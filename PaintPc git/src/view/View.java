@@ -23,6 +23,7 @@ import control.ControlPainting;
 
 /**
  * singleton view class.
+ * Contains all sub graphical user interface items.
  * 
  * @author Julius Huelsmann
  * @version %I%, %U%

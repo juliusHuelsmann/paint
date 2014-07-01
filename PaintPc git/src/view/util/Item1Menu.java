@@ -92,7 +92,7 @@ public class Item1Menu extends JPanel {
 		//initialize JPanel and alter settings
 		super();
 		super.setLayout(null);
-		super.setOpaque(true);
+		super.setOpaque(false);
 		super.setBorder(null);
 		super.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
 		super.setFocusable(false);
@@ -139,7 +139,7 @@ public class Item1Menu extends JPanel {
 		jpnl_subContainer = new JPanel();
 
 		sp_scroll = new VScrollPane(jpnl_stuff, jpnl_container, true);
-		sp_scroll.setOpaque(false);
+		sp_scroll.setOpaque(true);
 		super.add(sp_scroll);
 
 
@@ -162,7 +162,6 @@ public class Item1Menu extends JPanel {
 		jpnl_container.setBorder(null);
 		jpnl_container.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
 		jpnl_container.setFocusable(false);
-		jpnl_container.setOpaque(true);
 		super.add(jpnl_container);
 
         
@@ -207,22 +206,54 @@ public class Item1Menu extends JPanel {
 	 */
 	public final void setOpen(final boolean _open) {
 
+        Page.getInstance().getJlbl_painting().refreshPaint();
+       Graphics _g = Page.getInstance().getJlbl_painting().refreshRectangle(0,0,200,500);
+
 	    open = _open;
-        jpnl_stuff.setOpaque(_open);
-        jpnl_stuff.setVisible(_open);
         if (_open) {
-
-
             setSize(openedWidth, openedHeight);
-
             jpnl_container.setBorder(BorderFactory.createLineBorder(
                     ViewSettings.CLR_BORDER));
-            
+            new Thread(){
+                public void run(){
+
+                    
+                    try {
+                        Thread.sleep(100);
+                        jpnl_container.repaint();
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    Page.getInstance().getJlbl_painting().refreshPaint();
+//                    Graphics _g = Page.getInstance().getJlbl_painting().refreshRectangle(0,0,200,500);
+//
+//                    _g.setColor(Color.red);
+//                    _g.fillRect(0, 0,2000,2000);
+                }
+            } .start();
         
         } else {
             setSize(closedWidth, closedHeight);
             jpnl_container.setBorder(null);
-        
+            new Thread(){
+                public void run(){
+
+                    
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    Page.getInstance().getJlbl_painting().refreshPaint();
+//                    Graphics _g = Page.getInstance().getJlbl_painting().refreshRectangle(0,0,200,500);
+//
+//                    _g.setColor(Color.red);
+//                    _g.fillRect(0, 0,2000,2000);
+                }
+            } .start();
+            
         }
 	}
 
@@ -385,8 +416,6 @@ public class Item1Menu extends JPanel {
 			openedWidth = _width;
 			openedHeight = _height;
 
-			//if is currently visible
-			if (jpnl_stuff.isOpaque()) {
 
 				
 				/*
@@ -462,17 +491,11 @@ public class Item1Menu extends JPanel {
 						        + sp_scroll.getIcon_size() - sp_scroll.getY());
 					}
 				}
-			} else {
-
-				super.setSize(closedWidth, closedHeight);
-				tb_open.setSize(closedWidth, closedHeight);
-			}
 		} 
-		if (imagePath != "") {
-
-	        tb_open.setIcon(imagePath);   
-		}
-		repaint();
+//        if (imagePath != "") {
+//
+//            tb_open.setIcon(imagePath);   
+//        }
 	}
 
     

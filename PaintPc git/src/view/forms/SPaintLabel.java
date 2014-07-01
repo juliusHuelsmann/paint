@@ -229,7 +229,6 @@ public class SPaintLabel extends VPaintLabel {
     public final Graphics refreshRectangle(final int _x, final int _y, 
             final int _width, final int _height) {
 
-        if(isVisible()){
         //paint the painted stuff at graphics
         Graphics g_out = Picture.getInstance().updateRectangle(
                 -getX() + _x, -getY() + _y, _width, _height, _x, _y);
@@ -242,8 +241,7 @@ public class SPaintLabel extends VPaintLabel {
                     -getY() + _y + _height, _x, _y);  
         }
         
-        return g_out;}
-        return null;
+        return g_out;
     }
     
 

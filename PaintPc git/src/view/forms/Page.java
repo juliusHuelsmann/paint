@@ -47,11 +47,6 @@ implements Observer {
 	private static Page instance;
 	
 	
-	/**
-	 * JLabel for being able to show menus etc. without having 
-	 * to repaint all the time.
-	 */
-	private JLabel jlbl_screenLock;
 	
 	/**
 	 * empty utility class constructor. 
@@ -99,15 +94,6 @@ implements Observer {
         jpnl_toMove.setIgnoreRepaint(true);
         jpnl_toMove.setFocusable(false);
         
-        
-        jlbl_screenLock = new JLabel();
-        jlbl_screenLock.setBackground(Color.white);
-        jlbl_screenLock.setFocusable(false);
-        jlbl_screenLock.setVisible(false);
-        jlbl_screenLock.setBorder(null);
-        jlbl_screenLock.addMouseMotionListener(ControlPainting.getInstance());
-        jlbl_screenLock.addMouseListener(ControlPainting.getInstance());
-        super.add(jlbl_screenLock);
         //add selection JPanels
 //        super.add(Zoom.getInstance());
 
@@ -134,12 +120,12 @@ implements Observer {
 	
 	public void screenLock(boolean _b){
 	    
-	    if(_b){
-	        jlbl_painting.setVisible(false);
-	        Rectangle screenSize = new Rectangle( Toolkit.getDefaultToolkit().getScreenSize() );
-	        jlbl_screenLock.setIcon(new ImageIcon(ControlPainting.getRobot().createScreenCapture( screenSize )));
-	    } 
-        jlbl_screenLock.setVisible(_b);
+//	    if(_b){
+//	        jlbl_painting.setVisible(false);
+//	        Rectangle screenSize = new Rectangle( Toolkit.getDefaultToolkit().getScreenSize() );
+//	        jlbl_screenLock.setIcon(new ImageIcon(ControlPainting.getRobot().createScreenCapture( screenSize )));
+//	    } 
+//        jlbl_screenLock.setVisible(_b);
 	}
 	
 	
@@ -203,7 +189,6 @@ implements Observer {
                     Status.getImageShowSize().width,
                     Status.getImageShowSize().height);
 	        
-            jlbl_screenLock.setBounds(jpnl_toMove.getBounds());
 	        jlbl_painting.setLocation(0, 0);
 	     
 	        sp_ub.setLocation(ViewSettings.VIEW_SIZE_JFRAME.width 

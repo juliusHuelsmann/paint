@@ -47,7 +47,6 @@ public final class CItem implements MouseListener {
 
 		    //disable and close Item
 			i_lastActionItem.setOpen(false);
-			i_lastActionItem.close();
 
 		}
 
@@ -66,15 +65,9 @@ public final class CItem implements MouseListener {
 		    //set open flag
 			i_currentActionItem.setOpen(!i_currentActionItem.isOpen());
 			
-			//perform open/close action
-			if (i_currentActionItem.isOpen()) {
-				i_currentActionItem.open();
-			} else  {
-				i_currentActionItem.close();
-			}
-			
 			//set last element
 			i_lastActionItem = i_currentActionItem;
+			
 		} else { 
 		    
 		    //set last element

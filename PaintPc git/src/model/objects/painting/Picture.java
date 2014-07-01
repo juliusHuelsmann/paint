@@ -237,7 +237,7 @@ public final class Picture extends Observable {
         }
         
         if (_y + _height > Status.getImageShowSize().height) {
-            rectHeight = Status.getImageShowSize().height - _x;
+            rectHeight = Status.getImageShowSize().height - _y;
             
         }
         

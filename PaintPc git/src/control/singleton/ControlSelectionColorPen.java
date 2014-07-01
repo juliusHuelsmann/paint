@@ -113,10 +113,10 @@ public final class ControlSelectionColorPen implements MouseListener {
 			//set the image of the current pen
 			if (sa.getPenSelection() == 1) {
 				Paint.getInstance().getIt_stift1().setIcon(sa.getImagePath());
-				Paint.getInstance().getIt_stift1().close();
+	            Paint.getInstance().getIt_stift1().setOpen(false);
 			} else if (sa.getPenSelection() == 2) {
 				Paint.getInstance().getIt_stift2().setIcon(sa.getImagePath());
-				Paint.getInstance().getIt_stift2().close();
+                Paint.getInstance().getIt_stift2().setOpen(false);
 			}
 		} else if (
 		        !_event.getSource().equals(Paint.getInstance()
@@ -203,7 +203,7 @@ public final class ControlSelectionColorPen implements MouseListener {
                     Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE);
             Paint.getInstance().getIt_selection().getTb_open()
             .setActivated(true);
-            Paint.getInstance().getIt_selection().close();
+            Paint.getInstance().getIt_selection().setOpen(true);
         
         } else if (_event.getSource().equals(Paint.getInstance()
                 .getTb_selectionLine().getActionCause())) {

@@ -95,7 +95,7 @@ public final class Status {
      * @return the size.
      */
     public static int getRasterSize() {
-        final int min = 7;
+        final int min = 1;
         final int normal = 28;
         
         return Math.max(min, normal * imageShowSize.width / imageSize.width);

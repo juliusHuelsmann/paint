@@ -80,6 +80,11 @@ public class Item1Menu extends JPanel {
 	private String imagePath = "st2.png";
 	
 	/**
+	 * whether the menu is opened or not.
+	 */
+	private boolean open = false;
+	
+	/**
 	 * Constructor: shows closed item.
 	 */
 	public Item1Menu() {
@@ -87,7 +92,7 @@ public class Item1Menu extends JPanel {
 		//initialize JPanel and alter settings
 		super();
 		super.setLayout(null);
-		super.setOpaque(false);
+		super.setOpaque(true);
 		super.setBorder(null);
 		super.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
 		super.setFocusable(false);
@@ -116,7 +121,7 @@ public class Item1Menu extends JPanel {
 		ls_item = new List<Component>();
 		jpnl_container = new JPanel(){
 
-            @Override public void paintAll(Graphics _g){
+		    @Override public void paintAll(Graphics _g){
                 super.paintAll(_g);
             }
             @Override public void paint(Graphics _g){
@@ -145,6 +150,7 @@ public class Item1Menu extends JPanel {
         tb_open.addMouseListener(CItem.getInstance());
 		tb_open.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		tb_open.setFocusable(false);
+		tb_open.setOpaque(true);
 		super.add(tb_open);
 
         
@@ -156,11 +162,12 @@ public class Item1Menu extends JPanel {
 		jpnl_container.setBorder(null);
 		jpnl_container.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
 		jpnl_container.setFocusable(false);
+		jpnl_container.setOpaque(true);
 		super.add(jpnl_container);
 
         
         jpnl_subContainer.setLayout(null);
-        jpnl_subContainer.setOpaque(false);
+        jpnl_subContainer.setOpaque(true);
         jpnl_subContainer.setForeground(Color.green);
         jpnl_subContainer.setBorder(null);
         jpnl_subContainer.setBackground(
@@ -169,7 +176,7 @@ public class Item1Menu extends JPanel {
         jpnl_container.add(jpnl_subContainer);
         
 		jpnl_stuff.setLayout(null);
-		jpnl_stuff.setOpaque(false);
+		jpnl_stuff.setOpaque(true);
 		jpnl_stuff.setForeground(Color.green);
 		jpnl_stuff.setBorder(null);
 		jpnl_stuff.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
@@ -191,7 +198,7 @@ public class Item1Menu extends JPanel {
 	 * @return whether open or not.
 	 */
 	public final boolean isOpen() {
-		return jpnl_stuff.isOpaque();
+		return open;
 	}
 	
 	/**
@@ -200,10 +207,24 @@ public class Item1Menu extends JPanel {
 	 */
 	public final void setOpen(final boolean _open) {
 
+	    open = _open;
         jpnl_stuff.setOpaque(_open);
         jpnl_stuff.setVisible(_open);
+        if (_open) {
+
+
+            setSize(openedWidth, openedHeight);
+
+            jpnl_container.setBorder(BorderFactory.createLineBorder(
+                    ViewSettings.CLR_BORDER));
+            
+        
+        } else {
+            setSize(closedWidth, closedHeight);
+            jpnl_container.setBorder(null);
+        
+        }
 	}
-	
 
 	/**
 	 * set border.
@@ -214,14 +235,6 @@ public class Item1Menu extends JPanel {
 		tb_open.setBorder(_border);
         jpnl_stuff.setBorder(null);
         jpnl_container.setBorder(null);
-	}
-	
-	/**
-	 * close the menu.
-	 */
-	public final void close() {
-		setSize(closedWidth, closedHeight);
-		jpnl_container.setBorder(null);
 	}
 	
 	@Override
@@ -240,18 +253,6 @@ public class Item1Menu extends JPanel {
 	public void repaint(){
 
 	   super.repaint();
-	}
-	
-	/**
-	 * open the menu.
-	 */
-	public final void open() {
-
-		setSize(openedWidth, openedHeight);
-
-		jpnl_container.setBorder(BorderFactory.createLineBorder(
-				ViewSettings.CLR_BORDER));
-		
 	}
 
 
@@ -357,7 +358,11 @@ public class Item1Menu extends JPanel {
 		return _cmp;
 	}
 
-    @Override public final void setSize(Dimension _d) {
+    @Override public final void setSize(final Dimension _d) {
+
+        openedHeight = _d.height;
+        openedWidth = _d.width;
+        
         setSize(_d.width, _d.height);
     }
 	
@@ -367,8 +372,7 @@ public class Item1Menu extends JPanel {
 	@Override public final void setSize(final int _width, final int _height) {
 		
 		
-		
-		if (!isOpened(_width, _height)) {
+		if (!isOpen()) {
 
 			
 			super.setSize(closedWidth, closedHeight);
@@ -530,17 +534,6 @@ public class Item1Menu extends JPanel {
         return jpnl_stuff;
     }
 	
-	
-	/**
-	 * returns whether the item shell be closed.
-	 * 
-	 * @param _width the width
-	 * @param _height the height
-	 * @return whether is opened or not
-	 */
-	private boolean isOpened(final int _width, final int _height) {
-		return !(_width == closedWidth && _height == closedHeight);
-	}
 
 
 	/**

@@ -192,13 +192,13 @@ import control.ControlPainting;
         Page.getInstance().flip(_normalFlip);
         Paint.getInstance().flip();
         Tabs.getInstance().flip(_normalFlip);
-        Tabs.getInstance().flip(_normalFlip);
 	}
 	
 
     @Override
-    public void paintAll(Graphics _g){
-        super.paintAll(_g);
+    public void paint(Graphics _g){
+        super.paint(_g);
+        Page.getInstance().getJlbl_painting().refreshPaint();
     }
     @Override
     public void paintComponents(Graphics _g){
@@ -223,7 +223,6 @@ import control.ControlPainting;
         //return the only instance of this class.
         return instance;
     }
-
     /*
      * getter methods
      */

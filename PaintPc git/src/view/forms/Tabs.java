@@ -2,6 +2,9 @@
 package view.forms;
 
 //import declarations
+import java.awt.Color;
+import java.awt.Graphics;
+
 import settings.ViewSettings;
 import view.forms.tabs.Insert;
 import view.forms.tabs.Paint;
@@ -38,6 +41,7 @@ public class Tabs extends VTabbedPane {
                 ViewSettings.VIEW_WIDTH_TB, 
                 ViewSettings.VIEW_HEIGHT_TB,
                 ViewSettings.VIEW_HEIGHT_TB_VISIBLE);
+        super.setOpaque(true);
         super.setFocusable(false);
 
         /*
@@ -74,6 +78,8 @@ public class Tabs extends VTabbedPane {
         super.addTab("Drucken");
 
     }
+    
+    
     
 
     /**

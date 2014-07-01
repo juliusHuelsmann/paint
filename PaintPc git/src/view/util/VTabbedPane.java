@@ -4,6 +4,8 @@ package view.util;
 //import declarations
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -13,6 +15,7 @@ import control.util.CTabbedPane;
 import settings.Error;
 import settings.Status;
 import settings.ViewSettings;
+import view.forms.Page;
 
 
 /**
@@ -328,7 +331,7 @@ public class VTabbedPane extends JPanel {
         jpnl_contains.setSize(getWidth(), getHeight());
         
         //set background size (only visible width and height shown)
-        jpnl_background.setSize(getWidth(), visibleHeight);
+        jpnl_background.setSize(getWidth(), visibleHeight -titleHeight - titleY + 1);
         
         //if is normal rotated.
 	    if (_normalRotation) {
@@ -372,8 +375,16 @@ public class VTabbedPane extends JPanel {
 	        jpnl_background.setLocation(0, getHeight() 
 	                - (titleHeight + titleY - 1 + jpnl_background.getHeight()));
 	    }
+
 	}
 
+    public void repaint(){
+        super.repaint();
+        Page.getInstance().getJlbl_painting().refreshPaint();
+    }
+    public void paint(Graphics _g){
+        super.paint(_g);
+    }
 
     /**
      * @return the openTab

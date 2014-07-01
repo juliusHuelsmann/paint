@@ -409,7 +409,7 @@ public final class Utils {
                 x < Math.min(width - Status.getRasterBorderEnd(), _untilX); 
                 
                 //proceeds in size steps
-                x += Status.getRasterSize() / 2) {
+                x += Math.max(Status.getRasterSize() / 2, 1)) {
             
             for (int y = 
                     //the fromX (the window from x)

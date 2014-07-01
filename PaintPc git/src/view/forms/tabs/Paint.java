@@ -587,13 +587,13 @@ public final class Paint extends JPanel {
     	//
     	it_color = new Item1Menu();
     	it_color.setBorder(false);
-    	it_color.getJPanel().add(new VColorPanel(jbtn_colors));
     	it_color.setText("+ Farben");
     	it_color.setLocation(jbtn_colors[jbtn_colors.length - 1].getX() 
     	        + ViewSettings.DISTANCE_BETWEEN_ITEMS 
     	        + jbtn_colors[jbtn_colors.length - 1].getWidth(), 
     	        ViewSettings.DISTANCE_BETWEEN_ITEMS);
     	it_color.setSize(ViewSettings.PAINT_SIZE);
+    //    it_color.getJPanel().add(new VColorPanel(jbtn_colors));
         it_color.setIcon("icon/palette.png");
     	super.add(it_color);
     	it_color.setBorder(false);

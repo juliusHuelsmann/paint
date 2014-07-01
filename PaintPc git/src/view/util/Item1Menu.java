@@ -206,8 +206,8 @@ public class Item1Menu extends JPanel {
 	 */
 	public final void setOpen(final boolean _open) {
 
-        Page.getInstance().getJlbl_painting().refreshPaint();
-       Graphics _g = Page.getInstance().getJlbl_painting().refreshRectangle(0,0,200,500);
+//        Page.getInstance().getJlbl_painting().refreshPaint();
+//       Graphics _g = Page.getInstance().getJlbl_painting().refreshRectangle(0,0,200,500);
 
 	    open = _open;
         if (_open) {
@@ -220,12 +220,12 @@ public class Item1Menu extends JPanel {
                     
                     try {
                         Thread.sleep(100);
-                        jpnl_container.repaint();
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                     Page.getInstance().getJlbl_painting().refreshPaint();
+                    jpnl_container.repaint();
 //                    Graphics _g = Page.getInstance().getJlbl_painting().refreshRectangle(0,0,200,500);
 //
 //                    _g.setColor(Color.red);

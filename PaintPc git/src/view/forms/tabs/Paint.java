@@ -306,7 +306,7 @@ public final class Paint extends JPanel {
     
 
         final Dimension sizeIT = new Dimension(550, 550);
-        final Dimension sizeIT_selection = new Dimension(350, 260);
+        final Dimension sizeIT_selection = new Dimension(350, 360);
         final int sizeHeight = 110;
         
         if (_paint) {

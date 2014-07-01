@@ -459,7 +459,7 @@ public final class Paint extends JPanel {
     	//the first color for the first pen
     	tb_color1 = new Item1Button(null);
     	tb_color1.setOpaque(true);
-    	tb_color1.addActionListener(ControlSelectionColorPen.getInstance());
+    	tb_color1.addMouseListener(ControlSelectionColorPen.getInstance());
     	tb_color1.setBorder(BorderFactory.createCompoundBorder(
     	        new LineBorder(Color.black), new LineBorder(Color.white)));
     	tb_color1.setLocation(_x, ViewSettings.DISTANCE_BETWEEN_ITEMS);
@@ -471,7 +471,7 @@ public final class Paint extends JPanel {
     	//the second color for the second pen
     	tb_color2 = new Item1Button(null);
     	tb_color2.setOpaque(true);
-    	tb_color2.addActionListener(ControlSelectionColorPen.getInstance());
+    	tb_color2.addMouseListener(ControlSelectionColorPen.getInstance());
     	tb_color2.setBorder(BorderFactory.createCompoundBorder(
     	        new LineBorder(Color.black), new LineBorder(Color.white)));
     	tb_color2.setLocation(tb_color1.getWidth() + tb_color1.getX() 
@@ -493,7 +493,7 @@ public final class Paint extends JPanel {
     		        distanceBetweenColors + (i / anzInR)
     		        * (height + distanceBetweenColors), width, height);
     		jbtn_colors[i].setOpaque(true);
-    		jbtn_colors[i].addActionListener(
+    		jbtn_colors[i].addMouseListener(
     		        ControlSelectionColorPen.getInstance());
     		jbtn_colors[i].addMouseListener(ControlVisualEffects.getInstance());
     		jbtn_colors[i].setBorder(BorderFactory.createCompoundBorder(
@@ -880,7 +880,7 @@ public final class Paint extends JPanel {
         //alter settings of TextButton
         _tb.setOpaque(true);
         _tb.setText(_text);
-        _tb.addActionListener(ControlSelectionColorPen.getInstance());
+        _tb.addMouseListener(ControlSelectionColorPen.getInstance());
         _tb.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));

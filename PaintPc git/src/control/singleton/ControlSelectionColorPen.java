@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 
@@ -29,7 +31,7 @@ import view.util.VButtonWrapper;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class ControlSelectionColorPen implements ActionListener {
+public final class ControlSelectionColorPen implements MouseListener {
 
 	/**
 	 * boolean which indicates, whether the necessary instances of View and
@@ -92,7 +94,7 @@ public final class ControlSelectionColorPen implements ActionListener {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override public void actionPerformed(final ActionEvent _event) {
+	@Override public void mouseReleased(final MouseEvent _event) {
 
 		//if the ActionListener is not ready to listen to events because 
 		//of the lack of necessary links to instances of classes return
@@ -299,4 +301,32 @@ public final class ControlSelectionColorPen implements ActionListener {
 		//return the only instance of this class.
 		return instance;
 	}
+
+
+    @Override
+    public void mouseClicked(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+    @Override
+    public void mouseEntered(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+    @Override
+    public void mouseExited(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
+    @Override
+    public void mousePressed(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
 }

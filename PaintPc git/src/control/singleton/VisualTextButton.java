@@ -5,6 +5,7 @@ package control.singleton;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import settings.ViewSettings;
+import view.forms.Page;
 import view.util.Item1Menu;
 import view.util.Item1Button;
 import view.util.VButtonWrapper;
@@ -32,7 +33,8 @@ public final class VisualTextButton implements MouseListener {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override public void mouseReleased(final MouseEvent _event) { }
+	@Override public void mouseReleased(final MouseEvent _event) { 
+        Page.getInstance().getJlbl_painting().refreshPaint();}
 
 	/**
 	 * {@inheritDoc}
@@ -87,6 +89,8 @@ public final class VisualTextButton implements MouseListener {
 			        ViewSettings.CLR_ITEM1BUTTON_BACKGROUND);	
 			currentButton.setOwnBorder(ViewSettings.BRD_ITEM1BUTTON);
 		}
+		
+		Page.getInstance().getJlbl_painting().refreshPaint();
 	}
 
 

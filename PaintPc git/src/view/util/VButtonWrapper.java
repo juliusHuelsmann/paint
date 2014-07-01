@@ -27,12 +27,6 @@ public class VButtonWrapper extends JButton {
 	private Object o_delivered;
 	
 	
-	//@Override
-	public void fireActionPerformed(ActionEvent _event){
-	    
-	    super.fireActionPerformed(_event);
-	}
-	
 	/**
 	 * Constructor: save the object.
 	 * @param _o_delivered the object to be delivered.

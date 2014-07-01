@@ -141,44 +141,8 @@ public class Item1Menu extends JPanel {
 		//initialize JButton
 		tb_open = new Item1Button(this);
 		tb_open.setActivable(false);
-		tb_open.addActionListener(ControlSelectionColorPen.getInstance());
+		tb_open.addMouseListener(ControlSelectionColorPen.getInstance());
         tb_open.addMouseListener(CItem.getInstance());
-        tb_open.addMouseListener(new MouseListener() {
-            
-            @Override
-            public void mouseReleased(MouseEvent arg0) {
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                           
-            }
-            
-            @Override
-            public void mousePressed(MouseEvent arg0) {
-                // TODO Auto-generated method stub
-                
-            }
-            
-            @Override
-            public void mouseExited(MouseEvent arg0) {
-               
-            }
-            
-            @Override
-            public void mouseEntered(MouseEvent arg0) {
-                // TODO Auto-generated method stub
-                
-            }
-            
-            @Override
-            public void mouseClicked(MouseEvent arg0) {
-                // TODO Auto-generated method stub
-                
-            }
-        });
 		tb_open.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		tb_open.setFocusable(false);
 		super.add(tb_open);
@@ -211,6 +175,7 @@ public class Item1Menu extends JPanel {
 		jpnl_stuff.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
 		jpnl_stuff.setFocusable(false);
 		jpnl_subContainer.add(jpnl_stuff);
+        
 	}
 	
 	

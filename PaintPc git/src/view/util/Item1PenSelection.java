@@ -122,7 +122,7 @@ public class Item1PenSelection extends JPanel {
 		jbtn_select.setContentAreaFilled(false);
 		jbtn_select.setOpaque(false);
 		jbtn_select.setBorder(null);
-		jbtn_select.addActionListener(ControlSelectionColorPen.getInstance());
+		jbtn_select.addMouseListener(ControlSelectionColorPen.getInstance());
 		jbtn_select.setFocusable(false);
 		jbtn_select.addMouseListener(ControlVisualEffects.getInstance());
 		super.add(jbtn_select);

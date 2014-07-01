@@ -7,7 +7,6 @@ import view.forms.tabs.Insert;
 import view.forms.tabs.Paint;
 import view.forms.tabs.Selection;
 import view.util.VTabbedPane;
-import control.singleton.CItem;
 
 
 /**
@@ -61,7 +60,7 @@ public class Tabs extends VTabbedPane {
          */
         super.addTab("auswahl");
         Selection tab_selection = new Selection(
-                ViewSettings.VIEW_HEIGHT_TB, CItem.getInstance());
+                ViewSettings.VIEW_HEIGHT_TB);
         super.addToTab(2, tab_selection);
 
         /*

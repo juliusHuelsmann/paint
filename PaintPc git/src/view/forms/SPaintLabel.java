@@ -58,7 +58,6 @@ public class SPaintLabel extends VPaintLabel {
      */
     @Override public final void refreshPaint() {
 
-        if(isVisible())
         this.refreshRectangle(0, 0, getWidth(), getHeight());
     }
     

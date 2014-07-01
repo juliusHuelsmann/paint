@@ -4,6 +4,7 @@ package view.util;
 //import declarations
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import settings.ViewSettings;
+import view.View;
 import view.forms.Page;
 import control.singleton.CItem;
 import control.singleton.ControlSelectionColorPen;
@@ -78,11 +80,6 @@ public class Item1Menu extends JPanel {
 	private String imagePath = "st2.png";
 	
 	/**
-	 * constant for something.
-	 */
-	private final int twentyFife = 25;
-	
-	/**
 	 * Constructor: shows closed item.
 	 */
 	public Item1Menu() {
@@ -145,7 +142,7 @@ public class Item1Menu extends JPanel {
 		tb_open = new Item1Button(this);
 		tb_open.setActivable(false);
 		tb_open.addActionListener(ControlSelectionColorPen.getInstance());
-        tb_open.addActionListener(CItem.getInstance());
+        tb_open.addMouseListener(CItem.getInstance());
         tb_open.addMouseListener(new MouseListener() {
             
             @Override
@@ -394,7 +391,10 @@ public class Item1Menu extends JPanel {
 		
 		return _cmp;
 	}
-	
+
+    @Override public final void setSize(Dimension _d) {
+        setSize(_d.width, _d.height);
+    }
 	
 	/**
 	 * {@inheritDoc}
@@ -503,6 +503,7 @@ public class Item1Menu extends JPanel {
 
 	        tb_open.setIcon(imagePath);   
 		}
+		repaint();
 	}
 
     

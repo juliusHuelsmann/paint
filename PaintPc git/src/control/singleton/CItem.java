@@ -4,6 +4,8 @@ package control.singleton;
 //import declarations
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import view.forms.Page;
 import view.util.Item1Menu;
@@ -16,7 +18,7 @@ import view.util.VButtonWrapper;
  * @author Julius Huelsmann
  * @version %I, %U%
  */
-public final class CItem implements ActionListener {
+public final class CItem implements MouseListener {
 
     /**
      * the only instance of this class.
@@ -35,7 +37,7 @@ public final class CItem implements ActionListener {
 	private CItem() { }
 
 	@Override
-	public void actionPerformed(final ActionEvent _event) {
+	public void mouseClicked(final MouseEvent _event) {
 		
 	    //if this is NOT the first time an ActionEvent is thrown.
 	    //disable the last item
@@ -46,7 +48,8 @@ public final class CItem implements ActionListener {
 			i_lastActionItem.close();
 
 		}
-		
+
+        Page.getInstance().getJlbl_painting().refreshPaint();
 		
 		//fetch current source of action
 		Item1Menu i_currentActionItem = (Item1Menu) 
@@ -91,4 +94,28 @@ public final class CItem implements ActionListener {
 		}
 		return instance;
 	}
+
+    @Override
+    public void mouseEntered(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
 }

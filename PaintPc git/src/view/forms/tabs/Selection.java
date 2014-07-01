@@ -28,7 +28,7 @@ public class Selection extends JPanel {
      * @param _height the height
      * @param _al the ActionListener
      */
-	public Selection(final int _height, final ActionListener _al) {
+	public Selection(final int _height) {
 
 		//initialize JPanel and alter settings
 		super();

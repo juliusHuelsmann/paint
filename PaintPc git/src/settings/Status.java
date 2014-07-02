@@ -72,6 +72,12 @@ public final class Status {
     
     
     /**
+     * This counter counts the amount of image points that are printed
+     * to screen (just for debugging purpose).
+     */
+    private static int counter_paintedPoints = 0;
+    
+    /**
      * The path where to save the things.
      */
     private static String savePath = "";
@@ -271,5 +277,21 @@ public final class Status {
             final boolean _uncommittedChanges) {
 
         uncommittedChanges = _uncommittedChanges;
+    }
+
+
+    /**
+     * @return the counter_paintedPoints
+     */
+    public static int getCounter_paintedPoints() {
+        return counter_paintedPoints;
+    }
+
+
+    /**
+     * @param counter_paintedPoints the counter_paintedPoints to set
+     */
+    public static void setCounter_paintedPoints(int counter_paintedPoints) {
+        Status.counter_paintedPoints = counter_paintedPoints;
     }
 }

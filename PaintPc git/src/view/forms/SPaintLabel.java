@@ -75,7 +75,9 @@ public class SPaintLabel extends VPaintLabel {
      */
     public final void paintZoom(final int _x, final int _y, 
             final int _width, final int _height) {
-        getGraphics().drawRect(_x + 1, _y + 1, _width - 1, _height - 1);
+        Graphics g = getGraphics();
+        g.setColor(Color.red);
+        g.drawRect(_x + 1, _y + 1, _width - 1, _height - 1);
         this.r_old = new Rectangle(_x + 1, _y + 1, _width - 1, _height - 1);
     }
     
@@ -128,7 +130,7 @@ public class SPaintLabel extends VPaintLabel {
         
         //clear the rectangle which is to be repainted
         //and update the painted stuff of the image afterwards.
-        Picture.getInstance().updateRectangle(
+        Picture.getInstance().emptyRectangle(
                 
                 //the coordinates in total image
                 r_old.x - Page.getInstance().getJlbl_painting().getX(),
@@ -146,7 +148,7 @@ public class SPaintLabel extends VPaintLabel {
 
         //clear the rectangle which is to be repainted
         //and update the painted stuff of the image afterwards.
-        Picture.getInstance().updateRectangle(
+        Picture.getInstance().emptyRectangle(
                 
                 //the coordinates in total image
                 r_old.x - Page.getInstance().getJlbl_painting().getX()
@@ -164,7 +166,7 @@ public class SPaintLabel extends VPaintLabel {
 
         //clear the rectangle which is to be repainted
         //and update the painted stuff of the image afterwards.
-        Picture.getInstance().updateRectangle(
+        Picture.getInstance().emptyRectangle(
                 
                 //the coordinates in total image
                 r_old.x - Page.getInstance().getJlbl_painting().getX(),
@@ -183,7 +185,7 @@ public class SPaintLabel extends VPaintLabel {
 
         //clear the rectangle which is to be repainted
         //and update the painted stuff of the image afterwards.
-        Picture.getInstance().updateRectangle(
+        Picture.getInstance().emptyRectangle(
                 
                 //the coordinates in total image
                 r_old.x - Page.getInstance().getJlbl_painting().getX(),
@@ -199,6 +201,21 @@ public class SPaintLabel extends VPaintLabel {
                 r_old.x,
                 r_old.y);
 
+        Picture.getInstance().repaintRectangle(
+                
+                //the coordinates in total image
+                r_old.x - Page.getInstance().getJlbl_painting().getX(),
+                r_old.y - Page.getInstance().getJlbl_painting().getY(),
+                
+                //the size of the image- part that is printed.
+                //is one bigger than the rectangle because the lines are
+                //painted outside of the rectangle, thus it is necessary
+                //to repaint there.
+                r_old.width + 1, r_old.height + 1,
+                
+                //the graphics coordinates.
+                r_old.x,
+                r_old.y);
         //update the background raster
         Utils.getRastarImage(g, 
 

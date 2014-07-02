@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 
 import settings.Error;
 import settings.Status;
+import view.View;
+import view.forms.Page;
 import model.objects.pen.Pen;
 
 
@@ -64,7 +66,6 @@ public class PenKuli extends Pen {
 				if (_final && _p.x + i >= 0 && _p.y + j >= 0 && _p.x 
 				        + i < _bi.getWidth() && _p.y + j < _bi.getHeight()) {
 
-                    
 				    //set the given pixel in buffered image
 				    if (_final) {
 				        try {
@@ -106,18 +107,48 @@ public class PenKuli extends Pen {
                             imagePixelSizeY = Status.getImageShowSize().height 
                             / Status.getImageSize().height;
                     
-                    //for loop because i want to paint the gaps between the 
-                    //pixel if zoomed in.
-                    
-                    //print the pixel because if the pixel size is 0 the pixel 
-                    //has to be printed.
-                    _g.drawLine(x, y, x, y);
-                    
-                    for (int kx = 0; kx < imagePixelSizeX; kx++) {
-                        for (int ky = 0; ky < imagePixelSizeY; ky++) {
 
-                            //draw line.
-                            _g.drawLine(x + kx, y + ky, x + kx, y + ky);
+                    //error prevention (divide by zero if zoomed out a little 
+                    //bit too much)
+                    if (imagePixelSizeX == 0) {
+                        imagePixelSizeX = 1;
+                    }
+                    if (imagePixelSizeY == 0) {
+                        imagePixelSizeY = 1;
+                    }
+                    
+                    //if the data is displayed paint lines to graphics. 
+                    //otherwise nothing to do.
+                    if (x / imagePixelSizeX >= 0 && y / imagePixelSizeY >= 0
+                            
+                            //if the x coordinates are in range (displayed
+                            //at the right edge of the screen)
+                            && (int) x / imagePixelSizeX + 1 
+                            <= (int) Page.getInstance().getJlbl_painting()
+                            .getWidth() / imagePixelSizeX
+
+                            //if the x coordinates are in range (displayed
+                            //at the bottom edge of the screen)
+                            && (int) y / imagePixelSizeY + 1 
+                            <= (int) Page.getInstance().getJlbl_painting()
+                            .getHeight() / imagePixelSizeY) {
+                        
+                        Status.setCounter_paintedPoints(Status
+                                .getCounter_paintedPoints() + 1);
+                        
+                        //print the pixel because even if the pixel size in 
+                        //pixel is (rounded) equal to 0 the pixel has to be 
+                        //printed.
+                        _g.drawLine(x, y, x, y);
+
+                        //for loop because i want to paint the gaps between the 
+                        //pixel if zoomed in.
+                        for (int kx = 0; kx < imagePixelSizeX; kx++) {
+                            for (int ky = 0; ky < imagePixelSizeY; ky++) {
+
+                                //draw line.
+                                _g.drawLine(x + kx, y + ky, x + kx, y + ky);
+                            }
                         }
                     }
                 }

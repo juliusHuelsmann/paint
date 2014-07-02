@@ -31,6 +31,10 @@ public final class ViewSettings {
     //class selection
 
     /**
+     * The maximal zoom in and the maximal zoom out.
+     */
+    public static final int MAX_ZOOM_IN = 7, MAX_ZOOM_OUT = 3;
+    /**
      * colors.
      */
     public static final Color 

@@ -228,6 +228,32 @@ public final class Picture extends Observable {
             final int _graphicX, final int _graphiY) {
 
         
+        emptyRectangle(_x, _y, _width, _height, _graphicX, _graphiY);
+
+      
+      return repaintRectangle(_x, _y, _width, _height, _graphicX, _graphiY);
+
+    }
+    
+    
+
+    /**
+     * repaint the items that are in a rectangle to the (view) page (e.g. if
+     * the JLabel is moved))..
+     * 
+     * @param _x the x coordinate
+     * @param _y the y coordinate
+     * @param _width the width 
+     * @param _height the height
+     * @param _graphicX the graphics x
+     * @param _graphiY the graphics y.
+     * @return the graphics
+     */
+    public synchronized Graphics emptyRectangle(final int _x, 
+            final int _y, final int _width, final int _height,
+            final int _graphicX, final int _graphiY) {
+
+        
         //check whether the rectangle concerns the blue border of the
         //image which is not to be emptied and then repainted. 
         //If that's the case, the rectangle width or height are decreased.
@@ -248,7 +274,34 @@ public final class Picture extends Observable {
         }
         g_imageWork.setColor(Color.white);
         g_imageWork.fillRect(_graphicX, _graphiY, rectWidth, rectHeight);
-        
+
+      
+        return g_imageWork;
+
+    }
+    
+    
+    /**
+     * Repaint a rectangle without clearing the screen.
+     * 
+     * @param _x the x coordinate
+     * @param _y the y coordinate
+     * @param _width the width 
+     * @param _height the height
+     * @param _graphicX the graphics x
+     * @param _graphiY the graphics y.
+     * @return the graphics
+     */
+    public synchronized Graphics repaintRectangle(final int _x,
+            final int _y, final int _width, final int _height,
+            final int _graphicX, final int _graphiY) {
+
+        //alle die in Frage kommen neu laden.
+        if (ls_po_sortedByX == null
+                || g_imageWork == null) {
+            return g_imageWork;
+        }
+        Status.setCounter_paintedPoints(0);
         boolean behindRectangle = false;
         ls_po_sortedByX.toFirst();
         while (!ls_po_sortedByX.isEmpty() && !ls_po_sortedByX.isBehind() 
@@ -275,6 +328,10 @@ public final class Picture extends Observable {
         }
         ls_po_sortedByX.toFirst();
 
+//        System.out.println("Painted " 
+//                    + Status.getCounter_paintedPoints() 
+//                    + "pixel points for this operation.");
+        
       g_imageWork.translate(0, 0);
       
       
@@ -285,7 +342,6 @@ public final class Picture extends Observable {
       
       
       return g_imageWork;
-
     }
 	
 	

@@ -7,9 +7,12 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.Random;
+
 import settings.Status;
 import view.forms.Page;
 import model.objects.pen.Pen;
+import model.objects.pen.normal.PenKuli;
 import model.util.list.List;
 
 
@@ -129,7 +132,7 @@ public class PaintObjectWriting extends PaintObject {
 	    
 		//save values
 		this.ls_point = new List<Point>();
-		this.pen = _pen;
+		this.pen = new PenKuli(_pen.getId_operation(), _pen.getThickness(), _pen.getClr_foreground());
 	}
 	
 	/**

@@ -634,7 +634,8 @@ public final class ControlPainting implements MouseListener,
             return;
         }
 
-        if (Status.getIndexOperation() == Constants.CONTROL_PAINTING_INDEX_ZOOM) {
+        if (Status.getIndexOperation() 
+                == Constants.CONTROL_PAINTING_INDEX_ZOOM) {
 
             // save x and y location
             int xLocation = _event.getX() - ViewSettings.ZOOM_SIZE.width / 2;

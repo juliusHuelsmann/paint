@@ -304,6 +304,7 @@ public final class Picture extends Observable {
         Status.setCounter_paintedPoints(0);
         boolean behindRectangle = false;
         ls_po_sortedByX.toFirst();
+        System.out.println("\nrepaint:");
         while (!ls_po_sortedByX.isEmpty() && !ls_po_sortedByX.isBehind() 
                 && !behindRectangle) {
             
@@ -320,6 +321,7 @@ public final class Picture extends Observable {
                             bi_normalSize, false, g_imageWork,
                             Page.getInstance().getJpnl_toMove().getX(),
                             Page.getInstance().getJpnl_toMove().getY());
+                    System.out.println(((PaintObjectWriting)ls_po_sortedByX.getItem()).getPen().getClr_foreground());
                 } else {
                    behindRectangle = true; 
                 }
@@ -500,11 +502,14 @@ public final class Picture extends Observable {
     public void changeColor(final Color _clr) {
         
         //set in picture
-        pen_current.setClr_foreground(_clr);
+        pen_current.setClr_foreground(
+                new Color(_clr.getRed(), _clr.getGreen(), _clr.getBlue()));
         
         //set in current paint object
         if (po_current != null) {
-            po_current.changeColor(_clr);   
+            po_current.changeColor(
+                    new Color(_clr.getRed(), _clr.getGreen(), 
+                            _clr.getBlue()));   
         }
 
         //set uncommitted changes.

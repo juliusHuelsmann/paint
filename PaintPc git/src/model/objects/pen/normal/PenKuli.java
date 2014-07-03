@@ -141,6 +141,7 @@ public class PenKuli extends Pen {
                         //printed.
                         _g.drawLine(x, y, x, y);
 
+                        _g.setColor(getClr_foreground());
                         //for loop because i want to paint the gaps between the 
                         //pixel if zoomed in.
                         for (int kx = 0; kx < imagePixelSizeX; kx++) {

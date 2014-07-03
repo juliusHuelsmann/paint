@@ -696,4 +696,20 @@ public abstract class Pen implements Serializable {
 	public final void setThickness(final int _thickness) {
 		this.thickness = _thickness;
 	}
+
+
+    /**
+     * @return the id_operation
+     */
+    public int getId_operation() {
+        return id_operation;
+    }
+
+
+    /**
+     * @param id_operation the id_operation to set
+     */
+    public void setId_operation(int id_operation) {
+        this.id_operation = id_operation;
+    }
 }

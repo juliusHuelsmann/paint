@@ -146,6 +146,7 @@ public class PaintObjectWriting extends PaintObject {
 		            "PROGRAMMIERFEHLER @ paintobjectwriting: " 
 		            + "Stift noch nicht hinzugefuegt.");
 		    
+		    
 		    //throw exception
 		    throw new Error("Fehler: stift noch nicht hinzugefuegt.");
 		}

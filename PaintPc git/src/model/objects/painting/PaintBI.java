@@ -88,9 +88,4 @@ public final class PaintBI {
             final Point _p) {
         
     }
-    
-    
-    
-    
-    
 }

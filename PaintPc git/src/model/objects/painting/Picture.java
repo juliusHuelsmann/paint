@@ -70,7 +70,7 @@ public final class Picture extends Observable {
     /**
      * The graphics at which the Items are painted.
      */
-    private Graphics g_imageWork;
+    private BufferedImage g_imageWork;
 	
 	/**
 	 * Empty utility class constructor.

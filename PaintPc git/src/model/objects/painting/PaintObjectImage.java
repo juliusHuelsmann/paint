@@ -89,7 +89,7 @@ public class PaintObjectImage extends PaintObject {
      * {@inheritDoc}
      */
     @Override public final BufferedImage paint(final BufferedImage _bi, 
-            final boolean _final, final Graphics _g, final int _x,
+            final boolean _final, final BufferedImage _g, final int _x,
             final int _y) {
 
         //if final only paint at BufferedImage

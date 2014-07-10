@@ -91,7 +91,7 @@ public abstract class PaintObject implements Serializable {
 	 * @return the new BufferedImage.
 	 */
     public abstract BufferedImage paint(final BufferedImage _bi, 
-            final boolean _final, final Graphics _g, final int _x, 
+            final boolean _final, final BufferedImage _g, final int _x, 
             final int _y);
     
     

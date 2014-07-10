@@ -178,14 +178,9 @@ public class PaintObjectWriting extends PaintObject {
      */
     @Override 
     public final BufferedImage paint(final BufferedImage _bi, 
-            final boolean _final, final Graphics _g, final int _x, 
+            final boolean _final, final BufferedImage _g, final int _x, 
             final int _y) {
 
-        
-        if (_g != null) {
-            _g.setColor(pen.getClr_foreground());
-        }
-        
         return pen.paintToImage(
                 _bi, this, _final, new Point(_x, _y), _g);
     }

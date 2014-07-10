@@ -140,9 +140,13 @@ public class PaintObjectWriting extends PaintObject {
 		    this.pen = new PenKuli(_pen.getId_operation(),
 		            _pen.getThickness(), _pen.getClr_foreground());
 		} else {
+		    
+		    //alert user.
 		    JOptionPane.showMessageDialog(View.getInstance(), 
 		            "PROGRAMMIERFEHLER @ paintobjectwriting: " 
 		            + "Stift noch nicht hinzugefuegt.");
+		    
+		    //throw exception
 		    throw new Error("Fehler: stift noch nicht hinzugefuegt.");
 		}
 	}

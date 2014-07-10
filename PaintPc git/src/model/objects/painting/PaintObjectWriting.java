@@ -9,7 +9,10 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import settings.Status;
+import view.View;
 import view.forms.Page;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.PenKuli;
@@ -132,7 +135,16 @@ public class PaintObjectWriting extends PaintObject {
 	    
 		//save values
 		this.ls_point = new List<Point>();
-		this.pen = new PenKuli(_pen.getId_operation(), _pen.getThickness(), _pen.getClr_foreground());
+		
+		if (_pen instanceof PenKuli) {
+		    this.pen = new PenKuli(_pen.getId_operation(),
+		            _pen.getThickness(), _pen.getClr_foreground());
+		} else {
+		    JOptionPane.showMessageDialog(View.getInstance(), 
+		            "PROGRAMMIERFEHLER @ paintobjectwriting: " 
+		            + "Stift noch nicht hinzugefuegt.");
+		    throw new Error("Fehler: stift noch nicht hinzugefuegt.");
+		}
 	}
 	
 	/**

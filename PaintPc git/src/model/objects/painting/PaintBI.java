@@ -106,24 +106,29 @@ public final class PaintBI {
         
         //das hier so oft wie keine center points mehr gefunden werden.
         Point[] p = polygonReturn.findCenterPoints();
-        if(p.length != 2){
+        if (p.length != 2) {
 
             return;
         } else {
 
-            boolean [][] umgebung1 = getUmgebung(p[0], polygonReturn.getField());
-            if(umgebung1 == null) {
+            boolean [][] umgebung1 = getUmgebung(
+                    p[0], polygonReturn.getField());
+            
+            if (umgebung1 == null) {
 
-                boolean [][] umgebung2 = getUmgebung(p[1], polygonReturn.getField());
-                if(umgebung2 == null){
+                boolean [][] umgebung2 = getUmgebung(
+                        p[1], polygonReturn.getField());
+                
+                if (umgebung2 == null) {
                     System.out.println("error");
                     return;
                 } else {
-                    for (int y = 0; y < umgebung2.length; y++){
+                    for (int y = 0; y < umgebung2.length; y++) {
 
-                        for (int x = 0; x < umgebung2[y].length; x++){
-                            if(umgebung2[x][y])
-                                paintPoint(_bi, null, _clr, 1, new Point(x,y));
+                        for (int x = 0; x < umgebung2[y].length; x++) {
+                            if (umgebung2[x][y]) {
+                                paintPoint(_bi, null, _clr, 1, new Point(x, y));
+                            }
                         }
                     }
                 }
@@ -144,7 +149,16 @@ public final class PaintBI {
     }
     
     
-    private static boolean[][] getUmgebung(Point _p, boolean[][] _b){
+    
+    
+    /**
+     * 
+     * @param _p
+     * @param _b
+     * @return
+     */
+    private static boolean[][] getUmgebung(
+            final Point _p, final boolean[][] _b) {
         
         boolean [][] b = _b;
         
@@ -198,8 +212,9 @@ public final class PaintBI {
 
         int dX = _pStart.x - _pEnd.x;
         int dY = _pStart.y - _pEnd.y;
-        int maxDistance = Math.max(Math.max(dX, dY), 1);
-        
+        int maxDistance = Math.max(Math.max(Math.abs(dX), Math.abs(dY)), 1);
+
+       // System.out.println(dX + "x" + dY + "y" + maxDistance + "max");
         //the field, inside true if painted, otherwise false.
         boolean[][] field = _field;
         
@@ -239,11 +254,11 @@ public final class PaintBI {
         if (_field.length != _bi.getWidth() 
                 || _field.length != _bi.getHeight()) {
             
+            System.out.println("problem");
             throw new ThreadDeath();
             //("Fehlerhafte arrayuebergabe, " +
             	//	"programmierfehler");
         }
-
         //the thickness
         for (int x = _p.x - _thickness / 2 - _thickness % 2; 
                 x < _p.x + _thickness / 2; x++) {
@@ -263,6 +278,8 @@ public final class PaintBI {
                     
                     if (_field != null)
                     _field[x][y] = true;
+                    else
+                        System.out.println("problem2");
                 }
             }
         }
@@ -270,7 +287,37 @@ public final class PaintBI {
         return _field;
     }
     
+
+    public static void main(String[]args) {
+        
+        Point [] p = new Point[2];
+        p[1] = new Point (40,40);
+        p[0] = new Point (35,40);
+        
+        PolygonReturn pr = PaintBI.paintPolygonN(
+                new BufferedImage(50, 50, BufferedImage.TYPE_INT_ARGB), Color.black, 1, p, true);
+        drawPaintBI(pr);
+    }
     
+    
+    public static void drawPaintBI(PolygonReturn _pbi) {
+        for(int y = 0; y < _pbi.getField().length; y++){
+            for(int x = 0; x < _pbi.getField()[0].length; x++)
+            System.out.print("+-");
+            System.out.print("+");
+            System.out.println();
+        for(int x = 0; x < _pbi.getField()[0].length; x++){
+                
+            String str = "|t";
+            if(!_pbi.getField()[y][x]){
+                str = "| ";
+            }
+                System.out.print(str);
+        }
+        System.out.print("|");
+        System.out.println();
+        }
+    }
 }
 class PolygonReturn {
 
@@ -318,10 +365,18 @@ class PolygonReturn {
         this.field = _field;
     }
     
-    public PolygonReturn (int _width, int _height){
+    
+    /**
+     * Constructor: initializes a new PolygonReturn.
+     * 
+     * @param _width the size of the field
+     * @param _height the size of the field
+     */
+    public PolygonReturn(final int _width, 
+            final int _height) {
         this.lengthOrigin = 0;
         this.field = new boolean[_width][_height];
-        for (int x = 0; x < _width; x ++){
+        for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
                 field[x][y] = false;
             }
@@ -336,7 +391,7 @@ class PolygonReturn {
     /**
      * @param lengthOrigin the lengthOrigin to set
      */
-    public void setLengthOrigin(int lengthOrigin) {
+    public void setLengthOrigin(final int lengthOrigin) {
         this.lengthOrigin = lengthOrigin;
     }
     /**
@@ -348,9 +403,12 @@ class PolygonReturn {
     /**
      * @param field the field to set
      */
-    public void setField(boolean [][] field) {
+    public void setField(final boolean [][] field) {
         this.field = field;
     }
+    
+
+    
 }
 
 

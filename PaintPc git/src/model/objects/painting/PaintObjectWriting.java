@@ -3,21 +3,16 @@ package model.objects.painting;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.Random;
-
 import javax.swing.JOptionPane;
-
 import settings.Status;
 import view.View;
 import view.forms.Page;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.PenKuli;
 import model.util.list.List;
-
 
 /**
  * The paintObject corresponds to one item that has been painted. It consists

@@ -35,25 +35,25 @@ public abstract class VPaintLabel extends JLabel {
     public VPaintLabel() {
 
         super();
-        super.setIgnoreRepaint(true);
+//        super.setIgnoreRepaint(true);
 //        super.dispatchEvent(e)
 //        super.doLayout();
 //        super.grabFocus();
 //        super.(r)
         
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override public abstract void paint(final Graphics _g);
-    @Override public final void repaint() { }
-    @Override public final void paintComponent(final Graphics _g) { }
-    @Override public final void paintChildren(final Graphics _g) { }
-    @Override public final void paintComponents(final Graphics _g) { }
-    @Override public final void paintImmediately(final Rectangle _g) { }
-    @Override public final void paintBorder(final Graphics _g) { }
-    @Override public final void update(final Graphics _g) { }
+//    
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override public abstract void paint(final Graphics _g);
+//    @Override public final void repaint() { }
+//    @Override public final void paintComponent(final Graphics _g) { }
+//    @Override public final void paintChildren(final Graphics _g) { }
+//    @Override public final void paintComponents(final Graphics _g) { }
+//    @Override public final void paintImmediately(final Rectangle _g) { }
+//    @Override public final void paintBorder(final Graphics _g) { }
+//    @Override public final void update(final Graphics _g) { }
 
     
     
@@ -188,15 +188,15 @@ public abstract class VPaintLabel extends JLabel {
     /**
      * @return the bi
      */
-    public BufferedImage getBi() {
+    public final BufferedImage getBi() {
         return bi;
     }
 
     /**
-     * @param bi the bi to set
+     * @param _bi the _bi to set
      */
-    public void setBi(BufferedImage bi) {
-        this.bi = bi;
+    public final void setBi(final BufferedImage _bi) {
+        this.bi = _bi;
     }
     
 }

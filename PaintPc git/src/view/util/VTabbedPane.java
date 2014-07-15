@@ -380,7 +380,6 @@ public class VTabbedPane extends JPanel {
 
     public void repaint(){
         super.repaint();
-        Page.getInstance().getJlbl_painting().refreshPaint();
     }
     public void paint(Graphics _g){
         super.paint(_g);

@@ -198,7 +198,6 @@ import control.ControlPainting;
     @Override
     public void paint(Graphics _g){
         super.paint(_g);
-        Page.getInstance().getJlbl_painting().refreshPaint();
     }
     @Override
     public void paintComponents(Graphics _g){

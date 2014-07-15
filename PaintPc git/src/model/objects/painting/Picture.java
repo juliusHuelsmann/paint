@@ -296,6 +296,7 @@ public final class Picture extends Observable {
             final int _y, final int _width, final int _height,
             final int _graphicX, final int _graphiY) {
 
+        double time0 = System.currentTimeMillis();
         //alle die in Frage kommen neu laden.
         if (ls_po_sortedByX == null
                 || g_imageWork == null) {
@@ -338,6 +339,8 @@ public final class Picture extends Observable {
       
       
 
+        double time1 = System.currentTimeMillis();
+        System.out.println("zeiverbrauch einmal " + (time1 - time0));
       //notify preview-observer
       setChanged();
       notifyObservers(bi_normalSize);

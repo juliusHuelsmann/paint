@@ -183,6 +183,8 @@ implements Observer {
 
         jlbl_painting.setSize(getWidth() - 1, getHeight() - 1);
 
+        jlbl_painting.setBounds(0,0,getWidth() - 1, getHeight() - 1);
+
 	    if (_normalSize) {
 
             jpnl_toMove.setBounds(0, 0,

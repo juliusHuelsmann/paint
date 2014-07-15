@@ -7,6 +7,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+import _test.BufferedViewer;
+
 import settings.ViewSettings;
 import start.utils.Utils;
 import view.util.VPaintLabel;
@@ -21,6 +26,11 @@ import model.objects.painting.Picture;
 @SuppressWarnings("serial")
 public class SPaintLabel extends VPaintLabel {
 
+    /**
+     * The location which can be changed and given.
+     */
+    private int x = 0, y = 0;
+    
     /**
      * The thread which moves the border.
      */
@@ -46,10 +56,16 @@ public class SPaintLabel extends VPaintLabel {
      * {@inheritDoc}
      */
     @Override public final void paint(final Graphics _g) {
-        
+        System.out.println("1");
+        double time00 = System.currentTimeMillis();
         //if is set for the first time, refreshPaint
         if (Picture.getInstance().alterGraphics(getBi()) && isVisible()) {
+            double time01 = System.currentTimeMillis();
+            System.out.println("halbzeit" + (time01 -time00));
+            BufferedViewer.show(getBi());
             refreshPaint();
+            double time02 = System.currentTimeMillis();
+            System.out.println("ganzzeit" + (time02 -time00));
         }
     }
 
@@ -58,6 +74,7 @@ public class SPaintLabel extends VPaintLabel {
      */
     @Override public final void refreshPaint() {
 
+        System.out.println("2");
         this.refreshRectangle(0, 0, getWidth(), getHeight());
     }
     
@@ -75,6 +92,10 @@ public class SPaintLabel extends VPaintLabel {
      */
     public final void paintZoom(final int _x, final int _y, 
             final int _width, final int _height) {
+        BufferedViewer.show(getBi());
+        System.out.println(getBi().getWidth());
+        System.out.println(getBi().getHeight());
+        removeOldRectangle();
         Graphics g = getGraphics();
         g.setColor(Color.red);
         g.drawRect(_x + 1, _y + 1, _width - 1, _height - 1);
@@ -88,6 +109,7 @@ public class SPaintLabel extends VPaintLabel {
      */
     public final void paintEntireSelection(final Rectangle _r) {
 
+        System.out.println("3");
         //paint the background
         Utils.paintRastarBlock(getGraphics(), 
                 ViewSettings.SELECTION_BACKGROUND_CLR, _r);
@@ -105,6 +127,7 @@ public class SPaintLabel extends VPaintLabel {
      */
     public final void paintSelection(final int _x, final int _y, 
             final int _width, final int _height) {
+        System.out.println("4");
         getGraphics().drawRect(_x + 1, _y + 1, _width - 1, _height - 1);
         this.r_old = new Rectangle(_x + 1, _y + 1, _width - 1, _height - 1);
     }
@@ -115,7 +138,10 @@ public class SPaintLabel extends VPaintLabel {
      */
     public final void removeOldRectangle() {
 
-        if (r_old == null) {
+        System.out.println("5");
+        super.setIcon(new ImageIcon(getBi()));
+        super.repaint();
+        if (true || r_old == null) {
             return;
         }
         //set color and fetch Graphics
@@ -246,6 +272,7 @@ public class SPaintLabel extends VPaintLabel {
     public final BufferedImage refreshRectangle(final int _x, final int _y, 
             final int _width, final int _height) {
 
+        System.out.println("6");
         //paint the painted stuff at graphics
         BufferedImage g_out = Picture.getInstance().updateRectangle(
                 -getX() + _x, -getY() + _y, _width, _height, _x, _y);
@@ -273,6 +300,7 @@ public class SPaintLabel extends VPaintLabel {
      */
     private void paintBorder(final Rectangle _r) {
 
+        System.out.println("7");
         //initialize the index for the first run of the thread
         index = 0;
         if (thrd_moveBorder != null) {
@@ -293,6 +321,7 @@ public class SPaintLabel extends VPaintLabel {
      */
     private void initializeBorderThread(final Rectangle _r) {
 
+        System.out.println("8");
         thrd_moveBorder = new Thread() {
             @Override public void run() {
 

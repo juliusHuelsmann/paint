@@ -218,10 +218,13 @@ public final class PaintBI {
     
     
     /**
+     * fill the environment of a special point if the environment is not
+     * neighbored by the border of the bufferedImage.
      * 
-     * @param _p
-     * @param _b
-     * @return
+     * @param _p the point
+     * @param _b the paint array
+     * 
+     * @return the two dimensional boolean painting map
      */
     private static boolean[][] getUmgebung(
             final Point _p, final boolean[][] _b) {
@@ -270,6 +273,7 @@ public final class PaintBI {
      * Paints a line in a special color to a bufferedImage.
      * 
      * @param _bi the buffered image on which is painted
+     * @param _field a two dimensional boolean painting map
      * @param _clr the color in which is painted.
      * 
      * @param _thickness the thickness of printing the line
@@ -318,11 +322,13 @@ public final class PaintBI {
      * point which is finally printed (thickness)
      * 
      * @param _bi the buffered image on which is painted
+     * @param _field a two dimensional boolean painting map
      * @param _clr the color in which is painted.
      * 
      * @param _thickness the thickness of the point
      * 
      * @param _p the painted point.
+     * @return the two dimensional boolean painting map
      */
     private static boolean [][] paintPoint(
             final BufferedImage _bi, 

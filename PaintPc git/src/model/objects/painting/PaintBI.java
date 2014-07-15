@@ -21,6 +21,47 @@ public final class PaintBI {
     }
     
     
+    
+    
+    /**
+     * fill rectangle quickly in a certain color.
+     * 
+     * @param _bi the buffered image on which is painted
+     * @param _clr the color in which is painted.
+     * 
+     * @param _r the rectangle which is to be filled.
+     * 
+     * @return  a new PolygonReturn instance which contains both length of the
+     *          field and the field (as a two dimensional boolean array)
+     */
+    public static PolygonReturn fillRectangleQuick(
+            final BufferedImage _bi, 
+            final Color _clr,
+            final Rectangle _r) {
+
+        //initialize the length counter and the painted array are saved
+        PolygonReturn polygonReturn = new PolygonReturn(
+                _bi.getWidth(), _bi.getHeight());
+
+        //fetch the field from array (which is altered afterwards)
+        boolean[][] field = polygonReturn.getField();
+        
+        //go through the coordinates of the rectangle and paint
+        for (int x = 0; x <= _r.width; x++) {
+            for (int y = 0; y <= _r.height; y++) {
+                
+                //painting points
+                field = paintPoint(_bi, field, _clr, 1, 
+                        new Point(_r.x + x, _r.y + y));
+                 
+            }
+        }
+       
+        //return the new PolygonReturn
+        return new PolygonReturn(_r.width * _r.height, field);
+    }
+    
+    
     /**
      * Paints the borders of a polygon in a special 
      * color to a bufferedImage.
@@ -45,7 +86,8 @@ public final class PaintBI {
      *       
      * @param _paint whether to paint or just to return the length
      * 
-     * @return length of the curve.
+     * @return  a new PolygonReturn instance which contains both length of the
+     *          field and the field (as a two dimensional boolean array)
      */
     public static PolygonReturn paintPolygonN(
             final BufferedImage _bi, 
@@ -97,76 +139,77 @@ public final class PaintBI {
      *           
      *       p4
      * 
+     * @return  a new PolygonReturn instance which contains both length of the
+     *          field and the field (as a two dimensional boolean array)
      */
     public static PolygonReturn fillPolygonN(
             final BufferedImage _bi, 
             final Color _clr,
             final Point[] _p) {
+        
+        
+        //generate the polygon which is to be filled.
         PolygonReturn polygonReturn = paintPolygonN(_bi, _clr, 1, _p, true);
         
-        //das hier so oft wie keine center points mehr gefunden werden.
-        
+        //do this until no suitable points are found.
         for (int versuchID = 0;; versuchID++) {
+            
             Point[] p = polygonReturn.findCenterPoints(versuchID);
             
-            
-            
-            
-            if (p.length != 2) {
+            if (p == null) {
 
                 
-                return null;
+                return polygonReturn;
             } else {
-
-
-                boolean [][] umgebung1 = getUmgebung(
-                        p[0], polygonReturn.getField());
-                if (umgebung1 == null) {
-
-                    boolean [][] umgebung2 = getUmgebung(
-                            p[1], polygonReturn.getField());
+                
+                switch (p.length) {
+                
+                case 0:
+                    return polygonReturn;
                     
-                    if (umgebung2 == null) {
-                        
+                case 1:
+                    boolean [][] umgebung1 = getUmgebung(
+                            p[0], polygonReturn.getField());
+                    if (umgebung1 == null) {
                         continue;
                     } else {
-                        polygonReturn.setField(umgebung2);
-                        return polygonReturn;
-                        
-//                        drawPaintBI(new PolygonReturn(0, umgebung2));
-//                        for (int y = 0; y < umgebung2.length; y++) {
-//
-//                            
-//                            
-//                            for (int x = 0; x < umgebung2[y].length; x++) {
-//                                if (umgebung2[y][x]) {
-//                                    paintPoint(_bi, umgebung2, _clr, 1, new Point(y,x));
-//                                }
-//                            }
-//                        }
-//                        
-//
-//                        System.out.println("return 1");
-//                        return polygonReturn;
-                    }
-                } else {
 
-                    polygonReturn.setField(umgebung1);
-                    return polygonReturn;
-//                    
-//                    for (int y = 0; y < umgebung1.length; y++) {
-//
-//                        for (int x = 0; x < umgebung1[y].length; x++) {
-//                            if (umgebung1[y][x]) {
-//                                paintPoint(_bi, umgebung1, _clr, 1, new Point(x, y));
-//                            }
-//                        }
-//                    }
-//                    
-//                    
-//                    System.out.println("return 2");
-//                    return polygonReturn;
+                        polygonReturn.setField(umgebung1);
+                        continue;
+                    }
+
+                case 2:
+                    
+
+                    boolean [][] umgebung11 = getUmgebung(
+                            p[0], polygonReturn.getField());
+                    if (umgebung11 == null) {
+
+                        boolean [][] umgebung2 = getUmgebung(
+                                p[1], polygonReturn.getField());
+                        
+                        if (umgebung2 == null) {
+                            
+                            continue;
+                        } else {
+                            polygonReturn.setField(umgebung2);
+                            continue;
+                            
+                        }
+                    } else {
+
+                        polygonReturn.setField(umgebung11);
+                        continue;
+                    }
+                    
+                    
+                    
+                default:
+                    break;
+                
                 }
+
+
             }
         }
     }
@@ -191,7 +234,7 @@ public final class PaintBI {
             for (int y = _p.y - 1; y <= _p.y + 1; y++) {
                 
                 //out of image range -> continue
-                if (y > b.length || x > b[0].length) {
+                if (y < 0 || x < 0 || y >= b.length || x >= b[0].length) {
                     continue;
                 }
                 
@@ -210,8 +253,9 @@ public final class PaintBI {
                     } else {
                         b [y][x] = true;
                         b = getUmgebung(new Point(x, y), b);
-                        if (b == null)
+                        if (b == null) {
                             return null;
+                        }
                     }
                 }
                 
@@ -293,8 +337,6 @@ public final class PaintBI {
             
             System.out.println("problem");
             throw new ThreadDeath();
-            //("Fehlerhafte arrayuebergabe, " +
-            	//	"programmierfehler");
         }
         //the thickness
         for (int x = _p.x - _thickness / 2 - _thickness % 2; 
@@ -303,20 +345,22 @@ public final class PaintBI {
             for (int y = _p.y - _thickness / 2 - _thickness % 2; 
                     y < _p.y + _thickness / 2; y++) {
                 
-                if(x == _p.x && y == _p.y)
+                if (x == _p.x && y == _p.y) {
                     continue;
+                }
                 
                 //if in range paint to bufferedImage and fill
                 //the boolean array.
-                if (y < _bi.getHeight() && y >= 0
-                        && x < _bi.getWidth() && x >= 0) {
+                if (x < _bi.getHeight() && y >= 0
+                        && y < _bi.getWidth() && x >= 0) {
                     
-                    _bi.setRGB(x, y, _clr.getRGB());
+                    _bi.setRGB(y, x, _clr.getRGB());
                     
-                    if (_field != null)
-                    _field[x][y] = true;
-                    else
+                    if (_field != null) {
+                        _field[y][x] = true;
+                    } else {
                         System.out.println("problem2");
+                    }
                 }
             }
         }
@@ -325,24 +369,72 @@ public final class PaintBI {
     }
     
 
-    public static void main(String[]args) {
+    /**
+     * Main method for testing purpose.
+     * 
+     * @param _args the standard arguments (ignored)
+     */
+    public static void main(final String[] _args) {
+
+        /**
+         * Constants.
+         */
+        final int one = 1, two = 2, three = 3, four = 4, five = 5;
         
-        Point [] p = new Point[5];
-        p[0] = new Point (2,8);
-        p[1] = new Point (10,15);
-        p[2] = new Point (3,25);
-        p[3] = new Point (10,25);
-        p[4] = new Point (10,0);
+        Point [] p = new Point[2 + 2 + 1];
+        p[0] = new Point(two * five, 0);
+        p[1] = new Point(one, four * five);
+        p[2] = new Point(four * five, two * five);
+        p[three] = new Point(one, two * five);
+        p[four] = new Point(four * five, four * five);
+
+        Point [] p2 = new Point[2 + 2];
+        p2[0] = new Point(one, one);
+        p2[one] = new Point(one, four * five);
+        p2[2] = new Point(four * five * two, four * five);
+        p2[three] = new Point(four * five * two, one);
 
         PolygonReturn pr = PaintBI.paintPolygonN(
-                new BufferedImage(10, 40, BufferedImage.TYPE_INT_ARGB), Color.black, 1, p, true);
+                new BufferedImage(four * five, four * five * two,
+                        BufferedImage.TYPE_INT_ARGB), 
+                        Color.black, 1, p, true);
         drawPaintBI(pr);
         
         System.out.println();
         
-        pr = PaintBI.fillPolygonN( 
-                new BufferedImage(10, 40, BufferedImage.TYPE_INT_ARGB), Color.black, p);
+        pr = PaintBI.fillPolygonN(
+                new BufferedImage(four * five, four * five * two,
+                        BufferedImage.TYPE_INT_ARGB), 
+                        Color.black, p);
         drawPaintBI(pr);
+        
+        System.out.println();
+
+        pr = PaintBI.fillRectangleQuick(
+                new BufferedImage(four * five, four * five * two,
+                        BufferedImage.TYPE_INT_ARGB), 
+                        Color.black, new Rectangle(
+                                five, five, five * two, five));
+        drawPaintBI(pr);
+
+        System.out.println();
+        
+        pr = PaintBI.paintPolygonN(
+                new BufferedImage(four * five, four * five * two,
+                        BufferedImage.TYPE_INT_ARGB), 
+                        Color.black, 1, p2, true);
+        drawPaintBI(pr);
+        
+        System.out.println();
+        
+        pr = PaintBI.fillPolygonN(
+                new BufferedImage(four * five, four * five * two,
+                        BufferedImage.TYPE_INT_ARGB), 
+                        Color.black, p2);
+        drawPaintBI(pr);
+        
+        System.out.println();
+
 
 //        boolean [][] umgebung2 = getUmgebung(
 //                new Point (14,5), pr.getField());
@@ -360,7 +452,7 @@ public final class PaintBI {
         
         
         System.out.print("  \t");
-        for (int x = 0; x < _pbi.getField()[0].length; x++) {
+        for (int x = 1; x <= _pbi.getField()[0].length; x++) {
 
             switch ((x + "").length()) {
             case 1:
@@ -381,7 +473,7 @@ public final class PaintBI {
             }
             System.out.print("+");
             System.out.println();
-            System.out.print(y + "\t");
+            System.out.print((y + 1) + "\t");
         for (int x = 0; x < _pbi.getField()[0].length; x++) {
                 
             String str = "|t ";
@@ -427,10 +519,11 @@ class PolygonReturn {
      *      lines, there null is returned or two outside points
      *      loops: it may occur that both points are inside.
      *      
+     * @param _current how many results should be jumped.
      * 
      * @return a point with the length of two.
      */
-    public Point[] findCenterPoints(int _current) {
+    public Point[] findCenterPoints(final int _current) {
 
         int found = 0;
         for (int y = 0; y < field.length; y++) {
@@ -445,9 +538,15 @@ class PolygonReturn {
                             if (sy == 0 && sx == 0) {
                                 continue;
                             }
-                            
-                            if (x - sx >= field.length || y - sy >= field.length
+
+                            if (x - sx >= field[0].length 
+                                    || y - sy >= field.length
                                     || x - sx < 0 || y - sy < 0) {
+                                continue;
+                            }
+                            if (x + sx >= field[0].length 
+                                    || y + sy >= field.length
+                                    || x + sx < 0 || y + sy < 0) {
                                 continue;
                             }
                             if (!field [y + sy]  [x + sx]
@@ -455,9 +554,12 @@ class PolygonReturn {
                                 Point[] p = new Point[2];
                                 p[0] = new Point(x + sx, y + sy);
                                 p[1] = new Point(x - sx, y - sy);
-                                if(found >= _current)
-                                return p;
-                                found ++;
+                                if (found >= _current) {
+                                    return p;
+                                }
+                                
+                                //increase the found counter
+                                found++;
                             }
                         }
                     }
@@ -466,7 +568,23 @@ class PolygonReturn {
         }
         
 
-            return null;
+        for (int y = 0; y < field.length; y++) {
+            for (int x = 0; x < field[y].length; x++) {
+                
+                
+                if (!field[y][x]) {
+                    Point[] p = new Point[1];
+                    p[0] = new Point(x, y);
+                    if (found >= _current) {
+                        return p;
+                    }
+                }
+            }
+        }
+        
+        //if no two points are found return a free point. (it may be possible 
+        //that the form is a rectangle filling the entire screen)
+        return null;
         
     }
     
@@ -530,9 +648,9 @@ class PolygonReturn {
         
         
         boolean [][] f2 = new boolean[field.length][field[0].length];
-        for (int y = 0; y < field.length; y ++) {
+        for (int y = 0; y < field.length; y++) {
 
-            for (int x = 0; x < field[0].length; x ++) {
+            for (int x = 0; x < field[0].length; x++) {
                 f2[y][x] = field[y][x];
             }
         }

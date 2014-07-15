@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 import settings.ViewSettings;
 import start.utils.Utils;
@@ -36,7 +37,6 @@ public class SPaintLabel extends VPaintLabel {
     @SuppressWarnings("unused")
     private Point pnt_start;
 
-    
     /**
      * Constructor.
      */
@@ -48,7 +48,7 @@ public class SPaintLabel extends VPaintLabel {
     @Override public final void paint(final Graphics _g) {
         
         //if is set for the first time, refreshPaint
-        if (Picture.getInstance().alterGraphics(getGraphics()) && isVisible()) {
+        if (Picture.getInstance().alterGraphics(getBi()) && isVisible()) {
             refreshPaint();
         }
     }
@@ -217,7 +217,7 @@ public class SPaintLabel extends VPaintLabel {
                 r_old.x,
                 r_old.y);
         //update the background raster
-        Utils.getRastarImage(g, 
+        Utils.getRastarImage(getBi(), 
 
                 //the rectangle which is to be taken
                 -Page.getInstance().getJlbl_painting().getX() + r_old.x,
@@ -243,13 +243,15 @@ public class SPaintLabel extends VPaintLabel {
      * @param _height the height
      * @return the graphics
      */
-    public final Graphics refreshRectangle(final int _x, final int _y, 
+    public final BufferedImage refreshRectangle(final int _x, final int _y, 
             final int _width, final int _height) {
 
         //paint the painted stuff at graphics
-        Graphics g_out = Picture.getInstance().updateRectangle(
+        BufferedImage g_out = Picture.getInstance().updateRectangle(
                 -getX() + _x, -getY() + _y, _width, _height, _x, _y);
 
+        
+        
         //paint the painting background (e.g. raster / lines) at the graphical
         //user interface.
         if (g_out != null) {

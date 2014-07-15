@@ -106,7 +106,7 @@ public final class ControlPainting implements MouseListener,
                 e.printStackTrace();
             }
             Utils.getRastarImage(Page.getInstance().getJlbl_painting()
-                    .getGraphics());
+                    .getBi());
 
             // tell all the controller classes to start to perform
             this.startPerform = true;

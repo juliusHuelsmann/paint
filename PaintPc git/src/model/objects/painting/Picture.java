@@ -223,7 +223,7 @@ public final class Picture extends Observable {
      * @param _graphiY the graphics y.
      * @return the graphics
      */
-    public synchronized Graphics updateRectangle(final int _x, 
+    public synchronized BufferedImage updateRectangle(final int _x, 
             final int _y, final int _width, final int _height,
             final int _graphicX, final int _graphiY) {
 
@@ -249,7 +249,7 @@ public final class Picture extends Observable {
      * @param _graphiY the graphics y.
      * @return the graphics
      */
-    public synchronized Graphics emptyRectangle(final int _x, 
+    public synchronized BufferedImage emptyRectangle(final int _x, 
             final int _y, final int _width, final int _height,
             final int _graphicX, final int _graphiY) {
 
@@ -272,8 +272,8 @@ public final class Picture extends Observable {
                 || g_imageWork == null) {
             return g_imageWork;
         }
-        g_imageWork.setColor(Color.white);
-        g_imageWork.fillRect(_graphicX, _graphiY, rectWidth, rectHeight);
+        
+        PaintBI.fillRectangleQuick(g_imageWork, Color.white, new Rectangle(_graphicX, _graphiY, rectWidth, rectHeight));
 
       
         return g_imageWork;
@@ -292,7 +292,7 @@ public final class Picture extends Observable {
      * @param _graphiY the graphics y.
      * @return the graphics
      */
-    public synchronized Graphics repaintRectangle(final int _x,
+    public synchronized BufferedImage repaintRectangle(final int _x,
             final int _y, final int _width, final int _height,
             final int _graphicX, final int _graphiY) {
 
@@ -334,7 +334,7 @@ public final class Picture extends Observable {
 //                    + Status.getCounter_paintedPoints() 
 //                    + "pixel points for this operation.");
         
-      g_imageWork.translate(0, 0);
+//      g_imageWork.translate(0, 0);
       
       
 
@@ -753,7 +753,7 @@ public final class Picture extends Observable {
 	 * @param _g_image the Graphics.
 	 * @return whether set for the first time
 	 */
-	public boolean  alterGraphics(final Graphics _g_image) {
+	public boolean  alterGraphics(final BufferedImage _g_image) {
 	    
 	    //if is set first time
 	    if (g_imageWork == null) {

@@ -337,7 +337,7 @@ public final class Utils {
      * 
      * @param _g the graphics to which is painted
      */
-    public static void getRastarImage(final Graphics _g) {
+    public static void getRastarImage(final BufferedImage _g) {
         
         //the start and end values of the image rectangle which has
         //to be printed.
@@ -364,7 +364,7 @@ public final class Utils {
      * @param _graphiY the location at the component where the painting 
      *                  process starts.
      */
-    public static void getRastarImage(final Graphics _g, final int _fromX, 
+    public static void getRastarImage(final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {
 
@@ -383,6 +383,7 @@ public final class Utils {
         } else {
            distancePoints = 2 + 1;
         }
+        Graphics _g = _f.getGraphics();
         
         //set the raster color
         _g.setColor(RASTAR_COLOR);

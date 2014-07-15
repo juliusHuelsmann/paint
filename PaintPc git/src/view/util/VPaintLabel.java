@@ -4,6 +4,8 @@ package view.util;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
 import javax.swing.JLabel;
 
 
@@ -21,6 +23,11 @@ public abstract class VPaintLabel extends JLabel {
      */
     private int x = 0, y = 0;
 
+    
+    /**
+     * The bufferedImage.
+     */
+    private BufferedImage bi;
     
     /**
      * Constructor.
@@ -131,7 +138,8 @@ public abstract class VPaintLabel extends JLabel {
         
         //set width and height.
         super.setBounds(0, 0, _widht, _height);
-
+        bi = new BufferedImage(_widht, _height, BufferedImage.TYPE_INT_ARGB);
+        
         //repaint
         refreshPaint();
     }
@@ -175,6 +183,20 @@ public abstract class VPaintLabel extends JLabel {
      */
     @Override public final Rectangle getBounds() {
         return new Rectangle(x, y, getWidth(), getHeight());
+    }
+
+    /**
+     * @return the bi
+     */
+    public BufferedImage getBi() {
+        return bi;
+    }
+
+    /**
+     * @param bi the bi to set
+     */
+    public void setBi(BufferedImage bi) {
+        this.bi = bi;
     }
     
 }

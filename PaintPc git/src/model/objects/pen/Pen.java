@@ -102,7 +102,7 @@ public abstract class Pen implements Serializable {
 	 */
 	public final BufferedImage paintToImage(final BufferedImage _bi,
 			final PaintObjectWriting _o, final boolean _final, 
-			final Point _p_start, final Graphics _g) {
+			final Point _p_start, final BufferedImage _g) {
 
 		//fetch list of points and go to the beginning of the list
 		List<Point> ls_point = _o.getPoints();
@@ -162,7 +162,7 @@ public abstract class Pen implements Serializable {
 	 */
 	private void operationPoint(final List<Point> _ls_point, 
 	        final BufferedImage _bi, final boolean _final, 
-	        final Point _p_start, final Graphics _g) {
+	        final Point _p_start, final BufferedImage _g) {
     
         //go through the list of points and print point
         while (!_ls_point.isBehind()) {
@@ -194,7 +194,7 @@ public abstract class Pen implements Serializable {
 	 */
     private void operationLine(final List<Point> _ls_point, 
             final BufferedImage _bi, final boolean _final,
-            final Point _p_shift, final Graphics _g) {
+            final Point _p_shift, final BufferedImage _g) {
     
         //previous point
         Point pnt_previous = new Point(
@@ -241,7 +241,7 @@ public abstract class Pen implements Serializable {
     private void operationMaths(final List<Point> _ls_point,
             final BufferedImage _bi,
             final boolean _final, final Point _p_shift, 
-            final Graphics _g) {
+            final BufferedImage _g) {
 
         final int amountOfRuns = 1;
         Point pnt_1 = null, pnt_2 = null, pnt_3 = null;
@@ -545,7 +545,7 @@ public abstract class Pen implements Serializable {
 	 * @param _g the graphics to which line is painted.
 	 */
 	protected final void paintLine(final Point _p1, final Point _p2, 
-	        final BufferedImage _bi, final boolean _final, final Graphics _g, 
+	        final BufferedImage _bi, final boolean _final, final BufferedImage _g, 
 	        final Point _pnt_shift) {
 
 		//compute delta values
@@ -576,7 +576,7 @@ public abstract class Pen implements Serializable {
 	 * @param _shift the point in which the painting to graphics is shifted.
 	 */
 	protected abstract void paintPoint(Point _p, BufferedImage _bi, 
-	        boolean _final, Point _shift, Graphics _g);
+	        boolean _final, Point _shift, BufferedImage _g);
 		
 	
 	/*

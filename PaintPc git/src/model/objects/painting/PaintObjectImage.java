@@ -111,7 +111,7 @@ public class PaintObjectImage extends PaintObject {
             int y = pnt_locationOfImage.y;
             int width = bi_image.getWidth();
             int height = bi_image.getHeight();
-            _g.drawImage(bi_image, x, y, width, height, null);
+            _g.getGraphics().drawImage(bi_image, x, y, width, height, null);
             
         }
         

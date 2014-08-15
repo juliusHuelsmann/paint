@@ -82,7 +82,6 @@ implements Observer {
 
                 super.setLocation(_x, _y);
                 jlbl_painting.setLocation(_x, _y);
-//                jlbl_paintBG.setLocation(_x, _y);
             }
         };
         jpnl_toMove.setOpaque(true);
@@ -181,10 +180,6 @@ implements Observer {
 	 */
 	public void flip(final boolean _normalSize) {
 
-        jlbl_painting.setSize(getWidth() - 1, getHeight() - 1);
-
-        jlbl_painting.setBounds(0,0,getWidth() - 1, getHeight() - 1);
-
 	    if (_normalSize) {
 
             jpnl_toMove.setBounds(0, 0,
@@ -210,6 +205,10 @@ implements Observer {
                 - ViewSettings.VIEW_SIZE_SP);
         sp_lr.setSize(ViewSettings.VIEW_SIZE_JFRAME.width, 
                 ViewSettings.VIEW_SIZE_SP);
+
+        jlbl_painting.setSize(getWidth() - 1, getHeight() - 1);
+
+        jlbl_painting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
 
         //change size of components
 //        jlbl_paintBG.setIcon(new ImageIcon(Utils.getRastarImage(

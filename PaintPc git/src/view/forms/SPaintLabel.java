@@ -6,15 +6,11 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
 import _test.BufferedViewer;
-
 import settings.ViewSettings;
 import start.utils.Utils;
-import view.util.VPaintLabel;
 import model.objects.painting.Picture;
 
 
@@ -24,8 +20,14 @@ import model.objects.painting.Picture;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class SPaintLabel extends VPaintLabel {
+public class SPaintLabel extends JLabel {
 
+    
+    /**
+     * The bufferedImage.
+     */
+    private BufferedImage bi;
+    
     /**
      * The location which can be changed and given.
      */
@@ -56,25 +58,26 @@ public class SPaintLabel extends VPaintLabel {
      * {@inheritDoc}
      */
     @Override public final void paint(final Graphics _g) {
-        System.out.println("1");
-        double time00 = System.currentTimeMillis();
-        //if is set for the first time, refreshPaint
-        if (Picture.getInstance().alterGraphics(getBi()) && isVisible()) {
-            double time01 = System.currentTimeMillis();
-            System.out.println("halbzeit" + (time01 -time00));
-            BufferedViewer.show(getBi());
-            refreshPaint();
-            double time02 = System.currentTimeMillis();
-            System.out.println("ganzzeit" + (time02 -time00));
-        }
+        super.paint(_g);
+//        System.out.println("1");
+//        double time00 = System.currentTimeMillis();
+//        //if is set for the first time, refreshPaint
+//        if (Picture.getInstance().alterGraphics(getBi()) && isVisible()) {
+//            double time01 = System.currentTimeMillis();
+//            System.out.println("halbzeit" + (time01 -time00));
+//            BufferedViewer.show(getBi());
+//            refreshPaint();
+//            double time02 = System.currentTimeMillis();
+//            System.out.println("ganzzeit" + (time02 -time00));
+//        }
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override public final void refreshPaint() {
+    public final void refreshPaint() {
 
-        System.out.println("2");
+            System.out.println("Refreshing");
         this.refreshRectangle(0, 0, getWidth(), getHeight());
     }
     
@@ -259,7 +262,7 @@ public class SPaintLabel extends VPaintLabel {
                 r_old.x, r_old.y);  
         
     }
-    
+
    
     /**
      * repaint a special rectangle.
@@ -286,6 +289,9 @@ public class SPaintLabel extends VPaintLabel {
                     -getY() + _y, -getX() + _x + _width, 
                     -getY() + _y + _height, _x, _y);  
         }
+        setIcon(new ImageIcon(getBi()));
+        System.out.println("hier");
+        
         
         return g_out;
     }
@@ -483,8 +489,141 @@ public class SPaintLabel extends VPaintLabel {
         return ViewSettings.SELECTION_BORDER_CLR_BORDER[index % ViewSettings
                      .SELECTION_BORDER_CLR_BORDER.length];
     }
+
+    
+    /*
+     * Location is not set directly because the paint methods shell be able 
+     * to decide for themselves what to paint at which position.
+     * 
+     * Thus, the methods for changing the location and for getting it are
+     * overwritten and alter / return the locally saved location.
+     * 
+     * methods for changing location:
+     */
+    
+
+    /**
+     * in here, the location is not set as usual, but just the values
+     * for x and y location are saved. Thus, the painting methods
+     * are able to calculate for themselves what to paint at what position.
+     * @param _x the new x coordinate which is saved
+     * @param _y the new y coordinate which is saved
+     */
+    @Override public final void setLocation(final int _x, final int _y) {
+        
+        //if something changed, repaint
+        if (_x != x || _y != y) {
+
+            //save values
+            this.x = _x;
+            this.y = _y;
+            
+            if (isVisible()) {
+                
+                //set changed
+                refreshPaint();
+            }
+        }
+    }
+    
+
+    /**
+     * in here, the location is not set as usual, but just the values
+     * for x and y location are saved. Thus, the painting methods
+     * are able to calculate for themselves what to paint at what position.
+     * @param _p the new coordinates which are saved
+     */
+    @Override public final void setLocation(final Point _p) {
+        
+        //save the new location
+        this.x = _p.x;
+        this.y = _p.y;
+
+        
+        //repaint
+        refreshPaint();
+    }
     
     
+    /**
+     * set the size of the JLabel and save the new location. Location is not 
+     * set because the paint methods shell be able to decide for themselves
+     * what to paint at which position.
+     * 
+     * @param _x the x coordinate which is saved
+     * @param _y the y coordinate which is saved
+     * @param _widht the width which is set
+     * @param _height the height which is set
+     */
+    @Override public final void setBounds(final int _x, final int _y, 
+            final int _widht, final int _height) {
+        
+        //save the new location 
+        this.x = _x;
+        this.y = _y;
+        
+        //set width and height.
+        super.setBounds(0, 0, _widht, _height);
+        bi = new BufferedImage(_widht, _height, BufferedImage.TYPE_INT_ARGB);
+        
+        //repaint
+        refreshPaint();
+    }
+    
+    
+    
+    /*
+     * methods for getting location
+     */
+
+    
+    /**
+     * returns the saved but not applied x coordinate.
+     * @return the saved but not applied x coordinate.
+     */
+    @Override public final int getX() {
+        return this.x;
+    }
+    
+    /**
+     * returns the saved but not applied y coordinate.
+     * @return the saved but not applied y coordinate.
+     */
+    @Override public final int getY() {
+        return this.y;
+    }
+    
+    /**
+     * returns the saved but not applied x and y coordinates.
+     * @return the saved but not applied x and y coordinates (point).
+     */
+    @Override public final Point getLocation() {
+        return new Point(x, y);
+    }
+    
+    /**
+     * returns the saved but not applied x and y coordinates together with the
+     * applied size in a rectangle. 
+     * @return the saved but not applied x and y coordinates together with the
+     * applied size in a rectangle. 
+     */
+    @Override public final Rectangle getBounds() {
+        return new Rectangle(x, y, getWidth(), getHeight());
+    }
+
+    /**
+     * @return the bi
+     */
+    public final BufferedImage getBi() {
+        return bi;
+    }
+
+    /**
+     * @param _bi the _bi to set
+     */
+    public final void setBi(final BufferedImage _bi) {
+        this.bi = _bi;
+    }
 
     
 }

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -11,9 +12,12 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import model.objects.painting.PaintBI;
+
 import settings.Status;
 import settings.ViewSettings;
 import view.forms.Page;
+import view.forms.PaintLabel;
 
 /**
  * Class which contains utility methods.
@@ -337,7 +341,7 @@ public final class Utils {
      * 
      * @param _g the graphics to which is painted
      */
-    public static void getRastarImage(final BufferedImage _g) {
+    public static BufferedImage getRastarImage(final BufferedImage _g) {
         
         //the start and end values of the image rectangle which has
         //to be printed.
@@ -346,7 +350,7 @@ public final class Utils {
         int untilX = fromX + Page.getInstance().getWidth();
         int untilY = fromY + Page.getInstance().getHeight();
         
-        getRastarImage(_g, fromX, fromY, untilX, untilY, 0, 0);
+        return getRastarImage(_g, fromX, fromY, untilX, untilY, 0, 0);
         
     }
     
@@ -364,7 +368,7 @@ public final class Utils {
      * @param _graphiY the location at the component where the painting 
      *                  process starts.
      */
-    public static void getRastarImage(final BufferedImage _f, final int _fromX, 
+    public static BufferedImage getRastarImage(final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {
 
@@ -383,16 +387,13 @@ public final class Utils {
         } else {
            distancePoints = 2 + 1;
         }
-        Graphics _g = _f.getGraphics();
         
-        //set the raster color
-        _g.setColor(RASTAR_COLOR);
         
         //value because of which is decided whether to print a line
         //or to print a text for debugging purpose.
         boolean print = true;
         //set a small font
-        _g.setFont(new Font("Courier New", Font.PLAIN, (2 + 1) * (2 + 1)));
+//        _g.setFont(new Font("Courier New", Font.PLAIN, (2 + 1) * (2 + 1)));
         //vertical lines    |  |  |  |  |  |  |  |  |
         //                  |  |  |  |  |  |  |  |  |
         //                  |  |  |  |  |  |  |  |  |
@@ -431,8 +432,9 @@ public final class Utils {
                 
                 if (print) {
                     //paint the point
-                   _g.drawLine(coordinateX, coordinateY, 
-                           coordinateX, coordinateY);
+                    PaintBI.paintScilentPoint(
+                            _f, coordinateX, coordinateY,
+                            RASTAR_COLOR.getRGB());
 
                    //if the loop has reached the last values paint a line.
                    if (x == Status.getRasterBorderFront() 
@@ -440,12 +442,15 @@ public final class Utils {
                            - Status.getRasterSize() + 1) {
                         
                         if (y + 1 < height) {
-                            _g.drawLine(coordinateX, coordinateY + 1
-                                    , coordinateX, coordinateY + 1);
+                            PaintBI.paintScilentPoint(
+                                    _f, coordinateX, coordinateY + 1,
+                                    RASTAR_COLOR.getRGB());
                         }
                         if (y + 2 < height) {
-                            _g.drawLine(coordinateX, coordinateY + 2, 
-                                    coordinateX, coordinateY + 2);
+
+                            PaintBI.paintScilentPoint(
+                                    _f, coordinateX, coordinateY + 2,
+                                    RASTAR_COLOR.getRGB());
                         }
                     }
                 } else if (!print && y % Status.getRasterSize()
@@ -464,14 +469,14 @@ public final class Utils {
                         yBoxLoc += 2 * (2 + 1);
                     }
                     
-                    //draw the string with color black
-                    Color previousColor = _g.getColor();
-                    _g.setColor(Color.black);
-                    _g.drawString(xBoxID + "." +  yBoxID, 
-                           xBoxLoc, yBoxLoc);
-                    
-                    //reset color
-                    _g.setColor(previousColor);
+//                    //draw the string with color black
+//                    Color previousColor = _g.getColor();
+//                    _g.setColor(Color.black);
+//                    _g.drawString(xBoxID + "." +  yBoxID, 
+//                           xBoxLoc, yBoxLoc);
+//                    
+//                    //reset color
+//                    _g.setColor(previousColor);
                 }
             }
             print = !print;
@@ -494,27 +499,37 @@ public final class Utils {
                 //calculate correct coordinate values for the graphics
                 final int newX = x - _fromX + _graphiX;
                 final int newY = y - _fromY + _graphiY;
-               _g.drawLine(newX, newY, newX, newY);
+
+
+               PaintBI.paintScilentPoint(
+                       _f, newX, newY, RASTAR_COLOR.getRGB());
                
                 if (y / Status.getRasterSize() % (2 + 1) == 0) {
-                    _g.drawLine(newX, newY, newX, newY);
+                    PaintBI.paintScilentPoint(
+                            _f, newX, newY, RASTAR_COLOR.getRGB());
                 }
                 if (y == (height - height % Status.getRasterSize() - 1)) {
                     if (x + 1 < width) {
-                        _g.drawLine(newX + 1, newY, newX + 1, newY);
+
+                        PaintBI.paintScilentPoint(
+                                _f, newX + 1, newY, RASTAR_COLOR.getRGB());
                     }
                     if (x + 2 < width) {
-                        _g.drawLine(newX + 2, newY, newX + 2, newY);
+                        PaintBI.paintScilentPoint(
+                                _f, newX + 2, newY, RASTAR_COLOR.getRGB());
                     }
                 }
             }
         }
 
+        
         //paint the non image and the border of the page.
         if (width < _untilX
                 || height < _untilY) {
-            paintNonImage(_g, _untilX, _untilY, width, height);
+            //TODO:
+//            paintNonImage(_g, _untilX, _untilY, width, height);
         }
+        return _f;
     }
     
     

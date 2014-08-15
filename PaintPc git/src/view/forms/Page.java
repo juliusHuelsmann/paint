@@ -28,7 +28,7 @@ implements Observer {
 	/**
 	 * JLabel on which is painted and JLabel for background (e.g. raster).
 	 */
-	private SPaintLabel jlbl_painting;
+	private PaintLabel jlbl_painting;
 	
 	/**
 	 * two ScrollPanels for both dimensions.
@@ -97,12 +97,14 @@ implements Observer {
 //        super.add(Zoom.getInstance());
 
         //JLabel for the painting and the raster
-        jlbl_painting = new SPaintLabel();
+        jlbl_painting = new PaintLabel();
         jlbl_painting.setBackground(Color.white);
         jlbl_painting.setFocusable(false);
         jlbl_painting.setBorder(null);
         jlbl_painting.addMouseMotionListener(ControlPainting.getInstance());
         jlbl_painting.addMouseListener(ControlPainting.getInstance());
+        jlbl_painting.setBackground(Color.green);
+        jlbl_painting.setOpaque(true);
         super.add(jlbl_painting);
 
 
@@ -186,7 +188,6 @@ implements Observer {
                     Status.getImageShowSize().width,
                     Status.getImageShowSize().height);
 	        
-	        jlbl_painting.setLocation(0, 0);
 	     
 	        sp_ub.setLocation(ViewSettings.VIEW_SIZE_JFRAME.width 
 	                - sp_ub.getWidth(), ViewSettings.VIEW_SIZE_SP);
@@ -206,8 +207,8 @@ implements Observer {
         sp_lr.setSize(ViewSettings.VIEW_SIZE_JFRAME.width, 
                 ViewSettings.VIEW_SIZE_SP);
 
+        jlbl_painting.setLocation(0, 0);
         jlbl_painting.setSize(getWidth() - 1, getHeight() - 1);
-
         jlbl_painting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
 
         //change size of components
@@ -244,7 +245,7 @@ implements Observer {
     /**
      * @return the jlbl_painting
      */
-    public SPaintLabel getJlbl_painting() {
+    public PaintLabel getJlbl_painting() {
         return jlbl_painting;
     }
 
@@ -252,7 +253,7 @@ implements Observer {
     /**
      * @param _jlbl_painting the jlbl_painting to set
      */
-    public void setJlbl_painting(final SPaintLabel _jlbl_painting) {
+    public void setJlbl_painting(final PaintLabel _jlbl_painting) {
         this.jlbl_painting = _jlbl_painting;
     }
 

@@ -374,6 +374,13 @@ public final class PaintBI {
         return _field;
     }
     
+    
+    public static void paintScilentPoint(BufferedImage _bi, int _x, int _y, int _rgb){
+
+        _bi.setRGB(_y, _x, _rgb);
+        
+    }
+    
 
     /**
      * Main method for testing purpose.

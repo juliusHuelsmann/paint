@@ -224,7 +224,7 @@ public class Item1Menu extends JPanel {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-                    Page.getInstance().getJlbl_painting().refreshPaint();
+                    Page.getInstance().getJlbl_painting().refreshPopup();
                     jpnl_container.repaint();
 //                    Graphics _g = Page.getInstance().getJlbl_painting().refreshRectangle(0,0,200,500);
 //
@@ -246,7 +246,7 @@ public class Item1Menu extends JPanel {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-                    Page.getInstance().getJlbl_painting().refreshPaint();
+                    Page.getInstance().getJlbl_painting().refreshPopup();
 //                    Graphics _g = Page.getInstance().getJlbl_painting().refreshRectangle(0,0,200,500);
 //
 //                    _g.setColor(Color.red);

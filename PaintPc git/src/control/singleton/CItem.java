@@ -50,7 +50,7 @@ public final class CItem implements MouseListener {
 
 		}
 
-        Page.getInstance().getJlbl_painting().refreshPaint();
+        Page.getInstance().getJlbl_painting().refreshPopup();
 		
 		//fetch current source of action
 		Item1Menu i_currentActionItem = (Item1Menu) 

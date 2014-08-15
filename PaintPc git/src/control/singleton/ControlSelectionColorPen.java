@@ -4,21 +4,15 @@ package control.singleton;
 //import declarations
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.ImageIcon;
-
 import model.objects.painting.Picture;
 import settings.Constants;
 import settings.Status;
 import settings.TextFactory;
 import start.utils.Utils;
 import view.View;
-import view.forms.Page;
-import view.forms.SPaintLabel;
 import view.forms.tabs.Paint;
 import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;

@@ -74,6 +74,7 @@ implements Observer {
                                 0, 0, 1, 0, ViewSettings.CLR_BORDER),
                         BorderFactory.createMatteBorder(
                                 0, 0, 1, 1, Color.white))));
+        super.setVisible(false);
         
         //initialize JPanel jpnl_toMove
         jpnl_toMove = new JPanel() {

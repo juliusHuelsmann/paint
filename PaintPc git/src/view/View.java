@@ -3,6 +3,7 @@ package view;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -10,6 +11,7 @@ import java.awt.GraphicsEnvironment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import settings.Constants;
 import settings.ViewSettings;
@@ -40,6 +42,13 @@ import control.ControlPainting;
 	 */
 	private JButton jbtn_exit;
 	
+	
+	/**
+	 * JLabel which contains the program title (for start fade in).
+	 * Only question of design (no real usage).
+	 */
+	private JLabel jlbl_title;
+	
 	/**
 	 * Constructor: initialize JFrame, alter settings and initialize items.
 	 */
@@ -56,12 +65,14 @@ import control.ControlPainting;
         super.setLayout(null);
         super.setUndecorated(true);
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        super.getContentPane().setBackground(Color.white);
         this.setFullscreen();
-
-
+        
+        //fade in and show text.
+        fadeIn();
+        
+        //form for creating new page.
         super.add(New.getInstance());
-      
+
         //exit
         jbtn_exit = new JButton();
         jbtn_exit.setContentAreaFilled(false);
@@ -71,17 +82,143 @@ import control.ControlPainting;
         jbtn_exit.setFocusable(false);
         super.add(jbtn_exit);
 
-        //add tab, overview about paintObjects and Page
+        //fade out
+        fadeOut();
+        
+        //set some things visible and repaint the whole window.
+        flip(true);
+        repaint();
+
+        /*
+         * add tab, overview about paintObjects and Page
+         */
         super.add(Tabs.getInstance());
-//      super.add(PaintObjects.getInstance());
+        //super.add(PaintObjects.getInstance());
         super.add(Page.getInstance());
 
-        //set size and location
-        flip(true);
-        super.setVisible(true);
-
-        repaint();
+        //display tabs and page.
+        Tabs.getInstance().setVisible(true);
+        Page.getInstance().setVisible(true);
 	}
+	
+	/**
+	 * The maxcounter for design. Is used for fade in and out
+	 */
+	private final int dsgn_maxFadeIn = 200, dsgn_max_moveTitle = 200;
+	
+	
+	private void fadeIn(){
+
+        jlbl_title = new JLabel("Paint!");
+        jlbl_title.setBounds(-350, 
+                getHeight() / 2 - 75, 350, 150);
+        jlbl_title.setOpaque(false);
+        jlbl_title.setFont(new Font("Purisa", Font.BOLD + Font.ITALIC, 100));
+        super.add(jlbl_title);
+        
+
+        super.setVisible(true);
+        
+        new Thread(){
+            public void run(){
+                for(int i = 0; i < dsgn_max_moveTitle; i ++){
+
+                    jlbl_title.setBounds((int)(-350 + (getWidth() + 350)/2 * ((i)) / dsgn_max_moveTitle),
+                            getHeight() / 2 - 75, 350, 150);
+                    try {
+                        Thread.sleep(2);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                int max = 200;
+                int maxSteps = 2;
+                int lastPosition = -1;
+                for(int anzSteps = 1; anzSteps <= maxSteps; anzSteps ++){
+                for(int i = 0; i < max; i ++){
+
+                    lastPosition = (int)(getWidth() / 2 - 175 + (90 / (anzSteps )/ Math.sqrt(anzSteps) * maxSteps * Math.sqrt(maxSteps))*Math.sin(2 * Math.PI* i / max ));
+                    
+                    jlbl_title.setBounds((int)(getWidth() / 2 - 175 + (60 / (anzSteps )/ Math.sqrt(anzSteps) * maxSteps * Math.sqrt(maxSteps))*Math.sin(2 * Math.PI* i / max )), 
+                            getHeight() / 2 - 75, 350, 150);
+                    
+                    
+                    
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                
+                }
+                
+
+//                jlbl_title.setBounds(getWidth() / 2 - 175, 
+//                        getHeight() / 2 - 75, 350, 150);
+                for(int i = 0; i < dsgn_max_moveTitle; i ++){
+
+                    jlbl_title.setBounds(lastPosition + (getWidth() - lastPosition) * ((i)) / dsgn_max_moveTitle,
+                            getHeight() / 2 - 75, 350, 150);
+                    try {
+                        Thread.sleep(3);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        } .start();
+                
+        
+        //fade in
+        for(int i = 0; i < dsgn_maxFadeIn; i ++){
+
+            super.getContentPane().setBackground(
+                    new Color(255 - (255 - 75) * i / dsgn_maxFadeIn,
+                            255 - (255 - 175) * i / dsgn_maxFadeIn, 
+                            255 - (255 - 125) * i / dsgn_maxFadeIn));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        super.getContentPane().setBackground(new Color(75,175,125));
+	}
+	
+	
+	private void fadeOut(){
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        
+        //fade out
+        for(int i = 0; i < dsgn_maxFadeIn; i ++){
+
+            super.getContentPane().setBackground(
+                    new Color(75 + (255 - 75) * i / dsgn_maxFadeIn,
+                            175 + (255 - 175) * i / dsgn_maxFadeIn, 
+                            125 + (255 - 125) * i / dsgn_maxFadeIn));
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        jlbl_title.setVisible(false);
+        super.getContentPane().setBackground(Color.white);
+	}
+	
 	
 	
 	/**
@@ -194,16 +331,6 @@ import control.ControlPainting;
         Tabs.getInstance().flip(_normalFlip);
 	}
 	
-
-    @Override
-    public void paint(Graphics _g){
-        super.paint(_g);
-    }
-    @Override
-    public void paintComponents(Graphics _g){
-        super.paintComponents(_g);
-    }
-	
 	
     /**
      * this method guarantees that only one instance of this
@@ -222,6 +349,8 @@ import control.ControlPainting;
         //return the only instance of this class.
         return instance;
     }
+    
+    
     /*
      * getter methods
      */

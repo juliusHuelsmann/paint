@@ -43,6 +43,7 @@ public class Tabs extends VTabbedPane {
                 ViewSettings.VIEW_HEIGHT_TB_VISIBLE);
         super.setOpaque(true);
         super.setFocusable(false);
+        super.setVisible(false);
 
         /*
          * tab paint
@@ -76,6 +77,7 @@ public class Tabs extends VTabbedPane {
          * tab print
          */
         super.addTab("Drucken");
+        
 
     }
     

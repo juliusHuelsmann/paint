@@ -457,14 +457,14 @@ implements MouseMotionListener, MouseListener, KeyListener {
      */
     private void removeXLocation() {
         
-        int x = view.getJpnl_toLocate().getX() - moveStep;
+        int x = view.getJpnl_toLocate().getLocation().x - moveStep;
         if (x < -view.getJpnl_toLocate().getWidth()
                 + view.getJpnl_owner().getWidth()) {
             x = -view.getJpnl_toLocate().getWidth()
                     + view.getJpnl_owner().getWidth();
         }
         
-        view.getJpnl_toLocate().setLocation(x, view.getJpnl_toLocate().getY());
+        view.getJpnl_toLocate().setLocation(x, view.getJpnl_toLocate().getLocation().y);
         view.recalculateCenterBounds();
     
     }
@@ -475,12 +475,12 @@ implements MouseMotionListener, MouseListener, KeyListener {
      */
     private void addXLocation() {
         
-        int x = view.getJpnl_toLocate().getX() + moveStep;
+        int x = view.getJpnl_toLocate().getLocation().x + moveStep;
         
         if (x > 0) {
             x = 0;
         }
-        view.getJpnl_toLocate().setLocation(x, view.getJpnl_toLocate().getY());
+        view.getJpnl_toLocate().setLocation(x, view.getJpnl_toLocate().getLocation().y);
         view.recalculateCenterBounds();
     }
     
@@ -492,13 +492,13 @@ implements MouseMotionListener, MouseListener, KeyListener {
     private void removeYLocation() {
         
         
-        int y = view.getJpnl_toLocate().getY() - moveStep;
+        int y = view.getJpnl_toLocate().getLocation().y - moveStep;
         if (y < -view.getJpnl_toLocate().getHeight()
                 + view.getJpnl_owner().getHeight()) {
             y = -view.getJpnl_toLocate().getHeight()
                     + view.getJpnl_owner().getHeight();
         }
-        view.getJpnl_toLocate().setLocation(view.getJpnl_toLocate().getX(), y);
+        view.getJpnl_toLocate().setLocation(view.getJpnl_toLocate().getLocation().x, y);
 
         view.recalculateCenterBounds();
     }
@@ -509,12 +509,12 @@ implements MouseMotionListener, MouseListener, KeyListener {
      */
     private void addYLocation() {
         
-        int y = view.getJpnl_toLocate().getY() + moveStep;
+        int y = view.getJpnl_toLocate().getLocation().y + moveStep;
         
         if (y > 0) {
             y = 0;
         }
-        view.getJpnl_toLocate().setLocation(view.getJpnl_toLocate().getX(), y);
+        view.getJpnl_toLocate().setLocation(view.getJpnl_toLocate().getLocation().x, y);
         view.recalculateCenterBounds();
     }
 
@@ -532,7 +532,7 @@ implements MouseMotionListener, MouseListener, KeyListener {
             int percentage = Constants.MAX_PERCENTAGE 
                     * (view.getJbtn_center().getY()
                             - view.getJbtn_toTop().getHeight()) / bar100Percent;
-            view.getJpnl_toLocate().setLocation(view.getJpnl_toLocate().getX(), 
+            view.getJpnl_toLocate().setLocation(view.getJpnl_toLocate().getLocation().x, 
                     -percentage * (view.getJpnl_toLocate().getHeight() 
                             - view.getJpnl_owner().getHeight()) / cent);
         } else {
@@ -547,7 +547,7 @@ implements MouseMotionListener, MouseListener, KeyListener {
             view.getJpnl_toLocate().setLocation(-percentage 
                     * (view.getJpnl_toLocate().getWidth() 
                             - view.getJpnl_owner().getWidth()) / cent, 
-                            view.getJpnl_toLocate().getY());
+                            view.getJpnl_toLocate().getLocation().y);
         }
     }
 }

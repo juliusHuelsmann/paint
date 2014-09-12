@@ -15,6 +15,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -83,9 +84,14 @@ public final class ControlPainting implements MouseListener,
 
         // initialize startPerform
         this.startPerform = false;
+        
+        //set logger level to finest; thus every log message is shown.
+        Status.getLogger().setLevel(Level.FINEST);
 
         // if installed
         if (!Settings.getWsLocation().equals("")) {
+            
+            Status.getLogger().info("installation found.\n");
 
             // initialize the robot
             try {
@@ -94,24 +100,36 @@ public final class ControlPainting implements MouseListener,
                 e1.printStackTrace();
             }
 
-            // initialize the Controller classes, Model and View
+            /*
+             * initialize model
+             */
+
+            Status.getLogger().info(
+                    "initialize model class Pen and current pen.\n");
+            
             Picture.getInstance().initializePen(
                     new PenKuli(Constants.PEN_ID_POINT, 1, Color.black));
 
-            View.getInstance().setVisible(true);
-            try {
-                final int sleepTime = 500;
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Page.getInstance().getJlbl_painting().setBi(Utils.getRastarImage(Page.getInstance().getJlbl_painting()
-                    .getBi()));
 
+            /*
+             * initialize view.
+             */
+            Status.getLogger().info(
+                    "initialize view class and make visible.\n");
+            
+            View.getInstance().setVisible(true);
+
+
+            Status.getLogger().info(
+                    "Start handling actions and initialize listeners.\n");
+            
             // tell all the controller classes to start to perform
             this.startPerform = true;
             ControlSelectionColorPen.getInstance().initialize();
             ControlVisualEffects.getInstance().enable(true);
+
+            Status.getLogger().info(
+                    "initialization process completed.\n\n");
 
         } else {
 

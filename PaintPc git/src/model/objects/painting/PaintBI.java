@@ -375,9 +375,18 @@ public final class PaintBI {
     }
     
     
-    public static void paintScilentPoint(BufferedImage _bi, int _x, int _y, int _rgb){
+    public static void paintScilentPoint(
+            final BufferedImage _bi, int _x, int _y, int _rgb){
 
-        _bi.setRGB(_y, _x, _rgb);
+        if(_x <= 0)
+            _x = 0;
+        else if (_x >= _bi.getWidth())
+            _x = _bi.getWidth() - 1;
+        if(_y <= 0)
+            _y = 0;
+        else if (_y >= _bi.getHeight())
+            _y = _bi.getHeight() - 1;
+        _bi.setRGB(_x, _y, _rgb);
         
     }
     

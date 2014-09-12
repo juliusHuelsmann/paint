@@ -339,7 +339,8 @@ public final class Utils {
     /**
      * returns a raster BufferedImage as background.
      * 
-     * @param _g the graphics to which is painted
+     * @param _g the BufferedImage to which is painted
+     * @return _g
      */
     public static BufferedImage getRastarImage(final BufferedImage _g) {
         
@@ -356,7 +357,6 @@ public final class Utils {
     
     /**
      * return part of the raster image.
-     * @param _g the graphics
      * @param _fromX the start point
      * @param _fromY the start point
      * @param _untilX the end point

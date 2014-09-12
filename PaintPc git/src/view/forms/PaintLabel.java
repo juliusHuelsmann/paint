@@ -170,7 +170,9 @@ public class PaintLabel extends JLabel {
                 
                 //the graphics coordinates.
                 r_old.x,
-                r_old.y);
+                r_old.y,
+                
+                getBi());
 
         //clear the rectangle which is to be repainted
         //and update the painted stuff of the image afterwards.
@@ -188,7 +190,9 @@ public class PaintLabel extends JLabel {
                 
                 //the graphics coordinates.
                 r_old.x + r_old.width,
-                r_old.y);
+                r_old.y,
+                
+                getBi());
 
         //clear the rectangle which is to be repainted
         //and update the painted stuff of the image afterwards.
@@ -207,8 +211,10 @@ public class PaintLabel extends JLabel {
                 
                 //the graphics coordinates.
                 r_old.x,
-                r_old.y + r_old.height);
-
+                r_old.y + r_old.height,
+                
+                getBi());
+        
         //clear the rectangle which is to be repainted
         //and update the painted stuff of the image afterwards.
         Picture.getInstance().emptyRectangle(
@@ -225,7 +231,9 @@ public class PaintLabel extends JLabel {
                 
                 //the graphics coordinates.
                 r_old.x,
-                r_old.y);
+                r_old.y,
+                
+                getBi());
 
         Picture.getInstance().repaintRectangle(
                 
@@ -241,7 +249,9 @@ public class PaintLabel extends JLabel {
                 
                 //the graphics coordinates.
                 r_old.x,
-                r_old.y);
+                r_old.y,
+                
+                getBi());
         //update the background raster
         Utils.getRastarImage(getBi(), 
 
@@ -272,25 +282,24 @@ public class PaintLabel extends JLabel {
     public final BufferedImage refreshRectangle(final int _x, final int _y, 
             final int _width, final int _height) {
 
-        System.out.println("6");
         //paint the painted stuff at graphics
-        BufferedImage g_out = Picture.getInstance().updateRectangle(
-                -getX() + _x, -getY() + _y, _width, _height, _x, _y);
+        setBi(Picture.getInstance().updateRectangle(
+                -getX() + _x, -getY() + _y, _width, _height, _x, _y, getBi()));
 
         System.out.println(getSize());
         
         //paint the painting background (e.g. raster / lines) at the graphical
         //user interface.
-        if (g_out != null) {
-            Utils.getRastarImage(g_out, -getX() + _x, 
+        if (getBi() != null) {
+            setBi(Utils.getRastarImage(getBi(), -getX() + _x, 
                     -getY() + _y, -getX() + _x + _width, 
-                    -getY() + _y + _height, _x, _y);  
+                    -getY() + _y + _height, _x, _y));  
         }
         setIcon(new ImageIcon(getBi()));
         System.out.println("hier");
         
         
-        return g_out;
+        return getBi();
     }
     
 
@@ -573,6 +582,7 @@ public class PaintLabel extends JLabel {
     @Override public final void setBounds(final int _x, final int _y, 
             final int _widht, final int _height) {
         
+        System.out.println("0000");
         //save the new location 
         this.x = _x;
         this.y = _y;

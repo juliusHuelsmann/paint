@@ -21,6 +21,7 @@ import settings.Error;
 import settings.Status;
 import view.ViewVorschau;
 import view.forms.Page;
+import view.forms.PaintLabel;
 import model.objects.PictureOverview;
 import model.objects.pen.Pen;
 import model.objects.pen.special.PenSelection;
@@ -67,10 +68,6 @@ public final class Picture extends Observable {
 	private int currentId;
 
     
-    /**
-     * The graphics at which the Items are painted.
-     */
-    private BufferedImage g_imageWork;
 	
 	/**
 	 * Empty utility class constructor.
@@ -225,13 +222,14 @@ public final class Picture extends Observable {
      */
     public synchronized BufferedImage updateRectangle(final int _x, 
             final int _y, final int _width, final int _height,
-            final int _graphicX, final int _graphiY) {
+            final int _graphicX, final int _graphiY,
+            final BufferedImage _bi) {
 
         
-        emptyRectangle(_x, _y, _width, _height, _graphicX, _graphiY);
+        emptyRectangle(_x, _y, _width, _height, _graphicX, _graphiY, _bi);
 
       
-      return repaintRectangle(_x, _y, _width, _height, _graphicX, _graphiY);
+        return repaintRectangle(_x, _y, _width, _height, _graphicX, _graphiY, _bi);
 
     }
     
@@ -251,7 +249,8 @@ public final class Picture extends Observable {
      */
     public synchronized BufferedImage emptyRectangle(final int _x, 
             final int _y, final int _width, final int _height,
-            final int _graphicX, final int _graphiY) {
+            final int _graphicX, final int _graphiY, 
+            final BufferedImage _bi) {
 
         
         //check whether the rectangle concerns the blue border of the
@@ -269,14 +268,14 @@ public final class Picture extends Observable {
         
         //alle die in Frage kommen neu laden.
         if (ls_po_sortedByX == null
-                || g_imageWork == null) {
-            return g_imageWork;
+                || _bi == null) {
+            return _bi;
         }
         
-        PaintBI.fillRectangleQuick(g_imageWork, Color.white, new Rectangle(_graphicX, _graphiY, rectWidth, rectHeight));
+        PaintBI.fillRectangleQuick(_bi, Color.white, new Rectangle(_graphicX, _graphiY, rectWidth, rectHeight));
 
       
-        return g_imageWork;
+        return _bi;
 
     }
     
@@ -294,13 +293,14 @@ public final class Picture extends Observable {
      */
     public synchronized BufferedImage repaintRectangle(final int _x,
             final int _y, final int _width, final int _height,
-            final int _graphicX, final int _graphiY) {
+            final int _graphicX, final int _graphiY,
+            final BufferedImage _bi) {
 
         double time0 = System.currentTimeMillis();
         //alle die in Frage kommen neu laden.
         if (ls_po_sortedByX == null
-                || g_imageWork == null) {
-            return g_imageWork;
+                || _bi == null) {
+            return _bi;
         }
         Status.setCounter_paintedPoints(0);
         boolean behindRectangle = false;
@@ -319,7 +319,7 @@ public final class Picture extends Observable {
                     
                     //paint the object.
                     ls_po_sortedByX.getItem().paint(
-                            bi_normalSize, false, g_imageWork,
+                            bi_normalSize, false, _bi,
                             Page.getInstance().getJpnl_toMove().getX(),
                             Page.getInstance().getJpnl_toMove().getY());
                     System.out.println(((PaintObjectWriting)ls_po_sortedByX.getItem()).getPen().getClr_foreground());
@@ -346,7 +346,7 @@ public final class Picture extends Observable {
       notifyObservers(bi_normalSize);
       
       
-      return g_imageWork;
+      return _bi;
     }
 	
 	
@@ -400,7 +400,7 @@ public final class Picture extends Observable {
 	            }
 	        }
 		}
-        po_current.paint(null, false, g_imageWork, 
+        po_current.paint(null, false, Page.getInstance().getJlbl_painting().getBi(), 
                 Page.getInstance().getJpnl_toMove().getX(), 
                 Page.getInstance().getJpnl_toMove().getY());
 
@@ -440,7 +440,7 @@ public final class Picture extends Observable {
 		//graphics as well. Here, it is not possible to check whether
 		//items are in range, because the current PaintObject shell be
 		//entirely painted to both bufferedImage and screen.
-		bi_normalSize = po_current.paint(bi_normalSize, true, g_imageWork,
+		bi_normalSize = po_current.paint(bi_normalSize, true, Page.getInstance().getJlbl_painting().getBi(),
                 Page.getInstance().getJpnl_toMove().getX(),
                 Page.getInstance().getJpnl_toMove().getY());
 		PictureOverview.getInstance().add(po_current);
@@ -748,25 +748,6 @@ public final class Picture extends Observable {
 	}
 	
 	
-	/**
-	 * set the Graphics at which the items are painted in case of 
-	 * finishing an object. They are only set if the existing
-	 * graphics is null.
-	 * 
-	 * @param _g_image the Graphics.
-	 * @return whether set for the first time
-	 */
-	public boolean  alterGraphics(final BufferedImage _g_image) {
-	    
-	    //if is set first time
-	    if (g_imageWork == null) {
-	        this.g_imageWork = _g_image;
-	        return true;
-	    }
-	    
-	    //is already set
-	    return false;
-	}
 	
 	/**
 	 * this method guarantees that only one instance of this

@@ -4,15 +4,14 @@ package view;
 //import declarations
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
 import settings.Constants;
 import settings.ViewSettings;
 import start.utils.Utils;
@@ -107,24 +106,47 @@ import control.ControlPainting;
 	private final int dsgn_maxFadeIn = 200, dsgn_max_moveTitle = 200;
 	
 	
-	private void fadeIn(){
+	
+	/**
+	 * fade the gui in.
+	 */
+	private void fadeIn() {
 
+	    
+	    /**
+	     * The bounds of the title at the beginning
+	     */
+	    final int title_start_width = 350, 
+	            title_start_height = 150,
+	            title_start_x = -350, 
+	            title_start_y = getHeight() / 2 - title_start_height / 2;
+	    
+	    
+	    final int font_size = 100;
+	    
         jlbl_title = new JLabel("Paint!");
-        jlbl_title.setBounds(-350, 
-                getHeight() / 2 - 75, 350, 150);
+        jlbl_title.setBounds(title_start_x, title_start_y,
+                title_start_width, title_start_height);
         jlbl_title.setOpaque(false);
-        jlbl_title.setFont(new Font("Purisa", Font.BOLD + Font.ITALIC, 100));
+        jlbl_title.setFont(new Font("Purisa", 
+                Font.BOLD + Font.ITALIC, font_size));
         super.add(jlbl_title);
         
 
         super.setVisible(true);
         
-        new Thread(){
-            public void run(){
-                for(int i = 0; i < dsgn_max_moveTitle; i ++){
+        /*
+         * move title
+         */
+        new Thread() {
+            public void run() {
+                for (int i = 0; i < dsgn_max_moveTitle; i++) {
 
-                    jlbl_title.setBounds((int)(-350 + (getWidth() + 350)/2 * ((i)) / dsgn_max_moveTitle),
-                            getHeight() / 2 - 75, 350, 150);
+                    jlbl_title.setBounds((int) (title_start_x 
+                            + (getWidth() + title_start_width) / 2 * ((i))
+                            / dsgn_max_moveTitle),
+                            title_start_y,
+                            title_start_width, title_start_height);
                     try {
                         Thread.sleep(2);
                     } catch (InterruptedException e) {
@@ -135,22 +157,22 @@ import control.ControlPainting;
                 int max = 200;
                 int maxSteps = 2;
                 int lastPosition = -1;
-                for(int anzSteps = 1; anzSteps <= maxSteps; anzSteps ++){
-                for(int i = 0; i < max; i ++){
-
-                    lastPosition = (int)(getWidth() / 2 - 175 + (90 / (anzSteps )/ Math.sqrt(anzSteps) * maxSteps * Math.sqrt(maxSteps))*Math.sin(2 * Math.PI* i / max ));
-                    
-                    jlbl_title.setBounds((int)(getWidth() / 2 - 175 + (60 / (anzSteps )/ Math.sqrt(anzSteps) * maxSteps * Math.sqrt(maxSteps))*Math.sin(2 * Math.PI* i / max )), 
-                            getHeight() / 2 - 75, 350, 150);
-                    
-                    
-                    
-                    try {
-                        Thread.sleep(5);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                for (int anzSteps = 1; anzSteps <= maxSteps; anzSteps++) {
+                    for (int i = 0; i < max; i++) {
+    
+                        lastPosition = (int)(getWidth() / 2 - 175 + (90 / (anzSteps )/ Math.sqrt(anzSteps) * maxSteps * Math.sqrt(maxSteps))*Math.sin(2 * Math.PI* i / max ));
+                        
+                        jlbl_title.setBounds((int)(getWidth() / 2 - 175 + (60 / (anzSteps )/ Math.sqrt(anzSteps) * maxSteps * Math.sqrt(maxSteps))*Math.sin(2 * Math.PI* i / max )), 
+                                getHeight() / 2 - 75, 350, 150);
+                        
+                        
+                        
+                        try {
+                            Thread.sleep(5);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
                 
                 }
                 

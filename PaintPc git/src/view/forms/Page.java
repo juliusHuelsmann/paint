@@ -3,13 +3,9 @@ package view.forms;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import settings.Status;
 import settings.ViewSettings;
@@ -104,7 +100,6 @@ implements Observer {
         jlbl_painting.setBorder(null);
         jlbl_painting.addMouseMotionListener(ControlPainting.getInstance());
         jlbl_painting.addMouseListener(ControlPainting.getInstance());
-        jlbl_painting.setBackground(Color.green);
         jlbl_painting.setOpaque(true);
         super.add(jlbl_painting);
 
@@ -115,20 +110,11 @@ implements Observer {
 
         sp_lr = new VScrollPane(jpnl_toMove, this, false);
         View.getInstance().add(sp_lr);
-        
+
 //        super.add(jpnl_toMove);
 	}
 	
 	
-	public void screenLock(boolean _b){
-	    
-//	    if(_b){
-//	        jlbl_painting.setVisible(false);
-//	        Rectangle screenSize = new Rectangle( Toolkit.getDefaultToolkit().getScreenSize() );
-//	        jlbl_screenLock.setIcon(new ImageIcon(ControlPainting.getRobot().createScreenCapture( screenSize )));
-//	    } 
-//        jlbl_screenLock.setVisible(_b);
-	}
 	
 	
 	/**
@@ -138,9 +124,8 @@ implements Observer {
 		
 	    //set standard size
 	    super.setSize(_width, _height);
-		
-		//flip
-		flip(true);
+	    
+	    flip(true);
 	}
 	
 	
@@ -188,13 +173,13 @@ implements Observer {
             jpnl_toMove.setBounds(0, 0,
                     Status.getImageShowSize().width,
                     Status.getImageShowSize().height);
-	        
-	     
+
 	        sp_ub.setLocation(ViewSettings.VIEW_SIZE_JFRAME.width 
 	                - sp_ub.getWidth(), ViewSettings.VIEW_SIZE_SP);
 
 	        sp_lr.setLocation(0, ViewSettings.VIEW_SIZE_JFRAME.height 
 	                - sp_lr.getHeight());
+            
 
 	    } else {
 
@@ -208,16 +193,8 @@ implements Observer {
         sp_lr.setSize(ViewSettings.VIEW_SIZE_JFRAME.width, 
                 ViewSettings.VIEW_SIZE_SP);
 
-        jlbl_painting.setLocation(0, 0);
-        jlbl_painting.setSize(getWidth() - 1, getHeight() - 1);
         jlbl_painting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
 
-        //change size of components
-//        jlbl_paintBG.setIcon(new ImageIcon(Utils.getRastarImage(
-//                        jlbl_paintBG.getWidth(), jlbl_paintBG.getHeight())));
-//
-//        sp_ub.reload();
-//        sp_lr.reload();
 	}
 	
 	

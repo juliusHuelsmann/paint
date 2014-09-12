@@ -38,7 +38,7 @@ public final class PaintBI {
             final BufferedImage _bi, 
             final Color _clr,
             final Rectangle _r) {
-
+        
         //initialize the length counter and the painted array are saved
         PolygonReturn polygonReturn = new PolygonReturn(
                 _bi.getWidth(), _bi.getHeight());
@@ -47,8 +47,8 @@ public final class PaintBI {
         boolean[][] field = polygonReturn.getField();
         
         //go through the coordinates of the rectangle and paint
-        for (int x = 0; x <= _r.width; x++) {
-            for (int y = 0; y <= _r.height; y++) {
+        for (int x = 0; x < _r.width; x++) {
+            for (int y = 0; y < _r.height; y++) {
                 
                 //painting points
                 field = paintPoint(_bi, field, _clr, 1, 
@@ -337,6 +337,7 @@ public final class PaintBI {
             final int _thickness,
             final Point _p) {
         
+        
         //interrupt if error in field size
         if (_field.length != _bi.getWidth() 
                 || _field[0].length != _bi.getHeight()) {
@@ -344,30 +345,32 @@ public final class PaintBI {
             System.out.println("problem");
             throw new ThreadDeath();
         }
+        
         //the thickness
-        for (int x = _p.x - _thickness / 2 - _thickness % 2; 
-                x < _p.x + _thickness / 2; x++) {
+        for (int y = _p.y - _thickness / 2;
+                y < _p.y + _thickness / 2 + _thickness % 2; y++) {
 
-            for (int y = _p.y - _thickness / 2 - _thickness % 2; 
-                    y < _p.y + _thickness / 2; y++) {
+            for (int x = _p.x - _thickness / 2;
+                    x <= _p.x + _thickness / 2 + _thickness % 2; x++) {
                 
-                if (x == _p.x && y == _p.y) {
+                if (y == _p.y && x == _p.x) {
                     continue;
                 }
                 
                 //if in range paint to bufferedImage and fill
                 //the boolean array.
-                if (x < _bi.getHeight() && y >= 0
-                        && y < _bi.getWidth() && x >= 0) {
+                if (y < _bi.getHeight() && y >= 0
+                        && x < _bi.getWidth() && x >= 0) {
                     
-                    _bi.setRGB(y, x, _clr.getRGB());
+                    _bi.setRGB(x, y, _clr.getRGB());
                     
                     if (_field != null) {
-                        _field[y][x] = true;
+                        _field[x][y] = true;
                     } else {
                         System.out.println("problem2");
                     }
-                }
+                } else
+                    System.out.println(x + ".." + y);
             }
         }
         

@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import _test.BufferedViewer;
+import settings.Status;
 import settings.ViewSettings;
 import start.utils.Utils;
 import model.objects.painting.Picture;
@@ -72,9 +73,12 @@ public class PaintLabel extends JLabel {
 //        }
     }
 
+    
+    /**
+     * Refresh the entire image.
+     */
     public final void refreshPaint() {
 
-        System.out.println("Refreshing");
         this.refreshRectangle(0, 0, getWidth(), getHeight());
     }
     
@@ -282,12 +286,19 @@ public class PaintLabel extends JLabel {
     public final BufferedImage refreshRectangle(final int _x, final int _y, 
             final int _width, final int _height) {
 
+        Status.getLogger().warning("refreshing PaintLabel. \nValues: "
+                + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
+                + "\n\tgetLocation:\t" + getLocation() 
+                + " vs. " + super.getLocation()
+                + "\n\t" + "_x:\t\t" + _x
+                + "\n\t" + "_y\t\t" + _y 
+                + "\n\t" + "_width\t\t" + _width 
+                + "\n\t" + "_height\t\t" + _height + "\n");
+
         //paint the painted stuff at graphics
         setBi(Picture.getInstance().updateRectangle(
                 -getX() + _x, -getY() + _y, _width, _height, _x, _y, getBi()));
 
-        System.out.println(getSize());
-        
         //paint the painting background (e.g. raster / lines) at the graphical
         //user interface.
         if (getBi() != null) {
@@ -295,8 +306,8 @@ public class PaintLabel extends JLabel {
                     -getY() + _y, -getX() + _x + _width, 
                     -getY() + _y + _height, _x, _y));  
         }
+
         setIcon(new ImageIcon(getBi()));
-        System.out.println("hier");
         
         
         return getBi();
@@ -563,9 +574,12 @@ public class PaintLabel extends JLabel {
         this.x = _p.x;
         this.y = _p.y;
 
-        
-        //repaint
-        refreshPaint();
+
+        if (isVisible()) {
+            
+            //set changed
+            refreshPaint();
+        }
     }
     
     
@@ -582,7 +596,6 @@ public class PaintLabel extends JLabel {
     @Override public final void setBounds(final int _x, final int _y, 
             final int _widht, final int _height) {
         
-        System.out.println("0000");
         //save the new location 
         this.x = _x;
         this.y = _y;
@@ -590,9 +603,12 @@ public class PaintLabel extends JLabel {
         //set width and height.
         super.setBounds(0, 0, _widht, _height);
         bi = new BufferedImage(_widht, _height, BufferedImage.TYPE_INT_ARGB);
-        
-        //repaint
-        refreshPaint();
+
+        if (isVisible()) {
+            
+            //set changed
+            refreshPaint();
+        }
     }
     
     

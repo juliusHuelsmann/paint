@@ -86,7 +86,7 @@ public final class ControlPainting implements MouseListener,
         this.startPerform = false;
         
         //set logger level to finest; thus every log message is shown.
-        Status.getLogger().setLevel(Level.FINEST);
+        Status.getLogger().setLevel(Level.ALL);
 
         // if installed
         if (!Settings.getWsLocation().equals("")) {
@@ -128,8 +128,8 @@ public final class ControlPainting implements MouseListener,
             ControlSelectionColorPen.getInstance().initialize();
             ControlVisualEffects.getInstance().enable(true);
 
-            Status.getLogger().info(
-                    "initialization process completed.\n\n");
+            Status.getLogger().info("initialization process completed.\n\n"
+                    + "-------------------------------------------------\n");
 
         } else {
 

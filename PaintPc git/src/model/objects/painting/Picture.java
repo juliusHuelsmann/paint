@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 
 import settings.Error;
 import settings.Status;
+import view.View;
 import view.ViewVorschau;
 import view.forms.Page;
 import view.forms.PaintLabel;
@@ -218,6 +219,7 @@ public final class Picture extends Observable {
      * @param _height the height
      * @param _graphicX the graphics x
      * @param _graphiY the graphics y.
+     * @param _bi the bufferedImage
      * @return the graphics
      */
     public synchronized BufferedImage updateRectangle(final int _x, 
@@ -226,10 +228,11 @@ public final class Picture extends Observable {
             final BufferedImage _bi) {
 
         
-        emptyRectangle(_x, _y, _width, _height, _graphicX, _graphiY, _bi);
+        emptyRectangle(0, 0, _width, _height, 0, 0, _bi);
 
       
-        return repaintRectangle(_x, _y, _width, _height, _graphicX, _graphiY, _bi);
+        return repaintRectangle(_x, _y, _width, _height, 
+                _graphicX, _graphiY, _bi);
 
     }
     
@@ -272,9 +275,9 @@ public final class Picture extends Observable {
             return _bi;
         }
         
-        PaintBI.fillRectangleQuick(_bi, Color.white, new Rectangle(_graphicX, _graphiY, rectWidth, rectHeight));
-
-      
+        PaintBI.fillRectangleQuick(_bi, Color.white, 
+                new Rectangle(_graphicX, _graphiY, rectWidth, rectHeight));
+        
         return _bi;
 
     }
@@ -296,7 +299,6 @@ public final class Picture extends Observable {
             final int _graphicX, final int _graphiY,
             final BufferedImage _bi) {
 
-        double time0 = System.currentTimeMillis();
         //alle die in Frage kommen neu laden.
         if (ls_po_sortedByX == null
                 || _bi == null) {
@@ -305,7 +307,7 @@ public final class Picture extends Observable {
         Status.setCounter_paintedPoints(0);
         boolean behindRectangle = false;
         ls_po_sortedByX.toFirst();
-        System.out.println("\nrepaint:");
+
         while (!ls_po_sortedByX.isEmpty() && !ls_po_sortedByX.isBehind() 
                 && !behindRectangle) {
             
@@ -322,7 +324,6 @@ public final class Picture extends Observable {
                             bi_normalSize, false, _bi,
                             Page.getInstance().getJpnl_toMove().getX(),
                             Page.getInstance().getJpnl_toMove().getY());
-                    System.out.println(((PaintObjectWriting)ls_po_sortedByX.getItem()).getPen().getClr_foreground());
                 } else {
                    behindRectangle = true; 
                 }
@@ -339,8 +340,6 @@ public final class Picture extends Observable {
       
       
 
-        double time1 = System.currentTimeMillis();
-        System.out.println("zeiverbrauch einmal " + (time1 - time0));
       //notify preview-observer
       setChanged();
       notifyObservers(bi_normalSize);

@@ -163,8 +163,8 @@ public class PaintLabel extends JLabel {
         Picture.getInstance().emptyRectangle(
                 
                 //the coordinates in total image
-                r_old.x - Page.getInstance().getJlbl_painting().getX(),
-                r_old.y - Page.getInstance().getJlbl_painting().getY(),
+                r_old.x - Page.getInstance().getJlbl_painting().getLocation().x,
+                r_old.y - Page.getInstance().getJlbl_painting().getLocation().y,
                 
                 //the size of the image- part that is printed.
                 //is one bigger than the rectangle because the lines are
@@ -297,14 +297,15 @@ public class PaintLabel extends JLabel {
 
         //paint the painted stuff at graphics
         setBi(Picture.getInstance().updateRectangle(
-                -getX() + _x, -getY() + _y, _width, _height, _x, _y, getBi()));
+                -getLocation().x + _x, 
+                -getLocation().y + _y, _width, _height, _x, _y, getBi()));
 
         //paint the painting background (e.g. raster / lines) at the graphical
         //user interface.
         if (getBi() != null) {
-            setBi(Utils.getRastarImage(getBi(), -getX() + _x, 
-                    -getY() + _y, -getX() + _x + _width, 
-                    -getY() + _y + _height, _x, _y));  
+            setBi(Utils.getRastarImage(getBi(), -getLocation().x + _x, 
+                    -getLocation().y + _y, -getLocation().x + _x + _width, 
+                    -getLocation().y + _y + _height, _x, _y));  
         }
 
         setIcon(new ImageIcon(getBi()));
@@ -618,21 +619,21 @@ public class PaintLabel extends JLabel {
      */
 
     
-//    /**
-//     * returns the saved but not applied x coordinate.
-//     * @return the saved but not applied x coordinate.
-//     */
-//    @Override public final int getX() {
-//        return this.x;
-//    }
-//    
-//    /**
-//     * returns the saved but not applied y coordinate.
-//     * @return the saved but not applied y coordinate.
-//     */
-//    @Override public final int getY() {
-//        return this.y;
-//    }
+    /**
+     * @return the real coordinate!
+     */
+    @Deprecated
+    @Override public final int getX() {
+        return super.getX();
+    }
+
+    /**
+     * @return the real coordinate!
+     */
+    @Deprecated
+    @Override public final int getY() {
+        return super.getY();
+    }
     
     /**
      * returns the saved but not applied x and y coordinates.

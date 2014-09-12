@@ -51,27 +51,16 @@ public final class PaintBI {
         //fetch the field from array (which is altered afterwards)
         boolean[][] field = polygonReturn.getField();
         
-        Color clr = new Color(new Random().nextInt(254),new Random().nextInt(254),new Random().nextInt(254));
-//        System.out.println(_r.width + "...asdfjadsf" + _r.height);
         //go through the coordinates of the rectangle and paint
-//            System.out.println("x" + x + "von" + _r.width);
-        for (int x = 0; x < _bi.getWidth(); x++) {
-            for (int y = 0; y < _bi.getHeight(); y++) {
+        for (int x = 0; x < _r.width; x++) {
+            for (int y = 0; y < _r.height; y++) {
 
                 //painting points
-//                field = paintPoint(_bi, field, clr, 1, 
-//                        new Point(_r.x + x, _r.y + y));
-                _bi.setRGB(x, y, clr.getRGB());
+                field = paintPoint(_bi, field, _clr, 1, 
+                        new Point(_r.x + x, _r.y + y));
                  
             }
         }
-//        Page.getInstance().getJlbl_painting().setIcon(new ImageIcon(_bi));
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
        
         //return the new PolygonReturn
         return new PolygonReturn(_r.width * _r.height, field);

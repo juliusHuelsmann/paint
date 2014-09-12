@@ -346,11 +346,11 @@ public final class Utils {
         
         //the start and end values of the image rectangle which has
         //to be printed.
-        int fromX = -Page.getInstance().getJlbl_painting().getX();
-        int fromY = -Page.getInstance().getJlbl_painting().getY();
+        int fromX = -Page.getInstance().getJlbl_painting().getLocation().x;
+        int fromY = -Page.getInstance().getJlbl_painting().getLocation().y;
         int untilX = fromX + Page.getInstance().getWidth();
         int untilY = fromY + Page.getInstance().getHeight();
-        
+
         return getRastarImage(_g, fromX, fromY, untilX, untilY, 0, 0);
         
     }
@@ -368,7 +368,8 @@ public final class Utils {
      * @param _graphiY the location at the component where the painting 
      *                  process starts.
      */
-    public static BufferedImage getRastarImage(final BufferedImage _f, final int _fromX, 
+    public static BufferedImage getRastarImage(
+            final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {
 

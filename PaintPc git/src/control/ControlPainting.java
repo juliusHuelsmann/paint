@@ -711,10 +711,10 @@ public final class ControlPainting implements MouseListener,
 
         int color = Picture.getInstance().getColorPX(
                 (int) ((_event.getX() - Page.getInstance().getJlbl_painting()
-                        .getX())
+                        .getLocation().x)
                         * hundred / dX),
                 (int) ((_event.getY() - Page.getInstance().getJlbl_painting()
-                        .getY())
+                        .getLocation().y)
                         * hundred / dY));
 
         System.out.println(color);

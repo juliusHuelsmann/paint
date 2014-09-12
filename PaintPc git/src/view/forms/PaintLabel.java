@@ -286,13 +286,13 @@ public class PaintLabel extends JLabel {
     public final BufferedImage refreshRectangle(final int _x, final int _y, 
             final int _width, final int _height) {
 
-        Status.getLogger().warning("refreshing PaintLabel. \nValues: "
+        Status.getLogger().finest("refreshing PaintLabel. \nValues: "
                 + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
                 + "\n\tgetLocation:\t" + getLocation() 
                 + " vs. " + super.getLocation()
                 + "\n\t" + "_x:\t\t" + _x
-                + "\n\t" + "_y\t\t" + _y 
-                + "\n\t" + "_width\t\t" + _width 
+                + "\n\t" + "_y\t\t" + _y
+                + "\n\t" + "_width\t\t" + _width
                 + "\n\t" + "_height\t\t" + _height + "\n");
 
         //paint the painted stuff at graphics
@@ -640,6 +640,7 @@ public class PaintLabel extends JLabel {
      * @return the saved but not applied x and y coordinates (point).
      */
     @Override public final Point getLocation() {
+        System.out.println("göt location");
         return new Point(x, y);
     }
     

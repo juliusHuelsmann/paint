@@ -491,13 +491,14 @@ implements MouseMotionListener, MouseListener, KeyListener {
      */
     private void removeYLocation() {
         
-        
+        System.out.println("achtung:"+view.getJpnl_toLocate().getLocation().y);
         int y = view.getJpnl_toLocate().getLocation().y - moveStep;
         if (y < -view.getJpnl_toLocate().getHeight()
                 + view.getJpnl_owner().getHeight()) {
             y = -view.getJpnl_toLocate().getHeight()
                     + view.getJpnl_owner().getHeight();
         }
+        System.out.println("hier" + y);
         view.getJpnl_toLocate().setLocation(view.getJpnl_toLocate().getLocation().x, y);
 
         view.recalculateCenterBounds();
@@ -508,12 +509,12 @@ implements MouseMotionListener, MouseListener, KeyListener {
      * increase y location.
      */
     private void addYLocation() {
-        
         int y = view.getJpnl_toLocate().getLocation().y + moveStep;
         
         if (y > 0) {
             y = 0;
         }
+        System.out.println("hier" + y);
         view.getJpnl_toLocate().setLocation(view.getJpnl_toLocate().getLocation().x, y);
         view.recalculateCenterBounds();
     }

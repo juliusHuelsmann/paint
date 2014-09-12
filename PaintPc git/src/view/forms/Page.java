@@ -77,7 +77,6 @@ implements Observer {
             
             @Override public void setLocation(final int _x, final int _y) {
 
-                super.setLocation(_x, _y);
                 jlbl_painting.setLocation(_x, _y);
             }
         };

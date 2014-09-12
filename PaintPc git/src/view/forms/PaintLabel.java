@@ -618,21 +618,21 @@ public class PaintLabel extends JLabel {
      */
 
     
-    /**
-     * returns the saved but not applied x coordinate.
-     * @return the saved but not applied x coordinate.
-     */
-    @Override public final int getX() {
-        return this.x;
-    }
-    
-    /**
-     * returns the saved but not applied y coordinate.
-     * @return the saved but not applied y coordinate.
-     */
-    @Override public final int getY() {
-        return this.y;
-    }
+//    /**
+//     * returns the saved but not applied x coordinate.
+//     * @return the saved but not applied x coordinate.
+//     */
+//    @Override public final int getX() {
+//        return this.x;
+//    }
+//    
+//    /**
+//     * returns the saved but not applied y coordinate.
+//     * @return the saved but not applied y coordinate.
+//     */
+//    @Override public final int getY() {
+//        return this.y;
+//    }
     
     /**
      * returns the saved but not applied x and y coordinates.

@@ -227,7 +227,7 @@ implements Observer {
     /**
      * @return the jpnl_toMove
      */
-    public JPanel getJpnl_toMove() {
+    public JPanel getJpnl_toMoved() {
         return jpnl_toMove;
     }
 }

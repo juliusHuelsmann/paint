@@ -457,10 +457,11 @@ public final class ControlPainting implements MouseListener,
                         / ViewSettings.ZOOM_MULITPLICATOR;
 
                 Point oldLocation = new Point(Page.getInstance()
-                        .getJpnl_toMove().getX(), 
-                        Page.getInstance().getJpnl_toMove().getY());
+                        .getJlbl_painting().getLocation().x, 
+                        Page.getInstance()
+                        .getJlbl_painting().getLocation().y);
 
-                Page.getInstance().getJpnl_toMove()
+                Page.getInstance().getJlbl_painting()
                         .setLocation((oldLocation.x) / 2, (oldLocation.y) / 2);
 
                 Status.setImageShowSize(new Dimension(newWidth, newHeight));
@@ -539,8 +540,8 @@ public final class ControlPainting implements MouseListener,
                         * ViewSettings.ZOOM_MULITPLICATOR;
 
                 Point oldLocation = new Point(Page.getInstance()
-                        .getJpnl_toMove().getX(), Page.getInstance()
-                        .getJpnl_toMove().getY());
+                        .getJlbl_painting().getLocation().x, Page.getInstance()
+                        .getJlbl_painting().getLocation().y);
 
                 Status.setImageShowSize(new Dimension(newWidth, newHeight));
                 Page.getInstance().flip(Status.isNormalRotation());
@@ -571,7 +572,7 @@ public final class ControlPainting implements MouseListener,
                 newY = Math.min(newY, 0);
 
                 // apply the location at JLabel
-                Page.getInstance().getJpnl_toMove().setLocation(newX, newY);
+                Page.getInstance().getJlbl_painting().setLocation(newX, newY);
 
                 // apply the new location at ScrollPane
                 Page.getInstance().refrehsSps();

@@ -208,8 +208,8 @@ public class PaintObjectWriting extends PaintObject {
 				Status.getImageSize().height, 
 				BufferedImage.TYPE_INT_ARGB), 
 				false, null, 
-                Page.getInstance().getJpnl_toMove().getX(),
-                Page.getInstance().getJpnl_toMove().getY()).getSubimage(
+                Page.getInstance().getJlbl_painting().getLocation().x,
+                Page.getInstance().getJlbl_painting().getLocation().y).getSubimage(
 						rect.x, 
 						rect.y,
 						rect.width, 

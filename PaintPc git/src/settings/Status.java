@@ -2,6 +2,8 @@ package settings;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.logging.Logger;
+
 import model.objects.pen.Pen;
 import model.objects.pen.normal.PenKuli;
 
@@ -82,6 +84,11 @@ public final class Status {
      */
     private static String savePath = "";
     
+    
+    /**
+     * The logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger("info"); 
     
     /**
      * uncommitted changes.
@@ -289,9 +296,18 @@ public final class Status {
 
 
     /**
-     * @param counter_paintedPoints the counter_paintedPoints to set
+     * @param _counter_paintedPoints the counter_paintedPoints to set
      */
-    public static void setCounter_paintedPoints(int counter_paintedPoints) {
-        Status.counter_paintedPoints = counter_paintedPoints;
+    public static void setCounter_paintedPoints(
+            final int _counter_paintedPoints) {
+        Status.counter_paintedPoints = _counter_paintedPoints;
+    }
+
+
+    /**
+     * @return the logger
+     */
+    public static Logger getLogger() {
+        return LOGGER;
     }
 }

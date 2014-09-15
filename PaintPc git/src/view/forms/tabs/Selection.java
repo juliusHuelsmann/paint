@@ -4,12 +4,9 @@ package view.forms.tabs;
 //import declarations
 import java.awt.Color;
 import java.awt.Toolkit;
-import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-
-
 import view.util.Item1Menu;
 import view.util.Item1Button;
 
@@ -26,7 +23,6 @@ public class Selection extends JPanel {
     /**
      * Constructor.
      * @param _height the height
-     * @param _al the ActionListener
      */
 	public Selection(final int _height) {
 

@@ -4,21 +4,15 @@ package control.singleton;
 //import declarations
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.ImageIcon;
-
 import model.objects.painting.Picture;
 import settings.Constants;
 import settings.Status;
 import settings.TextFactory;
 import start.utils.Utils;
 import view.View;
-import view.forms.Page;
-import view.forms.SPaintLabel;
 import view.forms.tabs.Paint;
 import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;
@@ -125,23 +119,18 @@ public final class ControlSelectionColorPen implements MouseListener {
 		                .getTb_new().getActionCause())
 		        && !_event.getSource().equals(Paint.getInstance()
 		                .getTb_save().getActionCause())
-		                
                 && !_event.getSource().equals(Paint.getInstance()
                         .getTb_turnMirror().getActionCause())
-                        
                 && !_event.getSource().equals(Paint.getInstance()
                         .getTb_prev().getActionCause())
-                        
                 && !_event.getSource().equals(Paint.getInstance()
                         .getTb_next().getActionCause())
-                        
                 && !_event.getSource().equals(Paint.getInstance()
                         .getTb_turnNormal().getActionCause())
                         && !_event.getSource().equals(Paint.getInstance()
                                 .getIt_color().getTb_open().getActionCause())
 		        && !_event.getSource().equals(Paint.getInstance()
 		                .getTb_load().getActionCause())) {
-
 		    deactivate();
 		}
 
@@ -303,30 +292,11 @@ public final class ControlSelectionColorPen implements MouseListener {
 	}
 
 
-    @Override
-    public void mouseClicked(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
+    @Override public void mouseClicked(final MouseEvent _event) { }
 
+    @Override public void mouseEntered(final MouseEvent _event) { }
 
-    @Override
-    public void mouseEntered(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
+    @Override public void mouseExited(final MouseEvent _event) { }
 
-
-    @Override
-    public void mouseExited(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-    @Override
-    public void mousePressed(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
+    @Override public void mousePressed(final MouseEvent _event) { }
 }

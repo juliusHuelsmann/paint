@@ -5,10 +5,16 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import atest.BufferedViewer;
+import settings.Status;
 import settings.ViewSettings;
 import start.utils.Utils;
-import view.util.VPaintLabel;
 import model.objects.painting.Picture;
 
 
@@ -18,8 +24,19 @@ import model.objects.painting.Picture;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class SPaintLabel extends VPaintLabel {
+public class PaintLabel extends JLabel {
 
+    
+    /**
+     * The bufferedImage.
+     */
+    private BufferedImage bi;
+    
+    /**
+     * The location which can be changed and given.
+     */
+    private int x = 0, y = 0;
+    
     /**
      * The thread which moves the border.
      */
@@ -36,28 +53,29 @@ public class SPaintLabel extends VPaintLabel {
     @SuppressWarnings("unused")
     private Point pnt_start;
 
+    /**
+     * JPanel which is to be updated if location changes in
+     * PaintLabel.
+     */
+    private JPanel jpnl_toMove;
     
     /**
      * Constructor.
+     * 
+     * @param _jpnl_toMove JPanel which is to be updated if location changes in
+     * PaintLabel.
      */
-    public SPaintLabel() { }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override public final void paint(final Graphics _g) {
-        
-        //if is set for the first time, refreshPaint
-        if (Picture.getInstance().alterGraphics(getGraphics()) && isVisible()) {
-            refreshPaint();
-        }
+    public PaintLabel(JPanel _jpnl_toMove) {
+        this.jpnl_toMove = _jpnl_toMove;
     }
 
+    
     /**
-     * {@inheritDoc}
+     * Refresh the entire image.
      */
-    @Override public final void refreshPaint() {
+    public final void refreshPaint() {
 
+        System.out.println("rp");
         this.refreshRectangle(0, 0, getWidth(), getHeight());
     }
     
@@ -75,6 +93,12 @@ public class SPaintLabel extends VPaintLabel {
      */
     public final void paintZoom(final int _x, final int _y, 
             final int _width, final int _height) {
+        
+        System.out.println("paint zoom");
+        BufferedViewer.show(getBi());
+        System.out.println(getBi().getWidth());
+        System.out.println(getBi().getHeight());
+        removeOldRectangle();
         Graphics g = getGraphics();
         g.setColor(Color.red);
         g.drawRect(_x + 1, _y + 1, _width - 1, _height - 1);
@@ -88,6 +112,8 @@ public class SPaintLabel extends VPaintLabel {
      */
     public final void paintEntireSelection(final Rectangle _r) {
 
+        System.out.println("paint entire selection");
+        System.out.println("3");
         //paint the background
         Utils.paintRastarBlock(getGraphics(), 
                 ViewSettings.SELECTION_BACKGROUND_CLR, _r);
@@ -105,6 +131,7 @@ public class SPaintLabel extends VPaintLabel {
      */
     public final void paintSelection(final int _x, final int _y, 
             final int _width, final int _height) {
+        System.out.println("paint selection 4");
         getGraphics().drawRect(_x + 1, _y + 1, _width - 1, _height - 1);
         this.r_old = new Rectangle(_x + 1, _y + 1, _width - 1, _height - 1);
     }
@@ -115,7 +142,11 @@ public class SPaintLabel extends VPaintLabel {
      */
     public final void removeOldRectangle() {
 
-        if (r_old == null) {
+        int tempRemoveErrorOnlyDummyShit = 2;
+        System.out.println("remove old rectangle 5");
+        super.setIcon(new ImageIcon(getBi()));
+        super.repaint();
+        if (tempRemoveErrorOnlyDummyShit == 2 || r_old == null) {
             return;
         }
         //set color and fetch Graphics
@@ -133,8 +164,8 @@ public class SPaintLabel extends VPaintLabel {
         Picture.getInstance().emptyRectangle(
                 
                 //the coordinates in total image
-                r_old.x - Page.getInstance().getJlbl_painting().getX(),
-                r_old.y - Page.getInstance().getJlbl_painting().getY(),
+                r_old.x - Page.getInstance().getJlbl_painting().getLocation().x,
+                r_old.y - Page.getInstance().getJlbl_painting().getLocation().y,
                 
                 //the size of the image- part that is printed.
                 //is one bigger than the rectangle because the lines are
@@ -144,7 +175,9 @@ public class SPaintLabel extends VPaintLabel {
                 
                 //the graphics coordinates.
                 r_old.x,
-                r_old.y);
+                r_old.y,
+                
+                getBi());
 
         //clear the rectangle which is to be repainted
         //and update the painted stuff of the image afterwards.
@@ -162,7 +195,9 @@ public class SPaintLabel extends VPaintLabel {
                 
                 //the graphics coordinates.
                 r_old.x + r_old.width,
-                r_old.y);
+                r_old.y,
+                
+                getBi());
 
         //clear the rectangle which is to be repainted
         //and update the painted stuff of the image afterwards.
@@ -181,8 +216,10 @@ public class SPaintLabel extends VPaintLabel {
                 
                 //the graphics coordinates.
                 r_old.x,
-                r_old.y + r_old.height);
-
+                r_old.y + r_old.height,
+                
+                getBi());
+        
         //clear the rectangle which is to be repainted
         //and update the painted stuff of the image afterwards.
         Picture.getInstance().emptyRectangle(
@@ -199,7 +236,9 @@ public class SPaintLabel extends VPaintLabel {
                 
                 //the graphics coordinates.
                 r_old.x,
-                r_old.y);
+                r_old.y,
+                
+                getBi());
 
         Picture.getInstance().repaintRectangle(
                 
@@ -215,9 +254,11 @@ public class SPaintLabel extends VPaintLabel {
                 
                 //the graphics coordinates.
                 r_old.x,
-                r_old.y);
+                r_old.y,
+                
+                getBi());
         //update the background raster
-        Utils.getRastarImage(g, 
+        Utils.getRastarImage(getBi(), 
 
                 //the rectangle which is to be taken
                 -Page.getInstance().getJlbl_painting().getX() + r_old.x,
@@ -233,7 +274,7 @@ public class SPaintLabel extends VPaintLabel {
                 r_old.x, r_old.y);  
         
     }
-    
+
    
     /**
      * repaint a special rectangle.
@@ -243,22 +284,42 @@ public class SPaintLabel extends VPaintLabel {
      * @param _height the height
      * @return the graphics
      */
-    public final Graphics refreshRectangle(final int _x, final int _y, 
+    public final BufferedImage refreshRectangle(final int _x, final int _y, 
             final int _width, final int _height) {
 
-        //paint the painted stuff at graphics
-        Graphics g_out = Picture.getInstance().updateRectangle(
-                -getX() + _x, -getY() + _y, _width, _height, _x, _y);
+        System.out.println("refresh rectangle");
+        Status.getLogger().finest("refreshing PaintLabel. \nValues: "
+                + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
+                + "\n\tgetLocation:\t" + getLocation() 
+                + " vs. " + super.getLocation()
+                + "\n\t" + "_x:\t\t" + _x
+                + "\n\t" + "_y\t\t" + _y
+                + "\n\t" + "_width\t\t" + _width
+                + "\n\t" + "_height\t\t" + _height + "\n");
 
+        double time0 = System.currentTimeMillis();
+        //paint the painted stuff at graphics
+        setBi(Picture.getInstance().updateRectangle(
+                -getLocation().x + _x, 
+                -getLocation().y + _y, _width, _height, _x, _y, getBi()));
+
+        double time1 = System.currentTimeMillis();
+        System.out.println("zeit 1" + (time1 - time0));
+        
         //paint the painting background (e.g. raster / lines) at the graphical
         //user interface.
-        if (g_out != null) {
-            Utils.getRastarImage(g_out, -getX() + _x, 
-                    -getY() + _y, -getX() + _x + _width, 
-                    -getY() + _y + _height, _x, _y);  
+        if (getBi() != null) {
+            setBi(Utils.getRastarImage(getBi(), -getLocation().x + _x, 
+                    -getLocation().y + _y, -getLocation().x + _x + _width, 
+                    -getLocation().y + _y + _height, _x, _y));  
         }
-        
-        return g_out;
+
+
+        double time2 = System.currentTimeMillis();
+        System.out.println("zeit2" + (time2 - time1));
+
+        setIcon(new ImageIcon(getBi()));
+        return getBi();
     }
     
 
@@ -271,6 +332,7 @@ public class SPaintLabel extends VPaintLabel {
      */
     private void paintBorder(final Rectangle _r) {
 
+        System.out.println("7");
         //initialize the index for the first run of the thread
         index = 0;
         if (thrd_moveBorder != null) {
@@ -283,6 +345,37 @@ public class SPaintLabel extends VPaintLabel {
         thrd_moveBorder.start();
     }
     
+    
+    
+    /**
+     * Not necessary.
+     */
+    public void refreshPopup() {
+        //not necessary anymore because paitned to bi and autorefreshes.
+//        refreshPaint();
+    }
+    
+    
+    /**
+     * Remove zoom box.
+     */
+    public final void removeZoomBox() {
+        removeOldRectangle();
+    }
+    
+    
+    /**
+     * Paint a zoom box.
+     * 
+     * @param _x the x coordinate
+     * @param _y the y coordinate
+     * @param _width the width 
+     * @param _height the height
+     */
+    public final void setZoomBox(final int _x, final int _y, 
+            final int _width, final int _height) {
+        paintZoom(_x, _y, _width, _height);
+    }
     
     
     /**
@@ -344,12 +437,12 @@ public class SPaintLabel extends VPaintLabel {
                     
                     //go through the for loop and fill all the entire border
                     //blocks of upper border
-                    for (int x = startX; x < untilX; x++) {
+                    for (int nx = startX; nx < untilX; nx++) {
 
                         graph.setColor(getColorBorderPx());
-                        graph.drawLine(addIndex + plusX + x * sizeBB,
+                        graph.drawLine(addIndex + plusX + nx * sizeBB,
                                 _r.y + 1, 
-                                addIndex + plusX + (x + 1) * sizeBB,
+                                addIndex + plusX + (nx + 1) * sizeBB,
                                 _r.y + 1);
                         
                         //increase index.
@@ -386,14 +479,14 @@ public class SPaintLabel extends VPaintLabel {
                      */
                     //border block
                     int fromX = braucheNoch + _r.y % sizeBB;
-                    for (int y = _r.y / sizeBB; y < (_r.y + _r.height 
+                    for (int ny = _r.y / sizeBB; ny < (_r.y + _r.height 
                             - (braucheNoch + (_r.y + _r.height) % sizeBB)) 
-                            / sizeBB; y++) {
+                            / sizeBB; ny++) {
 
                         graph.setColor(getColorBorderPx());
 
-                        graph.drawLine(_r.x + _r.width, y * sizeBB + fromX,
-                                _r.x + _r.width, (y + 1) * sizeBB + fromX);
+                        graph.drawLine(_r.x + _r.width, ny * sizeBB + fromX,
+                                _r.x + _r.width, (ny + 1) * sizeBB + fromX);
 
                         //increase index.
                         index++;
@@ -403,13 +496,13 @@ public class SPaintLabel extends VPaintLabel {
                      *  bottom border
                      */
                     //border block
-                    for (int x = (_r.width + _r.x) / sizeBB - 1; x >= _r.x 
-                            / sizeBB; x--) {
+                    for (int nx = (_r.width + _r.x) / sizeBB - 1; nx >= _r.x 
+                            / sizeBB; nx--) {
 
                         graph.setColor(getColorBorderPx());
 
-                        graph.drawLine((x) * sizeBB, _r.y + _r.height
-                                , (x + 1) * sizeBB,  _r.y
+                        graph.drawLine((nx) * sizeBB, _r.y + _r.height
+                                , (nx + 1) * sizeBB,  _r.y
                                 + _r.height);
 
                         //increase index.
@@ -420,16 +513,16 @@ public class SPaintLabel extends VPaintLabel {
                      * left border
                      */
                     //border block
-                    for (int y = (_r.y + _r.height) 
-                            / ViewSettings.SELECTION_BORDER_BLOCK_SIZE; y 
+                    for (int ny = (_r.y + _r.height) 
+                            / ViewSettings.SELECTION_BORDER_BLOCK_SIZE; ny 
                             >= _r.y / ViewSettings.SELECTION_BORDER_BLOCK_SIZE; 
-                            y--) {
+                            ny--) {
 
                         graph.setColor(getColorBorderPx());
 
                         graph.drawLine(_r.x + 1, 
-                                y * ViewSettings.SELECTION_BORDER_BLOCK_SIZE,
-                                _r.x + 1,  (y + 1) 
+                                ny * ViewSettings.SELECTION_BORDER_BLOCK_SIZE,
+                                _r.x + 1,  (ny + 1) 
                                 * ViewSettings.SELECTION_BORDER_BLOCK_SIZE);
 
                         //increase index.
@@ -452,8 +545,174 @@ public class SPaintLabel extends VPaintLabel {
         return ViewSettings.SELECTION_BORDER_CLR_BORDER[index % ViewSettings
                      .SELECTION_BORDER_CLR_BORDER.length];
     }
+
+    
+    /*
+     * Location is not set directly because the paint methods shell be able 
+     * to decide for themselves what to paint at which position.
+     * 
+     * Thus, the methods for changing the location and for getting it are
+     * overwritten and alter / return the locally saved location.
+     * 
+     * methods for changing location:
+     */
+    
+
+    /**
+     * in here, the location is not set as usual, but just the values
+     * for x and y location are saved. Thus, the painting methods
+     * are able to calculate for themselves what to paint at what position.
+     * @param _x the new x coordinate which is saved
+     * @param _y the new y coordinate which is saved
+     */
+    @Override public final void setLocation(final int _x, final int _y) {
+        
+        //update the JPanel location because the ScrollPane fetches information
+        //out of that panel
+        jpnl_toMove.setBounds(_x, _y, jpnl_toMove.getWidth(), 
+                jpnl_toMove.getHeight());
+        
+        //if something changed, repaint
+        if (_x != x || _y != y) {
+
+            //save values
+            this.x = _x;
+            this.y = _y;
+            
+            if (isVisible()) {
+                
+                //set changed
+                refreshPaint();
+            }
+        }
+    }
+    
+
+    /**
+     * Really set the location.
+     * @param _x the new x coordinate which is saved
+     * @param _y the new y coordinate which is saved
+     */
+    public final void setLoc(final int _x, final int _y) {
+        
+        //if something changed, repaint
+        super.setLocation(_x, _y);
+    }
+    
+
+    /**
+     * in here, the location is not set as usual, but just the values
+     * for x and y location are saved. Thus, the painting methods
+     * are able to calculate for themselves what to paint at what position.
+     * @param _p the new coordinates which are saved
+     */
+    @Override public final void setLocation(final Point _p) {
+        
+        //save the new location
+        this.x = _p.x;
+        this.y = _p.y;
+
+        //update the JPanel location because the ScrollPane fetches information
+        //out of that panel
+        jpnl_toMove.setBounds(x, y, jpnl_toMove.getWidth(), 
+                jpnl_toMove.getHeight());
+
+        if (isVisible()) {
+            
+            //set changed
+            refreshPaint();
+        }
+    }
     
     
+    /**
+     * set the size of the JLabel and save the new location. Location is not 
+     * set because the paint methods shell be able to decide for themselves
+     * what to paint at which position.
+     * 
+     * @param _x the x coordinate which is saved
+     * @param _y the y coordinate which is saved
+     * @param _widht the width which is set
+     * @param _height the height which is set
+     */
+    @Override public final void setBounds(final int _x, final int _y, 
+            final int _widht, final int _height) {
+        
+        //save the new location 
+        this.x = _x;
+        this.y = _y;
+
+        //update the JPanel location because the ScrollPane fetches information
+        //out of that panel
+        jpnl_toMove.setBounds(_x, _y, jpnl_toMove.getWidth(), 
+                jpnl_toMove.getHeight());
+        
+        //set width and height.
+        super.setBounds(0, 0, _widht, _height);
+        bi = new BufferedImage(_widht, _height, BufferedImage.TYPE_INT_ARGB);
+
+        if (isVisible()) {
+            
+            //set changed
+            refreshPaint();
+        }
+    }
+    
+    
+    
+    /*
+     * methods for getting location
+     */
+
+    
+    /**
+     * @return the real coordinate!
+     */
+    @Deprecated
+    @Override public final int getX() {
+        return super.getX();
+    }
+
+    /**
+     * @return the real coordinate!
+     */
+    @Deprecated
+    @Override public final int getY() {
+        return super.getY();
+    }
+    
+    /**
+     * returns the saved but not applied x and y coordinates.
+     * @return the saved but not applied x and y coordinates (point).
+     */
+    @Override public final Point getLocation() {
+        System.out.println("göt location");
+        return new Point(x, y);
+    }
+    
+    /**
+     * returns the saved but not applied x and y coordinates together with the
+     * applied size in a rectangle. 
+     * @return the saved but not applied x and y coordinates together with the
+     * applied size in a rectangle. 
+     */
+    @Override public final Rectangle getBounds() {
+        return new Rectangle(x, y, getWidth(), getHeight());
+    }
+
+    /**
+     * @return the bi
+     */
+    public final BufferedImage getBi() {
+        return bi;
+    }
+
+    /**
+     * @param _bi the _bi to set
+     */
+    public final void setBi(final BufferedImage _bi) {
+        this.bi = _bi;
+    }
 
     
 }

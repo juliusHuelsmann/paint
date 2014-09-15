@@ -2,7 +2,6 @@
 package model.objects.painting;
 
 //import declarations
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
@@ -91,7 +90,7 @@ public abstract class PaintObject implements Serializable {
 	 * @return the new BufferedImage.
 	 */
     public abstract BufferedImage paint(final BufferedImage _bi, 
-            final boolean _final, final Graphics _g, final int _x, 
+            final boolean _final, final BufferedImage _g, final int _x, 
             final int _y);
     
     

@@ -3,7 +3,6 @@ package model.objects.pen.special;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import settings.ViewSettings;
@@ -41,7 +40,7 @@ public class PenSelection extends Pen {
 	 */
 	@Override protected final void paintPoint(final Point _p, 
 	        final BufferedImage _bi, final boolean _final, 
-	        final Point _pnt_shift, final Graphics _g) {
+	        final Point _pnt_shift, final BufferedImage _g) {
 
         int s = currentBorderValue / ViewSettings.SELECTION_BORDER_BLOCK_SIZE
                 % ViewSettings.SELECTION_BORDER_CLR_BORDER.length;

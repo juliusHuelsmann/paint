@@ -70,7 +70,6 @@ public class VScrollPane extends JPanel {
      */
     private final int rgbBorderHighlight = 204, rgbBorderShadow = 124;
 
-
 	
 	/**
 	 * Constructor. Initialize components.

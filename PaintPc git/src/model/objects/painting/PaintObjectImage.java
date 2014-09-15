@@ -2,11 +2,9 @@
 package model.objects.painting;
 
 //import declarations
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import settings.Error;
 
 
@@ -89,7 +87,7 @@ public class PaintObjectImage extends PaintObject {
      * {@inheritDoc}
      */
     @Override public final BufferedImage paint(final BufferedImage _bi, 
-            final boolean _final, final Graphics _g, final int _x,
+            final boolean _final, final BufferedImage _g, final int _x,
             final int _y) {
 
         //if final only paint at BufferedImage
@@ -111,7 +109,7 @@ public class PaintObjectImage extends PaintObject {
             int y = pnt_locationOfImage.y;
             int width = bi_image.getWidth();
             int height = bi_image.getHeight();
-            _g.drawImage(bi_image, x, y, width, height, null);
+            _g.getGraphics().drawImage(bi_image, x, y, width, height, null);
             
         }
         

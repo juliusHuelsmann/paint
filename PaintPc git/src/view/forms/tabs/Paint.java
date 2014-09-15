@@ -20,7 +20,6 @@ import settings.Constants;
 import settings.Status;
 import settings.TextFactory;
 import settings.ViewSettings;
-import view.util.VColorPanel;
 import view.util.Item1Menu;
 import view.util.Item1PenSelection;
 import view.util.VLabel;

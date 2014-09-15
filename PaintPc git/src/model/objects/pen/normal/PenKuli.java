@@ -3,13 +3,10 @@ package model.objects.pen.normal;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-
 import settings.Error;
 import settings.Status;
-import view.View;
 import view.forms.Page;
 import model.objects.pen.Pen;
 
@@ -45,7 +42,7 @@ public class PenKuli extends Pen {
 	 */
 	@Override protected final void paintPoint(final Point _p, 
 	        final BufferedImage _bi, final boolean _final, 
-	        final Point _pnt_shift, final Graphics _g) {
+	        final Point _pnt_shift, final BufferedImage _g) {
 
 	    for (int i = -getThickness() / 2;
                 i < (getThickness() / 2) + (getThickness() % 2); i++) {
@@ -81,9 +78,6 @@ public class PenKuli extends Pen {
 
                 if (_g != null) {
 
-                    //set as color the foreground color of this pen.
-                    _g.setColor(getClr_foreground());
-                    
                     //adjust the location at the zoom.
                     x = (x * Status.getImageShowSize().width)
                             / Status.getImageSize().width;
@@ -139,16 +133,26 @@ public class PenKuli extends Pen {
                         //print the pixel because even if the pixel size in 
                         //pixel is (rounded) equal to 0 the pixel has to be 
                         //printed.
-                        _g.drawLine(x, y, x, y);
-
-                        _g.setColor(getClr_foreground());
+                        Point[] point = new Point[1];
+                        point[0] = new Point(x, y);
+                        
+//                        PaintBI.paintPolygonN(_g, getClr_foreground(), 
+//                                getThickness(), point, true);
+                        _g.setRGB(x, y, getClr_foreground().getRGB());
+                        
                         //for loop because i want to paint the gaps between the 
                         //pixel if zoomed in.
                         for (int kx = 0; kx < imagePixelSizeX; kx++) {
                             for (int ky = 0; ky < imagePixelSizeY; ky++) {
 
                                 //draw line.
-                                _g.drawLine(x + kx, y + ky, x + kx, y + ky);
+                                point = new Point[1];
+                                point[0] = new Point(x + kx, y + ky);
+                                
+//                                PaintBI.paintPolygonN(_g, getClr_foreground(), 
+//                                        getThickness(), point, true);
+                                _g.setRGB(x + kx, y + ky, 
+                                        getClr_foreground().getRGB());
                             }
                         }
                     }

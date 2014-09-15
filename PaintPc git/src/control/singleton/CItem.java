@@ -2,13 +2,8 @@
 package control.singleton;
 
 //import declarations
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-import javax.naming.event.EventDirContext;
-
 import view.forms.Page;
 import view.util.Item1Menu;
 import view.util.VButtonWrapper;
@@ -50,7 +45,7 @@ public final class CItem implements MouseListener {
 
 		}
 
-        Page.getInstance().getJlbl_painting().refreshPaint();
+        Page.getInstance().getJlbl_painting().refreshPopup();
 		
 		//fetch current source of action
 		Item1Menu i_currentActionItem = (Item1Menu) 
@@ -90,27 +85,11 @@ public final class CItem implements MouseListener {
 		return instance;
 	}
 
-    @Override
-    public void mouseEntered(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
+    @Override public void mouseEntered(final MouseEvent _event) { }
 
-    @Override
-    public void mouseExited(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
+    @Override public void mouseExited(final MouseEvent _event) { }
 
-    @Override
-    public void mousePressed(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
+    @Override public void mousePressed(final MouseEvent _event) { }
 
-    @Override
-    public void mouseReleased(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
+    @Override public void mouseReleased(final MouseEvent _event) { }
 }

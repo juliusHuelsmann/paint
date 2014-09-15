@@ -3,21 +3,16 @@ package model.objects.painting;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.Random;
-
 import javax.swing.JOptionPane;
-
 import settings.Status;
 import view.View;
 import view.forms.Page;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.PenKuli;
 import model.util.list.List;
-
 
 /**
  * The paintObject corresponds to one item that has been painted. It consists
@@ -178,14 +173,9 @@ public class PaintObjectWriting extends PaintObject {
      */
     @Override 
     public final BufferedImage paint(final BufferedImage _bi, 
-            final boolean _final, final Graphics _g, final int _x, 
+            final boolean _final, final BufferedImage _g, final int _x, 
             final int _y) {
 
-        
-        if (_g != null) {
-            _g.setColor(pen.getClr_foreground());
-        }
-        
         return pen.paintToImage(
                 _bi, this, _final, new Point(_x, _y), _g);
     }
@@ -218,8 +208,8 @@ public class PaintObjectWriting extends PaintObject {
 				Status.getImageSize().height, 
 				BufferedImage.TYPE_INT_ARGB), 
 				false, null, 
-                Page.getInstance().getJpnl_toMove().getX(),
-                Page.getInstance().getJpnl_toMove().getY()).getSubimage(
+                Page.getInstance().getJlbl_painting().getLocation().x,
+                Page.getInstance().getJlbl_painting().getLocation().y).getSubimage(
 						rect.x, 
 						rect.y,
 						rect.width, 

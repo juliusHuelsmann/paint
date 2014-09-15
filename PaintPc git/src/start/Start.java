@@ -3,7 +3,7 @@ package start;
 
 //import declarations
 import java.io.File;
-
+import settings.Status;
 import model.objects.painting.Picture;
 import control.ControlPainting;
 
@@ -95,7 +95,7 @@ public final class Start {
 	    case 0:
 	        
 	        //print case message
-	        System.out.println("normal start: launch programm!");
+	        Status.getLogger().info("normal start: launch programm!\n\n");
 	        
 	        //call controller
 	        ControlPainting.getInstance();
@@ -105,7 +105,7 @@ public final class Start {
         default:
 
             //print case message
-            System.out.println("normal start: launch programm!");
+            Status.getLogger().info("start with parameters; alter images!\n\n");
             
             //go through array of Strings
             for (int currPath = 0; currPath < _args.length; currPath++) {

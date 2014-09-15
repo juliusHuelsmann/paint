@@ -68,9 +68,9 @@ public final class Zoom {
         int xNewAligned, yNewAligned;
         
         if (imagePixelSizeX != 0 && imagePixelSizeY != 0) {
-            int shiftAlinedX = -Page.getInstance().getJpnl_toMove().getX() 
+            int shiftAlinedX = -Page.getInstance().getJlbl_painting().getLocation().x 
                     % imagePixelSizeX,
-                    shiftAlinedY = -Page.getInstance().getJpnl_toMove().getY() 
+                    shiftAlinedY = -Page.getInstance().getJlbl_painting().getLocation().y 
                     % imagePixelSizeY;
 
             xNewAligned = _x + shiftAlinedX;
@@ -87,12 +87,12 @@ public final class Zoom {
         //if the zoom has moved essentially
         if (xNewAligned != x || yNewAligned != y) {
 
-            Page.getInstance().getJlbl_painting().removeOldRectangle();
+            Page.getInstance().getJlbl_painting().removeZoomBox();
             
             this.x = xNewAligned;
             this.y = yNewAligned;
             
-            Page.getInstance().getJlbl_painting().paintZoom(
+            Page.getInstance().getJlbl_painting().setZoomBox(
                     x, y, 
                     ViewSettings.ZOOM_SIZE.width,
                     ViewSettings.ZOOM_SIZE.height);

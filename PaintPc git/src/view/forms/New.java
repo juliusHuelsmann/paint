@@ -82,6 +82,7 @@ public final class New extends JPanel {
         super.setLocation(0, 0);
         super.setOpaque(true);
         super.setLayout(null);
+        super.setVisible(false);
 
         jpnl_stuff = new JPanel();
         jpnl_stuff.setSize(width, height);
@@ -152,7 +153,6 @@ public final class New extends JPanel {
         super.add(jlbl_background);
 
         
-        super.setVisible(false);
     }
     
     

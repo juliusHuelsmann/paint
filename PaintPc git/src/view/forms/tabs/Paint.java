@@ -5,6 +5,7 @@ package view.forms.tabs;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -12,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
 import control.ControlPainting;
 import control.singleton.ControlSelectionColorPen;
 import control.singleton.ControlVisualEffects;
@@ -22,6 +24,7 @@ import settings.TextFactory;
 import settings.ViewSettings;
 import view.util.Item1Menu;
 import view.util.Item1PenSelection;
+import view.util.VColorPanel;
 import view.util.VLabel;
 import view.util.Item1Button;
 
@@ -585,17 +588,19 @@ public final class Paint extends JPanel {
     
     	//
     	it_color = new Item1Menu();
+        it_color.setSize(ViewSettings.PAINT_SIZE);
     	it_color.setBorder(false);
     	it_color.setText("+ Farben");
     	it_color.setLocation(jbtn_colors[jbtn_colors.length - 1].getX() 
     	        + ViewSettings.DISTANCE_BETWEEN_ITEMS 
     	        + jbtn_colors[jbtn_colors.length - 1].getWidth(), 
     	        ViewSettings.DISTANCE_BETWEEN_ITEMS);
-    	it_color.setSize(ViewSettings.PAINT_SIZE);
-    //    it_color.getJPanel().add(new VColorPanel(jbtn_colors));
+        it_color.getJPanel().add(new VColorPanel(jbtn_colors));
+        it_color.setBorder(false);
         it_color.setIcon("icon/palette.png");
-    	super.add(it_color);
-    	it_color.setBorder(false);
+        super.add(it_color);
+        
+        
     	insertTrennung(it_color.getWidth() + it_color.getX() 
     	        + ViewSettings.DISTANCE_BEFORE_LINE, 
     	        it_color.getY(), 2 + 1, _paint);

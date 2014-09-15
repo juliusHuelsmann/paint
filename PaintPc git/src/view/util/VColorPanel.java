@@ -289,12 +289,14 @@ import control.util.CColorPanel;
         //initialize them
         it_color1 = new Item1Menu();
         it_color1.setOrderHeight(true);
-        it_color1.setSize(1, heightPanel);
+        it_color1.setSize(new Dimension(1, heightPanel));
+//        it_color1.setSize(1, heightPanel);
         it_color1.setItemsInRow(itemsInRow);
         
         it_color2 = new Item1Menu();
         it_color2.setOrderHeight(true);
-        it_color2.setSize(1, heightPanel);
+//        it_color2.setSize(1, heightPanel);
+        it_color2.setSize(new Dimension(1, heightPanel));
         it_color2.setItemsInRow(itemsInRow);
 
         /*

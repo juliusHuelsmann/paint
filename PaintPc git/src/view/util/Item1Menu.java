@@ -257,6 +257,7 @@ public class Item1Menu extends JPanel {
 	private Component addd(final Component _cmp) {
 
 		int size = openedWidth / itemsInRow;
+		System.out.println(openedWidth + "..." + itemsInRow);
 		
 		if (orderHeight) {
 			size = openedHeight / itemsInRow;

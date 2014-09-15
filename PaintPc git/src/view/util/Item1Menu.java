@@ -6,10 +6,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
+
 import settings.ViewSettings;
 import view.forms.Page;
 import control.singleton.CItem;
@@ -93,45 +95,9 @@ public class Item1Menu extends JPanel {
 		super.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
 		super.setFocusable(false);
 
-		jpnl_stuff = new JPanel() {
-
-            @Override public void paintAll(final Graphics _g) {
-                super.paintAll(_g);
-            }
-            @Override public void paint(final Graphics _g) {
-                super.paint(_g);
-            }
-            @Override public void repaint() {
-                super.repaint();
-            }
-
-            @Override public void setOpaque(final boolean _o) {
-                super.setOpaque(_o);
-            }
-
-            @Override public void setVisible(final boolean _o) {
-                super.setOpaque(_o);
-            }
-            
-        };
+		jpnl_stuff = new JPanel();
 		ls_item = new List<Component>();
-		jpnl_container = new JPanel() {
-
-		    @Override public void paintAll(final Graphics _g) {
-                super.paintAll(_g);
-            }
-            @Override public void paint(final Graphics _g) {
-                super.paint(_g);
-            }
-            @Override public void repaint() {
-                super.repaint();
-            }
-		    
-            @Override public void setOpaque(final boolean _o) {
-                super.setOpaque(_o);
-            }
-		    
-		};
+		jpnl_container = new JPanel();
 		jpnl_subContainer = new JPanel();
 
 		sp_scroll = new VScrollPane(jpnl_stuff, jpnl_container, true);
@@ -202,54 +168,21 @@ public class Item1Menu extends JPanel {
 	 */
 	public final void setOpen(final boolean _open) {
 
-	    final int hundred = 100;
-	    
 	    open = _open;
         if (_open) {
             setSize(openedWidth, openedHeight);
+
             jpnl_container.setBorder(BorderFactory.createLineBorder(
                     ViewSettings.CLR_BORDER));
-            new Thread() {
-                public void run() {
 
-                    
-                    try {
-                        Thread.sleep(hundred);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Page.getInstance().getJlbl_painting().refreshPopup();
-                    jpnl_container.repaint();
-//                    Graphics _g = Page.getInstance()
-//                    .getJlbl_painting().refreshRectangle(0,0,200,500);
-//
-//                    _g.setColor(Color.red);
-//                    _g.fillRect(0, 0,2000,2000);
-                }
-            } .start();
-        
+            jpnl_container.requestFocus();
+            
         } else {
             setSize(closedWidth, closedHeight);
             jpnl_container.setBorder(null);
-            new Thread() {
-                public void run() {
-
-                    
-                    try {
-                        Thread.sleep(hundred);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    Page.getInstance().getJlbl_painting().refreshPopup();
-//                    Graphics _g = Page.getInstance()
-//                    .getJlbl_painting().refreshRectangle(0,0,200,500);
-//
-//                    _g.setColor(Color.red);
-//                    _g.fillRect(0, 0,2000,2000);
-                }
-            } .start();
             
+            //when closed repaint.
+            Page.getInstance().getJlbl_painting().repaint();
         }
 	}
 
@@ -548,6 +481,7 @@ public class Item1Menu extends JPanel {
 	}
 
 
+	
 	/**
 	 * setter.
 	 * @param _tb_open the ITem1Button

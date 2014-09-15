@@ -16,6 +16,9 @@ import javax.swing.ImageIcon;
 import settings.Constants;
 import settings.Error;
 import start.utils.Utils;
+import view.View;
+import view.forms.Page;
+import view.forms.Tabs;
 import view.util.VScrollPane;
 
 
@@ -192,6 +195,9 @@ implements MouseMotionListener, MouseListener, KeyListener {
                 }
             } .start();
         }
+        
+        //close each open menu
+        Tabs.getInstance().closeMenues();
     }
 
 

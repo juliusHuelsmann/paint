@@ -27,6 +27,8 @@ public class Tabs extends VTabbedPane {
      */
     private Paint tab_paint;
     
+    private Insert tab_insert;
+    
     /**
      * 
      */
@@ -53,7 +55,7 @@ public class Tabs extends VTabbedPane {
          * tab insert
          */
         super.addTab("einfuegen");
-        Insert tab_insert = new Insert(ViewSettings.VIEW_HEIGHT_TB);
+        tab_insert = new Insert(ViewSettings.VIEW_HEIGHT_TB);
         super.addToTab(1, tab_insert);
         
 
@@ -76,6 +78,19 @@ public class Tabs extends VTabbedPane {
         super.addTab("Drucken");
         
 
+    }
+    
+    
+    public void closeMenues(){
+        tab_paint.getIt_stift1().setOpen(false);
+        tab_paint.getIt_stift2().setOpen(false);
+        tab_paint.getIt_selection().setOpen(false);
+        tab_paint.getIt_color().setOpen(false);
+
+        tab_insert.getIt_pfeileUAE().setOpen(false);
+        tab_insert.getIa_diagram().setOpen(false);
+        tab_insert.getIa_geo().setOpen(false);
+        tab_insert.getIa_maths().setOpen(false);
     }
     
     

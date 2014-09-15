@@ -75,7 +75,6 @@ public class PaintLabel extends JLabel {
      */
     public final void refreshPaint() {
 
-        System.out.println("rp");
         this.refreshRectangle(0, 0, getWidth(), getHeight());
     }
     

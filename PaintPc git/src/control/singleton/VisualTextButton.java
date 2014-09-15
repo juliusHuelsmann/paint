@@ -33,8 +33,7 @@ public final class VisualTextButton implements MouseListener {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override public void mouseReleased(final MouseEvent _event) { 
-	    Page.getInstance().getJlbl_painting().refreshPaint();
+	@Override public void mouseReleased(final MouseEvent _event) {  
 	}
 
 	/**
@@ -91,7 +90,6 @@ public final class VisualTextButton implements MouseListener {
 			currentButton.setOwnBorder(ViewSettings.BRD_ITEM1BUTTON);
 		}
 		
-		Page.getInstance().getJlbl_painting().refreshPaint();
 	}
 
 

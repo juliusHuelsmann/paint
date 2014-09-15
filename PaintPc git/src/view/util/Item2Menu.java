@@ -130,23 +130,34 @@ public class Item2Menu extends JPanel {
      * apply mouseClicked.
      */
 	public final void applyMouseClicked() {
-    
-        //if is not opened set border.
-		if (!opened) {
-		    final Color clr_highlight = new Color(165, 165, 190);
-	        setBorder(clr_highlight, Color.LIGHT_GRAY);  
-		}
+
+        setOpen(!opened);
+        
+	}
+	
+	
+	public void setOpen(boolean _open){
+	    
+	    if(_open == !opened) {
+
+	        this.opened = _open;
+
+	        //if is not opened set border.
+	        if (opened) {
+	            final Color clr_highlight = new Color(165, 165, 190);
+	            setBorder(clr_highlight, Color.LIGHT_GRAY);  
+	        }
 
 
-		
-		this.opened = !opened;
-		if (opened) {
-			setSize(getWidth(), getHeight() * 2);	
-		} else {
+	        
+	        if (opened) {
+	            setSize(getWidth(), getHeight() * 2);   
+	        } else {
 
-			setSize(getWidth(), 
-			        getHeight() + jbtn_open.getHeight() * 2 - 2 - 1);
-		}
+	            setSize(getWidth(), 
+	                    getHeight() + jbtn_open.getHeight() * 2 - 2 - 1);
+	        }
+	    } //otherwise nothing to do
 	}
 	
 	

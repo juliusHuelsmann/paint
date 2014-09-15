@@ -1,4 +1,4 @@
-package _test;
+package atest;
 
 import java.awt.image.BufferedImage;
 
@@ -12,6 +12,7 @@ import javax.swing.JLabel;
  * @author Julius Huelsmann
  *
  */
+@SuppressWarnings("serial")
 public final class BufferedViewer extends JFrame {
 
     

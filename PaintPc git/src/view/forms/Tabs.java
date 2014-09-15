@@ -2,9 +2,6 @@
 package view.forms;
 
 //import declarations
-import java.awt.Color;
-import java.awt.Graphics;
-
 import settings.ViewSettings;
 import view.forms.tabs.Insert;
 import view.forms.tabs.Paint;

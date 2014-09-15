@@ -6,15 +6,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import settings.ViewSettings;
-import view.View;
 import view.forms.Page;
 import control.singleton.CItem;
 import control.singleton.ControlSelectionColorPen;
@@ -99,39 +95,39 @@ public class Item1Menu extends JPanel {
 
 		jpnl_stuff = new JPanel() {
 
-            @Override public void paintAll(Graphics _g){
+            @Override public void paintAll(final Graphics _g) {
                 super.paintAll(_g);
             }
-            @Override public void paint(Graphics _g){
+            @Override public void paint(final Graphics _g) {
                 super.paint(_g);
             }
-            @Override public void repaint(){
+            @Override public void repaint() {
                 super.repaint();
             }
 
-            @Override public void setOpaque(boolean _o){
+            @Override public void setOpaque(final boolean _o) {
                 super.setOpaque(_o);
             }
 
-            @Override public void setVisible(boolean _o){
+            @Override public void setVisible(final boolean _o) {
                 super.setOpaque(_o);
             }
             
         };
 		ls_item = new List<Component>();
-		jpnl_container = new JPanel(){
+		jpnl_container = new JPanel() {
 
-		    @Override public void paintAll(Graphics _g){
+		    @Override public void paintAll(final Graphics _g) {
                 super.paintAll(_g);
             }
-            @Override public void paint(Graphics _g){
+            @Override public void paint(final Graphics _g) {
                 super.paint(_g);
             }
-            @Override public void repaint(){
+            @Override public void repaint() {
                 super.repaint();
             }
 		    
-            @Override public void setOpaque(boolean _o){
+            @Override public void setOpaque(final boolean _o) {
                 super.setOpaque(_o);
             }
 		    
@@ -206,27 +202,26 @@ public class Item1Menu extends JPanel {
 	 */
 	public final void setOpen(final boolean _open) {
 
-//        Page.getInstance().getJlbl_painting().refreshPaint();
-//       Graphics _g = Page.getInstance().getJlbl_painting().refreshRectangle(0,0,200,500);
-
+	    final int hundred = 100;
+	    
 	    open = _open;
         if (_open) {
             setSize(openedWidth, openedHeight);
             jpnl_container.setBorder(BorderFactory.createLineBorder(
                     ViewSettings.CLR_BORDER));
-            new Thread(){
-                public void run(){
+            new Thread() {
+                public void run() {
 
                     
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(hundred);
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                     Page.getInstance().getJlbl_painting().refreshPopup();
                     jpnl_container.repaint();
-//                    Graphics _g = Page.getInstance().getJlbl_painting().refreshRectangle(0,0,200,500);
+//                    Graphics _g = Page.getInstance()
+//                    .getJlbl_painting().refreshRectangle(0,0,200,500);
 //
 //                    _g.setColor(Color.red);
 //                    _g.fillRect(0, 0,2000,2000);
@@ -236,18 +231,19 @@ public class Item1Menu extends JPanel {
         } else {
             setSize(closedWidth, closedHeight);
             jpnl_container.setBorder(null);
-            new Thread(){
-                public void run(){
+            new Thread() {
+                public void run() {
 
                     
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(hundred);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                     Page.getInstance().getJlbl_painting().refreshPopup();
-//                    Graphics _g = Page.getInstance().getJlbl_painting().refreshRectangle(0,0,200,500);
+//                    Graphics _g = Page.getInstance()
+//                    .getJlbl_painting().refreshRectangle(0,0,200,500);
 //
 //                    _g.setColor(Color.red);
 //                    _g.fillRect(0, 0,2000,2000);
@@ -268,25 +264,7 @@ public class Item1Menu extends JPanel {
         jpnl_container.setBorder(null);
 	}
 	
-	@Override
-	public void paint(Graphics g){
-
-	    super.paint(g);
-	}
 	
-	
-	public void paintAll(Graphics _g){
-	    
-	    super.paintAll(_g);
-        //Page.getInstance().getJlbl_painting().refreshPaint();
-	}
-	@Override
-	public void repaint(){
-
-	   super.repaint();
-	}
-
-
     
     /**
      * add a JPanel to item1menu.
@@ -422,10 +400,12 @@ public class Item1Menu extends JPanel {
 				 * set size of stuff
 				 */
 				super.setSize(_width, _height);
-				jpnl_stuff.setBounds(0, 0, _width-2, _height - closedHeight - 2);
+				jpnl_stuff.setBounds(0, 0, 
+				        _width - 2, _height - closedHeight - 2);
 				jpnl_container.setBounds(0, 0 + closedHeight, 
 				        _width, _height - closedHeight - 0);
-				jpnl_subContainer.setBounds(1, 1, _width-2, _height - closedHeight - 2);
+				jpnl_subContainer.setBounds(1, 1, 
+				        _width - 2, _height - closedHeight - 2);
 				int size = getWidth() / itemsInRow + 2;
 				int currentItem = 0;
 

@@ -79,7 +79,7 @@ import control.ControlPainting;
         jbtn_exit.setBorder(null);
         jbtn_exit.setFocusable(false);
         super.add(jbtn_exit);
-
+        
         //fade out
         fadeOut();
 
@@ -108,7 +108,10 @@ import control.ControlPainting;
     /**
      * Background color fading in at startup.
      */
-    private final Color clr_bg = new Color(75, 175, 125);
+    private final Color clr_bg 
+//    = new Color(75, 175, 125);
+//    = new Color(75, 115, 165);
+    = new Color(55, 95, 135);
     
 	
 	/**
@@ -265,6 +268,15 @@ import control.ControlPainting;
 	 * fade the gui elements out.
 	 */
 	private void fadeOut() {
+        
+	    final int time = 2000;
+	    
+        //sleep for a while
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         
         //fade out
         for (int i = 0; i < dsgn_maxFadeIn; i++) {

@@ -174,7 +174,6 @@ implements MouseMotionListener, MouseListener, KeyListener {
             //set up down pressed
             upDownPressed = true;
             
-            
             //start a 'change - location' Thread.
             new Thread() {
                 public void run() {
@@ -464,7 +463,8 @@ implements MouseMotionListener, MouseListener, KeyListener {
                     + view.getJpnl_owner().getWidth();
         }
         
-        view.getJpnl_toLocate().setLocation(x, view.getJpnl_toLocate().getLocation().y);
+        view.getJpnl_toLocate().setLocation(x, 
+                view.getJpnl_toLocate().getLocation().y);
         view.recalculateCenterBounds();
     
     }
@@ -480,7 +480,8 @@ implements MouseMotionListener, MouseListener, KeyListener {
         if (x > 0) {
             x = 0;
         }
-        view.getJpnl_toLocate().setLocation(x, view.getJpnl_toLocate().getLocation().y);
+        view.getJpnl_toLocate().setLocation(x, 
+                view.getJpnl_toLocate().getLocation().y);
         view.recalculateCenterBounds();
     }
     
@@ -491,7 +492,8 @@ implements MouseMotionListener, MouseListener, KeyListener {
      */
     private void removeYLocation() {
         
-        System.out.println("achtung:"+view.getJpnl_toLocate().getLocation().y);
+        System.out.println("achtung:"
+                + view.getJpnl_toLocate().getLocation().y);
         int y = view.getJpnl_toLocate().getLocation().y - moveStep;
         if (y < -view.getJpnl_toLocate().getHeight()
                 + view.getJpnl_owner().getHeight()) {
@@ -499,7 +501,8 @@ implements MouseMotionListener, MouseListener, KeyListener {
                     + view.getJpnl_owner().getHeight();
         }
         System.out.println("hier" + y);
-        view.getJpnl_toLocate().setLocation(view.getJpnl_toLocate().getLocation().x, y);
+        view.getJpnl_toLocate().setLocation(
+                view.getJpnl_toLocate().getLocation().x, y);
 
         view.recalculateCenterBounds();
     }
@@ -515,7 +518,8 @@ implements MouseMotionListener, MouseListener, KeyListener {
             y = 0;
         }
         System.out.println("hier" + y);
-        view.getJpnl_toLocate().setLocation(view.getJpnl_toLocate().getLocation().x, y);
+        view.getJpnl_toLocate().setLocation(
+                view.getJpnl_toLocate().getLocation().x, y);
         view.recalculateCenterBounds();
     }
 
@@ -532,8 +536,10 @@ implements MouseMotionListener, MouseListener, KeyListener {
                     - view.getJbtn_center().getHeight();
             int percentage = Constants.MAX_PERCENTAGE 
                     * (view.getJbtn_center().getY()
-                            - view.getJbtn_toTop().getHeight()) / bar100Percent;
-            view.getJpnl_toLocate().setLocation(view.getJpnl_toLocate().getLocation().x, 
+                            - view.getJbtn_toTop().getHeight()) 
+                            / bar100Percent;
+            view.getJpnl_toLocate().setLocation(
+                    view.getJpnl_toLocate().getLocation().x, 
                     -percentage * (view.getJpnl_toLocate().getHeight() 
                             - view.getJpnl_owner().getHeight()) / cent);
         } else {

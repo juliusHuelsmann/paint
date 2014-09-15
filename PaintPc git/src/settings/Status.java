@@ -296,10 +296,11 @@ public final class Status {
 
 
     /**
-     * @param counter_paintedPoints the counter_paintedPoints to set
+     * @param _counter_paintedPoints the counter_paintedPoints to set
      */
-    public static void setCounter_paintedPoints(int counter_paintedPoints) {
-        Status.counter_paintedPoints = counter_paintedPoints;
+    public static void setCounter_paintedPoints(
+            final int _counter_paintedPoints) {
+        Status.counter_paintedPoints = _counter_paintedPoints;
     }
 
 

@@ -34,7 +34,8 @@ public final class VisualTextButton implements MouseListener {
 	 * {@inheritDoc}
 	 */
 	@Override public void mouseReleased(final MouseEvent _event) { 
-        Page.getInstance().getJlbl_painting().refreshPaint();}
+	    Page.getInstance().getJlbl_painting().refreshPaint();
+	}
 
 	/**
 	 * {@inheritDoc}

@@ -3,7 +3,6 @@ package model.objects.pen;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -14,7 +13,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
 import settings.Constants;
 import model.objects.painting.PaintObjectWriting;
 import model.util.list.List;
@@ -104,6 +102,7 @@ public abstract class Pen implements Serializable {
 			final PaintObjectWriting _o, final boolean _final, 
 			final Point _p_start, final BufferedImage _g) {
 
+	    double time0 = System.currentTimeMillis();
 		//fetch list of points and go to the beginning of the list
 		List<Point> ls_point = _o.getPoints();
 		ls_point.toFirst();
@@ -139,7 +138,8 @@ public abstract class Pen implements Serializable {
         default:
             break;
 		}
-		
+        double time1 = System.currentTimeMillis();
+		System.out.println("pen pain" + (time1 - time0));
 		return _bi;
 	}
 	
@@ -545,8 +545,8 @@ public abstract class Pen implements Serializable {
 	 * @param _g the graphics to which line is painted.
 	 */
 	protected final void paintLine(final Point _p1, final Point _p2, 
-	        final BufferedImage _bi, final boolean _final, final BufferedImage _g, 
-	        final Point _pnt_shift) {
+	        final BufferedImage _bi, final boolean _final, 
+	        final BufferedImage _g, final Point _pnt_shift) {
 
 		//compute delta values
 		int dX = (_p1.x - _p2.x);
@@ -701,15 +701,15 @@ public abstract class Pen implements Serializable {
     /**
      * @return the id_operation
      */
-    public int getId_operation() {
+    public final int getId_operation() {
         return id_operation;
     }
 
 
     /**
-     * @param id_operation the id_operation to set
+     * @param _id_operation the id_operation to set
      */
-    public void setId_operation(int id_operation) {
-        this.id_operation = id_operation;
+    public final void setId_operation(final int _id_operation) {
+        this.id_operation = _id_operation;
     }
 }

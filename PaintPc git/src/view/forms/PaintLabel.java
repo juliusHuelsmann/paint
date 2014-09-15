@@ -6,9 +6,11 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import _test.BufferedViewer;
+
+import atest.BufferedViewer;
 import settings.Status;
 import settings.ViewSettings;
 import start.utils.Utils;
@@ -79,6 +81,7 @@ public class PaintLabel extends JLabel {
      */
     public final void refreshPaint() {
 
+        System.out.println("rp");
         this.refreshRectangle(0, 0, getWidth(), getHeight());
     }
     
@@ -96,6 +99,8 @@ public class PaintLabel extends JLabel {
      */
     public final void paintZoom(final int _x, final int _y, 
             final int _width, final int _height) {
+        
+        System.out.println("paint zoom");
         BufferedViewer.show(getBi());
         System.out.println(getBi().getWidth());
         System.out.println(getBi().getHeight());
@@ -113,6 +118,7 @@ public class PaintLabel extends JLabel {
      */
     public final void paintEntireSelection(final Rectangle _r) {
 
+        System.out.println("paint entire selection");
         System.out.println("3");
         //paint the background
         Utils.paintRastarBlock(getGraphics(), 
@@ -131,7 +137,7 @@ public class PaintLabel extends JLabel {
      */
     public final void paintSelection(final int _x, final int _y, 
             final int _width, final int _height) {
-        System.out.println("4");
+        System.out.println("paint selection 4");
         getGraphics().drawRect(_x + 1, _y + 1, _width - 1, _height - 1);
         this.r_old = new Rectangle(_x + 1, _y + 1, _width - 1, _height - 1);
     }
@@ -142,10 +148,11 @@ public class PaintLabel extends JLabel {
      */
     public final void removeOldRectangle() {
 
-        System.out.println("5");
+        int tempRemoveErrorOnlyDummyShit = 2;
+        System.out.println("remove old rectangle 5");
         super.setIcon(new ImageIcon(getBi()));
         super.repaint();
-        if (true || r_old == null) {
+        if (tempRemoveErrorOnlyDummyShit == 2 || r_old == null) {
             return;
         }
         //set color and fetch Graphics
@@ -286,6 +293,7 @@ public class PaintLabel extends JLabel {
     public final BufferedImage refreshRectangle(final int _x, final int _y, 
             final int _width, final int _height) {
 
+        System.out.println("refresh rectangle");
         Status.getLogger().finest("refreshing PaintLabel. \nValues: "
                 + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
                 + "\n\tgetLocation:\t" + getLocation() 
@@ -295,11 +303,15 @@ public class PaintLabel extends JLabel {
                 + "\n\t" + "_width\t\t" + _width
                 + "\n\t" + "_height\t\t" + _height + "\n");
 
+        double time0 = System.currentTimeMillis();
         //paint the painted stuff at graphics
         setBi(Picture.getInstance().updateRectangle(
                 -getLocation().x + _x, 
                 -getLocation().y + _y, _width, _height, _x, _y, getBi()));
 
+        double time1 = System.currentTimeMillis();
+        System.out.println("zeit 1" + (time1 - time0));
+        
         //paint the painting background (e.g. raster / lines) at the graphical
         //user interface.
         if (getBi() != null) {
@@ -308,9 +320,11 @@ public class PaintLabel extends JLabel {
                     -getLocation().y + _y + _height, _x, _y));  
         }
 
+
+        double time2 = System.currentTimeMillis();
+        System.out.println("zeit2" + (time2 - time1));
+
         setIcon(new ImageIcon(getBi()));
-        
-        
         return getBi();
     }
     
@@ -339,20 +353,33 @@ public class PaintLabel extends JLabel {
     
     
     
-    
-    public void refreshPopup(){
+    /**
+     * Not necessary.
+     */
+    public void refreshPopup() {
         //not necessary anymore because paitned to bi and autorefreshes.
 //        refreshPaint();
     }
     
     
-    public void removeZoomBox(){
+    /**
+     * Remove zoom box.
+     */
+    public final void removeZoomBox() {
         removeOldRectangle();
     }
     
     
-    public void setZoomBox(final int _x, final int _y, 
-            final int _width, final int _height){
+    /**
+     * Paint a zoom box.
+     * 
+     * @param _x the x coordinate
+     * @param _y the y coordinate
+     * @param _width the width 
+     * @param _height the height
+     */
+    public final void setZoomBox(final int _x, final int _y, 
+            final int _width, final int _height) {
         paintZoom(_x, _y, _width, _height);
     }
     
@@ -363,7 +390,6 @@ public class PaintLabel extends JLabel {
      */
     private void initializeBorderThread(final Rectangle _r) {
 
-        System.out.println("8");
         thrd_moveBorder = new Thread() {
             @Override public void run() {
 
@@ -417,12 +443,12 @@ public class PaintLabel extends JLabel {
                     
                     //go through the for loop and fill all the entire border
                     //blocks of upper border
-                    for (int x = startX; x < untilX; x++) {
+                    for (int nx = startX; nx < untilX; nx++) {
 
                         graph.setColor(getColorBorderPx());
-                        graph.drawLine(addIndex + plusX + x * sizeBB,
+                        graph.drawLine(addIndex + plusX + nx * sizeBB,
                                 _r.y + 1, 
-                                addIndex + plusX + (x + 1) * sizeBB,
+                                addIndex + plusX + (nx + 1) * sizeBB,
                                 _r.y + 1);
                         
                         //increase index.
@@ -459,14 +485,14 @@ public class PaintLabel extends JLabel {
                      */
                     //border block
                     int fromX = braucheNoch + _r.y % sizeBB;
-                    for (int y = _r.y / sizeBB; y < (_r.y + _r.height 
+                    for (int ny = _r.y / sizeBB; ny < (_r.y + _r.height 
                             - (braucheNoch + (_r.y + _r.height) % sizeBB)) 
-                            / sizeBB; y++) {
+                            / sizeBB; ny++) {
 
                         graph.setColor(getColorBorderPx());
 
-                        graph.drawLine(_r.x + _r.width, y * sizeBB + fromX,
-                                _r.x + _r.width, (y + 1) * sizeBB + fromX);
+                        graph.drawLine(_r.x + _r.width, ny * sizeBB + fromX,
+                                _r.x + _r.width, (ny + 1) * sizeBB + fromX);
 
                         //increase index.
                         index++;
@@ -476,13 +502,13 @@ public class PaintLabel extends JLabel {
                      *  bottom border
                      */
                     //border block
-                    for (int x = (_r.width + _r.x) / sizeBB - 1; x >= _r.x 
-                            / sizeBB; x--) {
+                    for (int nx = (_r.width + _r.x) / sizeBB - 1; nx >= _r.x 
+                            / sizeBB; nx--) {
 
                         graph.setColor(getColorBorderPx());
 
-                        graph.drawLine((x) * sizeBB, _r.y + _r.height
-                                , (x + 1) * sizeBB,  _r.y
+                        graph.drawLine((nx) * sizeBB, _r.y + _r.height
+                                , (nx + 1) * sizeBB,  _r.y
                                 + _r.height);
 
                         //increase index.
@@ -493,16 +519,16 @@ public class PaintLabel extends JLabel {
                      * left border
                      */
                     //border block
-                    for (int y = (_r.y + _r.height) 
-                            / ViewSettings.SELECTION_BORDER_BLOCK_SIZE; y 
+                    for (int ny = (_r.y + _r.height) 
+                            / ViewSettings.SELECTION_BORDER_BLOCK_SIZE; ny 
                             >= _r.y / ViewSettings.SELECTION_BORDER_BLOCK_SIZE; 
-                            y--) {
+                            ny--) {
 
                         graph.setColor(getColorBorderPx());
 
                         graph.drawLine(_r.x + 1, 
-                                y * ViewSettings.SELECTION_BORDER_BLOCK_SIZE,
-                                _r.x + 1,  (y + 1) 
+                                ny * ViewSettings.SELECTION_BORDER_BLOCK_SIZE,
+                                _r.x + 1,  (ny + 1) 
                                 * ViewSettings.SELECTION_BORDER_BLOCK_SIZE);
 
                         //increase index.
@@ -560,6 +586,18 @@ public class PaintLabel extends JLabel {
                 refreshPaint();
             }
         }
+    }
+    
+
+    /**
+     * Really set the location.
+     * @param _x the new x coordinate which is saved
+     * @param _y the new y coordinate which is saved
+     */
+    public final void setLoc(final int _x, final int _y) {
+        
+        //if something changed, repaint
+        super.setLocation(_x, _y);
     }
     
 

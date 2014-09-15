@@ -181,8 +181,7 @@ public class Item1PenSelection extends JPanel {
 		
 		
 		jlbl_thickness.setBounds(
-		        jsl_thickness.getX() + 
-		        jsl_thickness.getWidth(),
+		        jsl_thickness.getX() + jsl_thickness.getWidth(),
 		        jsl_thickness.getY(),
 		        widthThicknessLabel,
                 _height);

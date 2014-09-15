@@ -4,11 +4,6 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.Random;
-
-import javax.swing.ImageIcon;
-
-import view.forms.Page;
 
 
 /**
@@ -24,8 +19,6 @@ public final class PaintBI {
     private PaintBI() {
         
     }
-    
-    
     
     
     /**
@@ -383,18 +376,36 @@ public final class PaintBI {
     }
     
     
-    public static void paintScilentPoint(
-            final BufferedImage _bi, int _x, int _y, int _rgb){
+    /**
+     * Paint point.
+     * @param _bi the bufferedImage
+     * @param _x the x coordinate of point
+     * @param _y the y coordinate of point
+     * @param _rgb the color
+     */
+    public static void paintScilentPoint(final BufferedImage _bi, 
+            final int _x, final int _y, final int _rgb) {
 
-        if(_x <= 0)
-            _x = 0;
-        else if (_x >= _bi.getWidth())
-            _x = _bi.getWidth() - 1;
-        if(_y <= 0)
-            _y = 0;
-        else if (_y >= _bi.getHeight())
-            _y = _bi.getHeight() - 1;
-        _bi.setRGB(_x, _y, _rgb);
+        //create integer values
+        int x = _x;
+        int y = _y;
+        
+        //transform x coordinate.
+        if (x <= 0) {
+            x = 0;
+        } else if (x >= _bi.getWidth()) {
+            x = _bi.getWidth() - 1;
+        }
+        
+        //transform y coordinate
+        if (y <= 0) {
+            y = 0;
+        } else if (y >= _bi.getHeight()) {
+            y = _bi.getHeight() - 1;
+        }
+        
+        //transform bufferedImage.
+        _bi.setRGB(x, y, _rgb);
         
     }
     

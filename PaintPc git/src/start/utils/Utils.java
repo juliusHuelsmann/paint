@@ -1,10 +1,8 @@
 package start.utils;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,11 +11,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import model.objects.painting.PaintBI;
-
 import settings.Status;
 import settings.ViewSettings;
 import view.forms.Page;
-import view.forms.PaintLabel;
 
 /**
  * Class which contains utility methods.
@@ -357,22 +353,26 @@ public final class Utils {
     
     /**
      * return part of the raster image.
+     * 
+     * @param _f the bufferedImage
+     * 
      * @param _fromX the start point
      * @param _fromY the start point
      * @param _untilX the end point
      * @param _untilY the end point
      * 
-     * 
      * @param _graphiX the location at the component where the painting 
      *                  process starts.
      * @param _graphiY the location at the component where the painting 
      *                  process starts.
+     *                  
+     * @return the transformed BufferedImage
      */
+    @SuppressWarnings("unused")
     public static BufferedImage getRastarImage(
             final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {
-
         
         //the width and the height of the entire image, of which the parts
         //are painted.
@@ -389,15 +389,12 @@ public final class Utils {
            distancePoints = 2 + 1;
         }
         
-        
         //value because of which is decided whether to print a line
         //or to print a text for debugging purpose.
         boolean print = true;
         //set a small font
 //        _g.setFont(new Font("Courier New", Font.PLAIN, (2 + 1) * (2 + 1)));
         //vertical lines    |  |  |  |  |  |  |  |  |
-        //                  |  |  |  |  |  |  |  |  |
-        //                  |  |  |  |  |  |  |  |  |
         //                  |  |  |  |  |  |  |  |  |
         //                  |  |  |  |  |  |  |  |  |
         for (int x = 
@@ -448,7 +445,6 @@ public final class Utils {
                                     RASTAR_COLOR.getRGB());
                         }
                         if (y + 2 < height) {
-
                             PaintBI.paintScilentPoint(
                                     _f, coordinateX, coordinateY + 2,
                                     RASTAR_COLOR.getRGB());
@@ -475,7 +471,6 @@ public final class Utils {
 //                    _g.setColor(Color.black);
 //                    _g.drawString(xBoxID + "." +  yBoxID, 
 //                           xBoxLoc, yBoxLoc);
-//                    
 //                    //reset color
 //                    _g.setColor(previousColor);
                 }
@@ -483,7 +478,6 @@ public final class Utils {
             print = !print;
         }
         //horizontal lines  _______________________
-        //                  _______________________
         //                  _______________________
         //                  _______________________
         //                  _______________________
@@ -500,7 +494,6 @@ public final class Utils {
                 //calculate correct coordinate values for the graphics
                 final int newX = x - _fromX + _graphiX;
                 final int newY = y - _fromY + _graphiY;
-
 
                PaintBI.paintScilentPoint(
                        _f, newX, newY, RASTAR_COLOR.getRGB());
@@ -522,14 +515,11 @@ public final class Utils {
                 }
             }
         }
-
         
         //paint the non image and the border of the page.
-        if (width < _untilX
-                || height < _untilY) {
-            //TODO:
-//            paintNonImage(_g, _untilX, _untilY, width, height);
-        }
+//        if (width < _untilX || height < _untilY) {
+//            //TODO: paintNonImage(_g, _untilX, _untilY, width, height);
+//        }
         return _f;
     }
     

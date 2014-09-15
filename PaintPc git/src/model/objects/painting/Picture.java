@@ -3,7 +3,6 @@ package model.objects.painting;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -16,13 +15,12 @@ import java.io.ObjectOutputStream;
 import java.util.Observable;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import settings.Error;
 import settings.Status;
-import view.View;
 import view.ViewVorschau;
 import view.forms.Page;
-import view.forms.PaintLabel;
 import model.objects.PictureOverview;
 import model.objects.pen.Pen;
 import model.objects.pen.special.PenSelection;
@@ -227,13 +225,23 @@ public final class Picture extends Observable {
             final int _graphicX, final int _graphiY,
             final BufferedImage _bi) {
 
-        
-        emptyRectangle(0, 0, _width, _height, 0, 0, _bi);
-
-      
-        return repaintRectangle(_x, _y, _width, _height, 
+        double time0 = System.currentTimeMillis();
+        BufferedImage ret = emptyRectangle(_x, _y, _width, _height, 
                 _graphicX, _graphiY, _bi);
+        Page.getInstance().getJlbl_painting().setBi(ret);
+        Page.getInstance().getJlbl_painting().setIcon(new ImageIcon(ret));
 
+        Page.getInstance().getJlbl_painting().repaint();
+
+        double time1 = System.currentTimeMillis();
+        System.out.println("empty time" + (time1 - time0));
+      
+        ret =  repaintRectangle(_x, _y, _width, _height, 
+                _graphicX, _graphiY, ret);
+        
+        double time2 = System.currentTimeMillis();
+        System.out.println("repaint time" + (time2 - time1));
+        return ret;
     }
     
     
@@ -248,6 +256,7 @@ public final class Picture extends Observable {
      * @param _height the height
      * @param _graphicX the graphics x
      * @param _graphiY the graphics y.
+     * @param _bi the BufferedImage
      * @return the graphics
      */
     public synchronized BufferedImage emptyRectangle(final int _x, 
@@ -292,6 +301,8 @@ public final class Picture extends Observable {
      * @param _height the height
      * @param _graphicX the graphics x
      * @param _graphiY the graphics y.
+     * 
+     * @param _bi the BufferedImage
      * @return the graphics
      */
     public synchronized BufferedImage repaintRectangle(final int _x,
@@ -313,17 +324,19 @@ public final class Picture extends Observable {
             
             if (ls_po_sortedByX.getItem() != null) {
                 
+                System.out.println("inner loop");
                 //check whether the current PaintObject is in the given 
                 //rectangle
                 if (ls_po_sortedByX.getItem().getSnapshotBounds().x 
-                        <= -Page.getInstance().getJlbl_painting().getX()
+                        <= -Page.getInstance().getJlbl_painting()
+                        .getLocation().getX()
                         + Page.getInstance().getJlbl_painting().getWidth()) {
                     
                     //paint the object.
                     ls_po_sortedByX.getItem().paint(
                             bi_normalSize, false, _bi,
-                            Page.getInstance().getJpnl_toMove().getX(),
-                            Page.getInstance().getJpnl_toMove().getY());
+                            Page.getInstance().getJlbl_painting().getLocation().x,
+                            Page.getInstance().getJlbl_painting().getLocation().y);
                 } else {
                    behindRectangle = true; 
                 }
@@ -332,9 +345,9 @@ public final class Picture extends Observable {
         }
         ls_po_sortedByX.toFirst();
 
-//        System.out.println("Painted " 
-//                    + Status.getCounter_paintedPoints() 
-//                    + "pixel points for this operation.");
+        System.out.println("Painted " 
+                    + Status.getCounter_paintedPoints() 
+                    + "pixel points for this operation.");
         
 //      g_imageWork.translate(0, 0);
       
@@ -399,10 +412,16 @@ public final class Picture extends Observable {
 	            }
 	        }
 		}
-        po_current.paint(null, false, Page.getInstance().getJlbl_painting().getBi(), 
+        BufferedImage bi_transformed = po_current.paint(
+                Page.getInstance().getJlbl_painting().getBi(), 
+                false, 
+                Page.getInstance().getJlbl_painting().getBi(), 
                 Page.getInstance().getJpnl_toMove().getX(), 
                 Page.getInstance().getJpnl_toMove().getY());
 
+        Page.getInstance().getJlbl_painting().setBi(bi_transformed);
+        Page.getInstance().getJlbl_painting().setIcon(
+                new javax.swing.ImageIcon(bi_transformed));
         
         //set uncommitted changes.
         Status.setUncommittedChanges(true);
@@ -435,14 +454,24 @@ public final class Picture extends Observable {
 		}
 		
 		
-		//update the current instance of BufferedImage and paint to 
-		//graphics as well. Here, it is not possible to check whether
-		//items are in range, because the current PaintObject shell be
-		//entirely painted to both bufferedImage and screen.
-		bi_normalSize = po_current.paint(bi_normalSize, true, Page.getInstance().getJlbl_painting().getBi(),
+//		//update the current instance of BufferedImage and paint to 
+//		//graphics as well. Here, it is not possible to check whether
+//		//items are in range, because the current PaintObject shell be
+//		//entirely painted to both bufferedImage and screen.
+		bi_normalSize = po_current.paint(bi_normalSize, true, 
+		        Page.getInstance().getJlbl_painting().getBi(),
                 Page.getInstance().getJpnl_toMove().getX(),
                 Page.getInstance().getJpnl_toMove().getY());
 		PictureOverview.getInstance().add(po_current);
+
+        BufferedImage bi_transformed = po_current.paint(
+                Page.getInstance().getJlbl_painting().getBi(), 
+                true, 
+                Page.getInstance().getJlbl_painting().getBi(), 
+                Page.getInstance().getJpnl_toMove().getX(), 
+                Page.getInstance().getJpnl_toMove().getY());
+
+        Page.getInstance().getJlbl_painting().setBi(bi_transformed);
 
 		//insert into sorted lists sorted by x and y positions.
 		final Rectangle b = po_current.getSnapshotBounds();

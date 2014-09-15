@@ -4,7 +4,14 @@ package view.util;
 //import declarations
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics;
+import java.awt.Font;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -31,6 +38,11 @@ public class VTabbedPane extends JPanel {
 	 * array of headline JButtons.
 	 */
 	private JButton [] jbtn_stuffHeadline;
+	
+	/**
+	 * JButton for closing the tabbedPane.
+	 */
+	private JButton jbtn_close;
 	
 	/**
 	 * array of Panels for each JButton.
@@ -63,7 +75,7 @@ public class VTabbedPane extends JPanel {
 	 * is the real size.
 	 */
 	private final int titleProportionWidth = 15,
-	        titleProportionHeight = 35;
+	        titleProportionHeight = 20;
 	
 	/**
 	 * The visible height.
@@ -81,6 +93,23 @@ public class VTabbedPane extends JPanel {
 	private CTabbedPane control;
 	
 	/**
+	 * 
+	 */
+	private int oldHeight = 0, oldVisibleHeight = 0;
+
+	/**
+	 * Whether pressed or not.
+	 */
+	private boolean press = false;
+	
+	/**
+	 * The closing JPanel.
+	 */
+	private JPanel jpnl_close;
+	
+	private JLabel jlbl_closeTime;
+	
+	/**
 	 * Constructor initialize view and corresponding controller class..
 	 */
 	public VTabbedPane() {
@@ -90,31 +119,279 @@ public class VTabbedPane extends JPanel {
 		super.setFocusable(false);
 		super.setLayout(null);
 		super.setBackground(new Color(0, 0, 0, 0));
-		super.setOpaque(false);
+		super.setOpaque(true);
 
+		jpnl_close = new JPanel();
+		jpnl_close.setOpaque(true);
+		jpnl_close.setBackground(Color.white);
+		jpnl_close.setLayout(null);
+		super.add(jpnl_close);
+		
+		jlbl_closeTime = new JLabel("Sonntag, 2014 09 14\t 20:17:40");
+		jlbl_closeTime.setForeground(Color.black);
+		jlbl_closeTime.setFont(new Font("Courier new",
+		        Font.ITALIC, (2 + 2 + 2) * (2)));
+		jpnl_close.add(jlbl_closeTime);
+		
+        jbtn_close = new JButton();
+        jbtn_close.setContentAreaFilled(false);
+        jbtn_close.setOpaque(false);
+        jbtn_close.addMouseMotionListener(new MouseMotionListener() {
+            
+            @Override public void mouseMoved(final MouseEvent _event) { }
+            
+            @Override public void mouseDragged(final MouseEvent _event) {
+                moveTab(_event);
+            }
+        });
+        jbtn_close.addMouseListener(new MouseListener() {
+            
+            @Override public void mouseReleased(final MouseEvent _event) {
+                press = false;
+                System.out.println(getHeight());
+                if (getHeight() <= (oldVisibleHeight + (oldVisibleHeight 
+                        / titleProportionHeight)) / 2) {
+                    closeTab();
+                } else {
+                    openTab();
+                }
+            }
+            
+            @Override public void mousePressed(final MouseEvent _event) {
+                press = true;
+            }
+            
+            @Override public void mouseExited(final MouseEvent _event)  { }
+            @Override public void mouseEntered(final MouseEvent _event) { }
+            @Override public void mouseClicked(final MouseEvent _event) { }
+        });
+        jbtn_close.setBorder(BorderFactory.createMatteBorder(
+                0, 0, 1, 0, Color.black));
+        jbtn_close.setFocusable(false);
+        jpnl_close.add(jbtn_close);
+
+        
 		//initialize the container for the title JButton and the tab 
 		//JPanels
 		jpnl_contains = new JPanel();
 		jpnl_contains.setFocusable(false);
 		jpnl_contains.setOpaque(false);
+		jpnl_contains.setBackground(Color.white);
 		jpnl_contains.setLayout(null);
 		super.add(jpnl_contains);
 
-		//initialize the Background JLabel
-		jpnl_background = new JLabel();
-		jpnl_background.setFocusable(false);
-		jpnl_background.setOpaque(true);
-		jpnl_background.setLayout(null);
+        //initialize the Background JLabel
+        jpnl_background = new JLabel();
+        jpnl_background.setFocusable(false);
+        jpnl_background.setOpaque(true);
+        jpnl_background.setLayout(null);
         jpnl_background.setBackground(ViewSettings.CLR_BACKGROUND_DARK);
         jpnl_background.setBorder(BorderFactory.createMatteBorder(
                 1, 0, 1, 1, ViewSettings.CLR_BORDER));
-		super.add(jpnl_background);
+        jpnl_contains.add(jpnl_background);
+
 		
 		//initialize controller class
 		control = new CTabbedPane(this);
+
+        new Thread() {
+            public void run() {
+                
+                double start = System.currentTimeMillis();
+                while (true) {
+                    try {
+                        Thread.sleep(2 * (2 + 2 + 1));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    DateFormat dateFormat = new SimpleDateFormat(
+                            "yyyy MM dd   HH:mm:ss");
+                    Calendar cal = Calendar.getInstance();
+                    
+                    String wochentag = "";
+                    switch(cal.get(Calendar.DAY_OF_WEEK)) {
+                    case 0:
+                        wochentag = "Samstag";
+                        break;
+                    case 1:
+                        wochentag = "Sonntag";
+                        break;
+                    case 2:
+                        wochentag = "Montag";
+                        break;
+                    case 2 + 1:
+                        wochentag = "Dienstag";
+                        break;
+                    case 2 + 2:
+                        wochentag = "Mittwoch";
+                        break;
+                    case 2 + 2 + 1:
+                        wochentag = "Donnerstag";
+                        break;
+                    case (2 + 1) * 2:
+                        wochentag = "Freitag";
+                        break;
+                    case (2 + 1) * 2 + 1:
+                        wochentag = "Samstag";
+                        break;
+                    default:
+                        wochentag = "Tolltag";
+                        break;
+                    }
+                    
+                    double currentTime = System.currentTimeMillis() - start;
+                    String bearbeitung = "Bearbeitungszeit: ";
+
+                    int sekunden = (int) (currentTime / 1000);
+                    int minuten = (int) (sekunden / 60);
+                    int stunden = (int) (minuten / 60);
+                    int tage = stunden / 24;
+                    
+                    sekunden = sekunden % 60;
+                    minuten = minuten % 60;
+                    stunden = stunden % 24;
+
+                    if (tage != 0) {
+                        bearbeitung += tage + " Tage, " + stunden + " h, "
+                                + minuten + " m, " + sekunden + "s";
+                    } else if (stunden != 0) {
+
+                        bearbeitung +=  stunden + " h, "
+                                + minuten + " m, " + sekunden + "s";
+                    } else if (minuten != 0) {
+
+                        bearbeitung += minuten + " m, " + sekunden + "s";
+                    } else if (sekunden != 0) {
+
+                        bearbeitung +=  sekunden + "s";
+                    }
+                    
+                    jlbl_closeTime.setText(wochentag 
+                            + "   " + dateFormat.format(cal.getTime())
+                            + "   " + "" + bearbeitung);
+                }
+            }
+        } .start();
 	}
 	
+	
+	/**
+	 * MOVE THE TAB.
+	 * @param _e the event.
+	 */
+	private void moveTab(final MouseEvent _e) {
 
+        jpnl_contains.setVisible(true);
+        if (press) {
+            super.setSize(getWidth(), _e.getYOnScreen()); 
+            jpnl_close.setLocation(0, getHeight() - jbtn_close.getHeight());
+            jpnl_background.setSize(getWidth(), getHeight());
+            Page.getInstance().setLocation(0, getHeight());
+        } 
+	}
+	
+	
+	/**
+	 * only super size setting method caller from outside the class.
+	 * @param _width the width 
+	 * @param _height the height.
+	 */
+	private void setComponentSize(final int _width, final int _height) {
+	    super.setSize(_width, _height);
+	}
+	
+	
+	/**
+	 * close the tab.
+	 */
+	private void closeTab() {
+	    
+	    jpnl_contains.setVisible(false);
+	    Thread t_closeTab = new Thread() {
+	        public void run() {
+
+	            int startHeight = getHeight();
+	            final int max = 20;
+	            for (int i = 0; i < max; i++) {
+
+	                setComponentSize(getWidth(), startHeight
+	                        + (oldHeight / titleProportionHeight - startHeight)
+	                        * i / max);
+	                jpnl_close.setLocation(0, getHeight());
+	                jpnl_background.setSize(getWidth(), getHeight()
+	                        - jpnl_background.getY());
+	                Page.getInstance().setLocation(0, getHeight());
+	                
+	                try {
+	                    Thread.sleep(2);
+	                } catch (InterruptedException e) {
+	                    e.printStackTrace();
+	                }
+	                
+	            }
+
+	            setComponentSize(getWidth(), oldHeight / titleProportionHeight);
+	            jpnl_close.setLocation(0, getHeight() - jbtn_close.getHeight());
+	            jpnl_background.setSize(getWidth(), getHeight()
+                        - jpnl_background.getY());
+	            Page.getInstance().setLocation(0, getHeight());
+	        
+	        }
+	    };
+	    t_closeTab.start();
+	    
+	}
+	
+	/**
+	 * open the tab.
+	 */
+	private void openTab() {
+
+        jpnl_contains.setVisible(true);
+        Thread t_closeTab = new Thread() {
+            public void run() {
+
+                int startHeight = getHeight();
+                int startHeight2 = jpnl_close.getY();
+                final int max = 20;
+                for (int i = 0; i < max; i++) {
+
+                    setComponentSize(getWidth(), startHeight
+                            + (oldHeight - startHeight)
+                            * i / max);
+                    jpnl_close.setLocation(0, startHeight2 
+                            + (oldVisibleHeight - startHeight2) * i / max);
+                    
+                    jlbl_closeTime.setBounds(0 , 2, jpnl_close.getWidth() 
+                            / 2, jpnl_close.getHeight());
+                    
+                    jpnl_background.setSize(getWidth(), 
+                            startHeight2 + (oldVisibleHeight - startHeight2) 
+                            * i / max
+                            - jpnl_background.getY());
+                    Page.getInstance().setLocation(0, startHeight2 
+                            + (oldVisibleHeight - startHeight2) * i / max);
+                    
+                    try {
+                        Thread.sleep(2);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                
+                setComponentSize(getWidth(), oldHeight);
+                jpnl_close.setLocation(0, 
+                        oldVisibleHeight);
+                jpnl_background.setSize(getWidth(), oldVisibleHeight 
+                        - jpnl_background.getY());
+                jpnl_background.repaint();
+                System.out.println(oldVisibleHeight);
+                Page.getInstance().setLocation(0, oldVisibleHeight 
+                        + jpnl_close.getHeight());
+            }
+        };
+        t_closeTab.start();
+	}
 	/**
 	 * add a new tab and its title to tabbedPane.
 	 * @param _title the title of the new tab.
@@ -154,6 +431,9 @@ public class VTabbedPane extends JPanel {
 			jpnl_stuff = jpnl_stuff2;
 			jbtn_stuffHeadline = jbtn_stuff2;
 		}
+		
+		//set position of background to last painted
+        jpnl_contains.setComponentZOrder(jpnl_background, jpnl_stuff.length);
 		
 		//open the first tab by default and repaint the TabbedPane
 		openTab(openTab);
@@ -263,34 +543,111 @@ public class VTabbedPane extends JPanel {
 	 */
 	public final void openTab(final int _index) {
 	    
-	    //save currently open tab
-	    openTab = _index;
+	    final boolean newOpening = true;
 	    
-	    //go through the list of headline JButtons and tab JPanels
-		for (int i = 0; i < jbtn_stuffHeadline.length; i++) {
+	    if (newOpening) {
+	        
+	        //the last tab
+	        final int lastTab = openTab;
+            
+            //save currently open tab
+            openTab = _index;
 
-		    //set the tab invisible
-			jpnl_stuff[i].setVisible(false);
-			
-			//set the standard background and a border at the bottom for 
-			//each not selected panel and button
-            jbtn_stuffHeadline[i].setBackground(Color.white);
-			jbtn_stuffHeadline[i].setBorder(BorderFactory.createMatteBorder(
-			        0, 0, 1, 0, ViewSettings.CLR_BORDER));
-		}
-		
-		//set the selected background for the currently selected tab
-		//and create a border everywhere except at the bottom
-		jbtn_stuffHeadline[_index].setBackground(
-		        ViewSettings.CLR_BACKGROUND_DARK);
-        jbtn_stuffHeadline[_index].setBorder(BorderFactory.createMatteBorder(
-                1, 1, 0, 1, ViewSettings.CLR_BORDER));
-		
-		//make the tab JPanel visible
-		jpnl_stuff[_index].setVisible(true);
-		
-		//set the size of open tab
-		flip(Status.isNormalRotation());
+            //go through the list of headline JButtons and tab JPanels
+            for (int i = 0; i < jbtn_stuffHeadline.length; i++) {
+
+                //set the tab invisible
+                jpnl_stuff[i].setVisible(false);
+                
+                //set the standard background and a border at the bottom for 
+                //each not selected panel and button
+                jbtn_stuffHeadline[i].setBackground(Color.white);
+                jbtn_stuffHeadline[i].setBorder(BorderFactory.createMatteBorder(
+                        0, 0, 1, 0, ViewSettings.CLR_BORDER));
+
+                //make the tab JPanel visible
+                jpnl_stuff[i].setLocation(getWidth() * (i - lastTab), 
+                        jpnl_stuff[i].getY());
+                jpnl_stuff[i].setVisible(true);
+            }
+            
+            //set the selected background for the currently selected tab
+            //and create a border everywhere except at the bottom
+            jbtn_stuffHeadline[_index].setBackground(
+                    ViewSettings.CLR_BACKGROUND_DARK);
+            jbtn_stuffHeadline[_index].setBorder(
+                    BorderFactory.createMatteBorder(
+                    1, 1, 0, 1, ViewSettings.CLR_BORDER));
+            
+
+            new Thread() {
+                public void run() {
+
+                    final int max = 150;
+                    
+                    //go through the list of headline JButtons and tab 
+                    //JPanels
+                    for (int percent = 0; percent <= max; percent++) {
+                        for (int i = 0; i < jbtn_stuffHeadline.length; i++) {
+                            
+                            int cStartLocation = getWidth() * (i - lastTab);
+                            int cEndLocation = getWidth() * (i - _index);
+                            
+                            //make the tab JPanel visible
+                            jpnl_stuff[i].setLocation(cStartLocation
+                                    + (cEndLocation - cStartLocation)
+                                    * percent / max,
+                                    jpnl_stuff[i].getY());
+                            try {
+                                Thread.sleep(1);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    for (int i = 0; i < jbtn_stuffHeadline.length; i++) {
+                        int cStartLocation = getWidth() * (i - lastTab);
+                        int cEndLocation = getWidth() * (i - _index);
+
+                        jpnl_stuff[i].setLocation(cStartLocation
+                                + cEndLocation - cStartLocation,
+                                jpnl_stuff[i].getY());
+                    }
+                }
+            } .start();
+
+	    } else {
+
+            //save currently open tab
+            openTab = _index;
+            
+            //go through the list of headline JButtons and tab JPanels
+            for (int i = 0; i < jbtn_stuffHeadline.length; i++) {
+
+                //set the tab invisible
+                jpnl_stuff[i].setVisible(false);
+                
+                //set the standard background and a border at the bottom for 
+                //each not selected panel and button
+                jbtn_stuffHeadline[i].setBackground(Color.white);
+                jbtn_stuffHeadline[i].setBorder(BorderFactory.createMatteBorder(
+                        0, 0, 1, 0, ViewSettings.CLR_BORDER));
+            }
+            
+            //set the selected background for the currently selected tab
+            //and create a border everywhere except at the bottom
+            jbtn_stuffHeadline[_index].setBackground(
+                    ViewSettings.CLR_BACKGROUND_DARK);
+            jbtn_stuffHeadline[_index].setBorder(
+                    BorderFactory.createMatteBorder(
+                    1, 1, 0, 1, ViewSettings.CLR_BORDER));
+            
+            //make the tab JPanel visible
+            jpnl_stuff[_index].setVisible(true);
+            
+            //set the size of open tab
+            flip(Status.isNormalRotation());
+	    }
 	}
 	
 	/**
@@ -302,6 +659,10 @@ public class VTabbedPane extends JPanel {
      */
     public final void setSize(final int _width, final int _height, 
             final int _visibleHeight) {
+
+        //save the height  
+        this.oldHeight = _height;
+        this.oldVisibleHeight = _visibleHeight;
         
         //set total size
     	super.setSize(_width, _height);
@@ -323,15 +684,16 @@ public class VTabbedPane extends JPanel {
      */
     public final void flip(final boolean _normalRotation) {
 
-        int titleWidth = getWidth() / titleProportionWidth;
-        int selectedtitleWidth = getWidth() / (titleProportionWidth);
-        int titleHeight = getHeight() / titleProportionHeight;
+        final int titleWidth = getWidth() / titleProportionWidth,
+                selectedtitleWidth = getWidth() / (titleProportionWidth),
+                titleHeight = getHeight() / titleProportionHeight;
         
         //set the size of container JPanel (whole width and height)
         jpnl_contains.setSize(getWidth(), getHeight());
         
         //set background size (only visible width and height shown)
-        jpnl_background.setSize(getWidth(), visibleHeight -titleHeight - titleY + 1);
+        jpnl_background.setSize(getWidth(), visibleHeight 
+                - titleHeight - titleY + 1);
         
         //if is normal rotated.
 	    if (_normalRotation) {
@@ -339,6 +701,9 @@ public class VTabbedPane extends JPanel {
 	        //because the border should be visible 
             jpnl_background.setLocation(0, titleHeight + titleY - 1);
             jpnl_contains.setLocation(0, 0);
+            jbtn_close.setSize(getWidth(), 25);
+            jpnl_close.setBounds(0, visibleHeight, getWidth(), 25);
+            
 
             //set size and location of headlines and tabs.
 	        for (int index = 0; jbtn_stuffHeadline != null 
@@ -356,7 +721,7 @@ public class VTabbedPane extends JPanel {
 	            }
                 jpnl_stuff[index].setSize(
                         getWidth(), getHeight() - titleHeight - titleY);
-	            
+                
                 //set locations depending on previous locations.
                 //if index == 0 there is no previous location, it has to be
                 //addressed in particular
@@ -377,13 +742,6 @@ public class VTabbedPane extends JPanel {
 	    }
 
 	}
-
-    public void repaint(){
-        super.repaint();
-    }
-    public void paint(Graphics _g){
-        super.paint(_g);
-    }
 
     /**
      * @return the openTab

@@ -2,14 +2,8 @@
 package view.util;
 
 //import declaration
-import java.awt.event.ActionEvent;
-
 import javax.swing.JButton;
-
 import settings.Error;
-import settings.ViewSettings;
-import view.View;
-import view.forms.Page;
 
 
 /**

@@ -119,23 +119,18 @@ public final class ControlSelectionColorPen implements MouseListener {
 		                .getTb_new().getActionCause())
 		        && !_event.getSource().equals(Paint.getInstance()
 		                .getTb_save().getActionCause())
-		                
                 && !_event.getSource().equals(Paint.getInstance()
                         .getTb_turnMirror().getActionCause())
-                        
                 && !_event.getSource().equals(Paint.getInstance()
                         .getTb_prev().getActionCause())
-                        
                 && !_event.getSource().equals(Paint.getInstance()
                         .getTb_next().getActionCause())
-                        
                 && !_event.getSource().equals(Paint.getInstance()
                         .getTb_turnNormal().getActionCause())
                         && !_event.getSource().equals(Paint.getInstance()
                                 .getIt_color().getTb_open().getActionCause())
 		        && !_event.getSource().equals(Paint.getInstance()
 		                .getTb_load().getActionCause())) {
-
 		    deactivate();
 		}
 
@@ -297,30 +292,11 @@ public final class ControlSelectionColorPen implements MouseListener {
 	}
 
 
-    @Override
-    public void mouseClicked(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
+    @Override public void mouseClicked(final MouseEvent _event) { }
 
+    @Override public void mouseEntered(final MouseEvent _event) { }
 
-    @Override
-    public void mouseEntered(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
+    @Override public void mouseExited(final MouseEvent _event) { }
 
-
-    @Override
-    public void mouseExited(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-    @Override
-    public void mousePressed(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
+    @Override public void mousePressed(final MouseEvent _event) { }
 }

@@ -194,7 +194,7 @@ public final class ViewSettings {
      * the visible height of the TabbedPane.
      */
     public static final int VIEW_HEIGHT_TB_VISIBLE = 
-            (int) (VIEW_SIZE_JFRAME.height / 4.5);
+            (int) (VIEW_SIZE_JFRAME.height / (2 + 2 + 1 / 2));
 
     /**
      * the bounds of the PaointObject.
@@ -212,10 +212,11 @@ public final class ViewSettings {
      * the bounds of the Page.
      */
     public static final Rectangle VIEW_BOUNDS_PAGE = new Rectangle(
-            0, VIEW_HEIGHT_TB_VISIBLE  , 
+            0, VIEW_HEIGHT_TB_VISIBLE + TWENTY_FIFE , 
             VIEW_SIZE_JFRAME.width - TWENTY_FIFE - TEN, 
             VIEW_SIZE_JFRAME.height - VIEW_SIZE_JFRAME.height / FIFE 
-            - 2 * VIEW_SIZE_SP);
+            - 2 * VIEW_SIZE_SP - TWENTY_FIFE);//the last 25 is the size 
+            //of the closing and opening button 
     
     /**
      * The font for information.

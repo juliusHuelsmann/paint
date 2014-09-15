@@ -3,13 +3,10 @@ package model.objects.pen.normal;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-
 import settings.Error;
 import settings.Status;
-import view.View;
 import view.forms.Page;
 import model.objects.painting.PaintBI;
 import model.objects.pen.Pen;
@@ -140,8 +137,9 @@ public class PenKuli extends Pen {
                         Point[] point = new Point[1];
                         point[0] = new Point(x, y);
                         
-                        PaintBI.paintPolygonN(_g, getClr_foreground(), 
-                                getThickness(), point, true);
+//                        PaintBI.paintPolygonN(_g, getClr_foreground(), 
+//                                getThickness(), point, true);
+                        _g.setRGB(x, y, getClr_foreground().getRGB());
                         
                         //for loop because i want to paint the gaps between the 
                         //pixel if zoomed in.
@@ -152,8 +150,10 @@ public class PenKuli extends Pen {
                                 point = new Point[1];
                                 point[0] = new Point(x + kx, y + ky);
                                 
-                                PaintBI.paintPolygonN(_g, getClr_foreground(), 
-                                        getThickness(), point, true);
+//                                PaintBI.paintPolygonN(_g, getClr_foreground(), 
+//                                        getThickness(), point, true);
+                                _g.setRGB(x + kx, y + ky, 
+                                        getClr_foreground().getRGB());
                             }
                         }
                     }

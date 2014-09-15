@@ -118,55 +118,6 @@ public class VTabbedPane extends JPanel {
 		super.setBackground(new Color(0, 0, 0, 0));
 		super.setOpaque(true);
 
-		jpnl_close = new JPanel();
-		jpnl_close.setOpaque(true);
-		jpnl_close.setBackground(Color.white);
-		jpnl_close.setLayout(null);
-		super.add(jpnl_close);
-		
-		jlbl_closeTime = new JLabel("Sonntag, 2014 09 14\t 20:17:40");
-		jlbl_closeTime.setForeground(Color.black);
-		jlbl_closeTime.setFont(new Font("Courier new",
-		        Font.ITALIC, (2 + 2 + 2) * (2)));
-		jpnl_close.add(jlbl_closeTime);
-		
-        jbtn_close = new JButton();
-        jbtn_close.setContentAreaFilled(false);
-        jbtn_close.setOpaque(false);
-        jbtn_close.addMouseMotionListener(new MouseMotionListener() {
-            
-            @Override public void mouseMoved(final MouseEvent _event) { }
-            
-            @Override public void mouseDragged(final MouseEvent _event) {
-                moveTab(_event);
-            }
-        });
-        jbtn_close.addMouseListener(new MouseListener() {
-            
-            @Override public void mouseReleased(final MouseEvent _event) {
-                press = false;
-                System.out.println(getHeight());
-                if (getHeight() <= (oldVisibleHeight + (oldVisibleHeight 
-                        / titleProportionHeight)) / 2) {
-                    closeTab();
-                } else {
-                    openTab();
-                }
-            }
-            
-            @Override public void mousePressed(final MouseEvent _event) {
-                press = true;
-            }
-            
-            @Override public void mouseExited(final MouseEvent _event)  { }
-            @Override public void mouseEntered(final MouseEvent _event) { }
-            @Override public void mouseClicked(final MouseEvent _event) { }
-        });
-        jbtn_close.setBorder(BorderFactory.createMatteBorder(
-                0, 0, 1, 0, Color.black));
-        jbtn_close.setFocusable(false);
-        jpnl_close.add(jbtn_close);
-
         
 		//initialize the container for the title JButton and the tab 
 		//JPanels
@@ -186,6 +137,57 @@ public class VTabbedPane extends JPanel {
         jpnl_background.setBorder(BorderFactory.createMatteBorder(
                 1, 0, 1, 1, ViewSettings.CLR_BORDER));
         jpnl_contains.add(jpnl_background);
+
+        jpnl_close = new JPanel();
+        jpnl_close.setOpaque(true);
+        jpnl_close.setBackground(Color.white);
+        jpnl_close.setLayout(null);
+        super.add(jpnl_close);
+        
+        jlbl_closeTime = new JLabel("Sonntag, 2014 09 14\t 20:17:40");
+        jlbl_closeTime.setForeground(Color.black);
+        jlbl_closeTime.setOpaque(false);
+        jlbl_closeTime.setFont(new Font("Courier new",
+                Font.ITALIC, (2 + 2 + 2) * (2)));
+        jlbl_closeTime.setVisible(false);
+        jpnl_close.add(jlbl_closeTime);
+        
+        jbtn_close = new JButton();
+        jbtn_close.setContentAreaFilled(false);
+        jbtn_close.setOpaque(false);
+        jbtn_close.addMouseMotionListener(new MouseMotionListener() {
+            
+            @Override public void mouseMoved(final MouseEvent _event) { }
+            
+            @Override public void mouseDragged(final MouseEvent _event) {
+                moveTab(_event);
+            }
+        });
+        jbtn_close.addMouseListener(new MouseListener() {
+            
+            @Override public void mouseReleased(final MouseEvent _event) {
+                press = false;
+                System.out.println(getHeight());
+                if (getHeight() <= (oldVisibleHeight + (oldVisibleHeight 
+                        / titleProportionHeight)) / 2) {
+                    closeTabbedPane();
+                } else {
+                    openTabbedPane();
+                }
+            }
+            
+            @Override public void mousePressed(final MouseEvent _event) {
+                press = true;
+            }
+            
+            @Override public void mouseExited(final MouseEvent _event)  { }
+            @Override public void mouseEntered(final MouseEvent _event) { }
+            @Override public void mouseClicked(final MouseEvent _event) { }
+        });
+        jbtn_close.setBorder(BorderFactory.createMatteBorder(
+                0, 0, 1, 0, Color.black));
+        jbtn_close.setFocusable(false);
+        jpnl_close.add(jbtn_close);
 
 		
 		//initialize controller class
@@ -262,10 +264,11 @@ public class VTabbedPane extends JPanel {
 
                         bearbeitung +=  sekunden + "s";
                     }
-                    
+
                     jlbl_closeTime.setText(wochentag 
                             + "   " + dateFormat.format(cal.getTime())
                             + "   " + "" + bearbeitung);
+                    
                 }
             }
         } .start();
@@ -284,6 +287,8 @@ public class VTabbedPane extends JPanel {
             jpnl_close.setLocation(0, getHeight() - jbtn_close.getHeight());
             jpnl_background.setSize(getWidth(), getHeight());
             Page.getInstance().setLocation(0, getHeight());
+            setComponentZOrder(jpnl_close, 0);
+            jlbl_closeTime.setVisible(false);
         } 
 	}
 	
@@ -301,7 +306,7 @@ public class VTabbedPane extends JPanel {
 	/**
 	 * close the tab.
 	 */
-	private void closeTab() {
+	private void closeTabbedPane() {
 	    
 	    jpnl_contains.setVisible(false);
 	    Thread t_closeTab = new Thread() {
@@ -332,7 +337,10 @@ public class VTabbedPane extends JPanel {
 	            jpnl_background.setSize(getWidth(), getHeight()
                         - jpnl_background.getY());
 	            Page.getInstance().setLocation(0, getHeight());
-	        
+
+	            setComponentZOrder(jpnl_close, 1);
+	            jlbl_closeTime.setVisible(true);
+	            
 	        }
 	    };
 	    t_closeTab.start();
@@ -342,7 +350,7 @@ public class VTabbedPane extends JPanel {
 	/**
 	 * open the tab.
 	 */
-	private void openTab() {
+	private void openTabbedPane() {
 
         jpnl_contains.setVisible(true);
         Thread t_closeTab = new Thread() {
@@ -385,6 +393,7 @@ public class VTabbedPane extends JPanel {
                 System.out.println(oldVisibleHeight);
                 Page.getInstance().setLocation(0, oldVisibleHeight 
                         + jpnl_close.getHeight());
+                setComponentZOrder(jpnl_close, 1);
             }
         };
         t_closeTab.start();
@@ -430,8 +439,7 @@ public class VTabbedPane extends JPanel {
 		}
 		
 		//set position of background to last painted
-        jpnl_contains.setComponentZOrder(jpnl_background, jpnl_stuff.length);
-		
+        jpnl_contains.setComponentZOrder(jpnl_background, jpnl_stuff.length - 1);
 		//open the first tab by default and repaint the TabbedPane
 		openTab(openTab);
 		flip(true);
@@ -575,7 +583,7 @@ public class VTabbedPane extends JPanel {
             jbtn_stuffHeadline[_index].setBorder(
                     BorderFactory.createMatteBorder(
                     1, 1, 0, 1, ViewSettings.CLR_BORDER));
-            
+            jpnl_contains.setComponentZOrder(jbtn_stuffHeadline[_index], 1);
 
             new Thread() {
                 public void run() {
@@ -610,6 +618,7 @@ public class VTabbedPane extends JPanel {
                                 + cEndLocation - cStartLocation,
                                 jpnl_stuff[i].getY());
                     }
+                    
                 }
             } .start();
 

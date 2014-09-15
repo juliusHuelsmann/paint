@@ -517,9 +517,9 @@ public final class Utils {
         }
         
         //paint the non image and the border of the page.
-//        if (width < _untilX || height < _untilY) {
-//            //TODO: paintNonImage(_g, _untilX, _untilY, width, height);
-//        }
+        if (width < _untilX || height < _untilY) {
+            paintNonImage(_f, _untilX, _untilY, width, height);
+        }
         return _f;
     }
     
@@ -532,25 +532,32 @@ public final class Utils {
      * @param _width the first x coordinate
      * @param _height the first y coordinate
      */
-    public static void paintNonImage(final Graphics _g, final int _untilX, 
+    public static void paintNonImage(final BufferedImage _bi, final int _untilX, 
             final int _untilY, final int _width, final int _height) {
         
         /*
          * print rectangles
          */
-        final Color c_nonImageBG = new Color(230, 240, 255);
-        _g.setColor(c_nonImageBG);
-        _g.fillRect(_width, 0, _untilX, _untilY);
-        _g.fillRect(0, _height, _untilX, _untilY);
-        _g.fillRect(_width, _height, _untilX, _untilY);
+//        final Color c_nonImageBG = new Color(230, 240, 255);
+        final Color c_nonImageBG = new Color(180, 190, 200);
+        
+        PaintBI.fillRectangleQuick(_bi, c_nonImageBG, 
+                new Rectangle(_width, 0, _untilX, _untilY));
+        PaintBI.fillRectangleQuick(_bi, c_nonImageBG, 
+                new Rectangle(0, _height, _untilX, _untilY));
+        PaintBI.fillRectangleQuick(_bi, c_nonImageBG, 
+                new Rectangle(_width, _height, _untilX, _untilY));
         
         
         /*
          * print lines
          */
-        _g.setColor(Color.black);
-        _g.drawLine(_width, 0, _width, _height);
-        _g.drawLine(0, _height, _width, _height);
+        PaintBI.fillRectangleQuick(_bi, Color.black,
+                new Rectangle(_width, 0, 1, _height));
+
+
+        PaintBI.fillRectangleQuick(_bi, Color.black,
+                new Rectangle(0, _height, _width, 1));
         
     }
 }

@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import atest.BufferedViewer;
 import settings.Status;
@@ -53,26 +54,19 @@ public class PaintLabel extends JLabel {
     private Point pnt_start;
 
     /**
-     * Constructor.
+     * JPanel which is to be updated if location changes in
+     * PaintLabel.
      */
-    public PaintLabel() { }
+    private JPanel jpnl_toMove;
     
     /**
-     * {@inheritDoc}
+     * Constructor.
+     * 
+     * @param _jpnl_toMove JPanel which is to be updated if location changes in
+     * PaintLabel.
      */
-    @Override public final void paint(final Graphics _g) {
-        super.paint(_g);
-//        System.out.println("1");
-//        double time00 = System.currentTimeMillis();
-//        //if is set for the first time, refreshPaint
-//        if (Picture.getInstance().alterGraphics(getBi()) && isVisible()) {
-//            double time01 = System.currentTimeMillis();
-//            System.out.println("halbzeit" + (time01 -time00));
-//            BufferedViewer.show(getBi());
-//            refreshPaint();
-//            double time02 = System.currentTimeMillis();
-//            System.out.println("ganzzeit" + (time02 -time00));
-//        }
+    public PaintLabel(JPanel _jpnl_toMove) {
+        this.jpnl_toMove = _jpnl_toMove;
     }
 
     
@@ -573,6 +567,11 @@ public class PaintLabel extends JLabel {
      */
     @Override public final void setLocation(final int _x, final int _y) {
         
+        //update the JPanel location because the ScrollPane fetches information
+        //out of that panel
+        jpnl_toMove.setBounds(_x, _y, jpnl_toMove.getWidth(), 
+                jpnl_toMove.getHeight());
+        
         //if something changed, repaint
         if (_x != x || _y != y) {
 
@@ -613,6 +612,10 @@ public class PaintLabel extends JLabel {
         this.x = _p.x;
         this.y = _p.y;
 
+        //update the JPanel location because the ScrollPane fetches information
+        //out of that panel
+        jpnl_toMove.setBounds(x, y, jpnl_toMove.getWidth(), 
+                jpnl_toMove.getHeight());
 
         if (isVisible()) {
             
@@ -638,6 +641,11 @@ public class PaintLabel extends JLabel {
         //save the new location 
         this.x = _x;
         this.y = _y;
+
+        //update the JPanel location because the ScrollPane fetches information
+        //out of that panel
+        jpnl_toMove.setBounds(_x, _y, jpnl_toMove.getWidth(), 
+                jpnl_toMove.getHeight());
         
         //set width and height.
         super.setBounds(0, 0, _widht, _height);

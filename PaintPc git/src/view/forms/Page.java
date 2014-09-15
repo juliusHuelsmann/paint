@@ -18,30 +18,41 @@ import control.ControlPainting;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-@SuppressWarnings("serial") public final class Page extends JPanel 
-implements Observer {
+@SuppressWarnings("serial") public final class Page extends JPanel {
 
+    /*
+     * Only instance of this class (singleton)
+     */
+    
+    /**
+     * The only instance of this page.
+     */
+    private static Page instance;
+    
+    /*
+     * JLabel which is being painted
+     */
+    
 	/**
 	 * JLabel on which is painted and JLabel for background (e.g. raster).
 	 */
 	private PaintLabel jlbl_painting;
 	
+	/*
+	 * Stuff for scrolling the JLabel
+	 */
+
+    /**
+     * Internal panel which is not added to graphical user interface.
+     * The panel serves to be able to scroll and handles the location change 
+     * further to the Painting JLabel
+     */
+    private JPanel jpnl_toMove;
+    
 	/**
 	 * two ScrollPanels for both dimensions.
 	 */
 	private VScrollPane sp_ub, sp_lr;
-	
-	/**
-	 * Panel to be moved.
-	 */
-	private JPanel jpnl_toMove;
-
-	
-	/**
-	 * The only instance of this page.
-	 */
-	private static Page instance;
-	
 	
 	
 	/**
@@ -82,7 +93,7 @@ implements Observer {
         };
 
         //JLabel for the painting and the raster
-        jlbl_painting = new PaintLabel();
+        jlbl_painting = new PaintLabel(jpnl_toMove);
         jlbl_painting.setBackground(Color.white);
         jlbl_painting.setFocusable(false);
         jlbl_painting.setBorder(null);
@@ -98,11 +109,19 @@ implements Observer {
 
         sp_lr = new VScrollPane(jpnl_toMove, this, false);
         View.getInstance().add(sp_lr);
-
-//        super.add(jpnl_toMove);
 	}
 	
-	
+
+    
+    
+    /**
+     * recalculate center bounds of ScrollPanes (if location has changed 
+     * without using the ScrollPanes).
+     */
+    public void refrehsSps() {
+        sp_ub.recalculateCenterBounds();
+        sp_lr.recalculateCenterBounds();
+    }
 	
 	
 	/**
@@ -116,38 +135,7 @@ implements Observer {
 	    flip(true);
 	}
 	
-	
-	/**
-	 * recalculate center bounds of ScrollPanes (if location has changed 
-	 * without using the ScrollPanes).
-	 */
-	public void refrehsSps() {
-        sp_ub.recalculateCenterBounds();
-        sp_lr.recalculateCenterBounds();
-	}
-	
-	
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override public void repaint() {
-	    
-	    //repaint this and JFrame
-		super.repaint();
-	}
 
-	/**
-	 * update method, prints new icon to screen.
-	 * @param _o the observable
-	 * @param _arg the argument
-	 */
-	@Override public void update(final Observable _o, final Object _arg) {
-		
-//		BufferedImage ls = (BufferedImage) _arg;
-//		jlbl_painting.setIcon(new ImageIcon(ls));
-//		View.getInstance().repaint();
-	}
 	
 	
 	/**
@@ -207,28 +195,16 @@ implements Observer {
 	    return instance;
 	}
 
+	
+	/*
+	 * getter methods
+	 */
 
     /**
      * @return the jlbl_painting
      */
     public PaintLabel getJlbl_painting() {
         return jlbl_painting;
-    }
-
-
-    /**
-     * @param _jlbl_painting the jlbl_painting to set
-     */
-    public void setJlbl_painting(final PaintLabel _jlbl_painting) {
-        this.jlbl_painting = _jlbl_painting;
-    }
-
-
-    /**
-     * @return the jpnl_toMove
-     */
-    public JPanel getJpnl_toMoved() {
-        return jpnl_toMove;
     }
 }
 

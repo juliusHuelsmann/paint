@@ -257,14 +257,14 @@ public final class ControlPainting implements MouseListener,
                 Picture.getInstance().addPaintObjectWrinting();
                 Picture.getInstance().changePaintObject(
                         new Point((_event.getX() 
-//                                + Page.getInstance()
-//                                .getJlbl_painting().getLocation().x
+                                - Page.getInstance()
+                                .getJlbl_painting().getLocation().x
                                 )
                                 * Status.getImageSize().width
                                 / Status.getImageShowSize().width, (_event
                                 .getY() 
-//                                + Page.getInstance().getJlbl_painting()
-//                                .getLocation().y
+                                - Page.getInstance().getJlbl_painting()
+                                .getLocation().y
                                 )
                                 * Status.getImageSize().height
                                 / Status.getImageShowSize().height));
@@ -344,14 +344,14 @@ public final class ControlPainting implements MouseListener,
                 // doch.
                 Picture.getInstance().changePaintObject(
                         new Point((_event.getX() 
-//                                + Page.getInstance()
-//                                .getJlbl_painting().getLocation().x
+                                - Page.getInstance()
+                                .getJlbl_painting().getLocation().x
                                 )
                                 * Status.getImageSize().width
                                 / Status.getImageShowSize().width, (_event
                                 .getY() 
-//                                + Page.getInstance()
-//                                .getJlbl_painting().getLocation().y
+                                - Page.getInstance()
+                                .getJlbl_painting().getLocation().y
                                 )
                                 * Status.getImageSize().height
                                 / Status.getImageShowSize().height));
@@ -509,7 +509,6 @@ public final class ControlPainting implements MouseListener,
         case Constants.CONTROL_PATINING_INDEX_PAINT_2:
         case Constants.CONTROL_PATINING_INDEX_PAINT_1:
 
-            System.out.println("finiesh");
             // write the current working picture into the global picture.
             Picture.getInstance().finish();
             break;

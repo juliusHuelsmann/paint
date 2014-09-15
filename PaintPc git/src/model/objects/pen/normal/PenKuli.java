@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import settings.Error;
 import settings.Status;
 import view.forms.Page;
-import model.objects.painting.PaintBI;
 import model.objects.pen.Pen;
 
 

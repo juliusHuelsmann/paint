@@ -13,15 +13,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-
 import settings.Error;
 import settings.Status;
 import view.ViewVorschau;
 import view.forms.Page;
-import model.objects.PictureOverview;
 import model.objects.pen.Pen;
 import model.objects.pen.special.PenSelection;
 import model.util.list.List;
@@ -416,8 +413,8 @@ public final class Picture extends Observable {
                 Page.getInstance().getJlbl_painting().getBi(), 
                 false, 
                 Page.getInstance().getJlbl_painting().getBi(), 
-                Page.getInstance().getJpnl_toMove().getX(), 
-                Page.getInstance().getJpnl_toMove().getY());
+                Page.getInstance().getJlbl_painting().getLocation().x, 
+                Page.getInstance().getJlbl_painting().getLocation().y);
 
         Page.getInstance().getJlbl_painting().setBi(bi_transformed);
         Page.getInstance().getJlbl_painting().setIcon(
@@ -453,25 +450,6 @@ public final class Picture extends Observable {
 			System.exit(1);
 		}
 		
-		
-//		//update the current instance of BufferedImage and paint to 
-//		//graphics as well. Here, it is not possible to check whether
-//		//items are in range, because the current PaintObject shell be
-//		//entirely painted to both bufferedImage and screen.
-		bi_normalSize = po_current.paint(bi_normalSize, true, 
-		        Page.getInstance().getJlbl_painting().getBi(),
-                Page.getInstance().getJpnl_toMove().getX(),
-                Page.getInstance().getJpnl_toMove().getY());
-		PictureOverview.getInstance().add(po_current);
-
-        BufferedImage bi_transformed = po_current.paint(
-                Page.getInstance().getJlbl_painting().getBi(), 
-                true, 
-                Page.getInstance().getJlbl_painting().getBi(), 
-                Page.getInstance().getJpnl_toMove().getX(), 
-                Page.getInstance().getJpnl_toMove().getY());
-
-        Page.getInstance().getJlbl_painting().setBi(bi_transformed);
 
 		//insert into sorted lists sorted by x and y positions.
 		final Rectangle b = po_current.getSnapshotBounds();

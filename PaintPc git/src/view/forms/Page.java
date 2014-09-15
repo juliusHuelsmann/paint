@@ -80,17 +80,6 @@ implements Observer {
                 jlbl_painting.setLocation(_x, _y);
             }
         };
-        jpnl_toMove.setOpaque(true);
-        jpnl_toMove.setBackground(Color.white);
-        jpnl_toMove.setLayout(null);
-        jpnl_toMove.setBorder(BorderFactory.createEtchedBorder(
-                Color.darkGray, Color.lightGray));
-        jpnl_toMove.setBorder(null);
-        jpnl_toMove.setIgnoreRepaint(true);
-        jpnl_toMove.setFocusable(false);
-        
-        //add selection JPanels
-//        super.add(Zoom.getInstance());
 
         //JLabel for the painting and the raster
         jlbl_painting = new PaintLabel();
@@ -240,14 +229,6 @@ implements Observer {
      */
     public JPanel getJpnl_toMove() {
         return jpnl_toMove;
-    }
-
-
-    /**
-     * @param _jpnl_toMove the jpnl_toMove to set
-     */
-    public void setJpnl_toMove(final JPanel _jpnl_toMove) {
-        this.jpnl_toMove = _jpnl_toMove;
     }
 }
 

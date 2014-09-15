@@ -161,14 +161,14 @@ public class Item1Menu extends JPanel {
 	public final boolean isOpen() {
 		return open;
 	}
-	
-	/**
-	 * set open.
-	 * @param _open whether open or  not.
-	 */
-	public final void setOpen(final boolean _open) {
+    
+    /**
+     * set open.
+     * @param _open whether open or  not.
+     */
+    public final void setOpen(final boolean _open) {
 
-	    open = _open;
+        open = _open;
         if (_open) {
             setSize(openedWidth, openedHeight);
 
@@ -184,7 +184,18 @@ public class Item1Menu extends JPanel {
             //when closed repaint.
             Page.getInstance().getJlbl_painting().repaint();
         }
-	}
+    }
+    
+    /**
+     * closes without repaint of paintLabel.
+     */
+    public final void closeSilently() {
+
+        open = false;
+        
+        setSize(closedWidth, closedHeight);
+        jpnl_container.setBorder(null);
+    }
 
 	/**
 	 * set border.

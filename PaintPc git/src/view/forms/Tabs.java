@@ -2,6 +2,7 @@
 package view.forms;
 
 //import declarations
+import control.singleton.CItem;
 import settings.ViewSettings;
 import view.forms.tabs.Insert;
 import view.forms.tabs.Paint;
@@ -91,6 +92,9 @@ public class Tabs extends VTabbedPane {
         tab_insert.getIa_diagram().setOpen(false);
         tab_insert.getIa_geo().setOpen(false);
         tab_insert.getIa_maths().setOpen(false);
+        
+        //reset open tab.
+        CItem.getInstance().reset();
     }
     
     

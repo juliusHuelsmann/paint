@@ -16,9 +16,11 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.logging.Level;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 import control.singleton.ControlSelectionColorPen;
 import control.singleton.ControlVisualEffects;
 import model.objects.Zoom;
@@ -36,6 +38,7 @@ import start.utils.Utils;
 import view.View;
 import view.forms.New;
 import view.forms.Page;
+import view.forms.Tabs;
 import view.forms.tabs.Paint;
 
 /**
@@ -236,6 +239,7 @@ public final class ControlPainting implements MouseListener,
                 Page.getInstance().getJlbl_painting())) {
 
             System.out.println(getClass() + " painting pressed");
+            Tabs.getInstance().closeMenues();
             
             // switch index of operation
             switch (Status.getIndexOperation()) {

@@ -4,6 +4,7 @@ package control.singleton;
 //import declarations
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 import view.forms.Page;
 import view.util.Item1Menu;
 import view.util.VButtonWrapper;
@@ -35,29 +36,45 @@ public final class CItem implements MouseListener {
 
 	@Override
 	public void mouseClicked(final MouseEvent _event) {
-		
+
+        //fetch current source of action
+        final Item1Menu i_currentActionItem = (Item1Menu) 
+                ((VButtonWrapper) _event.getSource()).wrapObject();
+        
+        
 	    //if this is NOT the first time an ActionEvent is thrown.
 	    //disable the last item
 		if (i_lastActionItem != null) {
 
 		    //disable and close Item
-			i_lastActionItem.setOpen(false);
-
+		    i_lastActionItem.setOpen(false);
 		}
+		
+		
 
-		
-		//fetch current source of action
-		Item1Menu i_currentActionItem = (Item1Menu) 
-		        ((VButtonWrapper) _event.getSource()).wrapObject();
-		
 		//if the current item is a new item open the new item. Set last item
 		//if action performed twice with the same source, do not reopen it
 		//but reset the last Action element
 		if (i_currentActionItem != i_lastActionItem) {
 
 		    
-		    //set open flag
-			i_currentActionItem.setOpen(!i_currentActionItem.isOpen());
+		    new Thread(){
+		        public void run(){
+		            
+		            //ugly solution: if opened without closing another menu
+		            if (i_currentActionItem != i_lastActionItem) {
+
+	                    try {
+	                        Thread.sleep(150);
+	                    } catch (InterruptedException e) {
+	                        e.printStackTrace();
+	                    }
+		            }
+
+		            //set open flag
+		            i_currentActionItem.setOpen(!i_currentActionItem.isOpen());
+		        }
+		    } .start();
 			
 			//set last element
 			i_lastActionItem = i_currentActionItem;
@@ -68,6 +85,15 @@ public final class CItem implements MouseListener {
 			i_lastActionItem = null;
 		}
 
+	}
+	
+	
+	/**
+	 * Reset the last open item.
+	 * Used if each ItemMenu is closed.
+	 */
+	public void reset(){
+	    i_lastActionItem = null;
 	}
 	
 	

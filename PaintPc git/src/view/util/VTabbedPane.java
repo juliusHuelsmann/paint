@@ -39,7 +39,7 @@ public class VTabbedPane extends JPanel {
 	/**
 	 * JButton for closing the tabbedPane.
 	 */
-	private JButton jbtn_close;
+	private JLabel jlbl_close;
 	
 	/**
 	 * array of Panels for each JButton.
@@ -139,6 +139,7 @@ public class VTabbedPane extends JPanel {
         jpnl_contains.add(jpnl_background);
 
         jpnl_close = new JPanel();
+        jpnl_close.setFocusable(false);
         jpnl_close.setOpaque(true);
         jpnl_close.setBackground(Color.white);
         jpnl_close.setLayout(null);
@@ -147,15 +148,16 @@ public class VTabbedPane extends JPanel {
         jlbl_closeTime = new JLabel("Sonntag, 2014 09 14\t 20:17:40");
         jlbl_closeTime.setForeground(Color.black);
         jlbl_closeTime.setOpaque(false);
+        jlbl_closeTime.setFocusable(false);
         jlbl_closeTime.setFont(new Font("Courier new",
                 Font.ITALIC, (2 + 2 + 2) * (2)));
         jlbl_closeTime.setVisible(false);
         jpnl_close.add(jlbl_closeTime);
         
-        jbtn_close = new JButton();
-        jbtn_close.setContentAreaFilled(false);
-        jbtn_close.setOpaque(false);
-        jbtn_close.addMouseMotionListener(new MouseMotionListener() {
+        jlbl_close = new JLabel();
+        jlbl_close.setFocusable(false);
+        jlbl_close.setOpaque(false);
+        jlbl_close.addMouseMotionListener(new MouseMotionListener() {
             
             @Override public void mouseMoved(final MouseEvent _event) { }
             
@@ -163,11 +165,10 @@ public class VTabbedPane extends JPanel {
                 moveTab(_event);
             }
         });
-        jbtn_close.addMouseListener(new MouseListener() {
+        jlbl_close.addMouseListener(new MouseListener() {
             
             @Override public void mouseReleased(final MouseEvent _event) {
                 press = false;
-                System.out.println(getHeight());
                 if (getHeight() <= (oldVisibleHeight + (oldVisibleHeight 
                         / titleProportionHeight)) / 2) {
                     closeTabbedPane();
@@ -184,10 +185,10 @@ public class VTabbedPane extends JPanel {
             @Override public void mouseEntered(final MouseEvent _event) { }
             @Override public void mouseClicked(final MouseEvent _event) { }
         });
-        jbtn_close.setBorder(BorderFactory.createMatteBorder(
+        jlbl_close.setBorder(BorderFactory.createMatteBorder(
                 0, 0, 1, 0, Color.black));
-        jbtn_close.setFocusable(false);
-        jpnl_close.add(jbtn_close);
+        jlbl_close.setFocusable(false);
+        jpnl_close.add(jlbl_close);
 
 		
 		//initialize controller class
@@ -284,7 +285,7 @@ public class VTabbedPane extends JPanel {
         jpnl_contains.setVisible(true);
         if (press) {
             super.setSize(getWidth(), _e.getYOnScreen()); 
-            jpnl_close.setLocation(0, getHeight() - jbtn_close.getHeight());
+            jpnl_close.setLocation(0, getHeight() - jlbl_close.getHeight());
             jpnl_background.setSize(getWidth(), getHeight());
             Page.getInstance().setLocation(0, getHeight());
             setComponentZOrder(jpnl_close, 0);
@@ -333,7 +334,7 @@ public class VTabbedPane extends JPanel {
 	            }
 
 	            setComponentSize(getWidth(), oldHeight / titleProportionHeight);
-	            jpnl_close.setLocation(0, getHeight() - jbtn_close.getHeight());
+	            jpnl_close.setLocation(0, getHeight() - jlbl_close.getHeight());
 	            jpnl_background.setSize(getWidth(), getHeight()
                         - jpnl_background.getY());
 	            Page.getInstance().setLocation(0, getHeight());
@@ -707,7 +708,7 @@ public class VTabbedPane extends JPanel {
 	        //because the border should be visible 
             jpnl_background.setLocation(0, titleHeight + titleY - 1);
             jpnl_contains.setLocation(0, 0);
-            jbtn_close.setSize(getWidth(), 25);
+            jlbl_close.setSize(getWidth(), 25);
             jpnl_close.setBounds(0, visibleHeight, getWidth(), 25);
             
 

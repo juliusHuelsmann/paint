@@ -9,15 +9,11 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-
 import settings.Constants;
 import settings.Error;
 import start.utils.Utils;
-import view.View;
-import view.forms.Page;
 import view.forms.Tabs;
 import view.util.VScrollPane;
 

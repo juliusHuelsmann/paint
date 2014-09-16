@@ -332,8 +332,10 @@ public final class Picture extends Observable {
                     //paint the object.
                     ls_po_sortedByX.getItem().paint(
                             bi_normalSize, false, _bi,
-                            Page.getInstance().getJlbl_painting().getLocation().x,
-                            Page.getInstance().getJlbl_painting().getLocation().y);
+                            Page.getInstance().getJlbl_painting()
+                            .getLocation().x,
+                            Page.getInstance().getJlbl_painting()
+                            .getLocation().y);
                 } else {
                    behindRectangle = true; 
                 }

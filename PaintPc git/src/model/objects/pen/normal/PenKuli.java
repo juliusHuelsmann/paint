@@ -149,7 +149,7 @@ public class PenKuli extends Pen {
                                 point = new Point[1];
                                 point[0] = new Point(x + kx, y + ky);
                                 
-//                                PaintBI.paintPolygonN(_g, getClr_foreground(), 
+//                                PaintBI.paintPolygonN(_g, getClr_foreground(),
 //                                        getThickness(), point, true);
                                 _g.setRGB(x + kx, y + ky, 
                                         getClr_foreground().getRGB());

@@ -68,10 +68,10 @@ public final class Zoom {
         int xNewAligned, yNewAligned;
         
         if (imagePixelSizeX != 0 && imagePixelSizeY != 0) {
-            int shiftAlinedX = -Page.getInstance().getJlbl_painting().getLocation().x 
-                    % imagePixelSizeX,
-                    shiftAlinedY = -Page.getInstance().getJlbl_painting().getLocation().y 
-                    % imagePixelSizeY;
+            int shiftAlinedX = -Page.getInstance().getJlbl_painting()
+                    .getLocation().x % imagePixelSizeX,
+                    shiftAlinedY = -Page.getInstance().getJlbl_painting()
+                    .getLocation().y % imagePixelSizeY;
 
             xNewAligned = _x + shiftAlinedX;
             yNewAligned = _y + shiftAlinedY;

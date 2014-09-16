@@ -136,9 +136,13 @@ public class Item2Menu extends JPanel {
 	}
 	
 	
-	public void setOpen(boolean _open){
+	/**
+	 * open or close the item2 menu from outside.
+	 * @param _open wheter open or not
+	 */
+	public final void setOpen(final boolean _open) {
 	    
-	    if(_open == !opened) {
+	    if (_open == !opened) {
 
 	        this.opened = _open;
 

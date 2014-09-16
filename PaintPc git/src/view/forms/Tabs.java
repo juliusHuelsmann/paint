@@ -24,14 +24,18 @@ public class Tabs extends VTabbedPane {
     private static Tabs instance;
 
     /**
-     * Tabs.
+     * Tab for general painting stuff like pen, colors etc.
      */
     private Paint tab_paint;
     
+    
+    /**
+     * Tab for things which can be inserted.
+     */
     private Insert tab_insert;
     
     /**
-     * 
+     * Constructor: adds instances of tabs to tabbedpane.
      */
     public Tabs() {
         
@@ -82,12 +86,19 @@ public class Tabs extends VTabbedPane {
     }
     
     
-    public void closeMenues(){
+    
+    /**
+     * Closes all menus in tabs.
+     */
+    public final void closeMenues() {
+        
+        //menus in paint tab
         tab_paint.getIt_stift1().setOpen(false);
         tab_paint.getIt_stift2().setOpen(false);
         tab_paint.getIt_selection().setOpen(false);
         tab_paint.getIt_color().setOpen(false);
 
+        //menus in insert tab
         tab_insert.getIt_pfeileUAE().setOpen(false);
         tab_insert.getIa_diagram().setOpen(false);
         tab_insert.getIa_geo().setOpen(false);

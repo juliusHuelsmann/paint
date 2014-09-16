@@ -5,7 +5,6 @@ package control.singleton;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import settings.ViewSettings;
-import view.forms.Page;
 import view.util.Item1Menu;
 import view.util.Item1Button;
 import view.util.VButtonWrapper;

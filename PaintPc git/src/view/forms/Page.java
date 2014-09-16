@@ -3,8 +3,6 @@ package view.forms;
 
 //import declarations
 import java.awt.Color;
-import java.util.Observable;
-import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import settings.Status;

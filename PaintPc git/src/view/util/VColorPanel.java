@@ -382,7 +382,6 @@ import control.util.CColorPanel;
                 insertPanel(it_color2, new Color(0, tempi, r));
             }
         }
-        
         /*
          * blue (to red)
          */
@@ -417,10 +416,10 @@ import control.util.CColorPanel;
         super.add(it_color1.getJPanel());
 
         it_color2.getJPanel().setVisible(true);
-        it_color2.getJPanel().setLocation(it_color1.getJPanel().getX(), yThing2);
+        it_color2.getJPanel().setLocation(it_color1.getJPanel().getX(),
+                yThing2);
         it_color2.getJPanel().setSize(dim_it_color);
         super.add(it_color2.getJPanel());
-
         return it_color1.getJPanel().getHeight();
 	}
 

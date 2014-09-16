@@ -104,6 +104,9 @@ public class VTabbedPane extends JPanel {
 	 */
 	private JPanel jpnl_close;
 	
+	/**
+	 * JLabel containing the time, date and the working time.
+	 */
 	private JLabel jlbl_closeTime;
 	
 	/**

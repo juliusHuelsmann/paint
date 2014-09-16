@@ -526,13 +526,14 @@ public final class Utils {
     
     /**
      * paint non image.
-     * @param _g the graphics
+     * @param _bi the BufferedImage
      * @param _untilX the second x coordinate
      * @param _untilY the second y coordinate
      * @param _width the first x coordinate
      * @param _height the first y coordinate
      */
-    public static void paintNonImage(final BufferedImage _bi, final int _untilX, 
+    public static void paintNonImage(final BufferedImage _bi, 
+            final int _untilX,
             final int _untilY, final int _width, final int _height) {
         
         /*

@@ -4,8 +4,6 @@ package control.singleton;
 //import declarations
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-import view.forms.Page;
 import view.util.Item1Menu;
 import view.util.VButtonWrapper;
 
@@ -58,14 +56,16 @@ public final class CItem implements MouseListener {
 		if (i_currentActionItem != i_lastActionItem) {
 
 		    
-		    new Thread(){
-		        public void run(){
+		    new Thread() {
+		        public void run() {
 		            
 		            //ugly solution: if opened without closing another menu
 		            if (i_currentActionItem != i_lastActionItem) {
 
+		                final int sleepTime = 150;
+		                
 	                    try {
-	                        Thread.sleep(150);
+	                        Thread.sleep(sleepTime);
 	                    } catch (InterruptedException e) {
 	                        e.printStackTrace();
 	                    }
@@ -92,7 +92,7 @@ public final class CItem implements MouseListener {
 	 * Reset the last open item.
 	 * Used if each ItemMenu is closed.
 	 */
-	public void reset(){
+	public void reset() {
 	    i_lastActionItem = null;
 	}
 	

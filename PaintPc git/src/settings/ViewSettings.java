@@ -215,7 +215,8 @@ public final class ViewSettings {
             0, VIEW_HEIGHT_TB_VISIBLE + TWENTY_FIFE , 
             VIEW_SIZE_JFRAME.width - TWENTY_FIFE - TEN, 
             VIEW_SIZE_JFRAME.height - VIEW_SIZE_JFRAME.height / FIFE 
-            - 2 * VIEW_SIZE_SP - TWENTY_FIFE);//the last 25 is the size 
+            - 2 * VIEW_SIZE_SP - TWENTY_FIFE);
+            //the last 25 is the size 
             //of the closing and opening button 
     
     /**

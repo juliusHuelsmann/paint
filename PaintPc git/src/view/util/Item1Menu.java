@@ -5,13 +5,10 @@ package view.util;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
-
 import settings.ViewSettings;
 import view.forms.Page;
 import control.singleton.CItem;

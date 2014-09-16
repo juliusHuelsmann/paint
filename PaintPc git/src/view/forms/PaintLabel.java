@@ -26,7 +26,6 @@ import model.objects.painting.Picture;
 @SuppressWarnings("serial")
 public class PaintLabel extends JLabel {
 
-    
     /**
      * The bufferedImage.
      */
@@ -65,7 +64,7 @@ public class PaintLabel extends JLabel {
      * @param _jpnl_toMove JPanel which is to be updated if location changes in
      * PaintLabel.
      */
-    public PaintLabel(JPanel _jpnl_toMove) {
+    public PaintLabel(final JPanel _jpnl_toMove) {
         this.jpnl_toMove = _jpnl_toMove;
     }
 
@@ -472,20 +471,24 @@ public class PaintLabel extends JLabel {
 
                     //increase index
                     index++;
-                    
+
+                    int fromX = braucheNoch + _r.y % sizeBB;
+                    //create start and finish values
+                    final int startX2 = _r.y / sizeBB;
+                    final int plusX2 = _r.y % sizeBB;
+                    final int untilX2 = (_r.height + _r.y - fromX - plusX) 
+                            / sizeBB;
                     /*
                      *  right border
                      */
                     //border block
-                    int fromX = braucheNoch + _r.y % sizeBB;
-                    for (int ny = _r.y / sizeBB; ny < (_r.y + _r.height 
-                            - (braucheNoch + (_r.y + _r.height) % sizeBB)) 
-                            / sizeBB; ny++) {
+                    for (int ny = startX2; ny < untilX2; ny++) {
 
                         graph.setColor(getColorBorderPx());
 
-                        graph.drawLine(_r.x + _r.width, ny * sizeBB + fromX,
-                                _r.x + _r.width, (ny + 1) * sizeBB + fromX);
+                        graph.drawLine(_r.x + _r.width, addIndex + plusX2 + ny * sizeBB,
+                                _r.x + _r.width, 
+                                addIndex + plusX2 + (ny + 1) * sizeBB);
 
                         //increase index.
                         index++;
@@ -495,12 +498,16 @@ public class PaintLabel extends JLabel {
                      *  bottom border
                      */
                     //border block
-                    for (int nx = (_r.width + _r.x) / sizeBB - 1; nx >= _r.x 
-                            / sizeBB; nx--) {
+//                    for (int nx = (_r.width + _r.x) / sizeBB - 1; nx >= _r.x 
+//                            / sizeBB; nx--) {
 
+                    for (int nx = (_r.width + _r.x)  
+                            / sizeBB - 1 + _r.y % sizeBB; nx >= _r.x 
+                            / sizeBB; nx--) {
+                        
                         graph.setColor(getColorBorderPx());
 
-                        graph.drawLine((nx) * sizeBB, _r.y + _r.height
+                        graph.drawLine((nx) * sizeBB - startIndex % sizeBB, _r.y + _r.height
                                 , (nx + 1) * sizeBB,  _r.y
                                 + _r.height);
 

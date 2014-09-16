@@ -338,7 +338,7 @@ public class PaintLabel extends JLabel {
         }
         
         //initialize the thread
-        initializeBorderThread(_r);
+        initRectBorderThrd(_r);
         
         thrd_moveBorder.start();
     }
@@ -377,12 +377,74 @@ public class PaintLabel extends JLabel {
     
     
     /**
+     * Initialize the border movement thread for rectangle border.
+     * @param _r the rectangle bounds
+     */
+    private void initRectBorderThrd(final Rectangle _r) { 
+
+        thrd_moveBorder = new Thread() { 
+            @Override public void run() {
+
+                final int sizeBB = ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
+                
+
+                //perform border movement 
+                while (index < Integer.MAX_VALUE / 2 && !isInterrupted()) {
+                    
+                    //save graphics
+                    Graphics graph = getGraphics();
+                    int begin = index % sizeBB;
+                    
+                    
+                    for (int step = 0; ; step ++) {
+
+                        graph.setColor(getColorBorderPx());
+                        
+                        //exit condition
+                        if(_r.x - begin + step * sizeBB > _r.x + _r.width) { 
+                            
+                            //tell the next line where to begin
+                            begin = (_r.x - begin + step * sizeBB) % sizeBB;
+                            
+                            //exit for loop
+                            break;
+                        }
+
+                        //paint border
+                        for(int pixelX = _r.x - begin + index * sizeBB; 
+                                pixelX <= _r.x - begin + (index + 1) * sizeBB;
+                                pixelX ++){
+                            
+                            if (pixelX >= _r.x && pixelX <= _r.x + _r.width) {
+                               graph.drawLine(pixelX, _r.y, pixelX, _r.y); 
+                            }
+                        }
+                        
+                        index++;
+                    }
+                    index += ViewSettings.SELECTION_BORDER_MOVE_SPEED_PX;
+                    
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                
+                
+                
+            }
+        };
+    }
+    
+    /**
      * Initialize the border movement thread. Which prints and moves the border
      * @param _r the rectangle.
      */
-    private void initializeBorderThread(final Rectangle _r) {
+    private void initializesBorderThread(final Rectangle _r) {
 
-        thrd_moveBorder = new Thread() {
+        thrd_moveBorder = new Thread() { 
             @Override public void run() {
 
                 //initialize start index

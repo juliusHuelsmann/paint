@@ -92,6 +92,13 @@ import control.ControlPainting;
             }
         };
 
+        //ScrollPanel for up and down
+        sp_ub = new VScrollPane(jpnl_toMove, this, true);
+        View.getInstance().add(sp_ub);
+
+        sp_lr = new VScrollPane(jpnl_toMove, this, false);
+        View.getInstance().add(sp_lr);
+        
         //JLabel for the painting and the raster
         jlbl_painting = new PaintLabel(jpnl_toMove);
         jlbl_painting.setBackground(Color.white);
@@ -103,12 +110,6 @@ import control.ControlPainting;
         super.add(jlbl_painting);
 
 
-        //ScrollPanel for up and down
-        sp_ub = new VScrollPane(jpnl_toMove, this, true);
-        View.getInstance().add(sp_ub);
-
-        sp_lr = new VScrollPane(jpnl_toMove, this, false);
-        View.getInstance().add(sp_lr);
 	}
 	
 

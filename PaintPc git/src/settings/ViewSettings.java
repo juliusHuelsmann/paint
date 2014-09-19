@@ -57,7 +57,7 @@ public final class ViewSettings {
      * If changed, reinitialize border in Selection.
      */
     public static final Color[] SELECTION_BORDER_CLR_BORDER = new Color[] { 
-            Color.red, Color.white };
+            Color.darkGray, Color.white };
     
     /**
      * time to sleep before recreating border.
@@ -77,7 +77,8 @@ public final class ViewSettings {
      * If changed, reinitialize background in Selection.
      */
     public static final Color[] SELECTION_BACKGROUND_CLR = new Color[] { 
-            new Color(25, 25, 255, 15), new Color(125, 125, 255, 15) };
+//        new Color(25, 25, 255, 15), new Color(125, 125, 255, 15) };
+        new Color(120, 125, 140, 15), new Color(30, 30, 50, 15) };
     /**
      * color for simple background of selection (shown if resizing).
      * If changed, reinitialize background in Selection.
@@ -238,7 +239,7 @@ public final class ViewSettings {
      * width of item1 menues.
      */
     public static final int ITEM_MENU1_WIDTH 
-    = (int) (ViewSettings.ITEM_WIDTH * 1.5),
+    = (int) (ViewSettings.ITEM_WIDTH * 1.4),
             ITEM_MENU1_HEIGHT = 2 * ViewSettings.ITEM_HEIGHT;
     
     /**

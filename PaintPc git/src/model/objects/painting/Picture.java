@@ -411,16 +411,32 @@ public final class Picture extends Observable {
 	            }
 	        }
 		}
-        BufferedImage bi_transformed = po_current.paint(
-                Page.getInstance().getJlbl_painting().getBi(), 
-                false, 
-                Page.getInstance().getJlbl_painting().getBi(), 
-                Page.getInstance().getJlbl_painting().getLocation().x, 
-                Page.getInstance().getJlbl_painting().getLocation().y);
+        
+        if (pen_current instanceof PenSelection) {
 
-        Page.getInstance().getJlbl_painting().setBi(bi_transformed);
-        Page.getInstance().getJlbl_painting().setIcon(
-                new javax.swing.ImageIcon(bi_transformed));
+            BufferedImage bi_transformed = Page.getInstance().getEmptyBI();
+            bi_transformed = po_current.paint(bi_transformed, false, 
+                    bi_transformed, 
+                    Page.getInstance().getJlbl_painting().getLocation().x, 
+                    Page.getInstance().getJlbl_painting().getLocation().y);
+
+
+            Page.getInstance().getJlbl_selectionBG().setIcon(
+                    new javax.swing.ImageIcon(bi_transformed));
+        } else {
+
+            BufferedImage bi_transformed = po_current.paint(
+                    Page.getInstance().getJlbl_painting().getBi(), 
+                    false, 
+                    Page.getInstance().getJlbl_painting().getBi(), 
+                    Page.getInstance().getJlbl_painting().getLocation().x, 
+                    Page.getInstance().getJlbl_painting().getLocation().y);
+
+            
+            Page.getInstance().getJlbl_painting().setBi(bi_transformed);
+            Page.getInstance().getJlbl_painting().setIcon(
+                    new javax.swing.ImageIcon(bi_transformed));
+        }
         
         //set uncommitted changes.
         Status.setUncommittedChanges(true);
@@ -432,6 +448,11 @@ public final class Picture extends Observable {
 	 */
 	public void abortPaintObject() {
 
+        if (pen_current instanceof PenSelection) {
+
+            Page.getInstance().getJlbl_painting().paintSelection(po_current, 
+                    (PenSelection) pen_current);
+        } 
 		pen_current.abort();
 		po_current = null;
 	}
@@ -456,6 +477,7 @@ public final class Picture extends Observable {
 		//insert into sorted lists sorted by x and y positions.
 		final Rectangle b = po_current.getSnapshotBounds();
         ls_po_sortedByX.insertSorted(po_current, b.x);
+
         
         
 		//reset current instance of PaintObject
@@ -465,8 +487,11 @@ public final class Picture extends Observable {
         setChanged();
         notifyObservers(bi_normalSize);
         
-        //set uncommitted changes.
-        Status.setUncommittedChanges(true);
+        if (!(pen_current instanceof PenSelection)) {
+
+            //set uncommitted changes.
+            Status.setUncommittedChanges(true);
+        }
 	}
 	
 
@@ -573,7 +598,6 @@ public final class Picture extends Observable {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -706,6 +730,9 @@ public final class Picture extends Observable {
 	}
 	
 	
+	/*
+	 * Selection methods.
+	 */
 	
 	
 	/**
@@ -737,6 +764,98 @@ public final class Picture extends Observable {
 	        ls_poSelected.insertSorted(_po, _po.getSnapshotBounds().x);   
 	    }
 	}
+	
+	
+	/**
+	 * Move selected items.
+	 * @param _dX the x difference from current position
+	 * @param _dY the y difference from current position
+	 */
+	public synchronized void moveSelected(final int _dX, final int _dY) {
+	
+	    if (ls_poSelected == null) {
+	        return;
+	    }
+	    ls_poSelected.toFirst();
+	    
+	    while (!ls_poSelected.isBehind()) {
+	        
+	        if (ls_poSelected.getItem() instanceof PaintObjectWriting) {
+
+	            PaintObjectWriting pow = (PaintObjectWriting)
+	                    ls_poSelected.getItem();
+	            pow.getPoints().toFirst();
+	            pow.adjustSnapshotBounds(_dX, _dY);
+	            while (!pow.getPoints().isBehind()) {
+                    pow.getPoints().getItem().x += _dX;
+                    pow.getPoints().getItem().y += _dY;
+	                pow.getPoints().next();
+	            }
+	        }
+            ls_poSelected.next();
+	    }
+	}
+	
+	
+	/**
+	 * Paint the selected items to the selection JLabel.
+	 */
+	public void paintSelected() {
+	    System.out.println("\nstart");
+	    BufferedImage verbufft = Page.getInstance().getEmptyBI();
+	    ls_poSelected.toFirst();
+        while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
+            
+            if (ls_poSelected.getItem() != null) {
+
+                System.out.println("new item");
+                //paint the object.
+                ls_poSelected.getItem().paint(
+                        Page.getInstance().getEmptyBI(), false, verbufft,
+                        Page.getInstance().getJlbl_painting().getLocation().x,
+                        Page.getInstance().getJlbl_painting().getLocation().y);
+
+            }
+            ls_poSelected.next();
+        }
+        ls_poSelected.toFirst();
+        Page.getInstance().getJlbl_selectionPainting().setIcon(
+                new ImageIcon(verbufft));
+	}
+	
+	
+	
+	
+	/**
+	 * release selected elements to normal list.
+	 */
+	public synchronized void releaseSelected() {
+	    
+	    if (ls_poSelected == null) {
+	        System.out.println("o selected elements");
+	        return;
+	    }
+	    ls_poSelected.toFirst();
+	    while (!ls_poSelected.isEmpty()) {
+	        
+	        PaintObject po = ls_poSelected.getItem();
+	        
+	        if (po instanceof PaintObjectWriting) {
+	            PaintObjectWriting pow = (PaintObjectWriting) po;
+	            ls_po_sortedByX.insertSorted(pow, pow.getSnapshotBounds().x);
+	        } else if (po instanceof PaintObjectImage) {
+	            PaintObjectImage poi = (PaintObjectImage) po;
+
+                ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x);
+	        }
+	        ls_poSelected.remove();
+	    }
+	    ls_poSelected = null;
+	}
+	
+	/*
+	 * save and load
+	 */
 	
 	
 	/**
@@ -776,7 +895,9 @@ public final class Picture extends Observable {
 		return instance;
 	}
 	
-	
+	/*
+	 * getter and setter methods
+	 */
 
 	/**
 	 * @return the pen_current

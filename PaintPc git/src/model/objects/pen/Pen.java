@@ -110,7 +110,8 @@ public abstract class Pen implements Serializable {
 		//if list is empty return the bufferedImage which is not changed.
 		if (ls_point.isEmpty()) {
 			return _bi;
-		}		
+		}	
+		
 		
 		
 		//if the painting is not final and id is for mathematics.
@@ -130,7 +131,7 @@ public abstract class Pen implements Serializable {
 			
 			break;
 		case Constants.PEN_ID_MATHS:
-		
+
 		    operationMaths(
 		            ls_point, _bi, _final, _p_start, _g);
 		    break;

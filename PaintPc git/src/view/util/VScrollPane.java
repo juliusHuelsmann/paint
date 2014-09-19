@@ -10,9 +10,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import model.objects.painting.Picture;
 import control.util.CScrollPane;
 import settings.Constants;
 import start.utils.Utils;
+import view.forms.Page;
+import view.forms.tabs.Paint;
 
 /**
  * ScrollPane.

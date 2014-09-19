@@ -121,9 +121,7 @@ public class VTabbedPane extends JPanel {
 		super.setBackground(new Color(0, 0, 0, 0));
 		super.setOpaque(true);
 
-        
-		//initialize the container for the title JButton and the tab 
-		//JPanels
+		//initialize the container for the title JButton and the tab  JPanels
 		jpnl_contains = new JPanel();
 		jpnl_contains.setFocusable(false);
 		jpnl_contains.setOpaque(false);
@@ -163,7 +161,6 @@ public class VTabbedPane extends JPanel {
         jlbl_close.addMouseMotionListener(new MouseMotionListener() {
             
             @Override public void mouseMoved(final MouseEvent _event) { }
-            
             @Override public void mouseDragged(final MouseEvent _event) {
                 moveTab(_event);
             }
@@ -179,11 +176,9 @@ public class VTabbedPane extends JPanel {
                     openTabbedPane();
                 }
             }
-            
             @Override public void mousePressed(final MouseEvent _event) {
                 press = true;
             }
-            
             @Override public void mouseExited(final MouseEvent _event)  { }
             @Override public void mouseEntered(final MouseEvent _event) { }
             @Override public void mouseClicked(final MouseEvent _event) { }
@@ -192,10 +187,17 @@ public class VTabbedPane extends JPanel {
                 0, 0, 1, 0, Color.black));
         jlbl_close.setFocusable(false);
         jpnl_close.add(jlbl_close);
-
 		
 		//initialize controller class
 		control = new CTabbedPane(this);
+		startTimeThread();
+	}
+	
+	
+	/**
+	 * Initialize the time log thread.
+	 */
+	private void startTimeThread() {
 
         new Thread() {
             public void run() {
@@ -245,14 +247,17 @@ public class VTabbedPane extends JPanel {
                     double currentTime = System.currentTimeMillis() - start;
                     String bearbeitung = "Bearbeitungszeit: ";
 
-                    int sekunden = (int) (currentTime / 1000);
-                    int minuten = (int) (sekunden / 60);
-                    int stunden = (int) (minuten / 60);
-                    int tage = stunden / 24;
+                    final int max_min = 60, max_h = 60, max_d = 24, 
+                            max_s = 1000;
                     
-                    sekunden = sekunden % 60;
-                    minuten = minuten % 60;
-                    stunden = stunden % 24;
+                    int sekunden = (int) (currentTime / max_s);
+                    int minuten = (int) (sekunden / max_min);
+                    int stunden = (int) (minuten / max_h);
+                    int tage = stunden / max_d;
+                    
+                    sekunden = sekunden % max_min;
+                    minuten = minuten % max_h;
+                    stunden = stunden % max_h;
 
                     if (tage != 0) {
                         bearbeitung += tage + " Tage, " + stunden + " h, "
@@ -272,7 +277,6 @@ public class VTabbedPane extends JPanel {
                     jlbl_closeTime.setText(wochentag 
                             + "   " + dateFormat.format(cal.getTime())
                             + "   " + "" + bearbeitung);
-                    
                 }
             }
         } .start();
@@ -443,7 +447,8 @@ public class VTabbedPane extends JPanel {
 		}
 		
 		//set position of background to last painted
-        jpnl_contains.setComponentZOrder(jpnl_background, jpnl_stuff.length - 1);
+        jpnl_contains.setComponentZOrder(
+                jpnl_background, jpnl_stuff.length - 1);
 		//open the first tab by default and repaint the TabbedPane
 		openTab(openTab);
 		flip(true);
@@ -705,14 +710,16 @@ public class VTabbedPane extends JPanel {
         jpnl_background.setSize(getWidth(), visibleHeight 
                 - titleHeight - titleY + 1);
         
+        final int height = 25;
+        
         //if is normal rotated.
 	    if (_normalRotation) {
 	        
 	        //because the border should be visible 
             jpnl_background.setLocation(0, titleHeight + titleY - 1);
             jpnl_contains.setLocation(0, 0);
-            jlbl_close.setSize(getWidth(), 25);
-            jpnl_close.setBounds(0, visibleHeight, getWidth(), 25);
+            jlbl_close.setSize(getWidth(), height);
+            jpnl_close.setBounds(0, visibleHeight, getWidth(), height);
             
 
             //set size and location of headlines and tabs.

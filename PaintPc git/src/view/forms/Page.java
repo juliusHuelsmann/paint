@@ -3,13 +3,21 @@ package view.forms;
 
 //import declarations
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import settings.Status;
 import settings.ViewSettings;
+import start.utils.Utils;
 import view.View;
 import view.util.VScrollPane;
 import control.ControlPainting;
+import control.singleton.CSelection;
 
 /**
  * 
@@ -51,7 +59,27 @@ import control.ControlPainting;
 	 * two ScrollPanels for both dimensions.
 	 */
 	private VScrollPane sp_ub, sp_lr;
+
+	/*
+	 * Stuff for selection
+	 */
 	
+    /**
+     * JButtons for resizing the selection.
+     */
+    private JButton[][] jbtn_resize;
+
+
+    /**
+     * Selection JLabel.
+     */
+    private JLabel jlbl_selectionBG;
+
+    /**
+     * Selection JLabel.
+     */
+    private JLabel jlbl_selectionPainting;
+    
 	
 	/**
 	 * empty utility class constructor. 
@@ -97,6 +125,47 @@ import control.ControlPainting;
         sp_lr = new VScrollPane(jpnl_toMove, this, false);
         View.getInstance().add(sp_lr);
         
+        //initialize resize JButton
+        jbtn_resize = new JButton[2 + 1][2 + 1];
+        for (int x = 0; x < jbtn_resize.length; x++) {
+            for (int y = 0; y < jbtn_resize[x].length; y++) {
+        
+                final int buttonSize = 10;
+                
+                jbtn_resize[x][y] = new JButton();
+                jbtn_resize[x][y].setSize(buttonSize, buttonSize);
+                jbtn_resize[x][y].setContentAreaFilled(false);
+                jbtn_resize[x][y].setBorder(
+                        BorderFactory.createLineBorder(Color.gray));
+                jbtn_resize[x][y].setBackground(Color.white);
+                jbtn_resize[x][y].setOpaque(true);
+                jbtn_resize[x][y].addMouseMotionListener(
+                        CSelection.getInstance());
+                jbtn_resize[x][y].addMouseListener(
+                        CSelection.getInstance());
+                super.add(jbtn_resize[x][y]);
+            }
+        }
+        
+        //the center button
+        jbtn_resize[1][1].setBorder(null);
+        jbtn_resize[1][1].setSize((2 + 2 + 2) * (2 + 2 + 1),
+                (2 + 2 + 2) * (2 + 2 + 1));
+        jbtn_resize[1][1].setIcon(new ImageIcon(Utils.resizeImage(
+                jbtn_resize[1][1].getWidth(), jbtn_resize[1][1].getHeight(),
+                "centerResize.png")));
+        
+        jlbl_selectionBG = new JLabel();
+        jlbl_selectionBG.setOpaque(false);
+        jlbl_selectionBG.setFocusable(false);
+        super.add(jlbl_selectionBG);
+        
+        jlbl_selectionPainting = new JLabel();
+        jlbl_selectionPainting.setOpaque(false);
+        jlbl_selectionPainting.setFocusable(false);
+        super.add(jlbl_selectionPainting);
+        
+        
         //JLabel for the painting and the raster
         jlbl_painting = new PaintLabel(jpnl_toMove);
         jlbl_painting.setBackground(Color.white);
@@ -107,6 +176,7 @@ import control.ControlPainting;
         jlbl_painting.setOpaque(true);
         super.add(jlbl_painting);
 
+        removeButtons();
 
 	}
 	
@@ -120,6 +190,20 @@ import control.ControlPainting;
     public void refrehsSps() {
         sp_ub.recalculateCenterBounds();
         sp_lr.recalculateCenterBounds();
+    }
+    
+    
+    
+    /**
+     * hide the buttons.
+     */
+    public void removeButtons() { 
+        final int newLocation = -100;
+        for (int a = 0; a < jbtn_resize.length; a++) {
+            for (int b = 0; b < jbtn_resize[a].length; b++) {
+                jbtn_resize[a][b].setLocation(newLocation, newLocation);
+            }
+        }
     }
 	
 	
@@ -169,7 +253,8 @@ import control.ControlPainting;
                 ViewSettings.VIEW_SIZE_SP);
 
         jlbl_painting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
-
+        jlbl_selectionBG.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
+        jlbl_selectionPainting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
 	}
 	
 	
@@ -193,17 +278,81 @@ import control.ControlPainting;
 	    //return the only instance of this class
 	    return instance;
 	}
+	
+	
+	
+	/**
+	 * return fully transparent BufferedImage.
+	 * 
+	 * @return the BufferedImage
+	 */
+	public BufferedImage getEmptyBI() {
+	    BufferedImage bi = new BufferedImage(jlbl_selectionBG.getWidth(), 
+	            jlbl_selectionBG.getHeight(), BufferedImage.TYPE_INT_ARGB);
+	    
+	    int rgba = new Color(0, 0, 0, 0).getRGB();
+	    for (int x = 0; x < bi.getWidth(); x++) {
+	        for (int y = 0; y < bi.getHeight(); y++) {
+	            bi.setRGB(x, y, rgba);
+	        }
+	    }
+	    
+	    return bi;
+	}
+	
+	
+	/**
+	 * Release selected items and add them to normal list.
+	 */
+	public void releaseSelected() {
+
+	    jlbl_painting.stopBorderThread();
+	    
+        BufferedImage emptyBI = getEmptyBI();
+        jlbl_selectionBG.setIcon(new ImageIcon(emptyBI));
+        jlbl_selectionPainting.setIcon(new ImageIcon(emptyBI));
+
+        jlbl_selectionBG.setLocation(0, 0);
+        jlbl_selectionPainting.setLocation(0, 0);
+        
+        jlbl_painting.refreshPaint();
+	}
 
 	
 	/*
 	 * getter methods
 	 */
+	
 
     /**
      * @return the jlbl_painting
      */
     public PaintLabel getJlbl_painting() {
         return jlbl_painting;
+    }
+
+
+    /**
+     * @return the jlbl_selection
+     */
+    public JLabel getJlbl_selectionBG() {
+        return jlbl_selectionBG;
+    }
+    
+
+    /**
+     * @return the jlbl_selectionPainting
+     */
+    public JLabel getJlbl_selectionPainting() {
+        return jlbl_selectionPainting;
+    }
+
+
+    /**
+     * @return the jbtn_resize
+     */
+    public JButton[][] getJbtn_resize() {
+        return jbtn_resize;
     }
 }
 

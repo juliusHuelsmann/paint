@@ -9,11 +9,14 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+
 import settings.Constants;
 import settings.Error;
 import start.utils.Utils;
+import view.forms.Page;
 import view.forms.Tabs;
 import view.util.VScrollPane;
 
@@ -347,6 +350,16 @@ implements MouseMotionListener, MouseListener, KeyListener {
             
             upDownPressed = false;
         }
+        
+
+        for (int a = 0; a < Page.getInstance().getJbtn_resize().length; a++) {
+            for (int b = 0; b < Page.getInstance().getJbtn_resize()[a].length; 
+                    b++) {
+                Page.getInstance().getJbtn_resize()[a][b].repaint();
+            }
+        }
+        Page.getInstance().getJlbl_selectionBG().repaint();
+        Page.getInstance().getJlbl_selectionPainting().repaint();
     }
 
 

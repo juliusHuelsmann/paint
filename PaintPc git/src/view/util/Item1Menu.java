@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import settings.ViewSettings;
 import view.forms.Page;
 import control.singleton.CItem;
-import control.singleton.ControlSelectionColorPen;
+import control.singleton.CStatus;
 import model.util.list.List;
 
 /**
@@ -105,7 +105,7 @@ public class Item1Menu extends JPanel {
 		//initialize JButton
 		tb_open = new Item1Button(this);
 		tb_open.setActivable(false);
-		tb_open.addMouseListener(ControlSelectionColorPen.getInstance());
+		tb_open.addMouseListener(CStatus.getInstance());
         tb_open.addMouseListener(CItem.getInstance());
 		tb_open.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		tb_open.setFocusable(false);
@@ -254,7 +254,6 @@ public class Item1Menu extends JPanel {
 	private Component addd(final Component _cmp) {
 
 		int size = openedWidth / itemsInRow;
-		System.out.println(openedWidth + "..." + itemsInRow);
 		
 		if (orderHeight) {
 			size = openedHeight / itemsInRow;
@@ -348,7 +347,7 @@ public class Item1Menu extends JPanel {
 				        _width, _height - closedHeight - 0);
 				jpnl_subContainer.setBounds(1, 1, 
 				        _width - 2, _height - closedHeight - 2);
-				int size = getWidth() / itemsInRow + 2;
+				int size = getWidth() / itemsInRow;
 				int currentItem = 0;
 
 				//size of contained stuff
@@ -370,7 +369,7 @@ public class Item1Menu extends JPanel {
 							        + sizeHeight * (currentItem / itemsInRow));
 
                             ls_item.getItem().setSize(
-							        size - x, sizeHeight);
+							        size - x , sizeHeight);
 						} else {
 							ls_item.getItem().setLocation(size * (currentItem 
 							        % itemsInRow),

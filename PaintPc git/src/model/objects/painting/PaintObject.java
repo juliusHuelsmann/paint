@@ -112,13 +112,22 @@ public abstract class PaintObject implements Serializable {
      */
     public abstract Rectangle getSnapshotBounds();
 
+    
+    
+    /**
+     * Separates the PaintObject; thus there are parts that are inside the
+     * given rectangle and ones that are outside.
+     * @param _r the rectangle
+     * @return the PaintObject array [0][x] outside, [1] [x] inside.s
+     */
+    public abstract PaintObject[][] separate(Rectangle _r);
 
     /**
      * return the bounds of the rectangle of the great 
      * image for this paintObject snapshot.
      * @return the bounds of the rect.
      */
-    public abstract Rectangle getSnapshotRectBounds();
+    public abstract Rectangle getSnapshotSquareBounds();
 
     /*
      * getter methods.

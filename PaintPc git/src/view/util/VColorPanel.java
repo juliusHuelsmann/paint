@@ -4,6 +4,7 @@ package view.util;
 //import declarations
 import java.awt.Color;
 import java.awt.Dimension;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -78,7 +79,7 @@ import control.util.CColorPanel;
 	 * @param _jbtn_toUpdate the JButtons which are being updated.
 	 */
 	public VColorPanel(final JButton[] _jbtn_toUpdate) {
-		
+
 		//initialize JPanel and alter settings
 		super();
 		super.setOpaque(false);
@@ -278,24 +279,20 @@ import control.util.CColorPanel;
          * first and second colorPanels
          */
         final Item1Menu it_color1, it_color2;
-        final int heightPanel = 70;
         final byte itemsInRow = (byte) 32;
-        final int abstand = 8;
-        final int abstand2 = 8;
-        final int maxRGB = 255;
-        final Dimension dim_it_color = new Dimension(_width, _height);
-        final int yThing2 = 73;
+        final int abstand = 8, abstand2 = 8, maxRGB = 255, komisch = 10, 
+                heightPanel = 70, yThing2 = 73;
+        final Dimension dim_it_color = new Dimension(_width, _height / 2 
+                - komisch);
         
         //initialize them
         it_color1 = new Item1Menu();
         it_color1.setOrderHeight(true);
         it_color1.setSize(new Dimension(1, heightPanel));
-//        it_color1.setSize(1, heightPanel);
         it_color1.setItemsInRow(itemsInRow);
         
         it_color2 = new Item1Menu();
         it_color2.setOrderHeight(true);
-//        it_color2.setSize(1, heightPanel);
         it_color2.setSize(new Dimension(1, heightPanel));
         it_color2.setItemsInRow(itemsInRow);
 
@@ -413,13 +410,14 @@ import control.util.CColorPanel;
         it_color1.getJPanel().setVisible(true);
         it_color1.getJPanel().setLocation(distanceItems, distanceItems);
         it_color1.getJPanel().setSize(dim_it_color);
-        super.add(it_color1.getJPanel());
 
         it_color2.getJPanel().setVisible(true);
         it_color2.getJPanel().setLocation(it_color1.getJPanel().getX(),
                 yThing2);
         it_color2.getJPanel().setSize(dim_it_color);
         super.add(it_color2.getJPanel());
+        super.add(it_color1.getJPanel());
+        
         return it_color1.getJPanel().getHeight();
 	}
 

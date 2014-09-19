@@ -15,7 +15,10 @@ import atest.BufferedViewer;
 import settings.Status;
 import settings.ViewSettings;
 import start.utils.Utils;
+import view.util.BorderThread;
+import model.objects.painting.PaintObject;
 import model.objects.painting.Picture;
+import model.objects.pen.special.PenSelection;
 
 
 /**
@@ -39,12 +42,8 @@ public class PaintLabel extends JLabel {
     /**
      * The thread which moves the border.
      */
-    private Thread thrd_moveBorder;
+    private BorderThread thrd_moveBorder;
     
-    /**
-     * Index for border movement in thread thrd_moveBorder. Determines the 
-     */
-    private int index = -1;
     
     /**
      * Point is subtracted from new location of item JLabel.
@@ -108,16 +107,40 @@ public class PaintLabel extends JLabel {
      * Paint the entire selection stuff.
      * @param _r the rectangle which is selected.
      */
-    public final void paintEntireSelection(final Rectangle _r) {
+    public final void paintEntireSelectionRect(final Rectangle _r) {
 
-        System.out.println("paint entire selection");
-        System.out.println("3");
+        //close old border thread.
+        if (thrd_moveBorder != null) {
+            thrd_moveBorder.interrupt();
+
+            repaint();
+        }
+
+        //initialize the thread and start it.
+        thrd_moveBorder = new BorderThread(_r, true, null, null);
+        thrd_moveBorder.start();
+        
         //paint the background
         Utils.paintRastarBlock(getGraphics(), 
                 ViewSettings.SELECTION_BACKGROUND_CLR, _r);
         
-        //paint the border.
-        paintBorder(_r);
+        //show resize buttons
+        
+        for (int a = 0; a < Page.getInstance().getJbtn_resize().length; a++) {
+
+            for (int b = 0; b < Page.getInstance().getJbtn_resize().length;
+                    b++) {
+
+                //size of JButton
+                final int b_size = Page.getInstance().getJbtn_resize()[a][b]
+                        .getWidth();
+                
+                Page.getInstance().getJbtn_resize()[a][b]
+                        .setLocation(_r.x + _r.width * a / 2  - b_size / 2, 
+                                _r.y + _r.height * b / 2 - b_size / 2);
+            }
+        }
+        
     }
     
     /**
@@ -321,29 +344,6 @@ public class PaintLabel extends JLabel {
     }
     
 
-    /**
-     * paint the border and start thread.
-     * time for one run 
-     *     0,115 sec./run whole screen (not whole image).
-     * Performance okay because it's threaded.    
-     * @param _r the rectangle of the border.
-     */
-    private void paintBorder(final Rectangle _r) {
-
-        System.out.println("7");
-        //initialize the index for the first run of the thread
-        index = 0;
-        if (thrd_moveBorder != null) {
-            thrd_moveBorder.interrupt();
-        }
-        
-        //initialize the thread
-        initRectBorderThrd(_r);
-        
-        thrd_moveBorder.start();
-    }
-    
-    
     
     /**
      * Not necessary.
@@ -375,244 +375,6 @@ public class PaintLabel extends JLabel {
         paintZoom(_x, _y, _width, _height);
     }
     
-    
-    /**
-     * Initialize the border movement thread for rectangle border.
-     * @param _r the rectangle bounds
-     */
-    private void initRectBorderThrd(final Rectangle _r) { 
-
-        thrd_moveBorder = new Thread() { 
-            @Override public void run() {
-
-                final int sizeBB = ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
-                
-
-                //perform border movement 
-                while (index < Integer.MAX_VALUE / 2 && !isInterrupted()) {
-                    
-                    //save graphics
-                    Graphics graph = getGraphics();
-                    int begin = index % sizeBB;
-                    
-                    
-                    for (int step = 0; ; step ++) {
-
-                        graph.setColor(getColorBorderPx());
-                        
-                        //exit condition
-                        if(_r.x - begin + step * sizeBB > _r.x + _r.width) { 
-                            
-                            //tell the next line where to begin
-                            begin = (_r.x - begin + step * sizeBB) % sizeBB;
-                            
-                            //exit for loop
-                            break;
-                        }
-
-                        //paint border
-                        for(int pixelX = _r.x - begin + index * sizeBB; 
-                                pixelX <= _r.x - begin + (index + 1) * sizeBB;
-                                pixelX ++){
-                            
-                            if (pixelX >= _r.x && pixelX <= _r.x + _r.width) {
-                               graph.drawLine(pixelX, _r.y, pixelX, _r.y); 
-                            }
-                        }
-                        
-                        index++;
-                    }
-                    index += ViewSettings.SELECTION_BORDER_MOVE_SPEED_PX;
-                    
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-                
-                
-                
-            }
-        };
-    }
-    
-    /**
-     * Initialize the border movement thread. Which prints and moves the border
-     * @param _r the rectangle.
-     */
-    private void initializesBorderThread(final Rectangle _r) {
-
-        thrd_moveBorder = new Thread() { 
-            @Override public void run() {
-
-                //initialize start index
-                int startIndex = index;
-
-                //perform border movement 
-                while (index < Integer.MAX_VALUE / 2 && !isInterrupted()) {
-                    
-                    //save graphics
-                    Graphics graph = getGraphics();
-                    
-                    //because the index after one run is not equal to the 
-                    //new one if the amount of pixel painted for the border
-                    //is not congruent to 0 (modulo sizeOfOneColor)
-                    startIndex = (startIndex 
-                            + ViewSettings.SELECTION_BORDER_MOVE_SPEED_PX);
-                    index = startIndex  
-                            / ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
-                    int addIndex = startIndex
-                            % ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
-                    
-                    //stop thread if interrupted
-                    try {
-                        Thread.sleep(ViewSettings.SELECTION_BORDER_SLEEP_TIME);
-                    } catch (InterruptedException e) {
-                        interrupt();
-                        continue;
-                    }
-                    if (isInterrupted()) {
-                        continue;
-                    }
-
-                    /*
-                     *  upper border
-                     */
-                    //create start and finish values
-                    final int sizeBB = ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
-                    final int startX = _r.x / sizeBB;
-                    final int plusX = _r.x % sizeBB;
-                    final int untilX = (_r.width + _r.x - addIndex - plusX) 
-                            / sizeBB;
-                    
-                    //print the first half line
-                    graph.setColor(getColorBorderPx());
-                    graph.drawLine(_r.x + 1,
-                            _r.y + 1,
-                            addIndex + plusX + startX * sizeBB,
-                            _r.y + 1);
-                    index++;
-                    
-                    //go through the for loop and fill all the entire border
-                    //blocks of upper border
-                    for (int nx = startX; nx < untilX; nx++) {
-
-                        graph.setColor(getColorBorderPx());
-                        graph.drawLine(addIndex + plusX + nx * sizeBB,
-                                _r.y + 1, 
-                                addIndex + plusX + (nx + 1) * sizeBB,
-                                _r.y + 1);
-                        
-                        //increase index.
-                        index++;
-                    }
-
-                    int braucheNoch = Math.abs(sizeBB - (_r.width + _r.x 
-                            - (addIndex + plusX + untilX * sizeBB)));
-
-                    //paint the missing piece at the end of last line
-                    graph.setColor(getColorBorderPx());
-                    graph.drawLine(
-                            plusX + addIndex + untilX * sizeBB, 
-                            _r.y + 1, 
-                            _r.width + _r.x,
-                            _r.y + 1);
-
-                    //because the pixel at the edge is not to be painted twice
-                    braucheNoch++;
-                    
-                    //paint missing piece at the beginning of new line
-                    graph.drawLine(
-                            _r.width + _r.x, 
-                            _r.y + 1, 
-                            _r.width + _r.x,
-                            _r.y + 1 + braucheNoch);
-                    
-
-                    //increase index
-                    index++;
-
-                    int fromX = braucheNoch + _r.y % sizeBB;
-                    //create start and finish values
-                    final int startX2 = _r.y / sizeBB;
-                    final int plusX2 = _r.y % sizeBB;
-                    final int untilX2 = (_r.height + _r.y - fromX - plusX) 
-                            / sizeBB;
-                    /*
-                     *  right border
-                     */
-                    //border block
-                    for (int ny = startX2; ny < untilX2; ny++) {
-
-                        graph.setColor(getColorBorderPx());
-
-                        graph.drawLine(_r.x + _r.width, addIndex + plusX2 + ny * sizeBB,
-                                _r.x + _r.width, 
-                                addIndex + plusX2 + (ny + 1) * sizeBB);
-
-                        //increase index.
-                        index++;
-                    }
-                    
-                    /*
-                     *  bottom border
-                     */
-                    //border block
-//                    for (int nx = (_r.width + _r.x) / sizeBB - 1; nx >= _r.x 
-//                            / sizeBB; nx--) {
-
-                    for (int nx = (_r.width + _r.x)  
-                            / sizeBB - 1 + _r.y % sizeBB; nx >= _r.x 
-                            / sizeBB; nx--) {
-                        
-                        graph.setColor(getColorBorderPx());
-
-                        graph.drawLine((nx) * sizeBB - startIndex % sizeBB, _r.y + _r.height
-                                , (nx + 1) * sizeBB,  _r.y
-                                + _r.height);
-
-                        //increase index.
-                        index++;
-                    }
-
-                    /*
-                     * left border
-                     */
-                    //border block
-                    for (int ny = (_r.y + _r.height) 
-                            / ViewSettings.SELECTION_BORDER_BLOCK_SIZE; ny 
-                            >= _r.y / ViewSettings.SELECTION_BORDER_BLOCK_SIZE; 
-                            ny--) {
-
-                        graph.setColor(getColorBorderPx());
-
-                        graph.drawLine(_r.x + 1, 
-                                ny * ViewSettings.SELECTION_BORDER_BLOCK_SIZE,
-                                _r.x + 1,  (ny + 1) 
-                                * ViewSettings.SELECTION_BORDER_BLOCK_SIZE);
-
-                        //increase index.
-                        index++;
-                    }
-                }
-            }
-        };
-    }
-    
-    
-    /**
-     * returns the color of the current border pixel. Used by thread which 
-     * moves and sets the border.
-     * 
-     * @return the calculated color.
-     */
-    private Color getColorBorderPx() {
-        
-        return ViewSettings.SELECTION_BORDER_CLR_BORDER[index % ViewSettings
-                     .SELECTION_BORDER_CLR_BORDER.length];
-    }
 
     
     /*
@@ -725,7 +487,36 @@ public class PaintLabel extends JLabel {
             refreshPaint();
         }
     }
+
+    /**
+     * Paint line selection.
+     * @param _po the PaintObject.
+     * @param _pen the pen.
+     */
+    public final void paintSelection(final PaintObject _po, 
+            final PenSelection _pen) {
+
+        //interrupt border thread.
+        stopBorderThread();
+        
+        //initialize the thread and start it.
+        thrd_moveBorder = new BorderThread(null, false, _po, _pen);
+        thrd_moveBorder.start();
+        
+        //paint the background
+    }
     
+    
+    /**
+     * Stop the border - thread.
+     */
+    public final void stopBorderThread() {
+
+        //close old border thread.
+        if (thrd_moveBorder != null) {
+            thrd_moveBorder.interrupt();
+        }
+    }
     
     
     /*
@@ -754,7 +545,6 @@ public class PaintLabel extends JLabel {
      * @return the saved but not applied x and y coordinates (point).
      */
     @Override public final Point getLocation() {
-        System.out.println("göt location");
         return new Point(x, y);
     }
     

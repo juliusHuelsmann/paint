@@ -19,12 +19,12 @@ import view.util.VButtonWrapper;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class ControlVisualEffects implements MouseListener {
+public final class CVisualEffects implements MouseListener {
 
 	/**
 	 * the only instance of this class.
 	 */
-	private static ControlVisualEffects instance = null;
+	private static CVisualEffects instance = null;
 
 	/**
 	 * boolean which indicates, whether the necessary instances of View and
@@ -42,7 +42,7 @@ public final class ControlVisualEffects implements MouseListener {
 	 * Constructor: initializes startPerfrom (which indicates the listeners 
 	 * to not perform an action until necessary variables have been set.
 	 */
-	private ControlVisualEffects() {
+	private CVisualEffects() {
 		
 		//initialize start perform because the necessary variables have not
 		//been set yet.
@@ -227,11 +227,11 @@ public final class ControlVisualEffects implements MouseListener {
 	 * 
 	 * @return the only instance of this class.
 	 */
-	public static ControlVisualEffects getInstance() {
+	public static CVisualEffects getInstance() {
 		
 		//if class is not instanced yet instantiate
 		if (instance == null) {
-			instance = new ControlVisualEffects();
+			instance = new CVisualEffects();
 		}
 		
 		//return the only instance of this class.

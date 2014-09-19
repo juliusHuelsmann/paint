@@ -17,27 +17,26 @@ import model.objects.pen.Pen;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class PenSelection extends Pen {
+public class FunnyPen extends Pen {
 
     /**
      * values for moving the border.
      */
     private int currentBorderValue = 0, 
             currentBorderStart = 0;
-
-    /**
-     * The last printed point.
-     */
-    private Point pnt_lastPrinted;
-
+    
     /**
      * Constructor calls super constructor.
      */
-	public PenSelection() {
+	public FunnyPen() {
 		super(Constants.PEN_ID_POINT, 1, Color.black);
 	}
 	
-	
+	/**
+	 * The last printed point.
+	 */
+	private Point pnt_lastPrinted;
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -62,6 +61,10 @@ public class PenSelection extends Pen {
 	        
 	        if (distance >= ViewSettings.SELECTION_BORDER_BLOCK_SIZE) {
 
+	            //calculate the color
+	            int s = (currentBorderValue 
+	                    / ViewSettings.SELECTION_BORDER_CLR_BORDER.length)
+	                    % ViewSettings.SELECTION_BORDER_CLR_BORDER.length;
 
 	            //generate vector from pnt_lastPrinted towards the new one
 	            //and norm it afterwards to the length of the maximal selection
@@ -79,42 +82,18 @@ public class PenSelection extends Pen {
 	            for (int i = 1; 
 	                    i <= ViewSettings.SELECTION_BORDER_BLOCK_SIZE; i++) {
 
-	                //calculate the color
-	                int s = (currentBorderValue 
-	                        / ViewSettings.SELECTION_BORDER_BLOCK_SIZE)
-	                        % ViewSettings.SELECTION_BORDER_CLR_BORDER.length;
-	                
-	                //if in range paint BufferedImage
-	                int x = pnt_lastPrinted.x + vector.x 
-                            * i / ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
-	                int y = pnt_lastPrinted.y + vector.y 
-                            * i / ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
-	                
-	                if (x >= _bi.getWidth()) {
-	                    x = _bi.getWidth() - 1;
-	                }
-                    if (x < 0) {
-                        x = 0;
-                    } 
-	                
-	                if (y >= _bi.getHeight()) {
-                        y = _bi.getHeight() - 1;
-                    }
-	                
-	                if (y < 0) {
-	                    y = 0;
-	                }
-	                
-	                _bi.setRGB(x, y, ViewSettings.SELECTION_BORDER_CLR_BORDER[s]
-	                        .getRGB()); 
-	                currentBorderValue++;
+	                _bi.setRGB(pnt_lastPrinted.x + vector.x 
+	                        * i / ViewSettings.SELECTION_BORDER_BLOCK_SIZE, 
+	                        pnt_lastPrinted.y + vector.y 
+                            * i / ViewSettings.SELECTION_BORDER_BLOCK_SIZE, 
+	                        ViewSettings.SELECTION_BORDER_CLR_BORDER[s]
+	                                .getRGB()); 
 	            }
 	            
 	            pnt_lastPrinted.x = pnt_lastPrinted.x + vector.x;
 	            pnt_lastPrinted.y = pnt_lastPrinted.y + vector.y;
 	            
-	            
-	            paintPoint(_p, _bi, _final, _pnt_shift, _g);
+	            currentBorderValue++;
 	        }
 	    }
 
@@ -125,8 +104,7 @@ public class PenSelection extends Pen {
 	 * reset the current border value.
 	 */
 	public final void resetCurrentBorderValue() {
-	    this.currentBorderStart += 1;
-//	    ViewSettings.SELECTION_BORDER_MOVE_SPEED_PX;
+	    this.currentBorderStart += ViewSettings.SELECTION_BORDER_MOVE_SPEED_PX;
 	    this.currentBorderValue = currentBorderStart;
 	}
 

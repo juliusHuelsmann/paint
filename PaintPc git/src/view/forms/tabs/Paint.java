@@ -15,8 +15,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import control.ControlPainting;
-import control.singleton.ControlSelectionColorPen;
-import control.singleton.ControlVisualEffects;
+import control.singleton.CStatus;
+import control.singleton.CVisualEffects;
 import control.singleton.PaintSelection;
 import settings.Constants;
 import settings.Status;
@@ -80,8 +80,8 @@ public final class Paint extends JPanel {
 	/**
 	 * buttons.
 	 */
-	private Item1Button tb_pipette, tb_fill, tb_selectionLine, 
-	tb_selectionMagic, tb_selectionCurve;
+	private Item1Button tb_pipette, tb_fill, tb_move, tb_erase, 
+	tb_selectionLine, tb_selectionMagic, tb_selectionCurve;
 	/**
 	 * JLabels for the information text, linked with separation line.
 	 */
@@ -305,45 +305,35 @@ public final class Paint extends JPanel {
      * @return the new x coordinate
 	 */
 	private int initializePagePens(final int _x, final boolean _paint) {
-    
-
         final Dimension sizeIT = new Dimension(550, 550);
-        final Dimension sizeIT_selection = new Dimension(350, 360);
+        final Dimension sizeIT_selection = new Dimension(350, 270);
         final int sizeHeight = 110;
         
         if (_paint) {
-
-        	//pen 1
         	it_stift1 = new Item1Menu();
         	it_stift1.setBorder(null);
-        	it_stift1.setBorder(false);
         	it_stift1.setText("Stift 1");
             it_stift1.setItemsInRow((byte) 1);
             it_stift1.setActivable();
             it_stift1.setSize(sizeIT);
+            it_stift1.setSizeHeight(fifety);
         	it_stift1.setBorder(false);
         	super.add(it_stift1);
         
         	it_stift2 = new Item1Menu();
         	it_stift2.setText("Stift 2");
-        	it_stift2.setBorder(false);
         	it_stift2.setSize(sizeIT);
         	it_stift2.setActivable();
         	it_stift2.setItemsInRow((byte) 1);
         	it_stift2.setSizeHeight(fifety);
         	it_stift2.setBorder(false);
         	super.add(it_stift2);
-        
-        
-        	it_stift1.setSizeHeight(fifety);
-        
         	addPens();
         	
             it_selection = new Item1Menu();
             it_selection.setText("Auswahl");
             it_selection.setBorder(false);
             it_selection.setActivable();
-            
             it_selection.setSize(sizeIT_selection);
             it_selection.setIcon(Constants.VIEW_TB_SELECT_LINE_PATH);
             it_selection.setItemsInRow((byte) (2 + 1));
@@ -363,8 +353,7 @@ public final class Paint extends JPanel {
             tb_selectionCurve = new Item1Button(null);
             tb_selectionCurve.setBorder(false);
             it_selection.add(tb_selectionCurve);
-            initializeTextButtonOhneAdd(tb_selectionCurve,
-                    "curve",
+            initializeTextButtonOhneAdd(tb_selectionCurve, "curve",
                     Constants.VIEW_TB_SELECT_CURVE_PATH);
             tb_selectionCurve.setSize(tb_selectionCurve.getWidth(), 
                     tb_selectionCurve.getHeight());
@@ -373,8 +362,7 @@ public final class Paint extends JPanel {
             tb_selectionMagic = new Item1Button(null);
             tb_selectionMagic.setBorder(false);
             it_selection.add(tb_selectionMagic);
-            initializeTextButtonOhneAdd(tb_selectionMagic,
-                    "magic",
+            initializeTextButtonOhneAdd(tb_selectionMagic, "magic",
                     Constants.VIEW_TB_SELECT_MAGIC_PATH);
             tb_selectionMagic.setSize(tb_selectionMagic.getWidth(), 
                     tb_selectionMagic.getHeight());
@@ -399,28 +387,38 @@ public final class Paint extends JPanel {
             PaintSelection.getInstance(
                     jcb_whole, jcb_separated, jcb_image,
                     tb_selectionLine, tb_selectionCurve, tb_selectionMagic);
-            
             it_selection.setBorder(false);
             super.add(it_selection);
-        
-        	tb_pipette = new Item1Button(null);
-        	tb_pipette.setSize(tb_copy.getWidth(), tb_copy.getHeight());
-        	tb_pipette.setBorder(false);
-        	initializeTextButton(tb_pipette,
-        	        "pipette",
-        	        Constants.VIEW_TB_PIPETTE_PATH, 0);
+
+            tb_pipette = new Item1Button(null);
+            tb_pipette.setSize(tb_copy.getWidth(), tb_copy.getHeight());
+            tb_pipette.setBorder(false);
+            initializeTextButton(tb_pipette, "pipette",
+                    Constants.VIEW_TB_PIPETTE_PATH, 0);
             tb_pipette.setActivable(true);
     
-        	tb_fill = new Item1Button(null);
-        	tb_fill.setActivable(true);
-        	tb_fill.setSize(tb_copy.getWidth(), tb_copy.getHeight());
-        	tb_fill.setBorder(false);
-        	initializeTextButton(tb_fill,
-        	        "fuellen",
-        	        Constants.VIEW_TB_FILL_PATH, 0);
-        	tb_fill.setActivable(true);
-        	
-        	
+            tb_fill = new Item1Button(null);
+            tb_fill.setActivable(true);
+            tb_fill.setSize(tb_copy.getWidth(), tb_copy.getHeight());
+            tb_fill.setBorder(false);
+            initializeTextButton(tb_fill, "fuellen",
+                    Constants.VIEW_TB_FILL_PATH, 0);
+            tb_fill.setActivable(true);
+            
+            tb_move = new Item1Button(null);
+            tb_move.setSize(tb_copy.getWidth(), tb_copy.getHeight());
+            tb_move.setBorder(false);
+            initializeTextButton(tb_move, "nothing",
+                    Constants.VIEW_TB_PIPETTE_PATH, 0);
+            tb_move.setActivable(true);
+    
+            tb_erase = new Item1Button(null);
+            tb_erase.setActivable(true);
+            tb_erase.setSize(tb_copy.getWidth(), tb_copy.getHeight());
+            tb_erase.setBorder(false);
+            initializeTextButton(tb_erase, "Erase",
+                    Constants.VIEW_TB_PIPETTE_PATH, 0);
+            tb_erase.setActivable(true);
         }
         
         if (Status.isNormalRotation()) {
@@ -439,12 +437,18 @@ public final class Paint extends JPanel {
                     + ViewSettings.DISTANCE_BETWEEN_ITEMS,
                     tb_pipette.getY() + tb_pipette.getHeight() 
                     + ViewSettings.DISTANCE_BETWEEN_ITEMS);
-                    
             
+            tb_move.setLocation(tb_pipette.getX() + tb_pipette.getWidth()
+                    + ViewSettings.DISTANCE_BETWEEN_ITEMS,
+                    tb_pipette.getY());
+            tb_erase.setLocation(tb_move.getX() 
+                    + ViewSettings.DISTANCE_BETWEEN_ITEMS,
+                    tb_move.getY() + tb_move.getHeight() 
+                    + ViewSettings.DISTANCE_BETWEEN_ITEMS);
         }
-        insertTrennung(tb_pipette.getWidth() + tb_pipette.getX() 
+        insertTrennung(tb_move.getWidth() + tb_move.getX() 
                 + ViewSettings.DISTANCE_BEFORE_LINE, 
-                tb_pipette.getY(), 2, _paint);
+                tb_move.getY(), 2, _paint);
         insertInformation("Stifte", _x, jlbl_separation[2].getX(), 2, _paint);
     	
     	return jlbl_separation[2].getX() + ViewSettings.DISTANCE_AFTER_LINE;
@@ -461,7 +465,7 @@ public final class Paint extends JPanel {
     	//the first color for the first pen
     	tb_color1 = new Item1Button(null);
     	tb_color1.setOpaque(true);
-    	tb_color1.addMouseListener(ControlSelectionColorPen.getInstance());
+    	tb_color1.addMouseListener(CStatus.getInstance());
     	tb_color1.setBorder(BorderFactory.createCompoundBorder(
     	        new LineBorder(Color.black), new LineBorder(Color.white)));
     	tb_color1.setLocation(_x, ViewSettings.DISTANCE_BETWEEN_ITEMS);
@@ -473,7 +477,7 @@ public final class Paint extends JPanel {
     	//the second color for the second pen
     	tb_color2 = new Item1Button(null);
     	tb_color2.setOpaque(true);
-    	tb_color2.addMouseListener(ControlSelectionColorPen.getInstance());
+    	tb_color2.addMouseListener(CStatus.getInstance());
     	tb_color2.setBorder(BorderFactory.createCompoundBorder(
     	        new LineBorder(Color.black), new LineBorder(Color.white)));
     	tb_color2.setLocation(tb_color1.getWidth() + tb_color1.getX() 
@@ -496,8 +500,8 @@ public final class Paint extends JPanel {
     		        * (height + distanceBetweenColors), width, height);
     		jbtn_colors[i].setOpaque(true);
     		jbtn_colors[i].addMouseListener(
-    		        ControlSelectionColorPen.getInstance());
-    		jbtn_colors[i].addMouseListener(ControlVisualEffects.getInstance());
+    		        CStatus.getInstance());
+    		jbtn_colors[i].addMouseListener(CVisualEffects.getInstance());
     		jbtn_colors[i].setBorder(BorderFactory.createCompoundBorder(
     		        new LineBorder(Color.black), new LineBorder(Color.white)));
     		super.add(jbtn_colors[i]);
@@ -600,12 +604,10 @@ public final class Paint extends JPanel {
         it_color.setIcon("icon/palette.png");
         super.add(it_color);
         
-        
-    	insertTrennung(it_color.getWidth() + it_color.getX() 
-    	        + ViewSettings.DISTANCE_BEFORE_LINE, 
-    	        it_color.getY(), 2 + 1, _paint);
-    	insertInformation("Farben", _x, jlbl_separation[2 + 1].getX(), 
-    	        2 + 1, _paint);
+    	insertTrennung(it_color.getWidth() + it_color.getX() + ViewSettings
+    	        .DISTANCE_BEFORE_LINE, it_color.getY(), 2 + 1, _paint);
+    	insertInformation("Farben", _x, jlbl_separation[2 + 1].getX(), 2 + 1, 
+    	        _paint);
     	return jlbl_separation[2 + 1].getX() + ViewSettings.DISTANCE_AFTER_LINE;
     }
 
@@ -884,11 +886,11 @@ public final class Paint extends JPanel {
         //alter settings of TextButton
         _tb.setOpaque(true);
         _tb.setText(_text);
-        _tb.addMouseListener(ControlSelectionColorPen.getInstance());
+        _tb.addMouseListener(CStatus.getInstance());
         _tb.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
-        _tb.setActivable(false);
+        _tb.setActivable(true);
         _tb.setIcon(_path);
     }
 	
@@ -1321,24 +1323,10 @@ public final class Paint extends JPanel {
     }
 
     /**
-     * @param _tb_selectionLine the tb_selectionLine to set
-     */
-    public void setTb_selectionLine(final Item1Button _tb_selectionLine) {
-        this.tb_selectionLine = _tb_selectionLine;
-    }
-
-    /**
      * @return the tb_selectionCurve
      */
     public Item1Button getTb_selectionCurve() {
         return tb_selectionCurve;
-    }
-
-    /**
-     * @param _tb_selectionCurve the tb_selectionCurve to set
-     */
-    public void setTb_selectionCurve(final Item1Button _tb_selectionCurve) {
-        this.tb_selectionCurve = _tb_selectionCurve;
     }
 
     /**
@@ -1349,24 +1337,10 @@ public final class Paint extends JPanel {
     }
 
     /**
-     * @param _tb_color1 the tb_color1 to set
-     */
-    public void setTb_color1(final Item1Button _tb_color1) {
-        this.tb_color1 = _tb_color1;
-    }
-
-    /**
      * @return the tb_color2
      */
     public Item1Button getTb_color2() {
         return tb_color2;
-    }
-
-    /**
-     * @param _tb_color2 the tb_color2 to set
-     */
-    public void setTb_color2(final Item1Button _tb_color2) {
-        this.tb_color2 = _tb_color2;
     }
 
     /**
@@ -1377,24 +1351,10 @@ public final class Paint extends JPanel {
     }
 
     /**
-     * @param _tb_fill the tb_fill to set
-     */
-    public void setTb_fill(final Item1Button _tb_fill) {
-        this.tb_fill = _tb_fill;
-    }
-
-    /**
      * @return the tb_pipette
      */
     public Item1Button getTb_pipette() {
         return tb_pipette;
-    }
-
-    /**
-     * @param _tb_pipette the tb_pipette to set
-     */
-    public void setTb_pipette(final Item1Button _tb_pipette) {
-        this.tb_pipette = _tb_pipette;
     }
 
     /**
@@ -1405,13 +1365,6 @@ public final class Paint extends JPanel {
     }
 
     /**
-     * @param _tb_zoomOut the tb_zoomOut to set
-     */
-    public void setTb_zoomOut(final Item1Button _tb_zoomOut) {
-        this.tb_zoomOut = _tb_zoomOut;
-    }
-
-    /**
      * @return the tb_zoomIn
      */
     public Item1Button getTb_zoomIn() {
@@ -1419,24 +1372,10 @@ public final class Paint extends JPanel {
     }
 
     /**
-     * @param _tb_zoomIn the tb_zoomIn to set
-     */
-    public void setTb_zoomIn(final Item1Button _tb_zoomIn) {
-        this.tb_zoomIn = _tb_zoomIn;
-    }
-
-    /**
      * @return the tb_new
      */
     public Item1Button getTb_new() {
         return tb_new;
-    }
-
-    /**
-     * @param _tb_new the tb_new to set
-     */
-    public void setTb_new(final Item1Button _tb_new) {
-        this.tb_new = _tb_new;
     }
 
     /**
@@ -1494,6 +1433,20 @@ public final class Paint extends JPanel {
      */
     public Item1Button getTb_next() {
         return tb_next;
+    }
+
+    /**
+     * @return the tb_move
+     */
+    public Item1Button getTb_move() {
+        return tb_move;
+    }
+
+    /**
+     * @return the tb_erase
+     */
+    public Item1Button getTb_erase() {
+        return tb_erase;
     }
 
 }

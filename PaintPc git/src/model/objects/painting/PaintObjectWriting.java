@@ -6,12 +6,15 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JOptionPane;
+
 import settings.Status;
 import view.View;
 import view.forms.Page;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.PenKuli;
+import model.objects.pen.special.PenSelection;
 import model.util.list.List;
 
 /**
@@ -134,6 +137,9 @@ public class PaintObjectWriting extends PaintObject {
 		if (_pen instanceof PenKuli) {
 		    this.pen = new PenKuli(_pen.getId_operation(),
 		            _pen.getThickness(), _pen.getClr_foreground());
+		} else if (_pen instanceof PenSelection) {
+
+            this.pen = new PenSelection();
 		} else {
 		    
 		    //alert user.
@@ -235,7 +241,7 @@ public class PaintObjectWriting extends PaintObject {
      * {@inheritDoc}
      */
     @Override 
-    public final Rectangle getSnapshotRectBounds() {
+    public final Rectangle getSnapshotSquareBounds() {
     	if (minX == Integer.MAX_VALUE || minY == Integer.MAX_VALUE) {
     		return new Rectangle(0, 0, 0, 0);
     	}
@@ -244,6 +250,19 @@ public class PaintObjectWriting extends PaintObject {
     	return r;
     }
     
+    
+    /**
+     * After moving operation re adjust snapshot bounds.
+     * @param _dx the delta x coordinate added to x
+     * @param _dy the delta y coordinate added to y
+     */
+    public final void adjustSnapshotBounds(final int _dx, final int _dy) {
+        minX += _dx;
+        minY += _dy;
+        
+        maxX += _dx;
+        maxY += _dy;
+    }
     
     
     
@@ -262,8 +281,6 @@ public class PaintObjectWriting extends PaintObject {
      */
     private boolean pruefeLine(final Point _p1, final Point _p2, 
             final Rectangle _r) {
-
-
 
         //compute delta values
         int dX = (_p1.x - _p2.x);
@@ -285,6 +302,31 @@ public class PaintObjectWriting extends PaintObject {
         return false;
     }
 
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override public final PaintObject[][] separate(final Rectangle _r) {
+        
+        boolean stateInside;
+        //TODO: kann sein dass es pen probleme gibt wenn der pen eines
+        //separierten PaintObjects geaendert wurde.
+        PaintObjectWriting pow = new PaintObjectWriting(getElementId(), 
+                getPen());
+        
+        
+        ls_point.toFirst();
+        while (!ls_point.isBehind()) {
+            
+//            if()
+            
+            
+            ls_point.next();
+        }
+        
+        return null;
+    }
 
     /*
      * getter methods.
@@ -326,7 +368,4 @@ public class PaintObjectWriting extends PaintObject {
     public final void changeColor(final Color _clr) {
         pen.setClr_foreground(_clr);
     }
-
-
-
 }

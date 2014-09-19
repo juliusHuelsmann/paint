@@ -22,10 +22,11 @@ import view.util.Item1Button;
 @SuppressWarnings("serial")
 public class Insert extends JPanel {
 
-    private Item2Menu ia_geo;
-    private Item2Menu ia_maths;
-    private Item2Menu it_pfeileUAE;
-    private Item2Menu ia_diagram;
+    /**
+     * The item2menus.
+     */
+    private Item2Menu ia_geo, ia_maths, it_pfeileUAE, ia_diagram;
+    
     /**
      * Constructor initializes Panel.
      * @param _height the height of the panel.
@@ -154,28 +155,28 @@ public class Insert extends JPanel {
     /**
      * @return the ia_maths
      */
-    public Item2Menu getIa_maths() {
+    public final Item2Menu getIa_maths() {
         return ia_maths;
     }
 
     /**
      * @return the ia_geo
      */
-    public Item2Menu getIa_geo() {
+    public final Item2Menu getIa_geo() {
         return ia_geo;
     }
 
     /**
      * @return the ia_diagram
      */
-    public Item2Menu getIa_diagram() {
+    public final Item2Menu getIa_diagram() {
         return ia_diagram;
     }
 
     /**
      * @return the it_pfeileUAE
      */
-    public Item2Menu getIt_pfeileUAE() {
+    public final Item2Menu getIt_pfeileUAE() {
         return it_pfeileUAE;
     }
 	

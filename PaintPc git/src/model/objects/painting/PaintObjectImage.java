@@ -115,6 +115,18 @@ public class PaintObjectImage extends PaintObject {
         
         return bi_image;
     }
+    
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override public final PaintObject[][] separate(final Rectangle _r) {
+        
+        new Exception(getClass() + "not implementetd yet").printStackTrace();
+        return null;
+        
+    }
 
 
 
@@ -143,7 +155,7 @@ public class PaintObjectImage extends PaintObject {
     /**
      * {@inheritDoc}
      */
-    @Override public final Rectangle getSnapshotRectBounds() {
+    @Override public final Rectangle getSnapshotSquareBounds() {
 
     	return new Rectangle(pnt_locationOfImage.x, pnt_locationOfImage.y,
     			Math.max(bi_image.getWidth(), bi_image.getHeight()),

@@ -16,8 +16,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import control.singleton.ControlSelectionColorPen;
-import control.singleton.ControlVisualEffects;
+import control.singleton.CStatus;
+import control.singleton.CVisualEffects;
 import settings.Constants;
 import start.utils.Utils;
 
@@ -122,9 +122,9 @@ public class Item1PenSelection extends JPanel {
 		jbtn_select.setContentAreaFilled(false);
 		jbtn_select.setOpaque(false);
 		jbtn_select.setBorder(null);
-		jbtn_select.addMouseListener(ControlSelectionColorPen.getInstance());
+		jbtn_select.addMouseListener(CStatus.getInstance());
 		jbtn_select.setFocusable(false);
-		jbtn_select.addMouseListener(ControlVisualEffects.getInstance());
+		jbtn_select.addMouseListener(CVisualEffects.getInstance());
 		super.add(jbtn_select);
 	}
 

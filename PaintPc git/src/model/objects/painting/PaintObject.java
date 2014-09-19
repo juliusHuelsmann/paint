@@ -112,6 +112,20 @@ public abstract class PaintObject implements Serializable {
      */
     public abstract Rectangle getSnapshotBounds();
 
+
+    /**
+     * return the bounds of the rectangle of the great 
+     * image for this paintObject snapshot.
+     * @return the bounds of the rect.
+     */
+    public abstract Rectangle getSnapshotSquareBounds();
+
+    
+    /**
+     * Fully recalculate the snapshot bounds.
+     */
+    public abstract void recalculateSnapshotBounds();
+
     
     
     /**
@@ -121,14 +135,6 @@ public abstract class PaintObject implements Serializable {
      * @return the PaintObject array [0][x] outside, [1] [x] inside.s
      */
     public abstract PaintObject[][] separate(Rectangle _r);
-
-    /**
-     * return the bounds of the rectangle of the great 
-     * image for this paintObject snapshot.
-     * @return the bounds of the rect.
-     */
-    public abstract Rectangle getSnapshotSquareBounds();
-
     /*
      * getter methods.
      */

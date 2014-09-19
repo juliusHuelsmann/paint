@@ -161,4 +161,13 @@ public class PaintObjectImage extends PaintObject {
     			Math.max(bi_image.getWidth(), bi_image.getHeight()),
     			Math.max(bi_image.getWidth(), bi_image.getHeight()));
     }
+
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override public final synchronized void recalculateSnapshotBounds() {
+        new Exception(getClass() + "not implemented yet").printStackTrace();
+    }
 }

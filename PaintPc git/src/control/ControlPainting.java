@@ -1050,25 +1050,36 @@ public final class ControlPainting implements MouseListener,
             // selected area
             while (po_current != null
                     && currentX <= r_sizeField.x + r_sizeField.width
-                    && currentY <= r_sizeField.y + r_sizeField.height
-                    ) {
+                    && currentY <= r_sizeField.y + r_sizeField.height) {
 
                 if (po_current.isInSelectionImage(r_sizeField)) {
 
                     // get item; remove it out of lists and add it to
                     // selection list
                     
-                    PaintObject [][] separatedPO = po_current.separate(r_sizeField);
+                    PaintObject [][] separatedPO = po_current.separate(
+                            r_sizeField);
                     Picture.getInstance().getLs_po_sortedByX().remove();
-                    for(int current = 0; current < separatedPO[1].length; current++) {
+                    
+                    //go through the list of elements.
+                    for (int current = 0; current < separatedPO[1].length;
+                            current++) {
 
-                        Picture.getInstance().insertIntoSelected(separatedPO[1][current]);
+                        //recalculate snapshot bounds for being able to insert
+                        //the item into the sorted list.
+                        separatedPO[1][current].recalculateSnapshotBounds();
+                        Picture.getInstance().insertIntoSelected(
+                                separatedPO[1][current]);
                     }
-                    for(int current = 0; current < separatedPO[0].length; current++) {
+                    for (int current = 0; current < separatedPO[0].length;
+                            current++) {
 
-                        //TODO: recalculation.
-//                        Picture.getInstance().getLs_po_sortedByX().insertSorted(
-//                                separatedPO[0][current]);
+                        //recalculate snapshot bounds for being able to insert
+                        //the item into the sorted list.
+                        separatedPO[0][current].recalculateSnapshotBounds();
+                        Picture.getInstance().getLs_po_sortedByX().insertSorted(
+                              separatedPO[0][current], 
+                              separatedPO[0][current].getSnapshotBounds().x);
                     }
                     Picture.getInstance().paintSelected();
                     Page.getInstance().getJlbl_painting().refreshPaint();

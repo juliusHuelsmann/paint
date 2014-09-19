@@ -1056,7 +1056,7 @@ public final class ControlPainting implements MouseListener,
 
                     // get item; remove it out of lists and add it to
                     // selection list
-                    
+
                     PaintObject [][] separatedPO = po_current.separate(
                             r_sizeField);
                     Picture.getInstance().getLs_po_sortedByX().remove();
@@ -1065,21 +1065,32 @@ public final class ControlPainting implements MouseListener,
                     for (int current = 0; current < separatedPO[1].length;
                             current++) {
 
-                        //recalculate snapshot bounds for being able to insert
-                        //the item into the sorted list.
-                        separatedPO[1][current].recalculateSnapshotBounds();
-                        Picture.getInstance().insertIntoSelected(
-                                separatedPO[1][current]);
+                        if (separatedPO[1][current] != null) {
+
+                            //recalculate snapshot bounds for being able to 
+                            //insert the item into the sorted list.
+                            separatedPO[1][current].recalculateSnapshotBounds();
+                            Picture.getInstance().insertIntoSelected(
+                                    separatedPO[1][current]);
+                        } else {
+                            System.out.println(getClass() 
+                                    + "error separatedpo null");
+                        }
                     }
                     for (int current = 0; current < separatedPO[0].length;
                             current++) {
 
+                        if (separatedPO[0][current] != null) {
                         //recalculate snapshot bounds for being able to insert
                         //the item into the sorted list.
                         separatedPO[0][current].recalculateSnapshotBounds();
                         Picture.getInstance().getLs_po_sortedByX().insertSorted(
                               separatedPO[0][current], 
                               separatedPO[0][current].getSnapshotBounds().x);
+                        } else {
+                            System.out.println(getClass() 
+                                    + "error separatedpo null");
+                        }
                     }
                     Picture.getInstance().paintSelected();
                     Page.getInstance().getJlbl_painting().refreshPaint();

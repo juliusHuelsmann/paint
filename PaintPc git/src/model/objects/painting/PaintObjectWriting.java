@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JOptionPane;
 
+import settings.Constants;
 import settings.Status;
 import view.View;
 import view.forms.Page;
@@ -136,8 +137,10 @@ public class PaintObjectWriting extends PaintObject {
 		this.ls_point = new List<Point>();
 		
 		if (_pen instanceof PenKuli) {
-		    this.pen = new PenKuli(_pen.getId_operation(),
-		            _pen.getThickness(), _pen.getClr_foreground());
+            this.pen = new PenKuli(_pen.getId_operation(),
+                    _pen.getThickness(), _pen.getClr_foreground());
+            this.pen = new PenKuli(Constants.PEN_ID_POINT,
+                    _pen.getThickness(), _pen.getClr_foreground());
 		} else if (_pen instanceof PenSelection) {
 
             this.pen = new PenSelection();
@@ -322,8 +325,8 @@ public class PaintObjectWriting extends PaintObject {
 
         //initialize the lInside Element
         Point pc = ls_point.getItem();
-        lInside = pc.x >= _r.x && pc.x <= _r.x + _r.width 
-                && pc.y >= _r.y && pc.y <= _r.y + _r.height;
+        lInside = (pc.x >= _r.x && pc.x <= _r.x + _r.width 
+                && pc.y >= _r.y && pc.y <= _r.y + _r.height);
 
         PaintObjectWriting pow_current = new PaintObjectWriting(getElementId(), 
                 getPen());
@@ -333,8 +336,8 @@ public class PaintObjectWriting extends PaintObject {
         while (!ls_point.isBehind()) {
             
             Point pcNew = ls_point.getItem();
-            boolean cInside = pcNew.x >= _r.x && pcNew.x <= _r.x + _r.width 
-                    && pcNew.y >= _r.y && pcNew.y <= _r.y + _r.height;
+            boolean cInside = (pcNew.x >= _r.x && pcNew.x <= _r.x + _r.width 
+                    && pcNew.y >= _r.y && pcNew.y <= _r.y + _r.height);
             
             if (cInside) {
             
@@ -349,17 +352,17 @@ public class PaintObjectWriting extends PaintObject {
 
                     //add the border point to the last PaintObject and insert 
                     //paintObject to list
-                    pow_current.addPoint(pnt_border);
-                    ls_pow_outside.insertBehind(pow_current);
+                    pow_current.addPoint(new Point(pnt_border));
+                    ls_pow_outside.insertBehind((pow_current));
                     
                     //crate new PaintObject and add the border point to the 
                     //new PaintObject
                     pow_current = new PaintObjectWriting(getElementId(), 
                             getPen());
-                    pow_current.addPoint(pnt_border);
+                    pow_current.addPoint(new Point(pnt_border));
                     
                     //add new point to the PaintObject
-                    pow_current.addPoint(pcNew);
+                    pow_current.addPoint(new Point(pcNew));
                 }
                 
             } else {
@@ -372,20 +375,20 @@ public class PaintObjectWriting extends PaintObject {
                     
                     //add the border point to the last PaintObject and insert 
                     //paintObject to list
-                    pow_current.addPoint(pnt_border);
+                    pow_current.addPoint(new Point(pnt_border));
                     ls_pow_inside.insertBehind(pow_current);
                     
                     //crate new PaintObject and add the border point to the 
                     //new PaintObject
                     pow_current = new PaintObjectWriting(getElementId(), 
                             getPen());
-                    pow_current.addPoint(pnt_border);
+                    pow_current.addPoint(new Point(pnt_border));
                     
                     //add new point to the PaintObject
-                    pow_current.addPoint(pcNew);
+                    pow_current.addPoint(new Point(pcNew));
                 } else {
 
-                    pow_current.addPoint(pcNew);
+                    pow_current.addPoint(new Point(pcNew));
                 }
             }
 
@@ -393,10 +396,50 @@ public class PaintObjectWriting extends PaintObject {
             lInside = cInside;
             ls_point.next();
         }
+        if (lInside) {
+
+            ls_pow_outside.insertBehind(pow_current); 
+        } else {
+
+            ls_pow_outside.insertBehind(pow_current); 
+        }
 
         
+        /*
+         * Transform lists to arrays
+         */
+        int lengthInside = 0, lengthOutside = 0;
+        ls_pow_inside.toFirst();
+        ls_pow_outside.toFirst();
+        while (!ls_pow_inside.isBehind()) {
+            ls_pow_inside.next();
+            lengthInside++;
+        }
         
-        return null;
+        while (!ls_pow_outside.isBehind()) {
+            ls_pow_outside.next();
+            lengthOutside++;
+        }
+        PaintObjectWriting [][] pow = new PaintObjectWriting[2][2];
+        pow[0] = new PaintObjectWriting[lengthInside];
+        pow[1] = new PaintObjectWriting[lengthOutside];
+
+        ls_pow_inside.toFirst();
+        ls_pow_outside.toFirst();
+        int index = 0;
+        while (!ls_pow_inside.isBehind()) {
+            pow[0][index] = ls_pow_inside.getItem();
+            ls_pow_inside.next();
+        }
+
+        index = 0;
+        while (!ls_pow_outside.isBehind()) {
+            pow[1][index] = ls_pow_outside.getItem();
+            ls_pow_outside.next();
+        }
+        
+        
+        return pow;
     }
     
     
@@ -605,9 +648,15 @@ public class PaintObjectWriting extends PaintObject {
         
         switch(minIndex) {
         case -1:
-            
+
+            System.out.println("min index: " + minIndex
+                    + intersection1 + intersection2 + intersection3 
+                    + intersection4 + "" + factors1[0] + factors2[0] 
+                            + factors3[0] 
+                    + factors4[0]);
             new Exception("PaintObjectWriting@static method; not a single "
-                    + "equation matched. That should be impossible");
+                    + "equation matched. That should be impossible")
+            .printStackTrace();
             return null;
         case 1:
             return intersection1;
@@ -618,7 +667,9 @@ public class PaintObjectWriting extends PaintObject {
         case 2 + 2:
             return intersection4;
         default:
-            new Exception("PaintObjectWriting@static method; Unexpected case");
+            new Exception("PaintObjectWriting@static method; Unexpected case")
+            .printStackTrace();
+            
             return null;
         }
     }

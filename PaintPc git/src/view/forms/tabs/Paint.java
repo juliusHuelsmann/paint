@@ -306,7 +306,8 @@ public final class Paint extends JPanel {
 	 */
 	private int initializePagePens(final int _x, final boolean _paint) {
         final Dimension sizeIT = new Dimension(550, 550);
-        final Dimension sizeIT_selection = new Dimension(350, 270);
+        final Dimension sizeIT_selection = new Dimension(350, 370);
+//        = new Dimension(350, 270);//for my laptop
         final int sizeHeight = 110;
         
         if (_paint) {

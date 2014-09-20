@@ -90,8 +90,8 @@ import control.ControlPainting;
         /*
          * add tab, overview about paintObjects and Page
          */
+        super.add(PaintObjects.getInstance());
         super.add(Tabs.getInstance());
-        //super.add(PaintObjects.getInstance());
         super.add(Page.getInstance());
 
         //display tabs and page.

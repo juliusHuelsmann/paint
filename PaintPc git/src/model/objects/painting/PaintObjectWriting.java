@@ -3,6 +3,7 @@ package model.objects.painting;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -138,8 +139,7 @@ public class PaintObjectWriting extends PaintObject {
 		
 		if (_pen instanceof PenKuli) {
             this.pen = new PenKuli(_pen.getId_operation(),
-                    _pen.getThickness(), _pen.getClr_foreground());
-            this.pen = new PenKuli(Constants.PEN_ID_POINT,
+//            this.pen = new PenKuli(Constants.PEN_ID_POINT,
                     _pen.getThickness(), _pen.getClr_foreground());
 		} else if (_pen instanceof PenSelection) {
 
@@ -363,6 +363,35 @@ public class PaintObjectWriting extends PaintObject {
                     
                     //add new point to the PaintObject
                     pow_current.addPoint(new Point(pcNew));
+                    
+                    final Point p_thread = pnt_border;
+                    new Thread(){
+                        public void run(){
+                            
+                            while(!isInterrupted()) {
+                                Graphics g = Page.getInstance().getJlbl_selectionPainting().getGraphics();
+                                
+//                                g.setColor(Color.green);
+//                                
+//                                g.drawRect(p_thread.x, p_thread.y, 2,2);
+//                                
+//
+//                                try{
+//                                    Thread.sleep(100);
+//                                }catch(Exception e){
+//                                    
+//                                }
+                                g.setColor(Color.red);
+                                g.drawRect(p_thread.x, p_thread.y, 2, 2);
+                                
+                                try{
+                                    Thread.sleep(500);
+                                }catch(Exception e){
+                                    
+                                }
+                            }
+                        }
+                    } .start();
                 }
                 
             } else {
@@ -386,6 +415,34 @@ public class PaintObjectWriting extends PaintObject {
                     
                     //add new point to the PaintObject
                     pow_current.addPoint(new Point(pcNew));
+                    final Point p_thread = pnt_border;
+                    new Thread(){
+                        public void run(){
+                            
+                            while(!isInterrupted()) {
+                                Graphics g = Page.getInstance().getJlbl_selectionPainting().getGraphics();
+                                
+                                g.setColor(Color.blue);
+                                
+                                g.drawRect(p_thread.x, p_thread.y, 2,2);
+                                
+
+//                                try{
+//                                    Thread.sleep(100);
+//                                }catch(Exception e){
+//                                    
+//                                }
+//                                g.setColor(Color.orange);
+//                                g.drawRect(p_thread.x, p_thread.y, 2, 2);
+                                
+                                try{
+                                    Thread.sleep(1000);
+                                }catch(Exception e){
+                                    
+                                }
+                            }
+                        }
+                    } .start();
                 } else {
 
                     pow_current.addPoint(new Point(pcNew));
@@ -421,21 +478,23 @@ public class PaintObjectWriting extends PaintObject {
             lengthOutside++;
         }
         PaintObjectWriting [][] pow = new PaintObjectWriting[2][2];
-        pow[0] = new PaintObjectWriting[lengthInside];
-        pow[1] = new PaintObjectWriting[lengthOutside];
+        pow[0] = new PaintObjectWriting[lengthOutside];
+        pow[1] = new PaintObjectWriting[lengthInside];
 
         ls_pow_inside.toFirst();
         ls_pow_outside.toFirst();
         int index = 0;
         while (!ls_pow_inside.isBehind()) {
-            pow[0][index] = ls_pow_inside.getItem();
+            pow[1][index] = ls_pow_inside.getItem();
             ls_pow_inside.next();
+            index++;
         }
 
         index = 0;
         while (!ls_pow_outside.isBehind()) {
-            pow[1][index] = ls_pow_outside.getItem();
+            pow[0][index] = ls_pow_outside.getItem();
             ls_pow_outside.next();
+            index++;
         }
         
         
@@ -577,9 +636,14 @@ public class PaintObjectWriting extends PaintObject {
 
             intersection1 = new Point((int) (_p.x + factors1[0] * _v.x), 
                     (int) (_p.y + factors1[0] * _v.y));
-            
+
             //check whether suitable.
-            if (factors1[1] < 0 || factors1[1] > _r.height) {
+            if (_r.y + _r.height  - (int) intersection1.y < 0
+                    || _r.y - (int) intersection1.y > 0) {
+
+                System.out.println("hier\t" 
+                        + (_r.y + _r.height  - (int) intersection1.y) + "\n\t"
+                        + (_r.y - (int) intersection1.y) + "\n");
                 intersection1 = null;
             }
         }
@@ -591,8 +655,9 @@ public class PaintObjectWriting extends PaintObject {
                     (int) (_p.y + factors2[0] * _v.y));
             
             //check whether suitable.
-            if (factors1[1] < 0 || factors1[1] > _r.width) {
-                intersection1 = null;
+            if (_r.x + _r.width  - (int) intersection2.x < 0
+                    || _r.x - (int) intersection2.x > 0) {
+                intersection2 = null;
             }
         }
         if (factors3 != null) {
@@ -601,19 +666,21 @@ public class PaintObjectWriting extends PaintObject {
                     (int) (_p.y + factors3[0] * _v.y));
             
             //check whether suitable.
-            if (factors3[1] < 0 || factors3[1] > _r.height) {
-                intersection1 = null;
+            if (_r.y + _r.height  - (int) intersection3.y < 0
+                    || _r.y - (int) intersection3.y > 0) {
+                intersection3 = null;
             }
         }
         if (factors4 != null) {
 
             //fetch point
             intersection4 = new Point((int) (_p.x + factors4[0] * _v.x), 
-                    (int) (_p.y + factors3[0] * _v.y));
+                    (int) (_p.y + factors4[0] * _v.y));
             
             //check whether suitable.
-            if (factors4[1] < 0 || factors4[1] > _r.width) {
-                intersection1 = null;
+            if (_r.x + _r.width  - (int) intersection4.x < 0
+                    || _r.x - (int) intersection4.x > 0) {
+                intersection4 = null;
             }
         }
         
@@ -621,39 +688,40 @@ public class PaintObjectWriting extends PaintObject {
         int minIndex = -1;
 
         if (intersection1 != null) {
-           if (minLambda > Math.abs(factors1[1])) {
-               minLambda = Math.abs(factors1[1]);
+           if (minLambda > Math.abs(factors1[0])) {
+               minLambda = Math.abs(factors1[0]);
                minIndex = 1;
            }
         }
         if (intersection2 != null) {
-            if (minLambda > Math.abs(factors2[1])) {
-                minLambda = Math.abs(factors2[1]);
+            if (minLambda > Math.abs(factors2[0])) {
+                minLambda = Math.abs(factors2[0]);
                 minIndex = 2;
             }
         }
         if (intersection3 != null) {
-            if (minLambda > Math.abs(factors3[1])) {
-                minLambda = Math.abs(factors3[1]);
+            if (minLambda > Math.abs(factors3[0])) {
+                minLambda = Math.abs(factors3[0]);
                 minIndex = 2 + 1;
             }
         }
         if (intersection4 != null) {
-            if (minLambda > Math.abs(factors4[1])) {
-                minLambda = Math.abs(factors4[1]);
+            if (minLambda > Math.abs(factors4[0])) {
+                minLambda = Math.abs(factors4[0]);
                 minIndex = 2 + 2;
             }
         }
-        
+
+        System.out.println("findIntersection; min index: " + minIndex + "\n"
+                + "intersec1:\t" +  intersection1 + "\nintersec2:\t" 
+                + intersection2 + "\nintersec3:\t" + intersection3 
+                + "\nintersec2:\t" + intersection4 
+                + "\nfactor1:\t" + factors1[0] + "\nfactor2:\t" + factors2[0] 
+                + "\nfactor3:\t" + factors3[0] + "\nfactor4:\t" + factors4[0]);
         
         switch(minIndex) {
         case -1:
 
-            System.out.println("min index: " + minIndex
-                    + intersection1 + intersection2 + intersection3 
-                    + intersection4 + "" + factors1[0] + factors2[0] 
-                            + factors3[0] 
-                    + factors4[0]);
             new Exception("PaintObjectWriting@static method; not a single "
                     + "equation matched. That should be impossible")
             .printStackTrace();
@@ -672,6 +740,27 @@ public class PaintObjectWriting extends PaintObject {
             
             return null;
         }
+    }
+    
+    private static void verify(final Point p_thread){
+
+        new Thread(){
+            public void run(){
+                
+                while(!isInterrupted()) {
+                    Graphics g = Page.getInstance().getJlbl_selectionPainting().getGraphics();
+                    
+                    g.setColor(Color.orange);
+                    g.drawRect(p_thread.x, p_thread.y, 2, 2);
+                    
+                    try{
+                        Thread.sleep(500);
+                    }catch(Exception e){
+                        
+                    }
+                }
+            }
+        } .start();
     }
 
     /*

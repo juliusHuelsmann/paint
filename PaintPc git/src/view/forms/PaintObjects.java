@@ -12,17 +12,25 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
 import model.objects.PictureOverview;
+import model.objects.painting.PaintObject;
+import model.objects.painting.PaintObjectWriting;
+import model.objects.painting.Picture;
+import model.objects.pen.Pen;
 import model.util.list.List;
 import control.singleton.MousePositionTracker;
+import settings.Constants;
 import settings.Status;
 import settings.ViewSettings;
+import view.ViewVorschau;
 import view.util.VScrollPane;
 import view.util.Item1Button;
 
@@ -53,6 +61,11 @@ public final class PaintObjects extends JPanel implements Observer {
 	 */
 	public static final int ID_ADD_ITEM = 1;
 	
+	
+	/**
+	 * ID for remving one item.
+	 */
+	public static final int ID_REMOVE_ITEM = 2;
 	/**
 	 * Contains the amount of items contained in JPanel, title and the 
 	 * detailed position in an image of the view.
@@ -268,147 +281,216 @@ public final class PaintObjects extends JPanel implements Observer {
 	 */
 	@Override public void update(final Observable _obs, final Object _obj) {
 		
+	    
+	    if (!(_obs instanceof PictureOverview)) {
+	        new Exception("error: update called with wrong parameters")
+	        .printStackTrace();
+	        return;
+	    }
+	    
 	    //if transmitted operation is to add an item
-		if (Integer.parseInt(_obj + "") == ID_ADD_ITEM) {
-
-		    final int itemSize = 40;
+	    if (Integer.parseInt(_obj + "") == ID_ADD_ITEM) {
 		    
-		    //update the amount of items
-			jlbl_amountOfItems.setText("amount = " 
-		    + ((PictureOverview) _obs).getNumber());
-			
-			//create new button for the item
-			Item1Button jbtn_new = new Item1Button(null);
-			jbtn_new.setImageWidth(itemSize);
-			jbtn_new.setImageHeight(itemSize);
-			jbtn_new.setBorder(true);
-			
-			
-			//TODO: list is not working if .
-			final Rectangle r = ((PictureOverview) _obs)
-			        .getCurrentPO().getSnapshotBounds();
-			final List<Point> ls_point = ((PictureOverview) _obs)
-			        .getCurrentPO().getPoints();
-			jbtn_new.addActionListener(new ActionListener() {
-				
-			    /**
-			     * actionListener which selects the paintItem the user clicked 
-			     * on.
-			     * 
-			     * @param _event the actionEvent
-			     */
-				@Override public void actionPerformed(
-				        final ActionEvent _event) {
-					
-					deactivate();
-
-					String text  = "Stift	" 
-					        + ((PictureOverview) _obs)
-					        .getCurrentPO().getPen().getClass().getSimpleName()
-							+ " \nArt	"
-							+ ((PictureOverview) _obs)
-							.getCurrentPO().getPen().getID()
-							+ "\nStaerke	" 
-							+ ((PictureOverview) _obs)
-							.getCurrentPO().getPen().getThickness()
-							+ "\nFarbe	(" 
-							+ ((PictureOverview) _obs)
-							.getCurrentPO().getPen().getClr_foreground()
-							.getRed()
-							+ ", " 
-							+ ((PictureOverview) _obs)
-							.getCurrentPO().getPen().getClr_foreground()
-							.getGreen()
-							+ ", " 
-							+ ((PictureOverview) _obs)
-							.getCurrentPO().getPen().getClr_foreground()
-							.getBlue()
-							+ ")\nBounds	"
-							+ r.x + "." + r.y + ";" + r.width + "." + r.height
-							+ "\nimageSize	"
-							+ Status.getImageSize().width + "." 
-							+ Status.getImageSize().height 
-							+ "\nPoints";
-					
-
-					ls_point.toFirst();
-					int currentLine = 0;
-					while (!((PictureOverview) _obs)
-					        .getCurrentPO().getPoints().isBehind()) {
-						
-						 currentLine++;
-						 
-						 //each second line a line break;
-						 if (currentLine % 2 == 1) {
-							 text += "\n";
-						 }
-						 
-						 text += ls_point.getItem().x 
-								 + " "
-								 + ls_point.getItem().y + "	| ";
-						ls_point.next();
-						
-					 }
-					 
-					jta_infoSelectedPanel.setText(text);
-					
-					
-					//create bufferedImage
-					BufferedImage bi = new BufferedImage(
-							jlbl_detailedPosition.getWidth(), 
-							jlbl_detailedPosition.getHeight(), 
-							BufferedImage.TYPE_INT_ARGB);
-
-					
-					//fetch rectangle
-					int x = r.x * bi.getWidth() 
-							/ Status.getImageSize().width;
-					int y = r.y * bi.getHeight() 
-							/ Status.getImageSize().height;
-					int width = r.width * bi.getWidth() 
-							/ Status.getImageSize().width;
-					int height = r.height * bi.getHeight() 
-							/ Status.getImageSize().height;
-
-					int border = 2;
-					int highlightX = x - border;
-					int highlightY = y - border;
-					int highlightWidth = width + 2 * border;
-					int highlightHeight = height + 2 * border;
-
-					//paint rectangle and initialize with alpha
-					for (int coorX = 0; coorX < bi.getWidth(); coorX++) {
-						for (int coorY = 0; coorY < bi.getHeight(); coorY++) {
-							
-							if (coorX >= x && coorY >= y && x + width >= coorX
-									&& y + height >= coorY) {
-								bi.setRGB(coorX, coorY, Color.black.getRGB());
-							} else if (coorX >= highlightX 
-							        && coorY >= highlightY 
-							        && highlightX + highlightWidth >= coorX
-							        && highlightY + highlightHeight >= coorY) {
-
-								bi.setRGB(coorX, coorY, Color.gray.getRGB());
-							} else {
-
-								bi.setRGB(coorX, coorY, 
-								        new Color(0, 0, 0, 0).getRGB());	
-							}
-						}
-					}
-					jlbl_detailedPosition.setIcon(new ImageIcon(bi));
-				}
-			});
-			
-			jbtn_new.setText(
-			        "ID " + ((PictureOverview) _obs).getCurrentPO()
-			        .getElementId());
-			add(jbtn_new);
-			jbtn_new.setIcon(
-			        (((PictureOverview) _obs).getCurrentPO().getSnapshot()));
-			
+	        this.updateAdd((PictureOverview) _obs);
+		    
+		} else if (Integer.parseInt(_obj + "") == ID_REMOVE_ITEM) {
+		    updateRemove((PictureOverview) _obs);
 		}
 	}
+	
+	
+	
+	
+	
+	/**
+	 * add a new PaintObject to the graphical user interface.
+	 * @param _pov the PictureOverview
+	 */
+	private void updateAdd(final PictureOverview _pov) {
+
+	    //TODO: externalize the ActionListener.
+
+        final int itemSize = 40;
+        
+        //update the amount of items
+        jlbl_amountOfItems.setText("amount = " 
+        + _pov.getNumber());
+
+        //TODO: list is not working if .
+        final Rectangle r = _pov
+                .getCurrentPO().getSnapshotBounds();
+        final PaintObject po_cu = _pov
+                .getCurrentPO();
+        
+        //create new button for the item
+        Item1Button jbtn_new = new Item1Button(null);
+        jbtn_new.setAdditionalInformation(po_cu);
+        jbtn_new.setImageWidth(itemSize);
+        jbtn_new.setImageHeight(itemSize);
+        jbtn_new.setBorder(true);
+        
+        
+        jbtn_new.addActionListener(new ActionListener() {
+            
+            /**
+             * actionListener which selects the paintItem the user clicked 
+             * on.
+             * 
+             * @param _event the actionEvent
+             */
+            @Override public void actionPerformed(
+                    final ActionEvent _event) {
+
+                
+                Picture.getInstance().releaseSelected();
+                Page.getInstance().releaseSelected();
+                deactivate();
+
+                String text = "no information found.";
+                
+                //stuff for paintObjectWriting
+                if (po_cu instanceof PaintObjectWriting) {
+                    
+                    PaintObjectWriting pow = (PaintObjectWriting) po_cu;
+                    Pen pe = pow.getPen();
+                    final List<Point> ls_point = pow.getPoints();
+                    text = "Stift  " + pe.getClass().getSimpleName()
+                            + " \nArt   " + pe.getID()
+                            + "\nStaerke    " + pe.getThickness()
+                            + "\nFarbe  (" + pe.getClr_foreground().getRed()
+                            + ", " + pe.getClr_foreground().getGreen()
+                            + ", " + pe.getClr_foreground().getBlue()
+                            + ")\nBounds    " + r.x + "." + r.y + ";" 
+                            + r.width + "." + r.height + "\nimageSize  "
+                            + Status.getImageSize().width + "." 
+                            + Status.getImageSize().height 
+                            + "\nPoints";
+                    ls_point.toFirst();
+                    int currentLine = 0;
+                    while (!pow.getPoints().isBehind()) {
+                        
+                         currentLine++;
+                         
+                         //each second line a line break;
+                         if (currentLine % 2 == 1) {
+                             text += "\n";
+                         }
+                         
+                         text += ls_point.getItem().x 
+                                 + " "
+                                 + ls_point.getItem().y + " | ";
+                        ls_point.next();
+                     }
+                }
+                
+                jta_infoSelectedPanel.setText(text);
+                
+                //create bufferedImage
+                BufferedImage bi = new BufferedImage(
+                        jlbl_detailedPosition.getWidth(), 
+                        jlbl_detailedPosition.getHeight(), 
+                        BufferedImage.TYPE_INT_ARGB);
+
+                
+                //fetch rectangle
+                int x = r.x * bi.getWidth() 
+                        / Status.getImageSize().width;
+                int y = r.y * bi.getHeight() 
+                        / Status.getImageSize().height;
+                int width = r.width * bi.getWidth() 
+                        / Status.getImageSize().width;
+                int height = r.height * bi.getHeight() 
+                        / Status.getImageSize().height;
+
+                int border = 2;
+                int highlightX = x - border;
+                int highlightY = y - border;
+                int highlightWidth = width + 2 * border;
+                int highlightHeight = height + 2 * border;
+
+                //paint rectangle and initialize with alpha
+                for (int coorX = 0; coorX < bi.getWidth(); coorX++) {
+                    for (int coorY = 0; coorY < bi.getHeight(); coorY++) {
+                        
+                        if (coorX >= x && coorY >= y && x + width >= coorX
+                                && y + height >= coorY) {
+                            bi.setRGB(coorX, coorY, Color.black.getRGB());
+                        } else if (coorX >= highlightX 
+                                && coorY >= highlightY 
+                                && highlightX + highlightWidth >= coorX
+                                && highlightY + highlightHeight >= coorY) {
+
+                            bi.setRGB(coorX, coorY, Color.gray.getRGB());
+                        } else {
+
+                            bi.setRGB(coorX, coorY, 
+                                    new Color(0, 0, 0, 0).getRGB());    
+                        }
+                    }
+                }
+                jlbl_detailedPosition.setIcon(new ImageIcon(bi));
+
+
+                Status.setIndexOperation(
+                        Constants.CONTROL_PAINTING_INDEX_MOVE);
+                
+                //decativate other menuitems and activate the current one
+                //(move)
+                Picture.getInstance().createSelected();
+                Picture.getInstance().insertIntoSelected(po_cu);
+                PictureOverview.getInstance().remove(po_cu);
+                Picture.getInstance().getLs_po_sortedByX().remove();
+                
+                Picture.getInstance().paintSelected();
+                Page.getInstance().getJlbl_painting().refreshPaint();
+                Page.getInstance().getJlbl_painting()
+                .paintEntireSelectionRect(po_cu.getSnapshotBounds());
+                
+                repaint();
+            }
+        });
+        
+        jbtn_new.setText(
+                "ID " + _pov.getCurrentPO()
+                .getElementId());
+        add(jbtn_new);
+        jbtn_new.setIcon(
+                (_pov.getCurrentPO().getSnapshot()));
+
+        repaint();
+    
+	}
+	
+
+    /**
+     * remove a PaintObject from the graphical user interface.
+     * @param _pov the PictureOverview
+     */
+    private void updateRemove(final PictureOverview _pov) {
+
+        Component [] comp = jpnl_items.getComponents();
+        for (int i = 0; i < comp.length; i++) {
+            if (comp[i] instanceof Item1Button) {
+                
+                Item1Button i1b = (Item1Button) comp[i];
+                if (i1b.getAdditionalInformation() != null
+                        && i1b.getAdditionalInformation() 
+                        instanceof PaintObject) {
+                    
+                    
+                    PaintObject po = 
+                            (PaintObject) i1b.getAdditionalInformation();
+                    
+                    if (po.equals(_pov.getCurrentPO())) {
+                        jpnl_items.remove(comp[i]);
+
+                        rec_old.y -= rec_old.getHeight();
+                    }
+                    
+                }
+            }
+        }
+    }
 	
 	
 	/**

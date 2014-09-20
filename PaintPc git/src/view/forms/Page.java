@@ -318,6 +318,8 @@ import control.singleton.CSelection;
         jlbl_painting.refreshPaint();
 	}
 
+
+
 	
 	/*
 	 * getter methods

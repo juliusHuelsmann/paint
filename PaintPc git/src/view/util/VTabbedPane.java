@@ -49,7 +49,7 @@ public class VTabbedPane extends JPanel {
 	/**
 	 * JLabel for the background.
 	 */
-	private JLabel jpnl_background;
+	private JLabel jpnl_background, jlbl_whiteBackground;
 	
 	/**
 	 * JPanel for the content 
@@ -118,14 +118,13 @@ public class VTabbedPane extends JPanel {
 		super();
 		super.setFocusable(false);
 		super.setLayout(null);
-		super.setBackground(new Color(0, 0, 0, 0));
-		super.setOpaque(true);
-
+		super.setOpaque(false);
+		
 		//initialize the container for the title JButton and the tab  JPanels
 		jpnl_contains = new JPanel();
 		jpnl_contains.setFocusable(false);
-		jpnl_contains.setOpaque(false);
-		jpnl_contains.setBackground(Color.white);
+		jpnl_contains.setOpaque(true);
+		jpnl_contains.setBackground(new Color(0, 0, 0, 0));
 		jpnl_contains.setLayout(null);
 		super.add(jpnl_contains);
 
@@ -187,7 +186,14 @@ public class VTabbedPane extends JPanel {
                 0, 0, 1, 0, Color.black));
         jlbl_close.setFocusable(false);
         jpnl_close.add(jlbl_close);
-		
+
+        //background at the top where the buttons can be found.
+        jlbl_whiteBackground = new JLabel();
+        jlbl_whiteBackground.setBackground(Color.white);
+        jlbl_whiteBackground.setOpaque(true);
+        jlbl_whiteBackground.setFocusable(false);
+        super.add(jlbl_whiteBackground);
+        
 		//initialize controller class
 		control = new CTabbedPane(this);
 		startTimeThread();
@@ -709,7 +715,8 @@ public class VTabbedPane extends JPanel {
         //set background size (only visible width and height shown)
         jpnl_background.setSize(getWidth(), visibleHeight 
                 - titleHeight - titleY + 1);
-        
+
+        jlbl_whiteBackground.setSize(getWidth(), visibleHeight);
         final int height = 25;
         
         //if is normal rotated.

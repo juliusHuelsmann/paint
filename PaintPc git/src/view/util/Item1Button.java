@@ -57,6 +57,14 @@ public class Item1Button extends JPanel {
      * the path of the image.
      */
     private String imgPath;
+    
+    
+    /**
+     * If it's necessary to store additional information in this button
+     * (done in PaintObjects view class) this can be done using getter and
+     * setter of this object.
+     */
+    private Object additionalInformation;
 	
 	/**
 	 * Constructor: save Object.
@@ -405,5 +413,19 @@ public class Item1Button extends JPanel {
      */
     public final void setImageHeight(final int _imageHeight) {
         this.imageHeight = _imageHeight;
+    }
+
+    /**
+     * @return the additionalInformation
+     */
+    public Object getAdditionalInformation() {
+        return additionalInformation;
+    }
+
+    /**
+     * @param additionalInformation the additionalInformation to set
+     */
+    public void setAdditionalInformation(Object additionalInformation) {
+        this.additionalInformation = additionalInformation;
     }
 }

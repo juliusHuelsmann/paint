@@ -13,12 +13,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
 import settings.Error;
 import settings.Status;
 import view.ViewVorschau;
 import view.forms.Page;
+import view.forms.PaintObjects;
+import model.objects.PictureOverview;
 import model.objects.pen.Pen;
 import model.objects.pen.special.PenSelection;
 import model.util.list.List;
@@ -121,6 +125,7 @@ public final class Picture extends Observable {
             
             System.exit(1);
         }
+        
         
         //create new PaintObject and insert it into list of 
         po_current = new PaintObjectWriting(currentId, pen_current);
@@ -478,7 +483,8 @@ public final class Picture extends Observable {
 		final Rectangle b = po_current.getSnapshotBounds();
         ls_po_sortedByX.insertSorted(po_current, b.x);
 
-        
+
+        PictureOverview.getInstance().add(po_current);
         
 		//reset current instance of PaintObject
 		po_current = null;
@@ -842,9 +848,11 @@ public final class Picture extends Observable {
 	        
 	        if (po instanceof PaintObjectWriting) {
 	            PaintObjectWriting pow = (PaintObjectWriting) po;
+                PictureOverview.getInstance().add(pow);
 	            ls_po_sortedByX.insertSorted(pow, pow.getSnapshotBounds().x);
 	        } else if (po instanceof PaintObjectImage) {
 	            PaintObjectImage poi = (PaintObjectImage) po;
+                PictureOverview.getInstance().add(null);
 
                 ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x);
 	        }

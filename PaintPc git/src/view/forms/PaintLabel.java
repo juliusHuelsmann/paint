@@ -75,6 +75,11 @@ public class PaintLabel extends JLabel {
 
         this.refreshRectangle(0, 0, getWidth(), getHeight());
     }
+
+    @Override public final void repaint() {
+        super.repaint();
+        PaintObjects.getInstance().repaint(); 
+    }
     
     /**
      * The previous rectangle.
@@ -340,7 +345,11 @@ public class PaintLabel extends JLabel {
         System.out.println("zeit2" + (time2 - time1));
 
         setIcon(new ImageIcon(getBi()));
+        
+        PaintObjects.getInstance().repaint();
         return getBi();
+        
+        
     }
     
 

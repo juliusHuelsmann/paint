@@ -5,32 +5,19 @@ package view.forms;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
-
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-
 import model.objects.PictureOverview;
-import model.objects.painting.PaintObject;
-import model.objects.painting.PaintObjectWriting;
-import model.objects.painting.Picture;
-import model.objects.pen.Pen;
-import model.util.list.List;
+import control.singleton.CPaintObjects;
 import control.singleton.MousePositionTracker;
-import settings.Constants;
 import settings.Status;
 import settings.ViewSettings;
-import view.ViewVorschau;
 import view.util.VScrollPane;
 import view.util.Item1Button;
 
@@ -60,12 +47,27 @@ public final class PaintObjects extends JPanel implements Observer {
 	 * id for adding one item; clears JPanel, receives.
 	 */
 	public static final int ID_ADD_ITEM = 1;
-	
-	
-	/**
-	 * ID for remving one item.
-	 */
-	public static final int ID_REMOVE_ITEM = 2;
+
+    
+    /**
+     * ID for removing one item from normal list and thus from view.
+     */
+    public static final int ID_REMOVE_ITEM = 2;
+    
+    
+    /**
+     * ID for adding one item to selected list after it has been removed from
+     * normal list. Thus is is re included to the PaintObjects view (this)
+     * until it loses focus and may be readded to the normal list of items.
+     */
+    public static final int ID_ADD_ITEM_SELECTED = 3;
+    
+    /**
+     * ID for removing one item from selected list and thus temporarily from
+     * PaintObjects until it is re added to the normal list of items.
+     */
+    public static final int ID_REMOVE_ITEM_SELECTED = 4;
+    
 	/**
 	 * Contains the amount of items contained in JPanel, title and the 
 	 * detailed position in an image of the view.
@@ -77,32 +79,25 @@ public final class PaintObjects extends JPanel implements Observer {
 	/**
 	 * Contains the items .
 	 */
-	private JPanel jpnl_items, jpnl_owner;
+	private final JPanel jpnl_items, jpnl_owner;
 	
 	/**
 	 * ScrollPanel for items.
 	 */
-	private VScrollPane sp_up;
-
-	//value for functionality of adding something
-	
-	/**
-	 * Point contains the coordinates of the last inserted item.
-	 */
-	private Rectangle rec_old;
-	
-	//JTextArea
+	private final VScrollPane sp_up;
 	
 	/**
 	 * JPanel which contains the JScrollPane of the JTextArea.
 	 */
-	private JPanel jpnl_container;
+	private final JPanel jpnl_container;
 
 	/**
 	 * JTextArea containing information on the selected item.
 	 */
-	private JTextArea jta_infoSelectedPanel;
+	private final JTextArea jta_infoSelectedPanel;
 
+    //value for functionality of adding something
+    
 	
 	/**
 	 * Constructor: initialize instances of Components and add special 
@@ -203,15 +198,20 @@ public final class PaintObjects extends JPanel implements Observer {
 	    final int distance = 5;
 	    
 		//update the rectangle
-		rec_old.y += rec_old.getHeight();
+		CPaintObjects.getInstance().getRec_old().y += 
+		        CPaintObjects.getInstance().getRec_old().getHeight();
 		
 		//set bounds of c
-		_component.setSize(rec_old.width, rec_old.height);
-		_component.setLocation(rec_old.x, rec_old.y);
+		_component.setSize(CPaintObjects.getInstance().getRec_old().width, 
+		        CPaintObjects.getInstance().getRec_old().height);
+		_component.setLocation(CPaintObjects.getInstance().getRec_old().x, 
+		        CPaintObjects.getInstance().getRec_old().y);
 		
 		//update size of JPanel for items.
-		jpnl_items.setSize(rec_old.width + distance,
-		        rec_old.height + rec_old.y + distance);
+		jpnl_items.setSize(
+		        CPaintObjects.getInstance().getRec_old().width + distance,
+		        CPaintObjects.getInstance().getRec_old().height 
+		        + CPaintObjects.getInstance().getRec_old().y + distance);
 
 		sp_up.reload();
 		
@@ -266,9 +266,10 @@ public final class PaintObjects extends JPanel implements Observer {
 		        - jpnl_container.getY() - 2 * distance - heightJLabel);
 		   
 		//initialize values
-		this.rec_old = new Rectangle(distance, -heightNewComponent + 1,
+		CPaintObjects.getInstance().setRec_old(new Rectangle(
+		        distance, -heightNewComponent + 1,
 		        jpnl_owner.getWidth() - widthScrollPane - (2 + 1) * distance, 
-		        heightNewComponent);
+		        heightNewComponent));
 		
 		
 		
@@ -291,206 +292,14 @@ public final class PaintObjects extends JPanel implements Observer {
 	    //if transmitted operation is to add an item
 	    if (Integer.parseInt(_obj + "") == ID_ADD_ITEM) {
 		    
-	        this.updateAdd((PictureOverview) _obs);
+	        CPaintObjects.getInstance().updateAdd((PictureOverview) _obs);
 		    
 		} else if (Integer.parseInt(_obj + "") == ID_REMOVE_ITEM) {
-		    updateRemove((PictureOverview) _obs);
+		    CPaintObjects.getInstance().updateRemove((PictureOverview) _obs);
 		}
 	}
 	
 	
-	
-	
-	
-	/**
-	 * add a new PaintObject to the graphical user interface.
-	 * @param _pov the PictureOverview
-	 */
-	private void updateAdd(final PictureOverview _pov) {
-
-	    //TODO: externalize the ActionListener.
-
-        final int itemSize = 40;
-        
-        //update the amount of items
-        jlbl_amountOfItems.setText("amount = " 
-        + _pov.getNumber());
-
-        //TODO: list is not working if .
-        final Rectangle r = _pov
-                .getCurrentPO().getSnapshotBounds();
-        final PaintObject po_cu = _pov
-                .getCurrentPO();
-        
-        //create new button for the item
-        Item1Button jbtn_new = new Item1Button(null);
-        jbtn_new.setAdditionalInformation(po_cu);
-        jbtn_new.setImageWidth(itemSize);
-        jbtn_new.setImageHeight(itemSize);
-        jbtn_new.setBorder(true);
-        
-        
-        jbtn_new.addActionListener(new ActionListener() {
-            
-            /**
-             * actionListener which selects the paintItem the user clicked 
-             * on.
-             * 
-             * @param _event the actionEvent
-             */
-            @Override public void actionPerformed(
-                    final ActionEvent _event) {
-
-                
-                Picture.getInstance().releaseSelected();
-                Page.getInstance().releaseSelected();
-                deactivate();
-
-                String text = "no information found.";
-                
-                //stuff for paintObjectWriting
-                if (po_cu instanceof PaintObjectWriting) {
-                    
-                    PaintObjectWriting pow = (PaintObjectWriting) po_cu;
-                    Pen pe = pow.getPen();
-                    final List<Point> ls_point = pow.getPoints();
-                    text = "Stift  " + pe.getClass().getSimpleName()
-                            + " \nArt   " + pe.getID()
-                            + "\nStaerke    " + pe.getThickness()
-                            + "\nFarbe  (" + pe.getClr_foreground().getRed()
-                            + ", " + pe.getClr_foreground().getGreen()
-                            + ", " + pe.getClr_foreground().getBlue()
-                            + ")\nBounds    " + r.x + "." + r.y + ";" 
-                            + r.width + "." + r.height + "\nimageSize  "
-                            + Status.getImageSize().width + "." 
-                            + Status.getImageSize().height 
-                            + "\nPoints";
-                    ls_point.toFirst();
-                    int currentLine = 0;
-                    while (!pow.getPoints().isBehind()) {
-                        
-                         currentLine++;
-                         
-                         //each second line a line break;
-                         if (currentLine % 2 == 1) {
-                             text += "\n";
-                         }
-                         
-                         text += ls_point.getItem().x 
-                                 + " "
-                                 + ls_point.getItem().y + " | ";
-                        ls_point.next();
-                     }
-                }
-                
-                jta_infoSelectedPanel.setText(text);
-                
-                //create bufferedImage
-                BufferedImage bi = new BufferedImage(
-                        jlbl_detailedPosition.getWidth(), 
-                        jlbl_detailedPosition.getHeight(), 
-                        BufferedImage.TYPE_INT_ARGB);
-
-                
-                //fetch rectangle
-                int x = r.x * bi.getWidth() 
-                        / Status.getImageSize().width;
-                int y = r.y * bi.getHeight() 
-                        / Status.getImageSize().height;
-                int width = r.width * bi.getWidth() 
-                        / Status.getImageSize().width;
-                int height = r.height * bi.getHeight() 
-                        / Status.getImageSize().height;
-
-                int border = 2;
-                int highlightX = x - border;
-                int highlightY = y - border;
-                int highlightWidth = width + 2 * border;
-                int highlightHeight = height + 2 * border;
-
-                //paint rectangle and initialize with alpha
-                for (int coorX = 0; coorX < bi.getWidth(); coorX++) {
-                    for (int coorY = 0; coorY < bi.getHeight(); coorY++) {
-                        
-                        if (coorX >= x && coorY >= y && x + width >= coorX
-                                && y + height >= coorY) {
-                            bi.setRGB(coorX, coorY, Color.black.getRGB());
-                        } else if (coorX >= highlightX 
-                                && coorY >= highlightY 
-                                && highlightX + highlightWidth >= coorX
-                                && highlightY + highlightHeight >= coorY) {
-
-                            bi.setRGB(coorX, coorY, Color.gray.getRGB());
-                        } else {
-
-                            bi.setRGB(coorX, coorY, 
-                                    new Color(0, 0, 0, 0).getRGB());    
-                        }
-                    }
-                }
-                jlbl_detailedPosition.setIcon(new ImageIcon(bi));
-
-
-                Status.setIndexOperation(
-                        Constants.CONTROL_PAINTING_INDEX_MOVE);
-                
-                //decativate other menuitems and activate the current one
-                //(move)
-                Picture.getInstance().createSelected();
-                Picture.getInstance().insertIntoSelected(po_cu);
-                PictureOverview.getInstance().remove(po_cu);
-                Picture.getInstance().getLs_po_sortedByX().remove();
-                
-                Picture.getInstance().paintSelected();
-                Page.getInstance().getJlbl_painting().refreshPaint();
-                Page.getInstance().getJlbl_painting()
-                .paintEntireSelectionRect(po_cu.getSnapshotBounds());
-                
-                repaint();
-            }
-        });
-        
-        jbtn_new.setText(
-                "ID " + _pov.getCurrentPO()
-                .getElementId());
-        add(jbtn_new);
-        jbtn_new.setIcon(
-                (_pov.getCurrentPO().getSnapshot()));
-
-        repaint();
-    
-	}
-	
-
-    /**
-     * remove a PaintObject from the graphical user interface.
-     * @param _pov the PictureOverview
-     */
-    private void updateRemove(final PictureOverview _pov) {
-
-        Component [] comp = jpnl_items.getComponents();
-        for (int i = 0; i < comp.length; i++) {
-            if (comp[i] instanceof Item1Button) {
-                
-                Item1Button i1b = (Item1Button) comp[i];
-                if (i1b.getAdditionalInformation() != null
-                        && i1b.getAdditionalInformation() 
-                        instanceof PaintObject) {
-                    
-                    
-                    PaintObject po = 
-                            (PaintObject) i1b.getAdditionalInformation();
-                    
-                    if (po.equals(_pov.getCurrentPO())) {
-                        jpnl_items.remove(comp[i]);
-
-                        rec_old.y -= rec_old.getHeight();
-                    }
-                    
-                }
-            }
-        }
-    }
 	
 	
 	/**
@@ -509,4 +318,44 @@ public final class PaintObjects extends JPanel implements Observer {
 		//return the only instance of this class.
 		return instance;
 	}
+
+
+    /**
+     * @return the jta_infoSelectedPanel
+     */
+    public JTextArea getJta_infoSelectedPanel() {
+        return jta_infoSelectedPanel;
+    }
+
+
+    /**
+     * @return the jlbl_detailedPosition
+     */
+    public JLabel getJlbl_detailedPosition() {
+        return jlbl_detailedPosition;
+    }
+
+
+    /**
+     * @return the jlbl_title
+     */
+    public JLabel getJlbl_title() {
+        return jlbl_title;
+    }
+
+
+    /**
+     * @return the jlbl_amountOfItems
+     */
+    public JLabel getJlbl_amountOfItems() {
+        return jlbl_amountOfItems;
+    }
+
+
+    /**
+     * @return the jpnl_items
+     */
+    public JPanel getJpnl_items() {
+        return jpnl_items;
+    }
 }

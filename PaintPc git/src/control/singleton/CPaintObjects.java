@@ -258,12 +258,13 @@ public final class CPaintObjects implements ActionListener {
                     + "\nPoints";
             ls_point.toFirst();
             int currentLine = 0;
+            final int newLine = 10;
             while (!pow.getPoints().isBehind()) {
                 
                  currentLine++;
                  
                  //each second line a line break;
-                 if (currentLine % 2 == 1) {
+                 if (currentLine % newLine == 1) {
                      text += "\n";
                  }
                  

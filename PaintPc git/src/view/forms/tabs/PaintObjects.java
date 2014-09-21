@@ -225,54 +225,75 @@ public final class PaintObjects extends JPanel implements Observer {
 	 */
 	@Override public void setSize(final int _width, final int _height) {
 
-        final int htf = 135;
+        final int htf = 200;
 	    
 		final int heightJLabel2 = 20;
 		final int heightJLabel = 10;
 		final int heightNewComponent = 50;
-		final int widthScrollPane = 15;
 		final int distance = 5;
-		final int thing = 300;
-		final int widht_Map = _width / 2;
 		
 		//set size of super and owner
 		final int iconSize = 16;
 		final int twentyFife = 25;
-		final int hundred = 100;
 		
-		super.setSize(_width, _height);
+		super.setSize(_width, htf);
         sp_up.setIcon_size(iconSize);
         
-        jlbl_title.setBounds(distance, distance, _width / 4, heightJLabel2);
-        jlbl_amountOfItems.setBounds(distance, jlbl_title.getHeight() 
-                + jlbl_title.getY() + distance, _width / 4, heightJLabel2);
-		
-		
-		
-		jpnl_owner.setLocation(distance, distance + jlbl_title.getY()
-		        + jlbl_title.getHeight());
-		jpnl_owner.setSize(_width, htf - jpnl_owner.getY());
-		jpnl_items.setLocation(0, 0);
-		jpnl_items.setSize(jpnl_owner.getWidth() - distance * 2, 
-		        jpnl_owner.getHeight());
+        final int amountOfItems = 7;
+        
+        
+        //first column
+        jlbl_title.setBounds(
+                distance, 
+                distance, 
+                _width / amountOfItems, 
+                heightJLabel2);
+
+        jpnl_owner.setLocation(
+                jlbl_title.getX(), 
+                jlbl_title.getY() + jlbl_title.getHeight() + distance);
+        jpnl_owner.setSize(
+                _width / amountOfItems, 
+                htf - jpnl_owner.getY());
+
+        jpnl_items.setLocation(0, 0);
+        jpnl_items.setSize(
+                jpnl_owner.getWidth() - distance * 2 - twentyFife,
+                jpnl_owner.getHeight());
+
+        sp_up.setLocation(jpnl_owner.getWidth() - twentyFife, 0);
+        sp_up.setSize(twentyFife, jpnl_owner.getHeight());
+        
+        
+        
+        //second column
+        jlbl_amountOfItems.setBounds(
+                jlbl_title.getX() + jlbl_title.getWidth() + distance,
+                jlbl_title.getY(), 
+                _width / amountOfItems, 
+                heightJLabel);
 		
 
-		jlbl_detailedPosition.setBounds(jpnl_owner.getX() + distance
-		        + jpnl_owner.getWidth(), jpnl_owner.getY() 
-		        , _width / 4 , jpnl_items.getHeight());
+		jlbl_detailedPosition.setLocation(jpnl_owner.getX() + distance
+		        + jpnl_owner.getWidth(), jpnl_owner.getY());
+		jlbl_detailedPosition.setSize(
+		        (htf - jlbl_detailedPosition.getY()) 
+		        * Status.getImageSize().width / Status.getImageSize().height, 
+		        htf - jlbl_detailedPosition.getY());
 		
-		sp_up.setLocation(_width - widthScrollPane - 2 * distance, 2 + 2 + 1);
-		sp_up.setSize(twentyFife, jpnl_owner.getHeight());
 				
-		jpnl_container.setLocation(jlbl_detailedPosition.getWidth() 
+		jpnl_container.setLocation(
+		        jlbl_detailedPosition.getWidth() 
 		        + jlbl_detailedPosition.getX() + distance, 
 		        jpnl_owner.getY());
-		jpnl_container.setSize(jlbl_detailedPosition.getSize());
+		jpnl_container.setSize(
+		        2 * _width / amountOfItems, 
+		        htf - jlbl_detailedPosition.getY());
 		   
 		//initialize values
 		CPaintObjects.getInstance().setRec_old(new Rectangle(
 		        distance, -heightNewComponent + 1,
-		        jpnl_owner.getWidth()  / 4, 
+		        jpnl_items.getWidth(), 
 		        heightNewComponent));
 		
 		

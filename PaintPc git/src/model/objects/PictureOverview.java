@@ -3,7 +3,6 @@ package model.objects;
 import java.util.Observable;
 
 import model.objects.painting.PaintObject;
-import model.objects.painting.PaintObjectWriting;
 import view.forms.PaintObjects;
 
 /**
@@ -60,6 +59,36 @@ public final class PictureOverview extends Observable {
         //notify observer
         setChanged();
         notifyObservers(PaintObjects.ID_REMOVE_ITEM);
+    }
+    
+    /**
+     * add paintObject.
+     * @param _po the paintObject to be added.
+     */
+    public synchronized void addSelected(final PaintObject _po) { 
+        
+        //increase number and save current PaintObject
+        number++;
+        this.currentPO = _po;
+        
+        //notify observer
+        setChanged();
+        notifyObservers(PaintObjects.ID_ADD_ITEM_SELECTED);
+    }
+    
+    /**
+     * add paintObject.
+     * @param _po the paintObject to be added.
+     */
+    public synchronized void removeSelected(final PaintObject _po) { 
+        
+        //increase number and save current PaintObject
+        number--;
+        this.currentPO = _po;
+        
+        //notify observer
+        setChanged();
+        notifyObservers(PaintObjects.ID_REMOVE_ITEM_SELECTED);
     }
 
 	

@@ -185,7 +185,9 @@ public final class PaintObjects extends JPanel implements Observer {
 	 */
 	public void deactivate() {
 		for (int i = 0; i < jpnl_items.getComponents().length; i++) {
-			((Item1Button) jpnl_items.getComponent(i)).setActivated(false);
+		    if (jpnl_items.getComponent(i) instanceof Item1Button) {
+	            ((Item1Button) jpnl_items.getComponent(i)).setActivated(false);
+		    }
 		}
 	}
 	
@@ -289,14 +291,30 @@ public final class PaintObjects extends JPanel implements Observer {
 	        return;
 	    }
 	    
-	    //if transmitted operation is to add an item
-	    if (Integer.parseInt(_obj + "") == ID_ADD_ITEM) {
-		    
-	        CPaintObjects.getInstance().updateAdd((PictureOverview) _obs);
-		    
-		} else if (Integer.parseInt(_obj + "") == ID_REMOVE_ITEM) {
-		    CPaintObjects.getInstance().updateRemove((PictureOverview) _obs);
-		}
+	    
+	    
+	    switch (Integer.parseInt(_obj + "")) {
+	    
+	    case ID_ADD_ITEM:
+            CPaintObjects.getInstance().updateAdd((PictureOverview) _obs);
+	        break;
+	    case ID_REMOVE_ITEM:
+            CPaintObjects.getInstance().updateRemove((PictureOverview) _obs);
+	        break;
+	    case ID_ADD_ITEM_SELECTED:
+            CPaintObjects.getInstance().updateAddSelected(
+                    (PictureOverview) _obs);
+	        break;
+	    case ID_REMOVE_ITEM_SELECTED:
+            CPaintObjects.getInstance().updateRemoveSelected(
+                    (PictureOverview) _obs);
+	        break;
+        default:
+            Status.getLogger().warning("unknown case!");
+            break;
+	        
+	    }
+	    
 	}
 	
 	

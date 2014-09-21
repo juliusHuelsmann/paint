@@ -1,5 +1,6 @@
 package control.singleton;
 
+//import declarations
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
@@ -62,110 +63,27 @@ public final class CPaintObjects implements ActionListener {
         
         Component[] c 
         = PaintObjects.getInstance().getJpnl_items().getComponents();
+
         
         
         for (int i = 0; i < c.length; i++) {
-            
-            if (_event.getSource().equals(c[i])) {
-                if (c[i] instanceof Item1Button
-                        && ((Item1Button) c[i]).getAdditionalInformation() 
-                        instanceof PaintObject) {
-                    
-                    final PaintObject po_cu = (PaintObject) ((Item1Button) c[i])
-                            .getAdditionalInformation();
-                    final Rectangle r = po_cu.getSnapshotBounds();
-                    
+
+            if (c[i] instanceof Item1Button
+                    && ((Item1Button) c[i]).getAdditionalInformation() 
+                    instanceof PaintObject) {
+
+                Item1Button i1b = (Item1Button) c[i];
+                final PaintObject po_cu = (PaintObject) i1b
+                        .getAdditionalInformation();
+                if (_event.getSource().equals(i1b.getActionCause())) {
+
+
+                    i1b.setActivated(false);
+                    showPaintObjectInformation(po_cu);
                     
                     Picture.getInstance().releaseSelected();
                     Page.getInstance().releaseSelected();
-                    PaintObjects.getInstance().deactivate();
 
-                    String text = "no information found.";
-                    
-                    //stuff for paintObjectWriting
-                    if (po_cu instanceof PaintObjectWriting) {
-                        
-                        PaintObjectWriting pow = (PaintObjectWriting) po_cu;
-                        Pen pe = pow.getPen();
-                        final List<Point> ls_point = pow.getPoints();
-                        text = "Stift  " + pe.getClass().getSimpleName()
-                                + " \nArt   " + pe.getID()
-                                + "\nStaerke    " + pe.getThickness()
-                                + "\nFarbe  (" + pe.getClr_foreground().getRed()
-                                + ", " + pe.getClr_foreground().getGreen()
-                                + ", " + pe.getClr_foreground().getBlue()
-                                + ")\nBounds    " + r.x + "." + r.y + ";" 
-                                + r.width + "." + r.height + "\nimageSize  "
-                                + Status.getImageSize().width + "." 
-                                + Status.getImageSize().height 
-                                + "\nPoints";
-                        ls_point.toFirst();
-                        int currentLine = 0;
-                        while (!pow.getPoints().isBehind()) {
-                            
-                             currentLine++;
-                             
-                             //each second line a line break;
-                             if (currentLine % 2 == 1) {
-                                 text += "\n";
-                             }
-                             
-                             text += ls_point.getItem().x 
-                                     + " "
-                                     + ls_point.getItem().y + " | ";
-                            ls_point.next();
-                         }
-                    }
-                    
-                    PaintObjects.getInstance().getJta_infoSelectedPanel()
-                    .setText(text);
-                    
-                    //create bufferedImage
-                    BufferedImage bi = new BufferedImage(PaintObjects
-                            .getInstance().getJlbl_detailedPosition()
-                            .getWidth(), PaintObjects.getInstance()
-                            .getJlbl_detailedPosition().getHeight(), 
-                            BufferedImage.TYPE_INT_ARGB);
-
-                    
-                    //fetch rectangle
-                    int x = r.x * bi.getWidth() 
-                            / Status.getImageSize().width;
-                    int y = r.y * bi.getHeight() 
-                            / Status.getImageSize().height;
-                    int width = r.width * bi.getWidth() 
-                            / Status.getImageSize().width;
-                    int height = r.height * bi.getHeight() 
-                            / Status.getImageSize().height;
-
-                    int border = 2;
-                    int highlightX = x - border;
-                    int highlightY = y - border;
-                    int highlightWidth = width + 2 * border;
-                    int highlightHeight = height + 2 * border;
-
-                    //paint rectangle and initialize with alpha
-                    for (int coorX = 0; coorX < bi.getWidth(); coorX++) {
-                        for (int coorY = 0; coorY < bi.getHeight(); coorY++) {
-                            
-                            if (coorX >= x && coorY >= y && x + width >= coorX
-                                    && y + height >= coorY) {
-                                bi.setRGB(coorX, coorY, Color.black.getRGB());
-                            } else if (coorX >= highlightX 
-                                    && coorY >= highlightY 
-                                    && highlightX + highlightWidth >= coorX
-                                    && highlightY + highlightHeight >= coorY) {
-
-                                bi.setRGB(coorX, coorY, Color.gray.getRGB());
-                            } else {
-
-                                bi.setRGB(coorX, coorY, 
-                                        new Color(0, 0, 0, 0).getRGB());    
-                            }
-                        }
-                    }
-                    PaintObjects.getInstance().getJlbl_detailedPosition()
-                    .setIcon(new ImageIcon(bi));
 
 
                     Status.setIndexOperation(
@@ -174,6 +92,7 @@ public final class CPaintObjects implements ActionListener {
                     //decativate other menuitems and activate the current one
                     //(move)
                     Picture.getInstance().createSelected();
+                    PaintObjects.getInstance().deactivate();
                     Picture.getInstance().insertIntoSelected(po_cu);
                     PictureOverview.getInstance().remove(po_cu);
                     Picture.getInstance().getLs_po_sortedByX().remove();
@@ -182,13 +101,12 @@ public final class CPaintObjects implements ActionListener {
                     Page.getInstance().getJlbl_painting().refreshPaint();
                     Page.getInstance().getJlbl_painting()
                     .paintEntireSelectionRect(po_cu.getSnapshotBounds());
-                    
                     PaintObjects.getInstance().repaint();
-                } else {
-                    Status.getLogger().severe("Error in ActionListener: "
-                            + "wrong kind of element. "
-                            + "This error should never occure");
                 }
+            } else {
+                Status.getLogger().severe("Error in ActionListener: "
+                        + "wrong kind of element. "
+                        + "This error should never occure");
             }
         }
        
@@ -200,9 +118,11 @@ public final class CPaintObjects implements ActionListener {
     /**
      * add a new PaintObject to the graphical user interface.
      * @param _pov the PictureOverview
+     * @return the inserted Item1Button for being able to edit it afterwards.
      */
-    public void updateAdd(final PictureOverview _pov) {
+    public Item1Button updateAdd(final PictureOverview _pov) {
 
+        //the size of each item
         final int itemSize = 40;
         
         //update the amount of items
@@ -216,14 +136,15 @@ public final class CPaintObjects implements ActionListener {
         jbtn_new.setImageHeight(itemSize);
         jbtn_new.setBorder(true);
         jbtn_new.addActionListener(new CPaintObjects());
-        jbtn_new.setText(
-                "ID " + _pov.getCurrentPO()
-                .getElementId());
+        jbtn_new.setText("ID " + _pov.getCurrentPO().getElementId());
         PaintObjects.getInstance().add(jbtn_new);
-        jbtn_new.setIcon(
-                (_pov.getCurrentPO().getSnapshot()));
-
+        jbtn_new.setIcon((_pov.getCurrentPO().getSnapshot()));
+        
+        //repaint view
         PaintObjects.getInstance().repaint();
+        
+        //return the Item1Button for later use (for example @updateAddSelected)
+        return jbtn_new;
     
     }
     
@@ -248,7 +169,8 @@ public final class CPaintObjects implements ActionListener {
                     PaintObject po = 
                             (PaintObject) i1b.getAdditionalInformation();
                     
-                    if (po.equals(_pov.getCurrentPO())) {
+                    if (po.equals(_pov.getCurrentPO())
+                            && !i1b.isActivated()) {
                         PaintObjects.getInstance().getJpnl_items()
                         .remove(comp[i]);
 
@@ -258,6 +180,149 @@ public final class CPaintObjects implements ActionListener {
                 }
             }
         }
+    }
+    
+    
+    /**
+     * 
+     * @param _pov the PictureOverview serving (temporarily) as container
+     * of information on the current instance of PaintObject
+     */
+    public void updateAddSelected(final PictureOverview _pov) {
+        Item1Button i1b = updateAdd(_pov);
+        i1b.setActivated(true);
+        showPaintObjectInformation(_pov.getCurrentPO());
+        
+    }
+    
+    
+    /**
+     * @param _pov the PictureOverview serving (temporarily) as container
+     * of information on the current instance of PaintObject
+     */
+    public void updateRemoveSelected(final PictureOverview _pov) {
+
+        Component [] comp = PaintObjects.getInstance().getJpnl_items()
+                .getComponents();
+        for (int i = 0; i < comp.length; i++) {
+            if (comp[i] instanceof Item1Button) {
+                
+                Item1Button i1b = (Item1Button) comp[i];
+                if (i1b.getAdditionalInformation() != null
+                        && i1b.getAdditionalInformation() 
+                        instanceof PaintObject) {
+                    
+                    
+                    PaintObject po = 
+                            (PaintObject) i1b.getAdditionalInformation();
+                    
+                    if (po.equals(_pov.getCurrentPO())
+                            && i1b.isActivated()) {
+                        PaintObjects.getInstance().getJpnl_items()
+                        .remove(comp[i]);
+
+                        rec_old.y -= rec_old.getHeight();
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    
+    /**
+     * show information on PaintObject at graphical user interface.
+     * @param _po_cu the current PaintObject
+     */
+    private void showPaintObjectInformation(final PaintObject _po_cu) {
+
+        final Rectangle r = _po_cu.getSnapshotBounds();
+        String text = "no information found.";
+        
+        //stuff for paintObjectWriting
+        if (_po_cu instanceof PaintObjectWriting) {
+            
+            PaintObjectWriting pow = (PaintObjectWriting) _po_cu;
+            Pen pe = pow.getPen();
+            final List<Point> ls_point = pow.getPoints();
+            text = "Stift  " + pe.getClass().getSimpleName()
+                    + " \nArt   " + pe.getID()
+                    + "\nStaerke    " + pe.getThickness()
+                    + "\nFarbe  (" + pe.getClr_foreground().getRed()
+                    + ", " + pe.getClr_foreground().getGreen()
+                    + ", " + pe.getClr_foreground().getBlue()
+                    + ")\nBounds    " + r.x + "." + r.y + ";" 
+                    + r.width + "." + r.height + "\nimageSize  "
+                    + Status.getImageSize().width + "." 
+                    + Status.getImageSize().height 
+                    + "\nPoints";
+            ls_point.toFirst();
+            int currentLine = 0;
+            while (!pow.getPoints().isBehind()) {
+                
+                 currentLine++;
+                 
+                 //each second line a line break;
+                 if (currentLine % 2 == 1) {
+                     text += "\n";
+                 }
+                 
+                 text += ls_point.getItem().x 
+                         + " "
+                         + ls_point.getItem().y + " | ";
+                ls_point.next();
+             }
+        }
+        
+        PaintObjects.getInstance().getJta_infoSelectedPanel()
+        .setText(text);
+        
+        //create bufferedImage
+        BufferedImage bi = new BufferedImage(PaintObjects
+                .getInstance().getJlbl_detailedPosition()
+                .getWidth(), PaintObjects.getInstance()
+                .getJlbl_detailedPosition().getHeight(), 
+                BufferedImage.TYPE_INT_ARGB);
+
+        
+        //fetch rectangle
+        int x = r.x * bi.getWidth() 
+                / Status.getImageSize().width;
+        int y = r.y * bi.getHeight() 
+                / Status.getImageSize().height;
+        int width = r.width * bi.getWidth() 
+                / Status.getImageSize().width;
+        int height = r.height * bi.getHeight() 
+                / Status.getImageSize().height;
+
+        int border = 2;
+        int highlightX = x - border;
+        int highlightY = y - border;
+        int highlightWidth = width + 2 * border;
+        int highlightHeight = height + 2 * border;
+
+        //paint rectangle and initialize with alpha
+        for (int coorX = 0; coorX < bi.getWidth(); coorX++) {
+            for (int coorY = 0; coorY < bi.getHeight(); coorY++) {
+                
+                if (coorX >= x && coorY >= y && x + width >= coorX
+                        && y + height >= coorY) {
+                    bi.setRGB(coorX, coorY, Color.black.getRGB());
+                } else if (coorX >= highlightX 
+                        && coorY >= highlightY 
+                        && highlightX + highlightWidth >= coorX
+                        && highlightY + highlightHeight >= coorY) {
+
+                    bi.setRGB(coorX, coorY, Color.gray.getRGB());
+                } else {
+
+                    bi.setRGB(coorX, coorY, 
+                            new Color(0, 0, 0, 0).getRGB());    
+                }
+            }
+        }
+        PaintObjects.getInstance().getJlbl_detailedPosition()
+        .setIcon(new ImageIcon(bi));
     }
     
     

@@ -768,6 +768,8 @@ public final class Picture extends Observable {
 	    } else {
 	        
 	        ls_poSelected.insertSorted(_po, _po.getSnapshotBounds().x);   
+	        
+	        PictureOverview.getInstance().addSelected(_po);
 	    }
 	}
 	
@@ -852,10 +854,13 @@ public final class Picture extends Observable {
 	            ls_po_sortedByX.insertSorted(pow, pow.getSnapshotBounds().x);
 	        } else if (po instanceof PaintObjectImage) {
 	            PaintObjectImage poi = (PaintObjectImage) po;
-                PictureOverview.getInstance().add(null);
+                PictureOverview.getInstance().add(po);
 
                 ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x);
+	        } else {
+	            Status.getLogger().warning("unknown kind of PaintObject");
 	        }
+	        PictureOverview.getInstance().removeSelected(po);
 	        ls_poSelected.remove();
 	    }
 	    ls_poSelected = null;

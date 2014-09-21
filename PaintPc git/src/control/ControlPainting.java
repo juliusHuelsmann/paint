@@ -1073,8 +1073,8 @@ public final class ControlPainting implements MouseListener,
 
                     PaintObject [][] separatedPO = po_current.separate(
                             r_sizeField);
-                    PictureOverview.getInstance().remove(
-                            Picture.getInstance().getLs_po_sortedByX().getItem());
+                    PictureOverview.getInstance().remove(Picture.getInstance()
+                            .getLs_po_sortedByX().getItem());
                     Picture.getInstance().getLs_po_sortedByX().remove();
                     System.out.println("outside(0)  "  + separatedPO[0].length 
                             + "\tinside(1) " + separatedPO[1].length);
@@ -1103,6 +1103,9 @@ public final class ControlPainting implements MouseListener,
                         //the item into the sorted list.
                         separatedPO[0][current].recalculateSnapshotBounds();
                         ls_toInsert.insertBehind(separatedPO[0][current]);
+
+                        PictureOverview.getInstance().add(
+                                separatedPO[0][current]);
                         } else {
                             System.out.println(getClass() 
                                     + "error separatedpo null");

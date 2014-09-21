@@ -97,10 +97,7 @@ public class PaintLabel extends JLabel {
     public final void paintZoom(final int _x, final int _y, 
             final int _width, final int _height) {
         
-        System.out.println("paint zoom");
         BufferedViewer.show(getBi());
-        System.out.println(getBi().getWidth());
-        System.out.println(getBi().getHeight());
         removeOldRectangle();
         Graphics g = getGraphics();
         g.setColor(Color.red);
@@ -158,7 +155,6 @@ public class PaintLabel extends JLabel {
      */
     public final void paintSelection(final int _x, final int _y, 
             final int _width, final int _height) {
-        System.out.println("paint selection 4");
         getGraphics().drawRect(_x + 1, _y + 1, _width - 1, _height - 1);
         this.r_old = new Rectangle(_x + 1, _y + 1, _width - 1, _height - 1);
     }
@@ -170,7 +166,6 @@ public class PaintLabel extends JLabel {
     public final void removeOldRectangle() {
 
         int tempRemoveErrorOnlyDummyShit = 2;
-        System.out.println("remove old rectangle 5");
         super.setIcon(new ImageIcon(getBi()));
         super.repaint();
         if (tempRemoveErrorOnlyDummyShit == 2 || r_old == null) {
@@ -181,7 +176,6 @@ public class PaintLabel extends JLabel {
         Color c = Color.white;
         g.setColor(c);
 
-        
         //TODO: current problem: if there is something painted to the rectangle,
         //it it painted 4 times by now and not removed
         //(so in case of transparency there'll be an error)

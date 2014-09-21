@@ -5,7 +5,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.JButton;
+
 import model.objects.painting.Picture;
+import settings.Status;
 import view.forms.Page;
 
 
@@ -78,6 +81,104 @@ public class CSelection implements MouseMotionListener, MouseListener {
             }
         } else {
             
+            int distanceX = _event.getXOnScreen() - pnt_start.x;
+            int distanceY = _event.getYOnScreen() - pnt_start.y;
+            int distanceXY;
+            if (Math.abs(distanceX) < Math.abs(distanceY)) {
+                distanceXY = distanceX;
+            } else {
+
+                distanceXY = distanceY;
+            }
+            
+            if (_event.getSource().equals(
+                    Page.getInstance().getJbtn_resize()[0][0])) {
+                
+                Page.getInstance().getJbtn_resize()[0][0].setLocation(
+                        pnt_startLocationButton[0][0].x + distanceXY,
+                        pnt_startLocationButton[0][0].y + distanceXY);
+
+
+                Page.getInstance().getJbtn_resize()[0][1].setLocation(
+                        pnt_startLocationButton[0][1].x + distanceXY,
+                        Page.getInstance().getJbtn_resize()[0][0].getY() 
+                        + (Page.getInstance().getJbtn_resize()[0][2].getY()
+                        - Page.getInstance().getJbtn_resize()[0][0].getY())
+                        / 2);
+
+                Page.getInstance().getJbtn_resize()[0][2].setLocation(
+                        pnt_startLocationButton[0][2].x + distanceXY,
+                        pnt_startLocationButton[0][2].y);
+
+                Page.getInstance().getJbtn_resize()[1][0].setLocation(
+                        Page.getInstance().getJbtn_resize()[0][0].getX()
+                        + (Page.getInstance().getJbtn_resize()[2][0].getX()
+                        - Page.getInstance().getJbtn_resize()[0][0].getX())
+                        / 2,
+                        pnt_startLocationButton[1][0].y + distanceXY);
+
+                Page.getInstance().getJbtn_resize()[2][0].setLocation(
+                        pnt_startLocationButton[2][0].x,
+                        pnt_startLocationButton[2][0].y + distanceXY);
+
+                Page.getInstance().getJbtn_resize()[1][2].setLocation(
+                        Page.getInstance().getJbtn_resize()[0][0].getX()
+                        + (Page.getInstance().getJbtn_resize()[2][0].getX()
+                        - Page.getInstance().getJbtn_resize()[0][0].getX())
+                        / 2,
+                        pnt_startLocationButton[1][2].y);
+                
+                final int size = Page.getInstance().getJbtn_resize()[0][0]
+                        .getWidth();
+                
+
+//                Page.getInstance().getJlbl_painting().removeOldRectangle();
+                Page.getInstance().getJlbl_painting().paintSelection(
+                        Page.getInstance().getJbtn_resize()[0][0].getX()
+                        - size,
+                        Page.getInstance().getJbtn_resize()[0][0].getY()
+                        - size,
+                        Page.getInstance().getJbtn_resize()[0][2].getX()
+                        - Page.getInstance().getJbtn_resize()[0][0].getX(),
+                        Page.getInstance().getJbtn_resize()[2][0].getY()
+                        - Page.getInstance().getJbtn_resize()[0][0].getY());
+                
+            } else if (_event.getSource().equals(
+                    Page.getInstance().getJbtn_resize()[1][0])) {
+                Page.getInstance().getJbtn_resize()[1][0].setLocation(
+                        pnt_startLocationButton[1][0].x,
+                        pnt_startLocationButton[1][0].y + distanceY);
+                Page.getInstance().getJbtn_resize()[0][0].setLocation(
+                        pnt_startLocationButton[0][0].x,
+                        pnt_startLocationButton[0][0].y + distanceY);
+                Page.getInstance().getJbtn_resize()[2][0].setLocation(
+                        pnt_startLocationButton[2][0].x,
+                        pnt_startLocationButton[2][0].y + distanceY);
+                
+            } else if (_event.getSource().equals(
+                    Page.getInstance().getJbtn_resize()[2][0])) {
+                Page.getInstance().getJbtn_resize()[2][0].setLocation(
+                        pnt_startLocationButton[2][0].x + distanceXY,
+                        pnt_startLocationButton[2][0].y + distanceXY);
+                
+            } else if (_event.getSource().equals(
+                    Page.getInstance().getJbtn_resize()[1][0])) {
+                
+            } else if (_event.getSource().equals(
+                    Page.getInstance().getJbtn_resize()[1][2])) {
+                
+            } else if (_event.getSource().equals(
+                    Page.getInstance().getJbtn_resize()[2][1])) {
+                
+            } else if (_event.getSource().equals(
+                    Page.getInstance().getJbtn_resize()[2][2])) {
+                
+            } else if (_event.getSource().equals(
+                    Page.getInstance().getJbtn_resize()[2][3])) {
+                
+            } 
+            
+                
             System.out.println("resizing not done yet");
             //resize
         }
@@ -123,6 +224,11 @@ public class CSelection implements MouseMotionListener, MouseListener {
                         Page.getInstance().getJbtn_resize()[x][y].getLocation();
             }
         }
+        
+        if (!_event.getSource().equals(
+                Page.getInstance().getJbtn_resize()[1][1])) {
+            Page.getInstance().getJlbl_painting().stopBorderThread();
+        }
     }
 
     /**
@@ -130,9 +236,39 @@ public class CSelection implements MouseMotionListener, MouseListener {
      */
     @Override public final void mouseReleased(final MouseEvent _event) {
 
-        int dX = _event.getXOnScreen() - pnt_start.x, 
-                dY = _event.getYOnScreen() - pnt_start.y;
-        Picture.getInstance().moveSelected(dX, dY);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        if (_event.getSource().equals(
+                Page.getInstance().getJbtn_resize()[1][1])) {
+            
+            int dX = _event.getXOnScreen() - pnt_start.x, 
+                    dY = _event.getYOnScreen() - pnt_start.y;
+            Picture.getInstance().moveSelected(dX, dY);
+        } else {
+
+            Picture.getInstance().getLs_poSelected().toFirst();
+            
+            //fetch points from which the vectory may start
+
+            if (_event.getSource() instanceof JButton) {
+                JButton jbtn = (JButton) _event.getSource();
+                Point from = new Point(jbtn.getX() - jbtn.getWidth() / 2,
+                        jbtn.getY() - jbtn.getHeight() / 2);
+            } else {
+                Status.getLogger().warning("Wrong action source? "
+                        + "This warning should never occure.");
+            }
+        }
         
         
         pnt_start = null;

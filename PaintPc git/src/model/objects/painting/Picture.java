@@ -945,4 +945,12 @@ public final class Picture extends Observable {
     public void setBi_normalSize(final BufferedImage _bi_normalSize) {
         this.bi_normalSize = _bi_normalSize;
     }
+
+    /**
+     * @return the ls_poSelected
+     */
+    public List<PaintObject> getLs_poSelected() {
+        return ls_poSelected;
+    }
+
 }

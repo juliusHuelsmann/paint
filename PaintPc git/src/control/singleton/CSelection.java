@@ -133,7 +133,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
                 
 
 //                Page.getInstance().getJlbl_painting().removeOldRectangle();
-                Page.getInstance().getJlbl_painting().paintSelection(
+                Page.getInstance().getJlbl_border().setBounds(
                         Page.getInstance().getJbtn_resize()[0][0].getX()
                         - size,
                         Page.getInstance().getJbtn_resize()[0][0].getY()

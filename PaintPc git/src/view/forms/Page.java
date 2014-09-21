@@ -79,7 +79,11 @@ import control.singleton.CSelection;
      * Selection JLabel.
      */
     private JLabel jlbl_selectionPainting;
-    
+
+    /**
+     * The border JLabel.
+     */
+    private JLabel jlbl_border;
 	
 	/**
 	 * empty utility class constructor. 
@@ -146,6 +150,12 @@ import control.singleton.CSelection;
                 super.add(jbtn_resize[x][y]);
             }
         }
+        
+        jlbl_border = new JLabel();
+        jlbl_border.setOpaque(false);
+        jlbl_border.setBorder(BorderFactory.createLineBorder(Color.black));
+        super.add(jlbl_border);
+        
         
         //the center button
         jbtn_resize[1][1].setBorder(null);
@@ -355,6 +365,22 @@ import control.singleton.CSelection;
      */
     public JButton[][] getJbtn_resize() {
         return jbtn_resize;
+    }
+
+
+    /**
+     * @return the jlbl_border
+     */
+    public JLabel getJlbl_border() {
+        return jlbl_border;
+    }
+
+
+    /**
+     * @param jlbl_border the jlbl_border to set
+     */
+    public void setJlbl_border(JLabel jlbl_border) {
+        this.jlbl_border = jlbl_border;
     }
 }
 

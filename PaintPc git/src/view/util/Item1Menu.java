@@ -5,12 +5,15 @@ package view.util;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
+
 import settings.ViewSettings;
 import view.forms.Page;
+import view.forms.Tabs;
 import control.singleton.CItem;
 import control.singleton.CStatus;
 import model.util.list.List;
@@ -180,6 +183,7 @@ public class Item1Menu extends JPanel {
             
             //when closed repaint.
             Page.getInstance().getJlbl_painting().repaint();
+            Tabs.getInstance().repaint();
         }
     }
     

@@ -1,18 +1,21 @@
 //package declaration
-package view.forms;
+package view.forms.tabs;
 
 //import declarations
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.util.Observable;
 import java.util.Observer;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
 import model.objects.PictureOverview;
 import control.singleton.CPaintObjects;
 import control.singleton.MousePositionTracker;
@@ -108,12 +111,7 @@ public final class PaintObjects extends JPanel implements Observer {
 		//initialize JPanel and alter settings
 		super();
 		super.setLayout(null);
-		super.setOpaque(true);
-		super.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
-		MousePositionTracker mpt = new MousePositionTracker(this);
-		super.addMouseListener(mpt);
-		super.addMouseMotionListener(mpt);
-		super.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+		super.setOpaque(false);
 
 		//final rather unimportant values
 		final int tabSize = 10;
@@ -227,6 +225,8 @@ public final class PaintObjects extends JPanel implements Observer {
 	 */
 	@Override public void setSize(final int _width, final int _height) {
 
+        final int htf = 135;
+	    
 		final int heightJLabel2 = 20;
 		final int heightJLabel = 10;
 		final int heightNewComponent = 50;
@@ -242,35 +242,37 @@ public final class PaintObjects extends JPanel implements Observer {
 		
 		super.setSize(_width, _height);
         sp_up.setIcon_size(iconSize);
-		jlbl_title.setBounds(distance, distance, _width - 2 * distance, 
-		        heightJLabel2);
+        
+        jlbl_title.setBounds(distance, distance, _width / 4, heightJLabel2);
+        jlbl_amountOfItems.setBounds(distance, jlbl_title.getHeight() 
+                + jlbl_title.getY() + distance, _width / 4, heightJLabel2);
+		
+		
+		
 		jpnl_owner.setLocation(distance, distance + jlbl_title.getY()
 		        + jlbl_title.getHeight());
-		jpnl_owner.setSize(_width, _height - heightJLabel2 - distance 
-		        * (2 + 2) - thing);
+		jpnl_owner.setSize(_width, htf - jpnl_owner.getY());
 		jpnl_items.setLocation(0, 0);
-		jpnl_items.setSize(jpnl_owner.getWidth() - distance * 2, hundred);
+		jpnl_items.setSize(jpnl_owner.getWidth() - distance * 2, 
+		        jpnl_owner.getHeight());
 		
 
-		jlbl_detailedPosition.setBounds(jpnl_owner.getX(), jpnl_owner.getY() 
-		        + jpnl_owner.getHeight() + distance, widht_Map , 
-		        Status.getImageSize().height * widht_Map 
-		        / Status.getImageSize().width);
-		jlbl_amountOfItems.setBounds(distance, _height - distance 
-		        - heightJLabel, _width - 2 * distance, heightJLabel);
+		jlbl_detailedPosition.setBounds(jpnl_owner.getX() + distance
+		        + jpnl_owner.getWidth(), jpnl_owner.getY() 
+		        , _width / 4 , jpnl_items.getHeight());
 		
 		sp_up.setLocation(_width - widthScrollPane - 2 * distance, 2 + 2 + 1);
 		sp_up.setSize(twentyFife, jpnl_owner.getHeight());
 				
-		jpnl_container.setLocation(distance, jlbl_detailedPosition.getHeight()
-		        + jlbl_detailedPosition.getY() + distance);
-		jpnl_container.setSize(_width - 2 * distance, _height 
-		        - jpnl_container.getY() - 2 * distance - heightJLabel);
+		jpnl_container.setLocation(jlbl_detailedPosition.getWidth() 
+		        + jlbl_detailedPosition.getX() + distance, 
+		        jpnl_owner.getY());
+		jpnl_container.setSize(jlbl_detailedPosition.getSize());
 		   
 		//initialize values
 		CPaintObjects.getInstance().setRec_old(new Rectangle(
 		        distance, -heightNewComponent + 1,
-		        jpnl_owner.getWidth() - widthScrollPane - (2 + 1) * distance, 
+		        jpnl_owner.getWidth()  / 4, 
 		        heightNewComponent));
 		
 		

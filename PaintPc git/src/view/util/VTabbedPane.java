@@ -197,8 +197,19 @@ public class VTabbedPane extends JPanel {
 		//initialize controller class
 		control = new CTabbedPane(this);
 		startTimeThread();
+		
+		super.setVisible(false);
 	}
 	
+	
+	@Override public final void setVisible(final boolean _b) {
+	    
+	    if (_b) {
+	        openTab(openTab);
+	    }
+	    
+	    super.setVisible(_b);
+	}
 	
 	/**
 	 * Initialize the time log thread.
@@ -547,7 +558,7 @@ public class VTabbedPane extends JPanel {
 	private JPanel initJpnl_tab() {
 
 		JPanel jpnl = new JPanel();
-		jpnl.setVisible(false);
+		jpnl.setVisible(true);
 		jpnl.setLayout(null);
 		jpnl.setFocusable(false);
 		jpnl.setOpaque(false);
@@ -576,8 +587,6 @@ public class VTabbedPane extends JPanel {
             //go through the list of headline JButtons and tab JPanels
             for (int i = 0; i < jbtn_stuffHeadline.length; i++) {
 
-                //set the tab invisible
-                jpnl_stuff[i].setVisible(false);
                 
                 //set the standard background and a border at the bottom for 
                 //each not selected panel and button
@@ -600,6 +609,7 @@ public class VTabbedPane extends JPanel {
                     1, 1, 0, 1, ViewSettings.CLR_BORDER));
             jpnl_contains.setComponentZOrder(jbtn_stuffHeadline[_index], 1);
 
+          super.setSize(getWidth(), visibleHeight);
             new Thread() {
                 public void run() {
 
@@ -618,10 +628,12 @@ public class VTabbedPane extends JPanel {
                                     + (cEndLocation - cStartLocation)
                                     * percent / max,
                                     jpnl_stuff[i].getY());
+                            jpnl_stuff[openTab].repaint();
                             try {
                                 Thread.sleep(1);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
+                                setSize(getWidth(), oldHeight);
                             }
                         }
                     }
@@ -633,6 +645,8 @@ public class VTabbedPane extends JPanel {
                                 + cEndLocation - cStartLocation,
                                 jpnl_stuff[i].getY());
                     }
+                    setSize(getWidth(), oldHeight);
+                    jpnl_stuff[openTab].repaint();
                     
                 }
             } .start();

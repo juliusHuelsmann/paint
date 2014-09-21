@@ -2,10 +2,13 @@
 package view.forms;
 
 //import declarations
+import java.awt.Toolkit;
+
 import control.singleton.CItem;
 import settings.ViewSettings;
 import view.forms.tabs.Insert;
 import view.forms.tabs.Paint;
+import view.forms.tabs.PaintObjects;
 import view.forms.tabs.Selection;
 import view.util.VTabbedPane;
 
@@ -57,21 +60,32 @@ public class Tabs extends VTabbedPane {
         super.addToTab(0, tab_paint);
 
         /*
-         * tab insert
-         */
-        super.addTab("einfuegen");
-        tab_insert = new Insert(ViewSettings.VIEW_HEIGHT_TB);
-        super.addToTab(1, tab_insert);
-        
-
-        /*
          * 
          */
         super.addTab("auswahl");
         Selection tab_selection = new Selection(
                 ViewSettings.VIEW_HEIGHT_TB);
-        super.addToTab(2, tab_selection);
+        super.addToTab(1, tab_selection);
+        
 
+        /*
+         * tab insert
+         */
+        super.addTab("einfuegen");
+        tab_insert = new Insert(ViewSettings.VIEW_HEIGHT_TB);
+        super.addToTab(2, tab_insert);
+        
+
+        
+
+
+        super.addTab("paintObejcts");
+        PaintObjects tab_pos = PaintObjects.getInstance();
+        PaintObjects.getInstance().setSize(
+                (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
+                ViewSettings.VIEW_HEIGHT_TB);
+        super.addToTab(2 + 1, tab_pos);
+        
         /*
          * tab view
          */
@@ -81,6 +95,21 @@ public class Tabs extends VTabbedPane {
          * tab print
          */
         super.addTab("Drucken");
+
+        /*
+         * tab print
+         */
+        super.addTab("Projekte");
+
+        /*
+         * tab print
+         */
+        super.addTab("Ziele");
+
+        /*
+         * tab print
+         */
+        super.addTab("Uebersicht");
         
 
     }

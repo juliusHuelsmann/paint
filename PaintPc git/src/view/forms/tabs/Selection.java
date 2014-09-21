@@ -4,9 +4,12 @@ package view.forms.tabs;
 //import declarations
 import java.awt.Color;
 import java.awt.Toolkit;
+
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+
 import view.util.Item1Menu;
 import view.util.Item1Button;
 

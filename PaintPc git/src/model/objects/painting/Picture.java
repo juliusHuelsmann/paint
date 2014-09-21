@@ -21,7 +21,7 @@ import settings.Error;
 import settings.Status;
 import view.ViewVorschau;
 import view.forms.Page;
-import view.forms.PaintObjects;
+import view.forms.tabs.PaintObjects;
 import model.objects.PictureOverview;
 import model.objects.pen.Pen;
 import model.objects.pen.special.PenSelection;

@@ -6,19 +6,21 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
 import settings.Constants;
 import settings.Status;
 import settings.ViewSettings;
 import start.utils.Utils;
 import view.forms.New;
 import view.forms.Page;
-import view.forms.PaintObjects;
 import view.forms.Tabs;
 import view.forms.tabs.Paint;
+import view.forms.tabs.PaintObjects;
 import control.ControlPainting;
 
 /**
@@ -90,7 +92,6 @@ import control.ControlPainting;
         /*
          * add tab, overview about paintObjects and Page
          */
-        super.add(PaintObjects.getInstance());
         super.add(Tabs.getInstance());
         super.add(Page.getInstance());
 
@@ -362,8 +363,6 @@ import control.ControlPainting;
         
         //initialize PaintObjects
         Status.getLogger().info("   initialize PaintObjects\n");
-        PaintObjects.getInstance().setSize(ViewSettings.VIEW_BOUNDS_PO.width, 
-                ViewSettings.VIEW_BOUNDS_PO.height);
 
         //initialize PaintObjects
         Status.getLogger().info("   initialize Page\n");
@@ -375,8 +374,6 @@ import control.ControlPainting;
 
 	        
 	        jbtn_exit.setBounds(ViewSettings.VIEW_BOUNDS_JBTN_EXIT);
-	        PaintObjects.getInstance().setLocation(
-	                ViewSettings.VIEW_BOUNDS_PO.getLocation());
 	        Page.getInstance().setLocation(
 	                ViewSettings.VIEW_BOUNDS_PAGE.getLocation());
 
@@ -398,13 +395,6 @@ import control.ControlPainting;
 	                jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
 	                Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
 
-	        PaintObjects.getInstance().setLocation(
-	                ViewSettings.VIEW_BOUNDS_PO.x, 
-                    ViewSettings.VIEW_SIZE_JFRAME.height 
-                    - ViewSettings.VIEW_BOUNDS_PO.y 
-                    - ViewSettings.VIEW_BOUNDS_PO.height);
-
-            PaintObjects.getInstance().setVisible(false);
             Page.getInstance().setLocation(
                     ViewSettings.VIEW_SIZE_JFRAME.width
                     - ViewSettings.VIEW_BOUNDS_PAGE.x

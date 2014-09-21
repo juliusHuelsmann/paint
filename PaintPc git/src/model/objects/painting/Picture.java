@@ -13,15 +13,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-
 import settings.Error;
 import settings.Status;
 import view.ViewVorschau;
 import view.forms.Page;
-import view.forms.tabs.PaintObjects;
 import model.objects.PictureOverview;
 import model.objects.pen.Pen;
 import model.objects.pen.special.PenSelection;

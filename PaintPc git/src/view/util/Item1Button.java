@@ -418,14 +418,15 @@ public class Item1Button extends JPanel {
     /**
      * @return the additionalInformation
      */
-    public Object getAdditionalInformation() {
+    public final Object getAdditionalInformation() {
         return additionalInformation;
     }
 
     /**
-     * @param additionalInformation the additionalInformation to set
+     * @param _additionalInformation the additionalInformation to set
      */
-    public void setAdditionalInformation(Object additionalInformation) {
-        this.additionalInformation = additionalInformation;
+    public final void setAdditionalInformation(
+            final Object _additionalInformation) {
+        this.additionalInformation = _additionalInformation;
     }
 }

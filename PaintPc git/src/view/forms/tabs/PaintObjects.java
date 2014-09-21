@@ -6,19 +6,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.util.Observable;
 import java.util.Observer;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-
 import model.objects.PictureOverview;
 import control.singleton.CPaintObjects;
-import control.singleton.MousePositionTracker;
 import settings.Status;
 import settings.ViewSettings;
 import view.util.VScrollPane;

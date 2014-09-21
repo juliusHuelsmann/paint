@@ -7,10 +7,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import javax.swing.JOptionPane;
-
-import settings.Constants;
 import settings.Status;
 import view.View;
 import view.forms.Page;
@@ -306,6 +303,40 @@ public class PaintObjectWriting extends PaintObject {
         return false;
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    @Override public final synchronized void recalculateSnapshotBounds() {
+        
+        //if the list is not empty
+        if (!ls_point.isEmpty()) {
+            
+            //go to the beginning of the list
+            ls_point.toFirst();
+
+            //reset values.
+            minX = Integer.MAX_VALUE;
+            minY = Integer.MAX_VALUE;
+            maxX = Integer.MIN_VALUE;
+            maxY = Integer.MIN_VALUE;
+            
+            //go through the list
+            while (!ls_point.isBehind()) {
+
+                //update MIN values
+                minX = Math.min(ls_point.getItem().x, minX);
+                minY = Math.min(ls_point.getItem().y, minY);
+
+                //update MAX values
+                maxX = Math.max(ls_point.getItem().x, maxX);
+                maxY = Math.max(ls_point.getItem().y, maxY);
+                
+                //proceed one step
+                ls_point.next();
+            }
+        }
+    }
     
     
     /**
@@ -363,35 +394,6 @@ public class PaintObjectWriting extends PaintObject {
                     
                     //add new point to the PaintObject
                     pow_current.addPoint(new Point(pcNew));
-                    
-                    final Point p_thread = pnt_border;
-                    new Thread(){
-                        public void run(){
-                            
-                            while(!isInterrupted()) {
-                                Graphics g = Page.getInstance().getJlbl_selectionPainting().getGraphics();
-                                
-//                                g.setColor(Color.green);
-//                                
-//                                g.drawRect(p_thread.x, p_thread.y, 2,2);
-//                                
-//
-//                                try{
-//                                    Thread.sleep(100);
-//                                }catch(Exception e){
-//                                    
-//                                }
-                                g.setColor(Color.red);
-                                g.drawRect(p_thread.x, p_thread.y, 2, 2);
-                                
-                                try{
-                                    Thread.sleep(500);
-                                }catch(Exception e){
-                                    
-                                }
-                            }
-                        }
-                    } .start();
                 }
                 
             } else {
@@ -415,34 +417,6 @@ public class PaintObjectWriting extends PaintObject {
                     
                     //add new point to the PaintObject
                     pow_current.addPoint(new Point(pcNew));
-                    final Point p_thread = pnt_border;
-                    new Thread(){
-                        public void run(){
-                            
-                            while(!isInterrupted()) {
-                                Graphics g = Page.getInstance().getJlbl_selectionPainting().getGraphics();
-                                
-                                g.setColor(Color.blue);
-                                
-                                g.drawRect(p_thread.x, p_thread.y, 2,2);
-                                
-
-//                                try{
-//                                    Thread.sleep(100);
-//                                }catch(Exception e){
-//                                    
-//                                }
-//                                g.setColor(Color.orange);
-//                                g.drawRect(p_thread.x, p_thread.y, 2, 2);
-                                
-                                try{
-                                    Thread.sleep(1000);
-                                }catch(Exception e){
-                                    
-                                }
-                            }
-                        }
-                    } .start();
                 } else {
 
                     pow_current.addPoint(new Point(pcNew));
@@ -544,6 +518,18 @@ public class PaintObjectWriting extends PaintObject {
      *               |           |
      *               |___________|
      *   
+     * Step 1: calculate the 4 intersections and their factors
+     * Thus, the equations to be solved are
+     * _v.x     - _d.x      |   _s.x - _p.x
+     * _v.y     - _d.y      |   _s.y - _p.y 
+     * If _v and _p are named as inside the header of this method, _d and _s
+     * the direction and support vectors of the current rectangle line 
+     * 
+     * Step2: Calculate Intersection1...4 and check whether they are at
+     * the rectangle border. Otherwise set them null
+     * 
+     * 
+     * 
      * 
      * @param _r the Rectangle which is to be intersected
      * @param _p the Point (thus the "support vector") 
@@ -552,24 +538,12 @@ public class PaintObjectWriting extends PaintObject {
      */
     public static Point findIntersection(final Rectangle _r, final Point _p, 
             final Point _v) {
-        
         /*
-         * Step 1: calculate the 4 intersections and their factors
-         * 
-         * Thus, the equations to be solved are
-         * 
-         * _v.x     - _d.x      |   _s.x - _p.x
-         * _v.y     - _d.y      |   _s.y - _p.y 
-         * 
-         * If _v and _p are named as inside the header of this method, _d and _s
-         * the direction and support vectors of the current rectangle line 
-         * 
+         * Step 1
          */
-
         //Visualization s____________
         //      x       s           |
         //              s    x      |
-        //              s           |
         //              s___________|
         //  LEFT        s
         Matrix m = new Matrix(2, 2 + 1);
@@ -579,12 +553,10 @@ public class PaintObjectWriting extends PaintObject {
         m.setValue(1, 1, 1);
         m.setValue(0, 2, _r.x - _p.x);
         m.setValue(1, 2, _r.y - _p.y);
-        double [] factors1 = m.solve();
-
+        double [] factor1 = m.solve();
         //Visualization s s s s s s s s s s s s s
         //      x       |           |
         //              |    x      |
-        //              |           |
         //  TOP         |___________|
         m = new Matrix(2, 2 + 1);
         m.setValue(0, 0, _v.x);
@@ -593,12 +565,10 @@ public class PaintObjectWriting extends PaintObject {
         m.setValue(1, 1, 0);
         m.setValue(0, 2, _r.x - _p.x);
         m.setValue(1, 2, _r.y - _p.y);
-        double [] factors2 = m.solve();
-        
+        double [] factor2 = m.solve();
         //Visualization ____________s
         //      x       |           s
         //              |    x      s
-        //              |           s
         //  RIGHT       |___________s
         m = new Matrix(2, 2 + 1);
         m.setValue(0, 0, _v.x);
@@ -607,12 +577,10 @@ public class PaintObjectWriting extends PaintObject {
         m.setValue(1, 1, -1);
         m.setValue(0, 2, _r.x + _r.width - _p.x);
         m.setValue(1, 2, _r.y + _r.height - _p.y);
-        double [] factors3 = m.solve();
-        
+        double [] factor3 = m.solve();
         //Visualization _____________
         //      x       |           |
         //              |    x      |
-        //              |           |
         //  BOTTOM    s s s s s s s s s
         m = new Matrix(2, 2 + 1);
         m.setValue(0, 0, _v.x);
@@ -621,110 +589,87 @@ public class PaintObjectWriting extends PaintObject {
         m.setValue(1, 1, 0);
         m.setValue(0, 2, _r.x + _r.width - _p.x);
         m.setValue(1, 2, _r.y + _r.height - _p.y);
-        double [] factors4 = m.solve();
-        
-        
+        double [] factor4 = m.solve();
         /*
-         * Step2: Calculate Intersection1...4 and check whether they are at
-         * the rectangle border. Otherwise set them null
+         * Step 2
          */
         Point intersection1 = null, intersection2 = null, 
                 intersection3 = null, intersection4 = null;
-        
         //fetch point
-        if (factors1 != null) {
-
-            intersection1 = new Point((int) (_p.x + factors1[0] * _v.x), 
-                    (int) (_p.y + factors1[0] * _v.y));
-
+        if (factor1 != null) {
+            intersection1 = new Point((int) (_p.x + factor1[0] * _v.x), 
+                    (int) (_p.y + factor1[0] * _v.y));
             //check whether suitable.
             if (_r.y + _r.height  - (int) intersection1.y < 0
                     || _r.y - (int) intersection1.y > 0) {
-
-                System.out.println("hier\t" 
-                        + (_r.y + _r.height  - (int) intersection1.y) + "\n\t"
-                        + (_r.y - (int) intersection1.y) + "\n");
                 intersection1 = null;
             }
         }
-
-        if (factors2 != null) {
-
+        if (factor2 != null) {
             //fetch point
-            intersection2 = new Point((int) (_p.x + factors2[0] * _v.x), 
-                    (int) (_p.y + factors2[0] * _v.y));
-            
+            intersection2 = new Point((int) (_p.x + factor2[0] * _v.x), 
+                    (int) (_p.y + factor2[0] * _v.y));
             //check whether suitable.
             if (_r.x + _r.width  - (int) intersection2.x < 0
                     || _r.x - (int) intersection2.x > 0) {
                 intersection2 = null;
             }
         }
-        if (factors3 != null) {
+        if (factor3 != null) {
             //fetch point
-            intersection3 = new Point((int) (_p.x + factors3[0] * _v.x), 
-                    (int) (_p.y + factors3[0] * _v.y));
-            
+            intersection3 = new Point((int) (_p.x + factor3[0] * _v.x), 
+                    (int) (_p.y + factor3[0] * _v.y));
             //check whether suitable.
             if (_r.y + _r.height  - (int) intersection3.y < 0
                     || _r.y - (int) intersection3.y > 0) {
                 intersection3 = null;
             }
         }
-        if (factors4 != null) {
-
+        if (factor4 != null) {
             //fetch point
-            intersection4 = new Point((int) (_p.x + factors4[0] * _v.x), 
-                    (int) (_p.y + factors4[0] * _v.y));
-            
+            intersection4 = new Point((int) (_p.x + factor4[0] * _v.x), 
+                    (int) (_p.y + factor4[0] * _v.y));
             //check whether suitable.
             if (_r.x + _r.width  - (int) intersection4.x < 0
                     || _r.x - (int) intersection4.x > 0) {
                 intersection4 = null;
             }
         }
-        
         double minLambda = Double.MAX_VALUE;
         int minIndex = -1;
-
         if (intersection1 != null) {
-           if (minLambda > Math.abs(factors1[0])) {
-               minLambda = Math.abs(factors1[0]);
+           if (minLambda > Math.abs(factor1[0])) {
+               minLambda = Math.abs(factor1[0]);
                minIndex = 1;
            }
         }
         if (intersection2 != null) {
-            if (minLambda > Math.abs(factors2[0])) {
-                minLambda = Math.abs(factors2[0]);
+            if (minLambda > Math.abs(factor2[0])) {
+                minLambda = Math.abs(factor2[0]);
                 minIndex = 2;
             }
         }
         if (intersection3 != null) {
-            if (minLambda > Math.abs(factors3[0])) {
-                minLambda = Math.abs(factors3[0]);
+            if (minLambda > Math.abs(factor3[0])) {
+                minLambda = Math.abs(factor3[0]);
                 minIndex = 2 + 1;
             }
         }
         if (intersection4 != null) {
-            if (minLambda > Math.abs(factors4[0])) {
-                minLambda = Math.abs(factors4[0]);
+            if (minLambda > Math.abs(factor4[0])) {
+                minLambda = Math.abs(factor4[0]);
                 minIndex = 2 + 2;
             }
         }
-
-        System.out.println("findIntersection; min index: " + minIndex + "\n"
-                + "intersec1:\t" +  intersection1 + "\nintersec2:\t" 
-                + intersection2 + "\nintersec3:\t" + intersection3 
-                + "\nintersec2:\t" + intersection4 
-                + "\nfactor1:\t" + factors1[0] + "\nfactor2:\t" + factors2[0] 
-                + "\nfactor3:\t" + factors3[0] + "\nfactor4:\t" + factors4[0]);
-        
         switch(minIndex) {
         case -1:
-
-            new Exception("PaintObjectWriting@static method; not a single "
-                    + "equation matched. That should be impossible")
-            .printStackTrace();
+            Status.getLogger().warning("PaintObjectWriting@static method; not"
+                    + " a single equation matched. That should be impossible"
+                    + "\n\nmin index: " + minIndex + "\n\nIntersections:\n"
+                    + "1:\t" +  intersection1 + "\n2:\t" + intersection2 
+                    + "\n3:\t" + intersection3 + "\n4:\t" + intersection4 
+                    + "\n\nFactors:\n1:\t" + factor1[0] + "\n2:\t" + factor2[0]
+                    + "\n3:\t" + factor3[0] + "\n4:\t" + factor4[0]);
             return null;
         case 1:
             return intersection1;
@@ -737,26 +682,36 @@ public class PaintObjectWriting extends PaintObject {
         default:
             new Exception("PaintObjectWriting@static method; Unexpected case")
             .printStackTrace();
-            
             return null;
         }
     }
     
-    private static void verify(final Point p_thread){
+    
+    /**
+     * Utility method for printing a point.
+     * Move to utils.
+     * 
+     * @param _p the Point which is to be printed
+     */
+    public static void verify(final Point _p) {
 
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 
-                while(!isInterrupted()) {
-                    Graphics g = Page.getInstance().getJlbl_selectionPainting().getGraphics();
+                
+                final int sleepTime = 500;
+                
+                while (!isInterrupted()) {
+                    Graphics g = Page.getInstance()
+                            .getJlbl_selectionPainting().getGraphics();
                     
                     g.setColor(Color.orange);
-                    g.drawRect(p_thread.x, p_thread.y, 2, 2);
+                    g.drawRect(_p.x, _p.y, 2, 2);
                     
-                    try{
-                        Thread.sleep(500);
-                    }catch(Exception e){
-                        
+                    try {
+                        Thread.sleep(sleepTime);
+                    } catch (Exception e) {
+                        interrupt();
                     }
                 }
             }
@@ -766,7 +721,22 @@ public class PaintObjectWriting extends PaintObject {
     /*
      * getter methods.
      */
+
+    /**
+     * setter method for pen.
+     * @param _pen the pen.
+     */
+    public final void setPen(final Pen _pen) {
+        this.pen = _pen;
+    }
     
+    /**
+     * Change the color of given pen.
+     * @param _clr the color which is set.
+     */
+    public final void changeColor(final Color _clr) {
+        pen.setClr_foreground(_clr);
+    }
     
     /**
 	 * getter method for pen. is used (e.g.) to
@@ -777,15 +747,6 @@ public class PaintObjectWriting extends PaintObject {
 	public final Pen getPen() {
 		return pen;
 	}
-	
-	
-	/**
-	 * setter method for pen.
-	 * @param _pen the pen.
-	 */
-	public final void setPen(final Pen _pen) {
-	    this.pen = _pen;
-	}
     
     /**
      * return list of points.
@@ -795,49 +756,5 @@ public class PaintObjectWriting extends PaintObject {
     public final List<Point> getPoints() {
         return ls_point;
     }
-    
-    /**
-     * Change the color of given pen.
-     * @param _clr the color which is set.
-     */
-    public final void changeColor(final Color _clr) {
-        pen.setClr_foreground(_clr);
-    }
 
-
-    /**
-     * 
-     * {@inheritDoc}
-     */
-    @Override public final synchronized void recalculateSnapshotBounds() {
-        
-        //if the list is not empty
-        if (!ls_point.isEmpty()) {
-            
-            //go to the beginning of the list
-            ls_point.toFirst();
-
-            //reset values.
-            minX = Integer.MAX_VALUE;
-            minY = Integer.MAX_VALUE;
-            maxX = Integer.MIN_VALUE;
-            maxY = Integer.MIN_VALUE;
-            
-            //go through the list
-            while (!ls_point.isBehind()) {
-
-                //update MIN values
-                minX = Math.min(ls_point.getItem().x, minX);
-                minY = Math.min(ls_point.getItem().y, minY);
-
-                //update MAX values
-                maxX = Math.max(ls_point.getItem().x, maxX);
-                maxY = Math.max(ls_point.getItem().y, maxY);
-                
-                //proceed one step
-                ls_point.next();
-            }
-        }
-        
-    }
 }

@@ -541,7 +541,6 @@ public final class ControlPainting implements MouseListener,
      */
     private void mouseReleasedPainting(final MouseEvent _event) {
 
-        System.out.println(getClass() + " painting released");
         // switch index of operation
         switch (Status.getIndexOperation()) {
 
@@ -563,18 +562,14 @@ public final class ControlPainting implements MouseListener,
             
             //select complete item.
             case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
-
                 //paint stuff
                 mr_selection_line_complete(_event);
-                
                 break;
                 
             //destroy items
             case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
-                
                 //stuff
                 mr_selection_line_destroy(_event);
-                
                 break;
                 
             case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
@@ -596,64 +591,8 @@ public final class ControlPainting implements MouseListener,
             Picture.getInstance().abortPaintObject();
             break;
         case Constants.CONTROL_PAINTING_INDEX_ZOOM:
-
-            if (Status.getImageShowSize().width
-                    / Status.getImageSize().width 
-                    < Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
-                            ViewSettings.MAX_ZOOM_IN)) {
-                
-                int newWidth = Status.getImageShowSize().width
-                        * ViewSettings.ZOOM_MULITPLICATOR, 
-                        newHeight = Status.getImageShowSize().height
-                        * ViewSettings.ZOOM_MULITPLICATOR;
-
-                Point oldLocation = new Point(Page.getInstance()
-                        .getJlbl_painting().getLocation().x, Page.getInstance()
-                        .getJlbl_painting().getLocation().y);
-
-                Status.setImageShowSize(new Dimension(newWidth, newHeight));
-                Page.getInstance().flip(Status.isNormalRotation());
-
-                /*
-                 * set the location of the panel.
-                 */
-
-                // save new coordinates
-                int newX = (oldLocation.x - Zoom.getInstance().getX())
-                        * ViewSettings.ZOOM_MULITPLICATOR;
-                int newY = (oldLocation.y - Zoom.getInstance().getY())
-                        * ViewSettings.ZOOM_MULITPLICATOR;
-
-                // check if the bounds are valid
-
-                // not smaller than the
-                newX = Math.max(newX, -(Status.getImageShowSize().width 
-                        - Page.getInstance().getJlbl_painting()
-                        .getWidth()));
-                newY = Math.max(newY,
-                        -(Status.getImageShowSize().height - Page
-                                .getInstance().getJlbl_painting()
-                                .getHeight()));
-
-                // not greater than 0
-                newX = Math.min(newX, 0);
-                newY = Math.min(newY, 0);
-
-                // apply the location at JLabel
-                Page.getInstance().getJlbl_painting().setLocation(newX, newY);
-
-                // apply the new location at ScrollPane
-                Page.getInstance().refrehsSps();
-            } else {
-                
-                //TODO: das hier soltle in einer popup text message stehen
-                //die nur als info da ist (nicht als fenster sondern nur
-                //text schoen @ gui.
-                JOptionPane.showMessageDialog(
-                        View.getInstance(), "max zoom in reached");
-            }
+            mr_zoom(_event);
             break;
-
         case Constants.CONTROL_PAINTING_INDEX_PIPETTE:
             actionPipette(_event);
             break;
@@ -679,7 +618,6 @@ public final class ControlPainting implements MouseListener,
                                     + Page.getInstance().getJlbl_painting()
                                     .getWidth();
                         }
-
                         if (x > 0) {
                             x = 0;
                         }
@@ -698,9 +636,9 @@ public final class ControlPainting implements MouseListener,
                         Page.getInstance().refrehsSps();
                         
                         try {
-                            Thread.sleep(20);
+                            final int sleepTime = 20;
+                            Thread.sleep(sleepTime);
                         } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
@@ -721,9 +659,7 @@ public final class ControlPainting implements MouseListener,
             Page.getInstance().getJlbl_painting().refreshPaint();
             break;
         default:
-            System.out.println(getClass()
-                    + " switch in mouseReleased default");
-            System.exit(1);
+            Status.getLogger().warning("Switch in mouseReleased default");
             break;
         }
     }
@@ -1147,6 +1083,67 @@ public final class ControlPainting implements MouseListener,
     }
     
     
+    
+    /**
+     * The MouseReleased event for zoom.
+     * @param _event the event.
+     */
+    private void mr_zoom(final MouseEvent _event) {
+
+        if (Status.getImageShowSize().width
+                / Status.getImageSize().width 
+                < Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
+                        ViewSettings.MAX_ZOOM_IN)) {
+            
+            int newWidth = Status.getImageShowSize().width
+                    * ViewSettings.ZOOM_MULITPLICATOR, 
+                    newHeight = Status.getImageShowSize().height
+                    * ViewSettings.ZOOM_MULITPLICATOR;
+
+            Point oldLocation = new Point(Page.getInstance()
+                    .getJlbl_painting().getLocation().x, Page.getInstance()
+                    .getJlbl_painting().getLocation().y);
+
+            Status.setImageShowSize(new Dimension(newWidth, newHeight));
+            Page.getInstance().flip(Status.isNormalRotation());
+
+            /*
+             * set the location of the panel.
+             */
+            // save new coordinates
+            int newX = (oldLocation.x - Zoom.getInstance().getX())
+                    * ViewSettings.ZOOM_MULITPLICATOR;
+            int newY = (oldLocation.y - Zoom.getInstance().getY())
+                    * ViewSettings.ZOOM_MULITPLICATOR;
+
+            // check if the bounds are valid
+
+            // not smaller than the
+            newX = Math.max(newX, -(Status.getImageShowSize().width 
+                    - Page.getInstance().getJlbl_painting()
+                    .getWidth()));
+            newY = Math.max(newY,
+                    -(Status.getImageShowSize().height - Page
+                            .getInstance().getJlbl_painting()
+                            .getHeight()));
+            // not greater than 0
+            newX = Math.min(newX, 0);
+            newY = Math.min(newY, 0);
+
+            // apply the location at JLabel
+            Page.getInstance().getJlbl_painting().setLocation(newX, newY);
+
+            // apply the new location at ScrollPane
+            Page.getInstance().refrehsSps();
+        } else {
+            
+            //TODO: das hier soltle in einer popup text message stehen
+            //die nur als info da ist (nicht als fenster sondern nur
+            //text schoen @ gui.
+            JOptionPane.showMessageDialog(
+                    View.getInstance(), "max zoom in reached");
+        }
+    }
 
     /**
      * the save action.

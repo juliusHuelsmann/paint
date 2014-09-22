@@ -4,12 +4,9 @@ package model.objects.painting;
 //import declarations
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import javax.swing.JOptionPane;
-
 import settings.Status;
 import view.View;
 import view.forms.Page;
@@ -370,7 +367,7 @@ public class PaintObjectWriting extends PaintObject {
         while (!ls_point.isBehind()) {
             
            DPoint pcNew = ls_point.getItem();
-            boolean cInside = (pcNew.getX() >= _r.x && pcNew.getX() <= _r.x + _r.width 
+           boolean cInside = (pcNew.getX() >= _r.x && pcNew.getX() <= _r.x + _r.width 
                     && pcNew.getY() >= _r.y && pcNew.getY() <= _r.y + _r.height);
             
             if (cInside) {

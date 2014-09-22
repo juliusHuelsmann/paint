@@ -46,10 +46,15 @@ public abstract class PaintObject implements Serializable {
 	 */
 	public abstract boolean isInSelectionImage(final Rectangle _r);
     
+	
 	/**
+	 * Stretch the points of entire paintObject and recalculate bounds on the
+	 * fly.
 	 * 
-	 * @param _pnt_from
-	 * @param _pnt_totalStretch
+	 * @param _pnt_from The Point from where to stretch
+	 * @param _pnt_totalStretch the total delta stretch
+	 * @param _pnt_size the new size of the rectangle which is indicating
+	 * the new size of the stretched PaintObject.
 	 */
 	public abstract void stretch(final DPoint _pnt_from, 
 	        final DPoint _pnt_totalStretch,
@@ -118,15 +123,17 @@ public abstract class PaintObject implements Serializable {
 	/**
      * return the bounds of the rectangle of the great image for this 
      * paintObject snapshot.
-     * @return the rect.
+     * 
+     * @return the rectangle.
      */
     public abstract Rectangle getSnapshotBounds();
 
 
     /**
-     * return the bounds of the rectangle of the great 
-     * image for this paintObject snapshot.
-     * @return the bounds of the rect.
+     * return the bounds of the smallest square rectangle which contains the 
+     * whole PaintObject.
+     * 
+     * @return the bounds of the rectangle.
      */
     public abstract Rectangle getSnapshotSquareBounds();
 
@@ -137,7 +144,6 @@ public abstract class PaintObject implements Serializable {
     public abstract void recalculateSnapshotBounds();
 
     
-    
     /**
      * Separates the PaintObject; thus there are parts that are inside the
      * given rectangle and ones that are outside.
@@ -145,6 +151,7 @@ public abstract class PaintObject implements Serializable {
      * @return the PaintObject array [0][x] outside, [1] [x] inside.s
      */
     public abstract PaintObject[][] separate(Rectangle _r);
+  
     /*
      * getter methods.
      */

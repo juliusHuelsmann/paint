@@ -379,10 +379,7 @@ public final class ControlPainting implements MouseListener,
 
                 if (pnt_start != null) {
 
-                    Page.getInstance().getJlbl_painting().removeOldRectangle();
-                    Page.getInstance()
-                            .getJlbl_painting()
-                            .paintSelection(
+                    Page.getInstance().getJlbl_border().setBounds(
                                     Math.min(pnt_start.x, _event.getX()),
                                     Math.min(pnt_start.y, _event.getY()),
                                     Math.abs(pnt_start.x - _event.getX()),

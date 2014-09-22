@@ -129,18 +129,16 @@ public class CSelection implements MouseMotionListener, MouseListener {
                         pnt_startLocationButton[1][2].y);
                 
                 final int size = Page.getInstance().getJbtn_resize()[0][0]
-                        .getWidth();
-                
+                        .getWidth() / 2;
 
-//                Page.getInstance().getJlbl_painting().removeOldRectangle();
                 Page.getInstance().getJlbl_border().setBounds(
                         Page.getInstance().getJbtn_resize()[0][0].getX()
                         - size,
                         Page.getInstance().getJbtn_resize()[0][0].getY()
                         - size,
-                        Page.getInstance().getJbtn_resize()[0][2].getX()
+                        Page.getInstance().getJbtn_resize()[2][0].getX()
                         - Page.getInstance().getJbtn_resize()[0][0].getX(),
-                        Page.getInstance().getJbtn_resize()[2][0].getY()
+                        Page.getInstance().getJbtn_resize()[0][2].getY()
                         - Page.getInstance().getJbtn_resize()[0][0].getY());
                 
             } else if (_event.getSource().equals(

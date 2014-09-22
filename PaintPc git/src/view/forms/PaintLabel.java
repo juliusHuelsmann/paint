@@ -99,10 +99,8 @@ public class PaintLabel extends JLabel {
             final int _width, final int _height) {
         
         BufferedViewer.show(getBi());
-        removeOldRectangle();
-        Graphics g = getGraphics();
-        g.setColor(Color.red);
-        g.drawRect(_x + 1, _y + 1, _width - 1, _height - 1);
+        
+        Page.getInstance().getJlbl_border().setBounds(_x, _y, _width, _height);
         this.r_old = new Rectangle(_x + 1, _y + 1, _width - 1, _height - 1);
     }
     
@@ -147,157 +145,8 @@ public class PaintLabel extends JLabel {
         
     }
     
-    /**
-     * das gleiche wie unten nur mut zoom rec.t.
-     * @param _x the x coordinate in view
-     * @param _y the y coordinate in view
-     * @param _width the width
-     * @param _height the height
-     */
-    public final void paintSelection(final int _x, final int _y, 
-            final int _width, final int _height) {
-        getGraphics().drawRect(_x + 1, _y + 1, _width - 1, _height - 1);
-        this.r_old = new Rectangle(_x + 1, _y + 1, _width - 1, _height - 1);
-    }
     
     
-    /**
-     * Remove the old changed pixel from zoom.
-     */
-    public final void removeOldRectangle() {
-
-        int tempRemoveErrorOnlyDummyShit = 2;
-        super.setIcon(new ImageIcon(getBi()));
-        super.repaint();
-        if (tempRemoveErrorOnlyDummyShit == 2 || r_old == null) {
-            return;
-        }
-        //set color and fetch Graphics
-        Graphics g = getGraphics();
-        Color c = Color.white;
-        g.setColor(c);
-
-        //TODO: current problem: if there is something painted to the rectangle,
-        //it it painted 4 times by now and not removed
-        //(so in case of transparency there'll be an error)
-        
-        //clear the rectangle which is to be repainted
-        //and update the painted stuff of the image afterwards.
-        Picture.getInstance().emptyRectangle(
-                
-                //the coordinates in total image
-                r_old.x - Page.getInstance().getJlbl_painting().getLocation().x,
-                r_old.y - Page.getInstance().getJlbl_painting().getLocation().y,
-                
-                //the size of the image- part that is printed.
-                //is one bigger than the rectangle because the lines are
-                //painted outside of the rectangle, thus it is necessary
-                //to repaint there.
-                r_old.width + 1, 1,
-                
-                //the graphics coordinates.
-                r_old.x,
-                r_old.y,
-                
-                getBi());
-
-        //clear the rectangle which is to be repainted
-        //and update the painted stuff of the image afterwards.
-        Picture.getInstance().emptyRectangle(
-                
-                //the coordinates in total image
-                r_old.x - Page.getInstance().getJlbl_painting().getX()
-                     + r_old.width,
-                r_old.y - Page.getInstance().getJlbl_painting().getY(),
-                //the size of the image- part that is printed.
-                //is one bigger than the rectangle because the lines are
-                //painted outside of the rectangle, thus it is necessary
-                //to repaint there.
-                1, r_old.height + 1, 
-                
-                //the graphics coordinates.
-                r_old.x + r_old.width,
-                r_old.y,
-                
-                getBi());
-
-        //clear the rectangle which is to be repainted
-        //and update the painted stuff of the image afterwards.
-        Picture.getInstance().emptyRectangle(
-                
-                //the coordinates in total image
-                r_old.x - Page.getInstance().getJlbl_painting().getX(),
-                r_old.y - Page.getInstance().getJlbl_painting().getY()
-                        + r_old.height,
-                
-                //the size of the image- part that is printed.
-                //is one bigger than the rectangle because the lines are
-                //painted outside of the rectangle, thus it is necessary
-                //to repaint there.
-                r_old.width + 1, 1, 
-                
-                //the graphics coordinates.
-                r_old.x,
-                r_old.y + r_old.height,
-                
-                getBi());
-        
-        //clear the rectangle which is to be repainted
-        //and update the painted stuff of the image afterwards.
-        Picture.getInstance().emptyRectangle(
-                
-                //the coordinates in total image
-                r_old.x - Page.getInstance().getJlbl_painting().getX(),
-                r_old.y - Page.getInstance().getJlbl_painting().getY(),
-                
-                //the size of the image- part that is printed.
-                //is one bigger than the rectangle because the lines are
-                //painted outside of the rectangle, thus it is necessary
-                //to repaint there.
-                1, r_old.height + 1, 
-                
-                //the graphics coordinates.
-                r_old.x,
-                r_old.y,
-                
-                getBi());
-
-        Picture.getInstance().repaintRectangle(
-                
-                //the coordinates in total image
-                r_old.x - Page.getInstance().getJlbl_painting().getX(),
-                r_old.y - Page.getInstance().getJlbl_painting().getY(),
-                
-                //the size of the image- part that is printed.
-                //is one bigger than the rectangle because the lines are
-                //painted outside of the rectangle, thus it is necessary
-                //to repaint there.
-                r_old.width + 1, r_old.height + 1,
-                
-                //the graphics coordinates.
-                r_old.x,
-                r_old.y,
-                
-                getBi());
-        //update the background raster
-        Utils.getRastarImage(getBi(), 
-
-                //the rectangle which is to be taken
-                -Page.getInstance().getJlbl_painting().getX() + r_old.x,
-                -Page.getInstance().getJlbl_painting().getY() + r_old.y,
-                
-                //the size of the 
-                r_old.x + r_old.width + 1 
-                - Page.getInstance().getJlbl_painting().getX(),
-                r_old.y + r_old.height + 1 
-                - Page.getInstance().getJlbl_painting().getY(), 
-                
-                //the location at graphics where to paint the raster
-                r_old.x, r_old.y);  
-        
-    }
-
-   
     /**
      * repaint a special rectangle.
      * @param _x the x coordinate in view
@@ -363,7 +212,7 @@ public class PaintLabel extends JLabel {
      * Remove zoom box.
      */
     public final void removeZoomBox() {
-        removeOldRectangle();
+        Page.getInstance().getJlbl_border().setBounds(-1, -1, 0, 0);
     }
     
     

@@ -736,16 +736,19 @@ public class PaintObjectWriting extends PaintObject {
         ls_point.toFirst();
         while (!ls_point.isBehind()) {
             
-           DPoint pnt_vector = new DPoint(ls_point.getItem().getX() - _pnt_from.getX(),
+            DPoint pnt_vector = new DPoint(
+                    ls_point.getItem().getX() - _pnt_from.getX(),
                     ls_point.getItem().getY() - _pnt_from.getY());
 
-            double dX = pnt_vector.getX() + _pnt_from.getX() 
-                    - (_pnt_totalStretch.getX() * pnt_vector.getX()) / _pnt_size.getX();
-
-            double dY = pnt_vector.getY() + _pnt_from.getY() 
-                    - (_pnt_totalStretch.getY() * pnt_vector.getY()) / _pnt_size.getY();
-            pnt_vector.setX((int)dX);
-            pnt_vector.setY((int)dY);
+            double dX = _pnt_from.getX() 
+                    + pnt_vector.getX() * _pnt_size.getX() 
+                            / (_pnt_size.getX() + _pnt_totalStretch.x);
+            double dY = _pnt_from.getY()               
+                    +    pnt_vector.getY() * _pnt_size.getY() 
+                    / (_pnt_size.getY() + _pnt_totalStretch.y);
+                
+            pnt_vector.setX(dX);
+            pnt_vector.setY(dY);
             
             ls_point.replace(pnt_vector);
             

@@ -1,12 +1,9 @@
 package control.singleton;
 
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
 import javax.swing.JButton;
-
 import model.objects.painting.Picture;
 import model.util.DPoint;
 import settings.Status;
@@ -158,7 +155,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
             //fetch DPoints from which the vectory may start
 
             if (_event.getSource() instanceof JButton) {
-                md_stretchImage(_event);
+                mr_stretchImage(_event);
             } else {
                 Status.getLogger().warning("Wrong action source? "
                         + "This warning should never occure.");
@@ -229,54 +226,40 @@ public class CSelection implements MouseMotionListener, MouseListener {
             
         } else if (_event.getSource().equals(j[0][1])) {
             j[0][1].setLocation(
-                    (int) (p[0][1].getX() + distanceX), 
-                            (int) (p[0][1].getY()));
+                    (int) (p[0][1].getX() + distanceX), (int) (p[0][1].getY()));
             j[0][0].setLocation(
-                    (int) (p[0][0].getX() + distanceX), 
-                            (int) (p[0][0].getY()));
+                    (int) (p[0][0].getX() + distanceX), (int) (p[0][0].getY()));
             j[0][2].setLocation(
-                    (int) (p[0][2].getX() + distanceX), 
-                            (int) (p[0][2].getY()));
+                    (int) (p[0][2].getX() + distanceX), (int) (p[0][2].getY()));
             
             
         } else if (_event.getSource().equals(j[1][2])) {
             j[1][2].setLocation(
-                    (int) (p[1][2].getX()), 
-                            (int) (p[1][2].getY() + distanceY));
+                    (int) (p[1][2].getX()), (int) (p[1][2].getY() + distanceY));
             j[0][2].setLocation(
-                    (int) (p[0][2].getX()),
-                            (int) ( p[0][2].getY() + distanceY));
+                    (int) (p[0][2].getX()), (int) (p[0][2].getY() + distanceY));
             j[2][2].setLocation(
-                    (int) (p[2][2].getX()),
-                            (int) ( p[2][2].getY() + distanceY));
+                    (int) (p[2][2].getX()), (int) (p[2][2].getY() + distanceY));
             
             
         } else if (_event.getSource().equals(j[0][2])) {
             //the items at the same margin as the moved one
-            j[0][2].setLocation(
-                    (int) (p[0][2].getX() - distanceXY2),
+            j[0][2].setLocation((int) (p[0][2].getX() - distanceXY2),
                     (int) (p[0][2].getY() + distanceXY2));
-            j[1][2].setLocation(
-                    (int) (j[2][2].getX() - (j[2][2].getX()
+            j[1][2].setLocation((int) (j[2][2].getX() - (j[2][2].getX()
                     - j[0][2].getX()) / 2), j[0][2].getY());
-            j[2][2].setLocation(
-                    (int) (p[2][2].getX()), j[0][2].getY());
-            j[0][0].setLocation(
-                    (int) (j[0][2].getX()), 
-                    (int) (p[0][0].getY()));
+            j[2][2].setLocation((int) (p[2][2].getX()), j[0][2].getY());
+            j[0][0].setLocation((int) (j[0][2].getX()), (int) (p[0][0].getY()));
             j[0][1].setLocation(j[0][2].getX(), j[0][2].getY()
                     + (j[0][0].getY() - j[0][2].getY()) / 2);
             
             
         } else if (_event.getSource().equals(j[2][1])) {
-            j[2][1].setLocation(
-                    (int) (p[2][1].getX() + distanceX),
-                    (int) ( p[2][1].getY()));
-            j[2][0].setLocation(
-                    (int) (p[2][0].getX() + distanceX), 
+            j[2][1].setLocation((int) (p[2][1].getX() + distanceX),
+                    (int) (p[2][1].getY()));
+            j[2][0].setLocation((int) (p[2][0].getX() + distanceX), 
                     (int) (p[2][0].getY()));
-            j[2][2].setLocation(
-                    (int) (p[2][2].getX() + distanceX), 
+            j[2][2].setLocation((int) (p[2][2].getX() + distanceX), 
                     (int) (p[2][2].getY()));
             
         } else if (_event.getSource().equals(j[2][2])) {
@@ -288,11 +271,9 @@ public class CSelection implements MouseMotionListener, MouseListener {
                     (int) (p[2][0].getY()));
             j[0][2].setLocation((int) (p[0][2].getX()),
                     (int) (p[0][2].getY() + distanceXY));
-            j[1][2].setLocation(
-                    (int) (p[1][2].getX()),
+            j[1][2].setLocation((int) (p[1][2].getX()),
                     (int) (p[1][2].getY() + distanceXY));
-            j[2][1].setLocation(
-                    (int) (p[2][1].getX() + distanceXY),
+            j[2][1].setLocation((int) (p[2][1].getX() + distanceXY),
                     (int) (p[2][1].getY()));
         } 
 
@@ -335,7 +316,11 @@ public class CSelection implements MouseMotionListener, MouseListener {
     }
     
 
-    private void md_stretchImage(final MouseEvent _event) {
+    /**
+     * Method for stretching image.
+     * @param _event the passed MouseEvent
+     */
+    private void mr_stretchImage(final MouseEvent _event) {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
@@ -368,19 +353,19 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
         } else if (_event.getSource().equals(j[1][2])) {
             pnt_stretchFrom = new DPoint(j[1][0].getLocation());
-            pnt_totalStretch = new DPoint(0, distanceY);
+            pnt_totalStretch = new DPoint(0, -distanceY);
 
         } else if (_event.getSource().equals(j[0][2])) {
             pnt_stretchFrom = new DPoint(j[2][0].getLocation());
-            pnt_totalStretch = new DPoint(distanceXY2, distanceXY2);
+            pnt_totalStretch = new DPoint(-distanceXY2, -distanceXY2);
 
         } else if (_event.getSource().equals(j[2][1])) {
             pnt_stretchFrom = new DPoint(j[0][1].getLocation());
-            pnt_totalStretch = new DPoint(distanceX, 0);
+            pnt_totalStretch = new DPoint(-distanceX, 0);
 
         } else if (_event.getSource().equals(j[2][2])) {
             pnt_stretchFrom = new DPoint(j[0][0].getLocation());
-            pnt_totalStretch = new DPoint(distanceXY, distanceXY);
+            pnt_totalStretch = new DPoint(-distanceXY, -distanceXY);
 
         } 
         pnt_size = new DPoint(j[2][2].getX() - j[0][0].getX(), 

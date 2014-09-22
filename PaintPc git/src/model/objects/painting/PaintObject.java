@@ -6,6 +6,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
+import model.util.DPoint;
+
 
 /**
  * The paintObject corresponds to one item that has been painted. It consists
@@ -44,6 +46,14 @@ public abstract class PaintObject implements Serializable {
 	 */
 	public abstract boolean isInSelectionImage(final Rectangle _r);
     
+	/**
+	 * 
+	 * @param _pnt_from
+	 * @param _pnt_totalStretch
+	 */
+	public abstract void stretch(final DPoint _pnt_from, 
+	        final DPoint _pnt_totalStretch,
+            final DPoint _pnt_size);
     
 
 	/**

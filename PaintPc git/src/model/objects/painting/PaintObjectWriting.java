@@ -7,19 +7,22 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JOptionPane;
+
 import settings.Status;
 import view.View;
 import view.forms.Page;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.PenKuli;
 import model.objects.pen.special.PenSelection;
+import model.util.DPoint;
 import model.util.list.List;
 import model.util.solveLGS.Matrix;
 
 /**
  * The paintObject corresponds to one item that has been painted. It consists
- * of a list of points which are added by the user by dragging the mouse and 
+ * of a list ofDPoints which are added by the user by dragging the mouse and 
  * thus painting an entity to the screen.<br><br>
  * 
  * The paint object takes care of painting the image both to the screen and
@@ -37,10 +40,10 @@ public class PaintObjectWriting extends PaintObject {
     private static final long serialVersionUID = -3730582547146097485L;
 
     /**
-	 * List of points. They are combined and treated different depending on 
+	 * List ofDPoints. They are combined and treated different depending on 
 	 * pen and the kind of painting ("point", "normal", "math")
 	 */
-	private List<Point> ls_point;
+	private List<DPoint> ls_point;
 	
 	/**
 	 * the pen with which PaintObject is painted. Has got its own paintPoint
@@ -69,18 +72,18 @@ public class PaintObjectWriting extends PaintObject {
 	@Override public final boolean isInSelectionImage(final Rectangle _r) {
 
         /*
-         * check whether first point is in rectangle.
+         * check whether firstDPoint is in rectangle.
          */
 
         ls_point.toFirst();
-	    Point pnt_previous = new Point(ls_point.getItem());
+        DPoint pnt_previous = new DPoint(ls_point.getItem());
         if (isInSelectionPoint(_r, pnt_previous)) {
             return true;
         }
         
 
         /*
-         * go through the list of points and check the lines between
+         * go through the list ofDPoints and check the lines between
          * the following items.
          */
         ls_point.next();
@@ -91,9 +94,9 @@ public class PaintObjectWriting extends PaintObject {
                 return true;
             }
             
-            //otherwise save the current point as the previous point
+            //otherwise save the currentDPoint as the previousDPoint
             //for the next time the loop is passed.
-            pnt_previous = new Point(ls_point.getItem());
+            pnt_previous = new DPoint(ls_point.getItem());
             ls_point.next();
         }
         
@@ -104,17 +107,17 @@ public class PaintObjectWriting extends PaintObject {
     
 
 	/**
-	 * checks whether a certain point is inside a given rectangle.
+	 * checks whether a certainDPoint is inside a given rectangle.
 	 * 
-	 * @param _r the rectangle of which is checked whether the point is inside
-	 * @param _p the point which is maybe inside the rectangle _r
+	 * @param _r the rectangle of which is checked whether theDPoint is inside
+	 * @param _p theDPoint which is maybe inside the rectangle _r
 	 * 
-	 * @return whether the point is inside the given rectangle.
+	 * @return whether theDPoint is inside the given rectangle.
 	 */
     private static boolean isInSelectionPoint(
-            final Rectangle _r, final Point _p) {
+            final Rectangle _r, finalDPoint _p) {
         
-        //return whether the point is inside given rectangle.
+        //return whether theDPoint is inside given rectangle.
         return (_p.x >= _r.x && _p.y >= _r.y 
                 && _p.x <= _r.x + _r.width && _p.y <= _r.y + _r.height);
     }
@@ -155,22 +158,22 @@ public class PaintObjectWriting extends PaintObject {
 	}
 	
 	/**
-	 * add a point to the list of points and update maximum and minimum 
+	 * add aDPoint to the list ofDPoints and update maximum and minimum 
 	 * coordinates value.
 	 * 
-	 * @param _pnt the point.
+	 * @param _pnt theDPoint.
 	 */
-	public final void addPoint(final Point _pnt) {
+	public final void addPoint(final DPoint _pnt) {
 
 	    //update MIN values
-		minX = Math.min(_pnt.x, minX);
-		minY = Math.min(_pnt.y, minY);
+		minX = (int) Math.min(_pnt.x, minX);
+		minY = (int) Math.min(_pnt.y, minY);
 
 		//update MAX values
-		maxX = Math.max(_pnt.x, maxX);
-		maxY = Math.max(_pnt.y, maxY);
+		maxX = (int) Math.max(_pnt.x, maxX);
+		maxY = (int) Math.max(_pnt.y, maxY);
 	
-		//insert at the end of the point list.
+		//insert at the end of theDPoint list.
 		ls_point.insertAtTheEnd(_pnt);
 	}
 
@@ -184,7 +187,7 @@ public class PaintObjectWriting extends PaintObject {
             final int _y) {
 
         return pen.paintToImage(
-                _bi, this, _final, new Point(_x, _y), _g);
+                _bi, this, _final, new DPoint(_x, _y), _g);
     }
     
     
@@ -274,27 +277,27 @@ public class PaintObjectWriting extends PaintObject {
      * 
      * @see Pen.paintLine(...)
      * 
-     * @param _p1 the first  point
-     * @param _p2 the second point
+     * @param _p1 the first DPoint
+     * @param _p2 the secondDPoint
      * @param _r the rectangle
      * 
      * @return true or false
      */
-    private boolean pruefeLine(final Point _p1, final Point _p2, 
+    private boolean pruefeLine(finalDPoint _p1, finalDPoint _p2, 
             final Rectangle _r) {
 
         //compute delta values
         int dX = (_p1.x - _p2.x);
         int dY = (_p1.y - _p2.y);
 
-        //print the line between the two points
+        //print the line between the twoDPoints
         for (int a = 0; a < Math.max(Math.abs(dX), Math.abs(dY)); a++) {
             int plusX = a * dX /  Math.max(Math.abs(dX), Math.abs(dY));
             int plusY = a * dY /  Math.max(Math.abs(dX), Math.abs(dY));
             
 
             if (isInSelectionPoint(_r, 
-                    new Point(_p1.x - plusX, _p1.y - plusY))) {
+                    new DPoint(_p1.x - plusX, _p1.y - plusY))) {
                 return true;
             }
             
@@ -355,7 +358,7 @@ public class PaintObjectWriting extends PaintObject {
         ls_point.toFirst();
 
         //initialize the lInside Element
-        Point pc = ls_point.getItem();
+       DPoint pc = ls_point.getItem();
         lInside = (pc.x >= _r.x && pc.x <= _r.x + _r.width 
                 && pc.y >= _r.y && pc.y <= _r.y + _r.height);
 
@@ -366,7 +369,7 @@ public class PaintObjectWriting extends PaintObject {
                 
         while (!ls_point.isBehind()) {
             
-            Point pcNew = ls_point.getItem();
+           DPoint pcNew = ls_point.getItem();
             boolean cInside = (pcNew.x >= _r.x && pcNew.x <= _r.x + _r.width 
                     && pcNew.y >= _r.y && pcNew.y <= _r.y + _r.height);
             
@@ -377,49 +380,49 @@ public class PaintObjectWriting extends PaintObject {
                     pow_current.addPoint(pcNew);
                 } else {
 
-                    //calculate border point
-                    Point pnt_border = findIntersection(_r, pc, new Point(
+                    //calculate borderDPoint
+                   DPoint pnt_border = findIntersection(_r, pc, new DPoint(
                             pcNew.x - pc.x, pcNew.y - pc.y));
 
-                    //add the border point to the last PaintObject and insert 
+                    //add the borderDPoint to the last PaintObject and insert 
                     //paintObject to list
-                    pow_current.addPoint(new Point(pnt_border));
+                    pow_current.addPoint(new DPoint(pnt_border));
                     ls_pow_outside.insertBehind((pow_current));
                     
-                    //crate new PaintObject and add the border point to the 
+                    //crate new PaintObject and add the borderDPoint to the 
                     //new PaintObject
                     pow_current = new PaintObjectWriting(getElementId(), 
                             getPen());
-                    pow_current.addPoint(new Point(pnt_border));
+                    pow_current.addPoint(new DPoint(pnt_border));
                     
-                    //add new point to the PaintObject
-                    pow_current.addPoint(new Point(pcNew));
+                    //add new DPoint to the PaintObject
+                    pow_current.addPoint(new DPoint(pcNew));
                 }
                 
             } else {
 
                 if (lInside) {
 
-                    //calculate border point
-                    Point pnt_border = findIntersection(_r, pc, new Point(
+                    //calculate borderDPoint
+                   DPoint pnt_border = findIntersection(_r, pc, new DPoint(
                             pcNew.x - pc.x, pcNew.y - pc.y));
                     
-                    //add the border point to the last PaintObject and insert 
+                    //add the borderDPoint to the last PaintObject and insert 
                     //paintObject to list
-                    pow_current.addPoint(new Point(pnt_border));
+                    pow_current.addPoint(new DPoint(pnt_border));
                     ls_pow_inside.insertBehind(pow_current);
                     
-                    //crate new PaintObject and add the border point to the 
+                    //crate new PaintObject and add the borderDPoint to the 
                     //new PaintObject
                     pow_current = new PaintObjectWriting(getElementId(), 
                             getPen());
-                    pow_current.addPoint(new Point(pnt_border));
+                    pow_current.addPoint(new DPoint(pnt_border));
                     
-                    //add new point to the PaintObject
-                    pow_current.addPoint(new Point(pcNew));
+                    //add new DPoint to the PaintObject
+                    pow_current.addPoint(new DPoint(pcNew));
                 } else {
 
-                    pow_current.addPoint(new Point(pcNew));
+                    pow_current.addPoint(new DPoint(pcNew));
                 }
             }
 
@@ -503,14 +506,14 @@ public class PaintObjectWriting extends PaintObject {
      * ( _r.y + _r.height ) +   factor2  *    ( 0 )
      * 
      * 
-     * The means to calculate the best intersection point is to first calculate
-     * the intersection between the point vector and the 4 rectangle vectors.
+     * The means to calculate the best intersectionDPoint is to first calculate
+     * the intersection between theDPoint vector and the 4 rectangle vectors.
      * 
-     * In the second step, those points are deleted that are outside the
+     * In the second step, thoseDPoints are deleted that are outside the
      * rectangle border (because the Rectangle vectors are (falsely) logically
      * infinite lines)
      * 
-     * In the last step, the point with the smallest factor is chosen to be
+     * In the last step, theDPoint with the smallest factor is chosen to be
      * returned.
      * Visualization _____________
      *       x       |           |
@@ -532,12 +535,12 @@ public class PaintObjectWriting extends PaintObject {
      * 
      * 
      * @param _r the Rectangle which is to be intersected
-     * @param _p the Point (thus the "support vector") 
+     * @param _p theDPoint (thus the "support vector") 
      * @param _v the "direction vector"
-     * @return the "best" intersection point between line and rectangle
+     * @return the "best" intersectionDPoint between line and rectangle
      */
-    public static Point findIntersection(final Rectangle _r, final Point _p, 
-            final Point _v) {
+    public static DPoint findIntersection(final Rectangle _r, final DPoint _p, 
+            final DPoint _v) {
         /*
          * Step 1
          */
@@ -593,11 +596,11 @@ public class PaintObjectWriting extends PaintObject {
         /*
          * Step 2
          */
-        Point intersection1 = null, intersection2 = null, 
+       DPoint intersection1 = null, intersection2 = null, 
                 intersection3 = null, intersection4 = null;
-        //fetch point
+        //fetchDPoint
         if (factor1 != null) {
-            intersection1 = new Point((int) (_p.x + factor1[0] * _v.x), 
+            intersection1 = new DPoint((int) (_p.x + factor1[0] * _v.x), 
                     (int) (_p.y + factor1[0] * _v.y));
             //check whether suitable.
             if (_r.y + _r.height  - (int) intersection1.y < 0
@@ -606,8 +609,8 @@ public class PaintObjectWriting extends PaintObject {
             }
         }
         if (factor2 != null) {
-            //fetch point
-            intersection2 = new Point((int) (_p.x + factor2[0] * _v.x), 
+            //fetchDPoint
+            intersection2 = new DPoint((int) (_p.x + factor2[0] * _v.x), 
                     (int) (_p.y + factor2[0] * _v.y));
             //check whether suitable.
             if (_r.x + _r.width  - (int) intersection2.x < 0
@@ -616,8 +619,8 @@ public class PaintObjectWriting extends PaintObject {
             }
         }
         if (factor3 != null) {
-            //fetch point
-            intersection3 = new Point((int) (_p.x + factor3[0] * _v.x), 
+            //fetchDPoint
+            intersection3 = new DPoint((int) (_p.x + factor3[0] * _v.x), 
                     (int) (_p.y + factor3[0] * _v.y));
             //check whether suitable.
             if (_r.y + _r.height  - (int) intersection3.y < 0
@@ -626,8 +629,8 @@ public class PaintObjectWriting extends PaintObject {
             }
         }
         if (factor4 != null) {
-            //fetch point
-            intersection4 = new Point((int) (_p.x + factor4[0] * _v.x), 
+            //fetchDPoint
+            intersection4 = new DPoint((int) (_p.x + factor4[0] * _v.x), 
                     (int) (_p.y + factor4[0] * _v.y));
             //check whether suitable.
             if (_r.x + _r.width  - (int) intersection4.x < 0
@@ -688,12 +691,12 @@ public class PaintObjectWriting extends PaintObject {
     
     
     /**
-     * Utility method for printing a point.
+     * Utility method for printing aDPoint.
      * Move to utils.
      * 
-     * @param _p the Point which is to be printed
+     * @param _p theDPoint which is to be printed
      */
-    public static void verify(final Point _p) {
+    public static void verify(final DPoint _p) {
 
         new Thread() {
             public void run() {
@@ -706,7 +709,7 @@ public class PaintObjectWriting extends PaintObject {
                             .getJlbl_selectionPainting().getGraphics();
                     
                     g.setColor(Color.orange);
-                    g.drawRect(_p.x, _p.y, 2, 2);
+                    g.drawRect((int)_p.x, (int)_p.y, 2, 2);
                     
                     try {
                         Thread.sleep(sleepTime);
@@ -716,6 +719,46 @@ public class PaintObjectWriting extends PaintObject {
                 }
             }
         } .start();
+    }
+
+
+    @Override
+    public synchronized void stretch(
+            final DPoint _pnt_from, final DPoint _pnt_totalStretch,
+            final DPoint _pnt_size) {
+
+
+        minX = Integer.MAX_VALUE; 
+        minY = Integer.MAX_VALUE; 
+        maxX = Integer.MIN_VALUE; 
+        maxY = Integer.MIN_VALUE;
+        
+        ls_point.toFirst();
+        while (!ls_point.isBehind()) {
+            
+           DPoint pnt_vector = new DPoint(ls_point.getItem().x - _pnt_from.x,
+                    ls_point.getItem().y - _pnt_from.y);
+
+            double dX = pnt_vector.x + _pnt_from.x 
+                    - (_pnt_totalStretch.x * pnt_vector.x) / _pnt_size.x;
+
+            double dY = pnt_vector.y + _pnt_from.y 
+                    - (_pnt_totalStretch.y * pnt_vector.y) / _pnt_size.y;
+            pnt_vector.x = (int)dX;
+            pnt_vector.y = (int)dY;
+            
+            ls_point.replace(pnt_vector);
+            
+            //update MIN values
+            minX = (int) Math.min(pnt_vector.x, minX);
+            minY = (int) Math.min(pnt_vector.y, minY);
+
+            //update MAX values
+            maxX = (int) Math.max(pnt_vector.x, maxX);
+            maxY = (int) Math.max(pnt_vector.y, maxY);
+            
+            ls_point.next();
+        }
     }
 
     /*
@@ -749,11 +792,11 @@ public class PaintObjectWriting extends PaintObject {
 	}
     
     /**
-     * return list of points.
+     * return list ofDPoints.
      * 
      * @return the list.
      */
-    public final List<Point> getPoints() {
+    public final List<DPoint> getPoints() {
         return ls_point;
     }
 

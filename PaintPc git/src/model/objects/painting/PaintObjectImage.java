@@ -170,4 +170,11 @@ public class PaintObjectImage extends PaintObject {
     @Override public final synchronized void recalculateSnapshotBounds() {
         new Exception(getClass() + "not implemented yet").printStackTrace();
     }
+
+
+    @Override
+    public void stretch(final Point _pnt_from, final Point _pnt_totalStretch,
+            final Point _pnt_size) {
+        
+    }
 }

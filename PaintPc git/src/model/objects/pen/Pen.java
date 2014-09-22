@@ -3,7 +3,6 @@ package model.objects.pen;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,8 +12,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+
 import settings.Constants;
 import model.objects.painting.PaintObjectWriting;
+import model.util.DPoint;
 import model.util.list.List;
 import model.util.solveLGS.Matrix;
 
@@ -100,11 +101,11 @@ public abstract class Pen implements Serializable {
 	 */
 	public final BufferedImage paintToImage(final BufferedImage _bi,
 			final PaintObjectWriting _o, final boolean _final, 
-			final Point _p_start, final BufferedImage _g) {
+			final DPoint _p_start, final BufferedImage _g) {
 
 	    double time0 = System.currentTimeMillis();
 		//fetch list of points and go to the beginning of the list
-		List<Point> ls_point = _o.getPoints();
+		List<DPoint> ls_point = _o.getPoints();
 		ls_point.toFirst();
 
 		//if list is empty return the bufferedImage which is not changed.
@@ -161,9 +162,9 @@ public abstract class Pen implements Serializable {
 	 *         each point
 	 * @param _g the graphics to which is painted.
 	 */
-	private void operationPoint(final List<Point> _ls_point, 
+	private void operationPoint(final List<DPoint> _ls_point, 
 	        final BufferedImage _bi, final boolean _final, 
-	        final Point _p_start, final BufferedImage _g) {
+	        final DPoint _p_start, final BufferedImage _g) {
     
         //go through the list of points and print point
         while (!_ls_point.isBehind()) {
@@ -193,12 +194,12 @@ public abstract class Pen implements Serializable {
      *         each point
      * @param _g the graphics to which is painted.
 	 */
-    private void operationLine(final List<Point> _ls_point, 
+    private void operationLine(final List<DPoint> _ls_point, 
             final BufferedImage _bi, final boolean _final,
-            final Point _p_shift, final BufferedImage _g) {
+            final DPoint _p_shift, final BufferedImage _g) {
     
         //previous point
-        Point pnt_previous = new Point(
+        DPoint pnt_previous = new DPoint(
                 _ls_point.getItem().x,
                 _ls_point.getItem().y);
         
@@ -216,11 +217,11 @@ public abstract class Pen implements Serializable {
                     == pnt_previous.y)) {
              
     
-                paintLine(new Point(
+                paintLine(new DPoint(
                         _ls_point.getItem().x,
                         _ls_point.getItem().y),
                         pnt_previous, _bi, _final, _g, _p_shift);
-                pnt_previous = new Point(
+                pnt_previous = new DPoint(
                         _ls_point.getItem().x,
                         _ls_point.getItem().y);
             }
@@ -239,46 +240,46 @@ public abstract class Pen implements Serializable {
      *         point drawn at the image.
      * @param _g the graphics to which is painted
      */
-    private void operationMaths(final List<Point> _ls_point,
+    private void operationMaths(final List<DPoint> _ls_point,
             final BufferedImage _bi,
-            final boolean _final, final Point _p_shift, 
+            final boolean _final, final DPoint _p_shift, 
             final BufferedImage _g) {
 
         final int amountOfRuns = 1;
-        Point pnt_1 = null, pnt_2 = null, pnt_3 = null;
+        DPoint pnt_1 = null, pnt_2 = null, pnt_3 = null;
         
         //does only contain the new new points (not merged)
-        List<Point> ls_newPoints = new List<Point>();
+        List<DPoint> ls_newPoints = new List<DPoint>();
         
         //contains all new and old points, new ones merged together
         //if necessary
-        List<Point> ls_allPoints = new List<Point>();
+        List<DPoint> ls_allPoints = new List<DPoint>();
         thickness = amountOfRuns;
         thickness = 1;
         for (int i = 0; i < amountOfRuns; i++) {
             
-            ls_newPoints = new List<Point>();
+            ls_newPoints = new List<DPoint>();
             //reinitialize the ls_newPoints and go to the beginning of the
             //points list.
             if (ls_allPoints.isEmpty()) {
                 //init
                 _ls_point.toFirst();
                 while (!_ls_point.isBehind()) {
-                    ls_newPoints.insertAtTheEnd(new Point(
+                    ls_newPoints.insertAtTheEnd(new DPoint(
                             _ls_point.getItem().x, _ls_point.getItem().y));
                     _ls_point.next();
                 }
             } else {
 
-                ls_newPoints = new List<Point>();
+                ls_newPoints = new List<DPoint>();
                 ls_allPoints.toFirst();
                 while (!ls_allPoints.isBehind()) {
-                    ls_newPoints.insertAtTheEnd(new Point(
+                    ls_newPoints.insertAtTheEnd(new DPoint(
                             ls_allPoints.getItem().x, 
                             ls_allPoints.getItem().y));
                     ls_allPoints.next();
                 }
-                ls_allPoints = new List<Point>();
+                ls_allPoints = new List<DPoint>();
             }
             ls_newPoints.toFirst();
 
@@ -325,14 +326,14 @@ public abstract class Pen implements Serializable {
                 if (!ls_allPoints.getItem().equals(pnt_1)) {
                     //merge
                     
-                    Point pnt_new = new Point(
+                    DPoint pnt_new = new DPoint(
                             (ls_allPoints.getItem().x + r.x) / 2, 
                             (ls_allPoints.getItem().y + r.y) / 2);
                     ls_allPoints.remove();
                     ls_allPoints.insertBehind(pnt_new);
                 } else  {
 
-                    ls_allPoints.insertBehind(r.getLocation());  
+                    ls_allPoints.insertBehind(new DPoint(r.getLocation()));  
                 }
                 } else {
                     ls_allPoints.toLast();
@@ -342,7 +343,7 @@ public abstract class Pen implements Serializable {
                 ls_allPoints.next();
                 if (r.width != -1) {
 
-                    ls_allPoints.insertBehind(new Point(r.width, r.height));   
+                    ls_allPoints.insertBehind(new DPoint(r.width, r.height));   
                 }
 //                paintPoint(r.getLocation(), _bi);
 //                paintPoint(new Point(r.width, r.height), _bi);
@@ -396,8 +397,8 @@ public abstract class Pen implements Serializable {
 	 * @param _p3 and the third point
 	 * @return the height of triangle.
 	 */
-	private double op_mathsGetTriangleHeight(final Point _p1, final Point _p2, 
-	        final Point _p3) {
+	private double op_mathsGetTriangleHeight(final DPoint _p1, final DPoint _p2, 
+	        final DPoint _p3) {
 
         double growthNormalX = (_p3.x - _p1.x);
         double growthNormalY = (_p3.y - _p1.y);
@@ -446,8 +447,8 @@ public abstract class Pen implements Serializable {
 	 * 
 	 * @return the rectangle.
 	 */
-	private Rectangle op_mathsGetNewPoints(final Point _p1, final Point _p2,
-	        final Point _p3, final BufferedImage _bi) {
+	private Rectangle op_mathsGetNewPoints(final DPoint _p1, final DPoint _p2,
+	        final DPoint _p3, final BufferedImage _bi) {
         
         
         double triangleHeight = op_mathsGetTriangleHeight(_p1, _p2, _p3);
@@ -455,29 +456,29 @@ public abstract class Pen implements Serializable {
             triangleHeight = 0.0;
         }
             
-        Point p_new1 = null, p_new2 = null;
+        DPoint p_new1 = null, p_new2 = null;
         
         final int groesserGleich  = 10;
-        int dx = _p1.x - _p2.x;
-        int dy = _p1.y - _p2.y;
+        int dx = (int) (_p1.x - _p2.x);
+        int dy = (int) (_p1.y - _p2.y);
         if (Math.sqrt(dx * dx + dy * dy) > groesserGleich) {
             p_new1 = op_mathsAddPoint(_p1, _p2, triangleHeight);
         }
     
-        dx = _p3.x - _p2.x;
-        dy = _p3.y - _p2.y;
+        dx = (int) (_p3.x - _p2.x);
+        dy = (int) (_p3.y - _p2.y);
         if (Math.sqrt(dx * dx + dy * dy) > groesserGleich) {
             p_new2 = op_mathsAddPoint(_p2, _p3, triangleHeight);
         }
         
         Rectangle toReturn = new Rectangle(-1, -1, -1, -1);
         if (p_new1 != null) {
-            toReturn.x = p_new1.x;
-            toReturn.y = p_new1.y;
+            toReturn.x = (int) p_new1.x;
+            toReturn.y = (int) p_new1.y;
         }
         if (p_new2 != null) {
-            toReturn.width = p_new2.x;
-            toReturn.height = p_new2.y;
+            toReturn.width = (int) p_new2.x;
+            toReturn.height = (int) p_new2.y;
         }
 
         return toReturn;
@@ -497,7 +498,7 @@ public abstract class Pen implements Serializable {
 	 * 
 	 * @return the point.
 	 */
-    private Point op_mathsAddPoint(final Point _p1, final Point _p2, 
+    private DPoint op_mathsAddPoint(final DPoint _p1, final DPoint _p2, 
             final double _triangleHeight) {
     
             double growthNormalX = (_p2.x - _p1.x);
@@ -525,7 +526,7 @@ public abstract class Pen implements Serializable {
             if (Double.isNaN(newPointX) || Double.isNaN(newPointY)) {
                 return null;
             }
-            return new Point((int) newPointX, (int) newPointY);
+            return new DPoint((int) newPointX, (int) newPointY);
     	}
 
 
@@ -545,19 +546,19 @@ public abstract class Pen implements Serializable {
      * @param _pnt_shift the point to shift.
 	 * @param _g the graphics to which line is painted.
 	 */
-	protected final void paintLine(final Point _p1, final Point _p2, 
+	protected final void paintLine(final DPoint _p1, final DPoint _p2, 
 	        final BufferedImage _bi, final boolean _final, 
-	        final BufferedImage _g, final Point _pnt_shift) {
+	        final BufferedImage _g, final DPoint _pnt_shift) {
 
 		//compute delta values
-		int dX = (_p1.x - _p2.x);
-		int dY = (_p1.y - _p2.y);
+		int dX = (int) (_p1.x - _p2.x);
+		int dY = (int) (_p1.y - _p2.y);
 
         //print the line between the two points
         for (int a = 0; a < Math.max(Math.abs(dX), Math.abs(dY)); a++) {
             int plusX = a * dX /  Math.max(Math.abs(dX), Math.abs(dY));
             int plusY = a * dY /  Math.max(Math.abs(dX), Math.abs(dY));
-            paintPoint(new Point(_p1.x - plusX, _p1.y - plusY), 
+            paintPoint(new DPoint(_p1.x - plusX, _p1.y - plusY), 
                     _bi, _final, _pnt_shift, _g);
         }
 	}
@@ -576,8 +577,8 @@ public abstract class Pen implements Serializable {
 	 * @param _g the line to which is painted.
 	 * @param _shift the point in which the painting to graphics is shifted.
 	 */
-	protected abstract void paintPoint(Point _p, BufferedImage _bi, 
-	        boolean _final, Point _shift, BufferedImage _g);
+	protected abstract void paintPoint(DPoint _p, BufferedImage _bi, 
+	        boolean _final, DPoint _shift, BufferedImage _g);
 		
 	
 	/*

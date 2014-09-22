@@ -555,6 +555,10 @@ public final class ControlPainting implements MouseListener,
 
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
 
+
+            //remove old rectangle.
+            Page.getInstance().getJlbl_border().setBounds(-1, -1, 0, 0);
+            
             switch (Status.getIndexSelection()) {
             
             //select complete item.

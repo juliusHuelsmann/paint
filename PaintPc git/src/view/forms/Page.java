@@ -153,8 +153,7 @@ import control.singleton.CSelection;
         
         jlbl_border = new JLabel();
         jlbl_border.setOpaque(true);
-        jlbl_border.setBounds(100,100,100,100);
-        jlbl_border.setBackground(new Color(0,0,0,20));
+        jlbl_border.setBackground(new Color(0, 0, 0, 2 * 2 * 2 * 2 * 2));
         jlbl_border.setBorder(BorderFactory.createLineBorder(Color.black));
         super.add(jlbl_border);
         

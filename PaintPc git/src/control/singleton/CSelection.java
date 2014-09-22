@@ -122,24 +122,13 @@ public class CSelection implements MouseMotionListener, MouseListener {
                         pnt_startLocationButton[2][0].y + distanceXY);
 
                 Page.getInstance().getJbtn_resize()[1][2].setLocation(
+                        
                         Page.getInstance().getJbtn_resize()[0][0].getX()
                         + (Page.getInstance().getJbtn_resize()[2][0].getX()
                         - Page.getInstance().getJbtn_resize()[0][0].getX())
                         / 2,
                         pnt_startLocationButton[1][2].y);
                 
-                final int size = Page.getInstance().getJbtn_resize()[0][0]
-                        .getWidth() / 2;
-
-                Page.getInstance().getJlbl_border().setBounds(
-                        Page.getInstance().getJbtn_resize()[0][0].getX()
-                        - size,
-                        Page.getInstance().getJbtn_resize()[0][0].getY()
-                        - size,
-                        Page.getInstance().getJbtn_resize()[2][0].getX()
-                        - Page.getInstance().getJbtn_resize()[0][0].getX(),
-                        Page.getInstance().getJbtn_resize()[0][2].getY()
-                        - Page.getInstance().getJbtn_resize()[0][0].getY());
                 
             } else if (_event.getSource().equals(
                     Page.getInstance().getJbtn_resize()[1][0])) {
@@ -155,8 +144,15 @@ public class CSelection implements MouseMotionListener, MouseListener {
                 
             } else if (_event.getSource().equals(
                     Page.getInstance().getJbtn_resize()[2][0])) {
+                distanceX = _event.getXOnScreen() - pnt_start.x;
+                distanceY = _event.getYOnScreen() - pnt_start.y;
+                if (Math.abs(distanceX) < Math.abs(distanceY)) {
+                    distanceXY = distanceX;
+                } else {
+                    distanceXY = distanceY;
+                }
                 Page.getInstance().getJbtn_resize()[2][0].setLocation(
-                        pnt_startLocationButton[2][0].x + distanceXY,
+                        pnt_startLocationButton[2][0].x - distanceXY,
                         pnt_startLocationButton[2][0].y + distanceXY);
                 
             } else if (_event.getSource().equals(
@@ -175,10 +171,19 @@ public class CSelection implements MouseMotionListener, MouseListener {
                     Page.getInstance().getJbtn_resize()[2][3])) {
                 
             } 
-            
-                
-            System.out.println("resizing not done yet");
-            //resize
+
+            final int size = Page.getInstance().getJbtn_resize()[0][0]
+                    .getWidth() / 2;
+
+            Page.getInstance().getJlbl_border().setBounds(
+                    Page.getInstance().getJbtn_resize()[0][0].getX()
+                    + size,
+                    Page.getInstance().getJbtn_resize()[0][0].getY()
+                    + size,
+                    Page.getInstance().getJbtn_resize()[2][0].getX()
+                    - Page.getInstance().getJbtn_resize()[0][0].getX(),
+                    Page.getInstance().getJbtn_resize()[0][2].getY()
+                    - Page.getInstance().getJbtn_resize()[0][0].getY());
         }
     }
 

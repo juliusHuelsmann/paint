@@ -209,14 +209,6 @@ public class PaintLabel extends JLabel {
     
     
     /**
-     * Remove zoom box.
-     */
-    public final void removeZoomBox() {
-        Page.getInstance().getJlbl_border().setBounds(-1, -1, 0, 0);
-    }
-    
-    
-    /**
      * Paint a zoom box.
      * 
      * @param _x the x coordinate

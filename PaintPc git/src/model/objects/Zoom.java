@@ -86,8 +86,6 @@ public final class Zoom {
         
         //if the zoom has moved essentially
         if (xNewAligned != x || yNewAligned != y) {
-
-            Page.getInstance().getJlbl_painting().removeZoomBox();
             
             this.x = xNewAligned;
             this.y = yNewAligned;

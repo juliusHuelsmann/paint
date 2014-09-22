@@ -62,22 +62,22 @@ public class CSelection implements MouseMotionListener, MouseListener {
         if (_event.getSource().equals(
                 Page.getInstance().getJbtn_resize()[1][1])) {
             
-            int dX = _event.getXOnScreen() - pnt_start.x, 
-                    dY = _event.getYOnScreen() - pnt_start.y;
+            int dX = (int) (_event.getXOnScreen() - pnt_start.getX()), 
+                    dY = (int) (_event.getYOnScreen() - pnt_start.getY());
             Page.getInstance().getJlbl_selectionBG().setLocation(
-                    pnt_startLocationLabel.x + dX,
-                    pnt_startLocationLabel.y + dY);
+                    (int) pnt_startLocationLabel.getX() + dX,
+                    (int) pnt_startLocationLabel.getY() + dY);
             Page.getInstance().getJlbl_selectionPainting().setLocation(
-                    pnt_startLocationLabel.x + dX,
-                    pnt_startLocationLabel.y + dY);
+                    (int) pnt_startLocationLabel.getX() + dX,
+                    (int) pnt_startLocationLabel.getY() + dY);
 
             for (int x = 0; x < pnt_startLocationButton.length; x++) {
 
                 for (int y = 0; y < pnt_startLocationButton.length; y++) {
                      
                     Page.getInstance().getJbtn_resize()[x][y].setLocation(
-                            pnt_startLocationButton[x][y].x + dX,
-                            pnt_startLocationButton[x][y].y + dY);
+                            (int) pnt_startLocationButton[x][y].getX() + dX,
+                            (int) pnt_startLocationButton[x][y].getY() + dY);
                 }
             }
         } else {
@@ -115,15 +115,15 @@ public class CSelection implements MouseMotionListener, MouseListener {
     public void mouseExited(final MouseEvent _event) { }
 
     @Override public final void mousePressed(final MouseEvent _event) {
-        pnt_start = _event.getLocationOnScreen();
-        pnt_startLocationLabel = Page.getInstance().getJlbl_selectionBG()
-                .getLocation();
+        pnt_start = new DPoint(_event.getLocationOnScreen());
+        pnt_startLocationLabel = new DPoint(
+                Page.getInstance().getJlbl_selectionBG().getLocation());
 
         for (int x = 0; x < pnt_startLocationButton.length; x++) {
 
             for (int y = 0; y < pnt_startLocationButton.length; y++) {
-                pnt_startLocationButton[x][y] = 
-                        Page.getInstance().getJbtn_resize()[x][y].getLocation();
+                pnt_startLocationButton[x][y] = new DPoint(Page.getInstance()
+                        .getJbtn_resize()[x][y].getLocation());
             }
         }
         
@@ -148,8 +148,8 @@ public class CSelection implements MouseMotionListener, MouseListener {
         if (_event.getSource().equals(
                 Page.getInstance().getJbtn_resize()[1][1])) {
             
-            int dX = _event.getXOnScreen() - pnt_start.x, 
-                    dY = _event.getYOnScreen() - pnt_start.y;
+            int dX = (int) (_event.getXOnScreen() - pnt_start.getX()), 
+                    dY = (int) (_event.getYOnScreen() - pnt_start.getY());
             Picture.getInstance().moveSelected(dX, dY);
         } else {
 
@@ -178,11 +178,11 @@ public class CSelection implements MouseMotionListener, MouseListener {
      */
     private void md_buttonLocation(final MouseEvent _event) {
 
-        double distanceX = _event.getXOnScreen() - pnt_start.x;
-        double distanceY = _event.getYOnScreen() - pnt_start.y;
+        double distanceX = _event.getXOnScreen() - pnt_start.getX();
+        double distanceY = _event.getYOnScreen() - pnt_start.getY();
         JButton[][] j = Page.getInstance().getJbtn_resize();
         DPoint[][] p = pnt_startLocationButton;
-        int distanceXY, distanceXY2;
+        double distanceXY, distanceXY2;
         if (Math.abs(distanceX) < Math.abs(distanceY)) {
             distanceXY = distanceX;
             distanceXY2 = -distanceX;
@@ -193,68 +193,107 @@ public class CSelection implements MouseMotionListener, MouseListener {
         
         if (_event.getSource().equals(j[0][0])) {
             //items at the same edges.
-            j[0][0].setLocation(p[0][0].x + distanceXY, p[0][0].y + distanceXY);
-            j[0][2].setLocation(p[0][2].x + distanceXY, p[0][2].y);
-            j[2][0].setLocation(p[2][0].x, p[2][0].y + distanceXY);
-            j[1][0].setLocation(p[1][0].x, p[1][0].y + distanceXY);
-            j[0][1].setLocation(p[0][1].x + distanceXY, p[0][1].y);
+            j[0][0].setLocation((int) (p[0][0].getX() + distanceXY), 
+                    (int) (p[0][0].getY() + distanceXY));
+            j[0][2].setLocation((int) (p[0][2].getX() + distanceXY), 
+                    (int) p[0][2].getY());
+            j[2][0].setLocation((int) p[2][0].getX(), 
+                    (int) (p[2][0].getY() + distanceXY));
+            j[1][0].setLocation((int) p[1][0].getX(), 
+                    (int) (p[1][0].getY() + distanceXY));
+            j[0][1].setLocation((int) (p[0][1].getX() + distanceXY), 
+                    (int) p[0][1].getY());
             
             
         } else if (_event.getSource().equals(j[1][0])) {
             //the items at the same margin as the moved one
-            j[1][0].setLocation(p[1][0].x, p[1][0].y + distanceY);
-            j[0][0].setLocation(p[0][0].x, p[0][0].y + distanceY);
-            j[2][0].setLocation(p[2][0].x, p[2][0].y + distanceY);
+            j[1][0].setLocation((int) p[1][0].getX(), 
+                    (int) (p[1][0].getY() + distanceY));
+            j[0][0].setLocation((int) p[0][0].getX(),
+                    (int) (p[0][0].getY() + distanceY));
+            j[2][0].setLocation((int) p[2][0].getX(),
+                    (int) (p[2][0].getY() + distanceY));
             
             
         } else if (_event.getSource().equals(j[2][0])) {
             //the items at the same margin as the moved one
-            j[2][0].setLocation(p[2][0].x - distanceXY2, 
-                    p[2][0].y + distanceXY2);
+            j[2][0].setLocation((int) (p[2][0].getX() - distanceXY2), 
+                    (int) (p[2][0].getY() + distanceXY2));
             j[1][0].setLocation(j[0][0].getX() - (j[0][0].getX()
                     - j[2][0].getX()) / 2, j[2][0].getY());
-            j[0][0].setLocation(p[0][0].x, j[2][0].getY());
-            j[2][2].setLocation(j[2][0].getX(), p[2][2].y);
+            j[0][0].setLocation((int) p[0][0].getX(), j[2][0].getY());
+            j[2][2].setLocation(j[2][0].getX(), (int) p[2][2].getY());
             j[2][1].setLocation(j[2][0].getX(), j[2][0].getY()
                     + (j[2][2].getY() - j[2][0].getY()) / 2);
             
             
         } else if (_event.getSource().equals(j[0][1])) {
-            j[0][1].setLocation(p[0][1].x + distanceX, p[0][1].y);
-            j[0][0].setLocation(p[0][0].x + distanceX, p[0][0].y);
-            j[0][2].setLocation(p[0][2].x + distanceX, p[0][2].y);
+            j[0][1].setLocation(
+                    (int) (p[0][1].getX() + distanceX), 
+                            (int) (p[0][1].getY()));
+            j[0][0].setLocation(
+                    (int) (p[0][0].getX() + distanceX), 
+                            (int) (p[0][0].getY()));
+            j[0][2].setLocation(
+                    (int) (p[0][2].getX() + distanceX), 
+                            (int) (p[0][2].getY()));
             
             
         } else if (_event.getSource().equals(j[1][2])) {
-            j[1][2].setLocation(p[1][2].x, p[1][2].y + distanceY);
-            j[0][2].setLocation(p[0][2].x, p[0][2].y + distanceY);
-            j[2][2].setLocation(p[2][2].x, p[2][2].y + distanceY);
+            j[1][2].setLocation(
+                    (int) (p[1][2].getX()), 
+                            (int) (p[1][2].getY() + distanceY));
+            j[0][2].setLocation(
+                    (int) (p[0][2].getX()),
+                            (int) ( p[0][2].getY() + distanceY));
+            j[2][2].setLocation(
+                    (int) (p[2][2].getX()),
+                            (int) ( p[2][2].getY() + distanceY));
             
             
         } else if (_event.getSource().equals(j[0][2])) {
             //the items at the same margin as the moved one
-            j[0][2].setLocation(p[0][2].x - distanceXY2,
-                    p[0][2].y + distanceXY2);
-            j[1][2].setLocation(j[2][2].getX() - (j[2][2].getX()
-                    - j[0][2].getX()) / 2, j[0][2].getY());
-            j[2][2].setLocation(p[2][2].x, j[0][2].getY());
-            j[0][0].setLocation(j[0][2].getX(), p[0][0].y);
+            j[0][2].setLocation(
+                    (int) (p[0][2].getX() - distanceXY2),
+                    (int) (p[0][2].getY() + distanceXY2));
+            j[1][2].setLocation(
+                    (int) (j[2][2].getX() - (j[2][2].getX()
+                    - j[0][2].getX()) / 2), j[0][2].getY());
+            j[2][2].setLocation(
+                    (int) (p[2][2].getX()), j[0][2].getY());
+            j[0][0].setLocation(
+                    (int) (j[0][2].getX()), 
+                    (int) (p[0][0].getY()));
             j[0][1].setLocation(j[0][2].getX(), j[0][2].getY()
                     + (j[0][0].getY() - j[0][2].getY()) / 2);
             
             
         } else if (_event.getSource().equals(j[2][1])) {
-            j[2][1].setLocation(p[2][1].x + distanceX, p[2][1].y);
-            j[2][0].setLocation(p[2][0].x + distanceX, p[2][0].y);
-            j[2][2].setLocation(p[2][2].x + distanceX, p[2][2].y);
+            j[2][1].setLocation(
+                    (int) (p[2][1].getX() + distanceX),
+                    (int) ( p[2][1].getY()));
+            j[2][0].setLocation(
+                    (int) (p[2][0].getX() + distanceX), 
+                    (int) (p[2][0].getY()));
+            j[2][2].setLocation(
+                    (int) (p[2][2].getX() + distanceX), 
+                    (int) (p[2][2].getY()));
             
         } else if (_event.getSource().equals(j[2][2])) {
             //items at the same edges.
-            j[2][2].setLocation(p[2][2].x + distanceXY, p[2][2].y + distanceXY);
-            j[2][0].setLocation(p[2][0].x + distanceXY, p[2][0].y);
-            j[0][2].setLocation(p[0][2].x, p[0][2].y + distanceXY);
-            j[1][2].setLocation(p[1][2].x, p[1][2].y + distanceXY);
-            j[2][1].setLocation(p[2][1].x + distanceXY, p[2][1].y);
+            j[2][2].setLocation(
+                    (int) (p[2][2].getX() + distanceXY), 
+                    (int) (p[2][2].getY() + distanceXY));
+            j[2][0].setLocation((int) (p[2][0].getX() + distanceXY), 
+                    (int) (p[2][0].getY()));
+            j[0][2].setLocation((int) (p[0][2].getX()),
+                    (int) (p[0][2].getY() + distanceXY));
+            j[1][2].setLocation(
+                    (int) (p[1][2].getX()),
+                    (int) (p[1][2].getY() + distanceXY));
+            j[2][1].setLocation(
+                    (int) (p[2][1].getX() + distanceXY),
+                    (int) (p[2][1].getY()));
         } 
 
         final int size = j[0][0].getWidth() / 2;
@@ -298,8 +337,8 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
     private void md_stretchImage(final MouseEvent _event) {
 
-        double distanceX = _event.getXOnScreen() - pnt_start.x;
-        double distanceY = _event.getYOnScreen() - pnt_start.y;
+        double distanceX = _event.getXOnScreen() - pnt_start.getX();
+        double distanceY = _event.getYOnScreen() - pnt_start.getY();
         JButton[][] j = Page.getInstance().getJbtn_resize();
         DPoint[][] p = pnt_startLocationButton;
         double distanceXY, distanceXY2;
@@ -352,11 +391,11 @@ public class CSelection implements MouseMotionListener, MouseListener {
         final int sizeButton = j[1][1].getWidth() / 2;
 
         final int minSize = sizeButton * 2 + size * (2 + 1);
-        if (pnt_size.x < minSize) {
-            pnt_size.x = minSize;
+        if (pnt_size.getX() < minSize) {
+            pnt_size.setX(minSize);
         }        
-        if (pnt_size.y < minSize) {
-            pnt_size.y = minSize;
+        if (pnt_size.getY() < minSize) {
+            pnt_size.setY(minSize);
         }
         
         Picture.getInstance().getLs_poSelected().toFirst();

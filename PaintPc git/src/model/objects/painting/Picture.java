@@ -13,8 +13,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
 import settings.Error;
 import settings.Status;
 import view.ViewVorschau;
@@ -22,6 +24,7 @@ import view.forms.Page;
 import model.objects.PictureOverview;
 import model.objects.pen.Pen;
 import model.objects.pen.special.PenSelection;
+import model.util.DPoint;
 import model.util.list.List;
 
 /**
@@ -370,7 +373,7 @@ public final class Picture extends Observable {
 	 * adds a Point to current PaintObject.
 	 * @param _pnt the point which is to be added.
 	 */
-	public void changePaintObject(final Point _pnt) {
+	public void changePaintObject(final DPoint _pnt) {
 
 		
 		
@@ -397,8 +400,10 @@ public final class Picture extends Observable {
 		} else {
 
 		    final int minimalDistance = 1;
-	        int dx = po_current.getPoints().getItem().x - _pnt.x;
-	        int dy = po_current.getPoints().getItem().y - _pnt.y;
+	        int dx = (int) 
+	                (po_current.getPoints().getItem().getX() - _pnt.getX());
+	        int dy = (int) 
+	                (po_current.getPoints().getItem().getY() - _pnt.getY());
 	        if (Math.sqrt(dx * dx + dy * dy) > minimalDistance) {
 	            po_current.addPoint(_pnt);
 
@@ -792,8 +797,8 @@ public final class Picture extends Observable {
 	            pow.getPoints().toFirst();
 	            pow.adjustSnapshotBounds(_dX, _dY);
 	            while (!pow.getPoints().isBehind()) {
-                    pow.getPoints().getItem().x += _dX;
-                    pow.getPoints().getItem().y += _dY;
+                    pow.getPoints().getItem().setX(pow.getPoints().getItem().getX() + _dX);
+                    pow.getPoints().getItem().setY(pow.getPoints().getItem().getY() + _dY);
 	                pow.getPoints().next();
 	            }
 	        }
@@ -874,14 +879,14 @@ public final class Picture extends Observable {
 	 * @param _wsLoc the location of the image
 	 * @return the size of the image
 	 */
-	public Point load(final String _wsLoc) {
+	public DPoint load(final String _wsLoc) {
 		try {
 			bi_normalSize = ImageIO.read(new File(_wsLoc));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		return new Point(bi_normalSize.getWidth(), bi_normalSize.getHeight());
+		return new DPoint(bi_normalSize.getWidth(), bi_normalSize.getHeight());
 	}
 	
 	

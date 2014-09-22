@@ -29,6 +29,7 @@ import model.objects.painting.PaintObject;
 import model.objects.painting.Picture;
 import model.objects.pen.normal.PenKuli;
 import model.objects.pen.special.PenSelection;
+import model.util.DPoint;
 import model.util.list.List;
 import settings.Constants;
 import settings.ReadSettings;
@@ -265,7 +266,7 @@ public final class ControlPainting implements MouseListener,
                 // add paintObject and point to Picture
                 Picture.getInstance().addPaintObjectWrinting();
                 Picture.getInstance().changePaintObject(
-                        new Point((_event.getX() 
+                        new DPoint((_event.getX() 
                                 - Page.getInstance()
                                 .getJlbl_painting().getLocation().x
                                 )
@@ -350,7 +351,7 @@ public final class ControlPainting implements MouseListener,
                 // hier kann ich das noch gar nicht entscheiden.
                 // doch.
                 Picture.getInstance().changePaintObject(
-                        new Point((_event.getX() 
+                        new DPoint((_event.getX() 
                                 - Page.getInstance()
                                 .getJlbl_painting().getLocation().x
                                 )
@@ -367,7 +368,7 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
 
                 Picture.getInstance().changePaintObject(
-                        new Point(_event.getX(), _event.getY()));
+                        new DPoint(_event.getX(), _event.getY()));
                 break;
 
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:

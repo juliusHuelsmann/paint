@@ -5,10 +5,12 @@ package model.objects.pen.normal;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+
 import settings.Error;
 import settings.Status;
 import view.forms.Page;
 import model.objects.pen.Pen;
+import model.util.DPoint;
 
 
 /**
@@ -40,9 +42,9 @@ public class PenKuli extends Pen {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override protected final void paintPoint(final Point _p, 
+	@Override protected final void paintPoint(final DPoint _p, 
 	        final BufferedImage _bi, final boolean _final, 
-	        final Point _pnt_shift, final BufferedImage _g) {
+	        final DPoint _pnt_shift, final BufferedImage _g) {
 
 	    for (int i = -getThickness() / 2;
                 i < (getThickness() / 2) + (getThickness() % 2); i++) {
@@ -55,8 +57,8 @@ public class PenKuli extends Pen {
                 //drawing.
                 int x, y;
 
-                x = _p.x + i;
-                y = _p.y + j;
+                x = (int) (_p.x + i);
+                y = (int) (_p.y + j);
                 
                 
 				//if is in range

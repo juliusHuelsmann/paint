@@ -5,6 +5,8 @@ package model.objects.painting;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
+import model.util.DPoint;
 import settings.Error;
 
 
@@ -173,8 +175,8 @@ public class PaintObjectImage extends PaintObject {
 
 
     @Override
-    public void stretch(final Point _pnt_from, final Point _pnt_totalStretch,
-            final Point _pnt_size) {
+    public void stretch(final DPoint _pnt_from, final DPoint _pnt_totalStretch,
+            final DPoint _pnt_size) {
         
     }
 }

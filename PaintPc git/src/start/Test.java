@@ -1,10 +1,9 @@
 package start;
 
 import java.awt.Color;
-import java.awt.Point;
-
 import model.objects.painting.Picture;
 import model.objects.pen.normal.PenKuli;
+import model.util.DPoint;
 import settings.Constants;
 import settings.Settings;
 import view.forms.Page;
@@ -52,11 +51,11 @@ public class Test {
      */
     public static final void loadPicture() {
     
-        Point newSize = Picture.getInstance().load(
+        DPoint newSize = Picture.getInstance().load(
                 "/home/juli/Arbeitsfläche/input.jpg");
     
         //change size
-        Page.getInstance().setSize(newSize.x, newSize.y);
+        Page.getInstance().setSize((int) newSize.x, (int) newSize.y);
         Picture.getInstance().whiteToAlpha();
         
         Picture.getInstance().savePNG("/home/juli/Arbeitsfläche/output.png");
@@ -89,7 +88,7 @@ public class Test {
                     e.printStackTrace();
                 }
                 Picture.getInstance().changePaintObject(
-                        new Point(fifety * 2, fifety * 2));
+                        new DPoint(fifety * 2, fifety * 2));
 
                 try {
                     Thread.sleep(time);
@@ -97,28 +96,28 @@ public class Test {
                     e.printStackTrace();
                 }
                 Picture.getInstance().changePaintObject(
-                        new Point(fifety * (2 + 1), fifety * (2 + 2)));
+                        new DPoint(fifety * (2 + 1), fifety * (2 + 2)));
                 try {
                     Thread.sleep(time);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 Picture.getInstance().changePaintObject(
-                        new Point(fifety * (2 + 2), fifety * 2));
+                        new DPoint(fifety * (2 + 2), fifety * 2));
                 try {
                     Thread.sleep(time);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 Picture.getInstance().changePaintObject(
-                        new Point(fifety * (2 + 1), 0));
+                        new DPoint(fifety * (2 + 1), 0));
                 try {
                     Thread.sleep(time);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 Picture.getInstance().changePaintObject(
-                        new Point(fifety * (2), fifety * (2)));
+                        new DPoint(fifety * (2), fifety * (2)));
                 try {
                     Thread.sleep(time);
                 } catch (InterruptedException e) {
@@ -134,12 +133,12 @@ public class Test {
 
                 Picture.getInstance().addPaintObjectWrinting();
                 Picture.getInstance().changePaintObject(
-                        new Point(2 + 2 + 1, fifety * 2));
-                Picture.getInstance().changePaintObject(new Point(
+                        new DPoint(2 + 2 + 1, fifety * 2));
+                Picture.getInstance().changePaintObject(new DPoint(
                         fifety * 2, 2 + 2 + 2));
-                Picture.getInstance().changePaintObject(new Point(
+                Picture.getInstance().changePaintObject(new DPoint(
                         fifety * (2 + 1), fifety * 2 + (2 + 2 + 1) * (2 + 2)));
-                Picture.getInstance().changePaintObject(new Point(
+                Picture.getInstance().changePaintObject(new DPoint(
                         fifety * (2 + 2 + 1), fifety + (2 + 2 + 1) * 2));
                 Picture.getInstance().finish();
                 
@@ -159,8 +158,8 @@ public class Test {
      * @param _p3 point of triangle
      * @param _pic the picture.
      */
-    public final void testAlle(final Point _p1, 
-            final Point _p2, final Point _p3, final Picture _pic) {
+    public final void testAlle(final DPoint _p1, 
+            final DPoint _p2, final DPoint _p3, final Picture _pic) {
 
         test(_p1, _p2, _p3, _pic);
         test(_p1, _p3, _p2, _pic);
@@ -181,7 +180,7 @@ public class Test {
      * @param _p3 point of triangle
      * @param _pic the picture
      */
-    private void test(final Point _p1, final Point _p2, final Point _p3, 
+    private void test(final DPoint _p1, final DPoint _p2, final DPoint _p3, 
             final Picture _pic) {
 
         final int time = 5000;
@@ -212,13 +211,13 @@ public class Test {
         
         _pic.clear();
         _pic.addPaintObjectWrinting();
-        _pic.changePaintObject(new Point(fifety, fifety * 2 + twenty));
-        _pic.changePaintObject(new Point(fifety * 2, fifety * (2 + 2)));
-        _pic.changePaintObject(new Point(
+        _pic.changePaintObject(new DPoint(fifety, fifety * 2 + twenty));
+        _pic.changePaintObject(new DPoint(fifety * 2, fifety * (2 + 2)));
+        _pic.changePaintObject(new DPoint(
                 fifety * (2 + 2), fifety * (2 + 2 + 2)));
-        _pic.changePaintObject(new Point(
+        _pic.changePaintObject(new DPoint(
                 fifety * (2 + 1), fifety * (twenty / 2)));
-        _pic.changePaintObject(new Point(fifety * (2 + 2 + 2), 
+        _pic.changePaintObject(new DPoint(fifety * (2 + 2 + 2), 
                 fifety * (2 + 2 + 2 + 2) + twenty + 2 + 2 + 1));
         _pic.finish();
 

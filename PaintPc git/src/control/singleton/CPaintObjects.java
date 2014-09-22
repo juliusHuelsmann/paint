@@ -16,6 +16,7 @@ import model.objects.painting.PaintObject;
 import model.objects.painting.PaintObjectWriting;
 import model.objects.painting.Picture;
 import model.objects.pen.Pen;
+import model.util.DPoint;
 import model.util.list.List;
 import settings.Constants;
 import settings.Status;
@@ -244,7 +245,7 @@ public final class CPaintObjects implements ActionListener {
             
             PaintObjectWriting pow = (PaintObjectWriting) _po_cu;
             Pen pe = pow.getPen();
-            final List<Point> ls_point = pow.getPoints();
+            final List<DPoint> ls_point = pow.getPoints();
             text = "Stift  " + pe.getClass().getSimpleName()
                     + " \nArt   " + pe.getID()
                     + "\nStaerke    " + pe.getThickness()

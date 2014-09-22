@@ -115,11 +115,11 @@ public class PaintObjectWriting extends PaintObject {
 	 * @return whether theDPoint is inside the given rectangle.
 	 */
     private static boolean isInSelectionPoint(
-            final Rectangle _r, finalDPoint _p) {
+            final Rectangle _r, final DPoint _p) {
         
         //return whether theDPoint is inside given rectangle.
-        return (_p.x >= _r.x && _p.y >= _r.y 
-                && _p.x <= _r.x + _r.width && _p.y <= _r.y + _r.height);
+        return (_p.getX() >= _r.x && _p.getY() >= _r.y 
+                && _p.getX() <= _r.x + _r.width && _p.getY() <= _r.y + _r.height);
     }
 
 	/**
@@ -135,7 +135,7 @@ public class PaintObjectWriting extends PaintObject {
 	    super(_elementId);
 	    
 		//save values
-		this.ls_point = new List<Point>();
+		this.ls_point = new List<DPoint>();
 		
 		if (_pen instanceof PenKuli) {
             this.pen = new PenKuli(_pen.getId_operation(),
@@ -166,12 +166,12 @@ public class PaintObjectWriting extends PaintObject {
 	public final void addPoint(final DPoint _pnt) {
 
 	    //update MIN values
-		minX = (int) Math.min(_pnt.x, minX);
-		minY = (int) Math.min(_pnt.y, minY);
+		minX = (int) Math.min(_pnt.getX(), minX);
+		minY = (int) Math.min(_pnt.getY(), minY);
 
 		//update MAX values
-		maxX = (int) Math.max(_pnt.x, maxX);
-		maxY = (int) Math.max(_pnt.y, maxY);
+		maxX = (int) Math.max(_pnt.getX(), maxX);
+		maxY = (int) Math.max(_pnt.getY(), maxY);
 	
 		//insert at the end of theDPoint list.
 		ls_point.insertAtTheEnd(_pnt);
@@ -283,12 +283,12 @@ public class PaintObjectWriting extends PaintObject {
      * 
      * @return true or false
      */
-    private boolean pruefeLine(finalDPoint _p1, finalDPoint _p2, 
+    private boolean pruefeLine(final DPoint _p1, final DPoint _p2, 
             final Rectangle _r) {
 
         //compute delta values
-        int dX = (_p1.x - _p2.x);
-        int dY = (_p1.y - _p2.y);
+        int dX = (int) (_p1.getX() - _p2.getX());
+        int dY = (int) (_p1.getY() - _p2.getY());
 
         //print the line between the twoDPoints
         for (int a = 0; a < Math.max(Math.abs(dX), Math.abs(dY)); a++) {
@@ -297,7 +297,7 @@ public class PaintObjectWriting extends PaintObject {
             
 
             if (isInSelectionPoint(_r, 
-                    new DPoint(_p1.x - plusX, _p1.y - plusY))) {
+                    new DPoint(_p1.getX() - plusX, _p1.getY() - plusY))) {
                 return true;
             }
             
@@ -328,12 +328,12 @@ public class PaintObjectWriting extends PaintObject {
             while (!ls_point.isBehind()) {
 
                 //update MIN values
-                minX = Math.min(ls_point.getItem().x, minX);
-                minY = Math.min(ls_point.getItem().y, minY);
+                minX = (int) Math.min(ls_point.getItem().getX(), minX);
+                minY = (int) Math.min(ls_point.getItem().getY(), minY);
 
                 //update MAX values
-                maxX = Math.max(ls_point.getItem().x, maxX);
-                maxY = Math.max(ls_point.getItem().y, maxY);
+                maxX = (int) Math.max(ls_point.getItem().getX(), maxX);
+                maxY = (int) Math.max(ls_point.getItem().getY(), maxY);
                 
                 //proceed one step
                 ls_point.next();
@@ -359,8 +359,8 @@ public class PaintObjectWriting extends PaintObject {
 
         //initialize the lInside Element
        DPoint pc = ls_point.getItem();
-        lInside = (pc.x >= _r.x && pc.x <= _r.x + _r.width 
-                && pc.y >= _r.y && pc.y <= _r.y + _r.height);
+        lInside = (pc.getX() >= _r.x && pc.getX() <= _r.x + _r.width 
+                && pc.getY() >= _r.y && pc.getY() <= _r.y + _r.height);
 
         PaintObjectWriting pow_current = new PaintObjectWriting(getElementId(), 
                 getPen());
@@ -370,8 +370,8 @@ public class PaintObjectWriting extends PaintObject {
         while (!ls_point.isBehind()) {
             
            DPoint pcNew = ls_point.getItem();
-            boolean cInside = (pcNew.x >= _r.x && pcNew.x <= _r.x + _r.width 
-                    && pcNew.y >= _r.y && pcNew.y <= _r.y + _r.height);
+            boolean cInside = (pcNew.getX() >= _r.x && pcNew.getX() <= _r.x + _r.width 
+                    && pcNew.getY() >= _r.y && pcNew.getY() <= _r.y + _r.height);
             
             if (cInside) {
             
@@ -382,7 +382,7 @@ public class PaintObjectWriting extends PaintObject {
 
                     //calculate borderDPoint
                    DPoint pnt_border = findIntersection(_r, pc, new DPoint(
-                            pcNew.x - pc.x, pcNew.y - pc.y));
+                            pcNew.getX() - pc.getX(), pcNew.getY() - pc.getY()));
 
                     //add the borderDPoint to the last PaintObject and insert 
                     //paintObject to list
@@ -405,7 +405,7 @@ public class PaintObjectWriting extends PaintObject {
 
                     //calculate borderDPoint
                    DPoint pnt_border = findIntersection(_r, pc, new DPoint(
-                            pcNew.x - pc.x, pcNew.y - pc.y));
+                            pcNew.getX() - pc.getX(), pcNew.getY() - pc.getY()));
                     
                     //add the borderDPoint to the last PaintObject and insert 
                     //paintObject to list
@@ -550,48 +550,48 @@ public class PaintObjectWriting extends PaintObject {
         //              s___________|
         //  LEFT        s
         Matrix m = new Matrix(2, 2 + 1);
-        m.setValue(0, 0, _v.x);
-        m.setValue(1, 0, _v.y);
+        m.setValue(0, 0, _v.getX());
+        m.setValue(1, 0, _v.getY());
         m.setValue(0, 1, 0);
         m.setValue(1, 1, 1);
-        m.setValue(0, 2, _r.x - _p.x);
-        m.setValue(1, 2, _r.y - _p.y);
+        m.setValue(0, 2, _r.x - _p.getX());
+        m.setValue(1, 2, _r.y - _p.getY());
         double [] factor1 = m.solve();
         //Visualization s s s s s s s s s s s s s
         //      x       |           |
         //              |    x      |
         //  TOP         |___________|
         m = new Matrix(2, 2 + 1);
-        m.setValue(0, 0, _v.x);
-        m.setValue(1, 0, _v.y);
+        m.setValue(0, 0, _v.getX());
+        m.setValue(1, 0, _v.getY());
         m.setValue(0, 1, 1);
         m.setValue(1, 1, 0);
-        m.setValue(0, 2, _r.x - _p.x);
-        m.setValue(1, 2, _r.y - _p.y);
+        m.setValue(0, 2, _r.x - _p.getX());
+        m.setValue(1, 2, _r.y - _p.getY());
         double [] factor2 = m.solve();
         //Visualization ____________s
         //      x       |           s
         //              |    x      s
         //  RIGHT       |___________s
         m = new Matrix(2, 2 + 1);
-        m.setValue(0, 0, _v.x);
-        m.setValue(1, 0, _v.y);
+        m.setValue(0, 0, _v.getX());
+        m.setValue(1, 0, _v.getY());
         m.setValue(0, 1, 0);
         m.setValue(1, 1, -1);
-        m.setValue(0, 2, _r.x + _r.width - _p.x);
-        m.setValue(1, 2, _r.y + _r.height - _p.y);
+        m.setValue(0, 2, _r.x + _r.width - _p.getX());
+        m.setValue(1, 2, _r.y + _r.height - _p.getY());
         double [] factor3 = m.solve();
         //Visualization _____________
         //      x       |           |
         //              |    x      |
         //  BOTTOM    s s s s s s s s s
         m = new Matrix(2, 2 + 1);
-        m.setValue(0, 0, _v.x);
-        m.setValue(1, 0, _v.y);
+        m.setValue(0, 0, _v.getX());
+        m.setValue(1, 0, _v.getY());
         m.setValue(0, 1, -1);
         m.setValue(1, 1, 0);
-        m.setValue(0, 2, _r.x + _r.width - _p.x);
-        m.setValue(1, 2, _r.y + _r.height - _p.y);
+        m.setValue(0, 2, _r.x + _r.width - _p.getX());
+        m.setValue(1, 2, _r.y + _r.height - _p.getY());
         double [] factor4 = m.solve();
         /*
          * Step 2
@@ -600,41 +600,41 @@ public class PaintObjectWriting extends PaintObject {
                 intersection3 = null, intersection4 = null;
         //fetchDPoint
         if (factor1 != null) {
-            intersection1 = new DPoint((int) (_p.x + factor1[0] * _v.x), 
-                    (int) (_p.y + factor1[0] * _v.y));
+            intersection1 = new DPoint((int) (_p.getX() + factor1[0] * _v.getX()), 
+                    (int) (_p.getY() + factor1[0] * _v.getY()));
             //check whether suitable.
-            if (_r.y + _r.height  - (int) intersection1.y < 0
-                    || _r.y - (int) intersection1.y > 0) {
+            if (_r.y + _r.height  - (int) intersection1.getY() < 0
+                    || _r.y - (int) intersection1.getY() > 0) {
                 intersection1 = null;
             }
         }
         if (factor2 != null) {
             //fetchDPoint
-            intersection2 = new DPoint((int) (_p.x + factor2[0] * _v.x), 
-                    (int) (_p.y + factor2[0] * _v.y));
+            intersection2 = new DPoint((int) (_p.getX() + factor2[0] * _v.getX()), 
+                    (int) (_p.getY() + factor2[0] * _v.getY()));
             //check whether suitable.
-            if (_r.x + _r.width  - (int) intersection2.x < 0
-                    || _r.x - (int) intersection2.x > 0) {
+            if (_r.x + _r.width  - (int) intersection2.getX() < 0
+                    || _r.x - (int) intersection2.getX() > 0) {
                 intersection2 = null;
             }
         }
         if (factor3 != null) {
             //fetchDPoint
-            intersection3 = new DPoint((int) (_p.x + factor3[0] * _v.x), 
-                    (int) (_p.y + factor3[0] * _v.y));
+            intersection3 = new DPoint((int) (_p.getX() + factor3[0] * _v.getX()), 
+                    (int) (_p.getY() + factor3[0] * _v.getY()));
             //check whether suitable.
-            if (_r.y + _r.height  - (int) intersection3.y < 0
-                    || _r.y - (int) intersection3.y > 0) {
+            if (_r.y + _r.height  - (int) intersection3.getY() < 0
+                    || _r.y - (int) intersection3.getY() > 0) {
                 intersection3 = null;
             }
         }
         if (factor4 != null) {
             //fetchDPoint
-            intersection4 = new DPoint((int) (_p.x + factor4[0] * _v.x), 
-                    (int) (_p.y + factor4[0] * _v.y));
+            intersection4 = new DPoint((int) (_p.getX() + factor4[0] * _v.getX()), 
+                    (int) (_p.getY() + factor4[0] * _v.getY()));
             //check whether suitable.
-            if (_r.x + _r.width  - (int) intersection4.x < 0
-                    || _r.x - (int) intersection4.x > 0) {
+            if (_r.x + _r.width  - (int) intersection4.getX() < 0
+                    || _r.x - (int) intersection4.getX() > 0) {
                 intersection4 = null;
             }
         }
@@ -709,7 +709,7 @@ public class PaintObjectWriting extends PaintObject {
                             .getJlbl_selectionPainting().getGraphics();
                     
                     g.setColor(Color.orange);
-                    g.drawRect((int)_p.x, (int)_p.y, 2, 2);
+                    g.drawRect((int)_p.getX(), (int)_p.getY(), 2, 2);
                     
                     try {
                         Thread.sleep(sleepTime);
@@ -736,26 +736,26 @@ public class PaintObjectWriting extends PaintObject {
         ls_point.toFirst();
         while (!ls_point.isBehind()) {
             
-           DPoint pnt_vector = new DPoint(ls_point.getItem().x - _pnt_from.x,
-                    ls_point.getItem().y - _pnt_from.y);
+           DPoint pnt_vector = new DPoint(ls_point.getItem().getX() - _pnt_from.getX(),
+                    ls_point.getItem().getY() - _pnt_from.getY());
 
-            double dX = pnt_vector.x + _pnt_from.x 
-                    - (_pnt_totalStretch.x * pnt_vector.x) / _pnt_size.x;
+            double dX = pnt_vector.getX() + _pnt_from.getX() 
+                    - (_pnt_totalStretch.getX() * pnt_vector.getX()) / _pnt_size.getX();
 
-            double dY = pnt_vector.y + _pnt_from.y 
-                    - (_pnt_totalStretch.y * pnt_vector.y) / _pnt_size.y;
-            pnt_vector.x = (int)dX;
-            pnt_vector.y = (int)dY;
+            double dY = pnt_vector.getY() + _pnt_from.getY() 
+                    - (_pnt_totalStretch.getY() * pnt_vector.getY()) / _pnt_size.getY();
+            pnt_vector.setX((int)dX);
+            pnt_vector.setY((int)dY);
             
             ls_point.replace(pnt_vector);
             
             //update MIN values
-            minX = (int) Math.min(pnt_vector.x, minX);
-            minY = (int) Math.min(pnt_vector.y, minY);
+            minX = (int) Math.min(pnt_vector.getX(), minX);
+            minY = (int) Math.min(pnt_vector.getY(), minY);
 
             //update MAX values
-            maxX = (int) Math.max(pnt_vector.x, maxX);
-            maxY = (int) Math.max(pnt_vector.y, maxY);
+            maxX = (int) Math.max(pnt_vector.getX(), maxX);
+            maxY = (int) Math.max(pnt_vector.getY(), maxY);
             
             ls_point.next();
         }

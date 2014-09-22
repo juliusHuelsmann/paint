@@ -200,8 +200,8 @@ public abstract class Pen implements Serializable {
     
         //previous point
         DPoint pnt_previous = new DPoint(
-                _ls_point.getItem().x,
-                _ls_point.getItem().y);
+                _ls_point.getItem().getX(),
+                _ls_point.getItem().getY());
         
         paintPoint(pnt_previous, _bi, _final, _p_shift, _g);
         _ls_point.next();
@@ -211,19 +211,19 @@ public abstract class Pen implements Serializable {
     
             //if the current point is not equal to the last point
             //print the line and update the last element.
-            if (!(_ls_point.getItem().x 
-                    == pnt_previous.x 
-                    && _ls_point.getItem().y  
-                    == pnt_previous.y)) {
+            if (!(_ls_point.getItem().getX() 
+                    == pnt_previous.getX() 
+                    && _ls_point.getItem().getY()  
+                    == pnt_previous.getY())) {
              
     
                 paintLine(new DPoint(
-                        _ls_point.getItem().x,
-                        _ls_point.getItem().y),
+                        _ls_point.getItem().getX(),
+                        _ls_point.getItem().getY()),
                         pnt_previous, _bi, _final, _g, _p_shift);
                 pnt_previous = new DPoint(
-                        _ls_point.getItem().x,
-                        _ls_point.getItem().y);
+                        _ls_point.getItem().getX(),
+                        _ls_point.getItem().getY());
             }
             _ls_point.next();
         }
@@ -266,7 +266,7 @@ public abstract class Pen implements Serializable {
                 _ls_point.toFirst();
                 while (!_ls_point.isBehind()) {
                     ls_newPoints.insertAtTheEnd(new DPoint(
-                            _ls_point.getItem().x, _ls_point.getItem().y));
+                            _ls_point.getItem().getX(), _ls_point.getItem().getY()));
                     _ls_point.next();
                 }
             } else {
@@ -275,8 +275,8 @@ public abstract class Pen implements Serializable {
                 ls_allPoints.toFirst();
                 while (!ls_allPoints.isBehind()) {
                     ls_newPoints.insertAtTheEnd(new DPoint(
-                            ls_allPoints.getItem().x, 
-                            ls_allPoints.getItem().y));
+                            ls_allPoints.getItem().getX(), 
+                            ls_allPoints.getItem().getY()));
                     ls_allPoints.next();
                 }
                 ls_allPoints = new List<DPoint>();
@@ -327,8 +327,8 @@ public abstract class Pen implements Serializable {
                     //merge
                     
                     DPoint pnt_new = new DPoint(
-                            (ls_allPoints.getItem().x + r.x) / 2, 
-                            (ls_allPoints.getItem().y + r.y) / 2);
+                            (ls_allPoints.getItem().getX() + r.x) / 2, 
+                            (ls_allPoints.getItem().getY() + r.y) / 2);
                     ls_allPoints.remove();
                     ls_allPoints.insertBehind(pnt_new);
                 } else  {
@@ -400,8 +400,8 @@ public abstract class Pen implements Serializable {
 	private double op_mathsGetTriangleHeight(final DPoint _p1, final DPoint _p2, 
 	        final DPoint _p3) {
 
-        double growthNormalX = (_p3.x - _p1.x);
-        double growthNormalY = (_p3.y - _p1.y);
+        double growthNormalX = (_p3.getX() - _p1.getX());
+        double growthNormalY = (_p3.getY() - _p1.getY());
 	    
         double growthOrthogonalX = -growthNormalY;
         double growthOrthogonalY = growthNormalX;
@@ -415,24 +415,24 @@ public abstract class Pen implements Serializable {
         Matrix m = new Matrix(2, 2 + 1);
         m.setValue(0, 0, growthNormalX);
         m.setValue(0, 1, -growthOrthogonalX);
-        m.setValue(0, 2, _p2.x - _p1.x);
+        m.setValue(0, 2, _p2.getX() - _p1.getX());
         m.setValue(1, 0, growthNormalY);
         m.setValue(1, 1, -growthOrthogonalY);
-        m.setValue(1, 2, _p2.y - _p1.y);
+        m.setValue(1, 2, _p2.getY() - _p1.getY());
         double [] d = m.solve();
 
         //the point of which distance to _p2 is to be calculated
         
-        double vX = _p1.x + d[0] * growthNormalX;
-        double vY = _p1.y + d[0] * growthNormalY;
+        double vX = _p1.getX() + d[0] * growthNormalX;
+        double vY = _p1.getY() + d[0] * growthNormalY;
 
         if (Double.isNaN(d[0])) {
-            vX = _p1.x + d[1] * growthOrthogonalX;
-            vY = _p1.y + d[1] * growthOrthogonalY;
+            vX = _p1.getX() + d[1] * growthOrthogonalX;
+            vY = _p1.getY() + d[1] * growthOrthogonalY;
         }
         
-        return Math.sqrt(Math.abs(vX - _p2.x) * Math.abs(vX - _p2.x)
-                + Math.abs(vY - _p2.y) * Math.abs(vY - _p2.y));
+        return Math.sqrt(Math.abs(vX - _p2.getX()) * Math.abs(vX - _p2.getX())
+                + Math.abs(vY - _p2.getY()) * Math.abs(vY - _p2.getY()));
 	}
 	
 	
@@ -459,26 +459,26 @@ public abstract class Pen implements Serializable {
         DPoint p_new1 = null, p_new2 = null;
         
         final int groesserGleich  = 10;
-        int dx = (int) (_p1.x - _p2.x);
-        int dy = (int) (_p1.y - _p2.y);
+        int dx = (int) (_p1.getX() - _p2.getX());
+        int dy = (int) (_p1.getY() - _p2.getY());
         if (Math.sqrt(dx * dx + dy * dy) > groesserGleich) {
             p_new1 = op_mathsAddPoint(_p1, _p2, triangleHeight);
         }
     
-        dx = (int) (_p3.x - _p2.x);
-        dy = (int) (_p3.y - _p2.y);
+        dx = (int) (_p3.getX() - _p2.getX());
+        dy = (int) (_p3.getY() - _p2.getY());
         if (Math.sqrt(dx * dx + dy * dy) > groesserGleich) {
             p_new2 = op_mathsAddPoint(_p2, _p3, triangleHeight);
         }
         
         Rectangle toReturn = new Rectangle(-1, -1, -1, -1);
         if (p_new1 != null) {
-            toReturn.x = (int) p_new1.x;
-            toReturn.y = (int) p_new1.y;
+            toReturn.x = (int) p_new1.getX();
+            toReturn.y = (int) p_new1.getY();
         }
         if (p_new2 != null) {
-            toReturn.width = (int) p_new2.x;
-            toReturn.height = (int) p_new2.y;
+            toReturn.width = (int) p_new2.getX();
+            toReturn.height = (int) p_new2.getY();
         }
 
         return toReturn;
@@ -501,15 +501,15 @@ public abstract class Pen implements Serializable {
     private DPoint op_mathsAddPoint(final DPoint _p1, final DPoint _p2, 
             final double _triangleHeight) {
     
-            double growthNormalX = (_p2.x - _p1.x);
-            double growthNormalY = (_p2.y - _p1.y);
+            double growthNormalX = (_p2.getX() - _p1.getX());
+            double growthNormalY = (_p2.getY() - _p1.getY());
             
             double growthOrthogonalX = -growthNormalY;
             double growthOrthogonalY = growthNormalX;
     
     
-            double centerX = _p1.x + (_p2.x - _p1.x) / 2;
-            double centerY = _p1.y + (_p2.y - _p1.y) / 2;
+            double centerX = _p1.getX() + (_p2.getX() - _p1.getX()) / 2;
+            double centerY = _p1.getY() + (_p2.getY() - _p1.getY()) / 2;
             
     //        clr_foreground = Color.green;
     //        paintPoint(new Point((int)centerX, (int)centerY), _bi);
@@ -551,14 +551,14 @@ public abstract class Pen implements Serializable {
 	        final BufferedImage _g, final DPoint _pnt_shift) {
 
 		//compute delta values
-		int dX = (int) (_p1.x - _p2.x);
-		int dY = (int) (_p1.y - _p2.y);
+		int dX = (int) (_p1.getX() - _p2.getX());
+		int dY = (int) (_p1.getY() - _p2.getY());
 
         //print the line between the two points
         for (int a = 0; a < Math.max(Math.abs(dX), Math.abs(dY)); a++) {
             int plusX = a * dX /  Math.max(Math.abs(dX), Math.abs(dY));
             int plusY = a * dY /  Math.max(Math.abs(dX), Math.abs(dY));
-            paintPoint(new DPoint(_p1.x - plusX, _p1.y - plusY), 
+            paintPoint(new DPoint(_p1.getX() - plusX, _p1.getY() - plusY), 
                     _bi, _final, _pnt_shift, _g);
         }
 	}

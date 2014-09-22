@@ -4,7 +4,8 @@ import java.awt.Point;
 
 public class DPoint {
 
-    public double x, y;
+    public double x;
+    public double y;
 
     public DPoint(double _x, double _y){
         x = _x;
@@ -25,5 +26,29 @@ public class DPoint {
     public DPoint(){
         x = 0;
         y = 0;
+    }
+    /**
+     * @return the x
+     */
+    public double getX() {
+        return x;
+    }
+    /**
+     * @param x the x to set
+     */
+    public void setX(double x) {
+        this.x = x;
+    }
+    /**
+     * @return the y
+     */
+    public double getY() {
+        return y;
+    }
+    /**
+     * @param y the y to set
+     */
+    public void setY(double y) {
+        this.y = y;
     }
 }

@@ -159,6 +159,7 @@ public final class Paint extends JPanel {
 	        initializeTextButton(tb_paste,
 	                TextFactory.getInstance().getTextViewTb_paste(),
 	                Constants.VIEW_TB_PASTE_PATH, 0);
+	        tb_paste.setActivable(false);
 
 	        //copy
 	        tb_copy = new Item1Button(tb_copy);
@@ -168,6 +169,7 @@ public final class Paint extends JPanel {
 	        initializeTextButton(tb_copy,
 	                TextFactory.getInstance().getTextViewTb_copy(),
 	                Constants.VIEW_TB_COPY_PATH, 0);
+	        tb_copy.setActivable(false);
 
 	        //cut
 	        tb_cut = new Item1Button(tb_cut);
@@ -177,6 +179,7 @@ public final class Paint extends JPanel {
 	        initializeTextButton(tb_cut,
 	                TextFactory.getInstance().getTextViewTb_cut(),
 	                Constants.VIEW_TB_CUT_PATH, 0);
+	        tb_cut.setActivable(false);
 
 	    }
 	    

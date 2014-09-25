@@ -588,6 +588,13 @@ public final class Picture extends Observable {
      * @return the painted BufferedImage.
      */
     public BufferedImage paintSelectedBI() {
+        
+        if (CSelection.getInstance().getR_selection() == null) {
+            
+            Status.getLogger().warning("the selection square does not exist!");
+            return null;
+        }
+        
         BufferedImage bi = new BufferedImage(
                 CSelection.getInstance().getR_selection().width, 
                 CSelection.getInstance().getR_selection().height, 

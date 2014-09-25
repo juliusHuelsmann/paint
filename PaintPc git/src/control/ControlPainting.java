@@ -568,8 +568,7 @@ public final class ControlPainting implements MouseListener,
             
 
             Page.getInstance().getJlbl_painting().refreshPaint();
-        } else if (_event.getButton() == 1
-                && _event.getSource().equals(
+        } else if (_event.getSource().equals(
                         Page.getInstance().getJlbl_painting())) {
             mouseReleasedPainting(_event);
         }
@@ -587,123 +586,143 @@ public final class ControlPainting implements MouseListener,
         case Constants.CONTROL_PATINING_INDEX_PAINT_2:
         case Constants.CONTROL_PATINING_INDEX_PAINT_1:
 
-            // write the current working picture into the global picture.
-            Picture.getInstance().finish();
+            if (_event.getButton() == 1) {
+
+                // write the current working picture into the global picture.
+                Picture.getInstance().finish();
+            }
             break;
 
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
 
-            Picture.getInstance().abortPaintObject();
+            if (_event.getButton() == 1) {
+
+                Picture.getInstance().abortPaintObject();
+            }
             break;
 
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
 
 
-            //remove old rectangle.
-            Page.getInstance().getJlbl_border().setBounds(-1, -1, 0, 0);
-            
-            switch (Status.getIndexSelection()) {
-            
-            //select complete item.
-            case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
-                //paint stuff
-                mr_selection_line_complete(_event);
-                break;
+            if (_event.getButton() == 1) {
+
+                //remove old rectangle.
+                Page.getInstance().getJlbl_border().setBounds(-1, -1, 0, 0);
                 
-            //destroy items
-            case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
-                //stuff
-                mr_selection_line_destroy(_event);
-                break;
+                switch (Status.getIndexSelection()) {
                 
-            case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
-                break;
+                //select complete item.
+                case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
+                    //paint stuff
+                    mr_selection_line_complete(_event);
+                    break;
+                    
+                //destroy items
+                case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
+                    //stuff
+                    mr_selection_line_destroy(_event);
+                    break;
+                    
+                case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
+                    break;
+                    
+                default:
+                    break;
                 
-            default:
-                break;
-            
+                }
+
+                //set index to moving
+                Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
+                CStatus.getInstance().deactivate();
+                Paint.getInstance().getTb_move().setActivated(true);
             }
-            
-            //set index to moving
-            Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
-            CStatus.getInstance().deactivate();
-            Paint.getInstance().getTb_move().setActivated(true);
-            
             break;
 
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
-            Picture.getInstance().abortPaintObject();
+
+            if (_event.getButton() == 1) {
+
+
+                Picture.getInstance().abortPaintObject();
+            }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ZOOM:
-            mr_zoom(_event);
+
+            if (_event.getButton() == 1) {
+
+                mr_zoom(_event);
+            }
             break;
         case Constants.CONTROL_PAINTING_INDEX_PIPETTE:
             actionPipette(_event);
             break;
         case Constants.CONTROL_PAINTING_INDEX_MOVE:
 
-            
-            final Point mmSP = pnt_movementSpeed;
-            if (mmSP != null) {
-                new Thread() {
-                    @Override public void run() {
-                        final int max = 25;
-                        for (int i = max; i >= 0; i--) {
-    
-                            int x = Page.getInstance().getJlbl_painting()
-                                    .getLocation().x 
-                                    - mmSP.x * i / max;
-                            int y = Page.getInstance().getJlbl_painting()
-                                    .getLocation().y 
-                                    - mmSP.y * i / max;
-    
-                            if (x < -Status.getImageShowSize().width 
-                                    + Page.getInstance().getJlbl_painting()
-                                    .getWidth()) {
-                                x = -Status.getImageShowSize().width
+
+            if (_event.getButton() == 1) {
+
+                final Point mmSP = pnt_movementSpeed;
+                if (mmSP != null) {
+                    new Thread() {
+                        @Override public void run() {
+                            final int max = 25;
+                            for (int i = max; i >= 0; i--) {
+        
+                                int x = Page.getInstance().getJlbl_painting()
+                                        .getLocation().x 
+                                        - mmSP.x * i / max;
+                                int y = Page.getInstance().getJlbl_painting()
+                                        .getLocation().y 
+                                        - mmSP.y * i / max;
+        
+                                if (x < -Status.getImageShowSize().width 
                                         + Page.getInstance().getJlbl_painting()
-                                        .getWidth();
-                            }
-                            if (x > 0) {
-                                x = 0;
-                            }
-                            
-                            if (y < -Status.getImageShowSize().height
-                                    + Page.getInstance().getJlbl_painting()
-                                    .getHeight()) {
-                                y = -Status.getImageShowSize().height
+                                        .getWidth()) {
+                                    x = -Status.getImageShowSize().width
+                                            + Page.getInstance()
+                                            .getJlbl_painting().getWidth();
+                                }
+                                if (x > 0) {
+                                    x = 0;
+                                }
+                                
+                                if (y < -Status.getImageShowSize().height
                                         + Page.getInstance().getJlbl_painting()
-                                        .getHeight();
-                            }
-                            if (y >= 0) {
-                                y = 0;
-                            } 
-                            Page.getInstance().getJlbl_painting().setLocation(x,
-                                    y);
-                            Page.getInstance().refrehsSps();
-                            
-                            try {
-                                final int sleepTime = 20;
-                                Thread.sleep(sleepTime);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                                        .getHeight()) {
+                                    y = -Status.getImageShowSize().height
+                                            + Page.getInstance()
+                                            .getJlbl_painting().getHeight();
+                                }
+                                if (y >= 0) {
+                                    y = 0;
+                                } 
+                                Page.getInstance().getJlbl_painting()
+                                .setLocation(x, y);
+                                Page.getInstance().refrehsSps();
+                                
+                                try {
+                                    final int sleepTime = 20;
+                                    Thread.sleep(sleepTime);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
-                    }
-                } .start();
+                    } .start();
+                }
+                
+                //set points to null
+                pnt_start = null;
+                pnt_startLocation = null;
+                pnt_last = null;
+                pnt_movementSpeed = null;
+                
+                //release everything
+                Page.getInstance().releaseSelected();
+                Picture.getInstance().releaseSelected();
+                Page.getInstance().removeButtons();
+                Page.getInstance().getJlbl_painting().refreshPaint();
             }
-            
-            //set points to null
-            pnt_start = null;
-            pnt_startLocation = null;
-            pnt_last = null;
-            pnt_movementSpeed = null;
-            
-            //release everything
-            Page.getInstance().releaseSelected();
-            Picture.getInstance().releaseSelected();
-            Page.getInstance().removeButtons();
-            Page.getInstance().getJlbl_painting().refreshPaint();
             break;
         default:
             Status.getLogger().warning("Switch in mouseReleased default");
@@ -827,20 +846,15 @@ public final class ControlPainting implements MouseListener,
      */
     private void actionPipette(final MouseEvent _event) {
 
-        final int hundred = 100;
-        final double dX = hundred * (0.000 + Status.getImageSize().width)
-                / Status.getImageShowSize().width;
-        final double dY = hundred * (0.000 + Status.getImageSize().height)
-                / Status.getImageShowSize().height;
 
-        int color = Picture.getInstance().getColorPX(
-                (int) ((_event.getX() - Page.getInstance().getJlbl_painting()
-                        .getLocation().x)
-                        * hundred / dX),
-                (int) ((_event.getY() - Page.getInstance().getJlbl_painting()
-                        .getLocation().y)
-                        * hundred / dY));
-
+        int color = Picture.getInstance().getColorPX(_event.getX(), 
+                _event.getY());
+        System.out.println(_event.getButton());
+        if (_event.getButton() == 1) {
+            Paint.getInstance().getTb_color1().setBackground(new Color(color));
+        } else {
+            Paint.getInstance().getTb_color2().setBackground(new Color(color));
+        }
         System.out.println(color);
     }
 

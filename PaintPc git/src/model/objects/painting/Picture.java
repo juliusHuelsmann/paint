@@ -215,7 +215,7 @@ public final class Picture extends Observable {
      * @return the RGB integer of the color at given coordinate.
      */
     public int getColorPX(final int _pxX, final int _pxY) {
-        return bi_normalSize.getRGB(_pxX, _pxY);
+        return Page.getInstance().getJlbl_painting().getBi().getRGB(_pxX, _pxY);
     }
     
     

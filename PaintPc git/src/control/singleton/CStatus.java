@@ -10,9 +10,9 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 
 import model.objects.painting.Picture;
+import model.util.paint.Utils;
 import settings.Constants;
 import settings.Status;
-import start.utils.Utils;
 import view.View;
 import view.forms.Page;
 import view.forms.Tabs;

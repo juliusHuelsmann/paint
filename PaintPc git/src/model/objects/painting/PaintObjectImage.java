@@ -45,6 +45,7 @@ public class PaintObjectImage extends PaintObject {
     public PaintObjectImage(final int _elementId, final BufferedImage _bi) {
         super(_elementId);
         this.bi_image = _bi;
+        this.pnt_locationOfImage = new Point(0, 0);
     }
 
     
@@ -75,17 +76,37 @@ public class PaintObjectImage extends PaintObject {
         return 
                 
                 //check the x coordinate and width
-                (pnt_locationOfImage.x < _r.x + _r.width 
-                        && (pnt_locationOfImage.x > _r.x
-                        || pnt_locationOfImage.x + bi_image.getWidth() > _r.x))
-                && (pnt_locationOfImage.y < _r.y + _r.height
-                		&& (pnt_locationOfImage.y > _r.y
+                (pnt_locationOfImage.x <= _r.x + _r.width 
+                && (pnt_locationOfImage.x >= _r.x
+                        || pnt_locationOfImage.x + bi_image.getWidth() >= _r.x))
+                && (pnt_locationOfImage.y <= _r.y + _r.height
+                		&& (pnt_locationOfImage.y >= _r.y
                 	    || pnt_locationOfImage.x
-                	    + bi_image.getHeight() > _r.y));
+                	    + bi_image.getHeight() >= _r.y));
     }
 
 
     
+    
+    /**
+     * Move the BufferedImage to new coordinates.
+     * @param _p the new coordinates
+     */
+    public final void move(final Point _p) {
+
+        //check whether the point does exist
+        if (_p == null) {
+            
+            //print error message and interrupt immediately
+            Error.printError(getClass().getSimpleName(), "isInSelection", 
+                    "Error moving PaintObject into nirvana (the band) ",
+                    new Exception("exception"), 
+                    Error.ERROR_MESSAGE_INTERRUPT);
+        } else {
+            this.pnt_locationOfImage.x += _p.x;
+            this.pnt_locationOfImage.y += _p.y;
+        }
+    }
     /**
      * {@inheritDoc}
      */
@@ -99,7 +120,7 @@ public class PaintObjectImage extends PaintObject {
             
             //print image to BufferedImage.
             int[] rgb = null;
-            _bi.setRGB(pnt_locationOfImage.x, pnt_locationOfImage.y, 
+            _bi.setRGB(pnt_locationOfImage.x + _x, pnt_locationOfImage.y + _y, 
                     bi_image.getWidth(), bi_image.getHeight(), 
                     bi_image.getRGB(0, 0, bi_image.getWidth(), 
                             bi_image.getHeight(), rgb, 0, bi_image.getWidth()),
@@ -108,8 +129,8 @@ public class PaintObjectImage extends PaintObject {
         } else {
             
             //print image to graphical user interface
-            int x =  pnt_locationOfImage.x;
-            int y = pnt_locationOfImage.y;
+            int x =  pnt_locationOfImage.x + _x;
+            int y = pnt_locationOfImage.y + _y;
             int width = bi_image.getWidth();
             int height = bi_image.getHeight();
             _g.getGraphics().drawImage(bi_image, x, y, width, height, null);
@@ -126,6 +147,11 @@ public class PaintObjectImage extends PaintObject {
      */
     @Override public final PaintObject[][] separate(final Rectangle _r) {
         
+        if (isInSelectionImage(_r)) {
+            
+        } else {
+            
+        }
         new Exception(getClass() + " not implemenented yet").printStackTrace();
         return null;
         
@@ -149,6 +175,12 @@ public class PaintObjectImage extends PaintObject {
      */
     @Override public final Rectangle getSnapshotBounds() {
 
+        //if the image does not exist it is not inside the rectangle; thus 
+        //return false
+        if (bi_image == null) {
+            
+            return new Rectangle(0, 0, 0, 0);
+        }
         return new Rectangle(pnt_locationOfImage.x, pnt_locationOfImage.y,
                 bi_image.getWidth(), bi_image.getHeight());
     }

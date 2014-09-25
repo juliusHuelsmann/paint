@@ -1,4 +1,4 @@
-package start.utils;
+package model.util.paint;
 
 
 /**
@@ -129,11 +129,11 @@ public final class MyClipboard implements ClipboardOwner {
             o = Toolkit.getDefaultToolkit()
                     .getSystemClipboard().getData(DataFlavor.imageFlavor);
         } catch (HeadlessException e) {
-            e.printStackTrace();
+            Status.getLogger().info("clipboard headless exception thrown");
         } catch (UnsupportedFlavorException e) {
-            e.printStackTrace();
+            Status.getLogger().info("UnsupportedFlavorException thrown");
         } catch (IOException e) {
-            e.printStackTrace();
+            Status.getLogger().info("IOException thrown");
         }
         
         if (own_clipboard) {

@@ -3,6 +3,7 @@ package model.objects.painting;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,8 +13,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
 import settings.Error;
 import settings.Status;
 import view.ViewVorschau;
@@ -149,14 +152,21 @@ public final class Picture extends Observable {
             System.exit(1);
         }
         
-        //create new PaintObject and insert it into list of 
-        ls_po_sortedByX.insertAfterHead(new PaintObjectImage(currentId, _bi));
-
-        //increase current id
-        currentId++;
+        if (_bi == null) {
+            Status.getLogger().warning("nothing on clipboard.");
+        } else {
+            
+            //create new PaintObject and insert it into list of 
+            ls_po_sortedByX.insertAfterHead(new PaintObjectImage(
+                    currentId, _bi));
+    
+            //increase current id
+            currentId++;
+            
+            //set uncommitted changes.
+            Status.setUncommittedChanges(true);
+        }
         
-        //set uncommitted changes.
-        Status.setUncommittedChanges(true);
     }
 	
 	
@@ -798,6 +808,12 @@ public final class Picture extends Observable {
                             pow.getPoints().getItem().getY() + _dY);
 	                pow.getPoints().next();
 	            }
+	        } else if (ls_poSelected.getItem() instanceof PaintObjectImage) {
+
+	            PaintObjectImage p = (PaintObjectImage) ls_poSelected.getItem();
+                p.move(new Point(_dX, _dY));
+	        } else {
+	            Status.getLogger().warning("unknown kind of PaintObject?");
 	        }
             ls_poSelected.next();
 	    }

@@ -1,5 +1,5 @@
 /**
  * Utility classes..
  */
-package start.utils;
+package model.util.paint;
 

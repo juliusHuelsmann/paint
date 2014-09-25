@@ -6,14 +6,16 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import model.util.paint.Utils;
 import settings.Constants;
 import settings.Status;
 import settings.ViewSettings;
-import start.utils.Utils;
 import view.forms.New;
 import view.forms.Page;
 import view.forms.Tabs;

@@ -1,4 +1,4 @@
-package start.utils;
+package model.util.paint;
 
 import java.awt.Color;
 import java.awt.Graphics;

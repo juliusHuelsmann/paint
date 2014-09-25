@@ -11,9 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.util.paint.Utils;
 import settings.Status;
 import settings.ViewSettings;
-import start.utils.Utils;
 import view.View;
 import view.util.VScrollPane;
 import control.ControlPainting;

@@ -14,12 +14,12 @@ import javax.swing.JPanel;
 import atest.BufferedViewer;
 import settings.Status;
 import settings.ViewSettings;
-import start.utils.Utils;
 import view.forms.tabs.PaintObjects;
 import view.util.BorderThread;
 import model.objects.painting.PaintObject;
 import model.objects.painting.Picture;
 import model.objects.pen.special.PenSelection;
+import model.util.paint.Utils;
 
 
 /**

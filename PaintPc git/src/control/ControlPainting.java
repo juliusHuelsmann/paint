@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.logging.Level;
 
+import javax.activation.UnsupportedDataTypeException;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -26,18 +27,20 @@ import control.singleton.CVisualEffects;
 import model.objects.PictureOverview;
 import model.objects.Zoom;
 import model.objects.painting.PaintObject;
+import model.objects.painting.PaintObjectImage;
+import model.objects.painting.PaintObjectWriting;
 import model.objects.painting.Picture;
 import model.objects.pen.normal.PenKuli;
 import model.objects.pen.special.PenSelection;
 import model.util.DPoint;
 import model.util.list.List;
+import model.util.paint.MyClipboard;
+import model.util.paint.Utils;
 import settings.Constants;
 import settings.ReadSettings;
 import settings.Settings;
 import settings.Status;
 import settings.ViewSettings;
-import start.utils.MyClipboard;
-import start.utils.Utils;
 import view.View;
 import view.forms.New;
 import view.forms.Page;
@@ -515,6 +518,11 @@ public final class ControlPainting implements MouseListener,
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_copy().getActionCause())) {
 
+            
+            PaintObjectWriting pow = 
+                    (PaintObjectWriting) 
+                    Picture.getInstance().getLs_poSelected().getItem();
+            MyClipboard.getInstance().copyPO_writing(pow, pow.getSnapshot());
             // TODO: // copy to clipboard (ENTIRE normal image)
             MyClipboard.getInstance().copyImage(
                     Picture.getInstance().getBi_normalSize());
@@ -522,9 +530,16 @@ public final class ControlPainting implements MouseListener,
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_paste().getActionCause())) {
 
-            // TODO: error if not image copy to clipboard (ENTIRE normal image)
-            Picture.getInstance().addPaintObjectImage(
-                    (BufferedImage) MyClipboard.getInstance().paste());
+            Object o = MyClipboard.getInstance().paste();
+            if (o instanceof BufferedImage) {
+
+                Picture.getInstance().addPaintObjectImage((BufferedImage) o);
+            } else if (o instanceof PaintObjectWriting) {
+                Picture.getInstance().insertIntoSelected(
+                        (PaintObjectWriting) o);
+            } else if (o instanceof PaintObjectImage) {
+                new UnsupportedDataTypeException("hier").printStackTrace();
+            }
 
         } else if (_event.getButton() == 1
                 && _event.getSource().equals(
@@ -600,53 +615,56 @@ public final class ControlPainting implements MouseListener,
             break;
         case Constants.CONTROL_PAINTING_INDEX_MOVE:
 
+            
             final Point mmSP = pnt_movementSpeed;
-            new Thread() {
-                @Override public void run() {
-                    final int max = 25;
-                    for (int i = max; i >= 0; i--) {
-
-                        int x = Page.getInstance().getJlbl_painting()
-                                .getLocation().x 
-                                - mmSP.x * i / max;
-                        int y = Page.getInstance().getJlbl_painting()
-                                .getLocation().y 
-                                - mmSP.y * i / max;
-
-                        if (x < -Status.getImageShowSize().width 
-                                + Page.getInstance().getJlbl_painting()
-                                .getWidth()) {
-                            x = -Status.getImageShowSize().width
+            if (mmSP != null) {
+                new Thread() {
+                    @Override public void run() {
+                        final int max = 25;
+                        for (int i = max; i >= 0; i--) {
+    
+                            int x = Page.getInstance().getJlbl_painting()
+                                    .getLocation().x 
+                                    - mmSP.x * i / max;
+                            int y = Page.getInstance().getJlbl_painting()
+                                    .getLocation().y 
+                                    - mmSP.y * i / max;
+    
+                            if (x < -Status.getImageShowSize().width 
                                     + Page.getInstance().getJlbl_painting()
-                                    .getWidth();
-                        }
-                        if (x > 0) {
-                            x = 0;
-                        }
-                        
-                        if (y < -Status.getImageShowSize().height
-                                + Page.getInstance().getJlbl_painting()
-                                .getHeight()) {
-                            y = -Status.getImageShowSize().height
+                                    .getWidth()) {
+                                x = -Status.getImageShowSize().width
+                                        + Page.getInstance().getJlbl_painting()
+                                        .getWidth();
+                            }
+                            if (x > 0) {
+                                x = 0;
+                            }
+                            
+                            if (y < -Status.getImageShowSize().height
                                     + Page.getInstance().getJlbl_painting()
-                                    .getHeight();
-                        }
-                        if (y >= 0) {
-                            y = 0;
-                        } 
-                        Page.getInstance().getJlbl_painting().setLocation(x, y);
-                        Page.getInstance().refrehsSps();
-                        
-                        try {
-                            final int sleepTime = 20;
-                            Thread.sleep(sleepTime);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                                    .getHeight()) {
+                                y = -Status.getImageShowSize().height
+                                        + Page.getInstance().getJlbl_painting()
+                                        .getHeight();
+                            }
+                            if (y >= 0) {
+                                y = 0;
+                            } 
+                            Page.getInstance().getJlbl_painting().setLocation(x,
+                                    y);
+                            Page.getInstance().refrehsSps();
+                            
+                            try {
+                                final int sleepTime = 20;
+                                Thread.sleep(sleepTime);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
-                }
-            } .start();
-            
+                } .start();
+            }
             
             //set points to null
             pnt_start = null;

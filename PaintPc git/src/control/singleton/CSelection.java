@@ -1,9 +1,12 @@
 package control.singleton;
 
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
 import javax.swing.JButton;
+
 import model.objects.painting.Picture;
 import model.util.DPoint;
 import settings.Status;
@@ -37,8 +40,12 @@ public class CSelection implements MouseMotionListener, MouseListener {
     /**
      * Start DPoint.
      */
-    private DPoint pnt_start;
-    
+    private DPoint pnt_start, pnt_rSelectionStart;;
+
+    /**
+     * This rectangle displays the selectino.
+     */
+    private Rectangle r_selection;
     
     /**
      * Constructor: initialize DPoint array.
@@ -75,8 +82,14 @@ public class CSelection implements MouseMotionListener, MouseListener {
                     Page.getInstance().getJbtn_resize()[x][y].setLocation(
                             (int) pnt_startLocationButton[x][y].getX() + dX,
                             (int) pnt_startLocationButton[x][y].getY() + dY);
+
                 }
             }
+            
+            r_selection.x = (int) pnt_rSelectionStart.getX() + dX;
+            r_selection.y =  (int) pnt_rSelectionStart.getY() + dY;
+            
+            Page.getInstance().getJlbl_border().setBounds(r_selection);
         } else {
             md_buttonLocation(_event);
             
@@ -113,6 +126,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
     @Override public final void mousePressed(final MouseEvent _event) {
         pnt_start = new DPoint(_event.getLocationOnScreen());
+        pnt_rSelectionStart = new DPoint(r_selection.getLocation());
         pnt_startLocationLabel = new DPoint(
                 Page.getInstance().getJlbl_selectionBG().getLocation());
 
@@ -164,6 +178,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
         
         
         pnt_start = null;
+        pnt_rSelectionStart = null;
     }
     
     
@@ -312,6 +327,9 @@ public class CSelection implements MouseMotionListener, MouseListener {
         Page.getInstance().getJlbl_border().setBounds(j[0][0].getX() + size,
                 j[0][0].getY() + size, j[2][0].getX() - j[0][0].getX(),
                 j[0][2].getY() - j[0][0].getY());
+        r_selection = new Rectangle(j[0][0].getX() + size,
+                j[0][0].getY() + size, j[2][0].getX() - j[0][0].getX(),
+                j[0][2].getY() - j[0][0].getY());
     
     }
     
@@ -393,6 +411,20 @@ public class CSelection implements MouseMotionListener, MouseListener {
         }
         Page.getInstance().releaseSelected();
         Picture.getInstance().paintSelected();
+    }
+
+    /**
+     * @return the r_selection
+     */
+    public Rectangle getR_selection() {
+        return r_selection;
+    }
+
+    /**
+     * @param r_selection the r_selection to set
+     */
+    public void setR_selection(Rectangle r_selection) {
+        this.r_selection = r_selection;
     }
 
         

@@ -22,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import control.singleton.CSelection;
 import control.singleton.CStatus;
 import control.singleton.CVisualEffects;
 import model.objects.PictureOverview;
@@ -519,13 +520,9 @@ public final class ControlPainting implements MouseListener,
                 Paint.getInstance().getTb_copy().getActionCause())) {
 
             
-            PaintObjectWriting pow = 
-                    (PaintObjectWriting) 
-                    Picture.getInstance().getLs_poSelected().getItem();
-            MyClipboard.getInstance().copyPO_writing(pow, pow.getSnapshot());
-            // TODO: // copy to clipboard (ENTIRE normal image)
-            MyClipboard.getInstance().copyImage(
-                    Picture.getInstance().getBi_normalSize());
+            MyClipboard.getInstance().copyPaintObjects(
+                    Picture.getInstance().getLs_poSelected(), 
+                    Picture.getInstance().paintSelectedBI());
 
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_paste().getActionCause())) {
@@ -892,6 +889,7 @@ public final class ControlPainting implements MouseListener,
                     Rectangle r = po_current.getSnapshotBounds();
                     r_sizeMax = new Rectangle(r.x, r.y, r.width + r.x, r.height
                             + r.y);
+                    CSelection.getInstance().setR_selection(r_sizeMax);
                 } else {
 
                     Rectangle r = po_current.getSnapshotBounds();
@@ -900,6 +898,7 @@ public final class ControlPainting implements MouseListener,
                             Math.min(r.y, r_sizeMax.y), Math.max(r.width + r.x,
                                     r_sizeMax.width), Math.max(r.height + r.y,
                                     r_sizeMax.height));
+                    CSelection.getInstance().setR_selection(r_sizeMax);
                 }
                 // get item; remove it out of lists and add it to
                 // selection list
@@ -926,7 +925,6 @@ public final class ControlPainting implements MouseListener,
         // paint to selected pane
         if (r_sizeMax != null) {
 
-            System.out.println("ye");
             Rectangle realRect = new Rectangle(r_sizeMax.x, r_sizeMax.y,
                     r_sizeMax.width - r_sizeMax.x, r_sizeMax.height
                             - r_sizeMax.y);
@@ -937,6 +935,7 @@ public final class ControlPainting implements MouseListener,
             Picture.getInstance().repaintRectangle(realRect);
             Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
                     realRect);
+            CSelection.getInstance().setR_selection(realRect);
             
             // Selection.getInstance().showSelection(realRect);
         } else {
@@ -948,6 +947,7 @@ public final class ControlPainting implements MouseListener,
             
             Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
                     r_sizeField);
+            CSelection.getInstance().setR_selection(r_sizeField);
         }
 
         // reset values

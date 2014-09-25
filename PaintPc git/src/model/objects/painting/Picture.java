@@ -17,6 +17,7 @@ import java.util.Observable;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import control.singleton.CSelection;
 import settings.Error;
 import settings.Status;
 import view.ViewVorschau;
@@ -565,6 +566,53 @@ public final class Picture extends Observable {
         Status.setUncommittedChanges(true);
     }
 	
+    
+    
+    /**
+     * Paint the selected BufferedImages to a new BufferedImage which has got 
+     * the size of the selection. This method is used for copying the 
+     * paintObjects as images to clipboard.
+     * @return the painted BufferedImage.
+     */
+    public BufferedImage paintSelectedBI() {
+        BufferedImage bi = new BufferedImage(
+                CSelection.getInstance().getR_selection().width, 
+                CSelection.getInstance().getR_selection().height, 
+                BufferedImage.TYPE_INT_ARGB);
+
+        ls_poSelected.toFirst();
+        while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
+            
+            PaintObject po = ls_poSelected.getItem();
+            
+            if (po instanceof PaintObjectWriting) {
+                PaintObjectWriting pow = (PaintObjectWriting) po;
+
+                //TODO: zoom, scroll adjust?
+                System.out.println("xx" + bi.getWidth() + "xx" 
+                + bi.getHeight() 
+                + CSelection.getInstance().getR_selection().getLocation());
+                System.out.println();
+                pow.paint(bi, false, bi, 
+                        -CSelection.getInstance().getR_selection().x, 
+                        -CSelection.getInstance().getR_selection().y);
+
+            } else if (po instanceof PaintObjectImage) {
+                PaintObjectImage poi = (PaintObjectImage) po;
+                poi.paint(bi, false, bi, 
+                        CSelection.getInstance().getR_selection().x, 
+                        CSelection.getInstance().getR_selection().y);
+
+
+            } else {
+                Status.getLogger().warning("unknown kind of PaintObject" + po);
+            }
+            ls_poSelected.next();
+
+
+        }
+        return bi;
+    }
 	
 
     /**

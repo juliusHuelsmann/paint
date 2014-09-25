@@ -140,7 +140,13 @@ public class PenKuli extends Pen {
                         
 //                        PaintBI.paintPolygonN(_g, getClr_foreground(), 
 //                                getThickness(), point, true);
-                        _g.setRGB(x, y, getClr_foreground().getRGB());
+                        try {
+                            _g.setRGB(x, y, getClr_foreground().getRGB());
+                            
+                        } catch (ArrayIndexOutOfBoundsException e) { 
+                            System.out.println("aioobe" + x + ";" + y + "width"
+                                    + _g.getWidth() + "h" + _g.getHeight());
+                        }
                         
                         //for loop because i want to paint the gaps between the 
                         //pixel if zoomed in.
@@ -153,8 +159,16 @@ public class PenKuli extends Pen {
                                 
 //                                PaintBI.paintPolygonN(_g, getClr_foreground(),
 //                                        getThickness(), point, true);
-                                _g.setRGB(x + kx, y + ky, 
-                                        getClr_foreground().getRGB());
+                                try {
+                                    _g.setRGB(x + kx, y + ky, 
+                                            getClr_foreground().getRGB());
+                                    
+                                } catch (ArrayIndexOutOfBoundsException e) { 
+                                    System.out.println("aioobe" + (x + kx) + ";"
+                                            + (y + ky) + "width"
+                                            + _g.getWidth() + "h" 
+                                            + _g.getHeight());
+                                }
                             }
                         }
                     }

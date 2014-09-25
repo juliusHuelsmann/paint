@@ -1,10 +1,4 @@
 package model.util.paint;
-
-
-/**
- *
- * @author Jigar
- */
 import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -15,11 +9,11 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import model.objects.painting.PaintObjectWriting;
+import model.objects.painting.PaintObject;
+import model.util.list.List;
 import settings.Status;
 
 
@@ -41,14 +35,15 @@ public final class MyClipboard implements ClipboardOwner {
 
         if (!Status.isDebug()) {
 
+            final int startSize = 30;
             JFrame jf = new JFrame();
-            jf.setSize(bi.getWidth(), bi.getHeight());
+            jf.setSize(startSize + bi.getWidth(), startSize + bi.getHeight());
             jf.setLayout(null);
             jf.setLocationRelativeTo(null);
             jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
             
             JLabel jlbl = new JLabel();
-            jlbl.setSize(jf.getSize());
+            jlbl.setSize(bi.getWidth(), bi.getHeight());
             jlbl.setIcon(new ImageIcon(bi));
             jf.add(jlbl);
            
@@ -72,7 +67,7 @@ public final class MyClipboard implements ClipboardOwner {
     /**
      * the paintObjectWriting which can be saved / loaded.
      */
-    private PaintObjectWriting pw;
+    private List<PaintObject> ls_po_selected;
     
     /**
      * Empty utility class Constructor.
@@ -98,28 +93,29 @@ public final class MyClipboard implements ClipboardOwner {
         //reset the last PaintObjectWriting if just an image is copied
         //in case of Writing copied, the pw is set after exporting Image;
         //thus, this command does not hinder that process.
-        this.pw = null;
+        this.ls_po_selected = null;
     }
 
     
     /**
      * copy po writing.
-     * @param _pw the poWriting
+     * @param _lsPoSelected the poWriting
      * @param _i its image.
      */
-    public void copyPO_writing(final PaintObjectWriting _pw, final Image _i) {
+    public void copyPaintObjects(final List<PaintObject> _lsPoSelected, 
+            final Image _i) {
 
         //copy image
         copyImage(_i);
         //save the paintObjectWriting
-        this.pw = _pw;
+        this.ls_po_selected = _lsPoSelected;
         
     }
     
     
     /**
      * Paste.
-     * @return the pasted image (if exisiting).
+     * @return the pasted image (if existing).
      */
     public Object paste() {
 
@@ -138,7 +134,7 @@ public final class MyClipboard implements ClipboardOwner {
         
         if (own_clipboard) {
             
-            return pw;
+            return ls_po_selected;
         }
         if (o instanceof BufferedImage) {
             System.out.println("bi! owned: " + own_clipboard);

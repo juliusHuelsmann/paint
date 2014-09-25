@@ -932,6 +932,24 @@ public final class Picture extends Observable {
 	    }
 	    ls_poSelected = null;
 	}
+    /**
+     * release selected elements to normal list.
+     */
+    public synchronized void deleteSelected() {
+        
+        if (ls_poSelected == null) {
+            System.out.println("o selected elements");
+            return;
+        }
+        ls_poSelected.toFirst();
+        while (!ls_poSelected.isEmpty()) {
+            
+            PictureOverview.getInstance().removeSelected(
+                    ls_poSelected.getItem());
+            ls_poSelected.remove();
+        }
+        ls_poSelected = null;
+    }
 	
 	/*
 	 * save and load

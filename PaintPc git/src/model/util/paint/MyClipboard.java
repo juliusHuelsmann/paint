@@ -138,7 +138,7 @@ public final class MyClipboard implements ClipboardOwner {
             return ls_po_selected;
         }
         if (o instanceof BufferedImage) {
-            System.out.println("bi! owned: " + own_clipboard);
+            System.out.println("bi! owned: " + own_clipboard + ls_po_selected);
             
             
         } else if (o instanceof String) {

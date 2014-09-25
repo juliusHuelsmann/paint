@@ -537,7 +537,20 @@ public final class ControlPainting implements MouseListener,
             } else if (o instanceof PaintObjectImage) {
                 new UnsupportedDataTypeException("hier").printStackTrace();
             }
+            Page.getInstance().getJlbl_painting().refreshPaint();
 
+        } else if (_event.getSource().equals(
+                Paint.getInstance().getTb_cut().getActionCause())) {
+
+            MyClipboard.getInstance().copyPaintObjects(
+                    Picture.getInstance().getLs_poSelected(), 
+                    Picture.getInstance().paintSelectedBI());
+            
+            Picture.getInstance().deleteSelected();
+            Page.getInstance().releaseSelected();
+            
+
+            Page.getInstance().getJlbl_painting().refreshPaint();
         } else if (_event.getButton() == 1
                 && _event.getSource().equals(
                         Page.getInstance().getJlbl_painting())) {

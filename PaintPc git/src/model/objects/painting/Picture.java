@@ -179,8 +179,12 @@ public final class Picture extends Observable {
         
         //set rectangle alpha
         for (int x = _r.x; x < _r.width + _r.x; x++) {
-            for (int y = 0; y < _r.height + _r.y; y++) {
-                bi_normalSize.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+            for (int y = _r.y; y < _r.height + _r.y; y++) {
+                
+                if (x >= 0 && x < bi_normalSize.getWidth()
+                        && y >= 0 && y < bi_normalSize.getHeight()) {
+                    bi_normalSize.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+                }
             }
         }
     }
@@ -600,8 +604,8 @@ public final class Picture extends Observable {
             } else if (po instanceof PaintObjectImage) {
                 PaintObjectImage poi = (PaintObjectImage) po;
                 poi.paint(bi, false, bi, 
-                        CSelection.getInstance().getR_selection().x, 
-                        CSelection.getInstance().getR_selection().y);
+                        -CSelection.getInstance().getR_selection().x, 
+                        -CSelection.getInstance().getR_selection().y);
 
 
             } else {

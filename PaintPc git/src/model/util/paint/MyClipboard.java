@@ -80,16 +80,13 @@ public final class MyClipboard implements ClipboardOwner {
      * CopyImage.
      * @param _i the image.
      */
-    public void copyImage(final Image _i) {
+    private void copyImage(final Image _i) {
 
         //copy to clipboard
         TransferableImage trans = new TransferableImage(_i);
         Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
         c.setContents(trans, this);
-        
-        //set that i own the clipboard
-        this.own_clipboard = true;
-        
+
         //reset the last PaintObjectWriting if just an image is copied
         //in case of Writing copied, the pw is set after exporting Image;
         //thus, this command does not hinder that process.
@@ -107,6 +104,10 @@ public final class MyClipboard implements ClipboardOwner {
 
         //copy image
         copyImage(_i);
+
+        //set that i own the clipboard
+//        this.own_clipboard = true;
+
         //save the paintObjectWriting
         this.ls_po_selected = _lsPoSelected;
         
@@ -132,7 +133,7 @@ public final class MyClipboard implements ClipboardOwner {
             Status.getLogger().info("IOException thrown");
         }
         
-        if (own_clipboard) {
+        if (own_clipboard && ls_po_selected != null) {
             
             return ls_po_selected;
         }

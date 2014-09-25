@@ -343,7 +343,6 @@ public class CSelection implements MouseMotionListener, MouseListener {
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
         JButton[][] j = Page.getInstance().getJbtn_resize();
-        DPoint[][] p = pnt_startLocationButton;
         double distanceXY, distanceXY2;
         if (Math.abs(distanceX) < Math.abs(distanceY)) {
             distanceXY = distanceX;
@@ -416,15 +415,15 @@ public class CSelection implements MouseMotionListener, MouseListener {
     /**
      * @return the r_selection
      */
-    public Rectangle getR_selection() {
+    public final Rectangle getR_selection() {
         return r_selection;
     }
 
     /**
-     * @param r_selection the r_selection to set
+     * @param _r_selection the r_selection to set
      */
-    public void setR_selection(Rectangle r_selection) {
-        this.r_selection = r_selection;
+    public final void setR_selection(final Rectangle _r_selection) {
+        this.r_selection = _r_selection;
     }
 
         

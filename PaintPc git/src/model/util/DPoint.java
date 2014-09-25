@@ -2,53 +2,95 @@ package model.util;
 
 import java.awt.Point;
 
+/**
+ * Double Point class.
+ * 
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
 public class DPoint {
 
-    public double x;
-    public double y;
+    /**
+     * The two double points.
+     */
+    private double x, y;
 
-    public DPoint(double _x, double _y){
+    
+    /**
+     * Constructor.
+     * @param _x coordiante
+     * @param _y coordiante
+     */
+    public DPoint(final double _x, final double _y) {
         x = _x;
         y = _y;
     }
-    public DPoint(int _x, int _y){
+    
+    /**
+     * 
+     * Constructor.
+     * @param _x coordiante
+     * @param _y coordiante
+     */
+    public DPoint(final int _x, final int _y) {
         x = _x;
         y = _y;
     }
-    public DPoint(DPoint _dp){
+    
+    /**
+     * Constructor.
+     * @param _dp coordinates
+     */
+    public DPoint(final DPoint _dp) {
         x = _dp.x;
         y = _dp.y;
     }
-    public DPoint(Point _dp){
+
+    
+    /**
+     * Constructor.
+     * @param _dp coordinates
+     */
+    public DPoint(final Point _dp) {
         x = _dp.x;
         y = _dp.y;
     }
-    public DPoint(){
+    
+
+    
+    /**
+     * Constructor.
+     */
+    public DPoint() {
         x = 0;
         y = 0;
     }
+
     /**
      * @return the x
      */
-    public double getX() {
+    public final double getX() {
         return x;
     }
+
     /**
-     * @param x the x to set
+     * @param _x the x to set
      */
-    public void setX(double x) {
-        this.x = x;
+    public final void setX(final double _x) {
+        this.x = _x;
     }
+
     /**
      * @return the y
      */
-    public double getY() {
+    public final double getY() {
         return y;
     }
+
     /**
-     * @param y the y to set
+     * @param _y the y to set
      */
-    public void setY(double y) {
-        this.y = y;
+    public final void setY(final double _y) {
+        this.y = _y;
     }
 }

@@ -537,6 +537,7 @@ public final class ControlPainting implements MouseListener,
                 Picture.getInstance().addPaintObjectImage((BufferedImage) o);
             } else if (o instanceof List) {
 
+                @SuppressWarnings("unchecked")
                 List<PaintObject> ls = (List<PaintObject>) o;
                 ls.toFirst();
                 
@@ -587,7 +588,6 @@ public final class ControlPainting implements MouseListener,
         case Constants.CONTROL_PATINING_INDEX_PAINT_1:
 
             if (_event.getButton() == 1) {
-
                 // write the current working picture into the global picture.
                 Picture.getInstance().finish();
             }

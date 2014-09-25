@@ -375,13 +375,5 @@ import control.singleton.CSelection;
     public JLabel getJlbl_border() {
         return jlbl_border;
     }
-
-
-    /**
-     * @param jlbl_border the jlbl_border to set
-     */
-    public void setJlbl_border(JLabel jlbl_border) {
-        this.jlbl_border = jlbl_border;
-    }
 }
 

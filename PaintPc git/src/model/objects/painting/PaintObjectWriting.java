@@ -746,10 +746,10 @@ public class PaintObjectWriting extends PaintObject {
 
             double dX = _pnt_from.getX() 
                     + pnt_vector.getX() * _pnt_size.getX() 
-                            / (_pnt_size.getX() + _pnt_totalStretch.x);
+                            / (_pnt_size.getX() + _pnt_totalStretch.getX());
             double dY = _pnt_from.getY()               
                     +    pnt_vector.getY() * _pnt_size.getY() 
-                    / (_pnt_size.getY() + _pnt_totalStretch.y);
+                    / (_pnt_size.getY() + _pnt_totalStretch.getY());
                 
             pnt_vector.setX(dX);
             pnt_vector.setY(dY);

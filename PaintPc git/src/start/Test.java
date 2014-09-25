@@ -55,7 +55,7 @@ public class Test {
                 "/home/juli/Arbeitsfläche/input.jpg");
     
         //change size
-        Page.getInstance().setSize((int) newSize.x, (int) newSize.y);
+        Page.getInstance().setSize((int) newSize.getX(), (int) newSize.getY());
         Picture.getInstance().whiteToAlpha();
         
         Picture.getInstance().savePNG("/home/juli/Arbeitsfläche/output.png");

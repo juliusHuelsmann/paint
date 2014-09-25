@@ -148,13 +148,16 @@ public class PaintObjectImage extends PaintObject {
     @Override public final PaintObject[][] separate(final Rectangle _r) {
         
         if (isInSelectionImage(_r)) {
-            
+
+            new Exception(getClass() + " not implemenented yet")
+            .printStackTrace();
+            return null;
         } else {
-            
+
+            new Exception(getClass() + " not implemenented yet")
+            .printStackTrace();
+            return null;
         }
-        new Exception(getClass() + " not implemenented yet").printStackTrace();
-        return null;
-        
     }
 
 

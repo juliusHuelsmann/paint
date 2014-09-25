@@ -122,7 +122,10 @@ public final class MyClipboard implements ClipboardOwner {
             PaintObject po = _lsPoSelected.getItem();
             if (po instanceof PaintObjectImage) {
                 PaintObjectImage poi = (PaintObjectImage) po;
-                
+                PaintObjectImage poi_new = Picture.getInstance()
+                        .createPOI(poi.getSnapshot());
+
+                ls_new.insertBehind(poi_new);
                 
             } else if (po instanceof PaintObjectWriting) {
                 

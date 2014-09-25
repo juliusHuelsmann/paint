@@ -1,16 +1,12 @@
 package view.forms;
 
 //import declarations
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import atest.BufferedViewer;
 import settings.Status;
 import settings.ViewSettings;
@@ -83,10 +79,6 @@ public class PaintLabel extends JLabel {
         PaintObjects.getInstance().repaint(); 
     }
     
-    /**
-     * The previous rectangle.
-     */
-    private Rectangle r_old;
     
     /**
      * das gleiche wie unten nur mut zoom rec.t.
@@ -101,7 +93,6 @@ public class PaintLabel extends JLabel {
         BufferedViewer.show(getBi());
         
         Page.getInstance().getJlbl_border().setBounds(_x, _y, _width, _height);
-        this.r_old = new Rectangle(_x + 1, _y + 1, _width - 1, _height - 1);
     }
     
     

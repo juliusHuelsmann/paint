@@ -3,9 +3,7 @@ package model.objects.pen.special;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
-
 import settings.Constants;
 import settings.ViewSettings;
 import model.objects.pen.Pen;
@@ -49,14 +47,14 @@ public class FunnyPen extends Pen {
 	    if (pnt_lastPrinted == null) {
 
 	        
-	        _bi.setRGB((int) _p.x, (int) _p.y, 
+	        _bi.setRGB((int) _p.getX(), (int) _p.getY(), 
 	                ViewSettings.SELECTION_BORDER_CLR_BORDER[0].getRGB()); 
 	        pnt_lastPrinted = _p;
 
 	    } else {
 	        
-	        int distanceX =  (int) Math.abs(_p.x - pnt_lastPrinted.x);
-	        int distanceY = (int) Math.abs(_p.y - pnt_lastPrinted.y);
+	        int distanceX =  (int) Math.abs(_p.getX() - pnt_lastPrinted.getX());
+	        int distanceY = (int) Math.abs(_p.getY() - pnt_lastPrinted.getY());
 	        
 	        int distance = Math.max(distanceX, distanceY);
 	        
@@ -70,29 +68,29 @@ public class FunnyPen extends Pen {
 	            //generate vector from pnt_lastPrinted towards the new one
 	            //and norm it afterwards to the length of the maximal selection
 	            //border size
-	            DPoint vector = new DPoint(_p.x - pnt_lastPrinted.x, 
-	                    _p.y - pnt_lastPrinted.y);
-	            double length = Math.sqrt(
-	                    Math.pow(vector.x, 2) + Math.pow(vector.y, 2));
-	            vector.x = (int) (vector.x 
-	                    * ViewSettings.SELECTION_BORDER_BLOCK_SIZE / length);
-	            vector.y = (int) (vector.y
-                        * ViewSettings.SELECTION_BORDER_BLOCK_SIZE / length);
+	            DPoint vector = new DPoint(_p.getX() - pnt_lastPrinted.getX(), 
+	                    _p.getY() - pnt_lastPrinted.getY());
+	            double length = Math.sqrt(Math.pow(vector.getX(), 2)
+	                    + Math.pow(vector.getY(), 2));
+	            vector.setX((int) (vector.getX() 
+	                    * ViewSettings.SELECTION_BORDER_BLOCK_SIZE / length));
+	            vector.setY((int) (vector.getY()
+                        * ViewSettings.SELECTION_BORDER_BLOCK_SIZE / length));
 	            
 	            
 	            for (int i = 1; 
 	                    i <= ViewSettings.SELECTION_BORDER_BLOCK_SIZE; i++) {
 
-	                _bi.setRGB((int) (pnt_lastPrinted.x + vector.x 
+	                _bi.setRGB((int) (pnt_lastPrinted.getX() + vector.getX() 
 	                        * i / ViewSettings.SELECTION_BORDER_BLOCK_SIZE), 
-	                        (int) (pnt_lastPrinted.y + vector.y 
+	                        (int) (pnt_lastPrinted.getY() + vector.getY() 
                             * i / ViewSettings.SELECTION_BORDER_BLOCK_SIZE), 
 	                        ViewSettings.SELECTION_BORDER_CLR_BORDER[s]
 	                                .getRGB()); 
 	            }
 	            
-	            pnt_lastPrinted.x = pnt_lastPrinted.x + vector.x;
-	            pnt_lastPrinted.y = pnt_lastPrinted.y + vector.y;
+	            pnt_lastPrinted.setX(pnt_lastPrinted.getX() + vector.getX());
+	            pnt_lastPrinted.setY(pnt_lastPrinted.getY() + vector.getY());
 	            
 	            currentBorderValue++;
 	        }

@@ -57,13 +57,14 @@ public class PenKuli extends Pen {
                 //drawing.
                 int x, y;
 
-                x = (int) (_p.x + i);
-                y = (int) (_p.y + j);
+                x = (int) (_p.getX() + i);
+                y = (int) (_p.getY() + j);
                 
                 
 				//if is in range
-				if (_final && _p.x + i >= 0 && _p.y + j >= 0 && _p.x 
-				        + i < _bi.getWidth() && _p.y + j < _bi.getHeight()) {
+				if (_final && _p.getX() + i >= 0 && _p.getY() + j >= 0 
+				        && _p.getX() + i < _bi.getWidth() 
+				        && _p.getY() + j < _bi.getHeight()) {
 
 				    //set the given pixel in buffered image
 				    if (_final) {
@@ -87,8 +88,8 @@ public class PenKuli extends Pen {
                             / Status.getImageSize().height;
 
                     //add the shift coordinates for painting.
-                    x +=  _pnt_shift.x;
-                    y +=  _pnt_shift.y;
+                    x +=  _pnt_shift.getX();
+                    y +=  _pnt_shift.getY();
                     
                     //the image pixel size in pixel for painting.
                     //for example if zoomed in once, an image pixel has

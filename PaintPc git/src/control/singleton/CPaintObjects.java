@@ -3,14 +3,11 @@ package control.singleton;
 //import declarations
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-
 import javax.swing.ImageIcon;
-
 import model.objects.PictureOverview;
 import model.objects.painting.PaintObject;
 import model.objects.painting.PaintObjectWriting;
@@ -269,9 +266,9 @@ public final class CPaintObjects implements ActionListener {
                      text += "\n";
                  }
                  
-                 text += ls_point.getItem().x 
+                 text += ls_point.getItem().getX() 
                          + " "
-                         + ls_point.getItem().y + " | ";
+                         + ls_point.getItem().getY() + " | ";
                 ls_point.next();
              }
         }

@@ -539,8 +539,12 @@ public final class ControlPainting implements MouseListener,
 
                 List<PaintObject> ls = (List<PaintObject>) o;
                 ls.toFirst();
-                Picture.getInstance().insertIntoSelected(ls.getItem());
-                System.out.println("habe jetzt inserted.");
+                
+                while (!ls.isEmpty() && !ls.isBehind()) {
+
+                    Picture.getInstance().insertIntoSelected(ls.getItem());
+                    ls.next();
+                }
                 
             } else if (o instanceof PaintObjectWriting) {
                 Picture.getInstance().insertIntoSelected(

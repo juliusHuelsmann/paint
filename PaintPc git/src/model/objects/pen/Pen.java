@@ -266,7 +266,8 @@ public abstract class Pen implements Serializable {
                 _ls_point.toFirst();
                 while (!_ls_point.isBehind()) {
                     ls_newPoints.insertAtTheEnd(new DPoint(
-                            _ls_point.getItem().getX(), _ls_point.getItem().getY()));
+                            _ls_point.getItem().getX(), 
+                            _ls_point.getItem().getY()));
                     _ls_point.next();
                 }
             } else {
@@ -397,8 +398,8 @@ public abstract class Pen implements Serializable {
 	 * @param _p3 and the third point
 	 * @return the height of triangle.
 	 */
-	private double op_mathsGetTriangleHeight(final DPoint _p1, final DPoint _p2, 
-	        final DPoint _p3) {
+	private double op_mathsGetTriangleHeight(final DPoint _p1, 
+	        final DPoint _p2, final DPoint _p3) {
 
         double growthNormalX = (_p3.getX() - _p1.getX());
         double growthNormalY = (_p3.getY() - _p1.getY());

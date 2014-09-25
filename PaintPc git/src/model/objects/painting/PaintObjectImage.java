@@ -35,6 +35,7 @@ public class PaintObjectImage extends PaintObject {
      */
     private Point pnt_locationOfImage;
     
+    
     /**
      * Constructor.
      * 
@@ -125,7 +126,7 @@ public class PaintObjectImage extends PaintObject {
      */
     @Override public final PaintObject[][] separate(final Rectangle _r) {
         
-        new Exception(getClass() + "not implementetd yet").printStackTrace();
+        new Exception(getClass() + " not implemenented yet").printStackTrace();
         return null;
         
     }

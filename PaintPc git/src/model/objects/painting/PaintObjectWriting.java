@@ -116,7 +116,8 @@ public class PaintObjectWriting extends PaintObject {
         
         //return whether theDPoint is inside given rectangle.
         return (_p.getX() >= _r.x && _p.getY() >= _r.y 
-                && _p.getX() <= _r.x + _r.width && _p.getY() <= _r.y + _r.height);
+                && _p.getX() <= _r.x + _r.width 
+                && _p.getY() <= _r.y + _r.height);
     }
 
 	/**
@@ -367,8 +368,9 @@ public class PaintObjectWriting extends PaintObject {
         while (!ls_point.isBehind()) {
             
            DPoint pcNew = ls_point.getItem();
-           boolean cInside = (pcNew.getX() >= _r.x && pcNew.getX() <= _r.x + _r.width 
-                    && pcNew.getY() >= _r.y && pcNew.getY() <= _r.y + _r.height);
+           boolean cInside = (pcNew.getX() >= _r.x && pcNew.getX() 
+                   <= _r.x + _r.width && pcNew.getY() >= _r.y 
+                   && pcNew.getY() <= _r.y + _r.height);
             
             if (cInside) {
             
@@ -379,7 +381,8 @@ public class PaintObjectWriting extends PaintObject {
 
                     //calculate borderDPoint
                    DPoint pnt_border = findIntersection(_r, pc, new DPoint(
-                            pcNew.getX() - pc.getX(), pcNew.getY() - pc.getY()));
+                            pcNew.getX() - pc.getX(),
+                            pcNew.getY() - pc.getY()));
 
                     //add the borderDPoint to the last PaintObject and insert 
                     //paintObject to list
@@ -402,7 +405,8 @@ public class PaintObjectWriting extends PaintObject {
 
                     //calculate borderDPoint
                    DPoint pnt_border = findIntersection(_r, pc, new DPoint(
-                            pcNew.getX() - pc.getX(), pcNew.getY() - pc.getY()));
+                            pcNew.getX() - pc.getX(), 
+                            pcNew.getY() - pc.getY()));
                     
                     //add the borderDPoint to the last PaintObject and insert 
                     //paintObject to list
@@ -538,9 +542,7 @@ public class PaintObjectWriting extends PaintObject {
      */
     public static DPoint findIntersection(final Rectangle _r, final DPoint _p, 
             final DPoint _v) {
-        /*
-         * Step 1
-         */
+        //Step 1
         //Visualization s____________
         //      x       s           |
         //              s    x      |
@@ -590,14 +592,13 @@ public class PaintObjectWriting extends PaintObject {
         m.setValue(0, 2, _r.x + _r.width - _p.getX());
         m.setValue(1, 2, _r.y + _r.height - _p.getY());
         double [] factor4 = m.solve();
-        /*
-         * Step 2
-         */
-       DPoint intersection1 = null, intersection2 = null, 
+        //STEP 2
+        DPoint intersection1 = null, intersection2 = null, 
                 intersection3 = null, intersection4 = null;
         //fetchDPoint
         if (factor1 != null) {
-            intersection1 = new DPoint((int) (_p.getX() + factor1[0] * _v.getX()), 
+            intersection1 = new DPoint(
+                    (int) (_p.getX() + factor1[0] * _v.getX()), 
                     (int) (_p.getY() + factor1[0] * _v.getY()));
             //check whether suitable.
             if (_r.y + _r.height  - (int) intersection1.getY() < 0
@@ -607,7 +608,8 @@ public class PaintObjectWriting extends PaintObject {
         }
         if (factor2 != null) {
             //fetchDPoint
-            intersection2 = new DPoint((int) (_p.getX() + factor2[0] * _v.getX()), 
+            intersection2 = new DPoint(
+                    (int) (_p.getX() + factor2[0] * _v.getX()), 
                     (int) (_p.getY() + factor2[0] * _v.getY()));
             //check whether suitable.
             if (_r.x + _r.width  - (int) intersection2.getX() < 0
@@ -617,7 +619,8 @@ public class PaintObjectWriting extends PaintObject {
         }
         if (factor3 != null) {
             //fetchDPoint
-            intersection3 = new DPoint((int) (_p.getX() + factor3[0] * _v.getX()), 
+            intersection3 = new DPoint(
+                    (int) (_p.getX() + factor3[0] * _v.getX()), 
                     (int) (_p.getY() + factor3[0] * _v.getY()));
             //check whether suitable.
             if (_r.y + _r.height  - (int) intersection3.getY() < 0
@@ -627,7 +630,8 @@ public class PaintObjectWriting extends PaintObject {
         }
         if (factor4 != null) {
             //fetchDPoint
-            intersection4 = new DPoint((int) (_p.getX() + factor4[0] * _v.getX()), 
+            intersection4 = new DPoint(
+                    (int) (_p.getX() + factor4[0] * _v.getX()), 
                     (int) (_p.getY() + factor4[0] * _v.getY()));
             //check whether suitable.
             if (_r.x + _r.width  - (int) intersection4.getX() < 0
@@ -706,7 +710,7 @@ public class PaintObjectWriting extends PaintObject {
                             .getJlbl_selectionPainting().getGraphics();
                     
                     g.setColor(Color.orange);
-                    g.drawRect((int)_p.getX(), (int)_p.getY(), 2, 2);
+                    g.drawRect((int) _p.getX(), (int) _p.getY(), 2, 2);
                     
                     try {
                         Thread.sleep(sleepTime);
@@ -719,8 +723,11 @@ public class PaintObjectWriting extends PaintObject {
     }
 
 
-    @Override
-    public synchronized void stretch(
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override public final synchronized void stretch(
             final DPoint _pnt_from, final DPoint _pnt_totalStretch,
             final DPoint _pnt_size) {
 

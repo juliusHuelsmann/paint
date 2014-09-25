@@ -3,7 +3,6 @@ package model.objects.painting;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,10 +12,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-
 import settings.Error;
 import settings.Status;
 import view.ViewVorschau;
@@ -66,8 +63,6 @@ public final class Picture extends Observable {
 	 * current id which is given to new PaintObject and then increased.
 	 */
 	private int currentId;
-
-    
 	
 	/**
 	 * Empty utility class constructor.
@@ -797,8 +792,10 @@ public final class Picture extends Observable {
 	            pow.getPoints().toFirst();
 	            pow.adjustSnapshotBounds(_dX, _dY);
 	            while (!pow.getPoints().isBehind()) {
-                    pow.getPoints().getItem().setX(pow.getPoints().getItem().getX() + _dX);
-                    pow.getPoints().getItem().setY(pow.getPoints().getItem().getY() + _dY);
+                    pow.getPoints().getItem().setX(
+                            pow.getPoints().getItem().getX() + _dX);
+                    pow.getPoints().getItem().setY(
+                            pow.getPoints().getItem().getY() + _dY);
 	                pow.getPoints().next();
 	            }
 	        }

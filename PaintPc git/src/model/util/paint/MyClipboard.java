@@ -9,10 +9,16 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
 import model.objects.painting.PaintObject;
+import model.objects.painting.PaintObjectImage;
+import model.objects.painting.PaintObjectWriting;
+import model.objects.painting.Picture;
+import model.util.DPoint;
 import model.util.list.List;
 import settings.Status;
 
@@ -106,12 +112,43 @@ public final class MyClipboard implements ClipboardOwner {
         copyImage(_i);
 
         //set that i own the clipboard
-//        this.own_clipboard = true;
+        this.own_clipboard = true;
 
         //save the paintObjectWriting
-        this.ls_po_selected = _lsPoSelected;
+        List<PaintObject> ls_new = new List<PaintObject>();
+        _lsPoSelected.toFirst();
+        while (!_lsPoSelected.isBehind() && !_lsPoSelected.isEmpty()) {
+            
+            PaintObject po = _lsPoSelected.getItem();
+            if (po instanceof PaintObjectImage) {
+                PaintObjectImage poi = (PaintObjectImage) po;
+                
+                
+            } else if (po instanceof PaintObjectWriting) {
+                
+                PaintObjectWriting pow = (PaintObjectWriting) po;
+                PaintObjectWriting pow_new = Picture.getInstance().createPOW(
+                        pow.getPen());
+                
+                pow.getPoints().toFirst();
+                while (!pow.getPoints().isEmpty() 
+                        && !pow.getPoints().isBehind()) {
+                    pow_new.addPoint(new DPoint(pow.getPoints().getItem()));
+                    pow.getPoints().next();
+                }
+                ls_new.insertBehind(pow_new);
+            
+            } else {
+                Status.getLogger().warning("unknown kind of PaintObject;"
+                        + "null element? element = " + po);
+            }
+            
+            _lsPoSelected.next();
+        }
         
-    }
+        this.ls_po_selected = ls_new;
+        
+    }  
     
     
     /**
@@ -134,7 +171,8 @@ public final class MyClipboard implements ClipboardOwner {
         }
         
         if (own_clipboard && ls_po_selected != null) {
-            
+
+            System.out.println("list owned: " + own_clipboard + ls_po_selected);
             return ls_po_selected;
         }
         if (o instanceof BufferedImage) {

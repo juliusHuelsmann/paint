@@ -376,6 +376,15 @@ public final class Picture extends Observable {
     }
 	
 	
+
+    public PaintObjectWriting createPOW(Pen _pen){
+        return new PaintObjectWriting(currentId, _pen);
+        
+    }
+    public PaintObjectImage createPOI(BufferedImage _bi){
+        return new PaintObjectImage(currentId, _bi);
+        
+    }
 	
 	
 	
@@ -925,7 +934,8 @@ public final class Picture extends Observable {
 
                 ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x);
 	        } else {
-	            Status.getLogger().warning("unknown kind of PaintObject");
+	            Status.getLogger().warning("unknown kind of PaintObject"
+	                    + po);
 	        }
 	        PictureOverview.getInstance().removeSelected(po);
 	        ls_poSelected.remove();

@@ -527,15 +527,28 @@ public final class ControlPainting implements MouseListener,
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_paste().getActionCause())) {
 
+            Page.getInstance().releaseSelected();
+            Picture.getInstance().releaseSelected();
+            Picture.getInstance().createSelected();
+            
             Object o = MyClipboard.getInstance().paste();
             if (o instanceof BufferedImage) {
 
                 Picture.getInstance().addPaintObjectImage((BufferedImage) o);
+            } else if (o instanceof List) {
+
+                List<PaintObject> ls = (List<PaintObject>) o;
+                ls.toFirst();
+                Picture.getInstance().insertIntoSelected(ls.getItem());
+                System.out.println("habe jetzt inserted.");
+                
             } else if (o instanceof PaintObjectWriting) {
                 Picture.getInstance().insertIntoSelected(
                         (PaintObjectWriting) o);
             } else if (o instanceof PaintObjectImage) {
                 new UnsupportedDataTypeException("hier").printStackTrace();
+            } else {
+                Status.getLogger().warning("unknown return type of clipboard");
             }
             Page.getInstance().getJlbl_painting().refreshPaint();
 

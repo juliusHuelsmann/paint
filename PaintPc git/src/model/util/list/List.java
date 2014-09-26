@@ -320,7 +320,7 @@ public class List<Type> implements Serializable {
      * @param _content the content to be inserted.
      * @param _searchCriteria the index of sorting.
      */
-    public final void insertSorted(final Type _content, 
+    public final synchronized void insertSorted(final Type _content, 
             final int _searchCriteria) {
         
         findSorted(_searchCriteria);
@@ -333,7 +333,7 @@ public class List<Type> implements Serializable {
      * goes behind the searched position.
      * @param _searchCriteria the search index.
      */
-    public final void findSorted(final int _searchCriteria) {
+    public final synchronized void findSorted(final int _searchCriteria) {
         
         toFirst();
         while (!isBehind() && elemCurrent.getSortedIndex() < _searchCriteria) {
@@ -356,4 +356,26 @@ public class List<Type> implements Serializable {
         }
         System.out.println("\n\n");
     }
+    
+    
+//    public static void main(String[]args){
+//        List<String> ls = new List<String>();
+//        ls.printIndex();
+//        ls.insertSorted("hi", 1);
+//        ls.printIndex();
+//        ls.insertSorted("du", 2);
+//        ls.printIndex();
+//        ls.insertSorted("da", 3);
+//        ls.printIndex();
+//        ls.insertSorted("er sagte", 0);
+//        ls.printIndex();
+//        ls.insertSorted("w", -1);
+//        ls.printIndex();
+//        ls.insertSorted("__", -1);
+//        ls.printIndex();
+//        ls.insertSorted("asdf", -2);
+//        ls.printIndex();
+//        ls.insertSorted("d", 1);
+//        ls.printIndex();
+//    }
 }

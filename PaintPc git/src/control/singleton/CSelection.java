@@ -150,11 +150,6 @@ public class CSelection implements MouseMotionListener, MouseListener {
     @Override public final void mouseReleased(final MouseEvent _event) {
 
         
-        
-        
-        
-        
-        
 
         if (_event.getSource().equals(
                 Page.getInstance().getJbtn_resize()[1][1])) {

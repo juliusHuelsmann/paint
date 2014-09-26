@@ -871,8 +871,6 @@ public final class ControlPainting implements MouseListener,
     private void mr_selection_line_complete(final MouseEvent _event) {
 
         // fetch rectangle
-        //TODO: ich glaube wenn ich von unten nach oben ziehe sieht das ganze
-        //scheiße aus.
         Rectangle r_sizeField = new Rectangle(
                 -Page.getInstance().getJlbl_painting().getLocation().x
                 + Math.min(pnt_start.x, _event.getX()), 
@@ -880,16 +878,19 @@ public final class ControlPainting implements MouseListener,
                 + Math.min(pnt_start.y, _event.getY()),
                 Math.abs(pnt_start.x - _event.getX()), Math.abs(pnt_start.y
                         - _event.getY()));
-        System.out.println(r_sizeField + "anfang");
+        if (r_sizeField.x < 0) {
+            r_sizeField.x = 0;
+        }
+        if (r_sizeField.y < 0) {
+            r_sizeField.y = 0;
+        }
 
         // the maximal bounds which cover all other items
         Rectangle r_sizeMax = null;
 
-
         if (Picture.getInstance().getLs_po_sortedByX().isEmpty()) {
             pnt_start = null;
             Picture.getInstance().releaseSelected();
-
 
             //adjust location of the field for painting to view
             r_sizeField.x += Page.getInstance().getJlbl_painting().getLocation()
@@ -945,16 +946,13 @@ public final class ControlPainting implements MouseListener,
         // selected area
         while (po_current != null
                 && currentX 
-//                * cZoomFactorWidth * cZoomFactorWidth 
                 <= (r_sizeField.x + r_sizeField.width)) {
 
-            
             //re check this one. The y condition has to be in here because
             //the items are just sorted by x coordinate; thus it is possible
             //that one PaintObject is not suitable for the specified rectangle
             //but some of its predecessors in sorted list do.
             if (currentY 
-//                    * cZoomFactorHeight * cZoomFactorHeight 
                     <= (r_sizeField.y + r_sizeField.height)
                     && po_current.isInSelectionImage(r_sizeField)) {
 
@@ -987,8 +985,6 @@ public final class ControlPainting implements MouseListener,
                 // next
                 Picture.getInstance().getLs_po_sortedByX().next();
             }
-
-
             // update current values
             currentX = po_current.getSnapshotBounds().x;
             currentY = po_current.getSnapshotBounds().y;
@@ -1019,7 +1015,6 @@ public final class ControlPainting implements MouseListener,
             
             // Selection.getInstance().showSelection(realRect);
         } else {
-
             
             //transform the logical Rectangle to the painted one.
             r_sizeField.x = (int) (1.0 * r_sizeField.x / cZoomFactorWidth);
@@ -1034,7 +1029,6 @@ public final class ControlPainting implements MouseListener,
             r_sizeField.y 
             += Page.getInstance().getJlbl_painting().getLocation().y;
             
-            
             System.out.println(r_sizeField);
             CSelection.getInstance().setR_selection(r_sizeField);
             Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
@@ -1043,7 +1037,6 @@ public final class ControlPainting implements MouseListener,
 
         // reset values
         pnt_start = null;
-
     }
     
     

@@ -1003,10 +1003,11 @@ public final class ControlPainting implements MouseListener,
                     r_sizeMax.width - r_sizeMax.x, r_sizeMax.height
                             - r_sizeMax.y);
 
-            realRect.x /= cZoomFactorWidth;
-            realRect.width /= cZoomFactorWidth;
-            realRect.y /= cZoomFactorHeight;
-            realRect.height /= cZoomFactorHeight;
+            realRect.x = (int) (1.0 * realRect.x / cZoomFactorWidth);
+            realRect.width = (int) (1.0 * realRect.width / cZoomFactorWidth);
+            realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
+            realRect.height = (int) (1.0 * realRect.height / cZoomFactorHeight);
+            
             realRect.x += Page.getInstance().getJlbl_painting().getLocation().x;
             realRect.y += Page.getInstance().getJlbl_painting().getLocation().y;
 
@@ -1021,10 +1022,12 @@ public final class ControlPainting implements MouseListener,
 
             
             //transform the logical Rectangle to the painted one.
-            r_sizeField.x /= cZoomFactorWidth;
-            r_sizeField.width /= cZoomFactorWidth;
-            r_sizeField.y /= cZoomFactorHeight;
-            r_sizeField.height /= cZoomFactorHeight;
+            r_sizeField.x = (int) (1.0 * r_sizeField.x / cZoomFactorWidth);
+            r_sizeField.width = (int) 
+                    (1.0 * r_sizeField.width / cZoomFactorWidth);
+            r_sizeField.y = (int) (1.0 * r_sizeField.y / cZoomFactorHeight);
+            r_sizeField.height = (int) 
+                    (1.0 * r_sizeField.height / cZoomFactorHeight);
             
             r_sizeField.x 
             += Page.getInstance().getJlbl_painting().getLocation().x;

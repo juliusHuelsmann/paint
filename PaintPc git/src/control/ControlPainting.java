@@ -952,9 +952,8 @@ public final class ControlPainting implements MouseListener,
             //the items are just sorted by x coordinate; thus it is possible
             //that one PaintObject is not suitable for the specified rectangle
             //but some of its predecessors in sorted list do.
-            if (currentY 
-                    <= (r_sizeField.y + r_sizeField.height)
-                    && po_current.isInSelectionImage(r_sizeField)) {
+            if (
+                    po_current.isInSelectionImage(r_sizeField)) {
 
                 // update maximal size
                 if (r_sizeMax == null) {

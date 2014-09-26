@@ -161,7 +161,14 @@ public class CSelection implements MouseMotionListener, MouseListener {
             
             int dX = (int) (_event.getXOnScreen() - pnt_start.getX()), 
                     dY = (int) (_event.getYOnScreen() - pnt_start.getY());
-            Picture.getInstance().moveSelected(dX, dY);
+
+            final double cZoomFactorWidth = Status.getImageSize().width
+                    / Status.getImageShowSize().width;
+            final double cZoomFactorHeight = Status.getImageSize().height
+                    / Status.getImageShowSize().height;
+            
+            Picture.getInstance().moveSelected((int) (dX * cZoomFactorWidth), 
+                    (int) (dY * cZoomFactorHeight));
         } else {
 
             Picture.getInstance().getLs_poSelected().toFirst();

@@ -323,6 +323,7 @@ import control.singleton.CSelection;
         jlbl_selectionBG.setIcon(new ImageIcon(emptyBI));
         jlbl_selectionPainting.setIcon(new ImageIcon(emptyBI));
 
+        jlbl_border.setBounds(0, 0, 0, 0);
         jlbl_selectionBG.setLocation(0, 0);
         jlbl_selectionPainting.setLocation(0, 0);
         

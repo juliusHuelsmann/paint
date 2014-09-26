@@ -305,9 +305,12 @@ public final class ControlPainting implements MouseListener,
 
                 break;
             case Constants.CONTROL_PAINTING_INDEX_MOVE:
+                
+                Page.getInstance().releaseSelected();
                 pnt_start = _event.getPoint();
                 pnt_startLocation = Page.getInstance().getJlbl_painting()
                         .getLocation();
+                
                 break;
             default:
                 break;

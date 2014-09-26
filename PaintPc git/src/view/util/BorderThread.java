@@ -236,7 +236,11 @@ public class BorderThread extends Thread {
             //paint border
             for (int pixelX = fromX; pixelX <= toX; pixelX++) {
                 if (pixelX >= rect.x && pixelX < rect.x + rect.width) {
-                   _graph.drawLine(pixelX, rect.y, pixelX, rect.y); 
+                    int x = pixelX - Page.getInstance()
+                            .getJlbl_selectionBG().getX();
+                    int y = rect.y - Page.getInstance()
+                            .getJlbl_selectionBG().getY();
+                   _graph.drawLine(x, y, x, y);
                 } else if (pixelX >= rect.x + rect.width) {
 
                     //decrease index; otherwise increased 2 often.
@@ -279,8 +283,11 @@ public class BorderThread extends Thread {
             //paint border
             for (int pixelY = fromY; pixelY <= toY; pixelY++) {
                 if (pixelY >= rect.y && pixelY < rect.y + rect.height) {
-                   _graph.drawLine(rect.x + rect.width, pixelY, 
-                           rect.x + rect.width, pixelY); 
+                   int x = rect.x + rect.width - Page.getInstance()
+                           .getJlbl_selectionBG().getX() - 1;
+                   int y = pixelY - Page.getInstance()
+                           .getJlbl_selectionBG().getY();
+                  _graph.drawLine(x, y, x, y);
                 } else if (pixelY >= rect.y + rect.height) {
                     //decrease index color because has been 
                     //increased too often.
@@ -325,8 +332,11 @@ public class BorderThread extends Thread {
             //paint border
             for (int pixelX = fromX; pixelX >= toX; pixelX--) {
                 if (pixelX <= rect.x + rect.width && pixelX > rect.x) {
-                   _graph.drawLine(pixelX, rect.y + rect.height,
-                           pixelX, rect.y + rect.height); 
+                   int x = pixelX - Page.getInstance()
+                           .getJlbl_selectionBG().getX();
+                   int y = rect.y + rect.height - Page.getInstance()
+                           .getJlbl_selectionBG().getY() - 1;
+                  _graph.drawLine(x, y, x, y);
                 } else if (pixelX <= rect.x) {
                     //decrease index color because has been 
                     //increased too often.
@@ -370,7 +380,11 @@ public class BorderThread extends Thread {
             //paint border
             for (int pixelY = fromY; pixelY >= toY; pixelY--) {
                 if (pixelY <= rect.y + rect.height && pixelY > rect.y) {
-                   _graph.drawLine(rect.x, pixelY, rect.x, pixelY); 
+                   int x = rect.x - Page.getInstance()
+                           .getJlbl_selectionBG().getX();
+                   int y = pixelY - Page.getInstance()
+                           .getJlbl_selectionBG().getY();
+                  _graph.drawLine(x, y, x, y);
                 } else if (pixelY <= rect.y) {
 
                     //decrease index color because has been 

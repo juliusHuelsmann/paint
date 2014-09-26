@@ -3,6 +3,7 @@ package model.util.solveLGS;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import settings.Status;
 import model.util.list.List;
 
 
@@ -50,8 +51,8 @@ public class Matrix {
 	public final double[] solve() {
 		
 		if (content.length + 1 != content[0].length) {
-			System.err.println(getClass() 
-			        + " unable to solve matrix: not quadratic!");
+		    Status.getLogger().severe(
+			        "unable to solve matrix: not quadratic!");
 			System.exit(1);
 		}
 		

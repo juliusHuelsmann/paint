@@ -35,7 +35,7 @@ public final class Start {
 
 		//if file exists and is directory
 		if (f.exists() && f.isDirectory()) {
-            System.out.println(f.getPath());
+		    Status.getLogger().info(f.getPath());
 		    
 		    //load, edit and save each file
 			for (File currentFile: f.listFiles()) {
@@ -44,7 +44,7 @@ public final class Start {
                     
                     p.load(currentFile.getPath());
                     p.whiteToAlpha();
-                    System.out.println(currentFile.getPath());
+                    Status.getLogger().info(currentFile.getPath());
                     p.savePNG(currentFile.getPath() + "2");
                 } else if (currentFile.isFile()
                         && currentFile.getPath().endsWith(".gif")) {
@@ -53,8 +53,7 @@ public final class Start {
                     p.whiteToAlpha();
                     p.savePNG(currentFile.getPath() + "2");
                 } else {
-                    
-                    System.out.println("hier");
+                    Status.getLogger().info("unknown type");
                 }
 			}
 

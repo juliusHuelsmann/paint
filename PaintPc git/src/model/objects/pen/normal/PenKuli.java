@@ -145,7 +145,8 @@ public class PenKuli extends Pen {
                             _g.setRGB(x, y, getClr_foreground().getRGB());
                             
                         } catch (ArrayIndexOutOfBoundsException e) { 
-                            System.out.println("aioobe" + x + ";" + y + "width"
+                            Status.getLogger().warning("FEHLER" + x + ";" 
+                                    + y + "width"
                                     + _g.getWidth() + "h" + _g.getHeight());
                         }
                         
@@ -165,10 +166,10 @@ public class PenKuli extends Pen {
                                             getClr_foreground().getRGB());
                                     
                                 } catch (ArrayIndexOutOfBoundsException e) { 
-                                    System.out.println("aioobe" + (x + kx) + ";"
-                                            + (y + ky) + "width"
-                                            + _g.getWidth() + "h" 
-                                            + _g.getHeight());
+                                    Status.getLogger().warning("FEHLER" 
+                                            + x + ";" + y + "width"
+                                            + _g.getWidth() 
+                                            + "height" + _g.getHeight());
                                 }
                             }
                         }

@@ -415,7 +415,6 @@ public class VTabbedPane extends JPanel {
                 jpnl_background.setSize(getWidth(), oldVisibleHeight 
                         - jpnl_background.getY());
                 jpnl_background.repaint();
-                System.out.println(oldVisibleHeight);
                 Page.getInstance().setLocation(0, oldVisibleHeight 
                         + jpnl_close.getHeight());
                 setComponentZOrder(jpnl_close, 1);

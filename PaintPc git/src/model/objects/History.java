@@ -3,6 +3,7 @@ package model.objects;
 
 import java.util.Observable;
 
+import settings.Status;
 import model.util.list.List;
 
 
@@ -48,7 +49,7 @@ public final class History extends Observable {
         if (ls_history.find(_hist)) {
             ls_history.remove();
         } else {
-            System.err.println("History" + "error");
+            Status.getLogger().warning("History" + "error");
         }
         getInstance().setChanged();
         getInstance().notifyObservers("remove " + _hist);

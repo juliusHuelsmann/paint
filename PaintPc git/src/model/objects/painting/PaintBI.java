@@ -5,6 +5,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import settings.Status;
+
 
 /**
  * Utility class for painting stuff to a buffered image.
@@ -338,8 +340,7 @@ public final class PaintBI {
         //interrupt if error in field size
         if (_field.length != _bi.getWidth() 
                 || _field[0].length != _bi.getHeight()) {
-            
-            System.out.println("problem");
+            Status.getLogger().warning("problem");
             throw new ThreadDeath();
         }
         

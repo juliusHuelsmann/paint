@@ -175,17 +175,20 @@ public final class MyClipboard implements ClipboardOwner {
         
         if (own_clipboard && ls_po_selected != null) {
 
-            System.out.println("list owned: " + own_clipboard + ls_po_selected);
+            Status.getLogger().fine("list owned: " + own_clipboard 
+                    + ls_po_selected);
             return ls_po_selected;
         }
         if (o instanceof BufferedImage) {
-            System.out.println("bi! owned: " + own_clipboard + ls_po_selected);
+            Status.getLogger().fine("bi! owned: " + own_clipboard 
+                    + ls_po_selected);
             
             
         } else if (o instanceof String) {
-            System.out.println("string! owned:" + own_clipboard);
+            Status.getLogger().fine("string! owned:" + own_clipboard);
         } else {
-            System.out.println("nothing on clipboard! owned: " + own_clipboard);
+            Status.getLogger().fine("nothing on clipboard! owned: "
+                    + own_clipboard);
         }
 
         return o;

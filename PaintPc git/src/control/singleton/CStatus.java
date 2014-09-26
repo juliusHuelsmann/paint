@@ -63,7 +63,8 @@ public final class CStatus implements MouseListener {
 		if (View.getInstance() != null && Picture.getInstance() != null) {
 			startPerform = true;
 		} else {
-			System.err.println(getClass() + "initialize. Es liegt "
+
+            Status.getLogger().warning("initialize. Es liegt "
 					+ "moeglicherweise ein Fehler bei der initializsierung "
 					+ "vor. Deshalb kann es sein, dass User Interaktionen"
 					+ "nicht registriert werden.");
@@ -351,7 +352,7 @@ public final class CStatus implements MouseListener {
                     Paint.getInstance().getTb_erase().setActivated(true);
                     break;
                 default:
-                    System.err.println(getClass() + "falsche id");
+                    Status.getLogger().warning("falsche id");
                     break;
                 }
 		    } else {

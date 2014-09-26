@@ -12,12 +12,15 @@ import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
+
+import settings.Status;
 
 /**
  * 
@@ -252,18 +255,19 @@ public class FetchMSPaint extends JFrame {
 						cLength = -(int) Math.sqrt(
 						        Math.pow(xLength, 2) + Math.pow(yLength, 2));
 					} else {
-						System.err.println("error");
+					    Status.getLogger().severe("error");
 					}
 				
 					if (pnt_1.getX() == pnt_2.getX() 
 					        && pnt_1.getY() == pnt_2.getY()) {
-						System.err.println("gleicher punkt");
+					    Status.getLogger().severe("gleicher punkt");
 					} else {
 						double thing = 0.0000 + ((hundred * yLength) / cLength);
 						degree = (int) Math.toDegrees(Math.asin(
 						        thing / hundred));
-						System.out.println("xLength " + xLength + "	yLength " 
-						+ yLength + "	cLength " + cLength + "	degree "
+						Status.getLogger().info("xLength " + xLength 
+						        + "	yLength " 
+						        + yLength + "	cLength " + cLength + "	degree "
 						        + degree);
 				
 						

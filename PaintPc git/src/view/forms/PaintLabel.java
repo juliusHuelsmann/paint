@@ -149,7 +149,6 @@ public class PaintLabel extends JLabel {
     public final BufferedImage refreshRectangle(final int _x, final int _y, 
             final int _width, final int _height) {
 
-        System.out.println("refresh rectangle");
         Status.getLogger().finest("refreshing PaintLabel. \nValues: "
                 + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
                 + "\n\tgetLocation:\t" + getLocation() 
@@ -159,14 +158,11 @@ public class PaintLabel extends JLabel {
                 + "\n\t" + "_width\t\t" + _width
                 + "\n\t" + "_height\t\t" + _height + "\n");
 
-        double time0 = System.currentTimeMillis();
         //paint the painted stuff at graphics
         setBi(Picture.getInstance().updateRectangle(
                 -getLocation().x + _x, 
                 -getLocation().y + _y, _width, _height, _x, _y, getBi()));
 
-        double time1 = System.currentTimeMillis();
-        System.out.println("zeit 1" + (time1 - time0));
         
         //paint the painting background (e.g. raster / lines) at the graphical
         //user interface.
@@ -177,8 +173,6 @@ public class PaintLabel extends JLabel {
         }
 
 
-        double time2 = System.currentTimeMillis();
-        System.out.println("zeit2" + (time2 - time1));
 
         setIcon(new ImageIcon(getBi()));
         

@@ -390,7 +390,9 @@ public final class ControlPainting implements MouseListener,
                                     Math.abs(pnt_start.x - _event.getX()),
                                     Math.abs(pnt_start.y - _event.getY()));
                 } else {
-                    System.out.println("ist null.");
+                    
+                    Status.getLogger().warning("Want to print border but"
+                            + "the starting point is null.");
                 }
                 break;
 
@@ -849,13 +851,11 @@ public final class ControlPainting implements MouseListener,
 
         int color = Picture.getInstance().getColorPX(_event.getX(), 
                 _event.getY());
-        System.out.println(_event.getButton());
         if (_event.getButton() == 1) {
             Paint.getInstance().getTb_color1().setBackground(new Color(color));
         } else {
             Paint.getInstance().getTb_color2().setBackground(new Color(color));
         }
-        System.out.println(color);
     }
 
     /**
@@ -1076,8 +1076,6 @@ public final class ControlPainting implements MouseListener,
                     PictureOverview.getInstance().remove(Picture.getInstance()
                             .getLs_po_sortedByX().getItem());
                     Picture.getInstance().getLs_po_sortedByX().remove();
-                    System.out.println("outside(0)  "  + separatedPO[0].length 
-                            + "\tinside(1) " + separatedPO[1].length);
                     
                     //go through the list of elements.
                     for (int current = 0; current < separatedPO[1].length;
@@ -1091,8 +1089,9 @@ public final class ControlPainting implements MouseListener,
                             Picture.getInstance().insertIntoSelected(
                                     separatedPO[1][current]);
                         } else {
-                            System.out.println(getClass() 
-                                    + "error separatedpo null");
+                            
+                            Status.getLogger().warning("separated paintObject "
+                                    + "is null");
                         }
                     }
                     for (int current = 0; current < separatedPO[0].length;
@@ -1107,8 +1106,9 @@ public final class ControlPainting implements MouseListener,
                         PictureOverview.getInstance().add(
                                 separatedPO[0][current]);
                         } else {
-                            System.out.println(getClass() 
-                                    + "error separatedpo null");
+
+                            Status.getLogger().warning("separated paintObject "
+                                    + "is null");
                         }
                     }
                 } else {
@@ -1292,9 +1292,9 @@ public final class ControlPainting implements MouseListener,
                 Picture.getInstance().loadPicture(file.getAbsolutePath());
                 Status.setUncommittedChanges(false);
             } else if (file.getName().toLowerCase().endsWith(".png")) {
-                System.out.println("not supported yet to load pictures "
+                new Error("not supported yet to load pictures "
                         + "because there are no paintObjects for pictures"
-                        + "but only those for lines.");
+                        + "but only those for lines.").printStackTrace();
 
             } else {
 

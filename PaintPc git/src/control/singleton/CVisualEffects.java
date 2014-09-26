@@ -3,9 +3,11 @@ package control.singleton;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.border.LineBorder;
 
+import settings.Status;
 import settings.ViewSettings;
 import view.View;
 import view.forms.tabs.Paint;
@@ -81,7 +83,7 @@ public final class CVisualEffects implements MouseListener {
 		if (View.getInstance() != null) {
 			startPerform = _true;
 		} else {
-			System.err.println(getClass() + "initialize. Es liegt "
+		    Status.getLogger().warning("initialize. Es liegt "
 					+ "moeglicherweise ein Fehler bei der initializsierung "
 					+ "vor. Deshalb kann es sein, dass Desing User "
 					+ "Interaktionen nicht registriert werden.");

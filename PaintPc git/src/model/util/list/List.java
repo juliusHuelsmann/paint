@@ -240,7 +240,6 @@ public class List<Type> implements Serializable {
             succ.setElemPredecessor(elemCurrent.getElemPredecessor());
             elemCurrent.getElemPredecessor().setElemSuccessor(succ);
             elemCurrent = succ.getElemPredecessor();
-            System.out.println("was");
         } else {
             if (isInFrontOf()) {
                 next();
@@ -250,7 +249,6 @@ public class List<Type> implements Serializable {
                 
             }
             
-            System.out.println("hier" + isInFrontOf() + ".." + isBehind());
         }
     }
 

@@ -4,9 +4,12 @@ package view.forms;
 import java.awt.BorderLayout;
 import java.util.Observable;
 import java.util.Observer;
+
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import settings.Status;
 import settings.ViewSettings;
 
 /**
@@ -69,7 +72,7 @@ public final class VHistory extends JFrame implements Observer {
             String newText = jta_info.getText().replace(
                     "\n" + c.replaceFirst("remove ", "add "), "");
             
-            System.out.println("remove: " + newText);
+            Status.getLogger().info("remove: " + newText);
         }
     }
     

@@ -117,8 +117,8 @@ public final class Picture extends Observable {
         if (po_current != null) {
             
             //throw error message and kill program.
-            System.err.println("Fehler in Klasse " + getClass().getName() 
-                    + "Es soll ein neues objekt geadded werden, obwohl das "
+            Status.getLogger().warning(
+                    "Es soll ein neues objekt geadded werden, obwohl das "
                     + "alte nicht null ist also nicht gefinished wurde.\n"
                     + "Programm wird beendet.");
             
@@ -145,8 +145,8 @@ public final class Picture extends Observable {
         if (po_current != null) {
             
             //throw error message and kill program.
-            System.err.println("Fehler in Klasse " + getClass().getName() 
-                    + "Es soll ein neues objekt geadded werden, obwohl das "
+            Status.getLogger().warning(
+                    "Es soll ein neues objekt geadded werden, obwohl das "
                     + "alte nicht null ist also nicht gefinished wurde.\n"
                     + "Programm wird beendet.");
             
@@ -237,7 +237,6 @@ public final class Picture extends Observable {
             final int _graphicX, final int _graphiY,
             final BufferedImage _bi) {
 
-        double time0 = System.currentTimeMillis();
         BufferedImage ret = emptyRectangle(_x, _y, _width, _height, 
                 _graphicX, _graphiY, _bi);
         Page.getInstance().getJlbl_painting().setBi(ret);
@@ -245,14 +244,10 @@ public final class Picture extends Observable {
 
         Page.getInstance().getJlbl_painting().repaint();
 
-        double time1 = System.currentTimeMillis();
-        System.out.println("empty time" + (time1 - time0));
       
         ret =  repaintRectangle(_x, _y, _width, _height, 
                 _graphicX, _graphiY, ret);
         
-        double time2 = System.currentTimeMillis();
-        System.out.println("repaint time" + (time2 - time1));
         return ret;
     }
     
@@ -336,7 +331,6 @@ public final class Picture extends Observable {
             
             if (ls_po_sortedByX.getItem() != null) {
                 
-                System.out.println("inner loop");
                 //check whether the current PaintObject is in the given 
                 //rectangle
                 if (ls_po_sortedByX.getItem().getSnapshotBounds().x 
@@ -359,7 +353,7 @@ public final class Picture extends Observable {
         }
         ls_po_sortedByX.toFirst();
 
-        System.out.println("Painted " 
+        Status.getLogger().info("Painted " 
                     + Status.getCounter_paintedPoints() 
                     + "pixel points for this operation.");
         
@@ -419,8 +413,8 @@ public final class Picture extends Observable {
 		if (po_current == null) {
 			
 			//throw error message and kill program.
-			System.err.println("Fehler in Klasse " + getClass().getName() 
-					+ "Es soll ein nicht existentes Objekt veraendert werden.\n"
+		    Status.getLogger().warning(
+					"Es soll ein nicht existentes Objekt veraendert werden.\n"
 					+ "Programm wird beendet.");
 			
 			System.exit(1);
@@ -512,8 +506,8 @@ public final class Picture extends Observable {
 		if (po_current == null) {
 			
 			//throw error message and kill program.
-			System.err.println("Fehler in Klasse " + getClass().getName() 
-					+ "Es soll ein nicht existentes Objekt beendet werden.\n"
+		    Status.getLogger().warning(
+					"Es soll ein nicht existentes Objekt beendet werden.\n"
 					+ "Programm wird beendet.");
 			
 			System.exit(1);
@@ -616,8 +610,8 @@ public final class Picture extends Observable {
         }
         
         BufferedImage bi = new BufferedImage(
-                CSelection.getInstance().getR_selection().width, 
-                CSelection.getInstance().getR_selection().height, 
+                CSelection.getInstance().getR_selection().width + 1, 
+                CSelection.getInstance().getR_selection().height + 1, 
                 BufferedImage.TYPE_INT_ARGB);
 
         ls_poSelected.toFirst();
@@ -629,10 +623,6 @@ public final class Picture extends Observable {
                 PaintObjectWriting pow = (PaintObjectWriting) po;
 
                 //TODO: zoom, scroll adjust?
-                System.out.println("xx" + bi.getWidth() + "xx" 
-                + bi.getHeight() 
-                + CSelection.getInstance().getR_selection().getLocation());
-                System.out.println();
                 pow.paint(bi, false, bi, 
                         -CSelection.getInstance().getR_selection().x, 
                         -CSelection.getInstance().getR_selection().y);
@@ -844,8 +834,8 @@ public final class Picture extends Observable {
 	        ls_poSelected = new List<PaintObject>();
 	    } else {
 	        if (!ls_poSelected.isEmpty()) {
-	            System.err.println("error:" + getClass() 
-	                    + "creating new selection list but list is not empty.");
+	            Status.getLogger().warning(
+	                    "creating new selection list but list is not empty.");
 	        }
 	    }
 	}
@@ -858,7 +848,7 @@ public final class Picture extends Observable {
 	public void insertIntoSelected(final PaintObject _po) {
 
 	    if (ls_poSelected == null) {
-	        System.err.println("error. insert into null list" + getClass());
+	        Status.getLogger().warning("insert into null list");
 	        System.exit(1);
 	    } else {
 	        
@@ -912,14 +902,12 @@ public final class Picture extends Observable {
 	 * Paint the selected items to the selection JLabel.
 	 */
 	public void paintSelected() {
-	    System.out.println("\nstart");
 	    BufferedImage verbufft = Page.getInstance().getEmptyBI();
 	    ls_poSelected.toFirst();
         while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
             
             if (ls_poSelected.getItem() != null) {
 
-                System.out.println("new item");
                 //paint the object.
                 ls_poSelected.getItem().paint(
                         Page.getInstance().getEmptyBI(), false, verbufft,
@@ -943,7 +931,7 @@ public final class Picture extends Observable {
 	public synchronized void releaseSelected() {
 	    
 	    if (ls_poSelected == null) {
-	        System.out.println("o selected elements");
+	        Status.getLogger().info("o selected elements");
 	        return;
 	    }
 	    ls_poSelected.toFirst();
@@ -975,7 +963,7 @@ public final class Picture extends Observable {
     public synchronized void deleteSelected() {
         
         if (ls_poSelected == null) {
-            System.out.println("o selected elements");
+            Status.getLogger().info("o selected elements");
             return;
         }
         ls_poSelected.toFirst();

@@ -103,7 +103,6 @@ public abstract class Pen implements Serializable {
 			final PaintObjectWriting _o, final boolean _final, 
 			final DPoint _p_start, final BufferedImage _g) {
 
-	    double time0 = System.currentTimeMillis();
 		//fetch list of points and go to the beginning of the list
 		List<DPoint> ls_point = _o.getPoints();
 		ls_point.toFirst();
@@ -140,8 +139,6 @@ public abstract class Pen implements Serializable {
         default:
             break;
 		}
-        double time1 = System.currentTimeMillis();
-		System.out.println("pen pain" + (time1 - time0));
 		return _bi;
 	}
 	
@@ -358,7 +355,6 @@ public abstract class Pen implements Serializable {
                 ls_newPoints.next();
             }
             
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             ls_allPoints.toFirst();
 
 //            if( i == amountOfRuns - 1){
@@ -523,7 +519,6 @@ public abstract class Pen implements Serializable {
                     / ((2 + 2) * Math.sqrt(growthOrthogonalX * growthOrthogonalX
                             + growthOrthogonalY * growthOrthogonalY));
             
-            System.out.println(newPointX + ". " + newPointY);
             if (Double.isNaN(newPointX) || Double.isNaN(newPointY)) {
                 return null;
             }

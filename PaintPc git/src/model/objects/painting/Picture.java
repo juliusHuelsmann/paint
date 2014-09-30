@@ -17,6 +17,7 @@ import java.util.Observable;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import control.singleton.CChangeSelection;
 import control.singleton.CSelection;
 import settings.Error;
 import settings.Status;
@@ -847,6 +848,10 @@ public final class Picture extends Observable {
 	 */
 	public void insertIntoSelected(final PaintObject _po) {
 
+
+        //deactivates to change operations of selected items
+        CChangeSelection.activateOp();
+	    CChangeSelection.selectPenOp(-1);
 	    if (ls_poSelected == null) {
 	        Status.getLogger().warning("insert into null list");
 	        System.exit(1);
@@ -987,6 +992,8 @@ public final class Picture extends Observable {
 	 */
 	public synchronized void releaseSelected() {
 	    
+	    //deactivates to change operations of selected items
+	    CChangeSelection.deactivateOp();
 	    if (ls_poSelected == null) {
 	        Status.getLogger().info("o selected elements");
 	        return;
@@ -1030,6 +1037,8 @@ public final class Picture extends Observable {
                     ls_poSelected.getItem());
             ls_poSelected.remove();
         }
+        //deactivates to change operations of selected items
+        CChangeSelection.deactivateOp();
         ls_poSelected = null;
     }
 	

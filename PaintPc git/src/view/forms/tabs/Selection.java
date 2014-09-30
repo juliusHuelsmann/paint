@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import control.singleton.CChangeSelection;
 import control.singleton.CStatus;
 import control.singleton.CVisualEffects;
 import settings.Status;
@@ -29,7 +30,7 @@ import view.util.VLabel;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class Selection extends JPanel {
+public final class Selection extends JPanel {
 
     /**
      * JLabels for the separation, linked with information.
@@ -54,20 +55,36 @@ public class Selection extends JPanel {
     /**
      * integer values.
      */
-    private final int distance = 5, htf = 135, twoHundred = 200;
+    private final int distance = 5, heightLabel = 20, htf = 135, 
+            twoHundred = 200;
+
+    /**
+     * The JCheckBox for changing the pen.
+     */
+    private JCheckBox jcb_points, jcb_line, jcb_maths;
+
+    /**
+     * The only instance of this class.
+     */
+    private static Selection instance;
     
     /**
-     * Constructor.
-     * @param _height the height
+     * Empty Utility class Constructor.
      */
-	public Selection(final int _height) {
-
-
+	private Selection() {
 	    
-		//initialize JPanel and alter settings
-		super();
-		super.setOpaque(false);
-		super.setLayout(null);
+	}
+	
+	
+	/**
+	 * real constructor.
+	 * @param _height the height
+	 */
+	private void init(final int _height) {
+        
+        //initialize JPanel and alter settings
+        super.setOpaque(false);
+        super.setLayout(null);
 
 
         //initialize items 
@@ -77,12 +94,13 @@ public class Selection extends JPanel {
         
 
         int x = initCololrs(distance, true);
-		x = initPen(x, true);
+        x = initPen(x, true);
         initOthers(x, true);
-		
-		super.setSize(
-		        (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(),
-		        _height);
+        
+        super.setSize(
+                (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(),
+                _height);
+    
 	}
 	
 	
@@ -235,32 +253,49 @@ public class Selection extends JPanel {
 	}
 	
 	
+	/**
+	 * initialize the pen.
+	 * @param _x the x coordinate
+	 * @param _paint whether to paint the items
+	 * @return the new x coordinate
+	 */
 	private int initPen(final int _x, final boolean _paint) {
-
-        JCheckBox jcb_points = new JCheckBox("whole");
+	    
+        jcb_points = new JCheckBox("points");
         jcb_points.setSelected(true);
-        jcb_points.setBounds(_x, distance, twoHundred, 20);
+        jcb_points.setOpaque(false);
+        jcb_points.setBounds(_x, distance, twoHundred, heightLabel);
         jcb_points.setVerticalAlignment(SwingConstants.TOP);
         jcb_points.setFocusable(false);
+        jcb_points.addActionListener(CChangeSelection.getInstance());
         super.add(jcb_points);
     
-        JCheckBox jcb_line = new JCheckBox("separated");
+        jcb_line = new JCheckBox("line");
         jcb_line.setVerticalAlignment(SwingConstants.TOP);
         jcb_line.setFocusable(false);
+        jcb_line.setOpaque(false);
         jcb_line.setBounds(_x, jcb_points.getHeight() + jcb_points.getY() 
-                + distance, twoHundred, 20);
+                + distance, twoHundred, heightLabel);
+        jcb_line.addActionListener(CChangeSelection.getInstance());
         super.add(jcb_line);
     
-        JCheckBox jcb_selection = new JCheckBox("image");
-        jcb_selection.setFocusable(false);
-        jcb_selection.setVerticalAlignment(SwingConstants.TOP);
-        jcb_selection.setBounds(_x, jcb_line.getHeight() + jcb_line.getY() 
-                + distance, twoHundred, 20);
-        super.add(jcb_selection);
+        jcb_maths = new JCheckBox("maths");
+        jcb_maths.setFocusable(false);
+        jcb_maths.setOpaque(false);
+        jcb_maths.setVerticalAlignment(SwingConstants.TOP);
+        jcb_maths.setBounds(_x, jcb_line.getHeight() + jcb_line.getY() 
+                + distance, twoHundred, heightLabel);
+        jcb_maths.addActionListener(CChangeSelection.getInstance());
+        super.add(jcb_maths);
+        
+        //deactivate the items because at the beginning there is no item 
+        //selected.
+        CChangeSelection.deactivateOp();
+    
 
-        insertTrennung(jcb_selection.getWidth() + jcb_selection.getX() 
-                + ViewSettings.DISTANCE_BEFORE_LINE, jcb_selection.getY(), 1, 
-                _paint);
+        insertTrennung(jcb_maths.getWidth() + jcb_maths.getX() 
+                + ViewSettings.DISTANCE_BEFORE_LINE, 
+                jcb_maths.getY(), 1, _paint);
         insertInformation("Pen", _x, jlbl_separation[1].getX(), 1, 
                 _paint);
 
@@ -386,5 +421,55 @@ public class Selection extends JPanel {
             jlbl_information[_locationInArray].setBounds(-1, -1, -1, -1);
         }
 
+    }
+    
+
+    /**
+     * getter method for only instance of this class.
+     * @param _height the height of the selection view.
+     * @return the only instance of CChangeSelection
+     */
+    public static Selection getInstance(final int _height) {
+        
+        if (instance == null) {
+            instance = new Selection();
+            instance.init(_height);
+        }
+        
+        return instance;
+        
+    }
+
+    /**
+     * getter method for only instance of this class.
+     * @return the only instance of CChangeSelection
+     */
+    public static Selection getInstance() {
+        
+        return instance;
+        
+    }
+
+    /**
+     * @return the jcb_points
+     */
+    public JCheckBox getJcb_points() {
+        return jcb_points;
+    }
+
+
+    /**
+     * @return the jcb_line
+     */
+    public JCheckBox getJcb_line() {
+        return jcb_line;
+    }
+
+
+    /**
+     * @return the jcb_maths
+     */
+    public JCheckBox getJcb_maths() {
+        return jcb_maths;
     }
 }

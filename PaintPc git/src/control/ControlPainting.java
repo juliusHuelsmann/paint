@@ -950,29 +950,13 @@ public final class ControlPainting implements MouseListener,
             //predecessors in sorted list do.
             if (po_current.isInSelectionImage(r_sizeField)) {
 
-                //fetch the size of the current element
-                Rectangle r = po_current.getSnapshotBounds();
-                
-                // update the max size; if it hasn't been initialized yet
-                //take the size of the currentPaintObject; otherwise make it 
-                //greater
-                if (r_sizeMax == null) {
-                    r_sizeMax = new Rectangle(r.x, r.y, 
-                            r.width + r.x, r.height + r.y);
-                } else {
-                    r_sizeMax = new Rectangle(Math.min(r.x, r_sizeMax.x),
-                            Math.min(r.y, r_sizeMax.y), 
-                            Math.max(r.width + r.x, r_sizeMax.width), 
-                            Math.max(r.height + r.y, r_sizeMax.height));
-                }
-                
                 //move current item from normal list into selected list 
                 Picture.getInstance().insertIntoSelected(po_current);
                 Picture.getInstance().getLs_po_sortedByX().remove();
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
                 PictureOverview.getInstance().remove(po_current);
-                Page.getInstance().getJlbl_painting().refreshPaint();
+                Picture.getInstance().getLs_po_sortedByX().toFirst();
             } else {
                 // next; in if clause the next is realized by remove()
                 Picture.getInstance().getLs_po_sortedByX().next();
@@ -981,46 +965,28 @@ public final class ControlPainting implements MouseListener,
             currentX = po_current.getSnapshotBounds().x;
             po_current = Picture.getInstance().getLs_po_sortedByX().getItem();
         }
-        Picture.getInstance().paintSelected();
 
-        // paint to selected pane
-        if (r_sizeMax != null) {
+        Page.getInstance().getJlbl_painting().refreshPaint();
+        if (!Picture.getInstance().paintSelected()) {
 
-            Rectangle realRect = new Rectangle(r_sizeMax.x, r_sizeMax.y,
-                    r_sizeMax.width - r_sizeMax.x, r_sizeMax.height
-                            - r_sizeMax.y);
-
-            realRect.x = (int) (1.0 * realRect.x / cZoomFactorWidth);
-            realRect.width = (int) (1.0 * realRect.width / cZoomFactorWidth);
-            realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
-            realRect.height = (int) (1.0 * realRect.height / cZoomFactorHeight);
-            
-            realRect.x += Page.getInstance().getJlbl_painting().getLocation().x;
-            realRect.y += Page.getInstance().getJlbl_painting().getLocation().y;
-
-            Picture.getInstance().repaintRectangle(realRect);
-            CSelection.getInstance().setR_selection(realRect);
-            Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
-                    realRect);
-        } else {
-            
-            //transform the logical Rectangle to the painted one.
-            r_sizeField.x = (int) (1.0 * r_sizeField.x / cZoomFactorWidth);
-            r_sizeField.width = (int) 
-                    (1.0 * r_sizeField.width / cZoomFactorWidth);
-            r_sizeField.y = (int) (1.0 * r_sizeField.y / cZoomFactorHeight);
-            r_sizeField.height = (int) 
-                    (1.0 * r_sizeField.height / cZoomFactorHeight);
-            
-            r_sizeField.x 
-            += Page.getInstance().getJlbl_painting().getLocation().x;
-            r_sizeField.y 
-            += Page.getInstance().getJlbl_painting().getLocation().y;
-            
-            CSelection.getInstance().setR_selection(r_sizeField);
-            Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
-                    r_sizeField);
+          //transform the logical Rectangle to the painted one.
+          r_sizeField.x = (int) (1.0 * r_sizeField.x / cZoomFactorWidth);
+          r_sizeField.width = (int) 
+                  (1.0 * r_sizeField.width / cZoomFactorWidth);
+          r_sizeField.y = (int) (1.0 * r_sizeField.y / cZoomFactorHeight);
+          r_sizeField.height = (int) 
+                  (1.0 * r_sizeField.height / cZoomFactorHeight);
+          
+          r_sizeField.x 
+          += Page.getInstance().getJlbl_painting().getLocation().x;
+          r_sizeField.y 
+          += Page.getInstance().getJlbl_painting().getLocation().y;
+          
+          CSelection.getInstance().setR_selection(r_sizeField);
+          Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
+                  r_sizeField);
         }
+
         // reset values
         pnt_start = null;
     }

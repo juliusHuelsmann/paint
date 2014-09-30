@@ -904,6 +904,7 @@ public final class Picture extends Observable {
 	 * @return whether there is something to be painted or not.
 	 */
 	public boolean paintSelected() {
+
         BufferedImage verbufft = Page.getInstance().getEmptyBI();
         BufferedImage verbufft2 = Page.getInstance().getEmptyBI();
 	    ls_poSelected.toFirst();

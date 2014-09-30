@@ -112,18 +112,19 @@ public class PaintLabel extends JLabel {
         //initialize the thread and start it.
         thrd_moveBorder = new BorderThread(_r, true, null, null);
         thrd_moveBorder.start();
-        
+//        
         //paint the background
-        Utils.paintRastarBlock(getGraphics(), 
-                ViewSettings.SELECTION_BACKGROUND_CLR, _r);
-        
+//        BufferedImage bi_fresh = Page.getInstance().getEmptyBI();
+//        Utils.paintRastarBlock(bi_fresh, 
+//                ViewSettings.SELECTION_BACKGROUND_CLR, _r);
+
+        System.out.println("passed tense");
+        //        
         //show resize buttons
         
         for (int a = 0; a < Page.getInstance().getJbtn_resize().length; a++) {
-
             for (int b = 0; b < Page.getInstance().getJbtn_resize().length;
                     b++) {
-
                 //size of JButton
                 final int b_size = Page.getInstance().getJbtn_resize()[a][b]
                         .getWidth();
@@ -133,7 +134,6 @@ public class PaintLabel extends JLabel {
                                 _r.y + _r.height * b / 2 - b_size / 2);
             }
         }
-        
     }
     
     

@@ -31,34 +31,25 @@ public final class PaintBI {
      * 
      * @param _r the rectangle which is to be filled.
      * 
-     * @return  a new PolygonReturn instance which contains both length of the
-     *          field and the field (as a two dimensional boolean array)
      */
-    public static PolygonReturn fillRectangleQuick(
+    public static void fillRectangleQuick(
             final BufferedImage _bi, 
             final Color _clr,
             final Rectangle _r) {
-        
-        //initialize the length counter and the painted array are saved
-        PolygonReturn polygonReturn = new PolygonReturn(
-                _bi.getWidth(), _bi.getHeight());
-
-        //fetch the field from array (which is altered afterwards)
-        boolean[][] field = polygonReturn.getField();
         
         //go through the coordinates of the rectangle and paint
         for (int x = 0; x < _r.width; x++) {
             for (int y = 0; y < _r.height; y++) {
 
                 //painting points
-                field = paintPoint(_bi, field, _clr, 1, 
-                        new Point(_r.x + x, _r.y + y));
+                if (_r.y + y < _bi.getHeight() && _r.y + y >= 0
+                        && _r.x + x < _bi.getWidth() && _r.x + x >= 0) {
+                    
+                    _bi.setRGB(_r.x + x, _r.y + y, _clr.getRGB());
+                }
                  
             }
         }
-       
-        //return the new PolygonReturn
-        return new PolygonReturn(_r.width * _r.height, field);
     }
     
     
@@ -452,11 +443,11 @@ public final class PaintBI {
         
         System.out.println();
 
-        pr = PaintBI.fillRectangleQuick(
-                new BufferedImage(four * five, four * five * two,
-                        BufferedImage.TYPE_INT_ARGB), 
-                        Color.black, new Rectangle(
-                                five, five, five * two, five));
+//        pr = PaintBI.fillRectangleQuick(
+//                new BufferedImage(four * five, four * five * two,
+//                        BufferedImage.TYPE_INT_ARGB), 
+//                        Color.black, new Rectangle(
+//                                five, five, five * two, five));
         drawPaintBI(pr);
 
         System.out.println();

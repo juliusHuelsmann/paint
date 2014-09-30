@@ -297,7 +297,7 @@ import control.singleton.CSelection;
 	 * 
 	 * @return the BufferedImage
 	 */
-	public BufferedImage getEmptyBI() {
+	public  BufferedImage getEmptyBI() {
 	    BufferedImage bi = new BufferedImage(jlbl_selectionBG.getWidth(), 
 	            jlbl_selectionBG.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	    

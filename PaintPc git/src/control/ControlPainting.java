@@ -977,6 +977,7 @@ public final class ControlPainting implements MouseListener,
         }
 
         Page.getInstance().getJlbl_painting().refreshPaint();
+
         if (!Picture.getInstance().paintSelected()) {
 
           //transform the logical Rectangle to the painted one.
@@ -992,7 +993,9 @@ public final class ControlPainting implements MouseListener,
           r_sizeField.y 
           += Page.getInstance().getJlbl_painting().getLocation().y;
           
+          
           CSelection.getInstance().setR_selection(r_sizeField);
+          
           Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
                   r_sizeField);
         }

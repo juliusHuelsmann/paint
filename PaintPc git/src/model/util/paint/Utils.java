@@ -44,7 +44,8 @@ public final class Utils {
      * @param _r the rectangle which is to be painted directly at graphics
      * 
      */
-    public static void paintRastarBlock(final Graphics _bi_background, 
+    public static BufferedImage paintRastarBlock(
+            final BufferedImage _bi_background, 
             final Color [] _clr, final Rectangle _r) {
 
         //go through the whole buffered image with block size raster
@@ -54,8 +55,6 @@ public final class Utils {
             for (int y = _r.y / ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
                     y < (_r.y + _r.height) / ViewSettings
                     .SELECTION_BORDER_BLOCK_SIZE + 1; y++) {
-
-                _bi_background.setColor(_clr[(y + x) % _clr.length]);
 
                 int rectX = x * ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
                 int rectY = y * ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
@@ -81,9 +80,12 @@ public final class Utils {
                     rectY = _r.y;
                 }
                 
-                _bi_background.fillRect(rectX, rectY, rectWidth, rectHeight);
+                PaintBI.fillRectangleQuick(_bi_background, 
+                        _clr[(y + x) % _clr.length], _r);
             }
         }
+        
+        return _bi_background;
     }
 
 

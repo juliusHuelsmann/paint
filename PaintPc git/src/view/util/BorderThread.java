@@ -98,6 +98,7 @@ public class BorderThread extends Thread {
         final int sleepTimeRectangle = 40;
         final int sleepTimeLine = 400;
         int sleepTime;
+        BufferedImage bi_neutral = Page.getInstance().getEmptyBI();
         
         //perform border movement 
         while (!isInterrupted()) {
@@ -105,7 +106,7 @@ public class BorderThread extends Thread {
             if (operationRectangle) {
 
                 sleepTime = sleepTimeRectangle;
-                indexStep = paintRectangleStep(sizeBB, indexStep);
+                indexStep = paintRectangleStep(sizeBB, indexStep, bi_neutral);
             } else {
                 sleepTime = sleepTimeLine;
                 paintLineStep(indexStep);
@@ -126,17 +127,17 @@ public class BorderThread extends Thread {
      * 
      * @param _sizeBB the size of the border block
      * @param _indexStep the index step
+     * @param _bi_neutral the BufferedImage to paint on
      * 
      * @return the new index step
      */
-    private int paintRectangleStep(final int _sizeBB, final int _indexStep) {
+    private int paintRectangleStep(final int _sizeBB, final int _indexStep, 
+            final BufferedImage _bi_neutral) {
 
         int indexStep = _indexStep;
         /*
          * save stuff for entire loop
          */
-        //save graphics
-        Graphics graph = Page.getInstance().getJlbl_selectionBG().getGraphics();
         
         //increase color index if necessary 
         indexColor += indexStep / _sizeBB;
@@ -151,22 +152,22 @@ public class BorderThread extends Thread {
          * top
          */
         int begin = indexStep;
-        begin = paintRectangleTop(begin, graph, _sizeBB);
+        begin = paintRectangleTop(begin, _bi_neutral, _sizeBB);
         
         /*
          * right
          */
-        begin = paintRectangleRight(begin, graph, _sizeBB);
+        begin = paintRectangleRight(begin, _bi_neutral, _sizeBB);
         
         /*
          * bottom
          */
-        begin = paintRectangleBottom(begin, graph, _sizeBB);
+        begin = paintRectangleBottom(begin, _bi_neutral, _sizeBB);
         
         /*
          * left
          */
-        begin = paintRectangleLeft(begin, graph, _sizeBB);
+        begin = paintRectangleLeft(begin, _bi_neutral, _sizeBB);
         
         
         //reset color index; is increased at the beginning of the 
@@ -210,18 +211,18 @@ public class BorderThread extends Thread {
     /**
      * paint the top edge of the rectangle.
      * @param _begin the beginning pixel
-     * @param _graph the graphics where to paint
+     * @param _bi_neutral the BufferedImage to paint on
      * @param _sizeBB the size
      * 
      * @return the new _begin value
      */
     private int paintRectangleTop(final int _begin, 
-            final Graphics _graph, 
+            final BufferedImage _bi_neutral, 
             final int _sizeBB) {
 
         for (int step = 0;; step++) {
             //setColor and calculate from and until values
-            _graph.setColor(getColorBorderPx());
+            int c = getColorBorderPx().getRGB();
             int fromX = rect.x - (_sizeBB - _begin) + step * _sizeBB;
             int toX = rect.x - (_sizeBB - _begin) + (step + 1) * _sizeBB;
 
@@ -240,7 +241,7 @@ public class BorderThread extends Thread {
                             .getJlbl_selectionBG().getX();
                     int y = rect.y - Page.getInstance()
                             .getJlbl_selectionBG().getY();
-                   _graph.drawLine(x, y, x, y);
+                    _bi_neutral.setRGB(x, y, c);
                 } else if (pixelX >= rect.x + rect.width) {
 
                     //decrease index; otherwise increased 2 often.
@@ -256,19 +257,19 @@ public class BorderThread extends Thread {
     /**
      * paint the right edge of the rectangle.
      * @param _begin the beginning pixel
-     * @param _graph the graphics where to paint
+     * @param _bi_neutral the BufferedImage to paint on
      * @param _sizeBB the size
      * 
      * @return the new _begin value
      */
     private int paintRectangleRight(final int _begin, 
-            final Graphics _graph, 
+            final BufferedImage _bi_neutral, 
             final int _sizeBB) {
 
         //begin = value set inside last loop
         for (int step = 0;; step++) {
             //setColor and calculate from and until values
-            _graph.setColor(getColorBorderPx());
+            int c = getColorBorderPx().getRGB();
             int fromY = rect.y - (_sizeBB - _begin) + step * _sizeBB;
             int toY = rect.y - (_sizeBB - _begin) + (step + 1) * _sizeBB;
             
@@ -287,7 +288,7 @@ public class BorderThread extends Thread {
                            .getJlbl_selectionBG().getX() - 1;
                    int y = pixelY - Page.getInstance()
                            .getJlbl_selectionBG().getY();
-                  _graph.drawLine(x, y, x, y);
+                   _bi_neutral.setRGB(x, y, c);
                 } else if (pixelY >= rect.y + rect.height) {
                     //decrease index color because has been 
                     //increased too often.
@@ -304,19 +305,19 @@ public class BorderThread extends Thread {
     /**
      * paint the bottom edge of the rectangle.
      * @param _begin the beginning pixel
-     * @param _graph the graphics where to paint
+     * @param _bi_neutral the BufferedImage to paint on
      * @param _sizeBB the size
      * 
      * @return the new _begin value
      */
     private int paintRectangleBottom(final int _begin, 
-            final Graphics _graph, 
+            final BufferedImage _bi_neutral, 
             final int _sizeBB) {
 
         for (int step = 0;; step++) {
 
             //setColor and calculate from and until values
-            _graph.setColor(getColorBorderPx());
+            int c = getColorBorderPx().getRGB();
             int fromX = rect.x + rect.width + (_sizeBB - _begin) 
                     - step * _sizeBB;
             int toX =  rect.x  + rect.width + (_sizeBB - _begin) 
@@ -336,7 +337,7 @@ public class BorderThread extends Thread {
                            .getJlbl_selectionBG().getX();
                    int y = rect.y + rect.height - Page.getInstance()
                            .getJlbl_selectionBG().getY() - 1;
-                  _graph.drawLine(x, y, x, y);
+                   _bi_neutral.setRGB(x, y, c);
                 } else if (pixelX <= rect.x) {
                     //decrease index color because has been 
                     //increased too often.
@@ -352,17 +353,17 @@ public class BorderThread extends Thread {
     /**
      * paint the left edge of the rectangle.
      * @param _begin the beginning pixel
-     * @param _graph the graphics where to paint
+     * @param _bi_neutral the BufferedImage to paint on
      * @param _sizeBB the size
      * 
      * @return the new _begin value
      */
     private int paintRectangleLeft(final int _begin, 
-            final Graphics _graph, 
+            final BufferedImage _bi_neutral, 
             final int _sizeBB) {
         for (int step = 0;; step++) {
             //setColor and calculate from and until values
-            _graph.setColor(getColorBorderPx());
+            int c = getColorBorderPx().getRGB();
             int fromY = rect.y + rect.height + (_sizeBB - _begin) 
                     - step * _sizeBB;
             int toY =  rect.y  + rect.height + (_sizeBB - _begin) 
@@ -384,7 +385,7 @@ public class BorderThread extends Thread {
                            .getJlbl_selectionBG().getX();
                    int y = pixelY - Page.getInstance()
                            .getJlbl_selectionBG().getY();
-                  _graph.drawLine(x, y, x, y);
+                   _bi_neutral.setRGB(x, y, c);
                 } else if (pixelY <= rect.y) {
 
                     //decrease index color because has been 

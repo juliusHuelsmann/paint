@@ -100,7 +100,7 @@ public final class ControlPainting implements MouseListener,
         this.startPerform = false;
         
         //set logger level to finest; thus every log message is shown.
-        Status.getLogger().setLevel(Level.ALL);
+        Status.getLogger().setLevel(Level.WARNING);
 
         // if installed
         if (!Settings.getWsLocation().equals("")) {
@@ -1032,14 +1032,7 @@ public final class ControlPainting implements MouseListener,
      */
     private void mr_selection_line_destroy(final MouseEvent _event) {
 
-
-        /*
-         * INITIALIZE 
-         */
-        //initialize rectangles; 
-        //  1) the bounds of the selection rectangle painted by user
-        //  2) the bounds of the rectangle which contains each PaintObject 
-        //     which is inside 1)
+        // fetch rectangle
         Rectangle r_sizeField = new Rectangle(
                 -Page.getInstance().getJlbl_painting().getLocation().x
                 + Math.min(pnt_start.x, _event.getX()), 
@@ -1047,152 +1040,117 @@ public final class ControlPainting implements MouseListener,
                 + Math.min(pnt_start.y, _event.getY()),
                 Math.abs(pnt_start.x - _event.getX()), Math.abs(pnt_start.y
                         - _event.getY()));
-        if (r_sizeField.x < 0) {
-            r_sizeField.x = 0;
-        }
-        if (r_sizeField.y < 0) {
-            r_sizeField.y = 0;
-        }
+
+        //paint selection
+        r_sizeField.x += Page.getInstance().getJlbl_painting().getLocation().x;
+        r_sizeField.y += Page.getInstance().getJlbl_painting().getLocation().y;
+        
+        Picture.getInstance().repaintRectangle(r_sizeField);
+        Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
+                r_sizeField);
 
         /*
-         * SELECT ALL ITEMS INSIDE RECTANGLE    
+         * whole item selection.
          */
-        //case: there can't be items inside rectangle because list is empty
-        if (Picture.getInstance().getLs_po_sortedByX().isEmpty()) {
-
-            //adjust location of the field for painting to view
-            r_sizeField.x += Page.getInstance().getJlbl_painting().getLocation()
-                    .x;
-            r_sizeField.y += Page.getInstance().getJlbl_painting().getLocation()
-                    .y;
-            //paint to view
-            Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
-                    r_sizeField);
-            pnt_start = null;
-            return;
-        }
-        
-        // find paintObjects and move them from image to Selection and 
-        // initialize selection list
+        // find paintObjects and move them from image to Selection
         Picture.getInstance().getLs_po_sortedByX().toFirst();
+
+        // initialize selection list
         Picture.getInstance().createSelected();
-        
-        // create and initialize current values (current PO and its coordinates)
-        PaintObject po_current = Picture.getInstance().getLs_po_sortedByX()
-                .getItem();
-        int currentX = po_current.getSnapshotBounds().x;
 
-        //adapt the rectangle to the currently used zoom factor.
-        final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
-                / Status.getImageShowSize().width;
-        final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
-                / Status.getImageShowSize().height;
-        r_sizeField.x *= cZoomFactorWidth;
-        r_sizeField.width *= cZoomFactorWidth;
-        r_sizeField.y *= cZoomFactorHeight;
-        r_sizeField.height *= cZoomFactorHeight;
+        // go to the beginning of the list
+        Picture.getInstance().getLs_po_sortedByX().toFirst();
+        if (!Picture.getInstance().getLs_po_sortedByX().isEmpty()) { 
 
-        
-        /**
-         * Because it is impossible to insert the new created items directly
-         * to list (otherwise there would be an infinite loop because of 
-         * sort order they reappear inside the while
-         * loop and are destroyed once again and thus reappear etc.
-         */
-        List<PaintObject> ls_toInsert = new List<PaintObject>();
-        
-        
-        // go through list. until either list is empty or it is
-        // impossible for the paintSelection to paint inside the
-        // selected area
-        while (po_current != null
-                && currentX 
-                <= (r_sizeField.x + r_sizeField.width)) {
+            // go to the beginning of the list
+            Picture.getInstance().getLs_po_sortedByX().toFirst();
+            
+            // create and initialize current values
+            PaintObject po_current = Picture.getInstance().getLs_po_sortedByX()
+                    .getItem();
+            int currentX = po_current.getSnapshotBounds().x;
 
-            //The y condition has to be in here because the items are just 
-            //sorted by x coordinate; thus it is possible that one PaintObject 
-            //is not suitable for the specified rectangle but some of its 
-            //predecessors in sorted list do.
-            if (po_current.isInSelectionImage(r_sizeField)) {
+            
+            /**
+             * Because it is impossible to insert the new created items directly
+             * to list (otherwise there would be an infinite loop because of 
+             * sort order they reappear inside the while
+             * loop and are destroyed once again and thus reappear etc.
+             */
+            List<PaintObject> ls_toInsert = new List<PaintObject>();
 
+            // go through list. until either list is empty or it is
+            // impossible for the paintSelection to paint inside the
+            // selected area
+            while (po_current != null
+                    && currentX 
+                    <= (r_sizeField.x + r_sizeField.width)) {
 
-                // get item; remove it out of lists and add it to
-                // selection list
+                //The y condition has to be in here because the items are just 
+                //sorted by x coordinate; thus it is possible that one 
+                //PaintObject is not suitable for the specified rectangle but 
+                //some of its predecessors in sorted list do.
+                if (po_current.isInSelectionImage(r_sizeField)) {
 
-                PaintObject [][] separatedPO = po_current.separate(
-                        r_sizeField);
-                PictureOverview.getInstance().remove(Picture.getInstance()
-                        .getLs_po_sortedByX().getItem());
-                Picture.getInstance().getLs_po_sortedByX().remove();
-                
-                //go through the list of elements.
-                for (int current = 0; current < separatedPO[1].length;
-                        current++) {
+                    // get item; remove it out of lists and add it to
+                    // selection list
 
-                    if (separatedPO[1][current] != null) {
+                    PaintObject [][] separatedPO = po_current.separate(
+                            r_sizeField);
+                    System.out.println(separatedPO[1].length);
+                    System.out.println(separatedPO[0].length);
+                    PictureOverview.getInstance().remove(Picture.getInstance()
+                            .getLs_po_sortedByX().getItem());
+                    Picture.getInstance().getLs_po_sortedByX().remove();
+                    
+                    //go through the list of elements.
+                    for (int current = 0; current < separatedPO[1].length;
+                            current++) {
 
-                        //recalculate snapshot bounds for being able to 
-                        //insert the item into the sorted list.
-                        separatedPO[1][current].recalculateSnapshotBounds();
-                        Picture.getInstance().insertIntoSelected(
-                                separatedPO[1][current]);
-                    } else {
-                        
-                        Status.getLogger().warning("separated paintObject "
-                                + "is null");
+                        if (separatedPO[1][current] != null) {
+
+                            //recalculate snapshot bounds for being able to 
+                            //insert the item into the sorted list.
+                            separatedPO[1][current].recalculateSnapshotBounds();
+                            Picture.getInstance().insertIntoSelected(
+                                    separatedPO[1][current]);
+                        } else {
+                            
+                            Status.getLogger().warning("separated paintObject "
+                                    + "is null");
+                        }
                     }
-                }
-                for (int current = 0; current < separatedPO[0].length;
-                        current++) {
+                    for (int current = 0; current < separatedPO[0].length;
+                            current++) {
 
-                    if (separatedPO[0][current] != null) {
-                    //recalculate snapshot bounds for being able to insert
-                    //the item into the sorted list.
-                    separatedPO[0][current].recalculateSnapshotBounds();
-                    ls_toInsert.insertBehind(separatedPO[0][current]);
+                        if (separatedPO[0][current] != null) {
+                        //recalculate snapshot bounds for being able to insert
+                        //the item into the sorted list.
+                        separatedPO[0][current].recalculateSnapshotBounds();
+                        ls_toInsert.insertBehind(separatedPO[0][current]);
 
-                    PictureOverview.getInstance().add(
-                            separatedPO[0][current]);
-                    } else {
+                        PictureOverview.getInstance().add(
+                                separatedPO[0][current]);
+                        } else {
 
-                        Status.getLogger().warning("separated paintObject "
-                                + "is null");
+                            Status.getLogger().warning("separated paintObject "
+                                    + "is null");
+                        }
                     }
+                } else {
+                    
+                    // next
+                    Picture.getInstance().getLs_po_sortedByX().next();
                 }
-                Picture.getInstance().getLs_po_sortedByX().toFirst();
-            } else {
-                // next; in if clause the next is realized by remove()
-                Picture.getInstance().getLs_po_sortedByX().next();
+
+
+                // update current values
+                currentX = po_current.getSnapshotBounds().x;
+                po_current = Picture.getInstance().getLs_po_sortedByX()
+                        .getItem();
             }
-            // update current values
-            currentX = po_current.getSnapshotBounds().x;
-            po_current = Picture.getInstance().getLs_po_sortedByX().getItem();
-        }
 
-        Page.getInstance().getJlbl_painting().refreshPaint();
-
-        if (!Picture.getInstance().paintSelected()) {
-
-            //transform the logical Rectangle to the painted one.
-          r_sizeField.x = (int) (1.0 * r_sizeField.x / cZoomFactorWidth);
-          r_sizeField.width = (int) 
-                  (1.0 * r_sizeField.width / cZoomFactorWidth);
-          r_sizeField.y = (int) (1.0 * r_sizeField.y / cZoomFactorHeight);
-          r_sizeField.height = (int) 
-                  (1.0 * r_sizeField.height / cZoomFactorHeight);
-          
-          r_sizeField.x 
-          += Page.getInstance().getJlbl_painting().getLocation().x;
-          r_sizeField.y 
-          += Page.getInstance().getJlbl_painting().getLocation().y;
-          
-          
-          CSelection.getInstance().setR_selection(r_sizeField);
-          Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
-                  r_sizeField);
-        }
-        
-        
+            
             //insert the to insert items to graphical user interface.
             ls_toInsert.toFirst();
             while (!ls_toInsert.isBehind()) {
@@ -1202,9 +1160,12 @@ public final class ControlPainting implements MouseListener,
                         ls_toInsert.getItem().getSnapshotBounds().x);
                 ls_toInsert.next();
             }
-            Picture.getInstance().paintSelected();
+            if (!Picture.getInstance().paintSelected()) {
+                System.out.println("WARNUNG");
+                System.exit(1);
+            }
             Page.getInstance().getJlbl_painting().refreshPaint();
-
+        }
     }
     
     

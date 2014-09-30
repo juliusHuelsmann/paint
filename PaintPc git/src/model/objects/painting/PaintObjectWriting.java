@@ -350,15 +350,15 @@ public class PaintObjectWriting extends PaintObject {
         //TODO: kann sein dass es pen probleme gibt wenn der pen eines
         //separierten PaintObjects geaendert wurde.
         List <PaintObjectWriting>   
-            ls_pow_outside = new List<PaintObjectWriting>(), 
-            ls_pow_inside = new List<PaintObjectWriting>();
+        ls_pow_outside = new List<PaintObjectWriting>(), 
+        ls_pow_inside = new List<PaintObjectWriting>();
         
         //The last element that was inside.
         boolean lInside;
         ls_point.toFirst();
 
         //initialize the lInside Element
-       DPoint pc = ls_point.getItem();
+        DPoint pc = ls_point.getItem();
         lInside = (pc.getX() >= _r.x && pc.getX() <= _r.x + _r.width 
                 && pc.getY() >= _r.y && pc.getY() <= _r.y + _r.height);
 
@@ -448,12 +448,12 @@ public class PaintObjectWriting extends PaintObject {
         int lengthInside = 0, lengthOutside = 0;
         ls_pow_inside.toFirst();
         ls_pow_outside.toFirst();
-        while (!ls_pow_inside.isBehind()) {
+        while (!ls_pow_inside.isBehind() && !ls_pow_inside.isEmpty()) {
             ls_pow_inside.next();
             lengthInside++;
         }
         
-        while (!ls_pow_outside.isBehind()) {
+        while (!ls_pow_outside.isBehind() && !ls_pow_outside.isEmpty()) {
             ls_pow_outside.next();
             lengthOutside++;
         }
@@ -464,14 +464,14 @@ public class PaintObjectWriting extends PaintObject {
         ls_pow_inside.toFirst();
         ls_pow_outside.toFirst();
         int index = 0;
-        while (!ls_pow_inside.isBehind()) {
+        while (!ls_pow_inside.isBehind() && !ls_pow_inside.isEmpty()) {
             pow[1][index] = ls_pow_inside.getItem();
             ls_pow_inside.next();
             index++;
         }
 
         index = 0;
-        while (!ls_pow_outside.isBehind()) {
+        while (!ls_pow_outside.isBehind() && !ls_pow_outside.isEmpty()) {
             pow[0][index] = ls_pow_outside.getItem();
             ls_pow_outside.next();
             index++;

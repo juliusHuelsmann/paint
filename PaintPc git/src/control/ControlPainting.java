@@ -1079,6 +1079,16 @@ public final class ControlPainting implements MouseListener,
              */
             List<PaintObject> ls_toInsert = new List<PaintObject>();
 
+            //adapt the rectangle to the currently used zoom factor.
+            final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
+                    / Status.getImageShowSize().width;
+            final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
+                    / Status.getImageShowSize().height;
+            r_sizeField.x *= cZoomFactorWidth;
+            r_sizeField.width *= cZoomFactorWidth;
+            r_sizeField.y *= cZoomFactorHeight;
+            r_sizeField.height *= cZoomFactorHeight;
+            
             // go through list. until either list is empty or it is
             // impossible for the paintSelection to paint inside the
             // selected area

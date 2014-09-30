@@ -1137,6 +1137,7 @@ public final class ControlPainting implements MouseListener,
                                     + "is null");
                         }
                     }
+                    Picture.getInstance().getLs_po_sortedByX().toFirst();
                 } else {
                     
                     // next
@@ -1153,7 +1154,7 @@ public final class ControlPainting implements MouseListener,
             
             //insert the to insert items to graphical user interface.
             ls_toInsert.toFirst();
-            while (!ls_toInsert.isBehind()) {
+            while (!ls_toInsert.isBehind() && !ls_toInsert.isEmpty()) {
 
                 Picture.getInstance().getLs_po_sortedByX().insertSorted(
                         ls_toInsert.getItem(), 

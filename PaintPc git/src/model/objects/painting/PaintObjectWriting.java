@@ -435,7 +435,7 @@ public class PaintObjectWriting extends PaintObject {
         }
         if (lInside) {
 
-            ls_pow_outside.insertBehind(pow_current); 
+            ls_pow_inside.insertBehind(pow_current); 
         } else {
 
             ls_pow_outside.insertBehind(pow_current); 
@@ -448,6 +448,9 @@ public class PaintObjectWriting extends PaintObject {
         int lengthInside = 0, lengthOutside = 0;
         ls_pow_inside.toFirst();
         ls_pow_outside.toFirst();
+        
+        //it is necessary to double check behind and empty because an empty
+        //list returns the length of 1 otherwise.
         while (!ls_pow_inside.isBehind() && !ls_pow_inside.isEmpty()) {
             ls_pow_inside.next();
             lengthInside++;

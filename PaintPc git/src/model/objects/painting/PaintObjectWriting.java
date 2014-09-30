@@ -359,8 +359,8 @@ public class PaintObjectWriting extends PaintObject {
 
         //initialize the lInside Element
         DPoint pc = ls_point.getItem();
-        lInside = (pc.getX() >= _r.x && pc.getX() <= _r.x + _r.width 
-                && pc.getY() >= _r.y && pc.getY() <= _r.y + _r.height);
+        lInside = (pc.getX() > _r.x && pc.getX() < _r.x + _r.width 
+                && pc.getY() > _r.y && pc.getY() < _r.y + _r.height);
 
         PaintObjectWriting pow_current = new PaintObjectWriting(getElementId(), 
                 getPen());
@@ -370,9 +370,9 @@ public class PaintObjectWriting extends PaintObject {
         while (!ls_point.isBehind()) {
             
            DPoint pcNew = ls_point.getItem();
-           boolean cInside = (pcNew.getX() >= _r.x && pcNew.getX() 
-                   <= _r.x + _r.width && pcNew.getY() >= _r.y 
-                   && pcNew.getY() <= _r.y + _r.height);
+           boolean cInside = (pcNew.getX() > _r.x && pcNew.getX() 
+                   < _r.x + _r.width && pcNew.getY() > _r.y 
+                   && pcNew.getY() < _r.y + _r.height);
             
             if (cInside) {
             
@@ -537,22 +537,26 @@ public class PaintObjectWriting extends PaintObject {
     public final synchronized Rectangle findSilentIntersection(
             final Rectangle _r, final DPoint _p, final DPoint _v) {
 
-        List<DPoint> ls = findIntersections(_r, _p, _v);
+        List<DPoint> ls = findIntersections(_r, _p, _v, false);
         ls.toFirst();
         if (!ls.isEmpty() || ls.getItem() != null) {
             
             double lambda1 = ls.getItemSortionIndex();
             DPoint p1 = ls.getItem();
+            System.out.println("lambda1" + lambda1);
             if (lambda1 <= 1 && lambda1 >= 0) {
                 
                 ls.next();
                 double lambda2 = ls.getItemSortionIndex();
+                System.out.println("lambda2" + lambda2);
                 DPoint p2 = ls.getItem();
                 if (lambda2 <= 1 && lambda2 >= 0) {
                     return new Rectangle((int) p1.getX(), (int) p1.getY(), 
                             (int) p2.getX(), (int) p2.getY());
                 }
             }
+        } else {
+            System.out.println("elz" + ls.isEmpty() + ".." + ls.getItem());
         }
         return null;
     }
@@ -611,10 +615,12 @@ public class PaintObjectWriting extends PaintObject {
      * @param _r the Rectangle which is to be intersected
      * @param _p theDPoint (thus the "support vector") 
      * @param _v the "direction vector"
+     * @param _sortAbs whether to sort the absolute lambda value or the normal
+     * value
      * @return the intersectionDPoints between line and rectangle
      */
     public static List<DPoint> findIntersections(final Rectangle _r, 
-            final DPoint _p, final DPoint _v) {
+            final DPoint _p, final DPoint _v, final boolean _sortAbs) {
         //Step 1
         //Visualization s____________
         //              s    x      |
@@ -683,7 +689,12 @@ public class PaintObjectWriting extends PaintObject {
                     || _r.y - (int) intersection1.getY() > 0) {
                 intersection1 = null;
             } else {
-                ls.insertSorted(intersection1, Math.abs(factor1[0]));
+                if (_sortAbs) {
+                    ls.insertSorted(intersection1, Math.abs(factor1[0]));
+                } else {
+
+                    ls.insertSorted(intersection1, factor1[0]);
+                }
             }
         }
         if (factor2 != null) {
@@ -695,7 +706,12 @@ public class PaintObjectWriting extends PaintObject {
                     || _r.x - (int) intersection2.getX() > 0) {
                 intersection2 = null;
             } else {
-                ls.insertSorted(intersection2, Math.abs(factor2[0]));
+                if (_sortAbs) {
+                    ls.insertSorted(intersection2, Math.abs(factor2[0]));
+                } else {
+
+                    ls.insertSorted(intersection2, (factor2[0]));
+                }
             }
         }
         if (factor3 != null) {
@@ -707,7 +723,12 @@ public class PaintObjectWriting extends PaintObject {
                     || _r.y - (int) intersection3.getY() > 0) {
                 intersection3 = null;
             } else {
-                ls.insertSorted(intersection3, Math.abs(factor3[0]));
+                if (_sortAbs) {
+                    ls.insertSorted(intersection3, Math.abs(factor3[0]));
+                } else {
+
+                    ls.insertSorted(intersection3, (factor3[0]));
+                }
             }
         }
         if (factor4 != null) {
@@ -719,7 +740,12 @@ public class PaintObjectWriting extends PaintObject {
                     || _r.x - (int) intersection4.getX() > 0) {
                 intersection4 = null;
             } else {
-                ls.insertSorted(intersection4, Math.abs(factor4[0]));
+                if (_sortAbs) {
+                    ls.insertSorted(intersection4, Math.abs(factor4[0]));
+                } else {
+
+                    ls.insertSorted(intersection4, (factor4[0]));
+                }
             }
         }
         
@@ -747,7 +773,7 @@ public class PaintObjectWriting extends PaintObject {
     public static DPoint findIntersection(final Rectangle _r, final DPoint _p, 
             final DPoint _v) {
     
-        List<DPoint> ls = findIntersections(_r, _p, _v);
+        List<DPoint> ls = findIntersections(_r, _p, _v, true);
         ls.toFirst();
         if (ls.isEmpty() || ls.getItem() == null) {
             

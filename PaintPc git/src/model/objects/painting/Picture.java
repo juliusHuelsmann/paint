@@ -900,6 +900,8 @@ public final class Picture extends Observable {
 	
 	/**
 	 * Paint the selected items to the selection JLabel.
+	 * 
+	 * @return whether there is something to be painted or not.
 	 */
 	public boolean paintSelected() {
         BufferedImage verbufft = Page.getInstance().getEmptyBI();

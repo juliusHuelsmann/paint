@@ -330,6 +330,7 @@ import control.singleton.CSelection;
         BufferedImage emptyBI = getEmptyBI();
         jlbl_selectionBG.setIcon(new ImageIcon(emptyBI));
         jlbl_selectionPainting.setIcon(new ImageIcon(emptyBI));
+        jlbl_selectionPainting.repaint();
 
         jlbl_border.setBounds(0, 0, 0, 0);
         jlbl_selectionBG.setLocation(0, 0);

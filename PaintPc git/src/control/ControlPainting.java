@@ -305,12 +305,12 @@ public final class ControlPainting implements MouseListener,
 
                 break;
             case Constants.CONTROL_PAINTING_INDEX_MOVE:
+
                 
-                Page.getInstance().releaseSelected();
                 pnt_start = _event.getPoint();
                 pnt_startLocation = Page.getInstance().getJlbl_painting()
                         .getLocation();
-                
+                Page.getInstance().getJlbl_painting().refreshPaint();
                 break;
             default:
                 break;
@@ -382,6 +382,8 @@ public final class ControlPainting implements MouseListener,
 
                 if (pnt_start == null) {
                     pnt_start = _event.getPoint();
+                    pnt_startLocation = Page.getInstance().getJlbl_painting()
+                            .getLocation();
                     Picture.getInstance().abortPaintObject();
                 }
 
@@ -406,7 +408,13 @@ public final class ControlPainting implements MouseListener,
                 Picture.getInstance().addPaintObjectWrinting();
                 break;
             case Constants.CONTROL_PAINTING_INDEX_MOVE:
-                
+
+                if (pnt_start == null) {
+                    pnt_start = _event.getPoint();
+                    pnt_startLocation = Page.getInstance().getJlbl_painting()
+                            .getLocation();
+                    Picture.getInstance().abortPaintObject();
+                }
                 
                 if (pnt_last != null) {
                     pnt_movementSpeed = new Point(pnt_last.x - _event.getX(), 
@@ -641,9 +649,10 @@ public final class ControlPainting implements MouseListener,
                     
                 default:
                     break;
-                
                 }
-
+                // reset values
+                pnt_start = null;
+                
                 //set index to moving
                 Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
                 CStatus.getInstance().deactivate();
@@ -731,10 +740,11 @@ public final class ControlPainting implements MouseListener,
                 pnt_movementSpeed = null;
                 
                 //release everything
-                Page.getInstance().releaseSelected();
                 Picture.getInstance().releaseSelected();
+                Page.getInstance().releaseSelected();
                 Page.getInstance().removeButtons();
                 Page.getInstance().getJlbl_painting().refreshPaint();
+                Page.getInstance().getJlbl_painting().repaint();
             }
             break;
         default:
@@ -891,7 +901,7 @@ public final class ControlPainting implements MouseListener,
                 -Page.getInstance().getJlbl_painting().getLocation().y 
                 + Math.min(pnt_start.y, _event.getY()),
                 Math.abs(pnt_start.x - _event.getX()), Math.abs(pnt_start.y
-                        - _event.getY())), r_sizeMax = null;
+                        - _event.getY()));
         if (r_sizeField.x < 0) {
             r_sizeField.x = 0;
         }
@@ -986,9 +996,6 @@ public final class ControlPainting implements MouseListener,
           Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
                   r_sizeField);
         }
-
-        // reset values
-        pnt_start = null;
     }
     
     

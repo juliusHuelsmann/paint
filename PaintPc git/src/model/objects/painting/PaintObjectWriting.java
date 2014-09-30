@@ -6,7 +6,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JOptionPane;
+
 import settings.Status;
 import view.View;
 import view.forms.Page;
@@ -183,7 +185,7 @@ public class PaintObjectWriting extends PaintObject {
     public final BufferedImage paint(final BufferedImage _bi, 
             final boolean _final, final BufferedImage _g, final int _x, 
             final int _y) {
-
+        
         return pen.paintToImage(
                 _bi, this, _final, new DPoint(_x, _y), _g);
     }
@@ -697,7 +699,7 @@ public class PaintObjectWriting extends PaintObject {
      * 
      * @param _p theDPoint which is to be printed
      */
-    public static void verify(final DPoint _p) {
+    public static void verifyPnt(final DPoint _p) {
 
         new Thread() {
             public void run() {

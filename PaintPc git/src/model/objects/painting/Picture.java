@@ -902,15 +902,30 @@ public final class Picture extends Observable {
 	 * Paint the selected items to the selection JLabel.
 	 */
 	public void paintSelected() {
-	    BufferedImage verbufft = Page.getInstance().getEmptyBI();
+        BufferedImage verbufft = Page.getInstance().getEmptyBI();
+        BufferedImage verbufft2 = Page.getInstance().getEmptyBI();
 	    ls_poSelected.toFirst();
+	    Rectangle r_max = null;
         while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
             
             if (ls_poSelected.getItem() != null) {
 
+                //create new Rectangle consisting of the bounds of the current 
+                //paitnObject otherwise adjust the existing bounds
+                if (r_max == null) {
+                    Rectangle b = ls_poSelected.getItem().getSnapshotBounds();
+                    r_max = new Rectangle(b.x, b.y, b.width + b.x, b.height 
+                            + b.y);
+                } else {
+                    Rectangle b = ls_poSelected.getItem().getSnapshotBounds();
+                    r_max.x = Math.min(r_max.x, b.x);
+                    r_max.y = Math.min(r_max.y, b.y);
+                    r_max.width = Math.max(r_max.width, b.x + b.width);
+                    r_max.height = Math.max(r_max.height, b.y + b.height);
+                }
                 //paint the object.
                 ls_poSelected.getItem().paint(
-                        Page.getInstance().getEmptyBI(), false, verbufft,
+                        verbufft2, false, verbufft,
                         Page.getInstance().getJlbl_painting().getLocation().x,
                         Page.getInstance().getJlbl_painting().getLocation().y);
 
@@ -920,6 +935,10 @@ public final class Picture extends Observable {
         ls_poSelected.toFirst();
         Page.getInstance().getJlbl_selectionPainting().setIcon(
                 new ImageIcon(verbufft));
+
+        CSelection.getInstance().setR_selection(r_max);
+        Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
+                r_max);
 	}
 	
 	

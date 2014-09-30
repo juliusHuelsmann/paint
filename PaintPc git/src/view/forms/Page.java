@@ -317,6 +317,14 @@ import control.singleton.CSelection;
 	 */
 	public void releaseSelected() {
 
+	    for (int i = 0; i < jbtn_resize.length; i++) {
+	        for (int j = 0; j < jbtn_resize[i].length; j++) {
+	            int width = jbtn_resize[i][j].getWidth();
+
+	            jbtn_resize[i][j].setLocation(-width - 1, -1);
+	        }
+	    }
+	    
 	    jlbl_painting.stopBorderThread();
 	    
         BufferedImage emptyBI = getEmptyBI();

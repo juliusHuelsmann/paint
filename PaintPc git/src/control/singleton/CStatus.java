@@ -165,7 +165,7 @@ public final class CStatus implements MouseListener {
         } else if (_event.getSource().equals(Paint.getInstance()
                 .getTb_zoomIn().getActionCause())) {
         
-            return Constants.CONTROL_PAINTING_INDEX_ZOOM;
+            return Constants.CONTROL_PAINTING_INDEX_ZOOM_IN;
         
         } else if (_event.getSource().equals(Paint.getInstance()
                 .getTb_pipette().getActionCause())) {
@@ -334,7 +334,7 @@ public final class CStatus implements MouseListener {
                     Tabs.getInstance().closeMenues();
                     Paint.getInstance().getTb_fill().setActivated(true);
                     break;
-                case Constants.CONTROL_PAINTING_INDEX_ZOOM:
+                case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
                     Tabs.getInstance().closeMenues();
                     Paint.getInstance().getTb_zoomIn().setActivated(true);
                     break;
@@ -355,7 +355,16 @@ public final class CStatus implements MouseListener {
                     Status.getLogger().warning("falsche id");
                     break;
                 }
-		    } else {
+		    } else if (_event.getSource().equals(
+		            Paint.getInstance().getTb_zoomOut().getActionCause())) {
+
+	            Picture.getInstance().releaseSelected();
+	            Page.getInstance().releaseSelected();
+	            
+	            Page.getInstance().getJlbl_painting().stopBorderThread();
+	            Page.getInstance().getJlbl_painting().repaint();
+	        } else {
+
 
 	            mouseReleasedColorChange(_event);
 		    }

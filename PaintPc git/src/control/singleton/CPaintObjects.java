@@ -95,11 +95,6 @@ public final class CPaintObjects implements ActionListener {
                     PictureOverview.getInstance().remove(po_cu);
                     Picture.getInstance().getLs_po_sortedByX().remove();
                     
-                    Picture.getInstance().paintSelected();
-                    Page.getInstance().getJlbl_painting().refreshPaint();
-                    Page.getInstance().getJlbl_painting()
-                    .paintEntireSelectionRect(po_cu.getSnapshotBounds());
-                    PaintObjects.getInstance().repaint();
                 }
             } else {
                 Status.getLogger().severe("Error in ActionListener: "
@@ -107,6 +102,9 @@ public final class CPaintObjects implements ActionListener {
                         + "This error should never occure");
             }
         }
+        Picture.getInstance().paintSelected();
+        Page.getInstance().getJlbl_painting().refreshPaint();
+        PaintObjects.getInstance().repaint();
        
     }
 

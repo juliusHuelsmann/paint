@@ -492,10 +492,12 @@ public final class ControlPainting implements MouseListener,
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_zoomOut().getActionCause())) {
 
+            //if able to zoom out
             if (Status.getImageSize().width
                     / Status.getImageShowSize().width 
                     < Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
                             ViewSettings.MAX_ZOOM_OUT)) {
+                
                 int newWidth = Status.getImageShowSize().width
                         / ViewSettings.ZOOM_MULITPLICATOR, newHeight = Status
                         .getImageShowSize().height
@@ -512,6 +514,9 @@ public final class ControlPainting implements MouseListener,
                 Status.setImageShowSize(new Dimension(newWidth, newHeight));
                 Page.getInstance().flip(Status.isNormalRotation());
                 Page.getInstance().refrehsSps();
+                
+                Page.getInstance().releaseSelected();
+                Picture.getInstance().releaseSelected();
             } else {
                 //TODO: das hier soltle in einer popup text message stehen
                 //die nur als info da ist (nicht als fenster sondern nur
@@ -556,10 +561,13 @@ public final class ControlPainting implements MouseListener,
                 Picture.getInstance().insertIntoSelected(
                         (PaintObjectWriting) o);
             } else if (o instanceof PaintObjectImage) {
+                Picture.getInstance().insertIntoSelected(
+                        (PaintObjectImage) o);
                 new UnsupportedDataTypeException("hier").printStackTrace();
             } else {
                 Status.getLogger().warning("unknown return type of clipboard");
             }
+            Picture.getInstance().paintSelected();
             Page.getInstance().getJlbl_painting().refreshPaint();
 
         } else if (_event.getSource().equals(
@@ -577,7 +585,7 @@ public final class ControlPainting implements MouseListener,
         } else if (_event.getSource().equals(
                         Page.getInstance().getJlbl_painting())) {
             mouseReleasedPainting(_event);
-        }
+        } 
     }
     
     /**
@@ -651,7 +659,7 @@ public final class ControlPainting implements MouseListener,
                 Picture.getInstance().abortPaintObject();
             }
             break;
-        case Constants.CONTROL_PAINTING_INDEX_ZOOM:
+        case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
 
             if (_event.getButton() == 1) {
 
@@ -801,7 +809,7 @@ public final class ControlPainting implements MouseListener,
         }
 
         if (Status.getIndexOperation() 
-                == Constants.CONTROL_PAINTING_INDEX_ZOOM) {
+                == Constants.CONTROL_PAINTING_INDEX_ZOOM_IN) {
 
             // save x and y location
             int xLocation = _event.getX() - ViewSettings.ZOOM_SIZE.width / 2;
@@ -964,12 +972,12 @@ public final class ControlPainting implements MouseListener,
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
                 PictureOverview.getInstance().remove(po_current);
-                Picture.getInstance().paintSelected();
                 Page.getInstance().getJlbl_painting().refreshPaint();
             } else {
                 // next; in if clause the next is realized by remove()
                 Picture.getInstance().getLs_po_sortedByX().next();
             }
+            Picture.getInstance().paintSelected();
             // update current values
             currentX = po_current.getSnapshotBounds().x;
             po_current = Picture.getInstance().getLs_po_sortedByX().getItem();

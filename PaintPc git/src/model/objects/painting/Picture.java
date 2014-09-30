@@ -936,9 +936,28 @@ public final class Picture extends Observable {
         Page.getInstance().getJlbl_selectionPainting().setIcon(
                 new ImageIcon(verbufft));
 
-        CSelection.getInstance().setR_selection(r_max);
+
+        Rectangle realRect = new Rectangle(r_max.x, r_max.y,
+                r_max.width - r_max.x, r_max.height
+                        - r_max.y);
+
+        //adapt the rectangle to the currently used zoom factor.
+        final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
+                / Status.getImageShowSize().width;
+        final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
+                / Status.getImageShowSize().height;
+        realRect.x = (int) (1.0 * realRect.x / cZoomFactorWidth);
+        realRect.width = (int) (1.0 * realRect.width / cZoomFactorWidth);
+        realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
+        realRect.height = (int) (1.0 * realRect.height / cZoomFactorHeight);
+        
+        realRect.x += Page.getInstance().getJlbl_painting().getLocation().x;
+        realRect.y += Page.getInstance().getJlbl_painting().getLocation().y;
+
+        Picture.getInstance().repaintRectangle(realRect);
+        CSelection.getInstance().setR_selection(realRect);
         Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
-                r_max);
+                realRect);
 	}
 	
 	

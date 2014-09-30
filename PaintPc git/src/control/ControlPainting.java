@@ -977,11 +977,11 @@ public final class ControlPainting implements MouseListener,
                 // next; in if clause the next is realized by remove()
                 Picture.getInstance().getLs_po_sortedByX().next();
             }
-            Picture.getInstance().paintSelected();
             // update current values
             currentX = po_current.getSnapshotBounds().x;
             po_current = Picture.getInstance().getLs_po_sortedByX().getItem();
         }
+        Picture.getInstance().paintSelected();
 
         // paint to selected pane
         if (r_sizeMax != null) {

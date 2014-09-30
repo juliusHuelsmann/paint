@@ -770,6 +770,21 @@ public class PaintObjectWriting extends PaintObject {
         }
     }
 
+
+    /**
+     * Tell the pen to paint this PaintObject as a selected PaintObject.
+     */
+    public final void enableSelected() {
+        pen.setSelected(true);
+    }
+    
+    /**
+     * Tell the pen not to paint this PaintObject as a selected PaintObject
+     * anymore.
+     */
+    public final void disableSelected() {
+        pen.setSelected(false);
+    }
     /*
      * getter methods.
      */

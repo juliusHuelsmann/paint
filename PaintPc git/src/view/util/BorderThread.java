@@ -1,9 +1,11 @@
 package view.util;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
+import javax.swing.ImageIcon;
+
 import model.objects.painting.PaintObject;
 import model.objects.pen.special.PenSelection;
 import settings.ViewSettings;
@@ -174,6 +176,9 @@ public class BorderThread extends Thread {
         //loop and increase step index.
         indexColor = indexBackup;
         indexStep += ViewSettings.SELECTION_BORDER_MOVE_SPEED_PX;
+        
+        Page.getInstance().getJlbl_selectionBG().setIcon(new ImageIcon(
+                _bi_neutral));
         
         return indexStep;
         

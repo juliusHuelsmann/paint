@@ -663,15 +663,12 @@ public final class ControlPainting implements MouseListener,
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
 
             if (_event.getButton() == 1) {
-
-
                 Picture.getInstance().abortPaintObject();
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
 
             if (_event.getButton() == 1) {
-
                 mr_zoom(_event);
             }
             break;
@@ -995,7 +992,6 @@ public final class ControlPainting implements MouseListener,
           
           
           CSelection.getInstance().setR_selection(r_sizeField);
-          
           Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
                   r_sizeField);
         }

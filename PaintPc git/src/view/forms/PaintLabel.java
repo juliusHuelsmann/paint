@@ -4,12 +4,13 @@ package view.forms;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import atest.BufferedViewer;
 import settings.Status;
-import settings.ViewSettings;
 import view.forms.tabs.PaintObjects;
 import view.util.BorderThread;
 import model.objects.painting.PaintObject;
@@ -118,7 +119,6 @@ public class PaintLabel extends JLabel {
 //        Utils.paintRastarBlock(bi_fresh, 
 //                ViewSettings.SELECTION_BACKGROUND_CLR, _r);
 
-        System.out.println("passed tense");
         //        
         //show resize buttons
         
@@ -134,6 +134,7 @@ public class PaintLabel extends JLabel {
                                 _r.y + _r.height * b / 2 - b_size / 2);
             }
         }
+        Page.getInstance().getJlbl_border().setBounds(_r);
     }
     
     
@@ -327,6 +328,7 @@ public class PaintLabel extends JLabel {
     public final void paintSelection(final PaintObject _po, 
             final PenSelection _pen) {
 
+    
         //interrupt border thread.
         stopBorderThread();
         

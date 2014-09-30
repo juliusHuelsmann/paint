@@ -63,6 +63,12 @@ public abstract class Pen implements Serializable {
 	 */
 	private int id_operation;
 	
+	/**
+	 * boolean indicating whether the current pen is painting to selected
+	 * item.
+	 */
+	private boolean selected = false;
+	
 	
 	/**
 	 * Constructor: saves the operation.
@@ -195,25 +201,75 @@ public abstract class Pen implements Serializable {
             final BufferedImage _bi, final boolean _final,
             final DPoint _p_shift, final BufferedImage _g) {
     
+        
+        
+        if (selected) {
+
+            //set foreground and thickness and backup old foreground
+            final int increasingThick = 2;
+            final Color clr_new = new Color(50, 200, 170);
+            Color clr_prev = new Color(clr_foreground.getRGB());
+            clr_foreground = clr_new;
+            thickness += increasingThick;
+            
+            //previous point
+            _ls_point.toFirst();
+            DPoint pnt_previous = new DPoint(
+                    _ls_point.getItem().getX(),
+                    _ls_point.getItem().getY());
+
+            
+            paintPoint(pnt_previous, _bi, _final, _p_shift, _g);
+            _ls_point.next();
+            
+            //go through the list of points and print point
+            while (!_ls_point.isBehind()) {
+        
+                //if the current point is not equal to the last point
+                //print the line and update the last element.
+                if (!(_ls_point.getItem().getX() 
+                        == pnt_previous.getX() 
+                        && _ls_point.getItem().getY()  
+                        == pnt_previous.getY())) {
+                 
+        
+                    paintLine(new DPoint(
+                            _ls_point.getItem().getX(),
+                            _ls_point.getItem().getY()),
+                            pnt_previous, _bi, _final, _g, _p_shift);
+                    pnt_previous = new DPoint(
+                            _ls_point.getItem().getX(),
+                            _ls_point.getItem().getY());
+                }
+                _ls_point.next();
+            }
+            
+            //reset foreground and thickness
+            clr_foreground = clr_prev;
+            thickness -= increasingThick;
+        } 
+
+
         //previous point
+        _ls_point.toFirst();
         DPoint pnt_previous = new DPoint(
                 _ls_point.getItem().getX(),
                 _ls_point.getItem().getY());
         
         paintPoint(pnt_previous, _bi, _final, _p_shift, _g);
         _ls_point.next();
-        
+                
         //go through the list of points and print point
         while (!_ls_point.isBehind()) {
-    
+            
             //if the current point is not equal to the last point
             //print the line and update the last element.
             if (!(_ls_point.getItem().getX() 
                     == pnt_previous.getX() 
                     && _ls_point.getItem().getY()  
                     == pnt_previous.getY())) {
-             
-    
+                
+                
                 paintLine(new DPoint(
                         _ls_point.getItem().getX(),
                         _ls_point.getItem().getY()),
@@ -224,6 +280,7 @@ public abstract class Pen implements Serializable {
             }
             _ls_point.next();
         }
+        
     }
     
     /**
@@ -709,5 +766,21 @@ public abstract class Pen implements Serializable {
      */
     public final void setId_operation(final int _id_operation) {
         this.id_operation = _id_operation;
+    }
+
+
+    /**
+     * @return the selected
+     */
+    public final boolean isSelected() {
+        return selected;
+    }
+
+
+    /**
+     * @param _selected the selected to set
+     */
+    public final void setSelected(final boolean _selected) {
+        this.selected = _selected;
     }
 }

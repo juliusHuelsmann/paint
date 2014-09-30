@@ -151,12 +151,6 @@ import control.singleton.CSelection;
             }
         }
         
-        jlbl_border = new JLabel();
-        jlbl_border.setOpaque(true);
-        jlbl_border.setBackground(new Color(0, 0, 0, 2 * 2 * 2 * 2 * 2));
-        jlbl_border.setBorder(BorderFactory.createLineBorder(Color.black));
-        super.add(jlbl_border);
-        
         
         //the center button
         jbtn_resize[1][1].setBorder(null);
@@ -175,6 +169,12 @@ import control.singleton.CSelection;
         jlbl_selectionPainting.setOpaque(false);
         jlbl_selectionPainting.setFocusable(false);
         super.add(jlbl_selectionPainting);
+
+        jlbl_border = new JLabel();
+        jlbl_border.setOpaque(true);
+        jlbl_border.setBackground(new Color(0, 0, 0, 2 * 2 * 2 * 2 * 2));
+        jlbl_border.setBorder(BorderFactory.createLineBorder(Color.black));
+        super.add(jlbl_border);
         
         
         //JLabel for the painting and the raster

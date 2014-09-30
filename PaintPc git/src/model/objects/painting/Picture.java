@@ -926,11 +926,23 @@ public final class Picture extends Observable {
                     r_max.width = Math.max(r_max.width, b.x + b.width);
                     r_max.height = Math.max(r_max.height, b.y + b.height);
                 }
+                
+                if (ls_poSelected.getItem() instanceof PaintObjectWriting) {
+                    PaintObjectWriting pow = 
+                            (PaintObjectWriting) ls_poSelected.getItem();
+                    pow.enableSelected();
+                }
                 //paint the object.
                 ls_poSelected.getItem().paint(
                         verbufft2, false, verbufft,
                         Page.getInstance().getJlbl_painting().getLocation().x,
                         Page.getInstance().getJlbl_painting().getLocation().y);
+
+                if (ls_poSelected.getItem() instanceof PaintObjectWriting) {
+                    PaintObjectWriting pow = 
+                            (PaintObjectWriting) ls_poSelected.getItem();
+                    pow.disableSelected();
+                }
 
             }
             ls_poSelected.next();

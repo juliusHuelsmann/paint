@@ -43,6 +43,7 @@ public final class Utils {
      * @param _clr the Color
      * @param _r the rectangle which is to be painted directly at graphics
      * 
+     * @return the altered bufferedImage 
      */
     public static BufferedImage paintRastarBlock(
             final BufferedImage _bi_background, 

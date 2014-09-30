@@ -364,7 +364,7 @@ public class PaintObjectWriting extends PaintObject {
 
         PaintObjectWriting pow_current = new PaintObjectWriting(getElementId(), 
                 getPen());
-        pow_current.addPoint(pc);
+        pow_current.addPoint(new DPoint(pc));
         
                 
         while (!ls_point.isBehind()) {
@@ -378,7 +378,7 @@ public class PaintObjectWriting extends PaintObject {
             
                 if (lInside) {
 
-                    pow_current.addPoint(pcNew);
+                    pow_current.addPoint(new DPoint(pcNew));
                 } else {
 
                     //calculate borderDPoint

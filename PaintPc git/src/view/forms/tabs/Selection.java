@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -49,6 +50,11 @@ public class Selection extends JPanel {
      * Color fetcher.
      */
     private Item1Menu it_color;
+
+    /**
+     * integer values.
+     */
+    private final int distance = 5, htf = 135, twoHundred = 200;
     
     /**
      * Constructor.
@@ -70,14 +76,23 @@ public class Selection extends JPanel {
         jlbl_information = new VLabel[amountOfSeparations];
         
 
-        int x = initCololrs(5, true);
-		initOthers (x, true);
+        int x = initCololrs(distance, true);
+		x = initPen(x, true);
+        initOthers(x, true);
+		
 		super.setSize(
 		        (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(),
 		        _height);
 	}
 	
-	private int initCololrs(int _x, final boolean _paint){
+	
+	/**
+	 * 
+	 * @param _x the x coordinate
+	 * @param _paint the boolean.
+	 * @return the new x coordinate
+	 */
+	private int initCololrs(final int _x, final boolean _paint) {
 
         //the first color for the first pen
         tb_color = new Item1Button(null);
@@ -214,17 +229,53 @@ public class Selection extends JPanel {
                 .DISTANCE_BEFORE_LINE, it_color.getY(), 0, _paint);
         insertInformation("Farben", _x, jlbl_separation[0].getX(), 0, 
                 _paint);
+
+        
         return jlbl_separation[0].getX();
 	}
 	
 	
+	private int initPen(final int _x, final boolean _paint) {
+
+        JCheckBox jcb_points = new JCheckBox("whole");
+        jcb_points.setSelected(true);
+        jcb_points.setBounds(_x, distance, twoHundred, 20);
+        jcb_points.setVerticalAlignment(SwingConstants.TOP);
+        jcb_points.setFocusable(false);
+        super.add(jcb_points);
+    
+        JCheckBox jcb_line = new JCheckBox("separated");
+        jcb_line.setVerticalAlignment(SwingConstants.TOP);
+        jcb_line.setFocusable(false);
+        jcb_line.setBounds(_x, jcb_points.getHeight() + jcb_points.getY() 
+                + distance, twoHundred, 20);
+        super.add(jcb_line);
+    
+        JCheckBox jcb_selection = new JCheckBox("image");
+        jcb_selection.setFocusable(false);
+        jcb_selection.setVerticalAlignment(SwingConstants.TOP);
+        jcb_selection.setBounds(_x, jcb_line.getHeight() + jcb_line.getY() 
+                + distance, twoHundred, 20);
+        super.add(jcb_selection);
+
+        insertTrennung(jcb_selection.getWidth() + jcb_selection.getX() 
+                + ViewSettings.DISTANCE_BEFORE_LINE, jcb_selection.getY(), 1, 
+                _paint);
+        insertInformation("Pen", _x, jlbl_separation[1].getX(), 1, 
+                _paint);
+
+        return jlbl_separation[1].getX();
+        
+	}
+	
+	
+	/**
+	 * initialize other items.
+	 * @param _x the x coordinate
+	 * @param _paint whether to paint or not
+	 */
 	private void initOthers(final int _x, final boolean _paint) {
 
-        
-        final int distance = 5;
-        final int htf = 135;
-        final int twoHundred = 200;
-        
         Item1Button tb = new Item1Button(null);
         tb.setOpaque(true);
         tb.setSize(htf, htf);
@@ -250,7 +301,6 @@ public class Selection extends JPanel {
         tb_changePen.setIcon("paint/test.png");
         super.add(tb_changePen);
 
-
         //pen 1
         Item1Menu it_stift1 = new Item1Menu();
         it_stift1.setBorder(null);
@@ -265,8 +315,8 @@ public class Selection extends JPanel {
         it_stift1.setBorder(false);
         super.add(it_stift1);
 
-        insertTrennung(it_color.getWidth() + it_color.getX() + ViewSettings
-                .DISTANCE_BEFORE_LINE, it_color.getY(), 1, _paint);
+        insertTrennung(it_stift1.getWidth() + it_stift1.getX() + ViewSettings
+                .DISTANCE_BEFORE_LINE, it_stift1.getY(), 1, _paint);
         insertInformation("Farben", _x, jlbl_separation[1].getX(), 1, 
                 _paint);
 	}

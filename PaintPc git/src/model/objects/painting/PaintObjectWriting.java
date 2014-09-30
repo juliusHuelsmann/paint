@@ -556,9 +556,8 @@ public class PaintObjectWriting extends PaintObject {
             final DPoint _v) {
         //Step 1
         //Visualization s____________
-        //      x       s           |
         //              s    x      |
-        //              s___________|
+        //      x       s___________|
         //  LEFT        s
         Matrix m = new Matrix(2, 2 + 1);
         m.setValue(0, 0, _v.getX());
@@ -570,9 +569,8 @@ public class PaintObjectWriting extends PaintObject {
         String s1 = m.printMatrix();
         double [] factor1 = m.solve();
         //Visualization s s s s s s s s s s s s s
-        //      x       |           |
         //              |    x      |
-        //  TOP         |___________|
+        //  TOP  x      |___________|
         m = new Matrix(2, 2 + 1);
         m.setValue(0, 0, _v.getX());
         m.setValue(1, 0, _v.getY());
@@ -611,7 +609,6 @@ public class PaintObjectWriting extends PaintObject {
         //STEP 2
         DPoint intersection1 = null, intersection2 = null, 
                 intersection3 = null, intersection4 = null;
-        //fetchDPoint
         if (factor1 != null) {
             intersection1 = new DPoint(
                     (_p.getX() + factor1[0] * _v.getX()), 
@@ -623,7 +620,6 @@ public class PaintObjectWriting extends PaintObject {
             }
         }
         if (factor2 != null) {
-            //fetchDPoint
             intersection2 = new DPoint(
                     (_p.getX() + factor2[0] * _v.getX()), 
                     (_p.getY() + factor2[0] * _v.getY()));
@@ -634,7 +630,6 @@ public class PaintObjectWriting extends PaintObject {
             }
         }
         if (factor3 != null) {
-            //fetchDPoint
             intersection3 = new DPoint(
                     (_p.getX() + factor3[0] * _v.getX()), 
                     (_p.getY() + factor3[0] * _v.getY()));
@@ -645,7 +640,6 @@ public class PaintObjectWriting extends PaintObject {
             }
         }
         if (factor4 != null) {
-            //fetchDPoint
             intersection4 = new DPoint(
                     (_p.getX() + factor4[0] * _v.getX()), 
                     (_p.getY() + factor4[0] * _v.getY()));

@@ -48,7 +48,8 @@ public class Matrix {
 	 * Try to compute a solution of the matrix.
 	 * @return the solved matrix
 	 */
-	public final double[] solve() {
+	@Deprecated
+	public final double[] solveUnexact() {
 		
 		if (content.length + 1 != content[0].length) {
 		    Status.getLogger().severe(
@@ -56,12 +57,15 @@ public class Matrix {
 			System.exit(1);
 		}
 		
+		
+		
 		for (int line = 0; line < content.length; line++) {
 			
-			//divide current line by line[content][content] 
-		    //(the current elemnt)
+			//divide current line by line[content][content]; thus make
+		    //the pivot element 1
 			content[line] = divideLine(content[line], content[line][line]);
-			
+		
+			//sub the first line from the following ones.
 			for (int lineTwo = line + 1; lineTwo < content.length; lineTwo++) {
 				substractMult(content[lineTwo], content[line], 
 				        content[lineTwo][line]);
@@ -85,6 +89,87 @@ public class Matrix {
 		x = x.replaceFirst("	+", "f(x) = ");
 		return solution;
 	}
+	
+
+    /**
+     * Try to compute a solution of the matrix.
+     * @return the solved matrix
+     */
+    public final double[] solve() {
+        
+        
+        //check whether the matrix is quadratic. Whether its determinant is non 
+        //- zero will be checked on the fly during the calculation.
+        if (content.length + 1 != content[0].length) {
+            Status.getLogger().severe("unable to solve matrix: not quadratic!");
+            return null;
+        } 
+        String s = ("anfang" + printMatrix());
+        
+        for (int line = 0; line < content.length; line++) {
+
+            /*
+             * pivot transformation
+             */
+            //find pivot element in each line. Only simple pivot research.
+            int maxId = line;
+            for (int lineF = line; lineF < content.length; lineF++) {
+                
+                if (Math.abs(content[lineF][line]) 
+                        >= Math.abs(content[maxId][maxId])) {
+                    maxId = lineF;
+                }
+            }
+            
+            //swap the current line with the line containing the pivot element
+            double[] swap = content[maxId];
+            content[maxId] = content[line];
+            content[line] = swap;
+
+            s += ("geordnet" + printMatrix());
+        
+            /*
+             * Subtract current line from following ones.
+             */
+            for (int lineF = line + 1; lineF < content.length; lineF++) {
+
+                substractMult(content[lineF], content[line], 
+                        1.0 * content[lineF][line] / content[line][line]);
+            }
+        
+        }
+
+        s += ("obere dreieck" + printMatrix());
+
+        for (int line = content.length - 1; line >= 0; line--) {
+            for (int lineTwo = line - 1; lineTwo >= 0; lineTwo--) {
+                substractMult(content[lineTwo], content[line], 
+                        content[lineTwo][line] / content[line][line]);
+            }
+        }
+
+        s += ("diagonalmatrix" + printMatrix());
+
+        
+        for (int line = 0; line < content.length; line++) {
+            
+            //divide current line by line[content][content]; thus make
+            //the pivot element 1
+            content[line] = divideLine(content[line], content[line][line]);
+        }
+        s += ("solution1" + printMatrix());
+        
+        //generate solution.
+        double [] solution = new double [content.length];
+        for (int i = 0; i < solution.length; i++) {
+            solution[i] = content[i][solution.length];
+            s += "    + " + solution[i] + " * x ^ " + (solution.length - 1 - i);
+        }
+        s = s.replaceFirst("    + ", "f(x) = ");
+        
+//        System.out.println(s + x);
+        return solution;
+    }
 	
 	/**
 	 * Berechnent funktionswert von f an der stelle x.
@@ -113,9 +198,8 @@ public class Matrix {
 	 */
 	private double[] divideLine(final double [] _content, 
 	        final double _divisor) {
-		
 		for (int i = 0; i < _content.length; i++) {
-			_content[i] /= _divisor;
+			_content[i] = 1.0 * _content[i] / _divisor;
 		}
 		return _content;
 	}
@@ -132,27 +216,47 @@ public class Matrix {
 	        final double [] _toSubstract, final double _factor) {
 		
 		for (int i = 0; i < _content.length; i++) {
-			_content[i] -= (_toSubstract[i] * _factor);
+			_content[i] -= (1.0 * _toSubstract[i] * _factor);
 		}
 		return _content;
 		
 	}
-	
-	
-	/**
-	 * print current matrix.
-	 */
-	public final void printMatrix() {
-		
-		System.out.println("\nPRINT MATRIX\n");
-		
-		for (int i = 0; i < content.length; i++) {
-			for (int j = 0; j < content[i].length; j++) {
-				System.out.print("	" + content[i][j] + "	");
-			}
-			System.out.println("");
-		}
-	}
+    
+    
+    /**
+     * print current matrix.
+     */
+    public final void printOutMatrix() {
+        
+        System.out.println("\nPRINT MATRIX\n");
+        
+        for (int i = 0; i < content.length; i++) {
+            for (int j = 0; j < content[i].length; j++) {
+                System.out.print("  " + content[i][j] + "   ");
+            }
+            System.out.println("");
+        }
+    }
+    
+    
+    /**
+     * print current matrix.
+     * @return the printed matrix
+     */
+    public final String printMatrix() {
+        
+        String s = "\nPRINT MATRIX\n\n";
+        
+        for (int i = 0; i < content.length; i++) {
+            for (int j = 0; j < content[i].length; j++) {
+                s += ("\t" + content[i][j] + "\t");
+            }
+            s += ("\n");
+        }
+        s += ("\n\n");
+        
+        return s;
+    }
 
 	/**
 	 * return the ableitung.
@@ -260,7 +364,7 @@ public class Matrix {
 			m.setValue(line, amount, y);
 			_ls.next();
 		}
-		m.printMatrix();
+		m.printOutMatrix();
 		/*
 		 * set value of ableitung
 		 */
@@ -281,7 +385,7 @@ public class Matrix {
 		}
 		m.setValue(amount - 1, amount, _ableitungen.height);
 		
-		m.printMatrix();
+		m.printOutMatrix();
 		
 		return m;
 	}

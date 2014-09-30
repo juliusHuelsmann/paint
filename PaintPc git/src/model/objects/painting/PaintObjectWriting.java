@@ -3,9 +3,12 @@ package model.objects.painting;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JOptionPane;
+
 import settings.Status;
 import view.View;
 import view.forms.Page;
@@ -411,7 +414,6 @@ public class PaintObjectWriting extends PaintObject {
                     DPoint pnt_border = findIntersection(_r, pc, new DPoint(
                             pcNew.getX() - pc.getX(), 
                             pcNew.getY() - pc.getY()));
-
                    
                     //add the borderDPoint to the last PaintObject and insert 
                     //paintObject to list
@@ -432,7 +434,37 @@ public class PaintObjectWriting extends PaintObject {
                     pow_current.addPoint(new DPoint(pcNew));
                 } else {
 
-                    pow_current.addPoint(new DPoint(pcNew));
+                    
+                    //if both items are outside the rectangle, this does not
+                    //directly indicate that the line between them does
+                    //not cross the selected rectangle. Example:
+                    //       _____          Thus if the equation x1 + l * dX
+                    //  x1  |     |  x2     has got (two) solutions with l in
+                    //      |_____|         (0,1) we have to treat this case
+                    //differently.
+                    Rectangle d = findSilentIntersection(_r, pc, new DPoint(
+                            pcNew.getX() - pc.getX(), 
+                            pcNew.getY() - pc.getY()));
+                    if (d == null) {
+                        pow_current.addPoint(new DPoint(pcNew));
+                    } else {
+
+                        System.out.println("hier bin ich");
+                        pow_current.addPoint(new DPoint(d.x, d.y));
+                        ls_pow_outside.insertBehind(pow_current);
+                        
+                        pow_current = new PaintObjectWriting(getElementId(), 
+                                getPen());
+                        pow_current.addPoint(new DPoint(d.x, d.y));
+                        pow_current.addPoint(new DPoint(d.width, d.height));
+                        ls_pow_inside.insertBehind(pow_current);
+
+                        pow_current = new PaintObjectWriting(getElementId(), 
+                                getPen());
+                        pow_current.addPoint(new DPoint(d.width, d.height));
+                        pow_current.addPoint(new DPoint(pcNew));
+                    }
+                    
                 }
             }
 
@@ -491,14 +523,43 @@ public class PaintObjectWriting extends PaintObject {
         return pow;
     }
     
+    /**
+     * @see findIntersection.
+     * The difference between find intersection and findSilentIntersection
+     * is that the lambda value has to be inside the interval (0,1) and that
+     * the two best points are returned in case of success.
+     * 
+     * @param _r the Rectangle which is to be intersected
+     * @param _p theDPoint (thus the "support vector") 
+     * @param _v the "direction vector"
+     * @return the intersectionDPoints between line and rectangle
+     */
+    public final synchronized Rectangle findSilentIntersection(
+            final Rectangle _r, final DPoint _p, final DPoint _v) {
+
+        List<DPoint> ls = findIntersections(_r, _p, _v);
+        ls.toFirst();
+        if (!ls.isEmpty() || ls.getItem() != null) {
+            
+            double lambda1 = ls.getItemSortionIndex();
+            DPoint p1 = ls.getItem();
+            if (lambda1 <= 1 && lambda1 >= 0) {
+                
+                ls.next();
+                double lambda2 = ls.getItemSortionIndex();
+                DPoint p2 = ls.getItem();
+                if (lambda2 <= 1 && lambda2 >= 0) {
+                    return new Rectangle((int) p1.getX(), (int) p1.getY(), 
+                            (int) p2.getX(), (int) p2.getY());
+                }
+            }
+        }
+        return null;
+    }
     
     /**
-     * Utility method to return the "best" intersection between a line and a 
+     * Utility method to return the intersections between a line and a 
      * Rectangle.
-     * 
-     * "best" means in this case that the factor with which the direction vector
-     * of the line is multiplied is as small as possible. The equation can be
-     * found below:
      * 
      * Vector:
      * ( _p.x )                               ( _v.x)
@@ -519,15 +580,15 @@ public class PaintObjectWriting extends PaintObject {
      * ( _r.y + _r.height ) +   factor2  *    ( 0 )
      * 
      * 
-     * The means to calculate the best intersectionDPoint is to first calculate
-     * the intersection between theDPoint vector and the 4 rectangle vectors.
+     * First calculate the intersection between theDPoint vector and the 
+     * 4 rectangle vectors.
      * 
      * In the second step, thoseDPoints are deleted that are outside the
      * rectangle border (because the Rectangle vectors are (falsely) logically
      * infinite lines)
      * 
-     * In the last step, theDPoint with the smallest factor is chosen to be
-     * returned.
+     * In the last step, the DPoints are inserted into a list sorted by their
+     * factor and afterwards returned.
      * Visualization _____________
      *       x       |           |
      *               |    x      |
@@ -550,10 +611,10 @@ public class PaintObjectWriting extends PaintObject {
      * @param _r the Rectangle which is to be intersected
      * @param _p theDPoint (thus the "support vector") 
      * @param _v the "direction vector"
-     * @return the "best" intersectionDPoint between line and rectangle
+     * @return the intersectionDPoints between line and rectangle
      */
-    public static DPoint findIntersection(final Rectangle _r, final DPoint _p, 
-            final DPoint _v) {
+    public static List<DPoint> findIntersections(final Rectangle _r, 
+            final DPoint _p, final DPoint _v) {
         //Step 1
         //Visualization s____________
         //              s    x      |
@@ -606,7 +667,11 @@ public class PaintObjectWriting extends PaintObject {
         m.setValue(1, 2, _r.y + _r.height - _p.getY());
         String s4 = m.printMatrix();
         double [] factor4 = m.solve();
+        
+        
         //STEP 2
+        List<DPoint> ls = new List<DPoint>();
+        ls.setSortASC();
         DPoint intersection1 = null, intersection2 = null, 
                 intersection3 = null, intersection4 = null;
         if (factor1 != null) {
@@ -617,6 +682,8 @@ public class PaintObjectWriting extends PaintObject {
             if (_r.y + _r.height  - (int) intersection1.getY() < 0
                     || _r.y - (int) intersection1.getY() > 0) {
                 intersection1 = null;
+            } else {
+                ls.insertSorted(intersection1, Math.abs(factor1[0]));
             }
         }
         if (factor2 != null) {
@@ -627,6 +694,8 @@ public class PaintObjectWriting extends PaintObject {
             if (_r.x + _r.width  - (int) intersection2.getX() < 0
                     || _r.x - (int) intersection2.getX() > 0) {
                 intersection2 = null;
+            } else {
+                ls.insertSorted(intersection2, Math.abs(factor2[0]));
             }
         }
         if (factor3 != null) {
@@ -637,6 +706,8 @@ public class PaintObjectWriting extends PaintObject {
             if (_r.y + _r.height  - (int) intersection3.getY() < 0
                     || _r.y - (int) intersection3.getY() > 0) {
                 intersection3 = null;
+            } else {
+                ls.insertSorted(intersection3, Math.abs(factor3[0]));
             }
         }
         if (factor4 != null) {
@@ -647,63 +718,58 @@ public class PaintObjectWriting extends PaintObject {
             if (_r.x + _r.width  - (int) intersection4.getX() < 0
                     || _r.x - (int) intersection4.getX() > 0) {
                 intersection4 = null;
+            } else {
+                ls.insertSorted(intersection4, Math.abs(factor4[0]));
             }
         }
-        double minLambda = Double.MAX_VALUE;
-        int minIndex = -1;
-        if (intersection1 != null) {
-           if (minLambda > Math.abs(factor1[0])) {
-               minLambda = Math.abs(factor1[0]);
-               minIndex = 1;
-           }
-        }
-        if (intersection2 != null) {
-            if (minLambda > Math.abs(factor2[0])) {
-                minLambda = Math.abs(factor2[0]);
-                minIndex = 2;
+        
+        //string which can be printed if errors occur. Contains the matrix and
+        //each step of its solution.
+        String s = s1 + s2 + s3 + s4;
+        s = s + "\n";
+        
+        return ls;
+    }
+    
+    /**
+     * Utility method to return the "best" intersection between a line and a 
+     * Rectangle.
+     * 
+     * "best" means in this case that the factor with which the direction vector
+     * of the line is multiplied is as small as possible. The equation can be
+     * found below:
+     * 
+     * @param _r the Rectangle which is to be intersected
+     * @param _p theDPoint (thus the "support vector") 
+     * @param _v the "direction vector"
+     * @return the "best" intersectionDPoint between line and rectangle
+     */
+    public static DPoint findIntersection(final Rectangle _r, final DPoint _p, 
+            final DPoint _v) {
+    
+        List<DPoint> ls = findIntersections(_r, _p, _v);
+        ls.toFirst();
+        if (ls.isEmpty() || ls.getItem() == null) {
+            
+            String s = "PaintObjectWriting@static method; not a single "
+                    + "equation matched. That should be impossible.\n";
+            while (!ls.isBehind() && ls.isEmpty()) {
+                s += ("item " + ls.getItem() 
+                        + "\tSortIndex" + ls.getItemSortionIndex() + "\n");
+                ls.next();
             }
-        }
-        if (intersection3 != null) {
-            if (minLambda > Math.abs(factor3[0])) {
-                minLambda = Math.abs(factor3[0]);
-                minIndex = 2 + 1;
-            }
-        }
-        if (intersection4 != null) {
-            if (minLambda > Math.abs(factor4[0])) {
-                minLambda = Math.abs(factor4[0]);
-                minIndex = 2 + 2;
-            }
-        }
-        switch(minIndex) {
-        case -1:
+            s += "\n";
+            Status.getLogger().warning(s);
+
             verifyPnt(_p, Color.blue);
             verifyPnt(new DPoint(_p.getX() + _v.getX(), _p.getY() + _v.getY()),
                     Color.orange);
-            Status.getLogger().warning("PaintObjectWriting@static method; not"
-                    + " a single equation matched. That should be impossible"
-                    + "\n\nmin index: " + minIndex + "\n\nIntersections:\n"
-                    + "1:\t" +  intersection1 + "\n2:\t" + intersection2 
-                    + "\n3:\t" + intersection3 + "\n4:\t" + intersection4 
-                    + "\n\nFactors:\n1:\t" + factor1[0] + "\n2:\t" + factor2[0]
-                    + "\n3:\t" + factor3[0] + "\n4:\t" + factor4[0]
-                            + s1 + s2 + s3 + s4);
             return null;
-        case 1:
-            return intersection1;
-        case 2:
-            return intersection2;
-        case 2 + 1:
-            return intersection3;
-        case 2 + 2:
-            return intersection4;
-        default:
-            new Exception("PaintObjectWriting@static method; Unexpected case")
-            .printStackTrace();
-            return null;
+            
+        } else {
+            return ls.getItem();
         }
     }
-    
     
     /**
      * Utility method for printing aDPoint.

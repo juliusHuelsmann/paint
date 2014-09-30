@@ -4,6 +4,8 @@ package model.util.list;
 //import declaration
 import java.io.Serializable;
 
+import settings.Status;
+
 /**
  * Double linked list (not a ring - list).
  *
@@ -33,6 +35,11 @@ public class List<Type> implements Serializable {
      * Last element.
      */
     private final Element<Type> elemLast;
+    
+    /**
+     * whether to sort ascending or descending.
+     */
+    private boolean sortAsc = true;
 
     /**
      * Initialize instance of List - initialize first and last element.
@@ -150,7 +157,7 @@ public class List<Type> implements Serializable {
      *
      * @return sorted index of current Element.
      */
-    public final int getItemSortionIndex() {
+    public final double getItemSortionIndex() {
         if (isEmpty() || isInFrontOf() || isBehind()) {
             return -1;
         } else {
@@ -321,19 +328,50 @@ public class List<Type> implements Serializable {
      * @param _searchCriteria the index of sorting.
      */
     public final synchronized void insertSorted(final Type _content, 
-            final int _searchCriteria) {
+            final double _searchCriteria) {
         
         findSorted(_searchCriteria);
-        insertInFrontOf(_content);
+        if (sortAsc) {
+            insertInFrontOf(_content);
+        } else {
+            insertBehind(_content);
+        }
         elemCurrent.setSortedIndex(_searchCriteria);
+    }
 
+    
+    /**
+     * Set sort criteria to ascending.
+     */
+    public final synchronized void setSortASC() {
+        if (isEmpty()) {
+            sortAsc = true;
+        } else {
+            Status.getLogger().warning("tried to change sorting order without"
+                    + "success: The list is not empty and thus may have"
+                    + "been sorted in a different order. " + sortAsc + "true");
+        }
+        
+    }
+    
+    /**
+     * Set sort criteria to descending.
+     */
+    public final synchronized void setSortDESC() {
+        if (isEmpty()) {
+            sortAsc = false;
+        } else {
+            Status.getLogger().warning("tried to change sorting order without"
+                    + "success: The list is not empty and thus may have"
+                    + "been sorted in a different order. " + sortAsc + "false");
+        }
     }
     
     /**
      * goes behind the searched position.
      * @param _searchCriteria the search index.
      */
-    public final synchronized void findSorted(final int _searchCriteria) {
+    public final synchronized void findSorted(final double _searchCriteria) {
         
         toFirst();
         while (!isBehind() && elemCurrent.getSortedIndex() < _searchCriteria) {

@@ -42,7 +42,7 @@ public class Element<Type> implements Serializable {
     /**
      * index for sort. Sort ASC.
      */
-    private int sortedIndex = 0;
+    private double sortedIndex = 0;
 
     /**
      * Constructor: Saves values such as content, successor, predecessor.
@@ -134,13 +134,13 @@ public class Element<Type> implements Serializable {
     /**
      * @return the sortedIndex
      */
-    public final int getSortedIndex() {
+    public final double getSortedIndex() {
         return sortedIndex;
     }
     /**
      * @param _sortedIndex the sortedIndex to set
      */
-    public final void setSortedIndex(final int _sortedIndex) {
+    public final void setSortedIndex(final double _sortedIndex) {
         this.sortedIndex = _sortedIndex;
     }
 }

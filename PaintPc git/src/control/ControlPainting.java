@@ -561,7 +561,34 @@ public final class ControlPainting implements MouseListener,
                 
                 while (!ls.isEmpty() && !ls.isBehind()) {
 
-                    Picture.getInstance().insertIntoSelected(ls.getItem());
+                    PaintObject po = ls.getItem();
+                    if (po instanceof PaintObjectImage) {
+                        PaintObjectImage poi = (PaintObjectImage) po;
+                        PaintObjectImage poi_new = Picture.getInstance()
+                                .createPOI(poi.getSnapshot());
+
+                        Picture.getInstance().insertIntoSelected(poi_new);
+                        
+                    } else if (po instanceof PaintObjectWriting) {
+                        
+                        PaintObjectWriting pow = (PaintObjectWriting) po;
+                        PaintObjectWriting pow_new 
+                        = Picture.getInstance().createPOW(
+                                pow.getPen());
+                        
+                        pow.getPoints().toFirst();
+                        while (!pow.getPoints().isEmpty() 
+                                && !pow.getPoints().isBehind()) {
+                            pow_new.addPoint(new DPoint(
+                                    pow.getPoints().getItem()));
+                            pow.getPoints().next();
+                        }
+                        Picture.getInstance().insertIntoSelected(pow_new);
+                    
+                    } else  if (po != null) {
+                        Status.getLogger().warning("unknown kind of "
+                                + "PaintObject; element = " + po);
+                    }
                     ls.next();
                 }
                 

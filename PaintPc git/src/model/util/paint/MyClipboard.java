@@ -142,8 +142,8 @@ public final class MyClipboard implements ClipboardOwner {
                 ls_new.insertBehind(pow_new);
             
             } else {
-                Status.getLogger().warning("unknown kind of PaintObject;"
-                        + "null element? element = " + po);
+                Status.getLogger().warning("unknown kind of "
+                        + "PaintObject; element = " + po);
             }
             
             _lsPoSelected.next();

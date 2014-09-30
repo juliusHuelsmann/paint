@@ -2,6 +2,7 @@
 package control.singleton;
 
 //import declarations
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -42,6 +43,14 @@ public final class CChangeSelection implements ActionListener {
             
         } else if (_event.getSource().equals(s.getJcb_maths())) {
             selectPenOp(Constants.PEN_ID_MATHS);
+        } else {
+            for (int i = 0; i < s.getJbtn_colors().length; i++) {
+
+                if (_event.getSource().equals(s.getJbtn_colors()[i])) {
+                    setColor(s.getJbtn_colors()[i].getBackground());
+                    Picture.getInstance().paintSelected();
+                }
+            }
         }
     }
     
@@ -91,7 +100,7 @@ public final class CChangeSelection implements ActionListener {
         }
     }
     
-    
+
     
     /**
      * Set id for selected paintObject's pens.
@@ -108,7 +117,23 @@ public final class CChangeSelection implements ActionListener {
             }
             Picture.getInstance().getLs_poSelected().next();
         }
-        
+    }
+    
+    /**
+     * Set selected paintObject's color.
+     * @param _clr the Color
+     */
+    private static synchronized void setColor(final Color _clr) {
+        Picture.getInstance().getLs_poSelected().toFirst();
+        while (!Picture.getInstance().getLs_poSelected().isBehind() 
+                && !Picture.getInstance().getLs_poSelected().isEmpty()) {
+            PaintObject o = Picture.getInstance().getLs_poSelected().getItem();
+            if (o instanceof PaintObjectWriting) {
+                PaintObjectWriting pow = (PaintObjectWriting) o;
+                pow.getPen().setClr_foreground(new Color(_clr.getRGB()));
+            }
+            Picture.getInstance().getLs_poSelected().next();
+        }
     }
 
     

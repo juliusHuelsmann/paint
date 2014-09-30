@@ -753,6 +753,7 @@ public class PaintObjectWriting extends PaintObject {
         //each step of its solution.
         String s = s1 + s2 + s3 + s4;
         s = s + "\n";
+        System.out.println(s);
         
         return ls;
     }

@@ -138,6 +138,7 @@ public final class Selection extends JPanel {
                     distanceBetweenColors + (i / anzInR)
                     * (height + distanceBetweenColors), width, height);
             jbtn_colors[i].setOpaque(true);
+            jbtn_colors[i].addActionListener(CChangeSelection.getInstance());
             jbtn_colors[i].addMouseListener(
                     CStatus.getInstance());
             jbtn_colors[i].addMouseListener(CVisualEffects.getInstance());
@@ -471,5 +472,21 @@ public final class Selection extends JPanel {
      */
     public JCheckBox getJcb_maths() {
         return jcb_maths;
+    }
+
+
+    /**
+     * @return the jbtn_colors
+     */
+    public JButton [] getJbtn_colors() {
+        return jbtn_colors;
+    }
+
+
+    /**
+     * @param jbtn_colors the jbtn_colors to set
+     */
+    public void setJbtn_colors(JButton [] jbtn_colors) {
+        this.jbtn_colors = jbtn_colors;
     }
 }

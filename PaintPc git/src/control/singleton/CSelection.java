@@ -168,6 +168,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
             
             Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
                     r_selection);
+            Page.getInstance().getJlbl_selectionPainting().repaint();
         } else {
 
             Picture.getInstance().getLs_poSelected().toFirst();

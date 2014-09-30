@@ -123,6 +123,10 @@ public final class ControlPainting implements MouseListener,
             
             Picture.getInstance().initializePen(
                     new PenKuli(Constants.PEN_ID_POINT, 1, Color.black));
+            Status.setIndexOperation(Constants.CONTROL_PATINING_INDEX_PAINT_1);
+            Paint.getInstance().getTb_color1().setActivated(true);
+            Paint.getInstance().getIt_stift1().getTb_open().setActivated(true);
+            
 
 
             /*
@@ -1041,10 +1045,6 @@ public final class ControlPainting implements MouseListener,
                 Math.abs(pnt_start.x - _event.getX()), Math.abs(pnt_start.y
                         - _event.getY()));
 
-        //paint selection
-        r_sizeField.x += Page.getInstance().getJlbl_painting().getLocation().x;
-        r_sizeField.y += Page.getInstance().getJlbl_painting().getLocation().y;
-        
         Picture.getInstance().repaintRectangle(r_sizeField);
         Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
                 r_sizeField);
@@ -1107,8 +1107,6 @@ public final class ControlPainting implements MouseListener,
 
                     PaintObject [][] separatedPO = po_current.separate(
                             r_sizeField);
-                    System.out.println(separatedPO[1].length);
-                    System.out.println(separatedPO[0].length);
                     PictureOverview.getInstance().remove(Picture.getInstance()
                             .getLs_po_sortedByX().getItem());
                     Picture.getInstance().getLs_po_sortedByX().remove();
@@ -1134,13 +1132,13 @@ public final class ControlPainting implements MouseListener,
                             current++) {
 
                         if (separatedPO[0][current] != null) {
-                        //recalculate snapshot bounds for being able to insert
-                        //the item into the sorted list.
-                        separatedPO[0][current].recalculateSnapshotBounds();
-                        ls_toInsert.insertBehind(separatedPO[0][current]);
-
-                        PictureOverview.getInstance().add(
-                                separatedPO[0][current]);
+                            //recalculate snapshot bounds for being able to
+                            //insert the item into the sorted list.
+                            separatedPO[0][current].recalculateSnapshotBounds();
+                            ls_toInsert.insertBehind(separatedPO[0][current]);
+    
+                            PictureOverview.getInstance().add(
+                                    separatedPO[0][current]);
                         } else {
 
                             Status.getLogger().warning("separated paintObject "
@@ -1171,11 +1169,9 @@ public final class ControlPainting implements MouseListener,
                         ls_toInsert.getItem().getSnapshotBounds().x);
                 ls_toInsert.next();
             }
-            if (!Picture.getInstance().paintSelected()) {
-                System.out.println("WARNUNG");
-                System.exit(1);
+            if (Picture.getInstance().paintSelected()) {
+                Page.getInstance().getJlbl_painting().refreshPaint();
             }
-            Page.getInstance().getJlbl_painting().refreshPaint();
         }
     }
     

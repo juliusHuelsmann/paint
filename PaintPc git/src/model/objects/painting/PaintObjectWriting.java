@@ -632,7 +632,9 @@ public class PaintObjectWriting extends PaintObject {
         String s4 = m.printMatrix();
         double [] factor4 = m.solve();
         
-        
+
+        int vorfactorX = (int) (Math.abs(_v.getX()) / _v.getX());
+        int vorfactorY = (int) (Math.abs(_v.getY()) / _v.getX());
         //STEP 2
         List<DPoint> ls = new List<DPoint>();
         ls.setSortASC();
@@ -642,8 +644,8 @@ public class PaintObjectWriting extends PaintObject {
             intersection1 = new DPoint(
                     (_p.getX() + factor1[0] * _v.getX()), 
                     (_p.getY() + factor1[0] * _v.getY()));
-            int f1x = (int) (factor1[0] * _v.getX());
-            int f1y = (int) (factor1[0] * _v.getY());
+            int f1x = (int) (factor1[0] * _v.getX() * vorfactorX);
+            int f1y = (int) (factor1[0] * _v.getY() * vorfactorY);
             //check whether suitable.
             if (_r.y + _r.height  - (int) intersection1.getY() < 0
                     || _r.y - (int) intersection1.getY() > 0
@@ -663,12 +665,13 @@ public class PaintObjectWriting extends PaintObject {
             intersection2 = new DPoint(
                     (_p.getX() + factor2[0] * _v.getX()), 
                     (_p.getY() + factor2[0] * _v.getY()));
-            int f2x = (int) (factor2[0]);
-            int f2y = (int) (factor2[0]);
+            int f2x = (int) (factor2[0] * _v.getX() * vorfactorX);
+            int f2y = (int) (factor2[0] * _v.getY() * vorfactorY);
             //check whether suitable.
             if (_r.x + _r.width  - (int) intersection2.getX() < 0
                     || _r.x - (int) intersection2.getX() > 0
-                    || f2x < 0 || f2x > 1 || f2y < 0 || f2y > 1) {
+                    || f2x < 0 || f2x > _v.getX() 
+                    || f2y < 0 || f2y > _v.getY()) {
                 intersection2 = null;
             } else {
                 if (_sortAbs) {
@@ -683,12 +686,13 @@ public class PaintObjectWriting extends PaintObject {
             intersection3 = new DPoint(
                     (_p.getX() + factor3[0] * _v.getX()), 
                     (_p.getY() + factor3[0] * _v.getY()));
-            int f3x = (int) (factor3[0]);
-            int f3y = (int) (factor3[0]);
+            int f3x = (int) (factor3[0] * _v.getX() * vorfactorX);
+            int f3y = (int) (factor3[0] * _v.getY() * vorfactorY);
             //check whether suitable.
             if (_r.y + _r.height  - (int) intersection3.getY() < 0
                     || _r.y - (int) intersection3.getY() > 0
-                    || f3x < 0 || f3x > 1 || f3y < 0 || f3y > 1) {
+                    || f3x < 0 || f3x > _v.getX() 
+                    || f3y < 0 || f3y > _v.getY()) {
                 intersection3 = null;
             } else {
                 if (_sortAbs) {
@@ -703,14 +707,15 @@ public class PaintObjectWriting extends PaintObject {
             intersection4 = new DPoint(
                     (_p.getX() + factor4[0] * _v.getX()), 
                     (_p.getY() + factor4[0] * _v.getY()));
-            int f4x = (int) (factor4[0]);
-            int f4y = (int) (factor4[0]);
+            int f4x = (int) (factor4[0] * _v.getX() * vorfactorX);
+            int f4y = (int) (factor4[0] * _v.getY() * vorfactorY);
             System.out.println(f4x);
             System.out.println(f4y);
             //check whether suitable.
             if (_r.x + _r.width  - (int) intersection4.getX() < 0
                     || _r.x - (int) intersection4.getX() > 0
-                    || f4x < 0 || f4x > 1 || f4y < 0 || f4y > 1) {
+                    || f4x < 0 || f4x > _v.getX() 
+                    || f4y < 0 || f4y > _v.getY()) {
                 intersection4 = null;
             } else {
                 if (_sortAbs) {

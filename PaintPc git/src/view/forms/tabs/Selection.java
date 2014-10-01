@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import control.singleton.CChangeSelection;
+import control.singleton.CTabSelection;
 import control.singleton.CStatus;
 import control.singleton.CVisualEffects;
 import settings.Status;
@@ -122,6 +122,7 @@ public final class Selection extends JPanel {
         tb_color.setSize(
                 ViewSettings.ITEM_MENU1_WIDTH, ViewSettings.ITEM_MENU1_HEIGHT);
         tb_color.setText("Farbe 1");
+        tb_color.setActivable(false);
         super.add(tb_color);
     
     
@@ -138,7 +139,7 @@ public final class Selection extends JPanel {
                     distanceBetweenColors + (i / anzInR)
                     * (height + distanceBetweenColors), width, height);
             jbtn_colors[i].setOpaque(true);
-            jbtn_colors[i].addActionListener(CChangeSelection.getInstance());
+            jbtn_colors[i].addActionListener(CTabSelection.getInstance());
             jbtn_colors[i].addMouseListener(
                     CStatus.getInstance());
             jbtn_colors[i].addMouseListener(CVisualEffects.getInstance());
@@ -268,7 +269,7 @@ public final class Selection extends JPanel {
         jcb_points.setBounds(_x, distance, twoHundred, heightLabel);
         jcb_points.setVerticalAlignment(SwingConstants.TOP);
         jcb_points.setFocusable(false);
-        jcb_points.addActionListener(CChangeSelection.getInstance());
+        jcb_points.addActionListener(CTabSelection.getInstance());
         super.add(jcb_points);
     
         jcb_line = new JCheckBox("line");
@@ -277,7 +278,7 @@ public final class Selection extends JPanel {
         jcb_line.setOpaque(false);
         jcb_line.setBounds(_x, jcb_points.getHeight() + jcb_points.getY() 
                 + distance, twoHundred, heightLabel);
-        jcb_line.addActionListener(CChangeSelection.getInstance());
+        jcb_line.addActionListener(CTabSelection.getInstance());
         super.add(jcb_line);
     
         jcb_maths = new JCheckBox("maths");
@@ -286,12 +287,12 @@ public final class Selection extends JPanel {
         jcb_maths.setVerticalAlignment(SwingConstants.TOP);
         jcb_maths.setBounds(_x, jcb_line.getHeight() + jcb_line.getY() 
                 + distance, twoHundred, heightLabel);
-        jcb_maths.addActionListener(CChangeSelection.getInstance());
+        jcb_maths.addActionListener(CTabSelection.getInstance());
         super.add(jcb_maths);
         
         //deactivate the items because at the beginning there is no item 
         //selected.
-        CChangeSelection.deactivateOp();
+        CTabSelection.deactivateOp();
     
 
         insertTrennung(jcb_maths.getWidth() + jcb_maths.getX() 

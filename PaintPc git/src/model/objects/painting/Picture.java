@@ -17,7 +17,7 @@ import java.util.Observable;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import control.singleton.CChangeSelection;
+import control.singleton.CTabSelection;
 import control.singleton.CSelection;
 import settings.Error;
 import settings.Status;
@@ -693,6 +693,15 @@ public final class Picture extends Observable {
             e.printStackTrace();
         }
     }
+    
+    
+    /**
+     * Empty each paintObject.
+     */
+    public void emptyImage() {
+        ls_po_sortedByX = new List<PaintObject>();
+        ls_poSelected = new List<PaintObject>();
+    }
 	
 	
 	/**
@@ -850,15 +859,17 @@ public final class Picture extends Observable {
 
 
         //deactivates to change operations of selected items
-        CChangeSelection.activateOp();
-	    CChangeSelection.selectPenOp(-1);
 	    if (ls_poSelected == null) {
 	        Status.getLogger().warning("insert into null list");
-	        System.exit(1);
 	    } else {
 	        
+
+	        CTabSelection.activateOp();
+	        CTabSelection.selectPenOp(-1);
+	        if (ls_poSelected.isEmpty()) {
+//	            CTabSelection.
+	        }
 	        ls_poSelected.insertSorted(_po, _po.getSnapshotBounds().x);   
-	        
 	        PictureOverview.getInstance().addSelected(_po);
 	    }
 	}
@@ -993,7 +1004,7 @@ public final class Picture extends Observable {
 	public synchronized void releaseSelected() {
 	    
 	    //deactivates to change operations of selected items
-	    CChangeSelection.deactivateOp();
+	    CTabSelection.deactivateOp();
 	    if (ls_poSelected == null) {
 	        Status.getLogger().info("o selected elements");
 	        return;
@@ -1038,7 +1049,7 @@ public final class Picture extends Observable {
             ls_poSelected.remove();
         }
         //deactivates to change operations of selected items
-        CChangeSelection.deactivateOp();
+        CTabSelection.deactivateOp();
         ls_poSelected = null;
     }
 	

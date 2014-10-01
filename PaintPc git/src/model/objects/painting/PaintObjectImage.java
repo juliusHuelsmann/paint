@@ -7,7 +7,9 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import model.util.DPoint;
+import model.util.paint.Utils;
 import settings.Error;
+import settings.Status;
 
 
 /**
@@ -129,11 +131,24 @@ public class PaintObjectImage extends PaintObject {
         } else {
             
             //print image to graphical user interface
-            int x =  pnt_locationOfImage.x + _x;
-            int y = pnt_locationOfImage.y + _y;
+            final double cZoomFactorWidth = 1.0 
+                    * Status.getImageShowSize().width
+                    / Status.getImageSize().width;
+            final double cZoomFactorHeight = 1.0 
+                    * Status.getImageShowSize().height
+                    / Status.getImageSize().height;
+            int x = (int) (pnt_locationOfImage.x * cZoomFactorWidth + _x);
+            int y = (int) (pnt_locationOfImage.y * cZoomFactorHeight + _y);
             int width = bi_image.getWidth();
             int height = bi_image.getHeight();
-            _g.getGraphics().drawImage(bi_image, x, y, width, height, null);
+            _g.getGraphics().drawImage(Utils.resizeImage(
+                    (int) (width * cZoomFactorWidth),
+                    (int) (height * cZoomFactorHeight), 
+                    bi_image), 
+                    (int) (x), 
+                    (int) (y), 
+                    (int) (width * cZoomFactorWidth),
+                    (int) (height * cZoomFactorHeight), null);
             
         }
         

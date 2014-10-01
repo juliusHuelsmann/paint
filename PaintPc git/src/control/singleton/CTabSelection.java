@@ -17,17 +17,22 @@ import view.forms.tabs.Selection;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class CChangeSelection implements ActionListener {
+public final class CTabSelection implements ActionListener {
 
     /**
      * The only instance of this class.
      */
-    private static CChangeSelection instance;
+    private static CTabSelection instance;
+    
+    /**
+     * The penID and the color of the currently selected item.
+     */
+    private static int selectionPenID = -1, selectionColor = -1;
     
     /**
      * Empty utility class constructor.
      */
-    private CChangeSelection() { }
+    private CTabSelection() { }
     
     /**
      * {@inheritDoc}
@@ -113,6 +118,7 @@ public final class CChangeSelection implements ActionListener {
             PaintObject o = Picture.getInstance().getLs_poSelected().getItem();
             if (o instanceof PaintObjectWriting) {
                 PaintObjectWriting pow = (PaintObjectWriting) o;
+                
                 pow.getPen().setId_operation(_id_operation);
             }
             Picture.getInstance().getLs_poSelected().next();
@@ -148,6 +154,8 @@ public final class CChangeSelection implements ActionListener {
         s.getJcb_maths().setEnabled(false);
         s.getJcb_line().setEnabled(false);
         s.getJcb_points().setEnabled(false);
+        selectionPenID = -1;
+        selectionColor = -1;
     }
     
     
@@ -166,14 +174,28 @@ public final class CChangeSelection implements ActionListener {
      * getter method for only instance of this class.
      * @return the only instance of CChangeSelection
      */
-    public static CChangeSelection getInstance() {
+    public static CTabSelection getInstance() {
         
         if (instance == null) {
-            instance = new CChangeSelection();
+            instance = new CTabSelection();
         }
         
         return instance;
         
+    }
+
+    /**
+     * @return the selectionPenID
+     */
+    public static int getSelectionPenID() {
+        return selectionPenID;
+    }
+
+    /**
+     * @return the selectionColor
+     */
+    public static int getSelectionColor() {
+        return selectionColor;
     }
 
     

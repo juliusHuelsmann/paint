@@ -1,6 +1,7 @@
 package model.util;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 /**
  * Double Point class.
@@ -8,8 +9,13 @@ import java.awt.Point;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class DPoint {
+public class DPoint implements Serializable {
 
+    /**
+     * Generated Serial version.
+     */
+    private static final long serialVersionUID = -6695180495580749849L;
+    
     /**
      * The two double points.
      */

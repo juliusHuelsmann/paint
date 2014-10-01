@@ -15,9 +15,11 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 
 import javax.activation.UnsupportedDataTypeException;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -1331,10 +1333,27 @@ public final class ControlPainting implements MouseListener,
             if (file.getName().toLowerCase().endsWith(".pic")) {
                 Picture.getInstance().loadPicture(file.getAbsolutePath());
                 Status.setUncommittedChanges(false);
+                Page.getInstance().getJlbl_painting().refreshPaint();
             } else if (file.getName().toLowerCase().endsWith(".png")) {
-                new Error("not supported yet to load pictures "
-                        + "because there are no paintObjects for pictures"
-                        + "but only those for lines.").printStackTrace();
+                
+                try {
+                    BufferedImage bi_imageBG = ImageIO.read(file);
+                    Status.setImageSize(new Dimension(bi_imageBG.getWidth(), 
+                            bi_imageBG.getHeight()));
+                    Status.setImageShowSize(Status.getImageSize());
+                    Picture.getInstance().emptyImage();
+                    Picture.getInstance().addPaintObjectImage(bi_imageBG);
+                    Page.getInstance().getJlbl_painting().refreshPaint();
+                    
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                    new Error("not supported yet to load pictures "
+                            + "because there are no paintObjects for pictures"
+                            + "but only those for lines.").printStackTrace();
+                }
+                
+                
 
             } else {
 

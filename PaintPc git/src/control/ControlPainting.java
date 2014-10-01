@@ -382,6 +382,11 @@ public final class ControlPainting implements MouseListener,
                         new DPoint(_event.getX(), _event.getY()));
                 break;
 
+            case Constants.CONTROL_PAINTING_INDEX_ERASE:
+
+                //TODO: 
+
+                break;
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
 
                 if (pnt_start == null) {
@@ -621,7 +626,7 @@ public final class ControlPainting implements MouseListener,
         } else if (_event.getSource().equals(
                         Page.getInstance().getJlbl_painting())) {
             mouseReleasedPainting(_event);
-        } 
+        }
     }
     
     /**
@@ -686,6 +691,12 @@ public final class ControlPainting implements MouseListener,
                 CStatus.getInstance().deactivate();
                 Paint.getInstance().getTb_move().setActivated(true);
             }
+            break;
+        case Constants.CONTROL_PAINTING_INDEX_ERASE:
+
+
+//            mr_selection_line_destroy(_event);
+//            Picture.getInstance().deleteSelected();
             break;
 
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:

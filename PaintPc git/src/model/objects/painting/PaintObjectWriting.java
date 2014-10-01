@@ -631,11 +631,10 @@ public class PaintObjectWriting extends PaintObject {
         m.setValue(1, 2, _r.y + _r.height - _p.getY());
         String s4 = m.printMatrix();
         double [] factor4 = m.solve();
-        
 
+        //STEP 2
         int vorfactorX = (int) (Math.abs(_v.getX()) / _v.getX());
         int vorfactorY = (int) (Math.abs(_v.getY()) / _v.getX());
-        //STEP 2
         List<DPoint> ls = new List<DPoint>();
         ls.setSortASC();
         DPoint intersection1 = null, intersection2 = null, 
@@ -647,16 +646,17 @@ public class PaintObjectWriting extends PaintObject {
             int f1x = (int) (factor1[0] * _v.getX() * vorfactorX);
             int f1y = (int) (factor1[0] * _v.getY() * vorfactorY);
             //check whether suitable.
-            if (_r.y + _r.height  - (int) intersection1.getY() < 0
+            if (Double.isNaN(factor1[0]) ||
+                    _r.y + _r.height  - (int) intersection1.getY() < 0
                     || _r.y - (int) intersection1.getY() > 0
-                    || f1x < 0 || f1x > _v.getX() 
+                    || 
+                    f1x < 0 || f1x > _v.getX() 
                     || f1y < 0 || f1y > _v.getY()) {
                 intersection1 = null;
             } else {
                 if (_sortAbs) {
                     ls.insertSorted(intersection1, Math.abs(factor1[0]));
                 } else {
-
                     ls.insertSorted(intersection1, factor1[0]);
                 }
             }
@@ -668,16 +668,17 @@ public class PaintObjectWriting extends PaintObject {
             int f2x = (int) (factor2[0] * _v.getX() * vorfactorX);
             int f2y = (int) (factor2[0] * _v.getY() * vorfactorY);
             //check whether suitable.
-            if (_r.x + _r.width  - (int) intersection2.getX() < 0
+            if (Double.isNaN(factor2[0]) ||
+                    _r.x + _r.width  - (int) intersection2.getX() < 0
                     || _r.x - (int) intersection2.getX() > 0
-                    || f2x < 0 || f2x > _v.getX() 
+                    || 
+                    f2x < 0 || f2x > _v.getX() 
                     || f2y < 0 || f2y > _v.getY()) {
                 intersection2 = null;
             } else {
                 if (_sortAbs) {
                     ls.insertSorted(intersection2, Math.abs(factor2[0]));
                 } else {
-
                     ls.insertSorted(intersection2, (factor2[0]));
                 }
             }
@@ -689,16 +690,17 @@ public class PaintObjectWriting extends PaintObject {
             int f3x = (int) (factor3[0] * _v.getX() * vorfactorX);
             int f3y = (int) (factor3[0] * _v.getY() * vorfactorY);
             //check whether suitable.
-            if (_r.y + _r.height  - (int) intersection3.getY() < 0
+            if (Double.isNaN(factor3[0]) ||
+                    _r.y + _r.height  - (int) intersection3.getY() < 0
                     || _r.y - (int) intersection3.getY() > 0
-                    || f3x < 0 || f3x > _v.getX() 
+                    || 
+                    f3x < 0 || f3x > _v.getX() 
                     || f3y < 0 || f3y > _v.getY()) {
                 intersection3 = null;
             } else {
                 if (_sortAbs) {
                     ls.insertSorted(intersection3, Math.abs(factor3[0]));
                 } else {
-
                     ls.insertSorted(intersection3, (factor3[0]));
                 }
             }
@@ -712,16 +714,18 @@ public class PaintObjectWriting extends PaintObject {
             System.out.println(f4x);
             System.out.println(f4y);
             //check whether suitable.
-            if (_r.x + _r.width  - (int) intersection4.getX() < 0
+            if (Double.isNaN(factor4[0]) ||
+                    _r.x + _r.width  - (int) intersection4.getX() < 0
                     || _r.x - (int) intersection4.getX() > 0
-                    || f4x < 0 || f4x > _v.getX() 
+                    || 
+                    f4x < 0 || f4x > _v.getX() 
                     || f4y < 0 || f4y > _v.getY()) {
                 intersection4 = null;
             } else {
+                System.err.println("f4" + factor4[0]);
                 if (_sortAbs) {
                     ls.insertSorted(intersection4, Math.abs(factor4[0]));
                 } else {
-
                     ls.insertSorted(intersection4, (factor4[0]));
                 }
             }
@@ -738,7 +742,7 @@ public class PaintObjectWriting extends PaintObject {
             System.out.println(ls.getItemSortionIndex());
             ls.next();
         }
-        System.out.println(s + "\tsabs\t" + _sortAbs);
+        System.out.println("\tsabs\t" + _sortAbs);
         ls.toFirst();
         return ls;
     }

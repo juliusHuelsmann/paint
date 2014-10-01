@@ -18,9 +18,9 @@ import model.objects.painting.PaintObject;
 import model.objects.painting.PaintObjectImage;
 import model.objects.painting.PaintObjectWriting;
 import model.objects.painting.Picture;
+import model.settings.Status;
 import model.util.DPoint;
 import model.util.list.List;
-import settings.Status;
 
 
 /**

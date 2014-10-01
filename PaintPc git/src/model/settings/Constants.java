@@ -1,5 +1,5 @@
 //package declaration
-package settings;
+package model.settings;
 
 import java.awt.Dimension;
 

@@ -16,10 +16,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import model.settings.Constants;
 import model.util.paint.Utils;
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
-import settings.Constants;
 
 /**
  * Class item pen selection, contains one pen which can be selected.

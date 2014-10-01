@@ -11,9 +11,9 @@ import javax.swing.ImageIcon;
 
 import control.util.CItem;
 import model.objects.painting.Picture;
+import model.settings.Constants;
+import model.settings.Status;
 import model.util.paint.Utils;
-import settings.Constants;
-import settings.Status;
 import view.View;
 import view.forms.Page;
 import view.forms.Tabs;

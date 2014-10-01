@@ -9,13 +9,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import atest.BufferedViewer;
-import settings.Status;
+import start.test.BufferedViewer;
 import view.forms.tabs.PaintObjects;
 import view.util.BorderThread;
 import model.objects.painting.PaintObject;
 import model.objects.painting.Picture;
 import model.objects.pen.special.PenSelection;
+import model.settings.Status;
 import model.util.paint.Utils;
 
 

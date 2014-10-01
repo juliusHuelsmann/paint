@@ -3,7 +3,7 @@ package model.util.solveLGS;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import settings.Status;
+import model.settings.Status;
 import model.util.list.List;
 
 

@@ -4,7 +4,7 @@ package model.util.list;
 //import declaration
 import java.io.Serializable;
 
-import settings.Status;
+import model.settings.Status;
 
 /**
  * Double linked list (not a ring - list).

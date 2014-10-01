@@ -7,8 +7,8 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.border.LineBorder;
 
-import settings.Status;
-import settings.ViewSettings;
+import model.settings.Status;
+import model.settings.ViewSettings;
 import view.View;
 import view.forms.tabs.Paint;
 import view.util.Item1PenSelection;

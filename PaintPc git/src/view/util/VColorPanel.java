@@ -12,8 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-import settings.TextFactory;
-import settings.ViewSettings;
+import model.settings.TextFactory;
+import model.settings.ViewSettings;
 import control.util.CColorPanel;
 
 

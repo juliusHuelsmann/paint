@@ -4,9 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 import javax.swing.JCheckBox;
-import settings.Constants;
-import settings.Status;
+
+import model.settings.Constants;
+import model.settings.Status;
 import view.util.Item1Button;
 
 /**

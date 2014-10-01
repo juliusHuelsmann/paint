@@ -1,5 +1,5 @@
 /**
  * Test packages.
  */
-package atest;
+package start.test;
 

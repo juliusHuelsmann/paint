@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import settings.ViewSettings;
+import model.settings.ViewSettings;
 import control.util.CItemAufklappen;
 
 

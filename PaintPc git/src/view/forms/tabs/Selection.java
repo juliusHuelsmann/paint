@@ -13,11 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import model.settings.Status;
+import model.settings.ViewSettings;
 import control.tabs.CPaintStatus;
 import control.tabs.CTabSelection;
 import control.tabs.CPaintVisualEffects;
-import settings.Status;
-import settings.ViewSettings;
 import view.util.Item1Menu;
 import view.util.Item1Button;
 import view.util.VColorPanel;

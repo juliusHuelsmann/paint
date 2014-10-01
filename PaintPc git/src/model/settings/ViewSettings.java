@@ -1,5 +1,5 @@
 //package declaration
-package settings;
+package model.settings;
 
 //import declarations
 import java.awt.Color;

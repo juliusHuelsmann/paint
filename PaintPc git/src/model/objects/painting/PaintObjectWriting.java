@@ -8,12 +8,12 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JOptionPane;
 
-import settings.Status;
 import view.View;
 import view.forms.Page;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.PenKuli;
 import model.objects.pen.special.PenSelection;
+import model.settings.Status;
 import model.util.DPoint;
 import model.util.Util;
 import model.util.list.List;

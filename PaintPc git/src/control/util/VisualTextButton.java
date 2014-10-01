@@ -4,7 +4,8 @@ package control.util;
 //import declarations
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import settings.ViewSettings;
+
+import model.settings.ViewSettings;
 import view.util.Item1Menu;
 import view.util.Item1Button;
 import view.util.VButtonWrapper;

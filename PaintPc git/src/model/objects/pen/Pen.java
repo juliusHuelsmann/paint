@@ -13,8 +13,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import settings.Constants;
 import model.objects.painting.PaintObjectWriting;
+import model.settings.Constants;
 import model.util.DPoint;
 import model.util.list.List;
 import model.util.solveLGS.Matrix;

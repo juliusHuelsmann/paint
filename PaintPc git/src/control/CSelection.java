@@ -8,8 +8,8 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JButton;
 
 import model.objects.painting.Picture;
+import model.settings.Status;
 import model.util.DPoint;
-import settings.Status;
 import view.forms.Page;
 
 

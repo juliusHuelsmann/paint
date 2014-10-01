@@ -14,14 +14,15 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import model.settings.Constants;
+import model.settings.Status;
+import model.settings.TextFactory;
+import model.settings.ViewSettings;
 import control.ControlPainting;
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import control.tabs.CPaintSelection;
-import settings.Constants;
-import settings.Status;
-import settings.TextFactory;
-import settings.ViewSettings;
+import view.forms.Tabs;
 import view.util.Item1Menu;
 import view.util.Item1PenSelection;
 import view.util.VColorPanel;
@@ -195,9 +196,6 @@ public final class Paint extends JPanel {
 	        insertTrennung(tb_cut.getWidth() + tb_cut.getX() 
 	                + ViewSettings.DISTANCE_BEFORE_LINE, tb_copy.getY(), 0, 
 	                _paint);
-
-	        insertInformation("Zwischenablage", _x, 
-	                jlbl_separation[0].getX(), 0, _paint);
 	    } else {
 
             tb_paste.setLocation(
@@ -217,7 +215,6 @@ public final class Paint extends JPanel {
             insertTrennung(tb_cut.getX() - ViewSettings.DISTANCE_BEFORE_LINE, 
                     tb_copy.getY() + tb_copy.getHeight() - hundredFourtyFife, 
                     0, _paint);
-
          }
 	    
 	    
@@ -917,7 +914,7 @@ public final class Paint extends JPanel {
 	        super.add(this.jlbl_separation[_locInArray]);
 	        
 	    }
-	    final int number = 145;
+	    final int number = tb_cut.getHeight() + tb_cut.getY() + 20;
         this.jlbl_separation[_locInArray].setBounds(_x, _y, 1, number);
 	}
 	
@@ -952,7 +949,8 @@ public final class Paint extends JPanel {
 
 		if (Status.isNormalRotation()) {
 
-            final int number = 135;
+		    final int distance = 5;
+            final int number = tb_cut.getHeight() + tb_cut.getY() + distance;
             final int number2 = 15;
 	        jlbl_information[_locationInArray].setBounds(
 	                _x1, number, _x2 - _x1, number2);

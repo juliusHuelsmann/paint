@@ -3,7 +3,8 @@ package view.util;
 
 //import declaration
 import javax.swing.JButton;
-import settings.Error;
+
+import model.settings.Error;
 
 
 /**

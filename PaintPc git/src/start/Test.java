@@ -1,11 +1,12 @@
 package start;
 
 import java.awt.Color;
+
 import model.objects.painting.Picture;
 import model.objects.pen.normal.PenKuli;
+import model.settings.Constants;
+import model.settings.Settings;
 import model.util.DPoint;
-import settings.Constants;
-import settings.Settings;
 import view.forms.Page;
 
 /**

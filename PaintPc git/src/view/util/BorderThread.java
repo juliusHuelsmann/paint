@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 
 import model.objects.painting.PaintObject;
 import model.objects.pen.special.PenSelection;
-import settings.ViewSettings;
+import model.settings.ViewSettings;
 import view.forms.Page;
 
 /**

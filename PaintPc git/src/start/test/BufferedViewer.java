@@ -1,4 +1,4 @@
-package atest;
+package start.test;
 
 import java.awt.image.BufferedImage;
 

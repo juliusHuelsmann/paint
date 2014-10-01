@@ -1,4 +1,4 @@
-package settings;
+package model.settings;
 
 import java.awt.Color;
 import java.awt.Dimension;

@@ -10,10 +10,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import model.settings.Constants;
+import model.settings.ViewSettings;
 import control.ControlPainting;
 import control.util.MousePositionTracker;
-import settings.Constants;
-import settings.ViewSettings;
 import view.View;
 import view.util.Item1Button;
 

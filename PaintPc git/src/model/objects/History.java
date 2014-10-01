@@ -3,7 +3,7 @@ package model.objects;
 
 import java.util.Observable;
 
-import settings.Status;
+import model.settings.Status;
 import model.util.list.List;
 
 

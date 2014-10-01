@@ -4,9 +4,10 @@ package model.objects.pen.special;
 //import declarations
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import settings.Constants;
-import settings.ViewSettings;
+
 import model.objects.pen.Pen;
+import model.settings.Constants;
+import model.settings.ViewSettings;
 import model.util.DPoint;
 
 

@@ -1,4 +1,4 @@
-package settings;
+package model.settings;
 
 /**
  * class contains the independant settings.

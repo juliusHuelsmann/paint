@@ -20,7 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
-import settings.Status;
+import model.settings.Status;
 
 /**
  * 

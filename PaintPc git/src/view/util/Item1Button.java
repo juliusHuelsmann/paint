@@ -14,10 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import model.settings.Status;
+import model.settings.ViewSettings;
 import model.util.paint.Utils;
 import control.util.VisualTextButton;
-import settings.Status;
-import settings.ViewSettings;
 
 /**
  * TextButton which displays both text and icon.

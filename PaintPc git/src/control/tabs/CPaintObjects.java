@@ -7,16 +7,18 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
+
 import model.objects.PictureOverview;
 import model.objects.painting.PaintObject;
 import model.objects.painting.PaintObjectWriting;
 import model.objects.painting.Picture;
 import model.objects.pen.Pen;
+import model.settings.Constants;
+import model.settings.Status;
 import model.util.DPoint;
 import model.util.list.List;
-import settings.Constants;
-import settings.Status;
 import view.forms.Page;
 import view.forms.tabs.PaintObjects;
 import view.util.Item1Button;

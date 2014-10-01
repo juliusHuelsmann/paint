@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import model.objects.painting.PaintObject;
 import model.objects.painting.PaintObjectWriting;
 import model.objects.painting.Picture;
-import settings.Constants;
+import model.settings.Constants;
 import view.forms.tabs.Selection;
 
 /**

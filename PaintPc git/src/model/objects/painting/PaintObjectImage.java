@@ -6,10 +6,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import model.settings.Error;
+import model.settings.Status;
 import model.util.DPoint;
 import model.util.paint.Utils;
-import settings.Error;
-import settings.Status;
 
 
 /**

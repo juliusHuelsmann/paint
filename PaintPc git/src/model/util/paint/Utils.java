@@ -11,8 +11,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import model.objects.painting.PaintBI;
-import settings.Status;
-import settings.ViewSettings;
+import model.settings.Status;
+import model.settings.ViewSettings;
 import view.forms.Page;
 
 /**

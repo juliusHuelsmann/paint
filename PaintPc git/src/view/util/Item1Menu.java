@@ -11,11 +11,11 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
-import settings.ViewSettings;
 import view.forms.Page;
 import view.forms.Tabs;
 import control.tabs.CPaintStatus;
 import control.util.CItem;
+import model.settings.ViewSettings;
 import model.util.list.List;
 
 /**

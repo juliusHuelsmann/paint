@@ -19,13 +19,13 @@ import javax.swing.ImageIcon;
 
 import control.CSelection;
 import control.tabs.CTabSelection;
-import settings.Error;
-import settings.Status;
 import view.ViewVorschau;
 import view.forms.Page;
 import model.objects.PictureOverview;
 import model.objects.pen.Pen;
 import model.objects.pen.special.PenSelection;
+import model.settings.Error;
+import model.settings.Status;
 import model.util.DPoint;
 import model.util.list.List;
 

@@ -9,8 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import settings.Status;
-import settings.ViewSettings;
+import model.settings.Status;
+import model.settings.ViewSettings;
 
 /**
  * 

@@ -3,8 +3,9 @@ package start;
 
 //import declarations
 import java.io.File;
-import settings.Status;
+
 import model.objects.painting.Picture;
+import model.settings.Status;
 import control.ControlPainting;
 
 

@@ -4,8 +4,8 @@ package view.forms;
 //import declarations
 import java.awt.Toolkit;
 
+import model.settings.ViewSettings;
 import control.util.CItem;
-import settings.ViewSettings;
 import view.forms.tabs.Insert;
 import view.forms.tabs.Paint;
 import view.forms.tabs.PaintObjects;

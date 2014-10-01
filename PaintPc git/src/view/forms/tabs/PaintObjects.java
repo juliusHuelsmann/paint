@@ -16,9 +16,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import model.objects.PictureOverview;
+import model.settings.Status;
+import model.settings.ViewSettings;
 import control.tabs.CPaintObjects;
-import settings.Status;
-import settings.ViewSettings;
 import view.util.VScrollPane;
 import view.util.Item1Button;
 

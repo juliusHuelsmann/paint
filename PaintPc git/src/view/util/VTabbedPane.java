@@ -11,14 +11,16 @@ import java.awt.event.MouseMotionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import model.settings.Error;
+import model.settings.Status;
+import model.settings.ViewSettings;
 import control.util.CTabbedPane;
-import settings.Error;
-import settings.Status;
-import settings.ViewSettings;
 import view.forms.Page;
 
 

@@ -1,7 +1,7 @@
 package model.objects;
 
-import settings.Status;
-import settings.ViewSettings;
+import model.settings.Status;
+import model.settings.ViewSettings;
 import view.forms.Page;
 
 

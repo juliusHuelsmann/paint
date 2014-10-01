@@ -3,7 +3,6 @@ package model.objects.painting;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -16,6 +15,7 @@ import model.objects.pen.Pen;
 import model.objects.pen.normal.PenKuli;
 import model.objects.pen.special.PenSelection;
 import model.util.DPoint;
+import model.util.Util;
 import model.util.list.List;
 import model.util.solveLGS.Matrix;
 
@@ -345,126 +345,115 @@ public class PaintObjectWriting extends PaintObject {
     /**
      * {@inheritDoc}
      */
-    @Override public final PaintObject[][] separate(final Rectangle _r) {
+    @Override public final synchronized PaintObject[][] separate(
+            final Rectangle _r) {
 
-        //TODO: kann sein dass es pen probleme gibt wenn der pen eines
-        //separierten PaintObjects geaendert wurde.
-        List <PaintObjectWriting>   
-        ls_pow_outside = new List<PaintObjectWriting>(), 
+        //initialize lists and go to the beginning of the point list.
+        List <PaintObjectWriting> 
+        ls_pow_outside = new List<PaintObjectWriting>(),
         ls_pow_inside = new List<PaintObjectWriting>();
-        
-        //The last element that was inside.
-        boolean lInside;
         ls_point.toFirst();
-
-        //initialize the lInside Element
+        
+        //Initialize current Point and verify whether it is outside or inside.
+        //Insert it into the new created PaintObject.
         DPoint pc = ls_point.getItem();
-        lInside = (pc.getX() > _r.x && pc.getX() < _r.x + _r.width 
-                && pc.getY() > _r.y && pc.getY() < _r.y + _r.height);
-
+        boolean lInside = (pc.getX() >= _r.x && pc.getX() <= _r.x + _r.width 
+                && pc.getY() >= _r.y && pc.getY() <= _r.y + _r.height);
         PaintObjectWriting pow_current = new PaintObjectWriting(getElementId(), 
                 getPen());
         pow_current.addPoint(new DPoint(pc));
         
-                
         while (!ls_point.isBehind()) {
             
-           DPoint pcNew = ls_point.getItem();
-           boolean cInside = (pcNew.getX() > _r.x && pcNew.getX() 
-                   < _r.x + _r.width && pcNew.getY() > _r.y 
-                   && pcNew.getY() < _r.y + _r.height);
+            //Initialize current Point and verify whether it is outside or 
+            //inside the rectangle
+            DPoint pcNew = ls_point.getItem();
+            boolean cInside = (pcNew.getX() >= _r.x && pcNew.getX() 
+                   <= _r.x + _r.width && pcNew.getY() >= _r.y 
+                   && pcNew.getY() <= _r.y + _r.height);
             
-            if (cInside) {
-            
-                if (lInside) {
+            if (cInside && lInside) {
 
-                    pow_current.addPoint(new DPoint(pcNew));
-                } else {
+                pow_current.addPoint(new DPoint(pcNew));
+            } else if (cInside) {
+                //calculate borderDPoint
+                DPoint pnt_border = findIntersection(_r, pc, new DPoint(
+                        pcNew.getX() - pc.getX(),
+                        pcNew.getY() - pc.getY()));
+               
 
-                    //calculate borderDPoint
-                    DPoint pnt_border = findIntersection(_r, pc, new DPoint(
-                            pcNew.getX() - pc.getX(),
-                            pcNew.getY() - pc.getY()));
-                   
-
-                    //add the borderDPoint to the last PaintObject and insert 
-                    //paintObject to list
-                    if (pnt_border != null) {
-                        pow_current.addPoint(new DPoint(pnt_border));
-                    }
-                    ls_pow_outside.insertBehind((pow_current));
-                    
-                    //crate new PaintObject and add the borderDPoint to the 
-                    //new PaintObject
-                    pow_current = new PaintObjectWriting(getElementId(), 
-                            getPen());
-                    if (pnt_border != null) {
-                        pow_current.addPoint(new DPoint(pnt_border));
-                    }
-                    
-                    //add new DPoint to the PaintObject
-                    pow_current.addPoint(new DPoint(pcNew));
+                //add the borderDPoint to the last PaintObject and insert 
+                //paintObject to list
+                if (pnt_border != null) {
+                    pow_current.addPoint(new DPoint(pnt_border));
+                }
+                ls_pow_outside.insertBehind((pow_current));
+                
+                //crate new PaintObject and add the borderDPoint to the 
+                //new PaintObject
+                pow_current = new PaintObjectWriting(getElementId(), getPen());
+                if (pnt_border != null) {
+                    pow_current.addPoint(new DPoint(pnt_border));
                 }
                 
-            } else {
+                //add new DPoint to the PaintObject
+                pow_current.addPoint(new DPoint(pcNew));
+            
+            } else if (!cInside && lInside) {
 
-                if (lInside) {
 
-                    //calculate borderDPoint
-                    DPoint pnt_border = findIntersection(_r, pc, new DPoint(
-                            pcNew.getX() - pc.getX(), 
-                            pcNew.getY() - pc.getY()));
-                   
-                    //add the borderDPoint to the last PaintObject and insert 
-                    //paintObject to list
-                    if (pnt_border != null) {
-                        pow_current.addPoint(new DPoint(pnt_border));
-                    }
-                    ls_pow_inside.insertBehind(pow_current);
-                    
-                    //crate new PaintObject and add the borderDPoint to the 
-                    //new PaintObject
-                    pow_current = new PaintObjectWriting(getElementId(), 
-                            getPen());
-                    if (pnt_border != null) {
-                        pow_current.addPoint(new DPoint(pnt_border));
-                    }
-                    
-                    //add new DPoint to the PaintObject
+                //calculate borderDPoint
+                DPoint pnt_border = findIntersection(_r, pc, new DPoint(
+                        pcNew.getX() - pc.getX(), 
+                        pcNew.getY() - pc.getY()));
+               
+                //add the borderDPoint to the last PaintObject and insert 
+                //paintObject to list
+                if (pnt_border != null) {
+                    pow_current.addPoint(new DPoint(pnt_border));
+                }
+                ls_pow_inside.insertBehind(pow_current);
+                
+                //crate new PaintObject and add the borderDPoint to the 
+                //new PaintObject
+                pow_current = new PaintObjectWriting(getElementId(), 
+                        getPen());
+                if (pnt_border != null) {
+                    pow_current.addPoint(new DPoint(pnt_border));
+                }
+                
+                //add new DPoint to the PaintObject
+                pow_current.addPoint(new DPoint(pcNew));
+            
+            } else if (!cInside) {
+                
+                //if both items are outside the rectangle, this does not
+                //directly indicate that the line between them does
+                //not cross the selected rectangle. Example:
+                //       _____          Thus if the equation x1 + l * dX
+                //  x1  |     |  x2     has got (two) solutions with l in
+                //      |_____|         (0,1) we have to treat this case
+                //differently.
+                Rectangle d = findSilentIntersection(_r, pc, new DPoint(
+                        pcNew.getX() - pc.getX(), pcNew.getY() - pc.getY()));
+                if (d == null) {
                     pow_current.addPoint(new DPoint(pcNew));
                 } else {
 
+                    System.out.println("hier bin ich");
+                    pow_current.addPoint(new DPoint(d.x, d.y));
+                    ls_pow_outside.insertBehind(pow_current);
                     
-                    //if both items are outside the rectangle, this does not
-                    //directly indicate that the line between them does
-                    //not cross the selected rectangle. Example:
-                    //       _____          Thus if the equation x1 + l * dX
-                    //  x1  |     |  x2     has got (two) solutions with l in
-                    //      |_____|         (0,1) we have to treat this case
-                    //differently.
-                    Rectangle d = findSilentIntersection(_r, pc, new DPoint(
-                            pcNew.getX() - pc.getX(), 
-                            pcNew.getY() - pc.getY()));
-                    if (d == null) {
-                        pow_current.addPoint(new DPoint(pcNew));
-                    } else {
+                    pow_current = new PaintObjectWriting(getElementId(), 
+                            getPen());
+                    pow_current.addPoint(new DPoint(d.x, d.y));
+                    pow_current.addPoint(new DPoint(d.width, d.height));
+                    ls_pow_inside.insertBehind(pow_current);
 
-                        System.out.println("hier bin ich");
-                        pow_current.addPoint(new DPoint(d.x, d.y));
-                        ls_pow_outside.insertBehind(pow_current);
-                        
-                        pow_current = new PaintObjectWriting(getElementId(), 
-                                getPen());
-                        pow_current.addPoint(new DPoint(d.x, d.y));
-                        pow_current.addPoint(new DPoint(d.width, d.height));
-                        ls_pow_inside.insertBehind(pow_current);
-
-                        pow_current = new PaintObjectWriting(getElementId(), 
-                                getPen());
-                        pow_current.addPoint(new DPoint(d.width, d.height));
-                        pow_current.addPoint(new DPoint(pcNew));
-                    }
-                    
+                    pow_current = new PaintObjectWriting(getElementId(), 
+                            getPen());
+                    pow_current.addPoint(new DPoint(d.width, d.height));
+                    pow_current.addPoint(new DPoint(pcNew));
                 }
             }
 
@@ -480,45 +469,12 @@ public class PaintObjectWriting extends PaintObject {
             ls_pow_outside.insertBehind(pow_current); 
         }
 
-        
         /*
          * Transform lists to arrays
          */
-        int lengthInside = 0, lengthOutside = 0;
-        ls_pow_inside.toFirst();
-        ls_pow_outside.toFirst();
-        
-        //it is necessary to double check behind and empty because an empty
-        //list returns the length of 1 otherwise.
-        while (!ls_pow_inside.isBehind() && !ls_pow_inside.isEmpty()) {
-            ls_pow_inside.next();
-            lengthInside++;
-        }
-        
-        while (!ls_pow_outside.isBehind() && !ls_pow_outside.isEmpty()) {
-            ls_pow_outside.next();
-            lengthOutside++;
-        }
         PaintObjectWriting [][] pow = new PaintObjectWriting[2][2];
-        pow[0] = new PaintObjectWriting[lengthOutside];
-        pow[1] = new PaintObjectWriting[lengthInside];
-
-        ls_pow_inside.toFirst();
-        ls_pow_outside.toFirst();
-        int index = 0;
-        while (!ls_pow_inside.isBehind() && !ls_pow_inside.isEmpty()) {
-            pow[1][index] = ls_pow_inside.getItem();
-            ls_pow_inside.next();
-            index++;
-        }
-
-        index = 0;
-        while (!ls_pow_outside.isBehind() && !ls_pow_outside.isEmpty()) {
-            pow[0][index] = ls_pow_outside.getItem();
-            ls_pow_outside.next();
-            index++;
-        }
-        
+        pow[0] = Util.lsToArray(ls_pow_outside);
+        pow[1] = Util.lsToArray(ls_pow_inside);
         
         return pow;
     }
@@ -538,9 +494,11 @@ public class PaintObjectWriting extends PaintObject {
             final Rectangle _r, final DPoint _p, final DPoint _v) {
 
         List<DPoint> ls = findIntersections(_r, _p, _v, false);
+        System.out.println("jetzt hier");
         ls.toFirst();
-        if (!ls.isEmpty() || ls.getItem() != null) {
+        if (!ls.isEmpty() && ls.getItem() != null) {
             
+            System.out.println("\ndrin hier werden die Lambdas kommen:");
             double lambda1 = ls.getItemSortionIndex();
             DPoint p1 = ls.getItem();
             System.out.println("lambda1" + lambda1);
@@ -684,9 +642,13 @@ public class PaintObjectWriting extends PaintObject {
             intersection1 = new DPoint(
                     (_p.getX() + factor1[0] * _v.getX()), 
                     (_p.getY() + factor1[0] * _v.getY()));
+            int f1x = (int) (factor1[0] * _v.getX());
+            int f1y = (int) (factor1[0] * _v.getY());
             //check whether suitable.
             if (_r.y + _r.height  - (int) intersection1.getY() < 0
-                    || _r.y - (int) intersection1.getY() > 0) {
+                    || _r.y - (int) intersection1.getY() > 0
+                    || f1x < 0 || f1x > _v.getX() 
+                    || f1y < 0 || f1y > _v.getY()) {
                 intersection1 = null;
             } else {
                 if (_sortAbs) {
@@ -701,9 +663,12 @@ public class PaintObjectWriting extends PaintObject {
             intersection2 = new DPoint(
                     (_p.getX() + factor2[0] * _v.getX()), 
                     (_p.getY() + factor2[0] * _v.getY()));
+            int f2x = (int) (factor2[0]);
+            int f2y = (int) (factor2[0]);
             //check whether suitable.
             if (_r.x + _r.width  - (int) intersection2.getX() < 0
-                    || _r.x - (int) intersection2.getX() > 0) {
+                    || _r.x - (int) intersection2.getX() > 0
+                    || f2x < 0 || f2x > 1 || f2y < 0 || f2y > 1) {
                 intersection2 = null;
             } else {
                 if (_sortAbs) {
@@ -718,9 +683,12 @@ public class PaintObjectWriting extends PaintObject {
             intersection3 = new DPoint(
                     (_p.getX() + factor3[0] * _v.getX()), 
                     (_p.getY() + factor3[0] * _v.getY()));
+            int f3x = (int) (factor3[0]);
+            int f3y = (int) (factor3[0]);
             //check whether suitable.
             if (_r.y + _r.height  - (int) intersection3.getY() < 0
-                    || _r.y - (int) intersection3.getY() > 0) {
+                    || _r.y - (int) intersection3.getY() > 0
+                    || f3x < 0 || f3x > 1 || f3y < 0 || f3y > 1) {
                 intersection3 = null;
             } else {
                 if (_sortAbs) {
@@ -735,9 +703,14 @@ public class PaintObjectWriting extends PaintObject {
             intersection4 = new DPoint(
                     (_p.getX() + factor4[0] * _v.getX()), 
                     (_p.getY() + factor4[0] * _v.getY()));
+            int f4x = (int) (factor4[0]);
+            int f4y = (int) (factor4[0]);
+            System.out.println(f4x);
+            System.out.println(f4y);
             //check whether suitable.
             if (_r.x + _r.width  - (int) intersection4.getX() < 0
-                    || _r.x - (int) intersection4.getX() > 0) {
+                    || _r.x - (int) intersection4.getX() > 0
+                    || f4x < 0 || f4x > 1 || f4y < 0 || f4y > 1) {
                 intersection4 = null;
             } else {
                 if (_sortAbs) {
@@ -753,8 +726,15 @@ public class PaintObjectWriting extends PaintObject {
         //each step of its solution.
         String s = s1 + s2 + s3 + s4;
         s = s + "\n";
-        System.out.println(s);
         
+        ls.toFirst();
+        while (!ls.isBehind() && !ls.isEmpty()) {
+            
+            System.out.println(ls.getItemSortionIndex());
+            ls.next();
+        }
+        System.out.println(s + "\tsabs\t" + _sortAbs);
+        ls.toFirst();
         return ls;
     }
     
@@ -794,6 +774,32 @@ public class PaintObjectWriting extends PaintObject {
             return null;
             
         } else {
+            
+            if (ls.getItemSortionIndex() < 0 
+                    || ls.getItemSortionIndex() > 1) {
+                ls.next();
+            }
+            
+            //if the point is at the border of the rectangle the nearest 
+            //intersection is the point itself. Then We do not have to find
+            //the nearest intersection but the second one.
+            int dX = (int) (ls.getItemSortionIndex() * _v.getX()), 
+                    dY = (int) (ls.getItemSortionIndex() * _v.getY());
+            if (dX == 0 && dY == 0) {
+                ls.next();
+                System.out.println("next");
+            } else if (dX == 1 && dY == 1) {
+                ls.next();
+            }
+            System.out.println(ls.getItemSortionIndex() + "|" + "\n" 
+            + dX + ".." + dY + "ueberpruefung"
+                    + "exakt" + ls.getItemSortionIndex() * _v.getX() + ".." 
+                    + ls.getItemSortionIndex() * _v.getY());
+            verifyPnt(new DPoint(_p.getX() 
+                    + ls.getItemSortionIndex() * _v.getX(),  
+                    _p.getY() + ls.getItemSortionIndex() * _v.getY()), Color.red);
+            
+            
             return ls.getItem();
         }
     }

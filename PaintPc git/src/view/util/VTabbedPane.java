@@ -403,7 +403,7 @@ public class VTabbedPane extends JPanel {
                             + (oldVisibleHeight - startHeight2) * i / max);
                     
                     try {
-                        Thread.sleep(2);
+                        Thread.sleep(1);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -628,12 +628,12 @@ public class VTabbedPane extends JPanel {
                                     * percent / max,
                                     jpnl_stuff[i].getY());
                             jpnl_stuff[openTab].repaint();
-                            try {
-                                Thread.sleep(1);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                                setSize(getWidth(), oldHeight);
-                            }
+                        }
+                        try {
+                            Thread.sleep(1);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            setSize(getWidth(), oldHeight);
                         }
                     }
                     for (int i = 0; i < jbtn_stuffHeadline.length; i++) {

@@ -13,9 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import control.singleton.CTabSelection;
-import control.singleton.CStatus;
-import control.singleton.CVisualEffects;
+import control.tabs.CPaintStatus;
+import control.tabs.CTabSelection;
+import control.tabs.CPaintVisualEffects;
 import settings.Status;
 import settings.ViewSettings;
 import view.util.Item1Menu;
@@ -115,7 +115,7 @@ public final class Selection extends JPanel {
         //the first color for the first pen
         tb_color = new Item1Button(null);
         tb_color.setOpaque(true);
-        tb_color.addMouseListener(CStatus.getInstance());
+        tb_color.addMouseListener(CPaintStatus.getInstance());
         tb_color.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black), new LineBorder(Color.white)));
         tb_color.setLocation(_x, ViewSettings.DISTANCE_BETWEEN_ITEMS);
@@ -141,8 +141,8 @@ public final class Selection extends JPanel {
             jbtn_colors[i].setOpaque(true);
             jbtn_colors[i].addActionListener(CTabSelection.getInstance());
             jbtn_colors[i].addMouseListener(
-                    CStatus.getInstance());
-            jbtn_colors[i].addMouseListener(CVisualEffects.getInstance());
+                    CPaintStatus.getInstance());
+            jbtn_colors[i].addMouseListener(CPaintVisualEffects.getInstance());
             jbtn_colors[i].setBorder(BorderFactory.createCompoundBorder(
                     new LineBorder(Color.black), new LineBorder(Color.white)));
             super.add(jbtn_colors[i]);

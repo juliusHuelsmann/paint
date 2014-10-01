@@ -15,7 +15,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 import model.util.paint.Utils;
-import control.singleton.VisualTextButton;
+import control.util.VisualTextButton;
 import settings.Status;
 import settings.ViewSettings;
 

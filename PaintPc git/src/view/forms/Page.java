@@ -16,8 +16,8 @@ import settings.Status;
 import settings.ViewSettings;
 import view.View;
 import view.util.VScrollPane;
+import control.CSelection;
 import control.ControlPainting;
-import control.singleton.CSelection;
 
 /**
  * 

@@ -17,8 +17,8 @@ import java.util.Observable;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import control.singleton.CTabSelection;
-import control.singleton.CSelection;
+import control.CSelection;
+import control.tabs.CTabSelection;
 import settings.Error;
 import settings.Status;
 import view.ViewVorschau;
@@ -111,6 +111,34 @@ public final class Picture extends Observable {
 	}
 	
 	/**
+     * Method for creating a new PaintObjectImage which is not directly added
+     * to a list but returned to the demanding method.
+     * 
+     * @param _bi the BufferedImage of which the new created PaintObjectImage
+     * consists
+     * 
+     * @return the new created PaintObjectImage.
+     */
+    public PaintObjectImage createPOI(final BufferedImage _bi) {
+        return new PaintObjectImage(currentId, _bi);
+        
+    }
+
+    /**
+     * Method for creating a new PaintObjectWriting which is not directly added
+     * to a list but returned to the demanding method.
+     * 
+     * 
+     * @param _pen the pen which will print the new created PaintObjectWriting
+     *
+     * @return the new created PaintObjectWriting
+     */
+    public PaintObjectWriting createPOW(final Pen _pen) {
+        return new PaintObjectWriting(currentId, _pen);
+        
+    }
+
+    /**
      * adds a new PaintObject to list.
      */
     public void addPaintObjectWrinting() {
@@ -373,37 +401,6 @@ public final class Picture extends Observable {
 	
 
     /**
-     * Method for creating a new PaintObjectWriting which is not directly added
-     * to a list but returned to the demanding method.
-     * 
-     * 
-     * @param _pen the pen which will print the new created PaintObjectWriting
-     *
-     * @return the new created PaintObjectWriting
-     */
-    public PaintObjectWriting createPOW(final Pen _pen) {
-        return new PaintObjectWriting(currentId, _pen);
-        
-    }
-    
-    
-    /**
-     * Method for creating a new PaintObjectImage which is not directly added
-     * to a list but returned to the demanding method.
-     * 
-     * @param _bi the BufferedImage of which the new created PaintObjectImage
-     * consists
-     * 
-     * @return the new created PaintObjectImage.
-     */
-    public PaintObjectImage createPOI(final BufferedImage _bi) {
-        return new PaintObjectImage(currentId, _bi);
-        
-    }
-	
-	
-	
-	/**
 	 * adds a Point to current PaintObject.
 	 * @param _pnt the point which is to be added.
 	 */

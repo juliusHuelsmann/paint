@@ -1,5 +1,5 @@
 //package declaration
-package control.singleton;
+package control.util;
 
 //import declarations
 import java.awt.event.MouseEvent;

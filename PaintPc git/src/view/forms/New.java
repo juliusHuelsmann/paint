@@ -3,13 +3,15 @@ package view.forms;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+
 import control.ControlPainting;
-import control.singleton.MousePositionTracker;
+import control.util.MousePositionTracker;
 import settings.Constants;
 import settings.ViewSettings;
 import view.View;

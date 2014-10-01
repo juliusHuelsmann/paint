@@ -1,4 +1,4 @@
-package control.singleton;
+package control.tabs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,12 +14,12 @@ import view.util.Item1Button;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class PaintSelection implements MouseListener, ActionListener {
+public final class CPaintSelection implements MouseListener, ActionListener {
 
 	/**
 	 * the only instance of this class.
 	 */
-	private static PaintSelection instance = null;
+	private static CPaintSelection instance = null;
 
 	/*
 	 * saved values
@@ -46,7 +46,7 @@ public final class PaintSelection implements MouseListener, ActionListener {
      * @param _jcb_image JCheckBox
      * @param _jcb_separated JCheckBox
 	 */
-	private PaintSelection(
+	private CPaintSelection(
             final JCheckBox _jcb_whole, 
             final JCheckBox _jcb_separated, final JCheckBox _jcb_image,
             final Item1Button _tb_line, final Item1Button _tb_curve,
@@ -84,7 +84,7 @@ public final class PaintSelection implements MouseListener, ActionListener {
      * @param _jcb_separated JCheckBox
 	 * @return the only instance of this class.
 	 */
-	public static PaintSelection getInstance(
+	public static CPaintSelection getInstance(
 			final JCheckBox _jcb_whole, 
 			final JCheckBox _jcb_separated, final JCheckBox _jcb_image,
 			final Item1Button _tb_line, final Item1Button _tb_curve,
@@ -92,7 +92,7 @@ public final class PaintSelection implements MouseListener, ActionListener {
 
 	    //if class is not instanced yet instantiate
 		if (instance == null) {
-			instance = new PaintSelection(
+			instance = new CPaintSelection(
 					_jcb_whole, _jcb_separated, _jcb_image,
 					_tb_line, _tb_curve, _tb_magic);
 		}

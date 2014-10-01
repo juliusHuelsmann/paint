@@ -24,9 +24,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import control.singleton.CSelection;
-import control.singleton.CStatus;
-import control.singleton.CVisualEffects;
+import control.tabs.CPaintStatus;
+import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
 import model.objects.Zoom;
 import model.objects.painting.PaintObject;
@@ -85,6 +84,11 @@ public final class ControlPainting implements MouseListener,
      */
     private static Robot robot;
 
+    /**
+     * The thread for moving at the page.
+     */
+    private Thread thrd_move;
+    
     /**
      * empty utility class Constructor.
      */
@@ -145,8 +149,8 @@ public final class ControlPainting implements MouseListener,
             
             // tell all the controller classes to start to perform
             this.startPerform = true;
-            CStatus.getInstance().initialize();
-            CVisualEffects.getInstance().enable(true);
+            CPaintStatus.getInstance().initialize();
+            CPaintVisualEffects.getInstance().enable(true);
 
             Status.getLogger().info("initialization process completed.\n\n"
                     + "-------------------------------------------------\n");
@@ -563,7 +567,10 @@ public final class ControlPainting implements MouseListener,
             Object o = MyClipboard.getInstance().paste();
             if (o instanceof BufferedImage) {
 
-                Picture.getInstance().addPaintObjectImage((BufferedImage) o);
+                PaintObjectImage poi = Picture.getInstance().createPOI(
+                        (BufferedImage) o);
+                Picture.getInstance().insertIntoSelected(poi);
+                Picture.getInstance().paintSelected();
             } else if (o instanceof List) {
 
                 @SuppressWarnings("unchecked")
@@ -690,7 +697,7 @@ public final class ControlPainting implements MouseListener,
                 
                 //set index to moving
                 Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
-                CStatus.getInstance().deactivate();
+                CPaintStatus.getInstance().deactivate();
                 Paint.getInstance().getTb_move().setActivated(true);
             }
             break;
@@ -723,7 +730,10 @@ public final class ControlPainting implements MouseListener,
 
                 final Point mmSP = pnt_movementSpeed;
                 if (mmSP != null) {
-                    new Thread() {
+                    if (thrd_move != null) {
+                        thrd_move.interrupt();
+                    }
+                    thrd_move = new Thread() {
                         @Override public void run() {
                             final int max = 25;
                             for (int i = max; i >= 0; i--) {
@@ -764,11 +774,12 @@ public final class ControlPainting implements MouseListener,
                                     final int sleepTime = 20;
                                     Thread.sleep(sleepTime);
                                 } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                                    interrupt();
                                 }
                             }
                         }
-                    } .start();
+                    };
+                    thrd_move.start();
                 }
                 
                 //set points to null

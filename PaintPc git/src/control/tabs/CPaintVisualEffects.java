@@ -1,4 +1,4 @@
-package control.singleton;
+package control.tabs;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -21,12 +21,12 @@ import view.util.VButtonWrapper;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class CVisualEffects implements MouseListener {
+public final class CPaintVisualEffects implements MouseListener {
 
 	/**
 	 * the only instance of this class.
 	 */
-	private static CVisualEffects instance = null;
+	private static CPaintVisualEffects instance = null;
 
 	/**
 	 * boolean which indicates, whether the necessary instances of View and
@@ -44,7 +44,7 @@ public final class CVisualEffects implements MouseListener {
 	 * Constructor: initializes startPerfrom (which indicates the listeners 
 	 * to not perform an action until necessary variables have been set.
 	 */
-	private CVisualEffects() {
+	private CPaintVisualEffects() {
 		
 		//initialize start perform because the necessary variables have not
 		//been set yet.
@@ -229,11 +229,11 @@ public final class CVisualEffects implements MouseListener {
 	 * 
 	 * @return the only instance of this class.
 	 */
-	public static CVisualEffects getInstance() {
+	public static CPaintVisualEffects getInstance() {
 		
 		//if class is not instanced yet instantiate
 		if (instance == null) {
-			instance = new CVisualEffects();
+			instance = new CPaintVisualEffects();
 		}
 		
 		//return the only instance of this class.

@@ -1,4 +1,4 @@
-package control.singleton;
+package control.tabs;
 
 //import declarations
 import java.awt.Color;

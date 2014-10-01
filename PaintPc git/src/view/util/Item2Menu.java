@@ -5,13 +5,14 @@ package view.util;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 import settings.ViewSettings;
-import control.singleton.CItemAufklappen;
+import control.util.CItemAufklappen;
 
 
 

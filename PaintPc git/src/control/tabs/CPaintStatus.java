@@ -1,5 +1,5 @@
 //package declaration
-package control.singleton;
+package control.tabs;
 
 //import declarations
 import java.awt.Point;
@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 
+import control.util.CItem;
 import model.objects.painting.Picture;
 import model.util.paint.Utils;
 import settings.Constants;
@@ -28,7 +29,7 @@ import view.util.VButtonWrapper;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class CStatus implements MouseListener {
+public final class CPaintStatus implements MouseListener {
 
 	/**
 	 * boolean which indicates, whether the necessary instances of View and
@@ -39,13 +40,13 @@ public final class CStatus implements MouseListener {
     /**
      * the only instance of this class.
      */
-	private static CStatus instance;
+	private static CPaintStatus instance;
 	
 	/**
 	 * Constructor: initializes startPerfrom (which indicates the listeners 
 	 * to not perform an action until necessary variables have been set.
 	 */
-	private CStatus() {
+	private CPaintStatus() {
 		
 		//initialize start perform because the necessary variables have not
 		//been set yet.
@@ -228,7 +229,7 @@ public final class CStatus implements MouseListener {
         /*
          * the different pens in open pen menu
          */
-        if (CVisualEffects.isAStiftAuswahl((_event.getSource()))) {
+        if (CPaintVisualEffects.isAStiftAuswahl((_event.getSource()))) {
             Item1PenSelection sa = (Item1PenSelection) ((VButtonWrapper) 
                     _event.getSource()).wrapObject();
             
@@ -378,11 +379,11 @@ public final class CStatus implements MouseListener {
 	 * 
 	 * @return the only instance of this class.
 	 */
-	public static CStatus getInstance() {
+	public static CPaintStatus getInstance() {
 		
 		//if class is not instanced yet instantiate
 		if (instance == null) {
-			instance = new CStatus();
+			instance = new CPaintStatus();
 		}
 		
 		//return the only instance of this class.

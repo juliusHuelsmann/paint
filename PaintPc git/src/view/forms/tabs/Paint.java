@@ -15,9 +15,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import control.ControlPainting;
-import control.singleton.CStatus;
-import control.singleton.CVisualEffects;
-import control.singleton.PaintSelection;
+import control.tabs.CPaintStatus;
+import control.tabs.CPaintVisualEffects;
+import control.tabs.CPaintSelection;
 import settings.Constants;
 import settings.Status;
 import settings.TextFactory;
@@ -388,7 +388,7 @@ public final class Paint extends JPanel {
             jcb_image.setVerticalAlignment(SwingConstants.TOP);
             it_selection.add(jcb_image);
             //initialize MouesListiener
-            PaintSelection.getInstance(
+            CPaintSelection.getInstance(
                     jcb_whole, jcb_separated, jcb_image,
                     tb_selectionLine, tb_selectionCurve, tb_selectionMagic);
             it_selection.setBorder(false);
@@ -469,7 +469,7 @@ public final class Paint extends JPanel {
     	//the first color for the first pen
     	tb_color1 = new Item1Button(null);
     	tb_color1.setOpaque(true);
-    	tb_color1.addMouseListener(CStatus.getInstance());
+    	tb_color1.addMouseListener(CPaintStatus.getInstance());
     	tb_color1.setBorder(BorderFactory.createCompoundBorder(
     	        new LineBorder(Color.black), new LineBorder(Color.white)));
     	tb_color1.setLocation(_x, ViewSettings.DISTANCE_BETWEEN_ITEMS);
@@ -481,7 +481,7 @@ public final class Paint extends JPanel {
     	//the second color for the second pen
     	tb_color2 = new Item1Button(null);
     	tb_color2.setOpaque(true);
-    	tb_color2.addMouseListener(CStatus.getInstance());
+    	tb_color2.addMouseListener(CPaintStatus.getInstance());
     	tb_color2.setBorder(BorderFactory.createCompoundBorder(
     	        new LineBorder(Color.black), new LineBorder(Color.white)));
     	tb_color2.setLocation(tb_color1.getWidth() + tb_color1.getX() 
@@ -504,8 +504,8 @@ public final class Paint extends JPanel {
     		        * (height + distanceBetweenColors), width, height);
     		jbtn_colors[i].setOpaque(true);
     		jbtn_colors[i].addMouseListener(
-    		        CStatus.getInstance());
-    		jbtn_colors[i].addMouseListener(CVisualEffects.getInstance());
+    		        CPaintStatus.getInstance());
+    		jbtn_colors[i].addMouseListener(CPaintVisualEffects.getInstance());
     		jbtn_colors[i].setBorder(BorderFactory.createCompoundBorder(
     		        new LineBorder(Color.black), new LineBorder(Color.white)));
     		super.add(jbtn_colors[i]);
@@ -890,7 +890,7 @@ public final class Paint extends JPanel {
         //alter settings of TextButton
         _tb.setOpaque(true);
         _tb.setText(_text);
-        _tb.addMouseListener(CStatus.getInstance());
+        _tb.addMouseListener(CPaintStatus.getInstance());
         _tb.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));

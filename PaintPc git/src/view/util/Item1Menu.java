@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 import settings.ViewSettings;
 import view.forms.Page;
 import view.forms.Tabs;
-import control.singleton.CItem;
-import control.singleton.CStatus;
+import control.tabs.CPaintStatus;
+import control.util.CItem;
 import model.util.list.List;
 
 /**
@@ -108,7 +108,7 @@ public class Item1Menu extends JPanel {
 		//initialize JButton
 		tb_open = new Item1Button(this);
 		tb_open.setActivable(false);
-		tb_open.addMouseListener(CStatus.getInstance());
+		tb_open.addMouseListener(CPaintStatus.getInstance());
         tb_open.addMouseListener(CItem.getInstance());
 		tb_open.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		tb_open.setFocusable(false);

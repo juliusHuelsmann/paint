@@ -320,8 +320,9 @@ public final class New extends JPanel {
         jcb_raster = new JCheckBox("Raster");
         jcb_raster.setFocusable(false);
         jcb_raster.setOpaque(false);
-        jcb_raster.setLocation(jlbl_backgroundTitle.getX(), distanceBetweenItems
-                + jlbl_backgroundTitle.getY() + jlbl_backgroundTitle.getHeight());
+        jcb_raster.setLocation(jlbl_backgroundTitle.getX(), 
+                distanceBetweenItems + jlbl_backgroundTitle.getY()
+                + jlbl_backgroundTitle.getHeight());
         jcb_raster.setSize(jlbl_backgroundTitle.getWidth() / (2 + 1) 
                 - (2 + 1) * distanceBetweenItems, buttonHeight);
         jcb_raster.setFont(ViewSettings.GENERAL_FONT_ITEM);

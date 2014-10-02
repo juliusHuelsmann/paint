@@ -24,8 +24,8 @@ public final class Constants {
      * static path of the normal image path 
      */
 	public static final String VIEW_JBTN_EXIT_NORMAL_PATH = "normal.png", 
-	        VIEW_JBTN_EXIT_MOUSEOVER_PATH = "", 
-	        VIEW_JBTN_EXIT_PRESSED_PATH = "",
+	        VIEW_JBTN_EXIT_MOUSEOVER_PATH = "mouseover.png", 
+	        VIEW_JBTN_EXIT_PRESSED_PATH = "pressed.png",
 	        VIEW_TB_PASTE_PATH = "icon/paste.png",
 	        VIEW_TB_COPY_PATH = "icon/copy.png", 
 	        VIEW_TB_CUT_PATH = "icon/cut.png", 

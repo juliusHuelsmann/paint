@@ -118,7 +118,7 @@ public final class PaintObjects extends JPanel implements Observer {
 		jlbl_title = new JLabel("Paint Objects");
 		jlbl_title.setFocusable(false);
 		jlbl_title.setBorder(null);
-		jlbl_title.setFont(ViewSettings.GENERAL_FONT_HEADLINE);
+		jlbl_title.setFont(ViewSettings.GENERAL_FONT_HEADLINE_1);
 		super.add(jlbl_title);
 		
 		//owner of items panel and items panel

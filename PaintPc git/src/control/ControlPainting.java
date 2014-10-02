@@ -255,7 +255,7 @@ public final class ControlPainting implements MouseListener,
                             new ImageIcon(Utils.resizeImage(View.getInstance()
                                     .getJbtn_exit().getWidth(), View
                                     .getInstance().getJbtn_exit().getHeight(),
-                                    "pressed.png")));
+                                    Constants.VIEW_JBTN_EXIT_PRESSED_PATH)));
         } else if (_event.getSource().equals(
                 Page.getInstance().getJlbl_painting())) {
 
@@ -490,7 +490,8 @@ public final class ControlPainting implements MouseListener,
             View.getInstance().getJbtn_exit().setIcon(new ImageIcon(
                     Utils.resizeImage(View.getInstance().getJbtn_exit()
                             .getWidth(), View.getInstance().getJbtn_exit()
-                            .getHeight(), "normal.png")));
+                            .getHeight(), 
+                            Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
 
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_new().getActionCause())) {
@@ -849,7 +850,7 @@ public final class ControlPainting implements MouseListener,
                             new ImageIcon(Utils.resizeImage(View.getInstance()
                                     .getJbtn_exit().getWidth(), View
                                     .getInstance().getJbtn_exit().getHeight(),
-                                    "mouseover.png")));
+                                    Constants.VIEW_JBTN_EXIT_MOUSEOVER_PATH)));
         }
     }
 

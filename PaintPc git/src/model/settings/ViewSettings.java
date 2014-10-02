@@ -121,8 +121,10 @@ public final class ViewSettings {
      * usages:
      *      PaintObject  at Constructor
      */
-    public static final Font GENERAL_FONT_HEADLINE = new Font(
-            "Courier New", Font.BOLD, 19);
+    public static final Font GENERAL_FONT_HEADLINE_1 = new Font(
+            "Courier New", Font.BOLD, 19),
+            GENERAL_FONT_HEADLINE_2 = new Font(
+                    "Courier New", Font.BOLD, 15);
 
     /**
      * headline font which can be used everywhere.

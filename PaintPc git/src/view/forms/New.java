@@ -15,7 +15,6 @@ import javax.swing.border.LineBorder;
 import model.settings.Constants;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
-import control.ControlPainting;
 import control.forms.CNew;
 import control.util.MousePositionTracker;
 import view.util.Item1Button;
@@ -38,7 +37,30 @@ public final class New extends JPanel {
     private static New instance;
 
     /*
-     * components
+     * top elements.
+     */
+
+    /**
+     * The JPanel which contains for instance the itemButtons.
+     */
+    private JPanel jpnl_stuff;
+
+    /**
+     * Exit button for this tab.
+     */
+    private JButton jbtn_exit;    
+    
+    /*
+     * Rather unimportant title dummies
+     */
+
+    /**
+     * Title JLabel.
+     */
+    private JLabel jlbl_sizeTitle, jlbl_backgroundTitle;
+    
+    /*
+     * pages sizes to be choosen.
      */
     
     /**
@@ -50,22 +72,10 @@ public final class New extends JPanel {
      * The JLabels which serve as border of Item1Button.
      */
     private JLabel jlbl_bg1, jlbl_bg2, jlbl_bg3, jlbl_bg4, jlbl_bg5;
-    /**
-     * The JPanel which contains for instance the itemButtons.
-     */
-    private JPanel jpnl_stuff;
 
-    /**
-     * JLabels showing the description for setting width and height manually.
+    /*
+     * Settings general
      */
-    private JLabel jlbl_customWidth, jlbl_customHeight;
-    
-    /**
-     * JTextFields which will be filled manually by user with the custom
-     * size of the new Page.
-     */
-    private JTextField jtf_customWidth, jtf_customHeight;
-    
     /**
      * The JCheckBox for background of new Image.
      */
@@ -81,18 +91,25 @@ public final class New extends JPanel {
      * new item.
      */
     private JButton jbtn_enter;
-    
+
     /*
-     * New - window exit button
+     * Settings Custom
      */
     
     /**
-     * Exit button for this tab.
+     * JLabels showing the description for setting width and height manually.
      */
-    private JButton jbtn_exit;
+    private JLabel jlbl_customWidth, jlbl_customHeight;
+    
+    /**
+     * JTextFields which will be filled manually by user with the custom
+     * size of the new Page.
+     */
+    private JTextField jtf_customWidth, jtf_customHeight;
+    
     
     /*
-     * final values
+     * final values for component's bounds.
      */
 
     /**
@@ -121,6 +138,11 @@ public final class New extends JPanel {
      */
     private void initialize() {
         
+        /*
+         * Initialize JPanel and its most important elements such as the
+         * exit button, the headline JLabel and the JPanel which contains 
+         * every other components.
+         */
         super.setSize(width, height);
         super.setLocation(0, 0);
         super.setOpaque(true);
@@ -130,15 +152,15 @@ public final class New extends JPanel {
         super.addMouseMotionListener(mpt);
         super.addMouseListener(mpt);
 
+        //The container JPanel
         jpnl_stuff = new JPanel();
         jpnl_stuff.setSize(width, height);
-        jpnl_stuff.setBackground(
-                ViewSettings.CLR_BACKGROUND_DARK);
+        jpnl_stuff.setBackground(ViewSettings.CLR_BACKGROUND_DARK);
         jpnl_stuff.setLayout(null);
         jpnl_stuff.setBorder(BorderFactory.createLineBorder(Color.black));
         super.add(jpnl_stuff);
 
-        //exit
+        //The exit button which makes the JPanel invisible
         jbtn_exit = new JButton();
         jbtn_exit.setContentAreaFilled(false);
         jbtn_exit.setOpaque(false);
@@ -153,14 +175,54 @@ public final class New extends JPanel {
                 Constants.VIEW_JBTN_EXIT_MOUSEOVER_PATH)));
         jpnl_stuff.add(jbtn_exit);
         
+        //The JLabel which shows the headline
         JLabel jlbl_title = new JLabel("Create new Page");
         jlbl_title.setFont(ViewSettings.GENERAL_FONT_HEADLINE_1);
         jlbl_title.setOpaque(false);
         jlbl_title.setBorder(null);
+        jlbl_title.setAlignmentX(CENTER_ALIGNMENT);
         jlbl_title.setLocation(distanceLeftRight, distanceLeftRight);
         jlbl_title.setSize(width, (2 + 2) * (2 + 2 + 1));
         jpnl_stuff.add(jlbl_title);
+
         
+        /*
+         * initializes the left half of the graphical user interface containing
+         * special page sizes.
+         */
+        initializeSamplePages();
+        
+
+        /*
+         * Initializes the first part of the graphical user itnerface's right
+         * half. This section contains the specification components that
+         * are always shown.
+         */
+        initializeGeneralSettings();
+        
+        /*
+         * Initializes the second part of the graphical user itnerface's right
+         * half. This section contains the specification components that
+         * are only shown if the user selected 'custom page' in the left half
+         * of the graphical user interface.
+         */
+        initializeCustomSettings();
+        
+        
+        //hide the custom information and set the Border invisible because the 
+        //start configuration is to enable din a4
+        hideCustomInformation();
+        i1b_a4.setActivated(true);
+        jlbl_bg1.setVisible(false);
+    }
+    
+    
+    
+    /**
+     * Initializes the left page of the graphical user interface.
+     */
+    private void initializeSamplePages() {
+
         /*
          * the page items
          */
@@ -170,7 +232,6 @@ public final class New extends JPanel {
                 (i1b_a4.getImageHeight() / Math.sqrt(2)));
         initialize(i1b_a4, "Din A4 (" + Constants.SIZE_A4.width + "x" 
                 + Constants.SIZE_A4.height + ")", 0, distanceTop);
-        i1b_a4.setActivated(true);
         
         jlbl_bg1 = new JLabel();
         jlbl_bg1.setFocusable(false);
@@ -239,20 +300,29 @@ public final class New extends JPanel {
         jlbl_bg5.setOpaque(false);
         jpnl_stuff.add(jlbl_bg5);
         
-        JLabel jlbl_background = new JLabel("Background:");
-        jlbl_background.setBounds(getWidth() / 2 + distanceLeftRight, 
+    }
+
+    /**
+     * Initializes the first part of the graphical user itnerface's right
+     * half. This section contains the specification components that
+     * are always shown.
+     */
+    private void initializeGeneralSettings() {
+
+        jlbl_backgroundTitle = new JLabel("Background:");
+        jlbl_backgroundTitle.setBounds(getWidth() / 2 + distanceLeftRight, 
                 distanceTop, getWidth() / 2 - 2 * distanceLeftRight, 
                 buttonHeight);
-        jlbl_background.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
-        jlbl_background.setFocusable(false);
-        jpnl_stuff.add(jlbl_background);
+        jlbl_backgroundTitle.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
+        jlbl_backgroundTitle.setFocusable(false);
+        jpnl_stuff.add(jlbl_backgroundTitle);
 
         jcb_raster = new JCheckBox("Raster");
         jcb_raster.setFocusable(false);
         jcb_raster.setOpaque(false);
-        jcb_raster.setLocation(jlbl_background.getX(), distanceBetweenItems
-                + jlbl_background.getY() + jlbl_background.getHeight());
-        jcb_raster.setSize(jlbl_background.getWidth() / (2 + 1) 
+        jcb_raster.setLocation(jlbl_backgroundTitle.getX(), distanceBetweenItems
+                + jlbl_backgroundTitle.getY() + jlbl_backgroundTitle.getHeight());
+        jcb_raster.setSize(jlbl_backgroundTitle.getWidth() / (2 + 1) 
                 - (2 + 1) * distanceBetweenItems, buttonHeight);
         jcb_raster.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jpnl_stuff.add(jcb_raster);
@@ -262,7 +332,7 @@ public final class New extends JPanel {
         jcb_lines.setOpaque(false);
         jcb_lines.setLocation(jcb_raster.getWidth() + jcb_raster.getX() 
                 + distanceBetweenItems, jcb_raster.getY());
-        jcb_lines.setSize(jlbl_background.getWidth() / (2 + 1) 
+        jcb_lines.setSize(jlbl_backgroundTitle.getWidth() / (2 + 1) 
                 - (2 + 1) * distanceBetweenItems, buttonHeight);
         jcb_lines.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jpnl_stuff.add(jcb_lines);
@@ -272,15 +342,15 @@ public final class New extends JPanel {
         jcb_nothing.setOpaque(false);
         jcb_nothing.setLocation(jcb_lines.getWidth() + jcb_lines.getX() 
                 + distanceBetweenItems, jcb_raster.getY());
-        jcb_nothing.setSize(jlbl_background.getWidth() / (2 + 1) 
+        jcb_nothing.setSize(jlbl_backgroundTitle.getWidth() / (2 + 1) 
                 - (2 + 1) * distanceBetweenItems, buttonHeight);
         jcb_nothing.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jpnl_stuff.add(jcb_nothing);
 
         JLabel jlbl_sizeProject = new JLabel("Project");
-        jlbl_sizeProject.setBounds(jlbl_background.getX(), 
+        jlbl_sizeProject.setBounds(jlbl_backgroundTitle.getX(), 
                 jcb_nothing.getHeight() + jcb_nothing.getY() 
-                + distanceBetweenItems * 2, jlbl_background.getWidth() / 2
+                + distanceBetweenItems * 2, jlbl_backgroundTitle.getWidth() / 2
                 - distanceBetweenItems,
                 buttonHeight);
         jlbl_sizeProject.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
@@ -294,22 +364,33 @@ public final class New extends JPanel {
                 buttonHeight);
         jpnl_stuff.add(jcb_project);
         
-        JLabel jlbl_sizeTitle1 = new JLabel("Size");
-        jlbl_sizeTitle1.setBounds(jlbl_background.getX(), 
+    }
+    
+    
+    /**
+     * Initializes the second part of the graphical user itnerface's right
+     * half. This section contains the specification components that
+     * are only shown if the user selected 'custom page' in the left half
+     * of the graphical user interface.
+     */
+    private void initializeCustomSettings() {
+
+        jlbl_sizeTitle = new JLabel("Size");
+        jlbl_sizeTitle.setBounds(jlbl_backgroundTitle.getX(), 
                 jcb_project.getHeight() + jcb_project.getY() 
-                + distanceBetweenItems * 2, jlbl_background.getWidth() / 2
+                + distanceBetweenItems * 2, jlbl_backgroundTitle.getWidth() / 2
                 - distanceBetweenItems,
                 buttonHeight);
-        jlbl_sizeTitle1.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
-        jlbl_sizeTitle1.setFocusable(false);
-        jpnl_stuff.add(jlbl_sizeTitle1);
+        jlbl_sizeTitle.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
+        jlbl_sizeTitle.setFocusable(false);
+        jpnl_stuff.add(jlbl_sizeTitle);
 
         jlbl_customHeight = new JLabel("Height: ");
         jlbl_customHeight.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jlbl_customHeight.setFocusable(false);
-        jlbl_customHeight.setBounds(jlbl_sizeTitle1.getX(), 
-                jlbl_sizeTitle1.getHeight() + jlbl_sizeTitle1.getY() 
-                + distanceBetweenItems, jlbl_sizeTitle1.getWidth() / 2
+        jlbl_customHeight.setBounds(jlbl_sizeTitle.getX(), 
+                jlbl_sizeTitle.getHeight() + jlbl_sizeTitle.getY() 
+                + distanceBetweenItems, jlbl_sizeTitle.getWidth() / 2
                 - distanceBetweenItems,
                 buttonHeight);
         jpnl_stuff.add(jlbl_customHeight);
@@ -351,10 +432,7 @@ public final class New extends JPanel {
         jbtn_enter.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jbtn_enter.setContentAreaFilled(false);
         jpnl_stuff.add(jbtn_enter);
-        
     }
-    
-    
     
     
     /**
@@ -408,6 +486,8 @@ public final class New extends JPanel {
         jtf_customWidth.setVisible(_visible);
         jlbl_customHeight.setVisible(_visible);
         jlbl_customWidth.setVisible(_visible);
+        jlbl_sizeTitle.setVisible(_visible);
+        
     }
     
     /**

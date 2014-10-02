@@ -33,22 +33,27 @@ public final class CNew implements ActionListener, MouseListener {
                 .getActionCause())) {
             deactivate();
             New.getInstance().getJlbl_bg1().setVisible(false);
+            New.getInstance().hideCustomInformation();
         } else if (_event.getSource().equals(New.getInstance().getI1b_a5()
                 .getActionCause())) {
             deactivate();
             New.getInstance().getJlbl_bg2().setVisible(false);
+            New.getInstance().hideCustomInformation();
         } else if (_event.getSource().equals(New.getInstance().getI1b_a6()
                 .getActionCause())) {
             deactivate(); 
             New.getInstance().getJlbl_bg3().setVisible(false);
+            New.getInstance().hideCustomInformation();
         } else if (_event.getSource().equals(New.getInstance().getI1b_a7()
                 .getActionCause())) {
             deactivate();
             New.getInstance().getJlbl_bg4().setVisible(false);
+            New.getInstance().hideCustomInformation();
         } else if (_event.getSource().equals(
                 New.getInstance().getI1b_custom().getActionCause())) {
             deactivate();
             New.getInstance().getJlbl_bg5().setVisible(false);
+            New.getInstance().showCustomInformation();
         }
     }
     

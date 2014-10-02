@@ -112,6 +112,9 @@ import control.ControlPainting;
                         BorderFactory.createMatteBorder(
                                 0, 0, 1, 1, Color.white))));
         super.setVisible(false);
+
+        //form for creating new page.
+        super.add(New.getInstance());
         
         //initialize JPanel jpnl_toMove
         jpnl_toMove = new JPanel() {

@@ -1,20 +1,14 @@
 package view.forms;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
-
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-
 import model.settings.Constants;
 import model.settings.ViewSettings;
-import control.ControlPainting;
 import control.util.MousePositionTracker;
-import view.View;
 import view.util.Item1Button;
 
 /**
@@ -51,7 +45,7 @@ public final class New extends JPanel {
     /**
      * JLabel for background and darken.
      */
-    private JLabel jlbl_background, jlbl_dimm;
+    private JLabel jlbl_dimm;
     
     /*
      * final values
@@ -80,20 +74,17 @@ public final class New extends JPanel {
      */
     private void initialize() {
         
-        super.setSize(View.getInstance().getSize());
+        super.setSize(width, height);
         super.setLocation(0, 0);
         super.setOpaque(true);
         super.setLayout(null);
         super.setVisible(false);
+        MousePositionTracker mpt =  new MousePositionTracker(this);
+        super.addMouseMotionListener(mpt);
+        super.addMouseListener(mpt);
 
         jpnl_stuff = new JPanel();
         jpnl_stuff.setSize(width, height);
-        MousePositionTracker mpt =  new MousePositionTracker(jpnl_stuff);
-        jpnl_stuff.addMouseMotionListener(mpt);
-        jpnl_stuff.addMouseListener(mpt);
-        super.addMouseMotionListener(mpt);
-        super.addMouseListener(mpt);
-        
         jpnl_stuff.setLocation((int) (getWidth() - jpnl_stuff.getWidth()) / 2, 
                 (int) (getHeight() - jpnl_stuff.getHeight()) / 2);
         jpnl_stuff.setBackground(
@@ -150,11 +141,6 @@ public final class New extends JPanel {
         jlbl_dimm.setOpaque(true);
         super.add(jlbl_dimm);
         
-        jlbl_background = new JLabel();
-        jlbl_background.setSize(getSize());
-        super.add(jlbl_background);
-
-        
     }
     
     
@@ -162,35 +148,8 @@ public final class New extends JPanel {
      * {@inheritDoc}
      */
     @Override public void setVisible(final boolean _visible) {
-        
-        
-        if (_visible) {
-
-            jlbl_background.setIcon(new ImageIcon(ControlPainting.getRobot()
-                    .createScreenCapture(
-                            new Rectangle(0, 0, getWidth(), getHeight()))));
-            new Thread() {
-                public void run() {
-
-                    final int maxAlpha = 200;
-                    final int rgb = 20;
-                    for (int i = 0; i <= maxAlpha; i += 2) {
-
-                        jlbl_dimm.setBackground(new Color(rgb, rgb, rgb, i));
-                        repaint();
-                        
-                        try {
-                            Thread.sleep(2 * (2 + 2 + 1));
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    
-                    }
-                }
-            } .start();
-        }
-
+        super.setLocation((Page.getInstance().getWidth() - getWidth()) / 2,
+                (Page.getInstance().getHeight() - getHeight()) / 2);
         super.setVisible(_visible);
         super.requestFocus();
     }

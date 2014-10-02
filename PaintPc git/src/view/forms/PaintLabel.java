@@ -78,6 +78,7 @@ public class PaintLabel extends JLabel {
     @Override public final void repaint() {
         super.repaint();
         PaintObjects.getInstance().repaint(); 
+        New.getInstance().setVisible(false);
     }
     
     

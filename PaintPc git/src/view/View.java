@@ -69,9 +69,6 @@ import control.ControlPainting;
         //fade in and show text.
         fadeIn();
         
-        //form for creating new page.
-        super.add(New.getInstance());
-
         //exit
         jbtn_exit = new JButton();
         jbtn_exit.setContentAreaFilled(false);
@@ -94,9 +91,11 @@ import control.ControlPainting;
         super.add(Tabs.getInstance());
         super.add(Page.getInstance());
 
+        
         //display tabs and page.
         Tabs.getInstance().setVisible(true);
         Page.getInstance().setVisible(true);
+
 	}
 	
 	/**

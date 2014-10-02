@@ -466,6 +466,7 @@ public final class ControlPainting implements MouseListener,
                 break;
             }
         }
+        New.getInstance().repaint();
     }
 
     /*
@@ -800,6 +801,7 @@ public final class ControlPainting implements MouseListener,
             Status.getLogger().warning("Switch in mouseReleased default");
             break;
         }
+        New.getInstance().setVisible(false);
     }
 
     /**
@@ -1388,15 +1390,23 @@ public final class ControlPainting implements MouseListener,
                     "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
             if (i == 0) {
                 actionSave();
-            }
-            if (i == -1) {
+                actionNew();
+            } 
+            
+            //if the user does not want to interrupt recall actionNew
+            if (i == 1) {
+
                 New.getInstance().setVisible(true);
+                Picture.getInstance().reload();
+                Status.setUncommittedChanges(false);
             }
+        } else {
+
+            New.getInstance().setVisible(true);
+            Picture.getInstance().reload();
+            Status.setUncommittedChanges(false);
+
         }
-
-        Picture.getInstance().reload();
-        Status.setUncommittedChanges(false);
-
     }
 
     /**

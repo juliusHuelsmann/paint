@@ -235,14 +235,26 @@ public final class ViewSettings {
     /**
      * the bounds of the Page.
      */
-    public static final Rectangle VIEW_BOUNDS_PAGE = new Rectangle(
+    public static final Rectangle VIEW_BOUNDS_PAGE_OPEN = new Rectangle(
             0, VIEW_HEIGHT_TB_VISIBLE + TWENTY_FIFE , 
             VIEW_SIZE_JFRAME.width - TWENTY_FIFE - TEN, 
             VIEW_SIZE_JFRAME.height - VIEW_SIZE_JFRAME.height / FIFE 
             - 2 * VIEW_SIZE_SP - TWENTY_FIFE);
             //the last 25 is the size 
-            //of the closing and opening button 
+    /**
+     * the bounds of the Page.
+     */
+    public static final Rectangle VIEW_BOUNDS_PAGE_CLOSED = new Rectangle(
+            VIEW_BOUNDS_PAGE_OPEN.x, 
+            VIEW_BOUNDS_PAGE_OPEN.y - VIEW_HEIGHT_TB_VISIBLE, 
+            VIEW_BOUNDS_PAGE_OPEN.width, 
+            VIEW_BOUNDS_PAGE_OPEN.height + VIEW_HEIGHT_TB_VISIBLE);
     
+    /**
+     * the bounds of the Page.
+     */
+    public static final Rectangle VIEW_BOUNDS_PAGE = VIEW_BOUNDS_PAGE_OPEN;
+
     /**
      * The font for information.
      */

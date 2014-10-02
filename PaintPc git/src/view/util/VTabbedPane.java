@@ -367,7 +367,21 @@ public class VTabbedPane extends JPanel {
 
 	            setComponentZOrder(jpnl_close, 1);
 	            jlbl_closeTime.setVisible(true);
-	            
+
+                ViewSettings.VIEW_BOUNDS_PAGE.y
+                = ViewSettings.VIEW_BOUNDS_PAGE_CLOSED.y;
+                ViewSettings.VIEW_BOUNDS_PAGE.height
+                = ViewSettings.VIEW_BOUNDS_PAGE_CLOSED.height;
+	            //adapt image size.
+                Page.getInstance().setSize(
+                        ViewSettings.VIEW_BOUNDS_PAGE.getSize());
+                Page.getInstance().getJlbl_painting().setSize(
+                        ViewSettings.VIEW_BOUNDS_PAGE.getSize());
+                Page.getInstance().getJlbl_selectionBG().setSize(
+                        ViewSettings.VIEW_BOUNDS_PAGE.getSize());
+                Page.getInstance().getJlbl_selectionPainting().setSize(
+                        ViewSettings.VIEW_BOUNDS_PAGE.getSize());
+                Page.getInstance().getJlbl_painting().refreshPaint();
 	        }
 	    };
 	    t_closeTab.start();
@@ -420,6 +434,22 @@ public class VTabbedPane extends JPanel {
                 Page.getInstance().setLocation(0, oldVisibleHeight 
                         + jpnl_close.getHeight());
                 setComponentZOrder(jpnl_close, 1);
+
+
+                ViewSettings.VIEW_BOUNDS_PAGE.y
+                = ViewSettings.VIEW_BOUNDS_PAGE_OPEN.y;
+                ViewSettings.VIEW_BOUNDS_PAGE.height
+                = ViewSettings.VIEW_BOUNDS_PAGE_OPEN.height;
+                //adapt image size.
+                Page.getInstance().setSize(
+                        ViewSettings.VIEW_BOUNDS_PAGE.getSize());
+                Page.getInstance().getJlbl_painting().setSize(
+                        ViewSettings.VIEW_BOUNDS_PAGE.getSize());
+                Page.getInstance().getJlbl_selectionBG().setSize(
+                        ViewSettings.VIEW_BOUNDS_PAGE.getSize());
+                Page.getInstance().getJlbl_selectionPainting().setSize(
+                        ViewSettings.VIEW_BOUNDS_PAGE.getSize());
+                Page.getInstance().getJlbl_painting().refreshPaint();
             }
         };
         t_closeTab.start();

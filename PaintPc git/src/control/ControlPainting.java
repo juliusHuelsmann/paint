@@ -44,6 +44,7 @@ import model.util.list.List;
 import model.util.paint.MyClipboard;
 import model.util.paint.Utils;
 import view.View;
+import view.forms.Message;
 import view.forms.New;
 import view.forms.Page;
 import view.forms.Tabs;
@@ -506,7 +507,6 @@ public final class ControlPainting implements MouseListener,
             int i = JOptionPane.showConfirmDialog(View.getInstance(),
                     "Do you want to save the committed changes? ",
                     "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
-
             // no
             if (i == 1) {
                 actionLoad();
@@ -516,13 +516,11 @@ public final class ControlPainting implements MouseListener,
             }
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_zoomOut().getActionCause())) {
-
             //if able to zoom out
             if (Status.getImageSize().width
                     / Status.getImageShowSize().width 
                     < Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
                             ViewSettings.MAX_ZOOM_OUT)) {
-                
                 int newWidth = Status.getImageShowSize().width
                         / ViewSettings.ZOOM_MULITPLICATOR, newHeight = Status
                         .getImageShowSize().height
@@ -532,7 +530,6 @@ public final class ControlPainting implements MouseListener,
                         .getJlbl_painting().getLocation().x, 
                         Page.getInstance()
                         .getJlbl_painting().getLocation().y);
-
                 Page.getInstance().getJlbl_painting()
                         .setLocation((oldLocation.x) / 2, (oldLocation.y) / 2);
 
@@ -543,11 +540,8 @@ public final class ControlPainting implements MouseListener,
                 Page.getInstance().releaseSelected();
                 Picture.getInstance().releaseSelected();
             } else {
-                //TODO: das hier soltle in einer popup text message stehen
-                //die nur als info da ist (nicht als fenster sondern nur
-                //text schoen @ gui.
-                JOptionPane.showMessageDialog(
-                        View.getInstance(), "max zoom out reached");
+                Message.showMessage(Message.MESSAGE_ID_INFO, 
+                        "max zoom out reached");
             }
 
             // TODO: hier die location aktualisieren.
@@ -648,10 +642,8 @@ public final class ControlPainting implements MouseListener,
 
         // switch index of operation
         switch (Status.getIndexOperation()) {
-
         case Constants.CONTROL_PATINING_INDEX_PAINT_2:
         case Constants.CONTROL_PATINING_INDEX_PAINT_1:
-
             if (_event.getButton() == 1) {
                 // write the current working picture into the global picture.
                 Picture.getInstance().finish();
@@ -659,38 +651,30 @@ public final class ControlPainting implements MouseListener,
             break;
 
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
-
             if (_event.getButton() == 1) {
-
                 Picture.getInstance().abortPaintObject();
             }
             break;
 
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
-
-
             if (_event.getButton() == 1) {
 
                 //remove old rectangle.
                 Page.getInstance().getJlbl_border().setBounds(-1, -1, 0, 0);
                 
                 switch (Status.getIndexSelection()) {
-                
                 //select complete item.
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
                     //paint stuff
                     mr_selection_line_complete(_event);
                     break;
-                    
                 //destroy items
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
                     //stuff
                     mr_selection_line_destroy(_event);
                     break;
-                    
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
                     break;
-                    
                 default:
                     break;
                 }
@@ -704,7 +688,6 @@ public final class ControlPainting implements MouseListener,
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ERASE:
-
 
 //            mr_selection_line_destroy(_event);
 //            Picture.getInstance().deleteSelected();
@@ -1321,14 +1304,18 @@ public final class ControlPainting implements MouseListener,
         }
 
         // generate path without the file ending.
-        int d = Status.getSavePath().toCharArray().length - 2 - 1;
-        String firstPath = Status.getSavePath().substring(0, d);
+        if (Status.getSavePath() != null) {
 
-        // save images in both formats.
-        Picture.getInstance().savePNG(firstPath + "png");
-        Picture.getInstance().savePicture(firstPath + "pic");
+            int d = Status.getSavePath().toCharArray().length - 2 - 1;
+            String firstPath = Status.getSavePath().substring(0, d);
+            
+            // save images in both formats.
+            Picture.getInstance().savePNG(firstPath + "png");
+            Picture.getInstance().savePicture(firstPath + "pic");
 
-        Status.setUncommittedChanges(false);
+
+            Status.setUncommittedChanges(false);
+        }
     }
 
     /**

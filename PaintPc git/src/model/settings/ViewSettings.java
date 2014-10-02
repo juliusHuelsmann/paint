@@ -153,13 +153,20 @@ public final class ViewSettings {
      */
     public static final Font GENERAL_FONT_ITEM_SMALL = new Font(
             "Courier New", Font.PLAIN, 10);
-    
+    /**
+     * general small font which can be used everywhere.
+     * 
+     */
+    public static final Font GENERAL_FONT_ITEM_PLAIN = new Font(
+            "Courier New", Font.PLAIN, 11);
+
     
     /**
      * .
      */
     public static final Dimension PAINT_SIZE 
     = new Dimension(275, 365);
+
     
     //sizes
     
@@ -169,6 +176,20 @@ public final class ViewSettings {
     public static final Dimension VIEW_SIZE_JFRAME = new Dimension(
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()), 
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
+
+    /**
+     * .
+     */
+    public static final Dimension MESSAGE_SIZE
+    = new Dimension(500, 40);
+    
+    /**
+     * .
+     */
+    public static final Point MESSAGE_LOCATION
+    = new Point((VIEW_SIZE_JFRAME.width - MESSAGE_SIZE.width) / 2, 
+            VIEW_SIZE_JFRAME.height - MESSAGE_SIZE.height - 2 * 2 * 2 * 2 * 2);
+
     
     /**
      * The Bounds of the Exit button.

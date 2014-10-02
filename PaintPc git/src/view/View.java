@@ -16,6 +16,7 @@ import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
+import view.forms.Message;
 import view.forms.New;
 import view.forms.Page;
 import view.forms.Tabs;
@@ -40,7 +41,11 @@ import control.ControlPainting;
 	 * close button.
 	 */
 	private JButton jbtn_exit;
-	
+
+    /**
+     * The maximum counter for design. Is used for fade in and out
+     */
+    private final int dsgn_maxFadeIn = 200, dsgn_max_moveTitle = 200;
 	
 	/**
 	 * JLabel which contains the program title (for start fade in).
@@ -86,8 +91,9 @@ import control.ControlPainting;
         repaint();
 
         /*
-         * add tab, overview about paintObjects and Page
+         * add Message form, tab, overview about paintObjects and Page
          */
+        Message.addMyself();
         super.add(Tabs.getInstance());
         super.add(Page.getInstance());
 
@@ -97,12 +103,6 @@ import control.ControlPainting;
         Page.getInstance().setVisible(true);
 
 	}
-	
-	/**
-	 * The maximum counter for design. Is used for fade in and out
-	 */
-	private final int dsgn_maxFadeIn = 200, dsgn_max_moveTitle = 200;
-	
 
     /**
      * Background color fading in at startup.

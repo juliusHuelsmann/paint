@@ -398,6 +398,7 @@ public final class New extends JPanel {
         
         jtf_customHeight = new JTextField();
         jtf_customHeight.setOpaque(false);
+        jtf_customHeight.addKeyListener(CNew.getInstance());
         jtf_customHeight.setBorder(BorderFactory.createLineBorder(Color.gray));
         jtf_customHeight.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jtf_customHeight.setBounds(jlbl_customHeight.getX() 
@@ -418,6 +419,7 @@ public final class New extends JPanel {
 
         jtf_customWidth = new JTextField();
         jtf_customWidth.setOpaque(false);
+        jtf_customWidth.addKeyListener(CNew.getInstance());
         jtf_customWidth.setBorder(BorderFactory.createLineBorder(Color.gray));
         jtf_customWidth.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jtf_customWidth.setBounds(jlbl_customWidth.getX() 
@@ -432,6 +434,7 @@ public final class New extends JPanel {
                 getWidth() / 2 - 2 * distanceLeftRight, buttonHeight);
         jbtn_enter.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jbtn_enter.setContentAreaFilled(false);
+        jbtn_enter.addActionListener(CNew.getInstance());
         jpnl_stuff.add(jbtn_enter);
     }
     
@@ -611,5 +614,66 @@ public final class New extends JPanel {
      */
     public JLabel getJlbl_bg5() {
         return jlbl_bg5;
+    }
+
+
+
+    /**
+     * @return the jcb_raster
+     */
+    public JCheckBox getJcb_raster() {
+        return jcb_raster;
+    }
+
+
+
+    /**
+     * @return the jcb_lines
+     */
+    public JCheckBox getJcb_lines() {
+        return jcb_lines;
+    }
+
+
+
+    /**
+     * @return the jcb_nothing
+     */
+    public JCheckBox getJcb_nothing() {
+        return jcb_nothing;
+    }
+
+
+   
+
+    /**
+     * @return the jcb_project
+     */
+    public JComboBox getJcb_project() {
+        return jcb_project;
+    }
+
+
+    /**
+     * @return the jbtn_enter
+     */
+    public JButton getJbtn_enter() {
+        return jbtn_enter;
+    }
+
+
+    /**
+     * @return the jtf_customWidth
+     */
+    public JTextField getJtf_customWidth() {
+        return jtf_customWidth;
+    }
+
+
+    /**
+     * @return the jtf_customHeight
+     */
+    public JTextField getJtf_customHeight() {
+        return jtf_customHeight;
     }
 }

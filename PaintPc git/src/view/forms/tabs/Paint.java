@@ -676,6 +676,7 @@ public final class Paint extends JPanel {
 		initializeTextButton(tb_save,
 				TextFactory.getInstance().getTextViewTb_save(),
 				Constants.VIEW_TB_SAVE_PATH, 0);
+		tb_save.setActivable(false);
 
 		//save
 		tb_load = new Item1Button(tb_load);
@@ -686,6 +687,7 @@ public final class Paint extends JPanel {
 		initializeTextButton(tb_load,
 				"load",
 				Constants.VIEW_TB_LOAD_PATH, 0);
+		tb_load.setActivable(false);
 
         //cut
         tb_new = new Item1Button(null);
@@ -697,6 +699,7 @@ public final class Paint extends JPanel {
         initializeTextButton(tb_new,
                 "new",
                 Constants.VIEW_TB_NEW_PATH, 0);
+        tb_new.setActivable(false);
 
         //cut
         tb_turnMirror = new Item1Button(null);
@@ -708,6 +711,7 @@ public final class Paint extends JPanel {
         initializeTextButton(tb_turnMirror,
                 "Spiegelung",
                 Constants.VIEW_TB_DOWN_PATH, 0);
+        tb_turnMirror.setActivable(false);
 
         tb_turnNormal = new Item1Button(null);
         tb_turnNormal.setSize(tb_turnMirror.getWidth(),
@@ -718,6 +722,7 @@ public final class Paint extends JPanel {
         initializeTextButton(tb_turnNormal,
                 "Spiegelung normal",
                 Constants.VIEW_TB_UP_PATH, 0);
+        tb_turnNormal.setActivable(false);
 
 		insertTrennung(tb_turnMirror.getWidth() + tb_turnMirror.getX() 
 		        + ViewSettings.DISTANCE_BEFORE_LINE, tb_turnMirror.getY(), 

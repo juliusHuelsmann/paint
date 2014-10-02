@@ -11,6 +11,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import model.objects.painting.PaintBI;
+import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import view.forms.Page;
@@ -200,70 +201,45 @@ public final class Utils {
     
 
     
+    
+    
     /**
-     * return lined background.
+     * Print background.
+     * @param _f the bufferedImage
      * 
-     * @param _width the width
-     * @param _height the height
-     * @return the BufferedImage
+     * @param _fromX the start point
+     * @param _fromY the start point
+     * @param _untilX the end point
+     * @param _untilY the end point
+     * 
+     * @param _graphiX the location at the component where the painting 
+     *                  process starts.
+     * @param _graphiY the location at the component where the painting 
+     *                  process starts.
+     *                  
+     * @return the transformed BufferedImage
      */
-    public static BufferedImage getLinedImage(
-            final int _width, final int _height) {
+    public static BufferedImage getBackground(
+            final BufferedImage _f, final int _fromX, 
+            final int _fromY, final int _untilX, final int _untilY, 
+            final int _graphiX, final int _graphiY) {
         
-        BufferedImage bi = new BufferedImage(
-                _width, _height, BufferedImage.TYPE_INT_ARGB);
-        
-        //initialize with transparency
-        for (int x = 0; x < bi.getWidth(); x++) {
-            for (int y = 0; y < bi.getHeight(); y++) {
-                bi.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
-//              bi.setRGB(x, y, (0 << 24) | (0 << 16) | (0 << 8) | 0);
-            }
-        }
-        
-        //create raster
-        final int size = 15;
-        final int margeFront = 150;
-        final int margeLast = (2 + 1) * (2 + 2) * (2 + 2 + 2 + 2 + 2)
-                + bi.getWidth() % size - 1;
-        
-        
-        Color rastarColor = Color.lightGray;
-        
-        for (int x = margeFront; x < bi.getWidth() - margeLast; x += size) {
-            for (int y = 0; y < bi.getHeight() - (bi.getHeight() % size); 
-                    y += 2) {
-                if (x == margeFront || x == bi.getWidth() - margeLast - 1) {
-                    if (y + 1 < bi.getHeight()) {
-                        bi.setRGB(x, y + 1, rastarColor.getRGB());
-                    }
-                    if (y + 2 < bi.getHeight()) {
-                        bi.setRGB(x, y + 2, rastarColor.getRGB());
-                    }
-                }
-            }
-        }
-        
-        
-        //horizontale linien
-        for (int y = size - 1; y < bi.getHeight(); y += size) {
-            for (int x = margeFront; x < bi.getWidth() - margeLast; x += 2) {
-                bi.setRGB(x, y, rastarColor.getRGB());
+        switch (Status.getIndexPageBackground()) {
+        case Constants.CONTROL_PAGE_BACKGROUND_LINES:
+            return getLinedImage(_f, _fromX, _fromY, _untilX, _untilY, 
+                    _graphiX, _graphiY);
 
-                if (y / size % (2 + 1) == 0) {
-                    bi.setRGB(x, y, Color.gray.getRGB());
-                }
-                if (y == (bi.getHeight() - bi.getHeight() % size - 1)) {
-                    if (x + 1 < bi.getWidth()) {
-                        bi.setRGB(x + 1, y, rastarColor.getRGB());
-                    }
-                    if (x + 2 < bi.getWidth()) {
-                        bi.setRGB(x + 2, y, rastarColor.getRGB());
-                    }
-                }
-            }
+        case Constants.CONTROL_PAGE_BACKGROUND_NONE:
+            return printWhiteBackground(_f, _fromX, _fromY, _untilX, _untilY, 
+                    _graphiX, _graphiY);
+            
+        case Constants.CONTROL_PAGE_BACKGROUND_RASTAR:
+            return getRastarImage(_f, _fromX, _fromY, _untilX, _untilY, 
+                    _graphiX, _graphiY);
+        default:
+            Status.getLogger().warning("unknown background type.");
+            return null;
         }
-        return bi;
     }
 
 
@@ -372,7 +348,7 @@ public final class Utils {
      * @return the transformed BufferedImage
      */
     @SuppressWarnings("unused")
-    public static BufferedImage getRastarImage(
+    private static BufferedImage getRastarImage(
             final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {
@@ -395,8 +371,6 @@ public final class Utils {
         //value because of which is decided whether to print a line
         //or to print a text for debugging purpose.
         boolean print = true;
-        //set a small font
-//        _g.setFont(new Font("Courier New", Font.PLAIN, (2 + 1) * (2 + 1)));
         //vertical lines    |  |  |  |  |  |  |  |  |
         //                  |  |  |  |  |  |  |  |  |
         //                  |  |  |  |  |  |  |  |  |
@@ -413,6 +387,13 @@ public final class Utils {
                 
                 //proceeds in size steps
                 x += Math.max(Status.getRasterSize() / 2, 1)) {
+            
+            
+            //edit last x coordinate
+            if (x > Math.min(width - Status.getRasterBorderEnd(), _untilX) 
+                    - Math.max(Status.getRasterSize() / 2, 1)) {
+                x = Math.min(width - Status.getRasterBorderEnd(), _untilX);
+            }
             
             for (int y = 
                     //the fromX (the window from x)
@@ -468,14 +449,6 @@ public final class Utils {
                     if (xBoxID % 2 == 0) {
                         yBoxLoc += 2 * (2 + 1);
                     }
-                    
-//                    //draw the string with color black
-//                    Color previousColor = _g.getColor();
-//                    _g.setColor(Color.black);
-//                    _g.drawString(xBoxID + "." +  yBoxID, 
-//                           xBoxLoc, yBoxLoc);
-//                    //reset color
-//                    _g.setColor(previousColor);
                 }
             }
             print = !print;
@@ -525,7 +498,255 @@ public final class Utils {
         }
         return _f;
     }
+
+    /**
+     * return part of the raster image.
+     * 
+     * @param _f the bufferedImage
+     * 
+     * @param _fromX the start point
+     * @param _fromY the start point
+     * @param _untilX the end point
+     * @param _untilY the end point
+     * 
+     * @param _graphiX the location at the component where the painting 
+     *                  process starts.
+     * @param _graphiY the location at the component where the painting 
+     *                  process starts.
+     *                  
+     * @return the transformed BufferedImage
+     */
+    @SuppressWarnings("unused")
+    private static BufferedImage getLinedImage(
+            final BufferedImage _f, final int _fromX, 
+            final int _fromY, final int _untilX, final int _untilY, 
+            final int _graphiX, final int _graphiY) {
+        
+        //the width and the height of the entire image, of which the parts
+        //are painted.
+        int width = Status.getImageShowSize().width;
+        int height = Status.getImageShowSize().height;
+
+        //the merge of the page which is not filled with raster but entirely
+        //white. distancePoints is not the right expression. distance between 
+        //points = distancePoints - 1
+        final int distancePoints;
+        if (Status.getRasterSize() <= (2 + 2 + 1) * 2) {
+           distancePoints = 2;
+        } else {
+           distancePoints = 2 + 1;
+        }
+
+        //value because of which is decided whether to print a line
+        //or to print a text for debugging purpose.
+        boolean print = true;
+        //set a small font
+//        _g.setFont(new Font("Courier New", Font.PLAIN, (2 + 1) * (2 + 1)));
+        //vertical lines    |                       |
+        //                  |                       |
+        //                  |                       |
+        //                  |                       |
+        for (int x : new int[]{Status.getRasterBorderFront(), 
+            width - Status.getRasterBorderEnd()}) {
+            for (int y = 
+                    //the fromX (the window from x)
+                    (_fromY / distancePoints) * distancePoints; 
+                    
+                    //either the height merge (the height minus the height
+                    //modulo the distance of the different points or until 
+                    //x coordinate
+                    y < Math.min(height -  (height % distancePoints), _untilY); 
+                    
+                    //proceeds with the speed of distancePoints
+                    y += distancePoints) {
     
+                //calculate the values of the coordinates which are painted 
+                //at the graphics.
+                final int coordinateX = x - _fromX + _graphiX;
+                final int coordinateY = y - _fromY + _graphiY;
+                
+                if (print) {
+                    //paint the point
+                    PaintBI.paintScilentPoint(
+                            _f, coordinateX, coordinateY,
+                            RASTAR_COLOR.getRGB());
+    
+                   //if the loop has reached the last values paint a line.
+                   if (x == Status.getRasterBorderFront() 
+                           || x >= width - Status.getRasterBorderEnd() 
+                           - Status.getRasterSize() + 1) {
+                        
+                        if (y + 1 < height) {
+                            PaintBI.paintScilentPoint(
+                                    _f, coordinateX, coordinateY + 1,
+                                    RASTAR_COLOR.getRGB());
+                        }
+                        if (y + 2 < height) {
+                            PaintBI.paintScilentPoint(
+                                    _f, coordinateX, coordinateY + 2,
+                                    RASTAR_COLOR.getRGB());
+                        }
+                    }
+                } else if (!print && y % Status.getRasterSize()
+                        == Status.getRasterSize() / 2 && Status.isDebug()) {
+    
+                    //the identifier of the small box
+                    int xBoxID = (x / Status.getRasterSize()), 
+                            yBoxID = (y / Status.getRasterSize());
+                    
+                    //the location of the information text about the box id
+                    int xBoxLoc = coordinateX - Status.getRasterSize() / 2 + 2, 
+                            yBoxLoc = coordinateY;
+                    
+                    //shift the text every second x entity
+                    if (xBoxID % 2 == 0) {
+                        yBoxLoc += 2 * (2 + 1);
+                    }
+                    
+                }
+            }
+        }
+        //horizontal lines  _______________________
+        //                  _______________________
+        //                  _______________________
+        //                  _______________________
+        for (int y = Math.max(0, 
+                (_fromY / Status.getRasterSize()) * Status.getRasterSize());
+                y < Math.min(height -  (height % distancePoints), _untilY); 
+                y += Status.getRasterSize()) {
+            
+            for (int x =  Math.max(Status.getRasterBorderFront(), 
+                    _fromX / distancePoints * distancePoints); 
+                    x < Math.min(width - Status.getRasterBorderEnd(), _untilX); 
+                    x += distancePoints) {
+
+                //calculate correct coordinate values for the graphics
+                final int newX = x - _fromX + _graphiX;
+                final int newY = y - _fromY + _graphiY;
+
+               PaintBI.paintScilentPoint(
+                       _f, newX, newY, RASTAR_COLOR.getRGB());
+               
+                if (y / Status.getRasterSize() % (2 + 1) == 0) {
+                    PaintBI.paintScilentPoint(
+                            _f, newX, newY, RASTAR_COLOR.getRGB());
+                }
+                if (y == (height - height % Status.getRasterSize() - 1)) {
+                    if (x + 1 < width) {
+
+                        PaintBI.paintScilentPoint(
+                                _f, newX + 1, newY, RASTAR_COLOR.getRGB());
+                    }
+                    if (x + 2 < width) {
+                        PaintBI.paintScilentPoint(
+                                _f, newX + 2, newY, RASTAR_COLOR.getRGB());
+                    }
+                }
+            }
+        }
+        
+        //paint the non image and the border of the page.
+        if (width < _untilX || height < _untilY) {
+            paintNonImage(_f, _untilX, _untilY, width, height);
+        }
+        return _f;
+    }
+    
+    /**
+     * Print the white empty Background.
+     * 
+     * @param _f the bufferedImage
+     * 
+     * @param _fromX the start point
+     * @param _fromY the start point
+     * @param _untilX the end point
+     * @param _untilY the end point
+     * 
+     * @param _graphiX the location at the component where the painting 
+     *                  process starts.
+     * @param _graphiY the location at the component where the painting 
+     *                  process starts.
+     *                  
+     * @return the transformed BufferedImage
+     */
+    private static BufferedImage printWhiteBackground(
+            final BufferedImage _f, final int _fromX, 
+            final int _fromY, final int _untilX, final int _untilY, 
+            final int _graphiX, final int _graphiY) {
+
+        //the width and the height of the entire image, of which the parts
+        //are painted.
+        int width = Status.getImageShowSize().width;
+        int height = Status.getImageShowSize().height;
+
+        //the merge of the page which is not filled with raster but entirely
+        //white. distancePoints is not the right expression. distance between 
+        //points = distancePoints - 1
+        final int distancePoints;
+        if (Status.getRasterSize() <= (2 + 2 + 1) * 2) {
+           distancePoints = 2;
+        } else {
+           distancePoints = 2 + 1;
+        }
+        //value because of which is decided whether to print a line
+        //or to print a text for debugging purpose.
+        boolean print = true;
+        //set a small font
+//        _g.setFont(new Font("Courier New", Font.PLAIN, (2 + 1) * (2 + 1)));
+        //vertical lines    |                       |
+        //                  |                       |
+        //                  |                       |
+        //                  |                       |
+        for (int x : new int[]{Status.getRasterBorderFront(), 
+            width - Status.getRasterBorderEnd()}) {
+            for (int y = 
+                    //the fromX (the window from x)
+                    (_fromY / distancePoints) * distancePoints; 
+                    
+                    //either the height merge (the height minus the height
+                    //modulo the distance of the different points or until 
+                    //x coordinate
+                    y < Math.min(height -  (height % distancePoints), _untilY); 
+                    
+                    //proceeds with the speed of distancePoints
+                    y += distancePoints) {
+    
+                //calculate the values of the coordinates which are painted 
+                //at the graphics.
+                final int coordinateX = x - _fromX + _graphiX;
+                final int coordinateY = y - _fromY + _graphiY;
+                
+                if (print) {
+                    //paint the point
+                    PaintBI.paintScilentPoint(
+                            _f, coordinateX, coordinateY,
+                            RASTAR_COLOR.getRGB());
+    
+                   //if the loop has reached the last values paint a line.
+                   if (x == Status.getRasterBorderFront() 
+                           || x >= width - Status.getRasterBorderEnd() 
+                           - Status.getRasterSize() + 1) {
+                        
+                        if (y + 1 < height) {
+                            PaintBI.paintScilentPoint(
+                                    _f, coordinateX, coordinateY + 1,
+                                    RASTAR_COLOR.getRGB());
+                        }
+                        if (y + 2 < height) {
+                            PaintBI.paintScilentPoint(
+                                    _f, coordinateX, coordinateY + 2,
+                                    RASTAR_COLOR.getRGB());
+                        }
+                    }
+                } 
+            }
+        }
+        //paint the non image and the border of the page.
+        if (width < _untilX || height < _untilY) {
+            paintNonImage(_f, _untilX, _untilY, width, height);
+        }
+        return _f;
+    }
     
     /**
      * paint non image.

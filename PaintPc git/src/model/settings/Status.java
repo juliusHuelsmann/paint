@@ -17,12 +17,23 @@ import model.objects.pen.normal.PenKuli;
 public final class Status {
 
     /**
+     * The open project.
+     */
+    private static String openProject = "";
+    
+    /**
      * the index indicates which operation is to be performed. (e.g. pen/
      * selection mode 1 - 3, ...).
      */
     private static int indexOperation = 
             Constants.CONTROL_PATINING_INDEX_PAINT_1;
-
+    
+    /**
+     * The Background of the pages.
+     */
+    private static int indexPageBackground = 
+            Constants.CONTROL_PAGE_BACKGROUND_RASTAR;
+    
     /**
      * index contains selection kind. (separate paintObjects,
      * whole paintObjects, image).
@@ -309,5 +320,37 @@ public final class Status {
      */
     public static Logger getLogger() {
         return LOGGER;
+    }
+
+
+    /**
+     * @return the indexPageBackground
+     */
+    public static int getIndexPageBackground() {
+        return indexPageBackground;
+    }
+
+
+    /**
+     * @param _indexPageBackground the indexPageBackground to set
+     */
+    public static void setIndexPageBackground(final int _indexPageBackground) {
+        Status.indexPageBackground = _indexPageBackground;
+    }
+
+
+    /**
+     * @return the openProject
+     */
+    public static String getOpenProject() {
+        return openProject;
+    }
+
+
+    /**
+     * @param _openProject the openProject to set
+     */
+    public static void setOpenProject(final String _openProject) {
+        Status.openProject = _openProject;
     }
 }

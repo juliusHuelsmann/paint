@@ -48,7 +48,11 @@ public final class Constants {
 	        SP_PATH_LEFT = "sb/s/t.png",
 	        SP_PATH_RIGHT = "sb/s/b.png";
 
-	
+	/**
+	 * The background constants.
+	 */
+	public static final int CONTROL_PAGE_BACKGROUND_RASTAR = 0,
+	        CONTROL_PAGE_BACKGROUND_LINES = 1, CONTROL_PAGE_BACKGROUND_NONE = 3;
 	
 	/**
 	 * The size of the mouseIcon.

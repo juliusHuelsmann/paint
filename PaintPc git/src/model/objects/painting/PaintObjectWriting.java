@@ -748,14 +748,7 @@ public class PaintObjectWriting extends PaintObject {
         //each step of its solution.
         String s = s1 + s2 + s3 + s4;
         s = s + "\n";
-        
-        ls.toFirst();
-        while (!ls.isBehind() && !ls.isEmpty()) {
-            
-            System.out.println(ls.getItemSortionIndex());
-            ls.next();
-        }
-        System.out.println("\tsabs\t" + _sortAbs);
+        ls.printIndex();
         ls.toFirst();
         return ls;
     }
@@ -818,8 +811,8 @@ public class PaintObjectWriting extends PaintObject {
                     + "exakt" + ls.getItemSortionIndex() * _v.getX() + ".." 
                     + ls.getItemSortionIndex() * _v.getY());
             verifyPnt(new DPoint(_p.getX() 
-                    + ls.getItemSortionIndex() * _v.getX(),  
-                    _p.getY() + ls.getItemSortionIndex() * _v.getY()), Color.red);
+                    + ls.getItemSortionIndex() * _v.getX(), _p.getY() 
+                    + ls.getItemSortionIndex() * _v.getY()), Color.red);
             
             
             return ls.getItem();

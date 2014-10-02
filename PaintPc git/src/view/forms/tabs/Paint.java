@@ -5,7 +5,6 @@ package view.forms.tabs;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -13,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.TextFactory;
@@ -22,7 +20,6 @@ import control.ControlPainting;
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import control.tabs.CPaintSelection;
-import view.forms.Tabs;
 import view.util.Item1Menu;
 import view.util.Item1PenSelection;
 import view.util.VColorPanel;
@@ -646,6 +643,7 @@ public final class Paint extends JPanel {
 		initializeTextButton(tb_zoomOut,
 				TextFactory.getInstance().getTextViewTb_zoomOut(),
 				Constants.VIEW_TB_ZOOM_OUT_PATH, 0);
+		tb_zoomOut.setActivable(false);
 
 		insertTrennung(tb_zoomIn.getWidth() + tb_zoomIn.getX() 
 		        + ViewSettings.DISTANCE_BEFORE_LINE, 
@@ -919,7 +917,8 @@ public final class Paint extends JPanel {
 	        super.add(this.jlbl_separation[_locInArray]);
 	        
 	    }
-	    final int number = tb_cut.getHeight() + tb_cut.getY() + 20;
+	    final int twenty = 20;
+	    final int number = tb_cut.getHeight() + tb_cut.getY() + twenty;
         this.jlbl_separation[_locInArray].setBounds(_x, _y, 1, number);
 	}
 	

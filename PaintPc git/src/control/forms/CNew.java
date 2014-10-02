@@ -1,5 +1,8 @@
+//package declaration
 package control.forms;
 
+//import declarations
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -9,14 +12,16 @@ import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 
+import model.objects.painting.Picture;
 import model.settings.Constants;
+import model.settings.Status;
 import model.util.paint.Utils;
 import view.View;
 import view.forms.Message;
 import view.forms.New;
+import view.forms.Page;
 
 /**
- * 
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
@@ -61,7 +66,8 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
                 New.getInstance().getJbtn_enter())) {
             
             int width, height, backgroundID;
-            String project;
+            String project = New.getInstance().getJcb_project()
+                    .getSelectedItem().toString();
             
             //check whether settings are correct:
             if (New.getInstance().getI1b_custom().isActivated()) {
@@ -93,7 +99,45 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
             } else if (New.getInstance().getI1b_a7().isActivated()) {
                 width = Constants.SIZE_A7.width;
                 height = Constants.SIZE_A7.height;
+            } else {
+                Status.getLogger().warning("no page activated.");
+                width = 2;
+                height = 2;
             }
+            
+            if (New.getInstance().getJcb_raster().isSelected()) {
+                backgroundID = Constants.CONTROL_PAGE_BACKGROUND_RASTAR;
+            } else if (New.getInstance().getJcb_lines().isSelected()) {
+                backgroundID = Constants.CONTROL_PAGE_BACKGROUND_LINES;
+            } else if (New.getInstance().getJcb_nothing().isSelected()) {
+                backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
+            } else {
+                Status.getLogger().warning("no background selected.");
+                backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
+            }
+
+            Status.setImageShowSize(new Dimension(width, height));
+            Status.setImageShowSize(new Dimension(width, height));
+            Status.setIndexPageBackground(backgroundID);
+            Picture.getInstance().reload();
+            Status.setOpenProject(project);
+            
+            Page.getInstance().getJlbl_painting().refreshPaint();
+        } else if (_event.getSource().equals(
+                New.getInstance().getJcb_lines())) {
+            New.getInstance().getJcb_lines().setSelected(true);
+            New.getInstance().getJcb_nothing().setSelected(false);
+            New.getInstance().getJcb_raster().setSelected(false);
+        } else if (_event.getSource().equals(
+                New.getInstance().getJcb_nothing())) {
+            New.getInstance().getJcb_nothing().setSelected(true);
+            New.getInstance().getJcb_lines().setSelected(false);
+            New.getInstance().getJcb_raster().setSelected(false);
+        } else if (_event.getSource().equals(
+                New.getInstance().getJcb_raster())) {
+            New.getInstance().getJcb_raster().setSelected(true);
+            New.getInstance().getJcb_nothing().setSelected(false);
+            New.getInstance().getJcb_lines().setSelected(false);
         }
     }
     

@@ -320,17 +320,20 @@ public final class New extends JPanel {
         jcb_raster = new JCheckBox("Raster");
         jcb_raster.setFocusable(false);
         jcb_raster.setOpaque(false);
+        jcb_raster.addActionListener(CNew.getInstance());
         jcb_raster.setLocation(jlbl_backgroundTitle.getX(), 
                 distanceBetweenItems + jlbl_backgroundTitle.getY()
                 + jlbl_backgroundTitle.getHeight());
         jcb_raster.setSize(jlbl_backgroundTitle.getWidth() / (2 + 1) 
                 - (2 + 1) * distanceBetweenItems, buttonHeight);
         jcb_raster.setFont(ViewSettings.GENERAL_FONT_ITEM);
+        jcb_raster.setSelected(true);
         jpnl_stuff.add(jcb_raster);
         
         jcb_lines = new JCheckBox("Lines");
         jcb_lines.setFocusable(false);
         jcb_lines.setOpaque(false);
+        jcb_lines.addActionListener(CNew.getInstance());
         jcb_lines.setLocation(jcb_raster.getWidth() + jcb_raster.getX() 
                 + distanceBetweenItems, jcb_raster.getY());
         jcb_lines.setSize(jlbl_backgroundTitle.getWidth() / (2 + 1) 
@@ -341,6 +344,7 @@ public final class New extends JPanel {
         jcb_nothing = new JCheckBox("Nothing");
         jcb_nothing.setFocusable(false);
         jcb_nothing.setOpaque(false);
+        jcb_nothing.addActionListener(CNew.getInstance());
         jcb_nothing.setLocation(jcb_lines.getWidth() + jcb_lines.getX() 
                 + distanceBetweenItems, jcb_raster.getY());
         jcb_nothing.setSize(jlbl_backgroundTitle.getWidth() / (2 + 1) 
@@ -676,4 +680,5 @@ public final class New extends JPanel {
     public JTextField getJtf_customHeight() {
         return jtf_customHeight;
     }
+
 }

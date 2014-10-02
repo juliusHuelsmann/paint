@@ -1,13 +1,11 @@
 package view.forms;
 
 import java.awt.Color;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.RepaintManager;
-
+import control.forms.CMessage;
 import view.View;
 import view.util.RoundedBorder;
 import model.settings.ViewSettings;
@@ -88,6 +86,7 @@ public final class Message extends JPanel {
         jbtn_hide = new JButton("OK");
         jbtn_hide.setContentAreaFilled(false);
         jbtn_hide.setOpaque(false);
+        jbtn_hide.addActionListener(CMessage.getInstance());
         jbtn_hide.setBorder(BorderFactory.createLineBorder(Color.gray));
         jbtn_hide.setSize(ViewSettings.MESSAGE_SIZE.height,
                 ViewSettings.MESSAGE_SIZE.height - 2 * 2);
@@ -171,5 +170,17 @@ public final class Message extends JPanel {
             instance.initialize();
         }
         View.getInstance().add(instance);
+    }
+    
+    
+    /**
+     * Set invisible.
+     */
+    public static void fadeOut() {
+
+        if (instance.t_show != null) {
+            instance.t_show.interrupt();
+        }
+        instance.setVisible(false);
     }
 }

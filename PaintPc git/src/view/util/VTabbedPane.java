@@ -451,7 +451,7 @@ public class VTabbedPane extends JPanel {
 			for (int i = 0; i < jpnl_stuff.length; i++) {
 				jpnl_stuff2[i] = jpnl_stuff[i];
 				jbtn_stuff2[i] = jbtn_stuffHeadline[i];
-				jpnl_stuff2[i].setVisible(false);
+				jpnl_stuff2[i].setVisible(true);
 			}
 			
 			//initialize the new JPanels.
@@ -610,7 +610,7 @@ public class VTabbedPane extends JPanel {
                     1, 1, 0, 1, ViewSettings.CLR_BORDER));
             jpnl_contains.setComponentZOrder(jbtn_stuffHeadline[_index], 1);
 
-          super.setSize(getWidth(), visibleHeight);
+            super.setSize(getWidth(), visibleHeight);
             new Thread() {
                 public void run() {
 
@@ -620,7 +620,7 @@ public class VTabbedPane extends JPanel {
                     //JPanels
                     for (int percent = 0; percent <= max; percent++) {
                         for (int i = 0; i < jbtn_stuffHeadline.length; i++) {
-                            
+
                             int cStartLocation = getWidth() * (i - lastTab);
                             int cEndLocation = getWidth() * (i - _index);
                             
@@ -629,7 +629,7 @@ public class VTabbedPane extends JPanel {
                                     + (cEndLocation - cStartLocation)
                                     * percent / max,
                                     jpnl_stuff[i].getY());
-                            jpnl_stuff[openTab].repaint();
+                            jpnl_stuff[i].repaint();
                         }
                         try {
                             Thread.sleep(1);

@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import model.settings.ViewSettings;
 import control.util.CItem;
 import view.forms.tabs.Insert;
+import view.forms.tabs.Outlook;
 import view.forms.tabs.Paint;
 import view.forms.tabs.PaintObjects;
 import view.forms.tabs.Selection;
@@ -52,20 +53,30 @@ public class Tabs extends VTabbedPane {
         super.setFocusable(false);
         super.setVisible(false);
 
+        int tabNumber = 0;
         /*
          * tab paint
          */
         super.addTab("zeichnen");
         tab_paint = Paint.getInstance();
-        super.addToTab(0, tab_paint);
+        super.addToTab(tabNumber, tab_paint);
+        tabNumber++;
 
+        /*
+         * tab view
+         */
+        super.addTab("Ansicht");   //view
+        super.addToTab(tabNumber, Outlook.getInstance());
+        tabNumber++;
+        
         /*
          * 
          */
         super.addTab("auswahl");
         Selection tab_selection = Selection.getInstance(
                 ViewSettings.VIEW_HEIGHT_TB);
-        super.addToTab(1, tab_selection);
+        super.addToTab(tabNumber, tab_selection);
+        tabNumber++;
         
 
         /*
@@ -73,7 +84,8 @@ public class Tabs extends VTabbedPane {
          */
         super.addTab("einfuegen");
         tab_insert = new Insert(ViewSettings.VIEW_HEIGHT_TB);
-        super.addToTab(2, tab_insert);
+        super.addToTab(tabNumber, tab_insert);
+        tabNumber++;
         
 
         
@@ -84,32 +96,32 @@ public class Tabs extends VTabbedPane {
         PaintObjects.getInstance().setSize(
                 (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
                 ViewSettings.VIEW_HEIGHT_TB);
-        super.addToTab(2 + 1, tab_pos);
+        super.addToTab(tabNumber, tab_pos);
+        tabNumber++;
         
-        /*
-         * tab view
-         */
-        super.addTab("Ansicht");   //view
-
         /*
          * tab print
          */
         super.addTab("Drucken");
+        tabNumber++;
 
         /*
          * tab print
          */
         super.addTab("Projekte");
+        tabNumber++;
 
         /*
          * tab print
          */
         super.addTab("Ziele");
+        tabNumber++;
 
         /*
          * tab print
          */
         super.addTab("Uebersicht");
+        tabNumber++;
         
 
     }

@@ -169,7 +169,7 @@ public class PaintLabel extends JLabel {
         //paint the painting background (e.g. raster / lines) at the graphical
         //user interface.
         if (getBi() != null) {
-            setBi(Utils.getRastarImage(getBi(), -getLocation().x + _x, 
+            setBi(Utils.getBackground(getBi(), -getLocation().x + _x, 
                     -getLocation().y + _y, -getLocation().x + _x + _width, 
                     -getLocation().y + _y + _height, _x, _y));  
         }

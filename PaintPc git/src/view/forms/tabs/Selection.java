@@ -482,12 +482,4 @@ public final class Selection extends JPanel {
     public JButton [] getJbtn_colors() {
         return jbtn_colors;
     }
-
-
-    /**
-     * @param jbtn_colors the jbtn_colors to set
-     */
-    public void setJbtn_colors(JButton [] jbtn_colors) {
-        this.jbtn_colors = jbtn_colors;
-    }
 }

@@ -66,10 +66,10 @@ public final class BufferedViewer extends JFrame {
      */
     public static void show(final BufferedImage _bi) {
 
-        getInstance().setSize(_bi.getWidth(), _bi.getHeight());
-        getInstance().jlbl_painting.setSize(_bi.getWidth(), _bi.getHeight());
-        getInstance().jlbl_painting.setIcon(new ImageIcon(_bi));
-        getInstance().setVisible(true);
+//        getInstance().setSize(_bi.getWidth(), _bi.getHeight());
+//        getInstance().jlbl_painting.setSize(_bi.getWidth(), _bi.getHeight());
+//        getInstance().jlbl_painting.setIcon(new ImageIcon(_bi));
+//        getInstance().setVisible(true);
     }
     
     

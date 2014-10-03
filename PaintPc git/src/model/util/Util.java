@@ -2,6 +2,7 @@ package model.util;
 
 import java.awt.Point;
 
+import model.objects.painting.PaintObject;
 import model.objects.painting.PaintObjectWriting;
 import model.util.list.List;
 
@@ -107,39 +108,44 @@ public final class Util {
     }
     
     
+
+    /**
+     * merge two arrays.
+     * @param _p1 the first array
+     * @param _p2 the second array
+     * @return the merged array
+     */
+    public static PaintObject[][] mergeDoubleArray(
+            final PaintObject[][] _p1, final PaintObject[][] _p2) {
+        
+        if (_p1.length != _p2.length) {
+            return null;
+        }
+        
+        PaintObject [][] p_return = new PaintObject[_p1.length][1];
+        for (int i = 0; i < _p1.length; i++) {
+            p_return[i] = mergeArray(_p1[i], _p2[i]);
+        }
+        
+        return p_return;
+    }
     
     /**
-     * convert list of points into array.
-     * 
-     * @param _ld list of points
-     * @return the array
+     * merge two arrays.
+     * @param _p1 the first array
+     * @param _p2 the second array
+     * @return the merged array
      */
-    private static Object[] lsToArrayD(
-            @SuppressWarnings("rawtypes") final List _ld) {
+    public static PaintObject[] mergeArray(
+            final PaintObject[] _p1, final PaintObject[] _p2) {
 
-        /*
-         * Transform lists to arrays
-         */
-        int length = 0;
-        _ld.toFirst();
-        
-        //it is necessary to double check behind and empty because an empty
-        //list returns the length of 1 otherwise.
-        while (!_ld.isBehind() && !_ld.isEmpty()) {
-            _ld.next();
-            length++;
+        PaintObject [] p_return = new PaintObject[_p1.length + _p2.length];
+        for (int i = 0; i < _p1.length; i++) {
+            p_return[i] = _p1[i];
         }
-        
-        Object [] pow = new Object[length];
-
-        _ld.toFirst();
-        int index = 0;
-        while (!_ld.isBehind() && !_ld.isEmpty()) {
-            pow[index] = _ld.getItem();
-            _ld.next();
-            index++;
+        for (int i = _p1.length; i < _p2.length; i++) {
+            p_return[i] = _p2[i - _p1.length];
         }
-        
-        return pow;
+        return p_return;
     }
 }

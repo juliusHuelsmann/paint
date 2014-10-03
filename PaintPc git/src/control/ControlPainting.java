@@ -17,11 +17,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+
 import javax.activation.UnsupportedDataTypeException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
@@ -39,6 +41,7 @@ import model.settings.Settings;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.DPoint;
+import model.util.Util;
 import model.util.list.List;
 import model.util.paint.MyClipboard;
 import model.util.paint.Utils;
@@ -683,7 +686,27 @@ public final class ControlPainting implements MouseListener,
                     mr_sel_line_complete(_event);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
-                    mr_sel_line_destroy(_event);
+
+                    // fetch rectangle
+                    Rectangle r_sizeField = new Rectangle(
+                            -Page.getInstance().getJlbl_painting()
+                            .getLocation().x
+                            + Math.min(pnt_start.x, _event.getX()), 
+                            -Page.getInstance().getJlbl_painting()
+                            .getLocation().y 
+                            + Math.min(pnt_start.y, _event.getY()),
+                            Math.abs(pnt_start.x - _event.getX()),
+                            Math.abs(pnt_start.y - _event.getY()));
+
+                    mr_sel_line_destroy(_event, r_sizeField);
+
+//                    final int shift = 5;
+//                    Rectangle r2 = 
+//                          new Rectangle(r_sizeField.x - shift, 
+//                                  r_sizeField.y - shift,
+//                                  r_sizeField.width + shift * 2, 
+//                                  r_sizeField.height + shift * 2);
+//                    mr_sel_line_destroy(_event, r2);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
                     break;
@@ -1086,16 +1109,8 @@ public final class ControlPainting implements MouseListener,
      * @param _event
      *            the mouseEvent.
      */
-    private void mr_sel_line_destroy(final MouseEvent _event) {
-
-        // fetch rectangle
-        Rectangle r_sizeField = new Rectangle(
-                -Page.getInstance().getJlbl_painting().getLocation().x
-                + Math.min(pnt_start.x, _event.getX()), 
-                -Page.getInstance().getJlbl_painting().getLocation().y 
-                + Math.min(pnt_start.y, _event.getY()),
-                Math.abs(pnt_start.x - _event.getX()), Math.abs(pnt_start.y
-                        - _event.getY()));
+    private void mr_sel_line_destroy(final MouseEvent _event, 
+            final Rectangle r_sizeField) {
 
         Picture.getInstance().repaintRectangle(r_sizeField);
         Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
@@ -1159,6 +1174,12 @@ public final class ControlPainting implements MouseListener,
 
                     PaintObject [][] separatedPO = po_current.separate(
                             r_sizeField);
+//                    PaintObject [][] p2 = po_current.separate(
+//                            new Rectangle(r_sizeField.x - 2, r_sizeField.y - 2,
+//                            r_sizeField.width + 2 * 2, 
+//                            r_sizeField.height + 2 * 2));
+//                    
+//                    PaintObject [][] separatedPO = Util.mergeDoubleArray(p, p2);
                     PictureOverview.getInstance().remove(Picture.getInstance()
                             .getLs_po_sortedByX().getItem());
                     Picture.getInstance().getLs_po_sortedByX().remove();

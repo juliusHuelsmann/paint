@@ -900,15 +900,8 @@ public final class Picture extends Observable {
 
 	            PaintObjectWriting pow = (PaintObjectWriting)
 	                    ls_poSelected.getItem();
-	            pow.getPoints().toFirst();
-	            pow.adjustSnapshotBounds(_dX, _dY);
-	            while (!pow.getPoints().isBehind()) {
-                    pow.getPoints().getItem().setX(
-                            pow.getPoints().getItem().getX() + _dX);
-                    pow.getPoints().getItem().setY(
-                            pow.getPoints().getItem().getY() + _dY);
-	                pow.getPoints().next();
-	            }
+	            pow = movePaintObjectWriting(pow, _dX, _dY);
+	            
 	        } else if (ls_poSelected.getItem() instanceof PaintObjectImage) {
 
 	            PaintObjectImage p = (PaintObjectImage) ls_poSelected.getItem();
@@ -920,6 +913,29 @@ public final class Picture extends Observable {
 	    }
 	}
 	
+	/**
+	 * 
+     * Move PaintObject items.
+	 * @param _pow PaintObjectWriting
+     * @param _dX the x difference from current position
+     * @param _dY the y difference from current position
+     * @return the PaintObjectWriting
+	 */
+	public static PaintObjectWriting movePaintObjectWriting(
+	        final PaintObjectWriting _pow, 
+	        final int _dX, final int _dY) {
+
+        _pow.getPoints().toFirst();
+        _pow.adjustSnapshotBounds(_dX, _dY);
+        while (!_pow.getPoints().isBehind()) {
+            _pow.getPoints().getItem().setX(
+                    _pow.getPoints().getItem().getX() + _dX);
+            _pow.getPoints().getItem().setY(
+                    _pow.getPoints().getItem().getY() + _dY);
+            _pow.getPoints().next();
+        }
+        return _pow;
+    }
 	
 	/**
 	 * Paint the selected items to the selection JLabel.

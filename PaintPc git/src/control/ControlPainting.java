@@ -45,7 +45,9 @@ import model.util.DPoint;
 import model.util.list.List;
 import model.util.paint.MyClipboard;
 import model.util.paint.Utils;
+import start.test.BufferedViewer;
 import view.View;
+import view.ViewVorschau;
 import view.forms.Message;
 import view.forms.New;
 import view.forms.Page;
@@ -943,9 +945,13 @@ public final class ControlPainting implements MouseListener,
      */
     private void mr_sel_curve_complete(final MouseEvent _event, 
             final PaintObjectWriting _ldp) {
-        PaintBI.printFillPolygonN(_ldp.getSnapshot(),
+        Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
+                -_ldp.getSnapshotBounds().y);
+        BufferedImage transform = _ldp.getSnapshot();
+        PaintBI.printFillPolygonN(transform,
                 Color.green, model.util.Util.dpntToPntArray(
                         model.util.Util.pntLsToArray(_ldp.getPoints())));
+        BufferedViewer.show((transform));
     }
 
     /**

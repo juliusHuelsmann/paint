@@ -178,6 +178,14 @@ public final class PaintBI {
             
             if (p == null) {
 
+                for (int x = 0; x < polygonReturn.getField().length; x++) {
+                    for (int y = 0; y < polygonReturn.getField()[x].length; 
+                            y++) {
+                        if (polygonReturn.getField()[x][y]) {
+                            _bi.setRGB(x, y, _clr.getRGB());
+                        }
+                    }
+                }
                 
                 return polygonReturn;
             } else {
@@ -185,6 +193,14 @@ public final class PaintBI {
                 switch (p.length) {
                 
                 case 0:
+                    for (int x = 0; x < polygonReturn.getField().length; x++) {
+                        for (int y = 0; y < polygonReturn.getField()[x].length;
+                                y++) {
+                            if (polygonReturn.getField()[x][y]) {
+                                _bi.setRGB(x, y, _clr.getRGB());
+                            }
+                        }
+                    }
                     return polygonReturn;
                     
                 case 1:

@@ -1034,12 +1034,17 @@ public final class Picture extends Observable {
         //scrolling
 	    if (CSelection.getInstance().getOldPaintLabelLocation() != null) {
 
-	        Picture.getInstance().moveSelected((int) (-Page.getInstance()
-	                .getJlbl_painting().getLocation().getX() + CSelection
-	                .getInstance().getOldPaintLabelLocation().getX()), 
-	                (int) (-Page.getInstance().getJlbl_painting()
-	                        .getLocation().getY() + CSelection.getInstance()
-	                        .getOldPaintLabelLocation().getY()));
+            int oldX = (int) CSelection.getInstance().getOldPaintLabelLocation()
+                    .getX();
+            int oldY = (int) CSelection.getInstance().getOldPaintLabelLocation()
+                    .getY();
+
+            int newX = (int) Page.getInstance().getJlbl_painting().getLocation()
+                    .getX();
+            int newY = (int) Page.getInstance().getJlbl_painting().getLocation()
+                    .getY();
+            
+	        Picture.getInstance().moveSelected(oldX - newX, oldY - newY);
 	        CSelection.getInstance().setOldPaintLabelLocation(null);
 	    }
         

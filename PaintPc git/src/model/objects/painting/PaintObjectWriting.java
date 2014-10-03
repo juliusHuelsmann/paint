@@ -790,14 +790,14 @@ public class PaintObjectWriting extends PaintObject {
             
             if (ls.getItemSortionIndex() <= 0 
                     || ls.getItemSortionIndex() > 1
-                    || ((int) ls.getItem().getX() == 0 
-                    && (int) ls.getItem().getY() == 0)) {
+                    || ((int) Math.abs(ls.getItem().getX() - _p.getX()) <= 1 
+                    && (int) Math.abs(ls.getItem().getY() - _p.getY()) <= 1)) {
                 ls.next();
                 System.out.println("noext.");
             }
-            System.out.println("soriterungsindex"
-                    + ((int) (ls.getItemSortionIndex() * _v.getX())) + " x "
-                    + ((int) (ls.getItemSortionIndex() * _v.getY())));
+            System.out.println("soriterungsindex" 
+                    + ((int) (ls.getItem().getX() - _p.getX())) + "und y " 
+                    + (int) (ls.getItem().getY() - _p.getY()) + "\n");
             
             //if the point is at the border of the rectangle the nearest 
             //intersection is the point itself. Then We do not have to find

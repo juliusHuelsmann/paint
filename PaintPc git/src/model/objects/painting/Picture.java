@@ -872,9 +872,12 @@ public final class Picture extends Observable {
 	        
 
 	        CTabSelection.activateOp();
-	        CTabSelection.selectPenOp(-1);
-	        if (ls_poSelected.isEmpty()) {
-//	            CTabSelection.
+	        if (_po instanceof PaintObjectWriting) {
+	            
+	            PaintObjectWriting pow = (PaintObjectWriting) _po;
+	            CTabSelection.getInstance().change(ls_poSelected.isEmpty(), 
+	                    pow.getPen().getId_operation(),
+	                    pow.getPen().getClr_foreground().getRGB());
 	        }
 	        ls_poSelected.insertSorted(_po, _po.getSnapshotBounds().x);   
 	        PictureOverview.getInstance().addSelected(_po);

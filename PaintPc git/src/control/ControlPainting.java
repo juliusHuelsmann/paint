@@ -403,11 +403,27 @@ public final class ControlPainting implements MouseListener,
 
                 if (pnt_start != null) {
 
+                    int xLocation = Math.min(pnt_start.x, _event.getX());
+                    int yLocation = Math.min(pnt_start.y, _event.getY());
+                    // not smaller than zero
+                    xLocation = Math.max(0, xLocation);
+                    yLocation = Math.max(0, yLocation);
+
+                    // not greater than the entire shown image - 
+                    // the width of zoom
+                    int xSize = Math.min(Status.getImageShowSize().width
+                            - xLocation, 
+                            Math.abs(pnt_start.x - _event.getX()));
+                    int ySize = Math.min(Status.getImageShowSize().height
+                            - yLocation, 
+                            Math.abs(pnt_start.y - _event.getY()));
+
                     Page.getInstance().getJlbl_border().setBounds(
-                                    Math.min(pnt_start.x, _event.getX()),
-                                    Math.min(pnt_start.y, _event.getY()),
-                                    Math.abs(pnt_start.x - _event.getX()),
-                                    Math.abs(pnt_start.y - _event.getY()));
+                            xLocation,
+                            yLocation,
+                            xSize,
+                            ySize);
+                    
                 } else {
                     
                     Status.getLogger().warning("Want to print border but"
@@ -632,6 +648,43 @@ public final class ControlPainting implements MouseListener,
         }
     }
     
+    
+    /**
+     * Method used for getting the location of the selection rectangle box.
+     * @param _event the MouseEvent.
+     * @return the location
+     */
+    private Rectangle calcRectangleLocation(final MouseEvent _event) {
+
+        int xLocation = Math.min(pnt_start.x, _event.getX());
+        int yLocation = Math.min(pnt_start.y, _event.getY());
+        // not smaller than zero
+        xLocation = Math.max(0, xLocation);
+        yLocation = Math.max(0, yLocation);
+        
+        // not greater than the entire shown image - 
+        // the width of zoom
+        int xSize = Math.min(Status.getImageShowSize().width
+                - xLocation, 
+                Math.abs(pnt_start.x - _event.getX()));
+        int ySize = Math.min(Status.getImageShowSize().height
+                - yLocation, 
+                Math.abs(pnt_start.y - _event.getY()));
+
+        xLocation -= Page.getInstance().getJlbl_painting()
+                .getLocation().x;
+        yLocation -= Page.getInstance().getJlbl_painting()
+                .getLocation().y;
+
+        
+        return new Rectangle (
+                xLocation,
+                yLocation,
+                xSize,
+                ySize);
+
+    }
+    
     /**
      * the mouse released event of painting JLabel.
      * @param _event the event given to mouseListener.
@@ -679,34 +732,26 @@ public final class ControlPainting implements MouseListener,
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
             if (_event.getButton() == 1) {
 
+                Rectangle r = calcRectangleLocation(_event);
+                Page.getInstance().getJlbl_border().setBounds(r);
+//                r.x += Page.getInstance().getJlbl_painting()
+//                        .getLocation().x;
+//                r.y += Page.getInstance().getJlbl_painting()
+//                        .getLocation().y;
+                
                 //remove old rectangle.
-                Page.getInstance().getJlbl_border().setBounds(-1, -1, 0, 0);
                 switch (Status.getIndexSelection()) {
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
-                    mr_sel_line_complete(_event);
+
+                    mr_sel_line_complete(_event, r);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
 
-                    // fetch rectangle
-                    Rectangle r_sizeField = new Rectangle(
-                            -Page.getInstance().getJlbl_painting()
-                            .getLocation().x
-                            + Math.min(pnt_start.x, _event.getX()), 
-                            -Page.getInstance().getJlbl_painting()
-                            .getLocation().y 
-                            + Math.min(pnt_start.y, _event.getY()),
-                            Math.abs(pnt_start.x - _event.getX()),
-                            Math.abs(pnt_start.y - _event.getY()));
-
-                    mr_sel_line_destroy(_event, r_sizeField);
-
-//                    final int shift = 5;
-//                    Rectangle r2 = 
-//                          new Rectangle(r_sizeField.x - shift, 
-//                                  r_sizeField.y - shift,
-//                                  r_sizeField.width + shift * 2, 
-//                                  r_sizeField.height + shift * 2);
-//                    mr_sel_line_destroy(_event, r2);
+                  r.x += Page.getInstance().getJlbl_painting()
+                          .getLocation().x;
+                  r.y += Page.getInstance().getJlbl_painting()
+                          .getLocation().y;
+                    mr_sel_line_destroy(_event, r);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
                     break;
@@ -982,31 +1027,12 @@ public final class ControlPainting implements MouseListener,
      * The event which is performed after performed a mouseReleased with id
      * selection line.
      * 
+     * @param _r_size the rectangle.
      * @param _event
      *            the mouseEvent.
      */
-    private void mr_sel_line_complete(final MouseEvent _event) {
-
-        /*
-         * INITIALIZE 
-         */
-        //initialize rectangles; 
-        //  1) the bounds of the selection rectangle painted by user
-        //  2) the bounds of the rectangle which contains each PaintObject 
-        //     which is inside 1)
-        Rectangle r_sizeField = new Rectangle(
-                -Page.getInstance().getJlbl_painting().getLocation().x
-                + Math.min(pnt_start.x, _event.getX()), 
-                -Page.getInstance().getJlbl_painting().getLocation().y 
-                + Math.min(pnt_start.y, _event.getY()),
-                Math.abs(pnt_start.x - _event.getX()), Math.abs(pnt_start.y
-                        - _event.getY()));
-        if (r_sizeField.x < 0) {
-            r_sizeField.x = 0;
-        }
-        if (r_sizeField.y < 0) {
-            r_sizeField.y = 0;
-        }
+    private void mr_sel_line_complete(final MouseEvent _event,
+            final Rectangle _r_size) {
 
         /*
          * SELECT ALL ITEMS INSIDE RECTANGLE    
@@ -1014,14 +1040,14 @@ public final class ControlPainting implements MouseListener,
         //case: there can't be items inside rectangle because list is empty
         if (Picture.getInstance().getLs_po_sortedByX().isEmpty()) {
 
-            //adjust location of the field for painting to view
-            r_sizeField.x += Page.getInstance().getJlbl_painting().getLocation()
+//            //adjust location of the field for painting to view
+            _r_size.x += Page.getInstance().getJlbl_painting().getLocation()
                     .x;
-            r_sizeField.y += Page.getInstance().getJlbl_painting().getLocation()
+            _r_size.y += Page.getInstance().getJlbl_painting().getLocation()
                     .y;
             //paint to view
             Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
-                    r_sizeField);
+                    _r_size);
             pnt_start = null;
             return;
         }
@@ -1041,23 +1067,23 @@ public final class ControlPainting implements MouseListener,
                 / Status.getImageShowSize().width;
         final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
                 / Status.getImageShowSize().height;
-        r_sizeField.x *= cZoomFactorWidth;
-        r_sizeField.width *= cZoomFactorWidth;
-        r_sizeField.y *= cZoomFactorHeight;
-        r_sizeField.height *= cZoomFactorHeight;
+        _r_size.x *= cZoomFactorWidth;
+        _r_size.width *= cZoomFactorWidth;
+        _r_size.y *= cZoomFactorHeight;
+        _r_size.height *= cZoomFactorHeight;
         
         // go through list. until either list is empty or it is
         // impossible for the paintSelection to paint inside the
         // selected area
         while (po_current != null
                 && currentX 
-                <= (r_sizeField.x + r_sizeField.width)) {
+                <= (_r_size.x + _r_size.width)) {
 
             //The y condition has to be in here because the items are just 
             //sorted by x coordinate; thus it is possible that one PaintObject 
             //is not suitable for the specified rectangle but some of its 
             //predecessors in sorted list do.
-            if (po_current.isInSelectionImage(r_sizeField)) {
+            if (po_current.isInSelectionImage(_r_size)) {
 
                 //move current item from normal list into selected list 
                 Picture.getInstance().insertIntoSelected(po_current);
@@ -1080,23 +1106,23 @@ public final class ControlPainting implements MouseListener,
         if (!Picture.getInstance().paintSelected()) {
 
           //transform the logical Rectangle to the painted one.
-          r_sizeField.x = (int) (1.0 * r_sizeField.x / cZoomFactorWidth);
-          r_sizeField.width = (int) 
-                  (1.0 * r_sizeField.width / cZoomFactorWidth);
-          r_sizeField.y = (int) (1.0 * r_sizeField.y / cZoomFactorHeight);
-          r_sizeField.height = (int) 
-                  (1.0 * r_sizeField.height / cZoomFactorHeight);
+          _r_size.x = (int) (1.0 * _r_size.x / cZoomFactorWidth);
+          _r_size.width = (int) 
+                  (1.0 * _r_size.width / cZoomFactorWidth);
+          _r_size.y = (int) (1.0 * _r_size.y / cZoomFactorHeight);
+          _r_size.height = (int) 
+                  (1.0 * _r_size.height / cZoomFactorHeight);
           
-          r_sizeField.x 
+          _r_size.x 
           += Page.getInstance().getJlbl_painting().getLocation().x;
-          r_sizeField.y 
+          _r_size.y 
           += Page.getInstance().getJlbl_painting().getLocation().y;
           
           
-          CSelection.getInstance().setR_selection(r_sizeField,
+          CSelection.getInstance().setR_selection(_r_size,
                   Page.getInstance().getJlbl_painting().getLocation());
           Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
-                  r_sizeField);
+                  _r_size);
         }
     }
     
@@ -1112,10 +1138,6 @@ public final class ControlPainting implements MouseListener,
     private void mr_sel_line_destroy(final MouseEvent _event, 
             final Rectangle r_sizeField) {
 
-        Picture.getInstance().repaintRectangle(r_sizeField);
-        Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
-                r_sizeField);
-
         /*
          * whole item selection.
          */
@@ -1127,7 +1149,7 @@ public final class ControlPainting implements MouseListener,
 
         // go to the beginning of the list
         Picture.getInstance().getLs_po_sortedByX().toFirst();
-        if (!Picture.getInstance().getLs_po_sortedByX().isEmpty()) { 
+        if (!Picture.getInstance().getLs_po_sortedByX().isEmpty()) {
 
             // go to the beginning of the list
             Picture.getInstance().getLs_po_sortedByX().toFirst();
@@ -1245,7 +1267,20 @@ public final class ControlPainting implements MouseListener,
             if (Picture.getInstance().paintSelected()) {
                 Page.getInstance().getJlbl_painting().refreshPaint();
             }
+
+            r_sizeField.x /= cZoomFactorWidth;
+            r_sizeField.width /= cZoomFactorWidth;
+            r_sizeField.y /= cZoomFactorHeight;
+            r_sizeField.height /= cZoomFactorHeight;
         }
+        
+
+        Picture.getInstance().repaintRectangle(r_sizeField);
+
+        
+        Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
+                r_sizeField);
+
     }
     
     

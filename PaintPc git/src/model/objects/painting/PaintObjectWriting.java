@@ -366,7 +366,7 @@ public class PaintObjectWriting extends PaintObject {
         
         while (!ls_point.isBehind()) {
             
-            System.out.println("neu\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNeu");
             
             //Initialize current Point and verify whether it is outside or 
             //inside the rectangle
@@ -598,7 +598,8 @@ public class PaintObjectWriting extends PaintObject {
      * value
      * @return the intersectionDPoints between line and rectangle
      */
-    public static List<DPoint> findIntersections(final Rectangle _r, 
+    public static synchronized List<DPoint> findIntersections(
+            final Rectangle _r, 
             final DPoint _p, final DPoint _v, final boolean _sortAbs) {
         //Step 1
         //Visualization s____________
@@ -763,7 +764,8 @@ public class PaintObjectWriting extends PaintObject {
      * @param _v the "direction vector"
      * @return the "best" intersectionDPoint between line and rectangle
      */
-    public static DPoint findIntersection(final Rectangle _r, final DPoint _p, 
+    public static synchronized DPoint findIntersection(final Rectangle _r, 
+            final DPoint _p, 
             final DPoint _v) {
     
         List<DPoint> ls = findIntersections(_r, _p, _v, true);

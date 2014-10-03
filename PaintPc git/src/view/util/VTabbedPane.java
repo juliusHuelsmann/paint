@@ -492,7 +492,11 @@ public class VTabbedPane extends JPanel {
 			jbtn_stuff2[jpnl_stuff.length] = initJbtn_title(
 			        jpnl_stuff.length, _title);
 			jpnl_stuff2[jpnl_stuff.length] = initJpnl_tab();
-			
+
+            if (_title.equals("")) {
+                
+                jbtn_stuff2[jpnl_stuff.length].setVisible(false);
+            }
 			//save the new created JPanel and JButton arrays.
 			jpnl_stuff = jpnl_stuff2;
 			jbtn_stuffHeadline = jbtn_stuff2;

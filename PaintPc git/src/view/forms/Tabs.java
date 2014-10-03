@@ -63,12 +63,13 @@ public class Tabs extends VTabbedPane {
         tabNumber++;
 
         /*
-         * tab view
+         * tab insert
          */
-        super.addTab("Ansicht");   //view
-        super.addToTab(tabNumber, Outlook.getInstance());
+        super.addTab("einfuegen");
+        tab_insert = new Insert(ViewSettings.VIEW_HEIGHT_TB);
+        super.addToTab(tabNumber, tab_insert);
         tabNumber++;
-        
+
         /*
          * 
          */
@@ -77,27 +78,21 @@ public class Tabs extends VTabbedPane {
                 ViewSettings.VIEW_HEIGHT_TB);
         super.addToTab(tabNumber, tab_selection);
         tabNumber++;
-        
+        /*
+         * tab view
+         */
+        super.addTab("Ansicht");   //view
+        super.addToTab(tabNumber, Outlook.getInstance());
+        tabNumber++;
 
         /*
-         * tab insert
+         * 
          */
-        super.addTab("einfuegen");
-        tab_insert = new Insert(ViewSettings.VIEW_HEIGHT_TB);
-        super.addToTab(tabNumber, tab_insert);
+        super.addTab("Export");
         tabNumber++;
         
 
-        
 
-
-        super.addTab("paintObejcts");
-        PaintObjects tab_pos = PaintObjects.getInstance();
-        PaintObjects.getInstance().setSize(
-                (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
-                ViewSettings.VIEW_HEIGHT_TB);
-        super.addToTab(tabNumber, tab_pos);
-        tabNumber++;
         
         /*
          * tab print
@@ -122,7 +117,30 @@ public class Tabs extends VTabbedPane {
          */
         super.addTab("Uebersicht");
         tabNumber++;
+
+
+
+        super.addTab("paintObejcts");
+        PaintObjects tab_pos = PaintObjects.getInstance();
+        PaintObjects.getInstance().setSize(
+                (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
+                ViewSettings.VIEW_HEIGHT_TB);
+        super.addToTab(tabNumber, tab_pos);
+        tabNumber++;
         
+        super.addTab("");
+        super.addTab("");
+        super.addTab("");
+        super.addTab("");
+        super.addTab("");
+        super.addTab("");
+        super.addTab("");
+        super.addTab("");
+        super.addTab("");
+        super.addTab("");
+        super.addTab("");
+        super.addTab("");
+        tabNumber++;
 
     }
     

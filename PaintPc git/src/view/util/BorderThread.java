@@ -246,7 +246,12 @@ public class BorderThread extends Thread {
                             .getJlbl_selectionBG().getX();
                     int y = rect.y - Page.getInstance()
                             .getJlbl_selectionBG().getY();
-                    _bi_neutral.setRGB(x, y, c);
+                    
+                    if (x >= 0 && x < _bi_neutral.getWidth()
+                            && y >= 0 && y < _bi_neutral.getHeight()) {
+
+                        _bi_neutral.setRGB(x, y, c);
+                    }
                 } else if (pixelX >= rect.x + rect.width) {
 
                     //decrease index; otherwise increased 2 often.

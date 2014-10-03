@@ -225,9 +225,24 @@ public class PaintObjectImage extends PaintObject {
     }
 
 
-    @Override
-    public void stretch(final DPoint _pnt_from, final DPoint _pnt_totalStretch,
-            final DPoint _pnt_size) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override public final void stretch(final DPoint _pnt_from, 
+            final DPoint _pnt_totalStretch, final DPoint _pnt_size) {
+
+        //print image to graphical user interface
+        final double cZoomFactorWidth = 1.0 
+                * Status.getImageSize().width
+                / Status.getImageShowSize().width;
+        final double cZoomFactorHeight = 1.0 
+                * Status.getImageSize().height
+                / Status.getImageShowSize().height;
+        bi_image = Utils.resizeImage(
+                (int) (_pnt_size.getX() * cZoomFactorWidth), 
+                (int) (_pnt_size.getY() * cZoomFactorHeight), bi_image);
+        pnt_locationOfImage = new Point(
+                (int) _pnt_from.getX(), (int) _pnt_from.getY());
         
     }
 }

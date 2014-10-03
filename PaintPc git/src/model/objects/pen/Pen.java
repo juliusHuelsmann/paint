@@ -147,7 +147,59 @@ public abstract class Pen implements Serializable {
 		}
 		return _bi;
 	}
-	
+
+    /**
+     * paint certain PaintObject to image.
+     * 
+     * @param _bi BufferedIsmage 
+     * @param _o PaintObject.
+     * @param _p_start the point which is added to the coordinates of each 
+     *         point drawn at the image.
+     * 
+     * @return the new BufferedImage.
+     */
+    public final BufferedImage paintLast(final BufferedImage _bi,
+            final PaintObjectWriting _o,  
+            final DPoint _p_start) {
+
+        //fetch list of points and go to the beginning of the list
+        List<DPoint> ls_point = _o.getPoints();
+
+        ls_point.toFirst();
+        //if list is empty return the bufferedImage which is not changed.
+        if (ls_point.isEmpty()) {
+            return _bi;
+        }   
+
+        ls_point.toLast();
+        ls_point.previous();
+        if (ls_point.getItem() == null) {
+            return _bi;
+        }
+        DPoint pnt_previous = new DPoint(ls_point.getItem());
+        ls_point.next();
+        
+        switch(id_operation) {
+        case Constants.PEN_ID_POINT:
+            
+            break;
+        case Constants.PEN_ID_LINES:
+
+            paintLine(new DPoint(ls_point.getItem()),
+                    pnt_previous, _bi, false, _bi, _p_start);
+            
+            break;
+        case Constants.PEN_ID_MATHS:
+
+//            operationMaths(
+//                    ls_point, _bi, _final, _p_start, _g);
+            break;
+
+        default:
+            break;
+        }
+        return _bi;
+    }
 	
 	/**
 	 * the operation for painting a point.

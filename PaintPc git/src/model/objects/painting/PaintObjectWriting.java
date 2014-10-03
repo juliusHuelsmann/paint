@@ -12,6 +12,7 @@ import view.View;
 import view.forms.Page;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
+import model.objects.pen.normal.Pencil;
 import model.objects.pen.special.PenSelection;
 import model.settings.Status;
 import model.util.DPoint;
@@ -133,17 +134,23 @@ public class PaintObjectWriting extends PaintObject {
 		
 	    //call super constructor
 	    super(_elementId);
-	    
 		//save values
 		this.ls_point = new List<DPoint>();
 		
 		if (_pen instanceof BallPen) {
-            this.pen = new BallPen(_pen.getId_operation(),
-//            this.pen = new PenKuli(Constants.PEN_ID_POINT,
+
+            this.pen = new Pencil(_pen.getId_operation(),
                     _pen.getThickness(), _pen.getClr_foreground());
+//            this.pen = new BallPen(_pen.getId_operation(),
+//            this.pen = new PenKuli(Constants.PEN_ID_POINT,
+//                    _pen.getThickness(), _pen.getClr_foreground());
 		} else if (_pen instanceof PenSelection) {
 
             this.pen = new PenSelection();
+		} else if (_pen instanceof Pencil) {
+
+            this.pen = new Pencil(_pen.getId_operation(),
+                    _pen.getThickness(), _pen.getClr_foreground());
 		} else {
 		    
 		    //alert user.
@@ -188,6 +195,19 @@ public class PaintObjectWriting extends PaintObject {
         
         return pen.paintToImage(
                 _bi, this, _final, new DPoint(_x, _y), _g);
+    }
+
+    /**
+     * Only print last added point.
+     * @param _bi to bi
+     * @param _x shifted
+     * @param _y shifted
+     * @return
+     */
+    public final BufferedImage paintLast(final BufferedImage _bi, 
+            final int _x, final int _y) {
+        
+        return pen.paintLast(_bi, this, new DPoint(_x, _y));
     }
     
     

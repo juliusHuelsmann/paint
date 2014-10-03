@@ -16,13 +16,17 @@ import java.util.Observable;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import control.CSelection;
 import control.tabs.CTabSelection;
+import view.View;
 import view.ViewVorschau;
 import view.forms.Page;
 import model.objects.PictureOverview;
 import model.objects.pen.Pen;
+import model.objects.pen.normal.BallPen;
+import model.objects.pen.normal.Pencil;
 import model.objects.pen.special.PenSelection;
 import model.settings.Error;
 import model.settings.Status;
@@ -153,7 +157,6 @@ public final class Picture extends Observable {
             
             System.exit(1);
         }
-        
         
         //create new PaintObject and insert it into list of 
         po_current = new PaintObjectWriting(currentId, pen_current);
@@ -463,9 +466,7 @@ public final class Picture extends Observable {
                     new javax.swing.ImageIcon(bi_transformed));
         } else {
 
-            BufferedImage bi_transformed = po_current.paint(
-                    Page.getInstance().getJlbl_painting().getBi(), 
-                    false, 
+            BufferedImage bi_transformed = po_current.paintLast(
                     Page.getInstance().getJlbl_painting().getBi(), 
                     Page.getInstance().getJlbl_painting().getLocation().x, 
                     Page.getInstance().getJlbl_painting().getLocation().y);
@@ -552,8 +553,30 @@ public final class Picture extends Observable {
      */
     public void initializePen(final Pen _pen) {
 
-        //set in picture
-        this.pen_current = _pen;
+        if (_pen instanceof BallPen) {
+
+            this.pen_current = new BallPen(_pen.getId_operation(),
+//            this.pen = new PenKuli(Constants.PEN_ID_POINT,
+                    _pen.getThickness(), _pen.getClr_foreground());
+        } else if (_pen instanceof PenSelection) {
+
+            this.pen_current = new PenSelection();
+        } else if (_pen instanceof Pencil) {
+
+            this.pen_current = new Pencil(_pen.getId_operation(),
+                    _pen.getThickness(), _pen.getClr_foreground());
+        } else {
+            
+            //alert user.
+            JOptionPane.showMessageDialog(View.getInstance(), 
+                    "PROGRAMMIERFEHLER @ paintobjectwriting: " 
+                    + "Stift noch nicht hinzugefuegt.");
+            
+            
+            //throw exception
+            new java.lang.Error("Fehler: stift noch nicht hinzugefuegt.")
+            .printStackTrace();;
+        }
         
     }
 	

@@ -17,11 +17,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+
 import javax.activation.UnsupportedDataTypeException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
@@ -32,6 +34,7 @@ import model.objects.painting.PaintObjectImage;
 import model.objects.painting.PaintObjectWriting;
 import model.objects.painting.Picture;
 import model.objects.pen.normal.BallPen;
+import model.objects.pen.normal.Pencil;
 import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
 import model.settings.ReadSettings;
@@ -129,7 +132,7 @@ public final class ControlPainting implements MouseListener,
                     "initialize model class Pen and current pen.\n");
             
             Picture.getInstance().initializePen(
-                    new BallPen(Constants.PEN_ID_POINT, 1, Color.black));
+                    new Pencil(Constants.PEN_ID_POINT, 1, Color.black));
             Status.setIndexOperation(Constants.CONTROL_PATINING_INDEX_PAINT_1);
             Paint.getInstance().getTb_color1().setActivated(true);
             Paint.getInstance().getIt_stift1().getTb_open().setActivated(true);

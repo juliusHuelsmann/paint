@@ -24,8 +24,8 @@ public class Pencil extends Pen {
     /**
      * The variance and the expectancies for inside and outside.
      */
-    private final int variance = 25, expectancyInside = 130, 
-            expectancyOutside = 60;
+    private final int variance = 50, expectancyInside = 100, 
+            expectancyOutside = 15;
     
 
     /**
@@ -87,11 +87,12 @@ public class Pencil extends Pen {
                     //set the given pixel in buffered image
                     if (_final) {
 
+                        final int rbg = printPixelArea(x, y, i, j, x, y, _bi);
+                        
                         if (x + i >= 0 && x + i < _bi.getWidth()
                                 && y + j >= 0 && y + j < _bi.getHeight()) {
 
-                            _bi.setRGB(x + i, y + j, 
-                                    printPixelArea(x, y, i, j, _bi));
+                            _bi.setRGB(x + i, y + j, rbg);
                         }
                     }
                 }
@@ -146,6 +147,8 @@ public class Pencil extends Pen {
                             && (int) ry / imagePixelSizeY + 1 
                             <= (int) Page.getInstance().getJlbl_painting()
                             .getHeight() / imagePixelSizeY) {
+
+                        final int rbg = printPixelArea(x, y, i, j, rx, ry, _bi);
                         
                         Status.setCounter_paintedPoints(Status
                                 .getCounter_paintedPoints() + 1);
@@ -153,8 +156,7 @@ public class Pencil extends Pen {
                         if (rx >= 0 && rx < _bi.getWidth()
                                 && ry >= 0 && ry < _bi.getHeight()) {
 
-                            _bi.setRGB(rx, ry, 
-                                    printPixelArea(x, y, i, j, _bi));
+                            _bi.setRGB(rx, ry, rbg);
                         }
                         
                         //for loop because i want to paint the gaps between the 
@@ -166,8 +168,7 @@ public class Pencil extends Pen {
                                         && ry + ky >= 0 
                                         && ry + ky < _bi.getHeight()) {
 
-                                    _bi.setRGB(rx + kx, ry + ky, 
-                                            printPixelArea(x, y, i, j, _bi));
+                                    _bi.setRGB(rx + kx, ry + ky, rbg);
                                 }
                             }
                         }
@@ -194,7 +195,7 @@ public class Pencil extends Pen {
         double mb = 1.0 * _clrB / (_clrA + _clrB);
         
         double value = maxRBG - 1.0 * (_clrA * (1 + ma) + _clrB * (1 + mb)) 
-                / (2 + 2);
+                / (2 * 2);
         return (int) value;
     }
     
@@ -205,11 +206,14 @@ public class Pencil extends Pen {
      * @param _y the y point
      * @param _i the x distance to center
      * @param _j the y distance to center
-     * @param _bi the bufferedImage
+     * @param _rX the real x coordinate in image for fetching point
+     * @param _rY the real y coordinate in image for fetching point.
+     * @param _bi the BufferedImage for fetching old point.
      * @return the RGB value of the pixel which will be printed.
      */
     private int printPixelArea(final int _x, 
-            final int _y, final int _i, final int _j, final BufferedImage _bi) {
+            final int _y, final int _i, final int _j, final int _rX, 
+            final int _rY, final BufferedImage _bi) {
 
         
         //the (inverted) colors
@@ -227,7 +231,8 @@ public class Pencil extends Pen {
             if (v >= maxRBG - 1) {
                 v = maxRBG - 2;
             }
-            rgbInversNew = new Color(v, v + 1, v + 2);
+            
+               rgbInversNew = new Color(v, v, v);
         } else {
 
             int v = (int) normalDistribution(
@@ -254,12 +259,47 @@ public class Pencil extends Pen {
                     maxRBG - clr_old.getBlue());
         }
         
-        return new Color(mergeColors(
+        Color merged = new Color(mergeColors(
                 rgbInversNew.getRed(), rgbInversOld.getRed()),
                 mergeColors(rgbInversNew.getGreen(), 
                         rgbInversOld.getGreen()), mergeColors(
                                 rgbInversNew.getBlue(), 
-                                rgbInversOld.getBlue())).getRGB();
+                                rgbInversOld.getBlue()));
+        
+        
+
+        double fgSum = getClr_foreground().getRed()
+               + getClr_foreground().getGreen()
+               + getClr_foreground().getBlue();
+        final double hellerD = 2.5;
+       double anteilR = 1.0 * getClr_foreground().getRed() / fgSum;
+       double anteilG = 1.0 * getClr_foreground().getGreen() / fgSum;
+       double anteilB = 1.0 * getClr_foreground().getBlue() / fgSum;
+
+       double mw = (anteilR + anteilG + anteilB) / 3;
+       double anteilR2 = Math.abs(anteilR - 
+               (anteilR - mw) / 2);
+       double anteilG2 = Math.abs(anteilG - 
+               (anteilG - mw) / 2);
+       double anteilB2 = Math.abs(anteilB - 
+               (anteilB - mw) / 2);
+       
+       int red =  (int) (hellerD * anteilR2 * merged.getRed());
+       int green = (int) (hellerD * anteilG2 * merged.getGreen());
+       int blue = (int) (hellerD * anteilB2 * merged.getBlue());
+
+       if (red > maxRBG) {
+           red = maxRBG;
+       }
+       if (green > maxRBG) {
+           green = maxRBG;
+       }
+       if (blue > maxRBG) {
+           blue = maxRBG;
+       }
+        
+       final int alpha = 175;
+        return new Color(red, green, blue, alpha).getRGB();
     
     }
     
@@ -270,7 +310,7 @@ public class Pencil extends Pen {
      * @param _variance the variance
      * @return random double value
      */
-    private double normalDistribution(final int _expectancy, 
+    private static double normalDistribution(final int _expectancy, 
             final int _variance) {
         double q = 0;
         double u1 = 0, u2;
@@ -284,7 +324,7 @@ public class Pencil extends Pen {
         
         double p = Math.sqrt((-1 * 2 * Math.log(q)) / q);
         
-        return u1 * p * Math.sqrt(_variance) + _expectancy;
+        return u1 * p * _variance + _expectancy;
     }
 
 }

@@ -1079,7 +1079,8 @@ public final class ControlPainting implements MouseListener,
           += Page.getInstance().getJlbl_painting().getLocation().y;
           
           
-          CSelection.getInstance().setR_selection(r_sizeField);
+          CSelection.getInstance().setR_selection(r_sizeField,
+                  Page.getInstance().getJlbl_painting().getLocation());
           Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
                   r_sizeField);
         }

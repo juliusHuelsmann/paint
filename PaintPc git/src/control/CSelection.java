@@ -1,5 +1,6 @@
 package control;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -31,6 +32,14 @@ public class CSelection implements MouseMotionListener, MouseListener {
      */
     private DPoint pnt_startLocationLabel;
     
+    
+    /**
+     * the point which saves the paintLabel location at the beginning of 
+     * selection. Thus it is possible to change the scroll position
+     * while selecting something.
+     */
+    private Point pnt_startPaintLabelLocation;
+    
     /**
      * Start location of Buttons for resizing and moving.
      * For moving operation.
@@ -43,7 +52,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
     private DPoint pnt_start, pnt_rSelectionStart;;
 
     /**
-     * This rectangle displays the selectino.
+     * This rectangle displays the selection.
      */
     private Rectangle r_selection;
     
@@ -427,12 +436,27 @@ public class CSelection implements MouseMotionListener, MouseListener {
     }
 
     /**
-     * @param _r_selection the r_selection to set
+     * @return the r_selection
      */
-    public final void setR_selection(final Rectangle _r_selection) {
-        this.r_selection = _r_selection;
+    public final Point getOldPaintLabelLocation() {
+        return pnt_startPaintLabelLocation;
+    }
+    
+    /**
+     * Simple setter method.
+     * @param _pnt the point to set.
+     */
+    public final void setOldPaintLabelLocation(final Point _pnt) {
+        this.pnt_startPaintLabelLocation = _pnt;
     }
 
-        
-
+    /**
+     * @param _r_selection the r_selection to set
+     * @param _pnt_startPaintLabelLocation the start label location.
+     */
+    public final void setR_selection(final Rectangle _r_selection,
+            final Point _pnt_startPaintLabelLocation) {
+        this.r_selection = _r_selection;
+        this.pnt_startPaintLabelLocation = _pnt_startPaintLabelLocation;
+    }
 }

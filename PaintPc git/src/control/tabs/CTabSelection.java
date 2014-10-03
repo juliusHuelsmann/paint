@@ -233,15 +233,20 @@ public final class CTabSelection implements ActionListener {
      * @param _clr the Color
      */
     private static synchronized void setColor(final Color _clr) {
-        Picture.getInstance().getLs_poSelected().toFirst();
-        while (!Picture.getInstance().getLs_poSelected().isBehind() 
-                && !Picture.getInstance().getLs_poSelected().isEmpty()) {
-            PaintObject o = Picture.getInstance().getLs_poSelected().getItem();
-            if (o instanceof PaintObjectWriting) {
-                PaintObjectWriting pow = (PaintObjectWriting) o;
-                pow.getPen().setClr_foreground(new Color(_clr.getRGB()));
+        
+        if (Picture.getInstance().getLs_poSelected() != null) {
+
+            Picture.getInstance().getLs_poSelected().toFirst();
+            while (!Picture.getInstance().getLs_poSelected().isBehind() 
+                    && !Picture.getInstance().getLs_poSelected().isEmpty()) {
+                PaintObject o = Picture.getInstance().getLs_poSelected()
+                        .getItem();
+                if (o instanceof PaintObjectWriting) {
+                    PaintObjectWriting pow = (PaintObjectWriting) o;
+                    pow.getPen().setClr_foreground(new Color(_clr.getRGB()));
+                }
+                Picture.getInstance().getLs_poSelected().next();
             }
-            Picture.getInstance().getLs_poSelected().next();
         }
     }
 
@@ -271,19 +276,6 @@ public final class CTabSelection implements ActionListener {
         s.getJcb_maths().setEnabled(true);
         s.getJcb_line().setEnabled(true);
         s.getJcb_points().setEnabled(true);
-    }
-    /**
-     * Deactivate to perform operation on selected items (e.g. because there
-     * is no item that exists or there are no suitable operations for special
-     * kind of PaintItem)
-     */
-    private static synchronized void deactivatePen() {
-
-        Selection s = Selection.getInstance();
-        s.getJcb_maths().setEnabled(false);
-        s.getJcb_line().setEnabled(false);
-        s.getJcb_points().setEnabled(false);
-        getInstance().selectionPenID = -1;
     }
     
     

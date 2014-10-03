@@ -1013,7 +1013,8 @@ public final class Picture extends Observable {
             realRect.y += Page.getInstance().getJlbl_painting().getLocation().y;
             
             Picture.getInstance().repaintRectangle(realRect);
-            CSelection.getInstance().setR_selection(realRect);
+            CSelection.getInstance().setR_selection(realRect,
+                    Page.getInstance().getJlbl_painting().getLocation());
             Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
                     realRect);
             return true;
@@ -1028,7 +1029,20 @@ public final class Picture extends Observable {
 	 * release selected elements to normal list.
 	 */
 	public synchronized void releaseSelected() {
-	    
+
+        //adjust the bounds of the selected items to the performed
+        //scrolling
+	    if (CSelection.getInstance().getOldPaintLabelLocation() != null) {
+
+	        Picture.getInstance().moveSelected((int) (-Page.getInstance()
+	                .getJlbl_painting().getLocation().getX() + CSelection
+	                .getInstance().getOldPaintLabelLocation().getX()), 
+	                (int) (-Page.getInstance().getJlbl_painting()
+	                        .getLocation().getY() + CSelection.getInstance()
+	                        .getOldPaintLabelLocation().getY()));
+	        CSelection.getInstance().setOldPaintLabelLocation(null);
+	    }
+        
 	    //deactivates to change operations of selected items
 	    CTabSelection.deactivateOp();
 	    if (ls_poSelected == null) {

@@ -226,13 +226,8 @@ public final class ControlPainting implements MouseListener,
 
                     // no
                     System.exit(1);
-                } else if (i == 2) {
-
-                    System.out.println(getClass() + "not");
-
-                    // interrupt
-
-                }
+                } 
+                //i == 2 ^ interrupt
             } else {
                 System.exit(1);
             }

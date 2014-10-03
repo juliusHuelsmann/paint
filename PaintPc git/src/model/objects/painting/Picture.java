@@ -862,13 +862,13 @@ public final class Picture extends Observable {
 	 * insert into selected list.
 	 * @param _po the paintObject to be inserted.
 	 */
-	public void insertIntoSelected(final PaintObject _po) {
+	public synchronized void insertIntoSelected(final PaintObject _po) {
 
 
         //deactivates to change operations of selected items
 	    if (ls_poSelected == null) {
 	        Status.getLogger().warning("insert into null list");
-	    } else {
+	    } else  if (_po != null) {
 	        
 
 	        CTabSelection.activateOp();
@@ -879,7 +879,9 @@ public final class Picture extends Observable {
 	                    pow.getPen().getId_operation(),
 	                    pow.getPen().getClr_foreground().getRGB());
 	        }
-	        ls_poSelected.insertSorted(_po, _po.getSnapshotBounds().x);   
+	        
+	        ls_poSelected.toFirst();
+	        ls_poSelected.insertBehind(_po);   
 	        PictureOverview.getInstance().addSelected(_po);
 	    }
 	}
@@ -1068,7 +1070,7 @@ public final class Picture extends Observable {
                 PictureOverview.getInstance().add(po);
 
                 ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x);
-	        } else {
+	        } else if (po != null) {
 	            Status.getLogger().warning("unknown kind of PaintObject"
 	                    + po);
 	        }

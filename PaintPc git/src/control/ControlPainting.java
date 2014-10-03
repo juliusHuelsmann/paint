@@ -6,7 +6,6 @@ import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
@@ -18,13 +17,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
-
 import javax.activation.UnsupportedDataTypeException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
@@ -47,7 +44,6 @@ import model.util.paint.MyClipboard;
 import model.util.paint.Utils;
 import start.test.BufferedViewer;
 import view.View;
-import view.ViewVorschau;
 import view.forms.Message;
 import view.forms.New;
 import view.forms.Page;
@@ -1285,12 +1281,7 @@ public final class ControlPainting implements MouseListener,
             // apply the new location at ScrollPane
             Page.getInstance().refrehsSps();
         } else {
-            
-            //TODO: das hier soltle in einer popup text message stehen
-            //die nur als info da ist (nicht als fenster sondern nur
-            //text schoen @ gui.
-            JOptionPane.showMessageDialog(
-                    View.getInstance(), "max zoom in reached");
+            Message.showMessage(Message.MESSAGE_ID_INFO, "max zoom in reached");
         }
     }
 

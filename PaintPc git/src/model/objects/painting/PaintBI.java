@@ -110,7 +110,36 @@ public final class PaintBI {
         return polygonReturn;
             
     }
-    
+
+    /**
+     * Fills a polygon in a special color to a bufferedImage.
+     * 
+     * @param _bi the buffered image on which is painted
+     * @param _clr the color in which is painted.
+     * 
+     * @param _p the points. In between which lines are painted
+     * consecutively.
+     *
+     * If length is equal to 4 it shell look like
+     * 
+     *      p1          
+     *                  
+     *                   p2
+     *           p3
+     *           
+     *       p4
+     * 
+     * @return  a new PolygonReturn instance which contains both length of the
+     *          field and the field (as a two dimensional boolean array)
+     */
+    public static PolygonReturn printFillPolygonN(
+            final BufferedImage _bi, 
+            final Color _clr,
+            final Point[] _p) {
+        PolygonReturn pr = fillPolygonN(_bi, _clr, _p);
+        drawPaintBI(pr);
+        return pr;
+    }
     
     /**
      * Fills a polygon in a special color to a bufferedImage.
@@ -252,7 +281,6 @@ public final class PaintBI {
                         }
                     }
                 }
-                
             }
         }
         return b;
@@ -407,7 +435,7 @@ public final class PaintBI {
      * 
      * @param _args the standard arguments (ignored)
      */
-    public static void mdain(final String[] _args) {
+    public static void main(final String[] _args) {
 
         /**
          * Constants.

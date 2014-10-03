@@ -473,8 +473,8 @@ public class PaintObjectWriting extends PaintObject {
          * Transform lists to arrays
          */
         PaintObjectWriting [][] pow = new PaintObjectWriting[2][2];
-        pow[0] = Util.lsToArray(ls_pow_outside);
-        pow[1] = Util.lsToArray(ls_pow_inside);
+        pow[0] = Util.poLsToArray(ls_pow_outside);
+        pow[1] = Util.poLsToArray(ls_pow_inside);
         
         return pow;
     }
@@ -652,15 +652,10 @@ public class PaintObjectWriting extends PaintObject {
             intersection1 = new DPoint(
                     (_p.getX() + factor1[0] * _v.getX()), 
                     (_p.getY() + factor1[0] * _v.getY()));
-            int f1x = (int) (factor1[0] * _v.getX() * vorfactorX);
-            int f1y = (int) (factor1[0] * _v.getY() * vorfactorY);
             //check whether suitable.
             if (
                     _r.y + _r.height  - (int) intersection1.getY() < 0
                     || _r.y - (int) intersection1.getY() > 0
-//                    || 
-//                    f1x < 0 || f1x > _v.getX() 
-//                    || f1y < 0 || f1y > _v.getY()
                     ) {
                 intersection1 = null;
             } else {
@@ -675,15 +670,10 @@ public class PaintObjectWriting extends PaintObject {
             intersection2 = new DPoint(
                     (_p.getX() + factor2[0] * _v.getX()), 
                     (_p.getY() + factor2[0] * _v.getY()));
-            int f2x = (int) (factor2[0] * _v.getX() * vorfactorX);
-            int f2y = (int) (factor2[0] * _v.getY() * vorfactorY);
             //check whether suitable.
             if (
                     _r.x + _r.width  - (int) intersection2.getX() < 0
                     || _r.x - (int) intersection2.getX() > 0
-//                    || 
-//                    f2x < 0 || f2x > _v.getX() 
-//                    || f2y < 0 || f2y > _v.getY()
                     ) {
                 intersection2 = null;
             } else {
@@ -698,15 +688,10 @@ public class PaintObjectWriting extends PaintObject {
             intersection3 = new DPoint(
                     (_p.getX() + factor3[0] * _v.getX()), 
                     (_p.getY() + factor3[0] * _v.getY()));
-            int f3x = (int) (factor3[0] * _v.getX() * vorfactorX);
-            int f3y = (int) (factor3[0] * _v.getY() * vorfactorY);
             //check whether suitable.
             if (
                     _r.y + _r.height  - (int) intersection3.getY() < 0
                     || _r.y - (int) intersection3.getY() > 0
-//                    || 
-//                    f3x < 0 || f3x > _v.getX() 
-//                    || f3y < 0 || f3y > _v.getY()
                     ) {
                 intersection3 = null;
             } else {

@@ -6,6 +6,7 @@ import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,7 @@ import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
 import model.objects.Zoom;
+import model.objects.painting.PaintBI;
 import model.objects.painting.PaintObject;
 import model.objects.painting.PaintObjectImage;
 import model.objects.painting.PaintObjectWriting;
@@ -652,7 +654,29 @@ public final class ControlPainting implements MouseListener,
 
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
             if (_event.getButton() == 1) {
-                Picture.getInstance().abortPaintObject();
+
+                PaintObjectWriting ldp 
+                = Picture.getInstance().abortPaintObject();
+                //remove old rectangle.
+                Page.getInstance().getJlbl_border().setBounds(-1, -1, 0, 0);
+                switch (Status.getIndexSelection()) {
+                case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
+                    mr_sel_curve_complete(_event, ldp);
+                    break;
+                case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
+                    mr_sel_curve_destroy(_event);
+                    break;
+                case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
+                    break;
+                default:
+                    break;
+                }
+                pnt_start = null;
+                
+                //set index to moving
+                Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
+                CPaintStatus.getInstance().deactivate();
+                Paint.getInstance().getTb_move().setActivated(true);
             }
             break;
 
@@ -661,17 +685,12 @@ public final class ControlPainting implements MouseListener,
 
                 //remove old rectangle.
                 Page.getInstance().getJlbl_border().setBounds(-1, -1, 0, 0);
-                
                 switch (Status.getIndexSelection()) {
-                //select complete item.
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
-                    //paint stuff
-                    mr_selection_line_complete(_event);
+                    mr_sel_line_complete(_event);
                     break;
-                //destroy items
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
-                    //stuff
-                    mr_selection_line_destroy(_event);
+                    mr_sel_line_destroy(_event);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
                     break;
@@ -709,7 +728,6 @@ public final class ControlPainting implements MouseListener,
             actionPipette(_event);
             break;
         case Constants.CONTROL_PAINTING_INDEX_MOVE:
-
 
             if (_event.getButton() == 1) {
 
@@ -914,6 +932,22 @@ public final class ControlPainting implements MouseListener,
         }
     }
 
+    
+
+    /**
+     * The event which is performed after performed a mouseReleased with id
+     * selection line.
+     * 
+     * @param _event the mouseEvent.
+     * @param _ldp the list of DPoints
+     */
+    private void mr_sel_curve_complete(final MouseEvent _event, 
+            final PaintObjectWriting _ldp) {
+        PaintBI.printFillPolygonN(_ldp.getSnapshot(),
+                Color.green, model.util.Util.dpntToPntArray(
+                        model.util.Util.pntLsToArray(_ldp.getPoints())));
+    }
+
     /**
      * The event which is performed after performed a mouseReleased with id
      * selection line.
@@ -921,7 +955,17 @@ public final class ControlPainting implements MouseListener,
      * @param _event
      *            the mouseEvent.
      */
-    private void mr_selection_line_complete(final MouseEvent _event) {
+    private void mr_sel_curve_destroy(final MouseEvent _event) {
+        
+    }
+    /**
+     * The event which is performed after performed a mouseReleased with id
+     * selection line.
+     * 
+     * @param _event
+     *            the mouseEvent.
+     */
+    private void mr_sel_line_complete(final MouseEvent _event) {
 
         /*
          * INITIALIZE 
@@ -1044,7 +1088,7 @@ public final class ControlPainting implements MouseListener,
      * @param _event
      *            the mouseEvent.
      */
-    private void mr_selection_line_destroy(final MouseEvent _event) {
+    private void mr_sel_line_destroy(final MouseEvent _event) {
 
         // fetch rectangle
         Rectangle r_sizeField = new Rectangle(

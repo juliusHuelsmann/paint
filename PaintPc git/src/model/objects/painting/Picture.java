@@ -482,17 +482,27 @@ public final class Picture extends Observable {
 	
 	
 	/**
-	 * 
+	 * @return the paintObject.
 	 */
-	public void abortPaintObject() {
-
+	public PaintObjectWriting  abortPaintObject() {
+	    PaintObjectWriting pow = null;
+//	    PaintObjectWriting pow = new PaintObjectWriting(-1, pen_current);
+//	    List<DPoint> ls_points = null;
+//	    pow.
         if (pen_current instanceof PenSelection) {
 
             Page.getInstance().getJlbl_painting().paintSelection(po_current, 
                     (PenSelection) pen_current);
+
         } 
 		pen_current.abort();
+
+        if (po_current instanceof PaintObjectWriting) {
+
+            pow = (PaintObjectWriting) po_current;
+        }
 		po_current = null;
+		return pow;
 	}
 	
 	

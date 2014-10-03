@@ -3,7 +3,7 @@ package start;
 import java.awt.Color;
 
 import model.objects.painting.Picture;
-import model.objects.pen.normal.PenKuli;
+import model.objects.pen.normal.BallPen;
 import model.settings.Constants;
 import model.settings.Settings;
 import model.util.DPoint;
@@ -73,7 +73,7 @@ public class Test {
             public void run() {
 
                 final int time = 50;
-                PenKuli pm = new PenKuli(
+                BallPen pm = new BallPen(
                         Constants.PEN_ID_MATHS, 1, Color.green);
                 Picture.getInstance().changePen(pm);
                 
@@ -126,7 +126,7 @@ public class Test {
                 }
                 Picture.getInstance().finish();
                 
-                PenKuli pp = new PenKuli(
+                BallPen pp = new BallPen(
                         Constants.PEN_ID_POINT, 2, Color.black);
                 pp.setClr_foreground(Color.black);
                 pp.setThickness(2 + 2);
@@ -143,7 +143,7 @@ public class Test {
                         fifety * (2 + 2 + 1), fifety + (2 + 2 + 1) * 2));
                 Picture.getInstance().finish();
                 
-                pm = new PenKuli(Constants.PEN_ID_MATHS, 1, Color.black);
+                pm = new BallPen(Constants.PEN_ID_MATHS, 1, Color.black);
                 pm.setClr_foreground(Color.orange);
                 pm.setThickness(2);
                 Picture.getInstance().changePen(pm);

@@ -17,7 +17,7 @@ import model.util.DPoint;
  * Loesungsvorschlag mathematische Schrift: abschnittweise approximieren.
  * @author Julius Huelsmann
  */
-public class PenKuli extends Pen {
+public class BallPen extends Pen {
 
 	/**
 	 * serial version of pen.
@@ -32,7 +32,7 @@ public class PenKuli extends Pen {
 	 * @param _thickness the thickness of painting
 	 * @param _background the background.
 	 */
-	public PenKuli(final int _index, final int _thickness, 
+	public BallPen(final int _index, final int _thickness, 
 	        final Color _background) {
 		
 		//call super constructor

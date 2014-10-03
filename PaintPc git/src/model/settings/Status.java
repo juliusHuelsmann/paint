@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.util.logging.Logger;
 
 import model.objects.pen.Pen;
-import model.objects.pen.normal.PenKuli;
+import model.objects.pen.normal.BallPen;
 
 /**
  * the current status of the program. E.g. which which operation is performed
@@ -80,8 +80,8 @@ public final class Status {
      * selected pens.
      */
     private static Pen 
-    penSelected1 = new PenKuli(Constants.PEN_ID_LINES, 2, Color.black), 
-    penSelected2 = new PenKuli(Constants.PEN_ID_LINES, 2, Color.black);
+    penSelected1 = new BallPen(Constants.PEN_ID_LINES, 2, Color.black), 
+    penSelected2 = new BallPen(Constants.PEN_ID_LINES, 2, Color.black);
     
     
     /**

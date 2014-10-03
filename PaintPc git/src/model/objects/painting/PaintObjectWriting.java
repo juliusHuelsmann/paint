@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import view.View;
 import view.forms.Page;
 import model.objects.pen.Pen;
-import model.objects.pen.normal.PenKuli;
+import model.objects.pen.normal.BallPen;
 import model.objects.pen.special.PenSelection;
 import model.settings.Status;
 import model.util.DPoint;
@@ -137,8 +137,8 @@ public class PaintObjectWriting extends PaintObject {
 		//save values
 		this.ls_point = new List<DPoint>();
 		
-		if (_pen instanceof PenKuli) {
-            this.pen = new PenKuli(_pen.getId_operation(),
+		if (_pen instanceof BallPen) {
+            this.pen = new BallPen(_pen.getId_operation(),
 //            this.pen = new PenKuli(Constants.PEN_ID_POINT,
                     _pen.getThickness(), _pen.getClr_foreground());
 		} else if (_pen instanceof PenSelection) {

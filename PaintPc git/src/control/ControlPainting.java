@@ -31,7 +31,7 @@ import model.objects.painting.PaintObject;
 import model.objects.painting.PaintObjectImage;
 import model.objects.painting.PaintObjectWriting;
 import model.objects.painting.Picture;
-import model.objects.pen.normal.PenKuli;
+import model.objects.pen.normal.BallPen;
 import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
 import model.settings.ReadSettings;
@@ -129,7 +129,7 @@ public final class ControlPainting implements MouseListener,
                     "initialize model class Pen and current pen.\n");
             
             Picture.getInstance().initializePen(
-                    new PenKuli(Constants.PEN_ID_POINT, 1, Color.black));
+                    new BallPen(Constants.PEN_ID_POINT, 1, Color.black));
             Status.setIndexOperation(Constants.CONTROL_PATINING_INDEX_PAINT_1);
             Paint.getInstance().getTb_color1().setActivated(true);
             Paint.getInstance().getIt_stift1().getTb_open().setActivated(true);

@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import view.forms.Page;
+import view.forms.Tabs;
 import model.settings.ViewSettings;
 import control.util.CItemAufklappen;
 
@@ -161,6 +163,9 @@ public class Item2Menu extends JPanel {
 
 	            setSize(getWidth(), 
 	                    getHeight() + jbtn_open.getHeight() * 2 - 2 - 1);
+                //when closed repaint.
+                Page.getInstance().getJlbl_painting().repaint();
+                Tabs.getInstance().repaint();
 	        }
 	    } //otherwise nothing to do
 	}

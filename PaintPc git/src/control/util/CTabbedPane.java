@@ -1,5 +1,6 @@
 package control.util;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -96,7 +97,7 @@ public class CTabbedPane implements ActionListener, MouseListener {
             //tab
             if (view.getOpenTab() != (currentTab)) {
                 ((VButtonWrapper) _event.getSource()).setBackground(
-                        ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
+                        Color.white);
             }
         } catch (ClassCastException exception) {
             

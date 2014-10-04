@@ -66,7 +66,7 @@ public class Tabs extends VTabbedPane {
          * tab insert
          */
         super.addTab("einfuegen");
-        tab_insert = new Insert(ViewSettings.VIEW_HEIGHT_TB);
+        tab_insert = Insert.getInstance();
         super.addToTab(tabNumber, tab_insert);
         tabNumber++;
 

@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import control.CSelection;
+import control.tabs.CPaintStatus;
 import model.settings.ViewSettings;
 import view.util.Item2;
 import view.util.Item2Menu;
@@ -22,7 +24,7 @@ import view.util.Item1Button;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class Insert extends JPanel {
+public final class Insert extends JPanel {
 
     /**
      * The item2menus.
@@ -30,13 +32,28 @@ public class Insert extends JPanel {
     private Item2Menu ia_geo, ia_maths, it_pfeileUAE, ia_diagram;
     
     /**
-     * Constructor initializes Panel.
-     * @param _height the height of the panel.
+     * ia_geo Item2 menus.
      */
-	public Insert(final int _height) {
+    private Item2 i2_g_line;
+    
+    
+    /**
+     * The only instance of this class.
+     */
+    private static Insert instance;
+    
+    /**
+     * Empty utility class constructor.
+     */
+	private Insert() { }
+	
+	/**
+	 * initializes Panel.
+     * @param _height the height of the panel.
+	 */
+	private void initialize(final int _height) {
 
 		//initialize JPanel and alter settings
-		super();
 		super.setOpaque(false);
 		super.setLayout(null);
 		
@@ -68,6 +85,10 @@ public class Insert extends JPanel {
         ia_geo.setSize(locationX, itemButtonSize * 2);
 		super.add(ia_geo);
 		
+		i2_g_line = new Item2();
+		i2_g_line.addMouseListener(CPaintStatus.getInstance());
+		ia_geo.add(i2_g_line);
+        i2_g_line.setIcon("st2.png");
 		
 		jlbl_trennung = insertTrennung(ia_geo.getX() 
 		        + ia_geo.getWidth(), ia_geo.getY());
@@ -153,33 +174,56 @@ public class Insert extends JPanel {
 		super.add(jlbl_informationColor);
 
 	}
+	
+	
+	
+	/**
+	 * Return the only instance of this class.
+	 * @return the only instance of this singleton class
+	 */
+	public static Insert getInstance() {
+	    
+	    if (instance == null) {
+	        instance = new Insert();
+	        instance.initialize(ViewSettings.VIEW_HEIGHT_TB);
+	    }
+	    
+	    return instance;
+	}
 
     /**
      * @return the ia_maths
      */
-    public final Item2Menu getIa_maths() {
+    public Item2Menu getIa_maths() {
         return ia_maths;
     }
 
     /**
      * @return the ia_geo
      */
-    public final Item2Menu getIa_geo() {
+    public Item2Menu getIa_geo() {
         return ia_geo;
     }
 
     /**
      * @return the ia_diagram
      */
-    public final Item2Menu getIa_diagram() {
+    public Item2Menu getIa_diagram() {
         return ia_diagram;
     }
 
     /**
      * @return the it_pfeileUAE
      */
-    public final Item2Menu getIt_pfeileUAE() {
+    public Item2Menu getIt_pfeileUAE() {
         return it_pfeileUAE;
+    }
+
+    /**
+     * @return the i2_g_line
+     */
+    public Item2 getI2_g_line() {
+        return i2_g_line;
     }
 	
 }

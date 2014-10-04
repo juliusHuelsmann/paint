@@ -33,7 +33,7 @@ import model.util.solveLGS.Matrix;
  * @author Julius Huelsmann
  * @version %U%,%I%
  */
-public class PaintObjectWriting extends PaintObject {
+public class PaintObjectWriting extends PaintObjectPen {
 
 	/**
      * serial version because the list of PaintObjects is saved.
@@ -105,24 +105,6 @@ public class PaintObjectWriting extends PaintObject {
         return false;
     }
     
-    
-
-	/**
-	 * checks whether a certainDPoint is inside a given rectangle.
-	 * 
-	 * @param _r the rectangle of which is checked whether theDPoint is inside
-	 * @param _p theDPoint which is maybe inside the rectangle _r
-	 * 
-	 * @return whether theDPoint is inside the given rectangle.
-	 */
-    private static boolean isInSelectionPoint(
-            final Rectangle _r, final DPoint _p) {
-        
-        //return whether theDPoint is inside given rectangle.
-        return (_p.getX() >= _r.x && _p.getY() >= _r.y 
-                && _p.getX() <= _r.x + _r.width 
-                && _p.getY() <= _r.y + _r.height);
-    }
 
 	/**
 	 * Constructor creates new instance
@@ -134,35 +116,32 @@ public class PaintObjectWriting extends PaintObject {
 	public PaintObjectWriting(final int _elementId, final Pen _pen) {
 		
 	    //call super constructor
-	    super(_elementId);
+	    super(_elementId, _pen);
+
+        if (_pen instanceof BallPen) {
+
+            pen = new Pencil(_pen.getId_operation(),
+                    _pen.getThickness(), _pen.getClr_foreground());
+        } else if (_pen instanceof PenSelection) {
+
+            pen = new PenSelection();
+        } else if (_pen instanceof Pencil) {
+
+            pen = new Pencil(_pen.getId_operation(),
+                    _pen.getThickness(), _pen.getClr_foreground());
+        } else {
+            
+            //alert user.
+            JOptionPane.showMessageDialog(View.getInstance(), 
+                    "PROGRAMMIERFEHLER @ paintobjectwriting: " 
+                    + "Stift noch nicht hinzugefuegt.");
+            
+            
+            //throw exception
+            throw new Error("Fehler: stift noch nicht hinzugefuegt.");
+        }
 		//save values
 		this.ls_point = new List<DPoint>();
-		
-		if (_pen instanceof BallPen) {
-
-            this.pen = new Pencil(_pen.getId_operation(),
-                    _pen.getThickness(), _pen.getClr_foreground());
-//            this.pen = new BallPen(_pen.getId_operation(),
-//            this.pen = new PenKuli(Constants.PEN_ID_POINT,
-//                    _pen.getThickness(), _pen.getClr_foreground());
-		} else if (_pen instanceof PenSelection) {
-
-            this.pen = new PenSelection();
-		} else if (_pen instanceof Pencil) {
-
-            this.pen = new Pencil(_pen.getId_operation(),
-                    _pen.getThickness(), _pen.getClr_foreground());
-		} else {
-		    
-		    //alert user.
-		    JOptionPane.showMessageDialog(View.getInstance(), 
-		            "PROGRAMMIERFEHLER @ paintobjectwriting: " 
-		            + "Stift noch nicht hinzugefuegt.");
-		    
-		    
-		    //throw exception
-		    throw new Error("Fehler: stift noch nicht hinzugefuegt.");
-		}
 	}
 	
 	/**
@@ -194,7 +173,6 @@ public class PaintObjectWriting extends PaintObject {
             final boolean _final, final BufferedImage _g, final int _x, 
             final int _y) {
         
-        System.out.println("\n\n\n\n\nweihnachtsmann\n");
         return pen.paintToImage(
                 _bi, this, _final, new DPoint(_x, _y), _g);
     }
@@ -926,50 +904,6 @@ public class PaintObjectWriting extends PaintObject {
         }
     }
 
-
-    /**
-     * Tell the pen to paint this PaintObject as a selected PaintObject.
-     */
-    public final void enableSelected() {
-        pen.setSelected(true);
-    }
-    
-    /**
-     * Tell the pen not to paint this PaintObject as a selected PaintObject
-     * anymore.
-     */
-    public final void disableSelected() {
-        pen.setSelected(false);
-    }
-    /*
-     * getter methods.
-     */
-
-    /**
-     * setter method for pen.
-     * @param _pen the pen.
-     */
-    public final void setPen(final Pen _pen) {
-        this.pen = _pen;
-    }
-    
-    /**
-     * Change the color of given pen.
-     * @param _clr the color which is set.
-     */
-    public final void changeColor(final Color _clr) {
-        pen.setClr_foreground(_clr);
-    }
-    
-    /**
-	 * getter method for pen. is used (e.g.) to
-	 *     reset the Border starting index at Curve Selection Pen.
-	 *     
-	 * @return the pen
-	 */
-	public final Pen getPen() {
-		return pen;
-	}
     
     /**
      * return list ofDPoints.

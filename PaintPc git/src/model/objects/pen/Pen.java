@@ -651,7 +651,7 @@ public abstract class Pen implements Serializable {
      * @param _pnt_shift the point to shift.
 	 * @param _g the graphics to which line is painted.
 	 */
-	protected final void paintLine(final DPoint _p1, final DPoint _p2, 
+	public final void paintLine(final DPoint _p1, final DPoint _p2, 
 	        final BufferedImage _bi, final boolean _final, 
 	        final BufferedImage _g, final DPoint _pnt_shift) {
 

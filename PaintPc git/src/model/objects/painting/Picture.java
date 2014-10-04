@@ -13,11 +13,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 import control.CSelection;
 import control.tabs.CTabSelection;
 import view.View;
@@ -26,7 +24,9 @@ import view.forms.Page;
 import model.objects.PictureOverview;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
+import model.objects.painting.po.PaintObjectPen;
 import model.objects.painting.po.PaintObjectWriting;
+import model.objects.painting.po.geo.Line;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Pencil;
@@ -64,7 +64,7 @@ public final class Picture extends Observable {
 	/**
 	 * current PaintObject which can be altered.
 	 */
-	private PaintObjectWriting po_current;
+	private PaintObjectPen po_current;
 	
 	/**
 	 * the pen which is given to new PaintObject if created.
@@ -202,6 +202,35 @@ public final class Picture extends Observable {
             //set uncommitted changes.
             Status.setUncommittedChanges(true);
         }
+        
+    }
+    
+    /**
+     * adds a new PaintObject to list.
+     */
+    public void addPaintObjectLine() {
+        
+        if (po_current != null) {
+            
+            //throw error message and kill program.
+            Status.getLogger().warning(
+                    "Es soll ein neues objekt geadded werden, obwohl das "
+                    + "alte nicht null ist also nicht gefinished wurde.\n"
+                    + "Programm wird beendet.");
+            
+            System.exit(1);
+        }
+        
+            
+        //create new PaintObject and insert it into list of 
+        po_current = new Line(currentId, pen_current);
+
+    
+        //increase current id
+        currentId++;
+            
+        //set uncommitted changes.
+        Status.setUncommittedChanges(true);
         
     }
 	
@@ -429,32 +458,50 @@ public final class Picture extends Observable {
 		}
 
 
-		po_current.getPoints().toLast();
-		if (po_current.getPoints().isEmpty()) {
+		if (po_current instanceof PaintObjectWriting) {
+		    PaintObjectWriting pow = (PaintObjectWriting) po_current;
+		    pow.getPoints().toLast();
+	        if (pow.getPoints().isEmpty()) {
 
-	      //add point to PaintObject
-	      po_current.addPoint(_pnt);
-		} else {
+	          //add point to PaintObject
+	            pow.addPoint(_pnt);
+	        } else {
 
-		    final int minimalDistance = 1;
-	        int dx = (int) 
-	                (po_current.getPoints().getItem().getX() - _pnt.getX());
-	        int dy = (int) 
-	                (po_current.getPoints().getItem().getY() - _pnt.getY());
-	        if (Math.sqrt(dx * dx + dy * dy) > minimalDistance) {
-	            po_current.addPoint(_pnt);
+	            final int minimalDistance = 1;
+	            int dx = (int) 
+	                    (pow.getPoints().getItem().getX() - _pnt.getX());
+	            int dy = (int) 
+	                    (pow.getPoints().getItem().getY() - _pnt.getY());
+	            if (Math.sqrt(dx * dx + dy * dy) > minimalDistance) {
+	                pow.addPoint(_pnt);
 
-	            try {
+	                try {
 
-	                ((PenSelection) po_current.getPen())
-	                .resetCurrentBorderValue();
-	            } catch (Exception e) {
-	                Error.printError(getClass().getSimpleName() , 
-	                        "changePaintObject", "Class cast", e, 
-	                        Error.ERROR_MESSAGE_DO_NOTHING);
+	                    ((PenSelection) pow.getPen())
+	                    .resetCurrentBorderValue();
+	                } catch (Exception e) {
+	                    Error.printError(getClass().getSimpleName() , 
+	                            "changePaintObject", "Class cast", e, 
+	                            Error.ERROR_MESSAGE_DO_NOTHING);
+	                }
 	            }
 	        }
-		}
+		} else if (po_current instanceof Line) {
+
+            Line pow = (Line) po_current;
+		    if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
+
+		        Page.getInstance().getJlbl_painting().refreshPaint();
+//                Page.getInstance().getJlbl_painting().refreshRectangle(
+//                        po_current.getSnapshotBounds().x,
+//                        po_current.getSnapshotBounds().y,
+//                        po_current.getSnapshotBounds().width,
+//                        po_current.getSnapshotBounds().height);
+		    }
+		    
+            pow.addPoint(_pnt);
+        }
+		
         
         if (pen_current instanceof PenSelection) {
 
@@ -469,15 +516,31 @@ public final class Picture extends Observable {
                     new javax.swing.ImageIcon(bi_transformed));
         } else {
 
-            BufferedImage bi_transformed = po_current.paintLast(
-                    Page.getInstance().getJlbl_painting().getBi(), 
-                    Page.getInstance().getJlbl_painting().getLocation().x, 
-                    Page.getInstance().getJlbl_painting().getLocation().y);
+            BufferedImage bi_transformed;
+            if (po_current instanceof PaintObjectWriting) {
+                bi_transformed = ((PaintObjectWriting) po_current).paintLast(
+                        Page.getInstance().getJlbl_painting().getBi(), 
+                        Page.getInstance().getJlbl_painting().getLocation().x, 
+                        Page.getInstance().getJlbl_painting().getLocation().y);
+            } else {
+                Page.getInstance().getJlbl_painting().refreshRectangle(
+                        po_current.getSnapshotBounds().x,
+                        po_current.getSnapshotBounds().y,
+                        po_current.getSnapshotBounds().width,
+                        po_current.getSnapshotBounds().height);
 
-            
+                bi_transformed = po_current.paint(
+                        Page.getInstance().getJlbl_painting().getBi(), 
+                        false,
+                        Page.getInstance().getJlbl_painting().getBi(), 
+                        Page.getInstance().getJlbl_painting().getLocation().x, 
+                        Page.getInstance().getJlbl_painting().getLocation().y);
+            }
             Page.getInstance().getJlbl_painting().setBi(bi_transformed);
             Page.getInstance().getJlbl_painting().setIcon(
                     new javax.swing.ImageIcon(bi_transformed));
+
+            
         }
         
         //set uncommitted changes.
@@ -596,7 +659,7 @@ public final class Picture extends Observable {
 		this.pen_current = _pen;
 		
 		//set in current paint object.
-		if (po_current != null) {
+		if (po_current != null && po_current instanceof PaintObjectWriting) {
 		    po_current.setPen(pen_current);
 		}
         
@@ -935,9 +998,13 @@ public final class Picture extends Observable {
 	            
 	        } else if (ls_poSelected.getItem() instanceof PaintObjectImage) {
 
-	            PaintObjectImage p = (PaintObjectImage) ls_poSelected.getItem();
+                PaintObjectImage p = (PaintObjectImage) ls_poSelected.getItem();
                 p.move(new Point(_dX, _dY));
-	        } else {
+            } else if (ls_poSelected.getItem() instanceof Line) {
+
+                Line p = (Line) ls_poSelected.getItem();
+                moveLine(p, _dX, _dY);
+            } else {
 	            Status.getLogger().warning("unknown kind of PaintObject?");
 	        }
             ls_poSelected.next();
@@ -967,7 +1034,26 @@ public final class Picture extends Observable {
         }
         return _pow;
     }
-	
+	   /**
+     * 
+     * Move PaintObject items.
+     * @param _pow PaintObjectWriting
+     * @param _dX the x difference from current position
+     * @param _dY the y difference from current position
+     * @return the PaintObjectWriting
+     */
+    public static Line moveLine(
+            final Line _pow, 
+            final int _dX, final int _dY) {
+
+        _pow.getPnt_first().setX(_pow.getPnt_first().getX() + _dX);
+        _pow.getPnt_first().setY(_pow.getPnt_first().getY() + _dY);
+        
+        _pow.getPnt_last().setX(_pow.getPnt_last().getX() + _dX);
+        _pow.getPnt_last().setY(_pow.getPnt_last().getY() + _dY);
+        return _pow;
+    }
+    
 	/**
 	 * Paint the selected items to the selection JLabel.
 	 * 
@@ -1096,7 +1182,14 @@ public final class Picture extends Observable {
                 PictureOverview.getInstance().add(po);
 
                 ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x);
-	        } else if (po != null) {
+	        } else if (ls_poSelected.getItem() instanceof Line) {
+                
+	            Line p = (Line) ls_poSelected.getItem();
+                p.recalculateSnapshotBounds();
+	            PictureOverview.getInstance().add(p);
+
+                ls_po_sortedByX.insertSorted(p, p.getSnapshotBounds().x);
+            } else if (po != null) {
 	            Status.getLogger().warning("unknown kind of PaintObject"
 	                    + po);
 	        }

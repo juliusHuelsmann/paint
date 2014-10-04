@@ -17,6 +17,7 @@ import model.util.paint.Utils;
 import view.View;
 import view.forms.Page;
 import view.forms.Tabs;
+import view.forms.tabs.Insert;
 import view.forms.tabs.Paint;
 import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;
@@ -183,6 +184,11 @@ public final class CPaintStatus implements MouseListener {
         
             return (Constants.CONTROL_PAINTING_INDEX_ERASE);
         
+        }  else if (_event.getSource().equals(Insert.getInstance()
+                .getI2_g_line())) {
+        
+            return (Constants.CONTROL_PAINTING_INDEX_I_G_LINE);
+        
         } else {
             return -1;
         }
@@ -294,6 +300,9 @@ public final class CPaintStatus implements MouseListener {
                 /*
                  * pens
                  */
+                case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+//                    Insert.getInstance().getI2_g_line().
+                    break;
                 case Constants.CONTROL_PATINING_INDEX_PAINT_1:
 
                     //enable buttons

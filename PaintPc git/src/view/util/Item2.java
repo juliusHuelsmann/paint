@@ -6,6 +6,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import model.util.paint.Utils;
+
 /**
  * JButton for inserting a form into image.
  * 
@@ -27,4 +29,15 @@ public class Item2 extends JButton {
 		super.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		super.setIcon(new ImageIcon("paint/test.png"));
 	}
+	
+    /**
+     * Set the icon of the JButton.
+     * @param _s the path
+     */
+	public final void setIcon(final String _s) {
+
+        super.setIcon(new ImageIcon(Utils.resizeImage(
+                getWidth(), getHeight(), "paint/test.png")));
+	}
+	
 }

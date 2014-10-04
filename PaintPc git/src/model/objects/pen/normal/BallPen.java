@@ -136,11 +136,7 @@ public class BallPen extends Pen {
                         //print the pixel because even if the pixel size in 
                         //pixel is (rounded) equal to 0 the pixel has to be 
                         //printed.
-                        Point[] point = new Point[1];
-                        point[0] = new Point(x, y);
                         
-//                        PaintBI.paintPolygonN(_g, getClr_foreground(), 
-//                                getThickness(), point, true);
                         try {
                             _g.setRGB(x, y, getClr_foreground().getRGB());
                             
@@ -155,12 +151,6 @@ public class BallPen extends Pen {
                         for (int kx = 0; kx < imagePixelSizeX; kx++) {
                             for (int ky = 0; ky < imagePixelSizeY; ky++) {
 
-                                //draw line.
-                                point = new Point[1];
-                                point[0] = new Point(x + kx, y + ky);
-                                
-//                                PaintBI.paintPolygonN(_g, getClr_foreground(),
-//                                        getThickness(), point, true);
                                 try {
                                     _g.setRGB(x + kx, y + ky, 
                                             getClr_foreground().getRGB());

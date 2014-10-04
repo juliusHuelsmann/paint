@@ -193,6 +193,7 @@ public class PaintObjectWriting extends PaintObject {
             final boolean _final, final BufferedImage _g, final int _x, 
             final int _y) {
         
+        System.out.println("\n\n\n\n\nweihnachtsmann\n");
         return pen.paintToImage(
                 _bi, this, _final, new DPoint(_x, _y), _g);
     }

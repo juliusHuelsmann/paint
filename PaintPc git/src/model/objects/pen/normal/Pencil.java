@@ -81,8 +81,8 @@ public class Pencil extends Pen {
                 
                 
                 //if is in range
-                if (_final && x >= 0 && y >= 0 && x < _bi.getWidth() 
-                        && y < _bi.getHeight()) {
+                if (_final && x + i >= 0 && x + i < _bi.getWidth() 
+                        && y + i < _bi.getHeight() && y + i >= 0) {
 
                     //set the given pixel in buffered image
                     if (_final) {
@@ -93,6 +93,7 @@ public class Pencil extends Pen {
                                 && y + j >= 0 && y + j < _bi.getHeight()) {
 
                             _bi.setRGB(x + i, y + j, rbg);
+                            System.out.println("ja das male ich.");
                         }
                     }
                 }
@@ -148,27 +149,32 @@ public class Pencil extends Pen {
                             <= (int) Page.getInstance().getJlbl_painting()
                             .getHeight() / imagePixelSizeY) {
 
-                        final int rbg = printPixelArea(x, y, i, j, rx, ry, _bi);
-                        
+                        int rbg = 0;
+                        if (rx >= 0 && rx < _g.getWidth()
+                                && ry >= 0 && ry < _g.getHeight()) {
+                            rbg = printPixelArea(x, y, i, j, (int)
+                                (rx),
+                                (int) (ry), _g);
+                        }
                         Status.setCounter_paintedPoints(Status
                                 .getCounter_paintedPoints() + 1);
 
-                        if (rx >= 0 && rx < _bi.getWidth()
-                                && ry >= 0 && ry < _bi.getHeight()) {
+                        if (rx >= 0 && rx < _g.getWidth()
+                                && ry >= 0 && ry < _g.getHeight()) {
 
-                            _bi.setRGB(rx, ry, rbg);
-                        }
+                            _g.setRGB(rx, ry, rbg);
+                        } 
                         
                         //for loop because i want to paint the gaps between the 
                         //pixel if zoomed in.
                         for (int kx = 0; kx < imagePixelSizeX; kx++) {
                             for (int ky = 0; ky < imagePixelSizeY; ky++) {
 
-                                if (rx + kx >= 0 && rx + kx < _bi.getWidth()
+                                if (rx + kx >= 0 && rx + kx < _g.getWidth()
                                         && ry + ky >= 0 
-                                        && ry + ky < _bi.getHeight()) {
+                                        && ry + ky < _g.getHeight()) {
 
-                                    _bi.setRGB(rx + kx, ry + ky, rbg);
+                                    _g.setRGB(rx + kx, ry + ky, rbg);
                                 }
                             }
                         }
@@ -243,7 +249,7 @@ public class Pencil extends Pen {
             rgbInversNew = new Color(v, v + 1, v + 2);
         }
         
-        final Color clr_old = new Color(_bi.getRGB(_x, _y));
+        final Color clr_old = new Color(_bi.getRGB(_rX, _rY));
 
         //fetch old color if the color is not completely white
         //or transparent

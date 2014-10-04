@@ -2,20 +2,12 @@
 package model.objects.painting.po.geo;
 
 //import declarations
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JOptionPane;
-
-import view.View;
 import view.forms.Page;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectPen;
 import model.objects.pen.Pen;
-import model.objects.pen.normal.BallPen;
-import model.objects.pen.normal.Pencil;
-import model.objects.pen.special.PenSelection;
 import model.settings.Status;
 import model.util.DPoint;
 
@@ -43,13 +35,6 @@ public class Line extends PaintObjectPen {
 	 * pen and the kind of painting ("point", "normal", "math")
 	 */
 	private DPoint pnt_first, pnt_last;
-	
-	/**
-	 * the pen with which PaintObject is painted. Has got its own paintPoint
-	 * method which is called by the prepared Pen classes, a thickness and
-	 * a color.
-	 */
-	private Pen pen;
 
 	
 	/**
@@ -100,28 +85,28 @@ public class Line extends PaintObjectPen {
 	    //call super constructor
 	    super(_elementId, _pen);
 
-        if (_pen instanceof BallPen) {
-
-            pen = new Pencil(_pen.getId_operation(),
-                    _pen.getThickness(), _pen.getClr_foreground());
-        } else if (_pen instanceof PenSelection) {
-
-            pen = new PenSelection();
-        } else if (_pen instanceof Pencil) {
-
-            pen = new Pencil(_pen.getId_operation(),
-                    _pen.getThickness(), _pen.getClr_foreground());
-        } else {
-            
-            //alert user.
-            JOptionPane.showMessageDialog(View.getInstance(), 
-                    "PROGRAMMIERFEHLER @ paintobjectwriting: " 
-                    + "Stift noch nicht hinzugefuegt.");
-            
-            
-            //throw exception
-            throw new Error("Fehler: stift noch nicht hinzugefuegt.");
-        }
+//        if (_pen instanceof BallPen) {
+//
+//            pen = new Pencil(_pen.getId_operation(),
+//                    _pen.getThickness(), _pen.getClr_foreground());
+//        } else if (_pen instanceof PenSelection) {
+//
+//            pen = new PenSelection();
+//        } else if (_pen instanceof Pencil) {
+//
+//            pen = new Pencil(_pen.getId_operation(),
+//                    _pen.getThickness(), _pen.getClr_foreground());
+//        } else {
+//            
+//            //alert user.
+//            JOptionPane.showMessageDialog(View.getInstance(), 
+//                    "PROGRAMMIERFEHLER @ paintobjectwriting: " 
+//                    + "Stift noch nicht hinzugefuegt.");
+//            
+//            
+//            //throw exception
+//            throw new Error("Fehler: stift noch nicht hinzugefuegt.");
+//        }
 	}
 	
 	/**
@@ -168,7 +153,8 @@ public class Line extends PaintObjectPen {
         if (pnt_first == null || pnt_last == null) {
             return _bi;
         }
-        pen.paintLine(pnt_first, pnt_last, _bi, _final, _g, new DPoint(_x, _y));
+        getPen().paintLine(
+                pnt_first, pnt_last, _bi, _final, _g, new DPoint(_x, _y));
         return _bi;
     }
     

@@ -3,14 +3,11 @@ package view.forms.tabs;
 //import declarations
 import java.awt.Color;
 import java.awt.Toolkit;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-
-import control.CSelection;
 import control.tabs.CPaintStatus;
 import model.settings.ViewSettings;
 import view.util.Item2;

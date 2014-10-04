@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
+import model.objects.painting.po.PaintObjectPen;
 import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Constants;
 import view.forms.tabs.Selection;
@@ -219,9 +220,8 @@ public final class CTabSelection implements ActionListener {
         while (!Picture.getInstance().getLs_poSelected().isBehind() 
                 && !Picture.getInstance().getLs_poSelected().isEmpty()) {
             PaintObject o = Picture.getInstance().getLs_poSelected().getItem();
-            if (o instanceof PaintObjectWriting) {
-                PaintObjectWriting pow = (PaintObjectWriting) o;
-                
+            if (o instanceof PaintObjectPen) {
+                PaintObjectPen pow = (PaintObjectPen) o;
                 pow.getPen().setId_operation(_id_operation);
             }
             Picture.getInstance().getLs_poSelected().next();
@@ -241,8 +241,8 @@ public final class CTabSelection implements ActionListener {
                     && !Picture.getInstance().getLs_poSelected().isEmpty()) {
                 PaintObject o = Picture.getInstance().getLs_poSelected()
                         .getItem();
-                if (o instanceof PaintObjectWriting) {
-                    PaintObjectWriting pow = (PaintObjectWriting) o;
+                if (o instanceof PaintObjectPen) {
+                    PaintObjectPen pow = (PaintObjectPen) o;
                     pow.getPen().setClr_foreground(new Color(_clr.getRGB()));
                 }
                 Picture.getInstance().getLs_poSelected().next();

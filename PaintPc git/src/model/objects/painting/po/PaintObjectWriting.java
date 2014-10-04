@@ -45,13 +45,6 @@ public class PaintObjectWriting extends PaintObjectPen {
 	 * pen and the kind of painting ("point", "normal", "math")
 	 */
 	private List<DPoint> ls_point;
-	
-	/**
-	 * the pen with which PaintObject is painted. Has got its own paintPoint
-	 * method which is called by the prepared Pen classes, a thickness and
-	 * a color.
-	 */
-	private Pen pen;
 
 	
 	/**
@@ -118,28 +111,6 @@ public class PaintObjectWriting extends PaintObjectPen {
 	    //call super constructor
 	    super(_elementId, _pen);
 
-        if (_pen instanceof BallPen) {
-
-            pen = new Pencil(_pen.getId_operation(),
-                    _pen.getThickness(), _pen.getClr_foreground());
-        } else if (_pen instanceof PenSelection) {
-
-            pen = new PenSelection();
-        } else if (_pen instanceof Pencil) {
-
-            pen = new Pencil(_pen.getId_operation(),
-                    _pen.getThickness(), _pen.getClr_foreground());
-        } else {
-            
-            //alert user.
-            JOptionPane.showMessageDialog(View.getInstance(), 
-                    "PROGRAMMIERFEHLER @ paintobjectwriting: " 
-                    + "Stift noch nicht hinzugefuegt.");
-            
-            
-            //throw exception
-            throw new Error("Fehler: stift noch nicht hinzugefuegt.");
-        }
 		//save values
 		this.ls_point = new List<DPoint>();
 	}
@@ -173,7 +144,7 @@ public class PaintObjectWriting extends PaintObjectPen {
             final boolean _final, final BufferedImage _g, final int _x, 
             final int _y) {
         
-        return pen.paintToImage(
+        return getPen().paintToImage(
                 _bi, this, _final, new DPoint(_x, _y), _g);
     }
 
@@ -187,7 +158,7 @@ public class PaintObjectWriting extends PaintObjectPen {
     public final BufferedImage paintLast(final BufferedImage _bi, 
             final int _x, final int _y) {
         
-        return pen.paintLast(_bi, this, new DPoint(_x, _y));
+        return getPen().paintLast(_bi, this, new DPoint(_x, _y));
     }
     
     

@@ -389,14 +389,11 @@ public final class ControlPainting implements MouseListener,
                 Picture.getInstance().changePaintObject(
                         new DPoint((_event.getX() 
                                 - Page.getInstance()
-                                .getJlbl_painting().getLocation().x
-                                )
+                                .getJlbl_painting().getLocation().x)
                                 * Status.getImageSize().width
                                 / Status.getImageShowSize().width, (_event
-                                .getY() 
-                                - Page.getInstance().getJlbl_painting()
-                                .getLocation().y
-                                )
+                                .getY() - Page.getInstance().getJlbl_painting()
+                                .getLocation().y)
                                 * Status.getImageSize().height
                                 / Status.getImageShowSize().height));
                 break;
@@ -407,19 +404,13 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PATINING_INDEX_PAINT_2:
             case Constants.CONTROL_PATINING_INDEX_PAINT_1:
 
-                // hier kann ich das noch gar nicht entscheiden.
-                // doch.
                 Picture.getInstance().changePaintObject(
-                        new DPoint((_event.getX() 
-                                - Page.getInstance()
-                                .getJlbl_painting().getLocation().x
-                                )
-                                * Status.getImageSize().width
-                                / Status.getImageShowSize().width, (_event
-                                .getY() 
-                                - Page.getInstance()
-                                .getJlbl_painting().getLocation().y
-                                )
+                        new DPoint((_event.getX() - Page.getInstance()
+                                .getJlbl_painting().getLocation().x)
+                                * Status.getImageSize().width / Status
+                                .getImageShowSize().width, (_event.getY() 
+                                - Page.getInstance().getJlbl_painting()
+                                .getLocation().y)
                                 * Status.getImageSize().height
                                 / Status.getImageShowSize().height));
                 break;
@@ -433,7 +424,6 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_ERASE:
 
                 //TODO: 
-
                 break;
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
 
@@ -461,12 +451,8 @@ public final class ControlPainting implements MouseListener,
                             - yLocation, 
                             Math.abs(pnt_start.y - _event.getY()));
 
-                    Page.getInstance().getJlbl_border().setBounds(
-                            xLocation,
-                            yLocation,
-                            xSize,
-                            ySize);
-                    
+                    Page.getInstance().getJlbl_border().setBounds(xLocation,
+                            yLocation, xSize, ySize);
                 } else {
                     
                     Status.getLogger().warning("Want to print border but"

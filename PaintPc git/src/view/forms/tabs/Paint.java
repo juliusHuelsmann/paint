@@ -715,9 +715,9 @@ public final class Paint extends JPanel {
 
         //cut
         tb_turnMirror = new Item1Button(null);
-        tb_turnMirror.setSize(tb_new.getWidth(), tb_new.getHeight());
-        tb_turnMirror.setLocation(tb_new.getWidth() + tb_new.getX() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS, tb_new.getY());
+        tb_turnMirror.setSize(tb_load.getWidth(), tb_load.getHeight());
+        tb_turnMirror.setLocation(tb_load.getWidth() + tb_load.getX() 
+                + ViewSettings.DISTANCE_BETWEEN_ITEMS, tb_load.getY());
         tb_turnMirror.setBorder(false);
         tb_turnMirror.addActionListener(ControlPainting.getInstance());
         initializeTextButton(tb_turnMirror,

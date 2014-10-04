@@ -31,7 +31,7 @@ public final class Insert extends JPanel {
     /**
      * ia_geo Item2 menus.
      */
-    private Item2 i2_g_line;
+    private Item2 i2_g_line, i2_g_rect, i2_g_triangle, i2_g_arch, i2_g_curve;
     
     
     /**
@@ -80,13 +80,33 @@ public final class Insert extends JPanel {
         ia_geo = new Item2Menu();
         ia_geo.setLocation(jlbl_trennung.getX() , tb.getY());
         ia_geo.setSize(locationX, itemButtonSize * 2);
-		super.add(ia_geo);
-		
-		i2_g_line = new Item2();
-		i2_g_line.addMouseListener(CPaintStatus.getInstance());
-		ia_geo.add(i2_g_line);
-        i2_g_line.setIcon("st2.png");
-		
+        super.add(ia_geo);
+
+        i2_g_line = new Item2();
+        i2_g_line.addMouseListener(CPaintStatus.getInstance());
+        ia_geo.add(i2_g_line);
+        i2_g_line.setIcon("icon/geoForm/line.png");
+
+        i2_g_rect = new Item2();
+        i2_g_rect.addMouseListener(CPaintStatus.getInstance());
+        ia_geo.add(i2_g_rect);
+        i2_g_rect.setIcon("icon/geoForm/rectangle.png");
+
+        i2_g_triangle = new Item2();
+        i2_g_triangle.addMouseListener(CPaintStatus.getInstance());
+        ia_geo.add(i2_g_triangle);
+        i2_g_triangle.setIcon("icon/geoForm/triangle.png");
+
+        i2_g_arch = new Item2();
+        i2_g_arch.addMouseListener(CPaintStatus.getInstance());
+        ia_geo.add(i2_g_arch);
+        i2_g_arch.setIcon("icon/geoForm/arch.png");
+
+        i2_g_curve = new Item2();
+        i2_g_curve.addMouseListener(CPaintStatus.getInstance());
+        ia_geo.add(i2_g_curve);
+        i2_g_curve.setIcon("icon/geoForm/curve.png");
+        
 		jlbl_trennung = insertTrennung(ia_geo.getX() 
 		        + ia_geo.getWidth(), ia_geo.getY());
         insertInformation("geometrische Formen", 
@@ -221,6 +241,34 @@ public final class Insert extends JPanel {
      */
     public Item2 getI2_g_line() {
         return i2_g_line;
+    }
+
+    /**
+     * @return the i2_g_rect
+     */
+    public Item2 getI2_g_rect() {
+        return i2_g_rect;
+    }
+
+    /**
+     * @return the i2_g_triangle
+     */
+    public Item2 getI2_g_triangle() {
+        return i2_g_triangle;
+    }
+
+    /**
+     * @return the i2_g_arch
+     */
+    public Item2 getI2_g_arch() {
+        return i2_g_arch;
+    }
+
+    /**
+     * @return the i2_g_curve
+     */
+    public Item2 getI2_g_curve() {
+        return i2_g_curve;
     }
 	
 }

@@ -184,10 +184,30 @@ public final class CPaintStatus implements MouseListener {
         
             return (Constants.CONTROL_PAINTING_INDEX_ERASE);
         
-        }  else if (_event.getSource().equals(Insert.getInstance()
+        } else if (_event.getSource().equals(Insert.getInstance()
                 .getI2_g_line())) {
         
             return (Constants.CONTROL_PAINTING_INDEX_I_G_LINE);
+        
+        }  else if (_event.getSource().equals(Insert.getInstance()
+                .getI2_g_rect())) {
+        
+            return (Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE);
+        
+        }  else if (_event.getSource().equals(Insert.getInstance()
+                .getI2_g_curve())) {
+        
+            return (Constants.CONTROL_PAINTING_INDEX_I_G_CURVE);
+        
+        }  else if (_event.getSource().equals(Insert.getInstance()
+                .getI2_g_triangle())) {
+        
+            return (Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE);
+        
+        }  else if (_event.getSource().equals(Insert.getInstance()
+                .getI2_g_arch())) {
+        
+            return (Constants.CONTROL_PAINTING_INDEX_I_G_ARCH);
         
         } else {
             return -1;
@@ -301,6 +321,10 @@ public final class CPaintStatus implements MouseListener {
                  * pens
                  */
                 case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+                case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
+                case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+                case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
+                case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
 //                    Insert.getInstance().getI2_g_line().
                     break;
                 case Constants.CONTROL_PATINING_INDEX_PAINT_1:

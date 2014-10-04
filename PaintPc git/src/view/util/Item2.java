@@ -37,7 +37,7 @@ public class Item2 extends JButton {
 	public final void setIcon(final String _s) {
 
         super.setIcon(new ImageIcon(Utils.resizeImage(
-                getWidth(), getHeight(), "paint/test.png")));
+                getWidth(), getHeight(), _s)));
 	}
 	
 }

@@ -13,9 +13,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
 import control.CSelection;
 import control.tabs.CTabSelection;
 import view.View;
@@ -26,11 +28,16 @@ import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
 import model.objects.painting.po.PaintObjectPen;
 import model.objects.painting.po.PaintObjectWriting;
-import model.objects.painting.po.geo.Line;
+import model.objects.painting.po.geo.POArch;
+import model.objects.painting.po.geo.POCurve;
+import model.objects.painting.po.geo.POLine;
+import model.objects.painting.po.geo.PORectangle;
+import model.objects.painting.po.geo.POTriangle;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Pencil;
 import model.objects.pen.special.PenSelection;
+import model.settings.Constants;
 import model.settings.Error;
 import model.settings.Status;
 import model.util.DPoint;
@@ -204,11 +211,45 @@ public final class Picture extends Observable {
         }
         
     }
+
+    /**
+     * Add the paintObject.
+     * @param _id the id of the item
+     */
+    public void addPaintObject(final int _id) {
+
+        // switch index of operation
+        switch (Status.getIndexOperation()) {
+
+        case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+            addPaintObject(new POLine(currentId, pen_current));
+            break;
+        case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+            addPaintObject(new POCurve(currentId, pen_current));
+            break;
+        case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
+            addPaintObject(new PORectangle(currentId, pen_current));
+            break;
+        case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
+            addPaintObject(new POTriangle(currentId, pen_current));
+            break;
+        case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
+            addPaintObject(new POArch(currentId, pen_current));
+            break;
+        case Constants.CONTROL_PATINING_INDEX_PAINT_2:
+        case Constants.CONTROL_PATINING_INDEX_PAINT_1:
+            addPaintObject(new PaintObjectWriting(currentId, pen_current));
+            break;
+        default:
+            Status.getLogger().warning("unknown index operation");
+        }
+    }
     
     /**
      * adds a new PaintObject to list.
+     * @param _po the PaintObjectPen.
      */
-    public void addPaintObjectLine() {
+    private void addPaintObject(final PaintObjectPen _po) {
         
         if (po_current != null) {
             
@@ -223,7 +264,7 @@ public final class Picture extends Observable {
         
             
         //create new PaintObject and insert it into list of 
-        po_current = new Line(currentId, pen_current);
+        po_current = _po;
 
     
         //increase current id
@@ -486,20 +527,46 @@ public final class Picture extends Observable {
 	                }
 	            }
 	        }
-		} else if (po_current instanceof Line) {
+		} else if (po_current instanceof POLine) {
 
-            Line pow = (Line) po_current;
-		    if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
+            POLine pow = (POLine) po_current;
+            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
+                Page.getInstance().getJlbl_painting().refreshPaint();
+            }
+            
+            po_current.addPoint(_pnt);
+        } else if (po_current instanceof PORectangle) {
 
-		        Page.getInstance().getJlbl_painting().refreshPaint();
-//                Page.getInstance().getJlbl_painting().refreshRectangle(
-//                        po_current.getSnapshotBounds().x,
-//                        po_current.getSnapshotBounds().y,
-//                        po_current.getSnapshotBounds().width,
-//                        po_current.getSnapshotBounds().height);
-		    }
-		    
-            pow.addPoint(_pnt);
+            PORectangle pow = (PORectangle) po_current;
+            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
+                Page.getInstance().getJlbl_painting().refreshPaint();
+            }
+            
+            po_current.addPoint(_pnt);
+        } else if (po_current instanceof POCurve) {
+
+            POCurve pow = (POCurve) po_current;
+            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
+                Page.getInstance().getJlbl_painting().refreshPaint();
+            }
+            
+            po_current.addPoint(_pnt);
+        } else if (po_current instanceof POArch) {
+
+            POArch pow = (POArch) po_current;
+            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
+                Page.getInstance().getJlbl_painting().refreshPaint();
+            }
+            
+            po_current.addPoint(_pnt);
+        } else if (po_current instanceof POTriangle) {
+
+            POTriangle pow = (POTriangle) po_current;
+            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
+                Page.getInstance().getJlbl_painting().refreshPaint();
+            }
+            
+            po_current.addPoint(_pnt);
         }
 		
         
@@ -1000,9 +1067,9 @@ public final class Picture extends Observable {
 
                 PaintObjectImage p = (PaintObjectImage) ls_poSelected.getItem();
                 p.move(new Point(_dX, _dY));
-            } else if (ls_poSelected.getItem() instanceof Line) {
+            } else if (ls_poSelected.getItem() instanceof POLine) {
 
-                Line p = (Line) ls_poSelected.getItem();
+                POLine p = (POLine) ls_poSelected.getItem();
                 moveLine(p, _dX, _dY);
             } else {
 	            Status.getLogger().warning("unknown kind of PaintObject?");
@@ -1042,8 +1109,8 @@ public final class Picture extends Observable {
      * @param _dY the y difference from current position
      * @return the PaintObjectWriting
      */
-    public static Line moveLine(
-            final Line _pow, 
+    public static POLine moveLine(
+            final POLine _pow, 
             final int _dX, final int _dY) {
 
         _pow.getPnt_first().setX(_pow.getPnt_first().getX() + _dX);
@@ -1137,6 +1204,96 @@ public final class Picture extends Observable {
 	}
 	
 	
+
+    /**
+     * Paint the selected items to the selection JLabel.
+     * 
+     * @return whether there is something to be painted or not.
+     */
+    public boolean paintSelectedInline() {
+
+        int px = (int) (CSelection.getInstance().getPnt_start()
+                .getX()
+                - Page.getInstance().getJlbl_painting().getLocation().getX());
+        int py = (int) (CSelection.getInstance().getPnt_start()
+                .getY()
+                - Page.getInstance().getJlbl_painting().getLocation().getY());
+        
+        BufferedImage verbufft = Page.getInstance().getEmptyBI();
+        BufferedImage verbufft2 = Page.getInstance().getEmptyBI();
+        ls_poSelected.toFirst();
+        Rectangle r_max = null;
+        while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
+            
+            if (ls_poSelected.getItem() != null) {
+
+                //create new Rectangle consisting of the bounds of the current 
+                //paitnObject otherwise adjust the existing bounds
+                if (r_max == null) {
+                    Rectangle b = ls_poSelected.getItem().getSnapshotBounds();
+                    r_max = new Rectangle(b.x, b.y, b.width + b.x, b.height 
+                            + b.y);
+                } else {
+                    Rectangle b = ls_poSelected.getItem().getSnapshotBounds();
+                    r_max.x = Math.min(r_max.x, b.x);
+                    r_max.y = Math.min(r_max.y, b.y);
+                    r_max.width = Math.max(r_max.width, b.x + b.width);
+                    r_max.height = Math.max(r_max.height, b.y + b.height);
+                }
+                
+                if (ls_poSelected.getItem() instanceof PaintObjectWriting) {
+                    PaintObjectWriting pow = 
+                            (PaintObjectWriting) ls_poSelected.getItem();
+                    pow.enableSelected();
+                }
+                //paint the object.
+                ls_poSelected.getItem().paint(verbufft2, false, verbufft,
+                        Page.getInstance().getJlbl_painting().getLocation().x
+                        - px,
+                        Page.getInstance().getJlbl_painting().getLocation().y
+                        - py);
+
+                if (ls_poSelected.getItem() instanceof PaintObjectWriting) {
+                    PaintObjectWriting pow = 
+                            (PaintObjectWriting) ls_poSelected.getItem();
+                    pow.disableSelected();
+                }
+
+            }
+            ls_poSelected.next();
+        }
+        ls_poSelected.toFirst();
+        Page.getInstance().getJlbl_selectionPainting().setIcon(
+                new ImageIcon(verbufft));
+
+
+        if (r_max != null) {
+            
+            Rectangle realRect = new Rectangle(r_max.x, r_max.y,
+                    r_max.width - r_max.x, r_max.height - r_max.y);
+    
+            //adapt the rectangle to the currently used zoom factor.
+            final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
+                    / Status.getImageShowSize().width;
+            final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
+                    / Status.getImageShowSize().height;
+            realRect.x = (int) (1.0 * realRect.x / cZoomFactorWidth);
+            realRect.width = (int) (1.0 * realRect.width / cZoomFactorWidth);
+            realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
+            realRect.height = (int) (1.0 * realRect.height / cZoomFactorHeight);
+              
+            realRect.x += Page.getInstance().getJlbl_painting().getLocation().x;
+            realRect.y += Page.getInstance().getJlbl_painting().getLocation().y;
+            
+            Picture.getInstance().repaintRectangle(realRect);
+            CSelection.getInstance().setR_selection(realRect,
+                    Page.getInstance().getJlbl_painting().getLocation());
+            Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
+                    realRect);
+            return true;
+        }
+        return false;
+    }
 	
 	
 	/**
@@ -1182,9 +1339,9 @@ public final class Picture extends Observable {
                 PictureOverview.getInstance().add(po);
 
                 ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x);
-	        } else if (ls_poSelected.getItem() instanceof Line) {
+	        } else if (ls_poSelected.getItem() instanceof POLine) {
                 
-	            Line p = (Line) ls_poSelected.getItem();
+	            POLine p = (POLine) ls_poSelected.getItem();
                 p.recalculateSnapshotBounds();
 	            PictureOverview.getInstance().add(p);
 

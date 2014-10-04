@@ -63,7 +63,7 @@ public final class CTabSelection implements ActionListener {
                     setColor(new Color(selectionColor));
                     Selection.getInstance().getTb_color().setBackground(
                             new Color(selectionColor));
-                    Picture.getInstance().paintSelected();
+//                    Picture.getInstance().paintSelected();
                     activateColor();
                 }
             }
@@ -85,7 +85,7 @@ public final class CTabSelection implements ActionListener {
             s.getJcb_maths().setSelected(false);
             s.getJcb_line().setSelected(false);
             setPen(Constants.PEN_ID_POINT);
-            Picture.getInstance().paintSelected();
+            Picture.getInstance().paintSelectedInline();
             activatePen();
         
             break;
@@ -95,7 +95,7 @@ public final class CTabSelection implements ActionListener {
             s.getJcb_maths().setSelected(false);
             s.getJcb_points().setSelected(false);
             setPen(Constants.PEN_ID_LINES);
-            Picture.getInstance().paintSelected();
+            Picture.getInstance().paintSelectedInline();
             activatePen();
         
             break;
@@ -105,7 +105,7 @@ public final class CTabSelection implements ActionListener {
             s.getJcb_line().setSelected(false);
             s.getJcb_points().setSelected(false);
             setPen(Constants.PEN_ID_MATHS);
-            Picture.getInstance().paintSelected();
+            Picture.getInstance().paintSelectedInline();
             activatePen();
         
             break;

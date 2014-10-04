@@ -261,6 +261,12 @@ public final class ControlPainting implements MouseListener,
             switch (Status.getIndexOperation()) {
 
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
+            case Constants.CONTROL_PATINING_INDEX_PAINT_2:
+            case Constants.CONTROL_PATINING_INDEX_PAINT_1:
 
                 // set currently selected pen. Differs if
                 if (_event.getButton() == MouseEvent.BUTTON1) {
@@ -272,7 +278,8 @@ public final class ControlPainting implements MouseListener,
                 }
 
                 // add paintObject and point to Picture
-                Picture.getInstance().addPaintObjectLine();
+                Picture.getInstance().addPaintObject(
+                        Status.getIndexOperation());
                 Picture.getInstance().changePaintObject(
                         new DPoint((_event.getX() 
                                 - Page.getInstance()
@@ -288,37 +295,6 @@ public final class ControlPainting implements MouseListener,
                                 / Status.getImageShowSize().height));
                 break;
             
-            // if painting is selected
-            case Constants.CONTROL_PATINING_INDEX_PAINT_2:
-            case Constants.CONTROL_PATINING_INDEX_PAINT_1:
-
-                // set currently selected pen. Differs if
-                if (_event.getButton() == MouseEvent.BUTTON1) {
-
-                    Picture.getInstance().changePen(Status.getPenSelected1());
-                } else if (_event.getButton() == MouseEvent.BUTTON3) {
-
-                    Picture.getInstance().changePen(Status.getPenSelected2());
-                }
-
-                // add paintObject and point to Picture
-                Picture.getInstance().addPaintObjectWrinting();
-                Picture.getInstance().changePaintObject(
-                        new DPoint((_event.getX() 
-                                - Page.getInstance()
-                                .getJlbl_painting().getLocation().x
-                                )
-                                * Status.getImageSize().width
-                                / Status.getImageShowSize().width, (_event
-                                .getY() 
-                                - Page.getInstance().getJlbl_painting()
-                                .getLocation().y
-                                )
-                                * Status.getImageSize().height
-                                / Status.getImageShowSize().height));
-
-                break;
-
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
 
                 // abort old paint object
@@ -384,6 +360,10 @@ public final class ControlPainting implements MouseListener,
             switch (Status.getIndexOperation()) {
 
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
 
                 // add paintObject and point to Picture
                 Picture.getInstance().changePaintObject(
@@ -720,6 +700,10 @@ public final class ControlPainting implements MouseListener,
         
 
         case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
         case Constants.CONTROL_PATINING_INDEX_PAINT_2:
         case Constants.CONTROL_PATINING_INDEX_PAINT_1:
             if (_event.getButton() == 1) {

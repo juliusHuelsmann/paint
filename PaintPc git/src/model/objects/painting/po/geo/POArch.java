@@ -23,7 +23,7 @@ import model.util.DPoint;
  * @author Julius Huelsmann
  * @version %U%,%I%
  */
-public class Line extends PaintObjectPen {
+public class POArch extends PaintObjectPen {
 
 	/**
      * serial version because the list of PaintObjects is saved.
@@ -80,7 +80,7 @@ public class Line extends PaintObjectPen {
 	 * @param _elementId the id of the element.
 	 * @param _pen the pen which is painted
 	 */
-	public Line(final int _elementId, final Pen _pen) {
+	public POArch(final int _elementId, final Pen _pen) {
 		
 	    //call super constructor
 	    super(_elementId, _pen);
@@ -153,8 +153,31 @@ public class Line extends PaintObjectPen {
         if (pnt_first == null || pnt_last == null) {
             return _bi;
         }
+        final int lengthTotal = 15;
+        DPoint pnt_vector = new DPoint(pnt_last.getX() - pnt_first.getX(), 
+                pnt_last.getY() - pnt_first.getY());
+        final double length = Math.sqrt(pnt_vector.getX() * pnt_vector.getX() 
+                + pnt_vector.getY() * pnt_vector.getY());
+        DPoint pnt_arch = new DPoint(
+                pnt_last.getX() - pnt_vector.getX() * lengthTotal / length , 
+                pnt_last.getY() - pnt_vector.getY() * lengthTotal / length);
+
         getPen().paintLine(
-                pnt_first, pnt_last, _bi, _final, _g, new DPoint(_x, _y));
+                pnt_first, pnt_arch, _bi, _final, _g, new DPoint(_x, _y));
+        
+        DPoint pnt_a1 = new DPoint(
+                pnt_arch.getX() + pnt_vector.getY() * lengthTotal / length,
+                pnt_arch.getY() - pnt_vector.getX() * lengthTotal / length);
+        DPoint pnt_a2 = new DPoint(
+                pnt_arch.getX() - pnt_vector.getY() * lengthTotal / length,
+                pnt_arch.getY() + pnt_vector.getX() * lengthTotal / length);
+
+        getPen().paintLine(
+                pnt_a1, pnt_a2, _bi, _final, _g, new DPoint(_x, _y));
+        getPen().paintLine(
+                pnt_a1, pnt_last, _bi, _final, _g, new DPoint(_x, _y));
+        getPen().paintLine(
+                pnt_last, pnt_a2, _bi, _final, _g, new DPoint(_x, _y));
         return _bi;
     }
     

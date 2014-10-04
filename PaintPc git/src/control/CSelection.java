@@ -38,7 +38,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
      * selection. Thus it is possible to change the scroll position
      * while selecting something.
      */
-    private Point pnt_startPaintLabelLocation, pnt_startPaintBGLocation;
+    private Point pnt_startPaintLabelLocation;
     
     /**
      * Start location of Buttons for resizing and moving.
@@ -81,8 +81,8 @@ public class CSelection implements MouseMotionListener, MouseListener {
                     (int) pnt_startLocationLabel.getX() + dX,
                     (int) pnt_startLocationLabel.getY() + dY);
             Page.getInstance().getJlbl_selectionPainting().setLocation(
-                    (int) pnt_startPaintBGLocation.getX() + dX,
-                    (int) pnt_startPaintBGLocation.getY() + dY);
+                    (int) pnt_startLocationLabel.getX() + dX,
+                    (int) pnt_startLocationLabel.getY() + dY);
 
             for (int x = 0; x < pnt_startLocationButton.length; x++) {
 
@@ -179,7 +179,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
                     r_selection);
             Page.getInstance().getJlbl_selectionPainting().repaint();
             
-            Picture.getInstance().paintSelected();
+//            Picture.getInstance().paintSelected();
             
         } else {
 
@@ -453,21 +453,21 @@ public class CSelection implements MouseMotionListener, MouseListener {
         
         if (_pnt == null) {
             this.pnt_startPaintLabelLocation = null;
-            this.pnt_startPaintBGLocation = null;
+//            this.pnt_startPaintBGLocation = null;
             
         } else {
-
-            if (pnt_startPaintLabelLocation != null) {
-
-                this.pnt_startPaintBGLocation = new Point(_pnt.x 
-                        - pnt_startPaintBGLocation.x 
-                        + pnt_startPaintLabelLocation.x,
-                        _pnt.y 
-                        - pnt_startPaintBGLocation.y 
-                        + pnt_startPaintLabelLocation.y);
-            } else {
-                pnt_startPaintBGLocation = _pnt;
-            }
+//
+//            if (pnt_startPaintLabelLocation != null) {
+//
+//                this.pnt_startPaintBGLocation = new Point(_pnt.x 
+//                        - pnt_startPaintBGLocation.x 
+//                        + pnt_startPaintLabelLocation.x,
+//                        _pnt.y 
+//                        - pnt_startPaintBGLocation.y 
+//                        + pnt_startPaintLabelLocation.y);
+//            } else {
+//                pnt_startPaintBGLocation = _pnt;
+//            }
             this.pnt_startPaintLabelLocation = _pnt;
         }
     }
@@ -480,6 +480,13 @@ public class CSelection implements MouseMotionListener, MouseListener {
             final Point _pnt_startPaintLabelLocation) {
         this.r_selection = _r_selection;
         this.pnt_startPaintLabelLocation = _pnt_startPaintLabelLocation;
-        this.pnt_startPaintBGLocation = _pnt_startPaintLabelLocation;
+//        this.pnt_startPaintBGLocation = _pnt_startPaintLabelLocation;
+    }
+
+    /**
+     * @return the pnt_start
+     */
+    public final DPoint getPnt_start() {
+        return pnt_start;
     }
 }

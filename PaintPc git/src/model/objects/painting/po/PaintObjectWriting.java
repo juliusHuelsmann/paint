@@ -5,16 +5,9 @@ package model.objects.painting.po;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JOptionPane;
-
-import view.View;
 import view.forms.Page;
 import model.objects.painting.PaintBI;
 import model.objects.pen.Pen;
-import model.objects.pen.normal.BallPen;
-import model.objects.pen.normal.Pencil;
-import model.objects.pen.special.PenSelection;
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.Util;

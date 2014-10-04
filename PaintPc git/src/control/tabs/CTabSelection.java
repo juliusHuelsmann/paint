@@ -5,11 +5,9 @@ package control.tabs;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectPen;
-import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Constants;
 import view.forms.tabs.Selection;
 

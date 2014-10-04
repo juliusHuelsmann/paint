@@ -38,7 +38,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
      * selection. Thus it is possible to change the scroll position
      * while selecting something.
      */
-    private Point pnt_startPaintLabelLocation;
+    private Point pnt_startPaintLabelLocation, pnt_startPaintBGLocation;
     
     /**
      * Start location of Buttons for resizing and moving.
@@ -81,8 +81,8 @@ public class CSelection implements MouseMotionListener, MouseListener {
                     (int) pnt_startLocationLabel.getX() + dX,
                     (int) pnt_startLocationLabel.getY() + dY);
             Page.getInstance().getJlbl_selectionPainting().setLocation(
-                    (int) pnt_startLocationLabel.getX() + dX,
-                    (int) pnt_startLocationLabel.getY() + dY);
+                    (int) pnt_startPaintBGLocation.getX() + dX,
+                    (int) pnt_startPaintBGLocation.getY() + dY);
 
             for (int x = 0; x < pnt_startLocationButton.length; x++) {
 
@@ -178,6 +178,9 @@ public class CSelection implements MouseMotionListener, MouseListener {
             Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
                     r_selection);
             Page.getInstance().getJlbl_selectionPainting().repaint();
+            
+            Picture.getInstance().paintSelected();
+            
         } else {
 
             Picture.getInstance().getLs_poSelected().toFirst();
@@ -447,7 +450,26 @@ public class CSelection implements MouseMotionListener, MouseListener {
      * @param _pnt the point to set.
      */
     public final void setOldPaintLabelLocation(final Point _pnt) {
-        this.pnt_startPaintLabelLocation = _pnt;
+        
+        if (_pnt == null) {
+            this.pnt_startPaintLabelLocation = null;
+            this.pnt_startPaintBGLocation = null;
+            
+        } else {
+
+            if (pnt_startPaintLabelLocation != null) {
+
+                this.pnt_startPaintBGLocation = new Point(_pnt.x 
+                        - pnt_startPaintBGLocation.x 
+                        + pnt_startPaintLabelLocation.x,
+                        _pnt.y 
+                        - pnt_startPaintBGLocation.y 
+                        + pnt_startPaintLabelLocation.y);
+            } else {
+                pnt_startPaintBGLocation = _pnt;
+            }
+            this.pnt_startPaintLabelLocation = _pnt;
+        }
     }
 
     /**
@@ -458,5 +480,6 @@ public class CSelection implements MouseMotionListener, MouseListener {
             final Point _pnt_startPaintLabelLocation) {
         this.r_selection = _r_selection;
         this.pnt_startPaintLabelLocation = _pnt_startPaintLabelLocation;
+        this.pnt_startPaintBGLocation = _pnt_startPaintLabelLocation;
     }
 }

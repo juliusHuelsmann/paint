@@ -1061,6 +1061,7 @@ public final class Picture extends Observable {
 	 */
 	public boolean paintSelected() {
 
+	    Page.getInstance().getJlbl_selectionPainting().setLocation(0, 0);
         BufferedImage verbufft = Page.getInstance().getEmptyBI();
         BufferedImage verbufft2 = Page.getInstance().getEmptyBI();
 	    ls_poSelected.toFirst();
@@ -1089,8 +1090,7 @@ public final class Picture extends Observable {
                     pow.enableSelected();
                 }
                 //paint the object.
-                ls_poSelected.getItem().paint(
-                        verbufft2, false, verbufft,
+                ls_poSelected.getItem().paint(verbufft2, false, verbufft,
                         Page.getInstance().getJlbl_painting().getLocation().x,
                         Page.getInstance().getJlbl_painting().getLocation().y);
 

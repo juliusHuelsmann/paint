@@ -16,7 +16,9 @@ import view.util.Item2;
  */
 public final class CItem2 implements MouseListener {
 
-    
+    /**
+     * The colors.
+     */
     private final Color clr_pressed = new Color(230, 160, 170), 
     clr_mouseOver = new Color(160, 230, 170), clr_nothing = Color.lightGray;
     

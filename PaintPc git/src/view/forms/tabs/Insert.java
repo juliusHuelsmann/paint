@@ -37,7 +37,11 @@ public final class Insert extends JPanel {
     i2_g_roundFilled, i2_g_rect_roundFilled;
     
     
+    /**
+     * The item1button which shows the currently selected form.
+     */
     private Item1Button tb_selected;
+    
     /**
      * The only instance of this class.
      */
@@ -59,7 +63,6 @@ public final class Insert extends JPanel {
 		super.setLayout(null);
 		
 		final int distance = 5;
-		final int amountOfItemsAdded = 20;
 		final int itemButtonSize = 128;
 		final int locationX = 285;
 
@@ -76,9 +79,10 @@ public final class Insert extends JPanel {
 		super.add(tb_selected);
 		
 		
-		JLabel jlbl_trennung = insertTrennung(
-		        tb_selected.getX() + tb_selected.getWidth(), tb_selected.getY());
-        insertInformation("ausgewaehlt", tb_selected.getX(), jlbl_trennung.getX());
+		JLabel jlbl_trennung = insertTrennung(tb_selected.getX() 
+		        + tb_selected.getWidth(), tb_selected.getY());
+        insertInformation("ausgewaehlt", 
+                tb_selected.getX(), jlbl_trennung.getX());
         //
 
         ia_geo = new Item2Menu();

@@ -158,7 +158,6 @@ public class Tabs extends VTabbedPane {
         tab_paint.getIt_color().setOpen(false);
 
         //menus in insert tab
-        tab_insert.getIt_pfeileUAE().setOpen(false);
         tab_insert.getIa_diagram().setOpen(false);
         tab_insert.getIa_geo().setOpen(false);
         tab_insert.getIa_maths().setOpen(false);

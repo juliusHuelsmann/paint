@@ -235,5 +235,19 @@ public class Item2Menu extends JPanel {
 		
 		return jlbl_border.add(_c);
 	}
+
+    /**
+     * @return the itemsInRow
+     */
+    public final int getItemsInRow() {
+        return itemsInRow;
+    }
+
+    /**
+     * @param _itemsInRow the itemsInRow to set
+     */
+    public final void setItemsInRow(final int _itemsInRow) {
+        this.itemsInRow = _itemsInRow;
+    }
 	
 }

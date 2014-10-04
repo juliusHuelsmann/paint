@@ -31,7 +31,8 @@ public final class Insert extends JPanel {
     /**
      * ia_geo Item2 menus.
      */
-    private Item2 i2_g_line, i2_g_rect, i2_g_triangle, i2_g_arch, i2_g_curve;
+    private Item2 i2_g_line, i2_g_rect, i2_g_triangle, i2_g_arch, i2_g_curve,
+    i2_g_archFilled;
     
     
     /**
@@ -101,6 +102,11 @@ public final class Insert extends JPanel {
         i2_g_arch.addMouseListener(CPaintStatus.getInstance());
         ia_geo.add(i2_g_arch);
         i2_g_arch.setIcon("icon/geoForm/arch.png");
+
+        i2_g_archFilled = new Item2();
+        i2_g_archFilled.addMouseListener(CPaintStatus.getInstance());
+        ia_geo.add(i2_g_archFilled);
+        i2_g_archFilled.setIcon("icon/geoForm/arch.png");
 
         i2_g_curve = new Item2();
         i2_g_curve.addMouseListener(CPaintStatus.getInstance());
@@ -270,5 +276,11 @@ public final class Insert extends JPanel {
     public Item2 getI2_g_curve() {
         return i2_g_curve;
     }
-	
+
+    /**
+     * @return the i2_g_archFilled
+     */
+    public Item2 getI2_g_archFilled() {
+        return i2_g_archFilled;
+    }
 }

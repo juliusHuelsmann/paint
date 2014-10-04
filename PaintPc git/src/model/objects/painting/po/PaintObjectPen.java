@@ -80,7 +80,7 @@ public abstract class PaintObjectPen extends PaintObject {
 		
 		if (_pen instanceof BallPen) {
 
-            pen = new Pencil(_pen.getId_operation(),
+            pen = new BallPen(_pen.getId_operation(),
                     _pen.getThickness(), _pen.getClr_foreground());
 		} else if (_pen instanceof PenSelection) {
 

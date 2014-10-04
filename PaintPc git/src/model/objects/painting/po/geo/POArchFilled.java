@@ -23,7 +23,7 @@ import model.util.DPoint;
  * @author Julius Huelsmann
  * @version %U%,%I%
  */
-public class POArch extends PaintObjectPen {
+public class POArchFilled extends PaintObjectPen {
 
 	/**
      * serial version because the list of PaintObjects is saved.
@@ -80,7 +80,7 @@ public class POArch extends PaintObjectPen {
 	 * @param _elementId the id of the element.
 	 * @param _pen the pen which is painted
 	 */
-	public POArch(final int _elementId, final Pen _pen) {
+	public POArchFilled(final int _elementId, final Pen _pen) {
 		
 	    //call super constructor
 	    super(_elementId, _pen);
@@ -149,6 +149,7 @@ public class POArch extends PaintObjectPen {
             final boolean _final, final BufferedImage _g, final int _x, 
             final int _y) {
         
+        getPen().setThickness(2);
 
         if (pnt_first == null || pnt_last == null) {
             return _bi;
@@ -173,11 +174,33 @@ public class POArch extends PaintObjectPen {
                 pnt_arch.getY() + pnt_vector.getX() * lengthTotal / length);
 
         getPen().paintLine(
+                pnt_a1, pnt_a2, _bi, _final, _g, new DPoint(_x, _y));
+        
+        getPen().paintLine(
                 pnt_a1, pnt_last, _bi, _final, _g, new DPoint(_x, _y));
         getPen().paintLine(
                 pnt_last, pnt_a2, _bi, _final, _g, new DPoint(_x, _y));
         
 
+        final double lengthZwischen = 1;
+//                1.0 / 2;
+        for (int i = 0; i < lengthTotal / lengthZwischen; i++) {
+
+            DPoint pnt_a3 = new DPoint(
+                    pnt_arch.getX() + pnt_vector.getY() 
+                    * i * lengthZwischen / length,
+                    pnt_arch.getY() - pnt_vector.getX() 
+                    * i * lengthZwischen / length);
+            DPoint pnt_a4 = new DPoint(
+                    pnt_arch.getX() - pnt_vector.getY() 
+                    * i * lengthZwischen / length,
+                    pnt_arch.getY() + pnt_vector.getX() 
+                    * i * lengthZwischen / length);
+            getPen().paintLine(
+                    pnt_a3, pnt_last, _bi, _final, _g, new DPoint(_x, _y));
+            getPen().paintLine(
+                    pnt_last, pnt_a4, _bi, _final, _g, new DPoint(_x, _y));
+        }
 
         return _bi;
     }

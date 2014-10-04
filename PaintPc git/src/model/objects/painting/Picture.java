@@ -24,6 +24,9 @@ import view.View;
 import view.ViewVorschau;
 import view.forms.Page;
 import model.objects.PictureOverview;
+import model.objects.painting.po.PaintObject;
+import model.objects.painting.po.PaintObjectImage;
+import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Pencil;
@@ -575,7 +578,7 @@ public final class Picture extends Observable {
             
             //throw exception
             new java.lang.Error("Fehler: stift noch nicht hinzugefuegt.")
-            .printStackTrace();;
+            .printStackTrace();
         }
         
     }

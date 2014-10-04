@@ -2,8 +2,8 @@ package model.util;
 
 import java.awt.Point;
 
-import model.objects.painting.PaintObject;
-import model.objects.painting.PaintObjectWriting;
+import model.objects.painting.po.PaintObject;
+import model.objects.painting.po.PaintObjectWriting;
 import model.util.list.List;
 
 

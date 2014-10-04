@@ -3,9 +3,7 @@ package model.objects.pen.normal;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
-
 import view.forms.Page;
 import model.objects.pen.Pen;
 import model.settings.Error;

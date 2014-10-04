@@ -1,5 +1,5 @@
 //package declaration
-package model.objects.painting;
+package model.objects.painting.po;
 
 //import declarations
 import java.awt.Color;
@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import view.View;
 import view.forms.Page;
+import model.objects.painting.PaintBI;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Pencil;
@@ -200,10 +201,10 @@ public class PaintObjectWriting extends PaintObject {
 
     /**
      * Only print last added point.
-     * @param _bi to bi
+     * @param _bi the BufferedImage
      * @param _x shifted
      * @param _y shifted
-     * @return
+     * @return the painted BufferedImage
      */
     public final BufferedImage paintLast(final BufferedImage _bi, 
             final int _x, final int _y) {

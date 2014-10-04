@@ -17,23 +17,20 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
-
 import javax.activation.UnsupportedDataTypeException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
 import model.objects.Zoom;
 import model.objects.painting.PaintBI;
-import model.objects.painting.PaintObject;
-import model.objects.painting.PaintObjectImage;
-import model.objects.painting.PaintObjectWriting;
 import model.objects.painting.Picture;
-import model.objects.pen.normal.BallPen;
+import model.objects.painting.po.PaintObject;
+import model.objects.painting.po.PaintObjectImage;
+import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.normal.Pencil;
 import model.objects.pen.special.PenSelection;
 import model.settings.Constants;

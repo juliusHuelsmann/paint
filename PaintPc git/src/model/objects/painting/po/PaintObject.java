@@ -1,5 +1,5 @@
 //package declaration
-package model.objects.painting;
+package model.objects.painting.po;
 
 //import declarations
 import java.awt.Rectangle;

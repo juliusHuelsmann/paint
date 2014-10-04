@@ -14,10 +14,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import model.objects.painting.PaintObject;
-import model.objects.painting.PaintObjectImage;
-import model.objects.painting.PaintObjectWriting;
 import model.objects.painting.Picture;
+import model.objects.painting.po.PaintObject;
+import model.objects.painting.po.PaintObjectImage;
+import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.list.List;

@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import model.objects.painting.PaintObject;
+import model.objects.painting.po.PaintObject;
 import model.objects.pen.special.PenSelection;
 import model.settings.ViewSettings;
 import view.forms.Page;

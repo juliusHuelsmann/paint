@@ -6,9 +6,9 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import model.objects.painting.PaintObject;
-import model.objects.painting.PaintObjectWriting;
 import model.objects.painting.Picture;
+import model.objects.painting.po.PaintObject;
+import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Constants;
 import view.forms.tabs.Selection;
 

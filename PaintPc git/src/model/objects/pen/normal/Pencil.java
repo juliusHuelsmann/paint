@@ -282,13 +282,10 @@ public class Pencil extends Pen {
        double anteilG = 1.0 * getClr_foreground().getGreen() / fgSum;
        double anteilB = 1.0 * getClr_foreground().getBlue() / fgSum;
 
-       double mw = (anteilR + anteilG + anteilB) / 3;
-       double anteilR2 = Math.abs(anteilR - 
-               (anteilR - mw) / 2);
-       double anteilG2 = Math.abs(anteilG - 
-               (anteilG - mw) / 2);
-       double anteilB2 = Math.abs(anteilB - 
-               (anteilB - mw) / 2);
+       double mw = (anteilR + anteilG + anteilB) / (2 + 1);
+       double anteilR2 = Math.abs(anteilR - (anteilR - mw) / 2);
+       double anteilG2 = Math.abs(anteilG - (anteilG - mw) / 2);
+       double anteilB2 = Math.abs(anteilB - (anteilB - mw) / 2);
        
        int red =  (int) (hellerD * anteilR2 * merged.getRed());
        int green = (int) (hellerD * anteilG2 * merged.getGreen());

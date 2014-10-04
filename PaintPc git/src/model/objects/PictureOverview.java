@@ -2,7 +2,7 @@ package model.objects;
 
 import java.util.Observable;
 
-import model.objects.painting.PaintObject;
+import model.objects.painting.po.PaintObject;
 import view.forms.tabs.PaintObjects;
 
 /**

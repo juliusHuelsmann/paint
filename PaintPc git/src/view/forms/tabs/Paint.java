@@ -79,7 +79,7 @@ public final class Paint extends JPanel {
 	 * buttons.
 	 */
 	private Item1Button tb_pipette, tb_fill, tb_move, tb_erase, 
-	tb_selectionLine, tb_selectionMagic, tb_selectionCurve;
+	tb_selectionLine, tb_selectionMagic, tb_selectionCurve, tb_saveAs;
 	/**
 	 * JLabels for the information text, linked with separation line.
 	 */
@@ -663,23 +663,37 @@ public final class Paint extends JPanel {
      * @return the new x coordinate
 	 */
 	private int initializeFileOperations(final int _x, final boolean _paint) {
-	    
-		//save
-		tb_save = new Item1Button(tb_save);
-		tb_save.setSize(tb_copy.getWidth(), tb_copy.getHeight());
-		tb_save.setLocation(_x + ViewSettings.DISTANCE_AFTER_LINE,
-				tb_zoomIn.getY());
-		tb_save.setBorder(false);
-		tb_save.addMouseListener(ControlPainting.getInstance());
-		initializeTextButton(tb_save,
-				TextFactory.getInstance().getTextViewTb_save(),
-				Constants.VIEW_TB_SAVE_PATH, 0);
-		tb_save.setActivable(false);
 
-		//save
+        //save
+        tb_save = new Item1Button(tb_save);
+        tb_save.setSize(tb_copy.getWidth(), tb_copy.getHeight());
+        tb_save.setLocation(_x + ViewSettings.DISTANCE_AFTER_LINE,
+                tb_zoomIn.getY());
+        tb_save.setBorder(false);
+        tb_save.addMouseListener(ControlPainting.getInstance());
+        initializeTextButton(tb_save,
+                TextFactory.getInstance().getTextViewTb_save(),
+                Constants.VIEW_TB_SAVE_PATH, 0);
+        tb_save.setActivable(false);
+
+        //save as
+        tb_saveAs = new Item1Button(tb_saveAs);
+        tb_saveAs.setSize(tb_copy.getWidth(), tb_copy.getHeight());
+        tb_saveAs.setLocation(tb_save.getX(),
+                tb_save.getY() + tb_save.getHeight() 
+                + ViewSettings.DISTANCE_BETWEEN_ITEMS);
+        tb_saveAs.setBorder(false);
+        tb_saveAs.addMouseListener(ControlPainting.getInstance());
+        initializeTextButton(tb_saveAs,
+                TextFactory.getInstance().getTextViewTb_save() + " as",
+                Constants.VIEW_TB_SAVE_PATH, 0);
+        tb_saveAs.setActivable(false);
+
+        //save
 		tb_load = new Item1Button(tb_load);
 		tb_load.setSize(tb_copy.getWidth(), tb_copy.getHeight());
-		tb_load.setLocation(tb_save.getX(), tb_zoomOut.getY());
+		tb_load.setLocation(tb_save.getWidth() + tb_save.getX()
+                + ViewSettings.DISTANCE_BETWEEN_ITEMS, tb_save.getY());
 		tb_load.setBorder(false);
 		tb_load.addMouseListener(ControlPainting.getInstance());
 		initializeTextButton(tb_load,
@@ -690,8 +704,8 @@ public final class Paint extends JPanel {
         //cut
         tb_new = new Item1Button(null);
         tb_new.setSize(tb_copy.getWidth(), tb_copy.getHeight());
-        tb_new.setLocation(tb_save.getWidth() + tb_save.getX()
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS, tb_save.getY());
+        tb_new.setLocation(tb_saveAs.getWidth() + tb_saveAs.getX()
+                + ViewSettings.DISTANCE_BETWEEN_ITEMS, tb_saveAs.getY());
         tb_new.setBorder(false);
         tb_new.addMouseListener(ControlPainting.getInstance());
         initializeTextButton(tb_new,

@@ -34,7 +34,7 @@ public final class Insert extends JPanel {
     private Item2 i2_g_line, i2_g_rect, i2_g_rect_round, 
     i2_g_triangle, i2_g_arch, i2_g_curve,
     i2_g_round, i2_g_archFilled, i2_g_rectFilled, i2_g_triangleFilled, 
-    i2_g_roundFilled, i2_g_rect_roundFilled;
+    i2_g_roundFilled, i2_g_rect_roundFilled, i2_d_diagramm;
     
     
     /**
@@ -184,6 +184,13 @@ public final class Insert extends JPanel {
      	ia_diagram.setSize(ia_geo.getWidth(), ia_geo.getHeight() * 2);
     	ia_diagram.setLocation(jlbl_trennung.getX() + distance, distance);
 		super.add(ia_diagram);
+
+        i2_d_diagramm = new Item2();
+        i2_d_diagramm.addMouseListener(CPaintStatus.getInstance());
+        i2_d_diagramm.setTitle("line");
+        ia_diagram.add(i2_d_diagramm);
+        i2_d_diagramm.setIcon("icon/geoForm/line.png");
+
 		
 		jlbl_trennung = insertTrennung(ia_diagram.getX() 
 		        + ia_diagram.getWidth(), ia_diagram.getY());
@@ -319,5 +326,12 @@ public final class Insert extends JPanel {
      */
     public Item1Button getTb_selected() {
         return tb_selected;
+    }
+
+    /**
+     * @return the i2_d_diagramm
+     */
+    public Item2 getI2_d_diagramm() {
+        return i2_d_diagramm;
     }
 }

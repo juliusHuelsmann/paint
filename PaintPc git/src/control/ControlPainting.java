@@ -262,6 +262,7 @@ public final class ControlPainting implements MouseListener,
             // switch index of operation
             switch (Status.getIndexOperation()) {
 
+            case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
@@ -362,6 +363,7 @@ public final class ControlPainting implements MouseListener,
             switch (Status.getIndexOperation()) {
 
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+            case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
             case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
@@ -707,6 +709,7 @@ public final class ControlPainting implements MouseListener,
         case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
         case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
         case Constants.CONTROL_PATINING_INDEX_PAINT_2:
+        case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
         case Constants.CONTROL_PATINING_INDEX_PAINT_1:
             if (_event.getButton() == 1) {
                 // write the current working picture into the global picture.

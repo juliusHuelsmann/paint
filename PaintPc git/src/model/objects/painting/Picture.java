@@ -28,6 +28,7 @@ import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
 import model.objects.painting.po.PaintObjectPen;
 import model.objects.painting.po.PaintObjectWriting;
+import model.objects.painting.po.diag.PODiagramm;
 import model.objects.painting.po.geo.POArch;
 import model.objects.painting.po.geo.POCurve;
 import model.objects.painting.po.geo.POLine;
@@ -235,6 +236,10 @@ public final class Picture extends Observable {
             break;
         case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
             addPaintObject(new POArch(currentId, pen_current));
+            break;
+
+        case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
+            addPaintObject(new PODiagramm(currentId, pen_current, 10, 3));
             break;
         case Constants.CONTROL_PATINING_INDEX_PAINT_2:
         case Constants.CONTROL_PATINING_INDEX_PAINT_1:
@@ -538,6 +543,14 @@ public final class Picture extends Observable {
         } else if (po_current instanceof PORectangle) {
 
             PORectangle pow = (PORectangle) po_current;
+            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
+                Page.getInstance().getJlbl_painting().refreshPaint();
+            }
+            
+            po_current.addPoint(_pnt);
+        } else if (po_current instanceof PODiagramm) {
+
+            PODiagramm pow = (PODiagramm) po_current;
             if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
                 Page.getInstance().getJlbl_painting().refreshPaint();
             }

@@ -103,7 +103,7 @@ public class PODiagramm extends PaintObjectPen {
 	 * @param _pnt theDPoint.
 	 */
 	public final void addPoint(final DPoint _pnt) {
-	    
+
 	    //save values
         if (pnt_first == null) {
             pnt_first = new DPoint(_pnt);
@@ -153,12 +153,24 @@ public class PODiagramm extends PaintObjectPen {
         getPen().paintLine(pnt_last, new DPoint(pnt_last.getX(), 
                 pnt_first.getY()), _bi, _final, _g, new DPoint(_x, _y));
         
-        
-        for (int x = 0; x < amountLines; x++) {
-            System.out.println("line");
+
+        double dYPL = -1.0 * (pnt_first.getY() - pnt_last.getY()) / amountLines;
+        double dXPL = -1.0 * (pnt_first.getX() - pnt_last.getX()) / amountRows;
+        for (int x = 1; x < amountLines; x++) {
+
+            getPen().paintLine(
+                    new DPoint(pnt_first.getX(), pnt_first.getY() +  dYPL * x),
+                    new DPoint(pnt_last.getX(), pnt_first.getY() +  dYPL * x), 
+                    _bi, _final, _g, new DPoint(_x, _y));
+
         }
-        for (int y = 0; y < amountRows; y++) {
-            System.out.println("row");
+        for (int y = 1; y < amountRows; y++) {
+
+            getPen().paintLine(
+                    new DPoint(pnt_first.getX() +  dXPL * y, pnt_first.getY()),
+                    new DPoint(pnt_first.getX() +  dXPL * y, pnt_last.getY()), 
+                    _bi, _final, _g, new DPoint(_x, _y));
+
         }
         
         return _bi;

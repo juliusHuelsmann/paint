@@ -3,11 +3,14 @@ package view.forms.tabs;
 //import declarations
 import java.awt.Color;
 import java.awt.Toolkit;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
 import control.tabs.CPaintStatus;
 import model.settings.ViewSettings;
 import view.util.Item2;
@@ -42,10 +45,26 @@ public final class Insert extends JPanel {
      */
     private Item1Button tb_selected;
     
+    
+    /**
+     * Titles for the amount of lines and rows of diagrams.
+     */
+    private JLabel jlbl_amountLines, jlbl_amountRows;
+    
+    /**
+     * Input fields for the amount of lines and rows of diagrams.
+     */
+    private JTextField jtf_amountLines, jtf_amountRows;
     /**
      * The only instance of this class.
      */
     private static Insert instance;
+
+    /**
+     * Constants.
+     */
+    private final int distance = 5, itemButtonSize = 128, locationX = 285;
+
     
     /**
      * Empty utility class constructor.
@@ -62,10 +81,6 @@ public final class Insert extends JPanel {
 		super.setOpaque(false);
 		super.setLayout(null);
 		
-		final int distance = 5;
-		final int itemButtonSize = 128;
-		final int locationX = 285;
-
 		tb_selected = new Item1Button(null);
 		tb_selected.setOpaque(true);
 		tb_selected.setSize(itemButtonSize, itemButtonSize);
@@ -78,15 +93,101 @@ public final class Insert extends JPanel {
 		tb_selected.setIcon("paint/test.png");
 		super.add(tb_selected);
 		
-		
 		JLabel jlbl_trennung = insertTrennung(tb_selected.getX() 
 		        + tb_selected.getWidth(), tb_selected.getY());
+        super.add(jlbl_trennung);
         insertInformation("ausgewaehlt", 
                 tb_selected.getX(), jlbl_trennung.getX());
         //
+        initializeGeo(jlbl_trennung.getX());
+        
+		jlbl_trennung = insertTrennung(ia_geo.getX() 
+		        + ia_geo.getWidth(), ia_geo.getY());
+        super.add(jlbl_trennung);
+        insertInformation("geometrische Formen", 
+                ia_geo.getX(), jlbl_trennung.getX());
+        //
+
+        ia_maths = new Item2Menu();
+        ia_maths.setLocation(jlbl_trennung.getX() + distance, distance);
+        ia_maths.setSize(ia_geo.getWidth(), ia_geo.getHeight() * 2);
+		super.add(ia_maths);
+		
+		jlbl_trennung = insertTrennung(ia_maths.getX() 
+		        + ia_maths.getWidth(), ia_maths.getY());
+        super.add(jlbl_trennung);
+        insertInformation("mathematische Formen",
+                ia_maths.getX(), jlbl_trennung.getX());
+		
+
+        ia_diagram = new Item2Menu();
+     	ia_diagram.setSize(ia_geo.getWidth(), ia_geo.getHeight() * 2);
+    	ia_diagram.setLocation(jlbl_trennung.getX() + distance, distance);
+		super.add(ia_diagram);
+
+        i2_d_diagramm = new Item2();
+        i2_d_diagramm.addMouseListener(CPaintStatus.getInstance());
+        i2_d_diagramm.setTitle("line");
+        ia_diagram.add(i2_d_diagramm);
+        i2_d_diagramm.setIcon("icon/geoForm/line.png");
+
+        final int widthLabel = 125, heightLabel = 20;
+        jlbl_amountLines = new JLabel("# lines");
+        jlbl_amountLines.setLocation(distance 
+                + ia_diagram.getX() + ia_diagram.getWidth(),
+                ia_diagram.getY());
+        jlbl_amountLines.setBorder(null);
+        jlbl_amountLines.setOpaque(false);
+        jlbl_amountLines.setFont(ViewSettings.GENERAL_FONT_ITEM_PLAIN);
+        jlbl_amountLines.setSize(widthLabel, heightLabel);
+        super.add(jlbl_amountLines);
+        
+        jtf_amountLines = new JTextField();
+        jtf_amountLines.setLocation(distance 
+                + jlbl_amountLines.getX() + jlbl_amountLines.getWidth(),
+                ia_diagram.getY());
+        jtf_amountLines.setOpaque(false);
+        jtf_amountLines.setFont(ViewSettings.GENERAL_FONT_ITEM_SMALL);
+        jtf_amountLines.setSize(widthLabel, heightLabel);
+        super.add(jtf_amountLines);
+        
+        jlbl_amountRows = new JLabel("# rows");
+        jlbl_amountRows.setLocation(distance 
+                + ia_diagram.getX() + ia_diagram.getWidth(),
+                jlbl_amountLines.getY() + jlbl_amountLines.getHeight() 
+                + distance);
+        jlbl_amountRows.setBorder(null);
+        jlbl_amountRows.setOpaque(false);
+        jlbl_amountRows.setFont(ViewSettings.GENERAL_FONT_ITEM_PLAIN);
+        jlbl_amountRows.setSize(widthLabel, heightLabel);
+        super.add(jlbl_amountRows);
+
+        jtf_amountRows = new JTextField();
+        jtf_amountRows.setLocation(distance 
+                + jlbl_amountRows.getX() + jlbl_amountRows.getWidth(),
+                jlbl_amountRows.getY());
+        jtf_amountRows.setOpaque(false);
+        jtf_amountRows.setFont(ViewSettings.GENERAL_FONT_ITEM_SMALL);
+        jtf_amountRows.setSize(widthLabel, heightLabel);
+        super.add(jtf_amountRows);
+        
+		jlbl_trennung = insertTrennung(ia_diagram.getX() 
+		        + ia_diagram.getWidth(), ia_diagram.getY());
+		super.add(jlbl_trennung);
+        insertInformation("Diagramme", ia_diagram.getX(),
+                jlbl_trennung.getX());
+        super.setSize((int) Toolkit.getDefaultToolkit()
+                .getScreenSize().getWidth(), _height);
+	}
+
+	/**
+	 * Initialize geometric objects.
+	 * @param _x the start x coordinate
+	 */
+	private void initializeGeo(final int _x) {
 
         ia_geo = new Item2Menu();
-        ia_geo.setLocation(jlbl_trennung.getX() , tb_selected.getY());
+        ia_geo.setLocation(_x , tb_selected.getY());
         ia_geo.setSize(locationX, itemButtonSize * 2);
         ia_geo.setItemsInRow(2 + 2);
         super.add(ia_geo);
@@ -163,43 +264,8 @@ public final class Insert extends JPanel {
         ia_geo.add(i2_g_triangleFilled);
         i2_g_triangleFilled.setIcon("icon/geoForm/triangleFilled.png");
 
-		jlbl_trennung = insertTrennung(ia_geo.getX() 
-		        + ia_geo.getWidth(), ia_geo.getY());
-        insertInformation("geometrische Formen", 
-                ia_geo.getX(), jlbl_trennung.getX());
-        //
-
-        ia_maths = new Item2Menu();
-        ia_maths.setLocation(jlbl_trennung.getX() + distance, distance);
-        ia_maths.setSize(ia_geo.getWidth(), ia_geo.getHeight() * 2);
-		super.add(ia_maths);
-		
-		jlbl_trennung = insertTrennung(ia_maths.getX() 
-		        + ia_maths.getWidth(), ia_maths.getY());
-        insertInformation("mathematische Formen",
-                ia_maths.getX(), jlbl_trennung.getX());
-		
-
-        ia_diagram = new Item2Menu();
-     	ia_diagram.setSize(ia_geo.getWidth(), ia_geo.getHeight() * 2);
-    	ia_diagram.setLocation(jlbl_trennung.getX() + distance, distance);
-		super.add(ia_diagram);
-
-        i2_d_diagramm = new Item2();
-        i2_d_diagramm.addMouseListener(CPaintStatus.getInstance());
-        i2_d_diagramm.setTitle("line");
-        ia_diagram.add(i2_d_diagramm);
-        i2_d_diagramm.setIcon("icon/geoForm/line.png");
-
-		
-		jlbl_trennung = insertTrennung(ia_diagram.getX() 
-		        + ia_diagram.getWidth(), ia_diagram.getY());
-        insertInformation("Diagramme", ia_diagram.getX(),
-                jlbl_trennung.getX());
-        super.setSize((int) Toolkit.getDefaultToolkit()
-                .getScreenSize().getWidth(), _height);
 	}
-
+	
 	/**
 	 * insert a separation line.
 	 * @param _x the x start location
@@ -333,5 +399,20 @@ public final class Insert extends JPanel {
      */
     public Item2 getI2_d_diagramm() {
         return i2_d_diagramm;
+    }
+
+    /**
+     * @return the jtf_amountLines
+     */
+    public JTextField getJtf_amountLines() {
+        return jtf_amountLines;
+    }
+
+
+    /**
+     * @return the jtf_amountRows
+     */
+    public JTextField getJtf_amountRows() {
+        return jtf_amountRows;
     }
 }

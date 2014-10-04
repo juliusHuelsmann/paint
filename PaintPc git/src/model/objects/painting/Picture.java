@@ -22,7 +22,9 @@ import control.CSelection;
 import control.tabs.CTabSelection;
 import view.View;
 import view.ViewVorschau;
+import view.forms.Message;
 import view.forms.Page;
+import view.forms.tabs.Insert;
 import model.objects.PictureOverview;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
@@ -239,7 +241,23 @@ public final class Picture extends Observable {
             break;
 
         case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
-            addPaintObject(new PODiagramm(currentId, pen_current, 10, 3));
+            
+            String srows = Insert.getInstance().getJtf_amountRows().getText();
+            int rows = 0;
+            try {
+                rows = Integer.parseInt(srows);
+            } catch (Exception e) {
+                Message.showMessage(Message.MESSAGE_ID_INFO, "enter valid row");
+            }
+            String slines = Insert.getInstance().getJtf_amountLines().getText();
+            int lines = 0;
+            try {
+                lines = Integer.parseInt(slines);
+            } catch (Exception e) {
+                Message.showMessage(Message.MESSAGE_ID_INFO, 
+                        "enter valid column");
+            }
+            addPaintObject(new PODiagramm(currentId, pen_current, lines, rows));
             break;
         case Constants.CONTROL_PATINING_INDEX_PAINT_2:
         case Constants.CONTROL_PATINING_INDEX_PAINT_1:

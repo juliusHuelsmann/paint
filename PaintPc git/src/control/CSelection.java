@@ -69,10 +69,14 @@ public class CSelection implements MouseMotionListener, MouseListener {
      */
 
     /**
-     * The oldimage size and the zoom factor (if whole image selected).
+     * The old image size  (if whole image selected).
      */
-    private Dimension imageSizeOld, factor;
+    private Dimension dim_imageSizeOld;
     
+    /**
+     * and the zoom factor (if whole image selected).
+     */
+    private double factorW, factorH;
     
     
     /**
@@ -170,6 +174,12 @@ public class CSelection implements MouseMotionListener, MouseListener {
         
         //nothing selected means resize whole image
         if (r_selection == null) {
+
+            dim_imageSizeOld = new Dimension(Status.getImageSize());
+            factorW = 1.0 * Status.getImageSize().width 
+                    / Status.getImageShowSize().width;
+            factorH = 1.0 * Status.getImageSize().height 
+                    / Status.getImageShowSize().height;
             wholeImageSelected = true;
         } else {
             wholeImageSelected = false;
@@ -264,6 +274,8 @@ public class CSelection implements MouseMotionListener, MouseListener {
         } else {
             distanceXY = distanceY;
         }
+        //TODO:
+        Dimension newDim = null;
         
             
         
@@ -273,7 +285,10 @@ public class CSelection implements MouseMotionListener, MouseListener {
                     (int) (p[1][2].getX()), (int) (p[1][2].getY() + distanceY));
             j[2][2].setLocation(
                     (int) (p[2][2].getX()), (int) (p[2][2].getY() + distanceY));
-            
+
+            newDim = new Dimension(
+                    (int) (dim_imageSizeOld.width), 
+                    (int) (dim_imageSizeOld.getHeight() + distanceY * factorH));
             
         } else if (_event.getSource().equals(j[2][1])) {
           
@@ -282,6 +297,9 @@ public class CSelection implements MouseMotionListener, MouseListener {
                     (int) (p[2][1].getY()));
             j[2][2].setLocation((int) (p[2][2].getX() + distanceX), 
                     (int) (p[2][2].getY()));
+            newDim = new Dimension(
+                    (int) (dim_imageSizeOld.width + distanceX * factorW), 
+                    (int) (dim_imageSizeOld.getHeight()));
             
         } else if (_event.getSource().equals(j[2][2])) {
             //items at the same edges.
@@ -295,19 +313,21 @@ public class CSelection implements MouseMotionListener, MouseListener {
             
             //center 
 
-            j[1][2].setLocation(j[2][2].getX() / 2,  j[1][2].getY());
-            j[2][1].setLocation(j[2][1].getX(), j[2][2].getY() / 2);
-            
+            newDim = new Dimension(
+                    (int) (dim_imageSizeOld.width + distanceXY * factorW), 
+                    (int) (dim_imageSizeOld.height + distanceXY * factorH));
         } 
 
-        final double mulitplicatorW = 1.0 * Status.getImageShowSize().width 
-                / Status.getImageSize().width;
-
-        final double mulitplicatorH = 1.0 * Status.getImageShowSize().height 
-                / Status.getImageSize().height;
+        j[1][2].setLocation(j[2][2].getX() / 2 - j[1][2].getWidth() / 2,
+                j[1][2].getY());
+        j[2][1].setLocation(j[2][1].getX(), 
+                j[2][2].getY() / 2 - j[2][1].getHeight() / 2);
+        Status.setImageSize(newDim);
+        Status.setImageShowSize(new Dimension(
+                (int) (newDim.width / factorW),
+                (int) (newDim.height / factorH)));
         
-        Status.setImageSize(_imageSize);
-        Status.setImageShowSize(_imageShowSize);
+        Page.getInstance().getJlbl_painting().refreshPaint();
 
         
     }
@@ -473,7 +493,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
      * Method for stretching the whole picture.
      * @param _event the passed MouseEvent
      */
-    private void mr_stretchPicture(final MouseEvent _event){
+    private void mr_stretchPicture(final MouseEvent _event) {
         
     }
 

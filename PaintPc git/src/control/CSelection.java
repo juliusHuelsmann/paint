@@ -393,6 +393,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
                 j[0][0].getY() + size, j[2][0].getX() - j[0][0].getX(),
                 j[0][2].getY() - j[0][0].getY());
     
+        
     }
     
 

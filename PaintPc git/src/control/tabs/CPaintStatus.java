@@ -395,15 +395,7 @@ public final class CPaintStatus implements MouseListener {
                     Status.getLogger().warning("falsche id");
                     break;
                 }
-		    } else if (_event.getSource().equals(
-		            Paint.getInstance().getTb_zoomOut().getActionCause())) {
-
-	            Picture.getInstance().releaseSelected();
-	            Page.getInstance().releaseSelected();
-	            
-	            Page.getInstance().getJlbl_painting().stopBorderThread();
-	            Page.getInstance().getJlbl_painting().repaint();
-	        } else {
+		    } else {
 
 
 	            mouseReleasedColorChange(_event);

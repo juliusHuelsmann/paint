@@ -176,19 +176,64 @@ public class PaintObjectWriting extends PaintObjectPen {
 			rect.y = 0;
 		}
 		
-	
-		return paint(new BufferedImage(
-		        Status.getImageSize().width, 
-				Status.getImageSize().height, 
-				BufferedImage.TYPE_INT_ARGB), 
-				false, null, 
-                Page.getInstance().getJlbl_painting().getLocation().x,
-                Page.getInstance().getJlbl_painting().getLocation().y)
-                .getSubimage(
-						rect.x, 
-						rect.y,
-						rect.width, 
-						rect.height);
+
+		int x = rect.x, y = rect.y;
+        if (x > Status.getImageSize().width) {
+            x = Status.getImageSize().width;
+        }
+
+        if (x < 0) {
+            x = 0;
+        } 
+        if (y > Status.getImageSize().height) {
+            y = Status.getImageSize().height;
+        }
+
+        if (y < 0) {
+            y = 0;
+        } 
+
+        int width = rect.width;
+        int height = rect.height;
+
+        if (x + width > Status.getImageSize().width) {
+            width = Status.getImageSize().width - x;
+        }
+        if (y + height > Status.getImageSize().height) {
+            height = Status.getImageSize().height - y;
+        }
+        
+        if (width == 0 || height == 0) {
+
+            if (Status.getImageSize().width >= 1 
+                    && Status.getImageSize().height >= 1) {
+
+                return paint(new BufferedImage(
+                        Status.getImageSize().width, 
+                        Status.getImageSize().height, 
+                        BufferedImage.TYPE_INT_ARGB), 
+                        false, null, 
+                        Page.getInstance().getJlbl_painting().getLocation().x,
+                        Page.getInstance().getJlbl_painting().getLocation().y)
+                        .getSubimage(
+                                0, 0, 1, 1);
+            } else {
+                Status.getLogger().warning(
+                        "image size zero -> resulting error");
+                return null;
+            }
+        } else {
+
+            return paint(new BufferedImage(
+                    Status.getImageSize().width, 
+                    Status.getImageSize().height, 
+                    BufferedImage.TYPE_INT_ARGB), 
+                    false, null, 
+                    Page.getInstance().getJlbl_painting().getLocation().x,
+                    Page.getInstance().getJlbl_painting().getLocation().y)
+                    .getSubimage(
+                            x, y, width, height);
+        }
 	}
 
     /**

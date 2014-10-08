@@ -511,8 +511,6 @@ public final class Picture {
 				|| _pnt.getY() < 0) {
 			return;
 		}
-
-
 		if (po_current instanceof PaintObjectWriting) {
 		    PaintObjectWriting pow = (PaintObjectWriting) po_current;
 		    pow.getPoints().toLast();
@@ -587,7 +585,6 @@ public final class Picture {
             if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
                 Page.getInstance().getJlbl_painting().refreshPaint();
             }
-            
             po_current.addPoint(_pnt);
         } else if (po_current instanceof POTriangle) {
 
@@ -595,7 +592,6 @@ public final class Picture {
             if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
                 Page.getInstance().getJlbl_painting().refreshPaint();
             }
-            
             po_current.addPoint(_pnt);
         } else if (po_current instanceof POTriangleFilled) {
 
@@ -603,7 +599,6 @@ public final class Picture {
             if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
                 Page.getInstance().getJlbl_painting().refreshPaint();
             }
-            
             po_current.addPoint(_pnt);
         } else if (po_current instanceof PoRectangleFilled) {
 
@@ -611,14 +606,13 @@ public final class Picture {
             if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
                 Page.getInstance().getJlbl_painting().refreshPaint();
             }
-            
             po_current.addPoint(_pnt);
         }
-		
         
         if (pen_current instanceof PenSelection) {
 
-            BufferedImage bi_transformed = Page.getInstance().getEmptyBISelection();
+            BufferedImage bi_transformed = 
+                    Page.getInstance().getEmptyBISelection();
             bi_transformed = po_current.paint(bi_transformed, false, 
                     bi_transformed, 
                     Page.getInstance().getJlbl_painting().getLocation().x, 
@@ -926,8 +920,9 @@ public final class Picture {
 	
 	/**
 	 * darken image.
+	 * @param _poi the PaintObjectImage which is altered
 	 */
-	public void darken(PaintObjectImage _poi) {
+	public void darken(final PaintObjectImage _poi) {
 
         BufferedImage bi_snapshot = _poi.getSnapshot();
 		for (int i = 0; i < bi_snapshot.getWidth(); i++) {
@@ -958,8 +953,9 @@ public final class Picture {
 	
 	/**
 	 * transform white to alpha.
+     * @param _poi the PaintObjectImage which is altered
 	 */
-	public void transformToAlpha(PaintObjectImage _poi) {
+	public void transformToAlpha(final PaintObjectImage _poi) {
 
         BufferedImage bi_snapshot = _poi.getSnapshot();
 		for (int i = 0; i < bi_snapshot.getWidth(); i++) {
@@ -1022,6 +1018,7 @@ public final class Picture {
 	
 	/**
 	 * transform white pixel to alpha pixel.
+     * @param _poi the PaintObjectImage which is altered
 	 */
 	private void whiteToAlpha(final PaintObjectImage _poi) {
 	    
@@ -1054,8 +1051,9 @@ public final class Picture {
 	
 	/**
 	 * transform image to gray image.
+     * @param _poi the PaintObjectImage which is altered
 	 */
-	public void blackWhite(PaintObjectImage _poi) {
+	public void blackWhite(final PaintObjectImage _poi) {
 
         BufferedImage bi_snapshot = _poi.getSnapshot();
         

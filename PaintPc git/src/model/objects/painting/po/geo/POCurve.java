@@ -59,6 +59,42 @@ public class POCurve extends PaintObjectWriting {
 	}
     
 
+    
+    /**
+     * 
+     * @param _p1 the first DPoint
+     * @param _p2 the secondDPoint
+     * @param _toleranceRad the tolerance radius
+     * @param _pnt_to_find the point to be found
+     * 
+     * @return true or false
+     */
+    public static boolean pruefeLine(final DPoint _p1, final DPoint _p2, 
+            final int _toleranceRad, final DPoint _pnt_to_find) {
+
+        //compute delta values
+        int dX = (int) (_p1.getX() - _p2.getX());
+        int dY = (int) (_p1.getY() - _p2.getY());
+
+        //print the line between the twoDPoints
+        for (int a = 0; a < Math.max(Math.abs(dX), Math.abs(dY)); a++) {
+            int plusX = a * dX /  Math.max(Math.abs(dX), Math.abs(dY));
+            int plusY = a * dY /  Math.max(Math.abs(dX), Math.abs(dY));
+            
+
+            if (isInSelectionPoint(new Rectangle(
+                    (int) (_pnt_to_find.getX() - _toleranceRad),
+                    (int) (_pnt_to_find.getY() - _toleranceRad),
+                    (int) (_pnt_to_find.getX() + _toleranceRad),
+                    (int) (_pnt_to_find.getY() + _toleranceRad)),
+                    new DPoint(_p1.getX() - plusX, _p1.getY() - plusY))) {
+                return true;
+            }
+            
+        }
+        
+        return false;
+    }
 	/**
 	 * {@inheritDoc}
 	 */
@@ -72,10 +108,6 @@ public class POCurve extends PaintObjectWriting {
             if (!empty) {
                 
                 final int tolerance = 6;
-                final Rectangle r = new Rectangle(
-                        (int) (_pnt.getX() - tolerance / 2),
-                        (int) (_pnt.getY() - tolerance / 2), 
-                        tolerance, tolerance);
                 getPoints().toFirst();
                 DPoint pnt_previous = getPoints().getItem();
                 getPoints().next();
@@ -83,12 +115,19 @@ public class POCurve extends PaintObjectWriting {
                 
                 while (!found && !getPoints().isEmpty() 
                         && !getPoints().isBehind()) {
-                    found = pruefeLine(pnt_previous, getPoints().getItem(), r);
+                    found = pruefeLine(pnt_previous, getPoints().getItem(), 
+                            tolerance,
+                            _pnt);
                 
                     if (!found) {
 
                         getPoints().next();
                     }
+                }
+                
+                if (!found) {
+                    System.out.println("not found.");
+                    return;
                 }
                 getPoints().previous();
 
@@ -105,11 +144,17 @@ public class POCurve extends PaintObjectWriting {
             setMaxX((int) Math.max(_pnt.getX(), getMaxX()));
             setMaxY((int) Math.max(_pnt.getY(), getMaxY()));
         
-            getPoints().insertBehind(_pnt);
+            getPoints().insertBehind(new DPoint(_pnt));
+            if (empty) {
+                getPoints().insertBehind(new DPoint(_pnt));
+            }
             
-            ready = empty;
+            System.out.println("insert 1");
+            
+            ready = false;
         } else {
-            getPoints().replace(_pnt);
+            getPoints().replace(new DPoint(_pnt));
+            System.out.println("insert replace");
         }
     }
 

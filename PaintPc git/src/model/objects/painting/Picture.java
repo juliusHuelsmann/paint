@@ -13,11 +13,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 import control.CSelection;
 import control.tabs.CTabSelection;
 import view.View;
@@ -44,7 +42,6 @@ import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Pencil;
 import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
-import model.settings.Error;
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.list.List;
@@ -163,15 +160,18 @@ public final class Picture {
             }
             
         }
-        
-        //create new PaintObject and insert it into list of 
-        po_current = new PaintObjectWriting(currentId, pen_current);
+        if (!(po_current instanceof POCurve)) {
 
-        //increase current id
-        currentId++;
+            //create new PaintObject and insert it into list of 
+            po_current = new PaintObjectWriting(currentId, pen_current);
+
+            //increase current id
+            currentId++;
+            
+            //set uncommitted changes.
+            Status.setUncommittedChanges(true);
+        }
         
-        //set uncommitted changes.
-        Status.setUncommittedChanges(true);
     }
     
     /**
@@ -279,26 +279,32 @@ public final class Picture {
         
         if (po_current != null) {
             
-            //throw error message and kill program.
-            Status.getLogger().warning(
-                    "Es soll ein neues objekt geadded werden, obwohl das "
-                    + "alte nicht null ist also nicht gefinished wurde.\n"
-                    + "Programm wird beendet.");
-            
-            System.exit(1);
+            if (!(po_current instanceof POCurve)) {
+
+                
+                //throw error message and kill program.
+                Status.getLogger().warning(
+                        "Es soll ein neues objekt geadded werden, obwohl das "
+                        + "alte nicht null ist also nicht gefinished wurde.\n"
+                        + "Programm wird beendet.");
+                
+                System.exit(1);
+            }
         }
         
-            
-        //create new PaintObject and insert it into list of 
-        po_current = _po;
 
-    
-        //increase current id
-        currentId++;
-            
-        //set uncommitted changes.
-        Status.setUncommittedChanges(true);
+        if (!(po_current instanceof POCurve) || !(_po instanceof POCurve)) {
+
+            //create new PaintObject and insert it into list of 
+            po_current = _po;
+
         
+            //increase current id
+            currentId++;
+                
+            //set uncommitted changes.
+            Status.setUncommittedChanges(true);
+        }
     }
 	
     
@@ -529,34 +535,29 @@ public final class Picture {
 	            pow.addPoint(_pnt);
 	        } else {
 
-	            final int minimalDistance = 1;
-	            int dx = (int) 
-	                    (pow.getPoints().getItem().getX() - _pnt.getX());
-	            int dy = (int) 
-	                    (pow.getPoints().getItem().getY() - _pnt.getY());
-	            if (Math.sqrt(dx * dx + dy * dy) > minimalDistance) {
-	                pow.addPoint(_pnt);
+	            pow.addPoint(_pnt);
 
-	                try {
 
-	                    ((PenSelection) pow.getPen())
-	                    .resetCurrentBorderValue();
-	                } catch (Exception e) {
-	                    Error.printError(getClass().getSimpleName() , 
-	                            "changePaintObject", "Class cast", e, 
-	                            Error.ERROR_MESSAGE_DO_NOTHING);
-	                }
+	            if (pen_current instanceof PenSelection) {
+
+                    ((PenSelection) pow.getPen())
+                    .resetCurrentBorderValue();
 	            }
 	        }
 		} else if (po_current instanceof POInsertion 
-		        || po_current instanceof POLine) {
+                || po_current instanceof POLine) {
 
-		    POInsertion pow = (POInsertion) po_current;
+            POInsertion pow = (POInsertion) po_current;
             if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
                 Page.getInstance().getJlbl_painting().refreshPaint();
             }
             
             po_current.addPoint(_pnt);
+        } else if (po_current instanceof POCurve) {
+
+            POCurve pow = (POCurve) po_current;
+            pow.addPoint(_pnt);
+            Page.getInstance().getJlbl_painting().refreshPaint();
         } 
 
         
@@ -575,7 +576,15 @@ public final class Picture {
         } else {
 
             BufferedImage bi_transformed;
-            if (po_current instanceof PaintObjectWriting) {
+            if (po_current instanceof POCurve) {
+                bi_transformed = ((PaintObjectWriting) po_current).paint(
+                        Page.getInstance().getJlbl_painting().getBi(), 
+                        false,
+                        Page.getInstance().getJlbl_painting().getBi(), 
+                        Page.getInstance().getJlbl_painting().getLocation().x, 
+                        Page.getInstance().getJlbl_painting().getLocation().y);
+            } else if (po_current instanceof PaintObjectWriting
+                    && !(po_current instanceof POCurve)) {
                 bi_transformed = ((PaintObjectWriting) po_current).paintLast(
                         Page.getInstance().getJlbl_painting().getBi(), 
                         Page.getInstance().getJlbl_painting().getLocation().x, 

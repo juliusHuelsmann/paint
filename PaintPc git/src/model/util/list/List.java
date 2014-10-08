@@ -151,6 +151,26 @@ public class List<Type> implements Serializable {
             return elemCurrent.getContent();
         }
     }
+    /**
+     * Return current Element.
+     *
+     * @return current Element.
+     */
+    public final Element<Type> getElement() {
+        if (isEmpty() || isInFrontOf() || isBehind()) {
+            return null;
+        } else {
+            return elemCurrent;
+        }
+    }
+    
+    /**
+     * Set the current element.
+     * @param _elemCurrent the current elmenet.
+     */
+    public final void setCurrentElement(final Element<Type> _elemCurrent) {
+        elemCurrent = _elemCurrent;
+    }
 
     /**
      * Return sort index of the current Element.

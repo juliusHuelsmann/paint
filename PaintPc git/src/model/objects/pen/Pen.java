@@ -113,6 +113,7 @@ public abstract class Pen implements Serializable {
 
 		//fetch list of points and go to the beginning of the list
 		List<DPoint> ls_point = _o.getPoints();
+		model.util.list.Element<DPoint> d = _o.getPoints().getElement();
 		ls_point.toFirst();
 
 		//if list is empty return the bufferedImage which is not changed.
@@ -147,6 +148,7 @@ public abstract class Pen implements Serializable {
         default:
             break;
 		}
+		_o.getPoints().setCurrentElement(d);
 		return _bi;
 	}
 

@@ -366,6 +366,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
         Page.getInstance().refrehsSps();
         
+        
     }
     
     

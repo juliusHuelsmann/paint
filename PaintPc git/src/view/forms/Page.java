@@ -67,6 +67,10 @@ import control.ControlPainting;
      */
     private JButton[][] jbtn_resize;
 
+    /**
+     * Contains the size of a selection while resizing.
+     */
+    private JLabel jlbl_resizeSelectionSize;
 
     /**
      * Selection JLabel.
@@ -134,6 +138,20 @@ import control.ControlPainting;
 
         sp_lr = new VScrollPane(jpnl_toMove, this, false);
         View.getInstance().add(sp_lr);
+        
+        jlbl_resizeSelectionSize = new JLabel();
+        jlbl_resizeSelectionSize.setOpaque(true);
+        jlbl_resizeSelectionSize.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
+        jlbl_resizeSelectionSize.setBackground(Color.white);
+        jlbl_resizeSelectionSize.setForeground(Color.black);
+        jlbl_resizeSelectionSize.setSize((int) Math.pow(2, 2 + 2 + 2 + 1), 
+                (int) Math.pow(2, 2 + 2 + 1));
+        jlbl_resizeSelectionSize.setLocation(
+                -jlbl_resizeSelectionSize.getWidth(), 
+                -jlbl_resizeSelectionSize.getHeight());
+        jlbl_resizeSelectionSize.setBorder(BorderFactory.createLineBorder(
+                Color.black));
+        super.add(jlbl_resizeSelectionSize);
         
         //initialize resize JButton
         jbtn_resize = new JButton[2 + 1][2 + 1];
@@ -408,6 +426,14 @@ import control.ControlPainting;
      */
     public JLabel getJlbl_background() {
         return jlbl_background;
+    }
+
+
+    /**
+     * @return the jlbl_resizeSelectionSize
+     */
+    public JLabel getJlbl_resizeSelectionSize() {
+        return jlbl_resizeSelectionSize;
     }
 }
 

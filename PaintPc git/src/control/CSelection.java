@@ -240,6 +240,15 @@ public class CSelection implements MouseMotionListener, MouseListener {
             //fetch DPoints from which the vectory may start
 
             if (_event.getSource() instanceof JButton) {
+                
+
+                final int jrssW = Page.getInstance()
+                        .getJlbl_resizeSelectionSize().getWidth();
+                final int jrssH = Page.getInstance()
+                        .getJlbl_resizeSelectionSize().getWidth();
+                Page.getInstance().getJlbl_resizeSelectionSize().setLocation(
+                        (-jrssW), 
+                        (-jrssH));
                 if (wholeImageSelected) {
                     mr_stretchPicture(_event);
                 } else {
@@ -327,8 +336,35 @@ public class CSelection implements MouseMotionListener, MouseListener {
                 (int) (newDim.width / factorW),
                 (int) (newDim.height / factorH)));
         
-        Page.getInstance().getJlbl_painting().refreshPaint();
 
+        Page.getInstance().getJlbl_painting().refreshPaint();
+        
+        
+        final int width = Page.getInstance().getJlbl_resizeSelectionSize()
+                .getWidth();
+        final int height = Page.getInstance().getJlbl_resizeSelectionSize()
+                .getHeight();
+        Page.getInstance().getJlbl_resizeSelectionSize().setLocation(
+                (j[2][2].getX() - width) / 2, 
+                (j[2][2].getY() - height) / 2);
+
+        if (Page.getInstance().getJlbl_resizeSelectionSize().getX() 
+                < 0) {
+            Page.getInstance().getJlbl_resizeSelectionSize().setLocation(
+                    j[2][2].getX(),
+                    Page.getInstance().getJlbl_resizeSelectionSize().getY());
+        }
+        if (Page.getInstance().getJlbl_resizeSelectionSize().getY() 
+                < 0) {
+            Page.getInstance().getJlbl_resizeSelectionSize().setLocation(
+                    Page.getInstance().getJlbl_resizeSelectionSize().getX(),
+                    j[2][2].getY());
+        }
+        
+        Page.getInstance().getJlbl_resizeSelectionSize().setText(
+                newDim.width + "x" + newDim.height + "");
+
+        Page.getInstance().refrehsSps();
         
     }
     

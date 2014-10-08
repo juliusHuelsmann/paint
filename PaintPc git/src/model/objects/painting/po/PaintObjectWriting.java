@@ -114,7 +114,7 @@ public class PaintObjectWriting extends PaintObjectPen {
 	 * 
 	 * @param _pnt theDPoint.
 	 */
-	public final void addPoint(final DPoint _pnt) {
+	public void addPoint(final DPoint _pnt) {
 
 	    //update MIN values
 		minX = (int) Math.min(_pnt.getX(), minX);
@@ -292,7 +292,7 @@ public class PaintObjectWriting extends PaintObjectPen {
      * 
      * @return true or false
      */
-    private boolean pruefeLine(final DPoint _p1, final DPoint _p2, 
+    public static boolean pruefeLine(final DPoint _p1, final DPoint _p2, 
             final Rectangle _r) {
 
         //compute delta values
@@ -921,6 +921,70 @@ public class PaintObjectWriting extends PaintObjectPen {
      */
     public final List<DPoint> getPoints() {
         return ls_point;
+    }
+
+
+    /**
+     * @return the minX
+     */
+    protected final int getMinX() {
+        return minX;
+    }
+
+
+    /**
+     * @param _minX the minX to set
+     */
+    protected final void setMinX(final int _minX) {
+        this.minX = _minX;
+    }
+
+
+    /**
+     * @return the minY
+     */
+    protected final int getMinY() {
+        return minY;
+    }
+
+
+    /**
+     * @param _minY the minY to set
+     */
+    protected final void setMinY(final int _minY) {
+        this.minY = _minY;
+    }
+
+
+    /**
+     * @return the maxX
+     */
+    protected final int getMaxX() {
+        return maxX;
+    }
+
+
+    /**
+     * @param _maxX the maxX to set
+     */
+    protected final void setMaxX(final int _maxX) {
+        this.maxX = _maxX;
+    }
+
+
+    /**
+     * @return the maxY
+     */
+    protected final int getMaxY() {
+        return maxY;
+    }
+
+
+    /**
+     * @param _maxY the maxY to set
+     */
+    protected final void setMaxY(final int _maxY) {
+        this.maxY = _maxY;
     }
 
 }

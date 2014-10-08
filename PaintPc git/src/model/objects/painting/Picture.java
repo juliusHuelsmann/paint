@@ -148,13 +148,20 @@ public final class Picture {
         
         if (po_current != null) {
             
-            //throw error message and kill program.
-            Status.getLogger().warning(
-                    "Es soll ein neues objekt geadded werden, obwohl das "
-                    + "alte nicht null ist also nicht gefinished wurde.\n"
-                    + "Programm wird beendet.");
+            if (!(po_current instanceof POCurve)) {
+                
+
+                System.out.println(po_current);
+                //throw error message and kill program.
+                Status.getLogger().warning(
+                        "Es soll ein neues pen objekt geadded werden, obwohl "
+                        + "das Alte nicht null ist also nicht gefinished "
+                        + "wurde.\n"
+                        + "Programm wird beendet.");
+                
+                System.exit(1);
+            }
             
-            System.exit(1);
         }
         
         //create new PaintObject and insert it into list of 
@@ -177,8 +184,8 @@ public final class Picture {
             
             //throw error message and kill program.
             Status.getLogger().warning(
-                    "Es soll ein neues objekt geadded werden, obwohl das "
-                    + "alte nicht null ist also nicht gefinished wurde.\n"
+                    "Es soll ein neues image objekt geadded werden, obwohl das "
+                    + "Alte nicht null ist also nicht gefinished wurde.\n"
                     + "Programm wird beendet.");
             
             System.exit(1);
@@ -511,7 +518,9 @@ public final class Picture {
 				|| _pnt.getY() < 0) {
 			return;
 		}
-		if (po_current instanceof PaintObjectWriting) {
+		if (!(po_current instanceof POCurve) 
+		        && po_current instanceof PaintObjectWriting) {
+		    
 		    PaintObjectWriting pow = (PaintObjectWriting) po_current;
 		    pow.getPoints().toLast();
 	        if (pow.getPoints().isEmpty()) {
@@ -539,7 +548,8 @@ public final class Picture {
 	                }
 	            }
 	        }
-		} else if (po_current instanceof POInsertion) {
+		} else if (po_current instanceof POInsertion 
+		        || po_current instanceof POLine) {
 
 		    POInsertion pow = (POInsertion) po_current;
             if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
@@ -639,13 +649,19 @@ public final class Picture {
 
 		//insert into sorted lists sorted by x and y positions.
 		final Rectangle b = po_current.getSnapshotBounds();
-        ls_po_sortedByX.insertSorted(po_current, b.x);
+		
+		if (po_current instanceof POCurve) {
+		    POCurve pc = (POCurve) po_current;
+		    pc.setReady();
+		} else {
 
-
-        PictureOverview.getInstance().add(po_current);
-        
-		//reset current instance of PaintObject
-		po_current = null;
+	        ls_po_sortedByX.insertSorted(po_current, b.x);
+	        PictureOverview.getInstance().add(po_current);
+	        
+	        //reset current instance of PaintObject
+	        po_current = null;
+		}
+		
 
 //        setChanged();
 //        notifyObservers(bi_normalSize);

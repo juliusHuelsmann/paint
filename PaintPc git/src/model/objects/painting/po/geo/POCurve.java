@@ -3,11 +3,10 @@ package model.objects.painting.po.geo;
 
 //import declarations
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import model.objects.painting.po.POInsertion;
-import model.objects.painting.po.PaintObject;
+
+import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.Pen;
-import model.settings.Status;
+import model.settings.Constants;
 import model.util.DPoint;
 
 /**
@@ -22,36 +21,20 @@ import model.util.DPoint;
  * @author Julius Huelsmann
  * @version %U%,%I%
  */
-public class POCurve extends POInsertion {
+public class POCurve extends PaintObjectWriting {
 
 	/**
      * serial version because the list of PaintObjects is saved.
      */
     private static final long serialVersionUID = -3730582547146097485L;
 
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override public final boolean isInSelectionImage(final Rectangle _r) {
-
-	    //check whether the PaintObject is completed
-	    if (getPnt_first() == null || getPnt_last() == null) {
-	        Status.getLogger().warning("Paint object line not ready");
-	        return false;
-	    }
-
-        //check whether is in rectangle.
-        if (isInSelectionPoint(_r, getPnt_first())
-                || isInSelectionPoint(_r, getPnt_last())
-                || pruefeLine(getPnt_last(), getPnt_first(), _r)) {
-            return true;
-        }
-        
-        //if the item has not been found return false
-        return false;
-    }
     
+    
+    /**
+     * Counts the amount of points.
+     */
+    private boolean ready;
+	
 
 	/**
 	 * Constructor creates new instance
@@ -63,44 +46,71 @@ public class POCurve extends POInsertion {
 	public POCurve(final int _elementId, final Pen _pen) {
 		
 	    //call super constructor
-	    super(_elementId, _pen);
+	    super(Constants.PEN_ID_MATHS, _pen);
+	    this.ready = true;
 	}
 	
 
+	/**
+	 * Set the PaintObject ready to receive a new point.
+	 */
+	public final void setReady() {
+	    this.ready = true;
+	}
+    
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override 
-    public final BufferedImage paint(final BufferedImage _bi, 
-            final boolean _final, final BufferedImage _g, final int _x, 
-            final int _y) {
+	/**
+	 * {@inheritDoc}
+	 */
+    @Override
+    public final void addPoint(final DPoint _pnt) {
+
+        if (ready) {
+            
+            boolean empty = getPoints().isEmpty();
+            
+            if (!empty) {
+                
+                final int tolerance = 6;
+                final Rectangle r = new Rectangle(
+                        (int) (_pnt.getX() - tolerance / 2),
+                        (int) (_pnt.getY() - tolerance / 2), 
+                        tolerance, tolerance);
+                getPoints().toFirst();
+                DPoint pnt_previous = getPoints().getItem();
+                getPoints().next();
+                boolean found = false;
+                
+                while (!found && !getPoints().isEmpty() 
+                        && !getPoints().isBehind()) {
+                    found = pruefeLine(pnt_previous, getPoints().getItem(), r);
+                
+                    if (!found) {
+
+                        getPoints().next();
+                    }
+                }
+                getPoints().previous();
+
+                
+                
+                //find the point next to
+            } 
+
+            //update MIN values
+            setMinX((int) Math.min(_pnt.getX(), getMinX()));
+            setMinY((int) Math.min(_pnt.getY(), getMinY()));
+
+            //update MAX values
+            setMaxX((int) Math.max(_pnt.getX(), getMaxX()));
+            setMaxY((int) Math.max(_pnt.getY(), getMaxY()));
         
-
-        if (getPnt_first() == null || getPnt_last() == null) {
-            return _bi;
+            getPoints().insertBehind(_pnt);
+            
+            ready = empty;
+        } else {
+            getPoints().replace(_pnt);
         }
-        getPen().paintLine(
-                getPnt_first(), getPnt_last(), _bi,
-                _final, _g, new DPoint(_x, _y));
-        return _bi;
     }
-    
-
-
-    
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override public final synchronized PaintObject[][] separate(
-            final Rectangle _r) {
-        Status.getLogger().severe("not impklemented yet");
-        return null;
-    }
-
-
-    
-
 
 }

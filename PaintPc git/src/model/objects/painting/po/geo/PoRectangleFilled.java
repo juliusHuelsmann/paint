@@ -4,7 +4,9 @@ package model.objects.painting.po.geo;
 //import declarations
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import view.forms.Page;
+import model.objects.painting.PaintBI;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectPen;
 import model.objects.pen.Pen;
@@ -23,7 +25,7 @@ import model.util.DPoint;
  * @author Julius Huelsmann
  * @version %U%,%I%
  */
-public class POTriangle extends PaintObjectPen {
+public class PoRectangleFilled extends PaintObjectPen {
 
 	/**
      * serial version because the list of PaintObjects is saved.
@@ -80,11 +82,10 @@ public class POTriangle extends PaintObjectPen {
 	 * @param _elementId the id of the element.
 	 * @param _pen the pen which is painted
 	 */
-	public POTriangle(final int _elementId, final Pen _pen) {
+	public PoRectangleFilled(final int _elementId, final Pen _pen) {
 		
 	    //call super constructor
 	    super(_elementId, _pen);
-
 	}
 	
 	/**
@@ -131,13 +132,53 @@ public class POTriangle extends PaintObjectPen {
         if (pnt_first == null || pnt_last == null) {
             return _bi;
         }
+
+        int cMinX = Math.min((int) pnt_first.getX(),
+                (int) pnt_last.getX());
+        int cMinY = Math.min((int) pnt_first.getY(),
+                (int) pnt_last.getY());
+        int cMaxX = Math.max((int) pnt_first.getX(),
+                (int) pnt_last.getX());
+        int cMaxY = Math.max((int) pnt_first.getY(),
+                (int) pnt_last.getY());
+        if (_final) {
+
+            PaintBI.fillRectangleQuick(_bi, getPen().getClr_foreground(), 
+                    new Rectangle(cMinX, cMinY, cMaxX - cMinX, cMaxY - cMinY));
+        } else {
+            
+
+            //adjust the location at the zoom.
+            cMinX = ((cMinX) * Status.getImageShowSize().width)
+                    / Status.getImageSize().width;
+            cMinY = ((cMinY) * Status.getImageShowSize().height)
+                    / Status.getImageSize().height;
+            cMaxX = ((cMaxX) * Status.getImageShowSize().width)
+                    / Status.getImageSize().width;
+            cMaxY = ((cMaxY) * Status.getImageShowSize().height)
+                    / Status.getImageSize().height;
+
+            //add the shift coordinates for painting.
+            cMinX +=  _x;
+            cMinY +=  _y;
+            
+            
+
+            PaintBI.fillRectangleQuick(_g, getPen().getClr_foreground(), 
+                    new Rectangle(cMinX, cMinY, cMaxX - cMinX, cMaxY - cMinY));
+        }
+        
         getPen().paintLine(
-                pnt_first, pnt_last, _bi, _final, _g, new DPoint(_x, _y));
-        getPen().paintLine(
-                pnt_first, new DPoint(pnt_first.getX(), pnt_last.getY()),
+                pnt_first, new DPoint(pnt_last.getX(), pnt_first.getY()), 
                 _bi, _final, _g, new DPoint(_x, _y));
         getPen().paintLine(
-                pnt_last, new DPoint(pnt_first.getX(), pnt_last.getY()),
+                pnt_first, new DPoint(pnt_first.getX(), pnt_last.getY()), 
+                _bi, _final, _g, new DPoint(_x, _y));
+        getPen().paintLine(
+                pnt_last, new DPoint(pnt_first.getX(), pnt_last.getY()), 
+                _bi, _final, _g, new DPoint(_x, _y));
+        getPen().paintLine(
+                pnt_last, new DPoint(pnt_last.getX(), pnt_first.getY()), 
                 _bi, _final, _g, new DPoint(_x, _y));
         return _bi;
     }

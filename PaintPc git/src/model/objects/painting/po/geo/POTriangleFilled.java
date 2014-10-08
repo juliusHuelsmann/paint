@@ -2,8 +2,10 @@
 package model.objects.painting.po.geo;
 
 //import declarations
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import view.forms.Page;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectPen;
@@ -23,7 +25,7 @@ import model.util.DPoint;
  * @author Julius Huelsmann
  * @version %U%,%I%
  */
-public class POTriangle extends PaintObjectPen {
+public class POTriangleFilled extends PaintObjectPen {
 
 	/**
      * serial version because the list of PaintObjects is saved.
@@ -80,7 +82,7 @@ public class POTriangle extends PaintObjectPen {
 	 * @param _elementId the id of the element.
 	 * @param _pen the pen which is painted
 	 */
-	public POTriangle(final int _elementId, final Pen _pen) {
+	public POTriangleFilled(final int _elementId, final Pen _pen) {
 		
 	    //call super constructor
 	    super(_elementId, _pen);
@@ -131,17 +133,81 @@ public class POTriangle extends PaintObjectPen {
         if (pnt_first == null || pnt_last == null) {
             return _bi;
         }
+        
+        //hier rein und das unten machen.
         getPen().paintLine(
                 pnt_first, pnt_last, _bi, _final, _g, new DPoint(_x, _y));
+        
+        
         getPen().paintLine(
                 pnt_first, new DPoint(pnt_first.getX(), pnt_last.getY()),
                 _bi, _final, _g, new DPoint(_x, _y));
         getPen().paintLine(
                 pnt_last, new DPoint(pnt_first.getX(), pnt_last.getY()),
                 _bi, _final, _g, new DPoint(_x, _y));
+        
+        Dimension _finalSize = new Dimension(0, (int)pnt_last.getY());
+        
+        if (pnt_last.getY() > pnt_first.getY()) {
+        } else {
+            
+        }
+        
+        paintLineIntegral(pnt_first, pnt_last, _bi, _final, _g, 
+                new DPoint(_x, _y), _finalSize);
         return _bi;
     }
     
+    
+    /**
+     * print line between points _p1 and _p2 and to the BufferedImage _bi.
+     * 
+     * @param _p1 the fist point
+     * @param _p2 the second point
+     * @param _bi the buffered image which is extended
+     * @param _final 
+     *          if true:
+     *              paint both to Graphics and BufferedImage
+     *              
+     *          if false:
+     *              do only paint to given Graphics
+     *              
+     * @param _pnt_shift the point to shift.
+     * @param _g the graphics to which line is painted.
+     * @param _finalSize the size (point) to point to
+     */
+    public final void paintLineIntegral(final DPoint _p1, final DPoint _p2, 
+            final BufferedImage _bi, final boolean _final, 
+            final BufferedImage _g, final DPoint _pnt_shift, 
+            final Dimension _finalSize) {
+
+        //compute delta values
+        int dX = (int) (_p1.getX() - _p2.getX());
+        int dY = (int) (_p1.getY() - _p2.getY());
+
+        //print the line between the two points
+        for (int a = 0; a < Math.max(Math.abs(dX), Math.abs(dY)); a++) {
+            int plusX = a * dX /  Math.max(Math.abs(dX), Math.abs(dY));
+            int plusY = a * dY /  Math.max(Math.abs(dX), Math.abs(dY));
+            
+            if (_finalSize.width == 0) {
+
+                getPen().paintLine(
+                        new DPoint(_p1.getX() - plusX, 
+                                _p1.getY() - plusY), 
+                        new DPoint(_p1.getX() - plusX, 
+                                _finalSize.height),
+                        _bi, _final, _g, _pnt_shift);
+            } else {
+                getPen().paintLine(
+                        new DPoint(_p1.getX() - plusX, 
+                                _p1.getY() - plusY), 
+                        new DPoint(_finalSize.height, 
+                                _p1.getY() - plusY), 
+                        _bi, _final, _g, _pnt_shift);
+            }
+        }
+    }
     
     /*
      * snapshot things, e.g. for selection.

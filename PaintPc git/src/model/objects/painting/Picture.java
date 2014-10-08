@@ -36,6 +36,8 @@ import model.objects.painting.po.geo.POCurve;
 import model.objects.painting.po.geo.POLine;
 import model.objects.painting.po.geo.PORectangle;
 import model.objects.painting.po.geo.POTriangle;
+import model.objects.painting.po.geo.POTriangleFilled;
+import model.objects.painting.po.geo.PoRectangleFilled;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Pencil;
@@ -223,7 +225,12 @@ public final class Picture {
         case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
             addPaintObject(new POArchFilled(currentId, pen_current));
             break;
-            
+        case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
+            addPaintObject(new PoRectangleFilled(currentId, pen_current));
+            break;
+        case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
+            addPaintObject(new POTriangleFilled(currentId, pen_current));
+            break;
         case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
             addPaintObject(new POArch(currentId, pen_current));
             break;
@@ -590,6 +597,22 @@ public final class Picture {
             }
             
             po_current.addPoint(_pnt);
+        } else if (po_current instanceof POTriangleFilled) {
+
+            POTriangleFilled pow = (POTriangleFilled) po_current;
+            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
+                Page.getInstance().getJlbl_painting().refreshPaint();
+            }
+            
+            po_current.addPoint(_pnt);
+        } else if (po_current instanceof PoRectangleFilled) {
+
+            PoRectangleFilled pow = (PoRectangleFilled) po_current;
+            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
+                Page.getInstance().getJlbl_painting().refreshPaint();
+            }
+            
+            po_current.addPoint(_pnt);
         }
 		
         
@@ -689,7 +712,6 @@ public final class Picture {
 		//reset current instance of PaintObject
 		po_current = null;
 
-//		//notify preview-observer
 //        setChanged();
 //        notifyObservers(bi_normalSize);
         

@@ -269,6 +269,8 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
             case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
 
@@ -370,6 +372,8 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
 
                 // add paintObject and point to Picture
                 Picture.getInstance().changePaintObject(
@@ -713,6 +717,8 @@ public final class ControlPainting implements MouseListener,
         case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
         case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
         case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
         case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
             if (_event.getButton() == 1) {
                 // write the current working picture into the global picture.
@@ -938,6 +944,8 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
                 Picture.getInstance().getPen_current().preprint(
                         _event.getX(), _event.getY());

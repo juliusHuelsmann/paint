@@ -84,29 +84,6 @@ public class POArchFilled extends PaintObjectPen {
 		
 	    //call super constructor
 	    super(_elementId, _pen);
-
-//        if (_pen instanceof BallPen) {
-//
-//            pen = new Pencil(_pen.getId_operation(),
-//                    _pen.getThickness(), _pen.getClr_foreground());
-//        } else if (_pen instanceof PenSelection) {
-//
-//            pen = new PenSelection();
-//        } else if (_pen instanceof Pencil) {
-//
-//            pen = new Pencil(_pen.getId_operation(),
-//                    _pen.getThickness(), _pen.getClr_foreground());
-//        } else {
-//            
-//            //alert user.
-//            JOptionPane.showMessageDialog(View.getInstance(), 
-//                    "PROGRAMMIERFEHLER @ paintobjectwriting: " 
-//                    + "Stift noch nicht hinzugefuegt.");
-//            
-//            
-//            //throw exception
-//            throw new Error("Fehler: stift noch nicht hinzugefuegt.");
-//        }
 	}
 	
 	/**
@@ -231,7 +208,7 @@ public class POArchFilled extends PaintObjectPen {
 		        Status.getImageSize().width, 
 				Status.getImageSize().height, 
 				BufferedImage.TYPE_INT_ARGB), 
-				false, null, 
+				true, null, 
                 Page.getInstance().getJlbl_painting().getLocation().x,
                 Page.getInstance().getJlbl_painting().getLocation().y)
                 .getSubimage(

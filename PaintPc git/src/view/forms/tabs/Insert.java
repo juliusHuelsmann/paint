@@ -416,4 +416,67 @@ public final class Insert extends JPanel {
     public JTextField getJtf_amountRows() {
         return jtf_amountRows;
     }
+
+    /**
+     * @return the i2_g_rectFilled
+     */
+    public Item2 getI2_g_rectFilled() {
+        return i2_g_rectFilled;
+    }
+
+    /**
+     * @param i2_g_rectFilled the i2_g_rectFilled to set
+     */
+    public void setI2_g_rectFilled(Item2 i2_g_rectFilled) {
+        this.i2_g_rectFilled = i2_g_rectFilled;
+    }
+
+    /**
+     * @return the i2_g_triangleFilled
+     */
+    public Item2 getI2_g_triangleFilled() {
+        return i2_g_triangleFilled;
+    }
+
+    /**
+     * @param i2_g_triangleFilled the i2_g_triangleFilled to set
+     */
+    public void setI2_g_triangleFilled(Item2 i2_g_triangleFilled) {
+        this.i2_g_triangleFilled = i2_g_triangleFilled;
+    }
+
+    /**
+     * @return the i2_g_roundFilled
+     */
+    public Item2 getI2_g_roundFilled() {
+        return i2_g_roundFilled;
+    }
+
+    /**
+     * @param i2_g_roundFilled the i2_g_roundFilled to set
+     */
+    public void setI2_g_roundFilled(Item2 i2_g_roundFilled) {
+        this.i2_g_roundFilled = i2_g_roundFilled;
+    }
+
+    /**
+     * @return the i2_g_rect_roundFilled
+     */
+    public Item2 getI2_g_rect_roundFilled() {
+        return i2_g_rect_roundFilled;
+    }
+
+    /**
+     * @param i2_g_rect_roundFilled the i2_g_rect_roundFilled to set
+     */
+    public void setI2_g_rect_roundFilled(Item2 i2_g_rect_roundFilled) {
+        this.i2_g_rect_roundFilled = i2_g_rect_roundFilled;
+    }
+
+    /**
+     * @param i2_d_diagramm the i2_d_diagramm to set
+     */
+    public void setI2_d_diagramm(Item2 i2_d_diagramm) {
+        this.i2_d_diagramm = i2_d_diagramm;
+    }
 }

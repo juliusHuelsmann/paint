@@ -63,7 +63,6 @@ public class PaintLabel extends JLabel {
      */
     public PaintLabel(final JPanel _jpnl_toMove) {
         this.jpnl_toMove = _jpnl_toMove;
-        
     }
 
     

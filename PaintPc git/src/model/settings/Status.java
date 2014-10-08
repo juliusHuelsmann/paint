@@ -2,10 +2,14 @@ package model.settings;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
-
+import view.forms.Page;
+import model.objects.painting.PaintBI;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
+import model.util.paint.Utils;
 
 /**
  * the current status of the program. E.g. which which operation is performed
@@ -26,7 +30,7 @@ public final class Status {
      * selection mode 1 - 3, ...).
      */
     private static int indexOperation = 
-            Constants.CONTROL_PATINING_INDEX_PAINT_1;
+            Constants.CONTROL_PAINTING_INDEX_PAINT_1;
     
     /**
      * The Background of the pages.
@@ -95,6 +99,17 @@ public final class Status {
      */
     private static String savePath = "";
     
+    
+    /**
+     * The transparency id.
+     */
+    private static int id_transparency = Constants.ID_TRANSPARENCY_WHITE;
+    
+    /**
+     * The BufferedImage which is shown for the transparency.
+     * Is contained by a JLabel in background of the image.
+     */
+    private static BufferedImage bi_transparency;
     
     /**
      * The logger.
@@ -352,5 +367,68 @@ public final class Status {
      */
     public static void setOpenProject(final String _openProject) {
         Status.openProject = _openProject;
+    }
+
+
+    /**
+     * @param _id_transparency the id_transparency to set
+     */
+    public static void setId_transparency(final int _id_transparency) {
+        
+
+        id_transparency = _id_transparency;
+        
+        switch (id_transparency) {
+        case Constants.ID_TRANSPARENCY_RASTER:
+
+            final int transparencyRectanlgeSize = 25;
+            final Color color1 = new Color(234, 239, 242);
+            final Color color2 = new Color(250, 252, 255);
+            
+            bi_transparency = Utils.paintRastarBlock(
+                    new BufferedImage(
+                            Page.getInstance().getJlbl_background().getWidth(), 
+                            Page.getInstance().getJlbl_background()
+                            .getHeight(), 
+                            BufferedImage.TYPE_INT_RGB), 
+                    new Color[]{color1, color2},
+                    new Rectangle(0, 0, 
+                            Page.getInstance().getJlbl_background().getWidth(), 
+                            Page.getInstance().getJlbl_background()
+                            .getHeight()), 
+                            transparencyRectanlgeSize);
+            break;
+        case Constants.ID_TRANSPARENCY_WHITE:
+            
+            bi_transparency =  
+                    new BufferedImage(
+                            Page.getInstance().getJlbl_background().getWidth(), 
+                            Page.getInstance().getJlbl_background()
+                            .getHeight(), 
+                            BufferedImage.TYPE_INT_RGB);
+            PaintBI.fillRectangleQuick(bi_transparency, Color.white, 
+                    new Rectangle(0, 0, 
+                            Page.getInstance().getJlbl_background().getWidth(), 
+                            Page.getInstance().getJlbl_background()
+                            .getHeight()));
+            break;
+        default: 
+            getLogger().warning("Wrong transparency id.");
+            break;
+        }
+        
+    }
+
+
+    /**
+     * @return the bi_transparency
+     */
+    public static BufferedImage getBi_transparency() {
+        
+        if (bi_transparency == null) {
+            
+            setId_transparency(id_transparency);
+        }
+        return bi_transparency;
     }
 }

@@ -12,9 +12,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
+import javax.swing.ImageIcon;
+import view.forms.Page;
 import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Constants;
+import model.settings.Status;
 import model.util.DPoint;
 import model.util.list.List;
 import model.util.solveLGS.Matrix;
@@ -834,5 +836,26 @@ public abstract class Pen implements Serializable {
      */
     public final void setSelected(final boolean _selected) {
         this.selected = _selected;
+    }
+
+
+
+    /**
+     * Print a preview of the painting.
+     * @param _x the x coordinate
+     * @param _y the y coordinate
+     */
+    public final void preprint(final int _x, final int _y) {
+
+        final double factorW = 1.0 * Status.getImageSize().width 
+                / Status.getImageShowSize().width;
+        final double factorH = 1.0 * Status.getImageSize().height
+                / Status.getImageShowSize().height;
+        BufferedImage bi = Page.getInstance().getEmptyBI();
+        paintPoint(new DPoint(_x * factorW, _y * factorH), bi, false, 
+                new DPoint(0, 0),
+                bi);
+        
+        Page.getInstance().getJlbl_selectionBG().setIcon(new ImageIcon(bi));
     }
 }

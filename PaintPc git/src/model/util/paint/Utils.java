@@ -35,7 +35,7 @@ public final class Utils {
     /**
      * Color for painting background for painting.
      */
-    private static final Color RASTAR_COLOR = Color.lightGray;
+    private static final Color RASTAR_COLOR = Color.black;
     
 
     /**
@@ -49,19 +49,36 @@ public final class Utils {
     public static BufferedImage paintRastarBlock(
             final BufferedImage _bi_background, 
             final Color [] _clr, final Rectangle _r) {
+        return paintRastarBlock(_bi_background, _clr, _r, 
+                ViewSettings.SELECTION_BORDER_BLOCK_SIZE);
+    }
+
+
+
+    /**
+     * paint a raster background with .
+     * @param _bi_background the graphics at which is painted.
+     * @param _clr the Color
+     * @param _r the rectangle which is to be painted directly at graphics
+     * @param _blocksize the size of each block.
+     * 
+     * @return the altered bufferedImage 
+     */
+    public static BufferedImage paintRastarBlock(
+            final BufferedImage _bi_background, 
+            final Color [] _clr, final Rectangle _r, 
+            final int _blocksize) {
 
         //go through the whole buffered image with block size raster
-        for (int x = _r.x / ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
-                x < (_r.width + _r.x) / ViewSettings
-                .SELECTION_BORDER_BLOCK_SIZE + 1; x++) {
-            for (int y = _r.y / ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
-                    y < (_r.y + _r.height) / ViewSettings
-                    .SELECTION_BORDER_BLOCK_SIZE + 1; y++) {
+        for (int x = _r.x / _blocksize;
+                x < (_r.width + _r.x) / _blocksize + 1; x++) {
+            for (int y = _r.y / _blocksize;
+                    y < (_r.y + _r.height) / _blocksize + 1; y++) {
 
-                int rectX = x * ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
-                int rectY = y * ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
+                int rectX = x * _blocksize;
+                int rectY = y * _blocksize;
                 
-                int rectWidth = ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
+                int rectWidth = _blocksize;
                 int rectHeight = rectWidth;
 
                 //fit the size to the borders.
@@ -83,7 +100,8 @@ public final class Utils {
                 }
                 
                 PaintBI.fillRectangleQuick(_bi_background, 
-                        _clr[(y + x) % _clr.length], _r);
+                        _clr[(y + x) % _clr.length], new Rectangle(
+                                rectX, rectY, rectWidth, rectHeight));
             }
         }
         

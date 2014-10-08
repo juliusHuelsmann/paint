@@ -431,16 +431,14 @@ public final class Paint extends JPanel {
             tb_pipette.setLocation(it_selection.getX() + it_selection.getWidth()
                     + ViewSettings.DISTANCE_BETWEEN_ITEMS,
                     it_stift2.getY());
-            tb_fill.setLocation(tb_pipette.getX() 
-                    + ViewSettings.DISTANCE_BETWEEN_ITEMS,
+            tb_fill.setLocation(tb_pipette.getX(),
                     tb_pipette.getY() + tb_pipette.getHeight() 
                     + ViewSettings.DISTANCE_BETWEEN_ITEMS);
             
             tb_move.setLocation(tb_pipette.getX() + tb_pipette.getWidth()
                     + ViewSettings.DISTANCE_BETWEEN_ITEMS,
                     tb_pipette.getY());
-            tb_erase.setLocation(tb_move.getX() 
-                    + ViewSettings.DISTANCE_BETWEEN_ITEMS,
+            tb_erase.setLocation(tb_move.getX(),
                     tb_move.getY() + tb_move.getHeight() 
                     + ViewSettings.DISTANCE_BETWEEN_ITEMS);
         }

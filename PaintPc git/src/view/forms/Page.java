@@ -4,13 +4,11 @@ package view.forms;
 //import declarations
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
@@ -85,6 +83,11 @@ import control.ControlPainting;
      */
     private JLabel jlbl_border;
 	
+    /**
+     * The background JLabel (which is shown if image is transparent).
+     */
+    private JLabel jlbl_background;
+    
 	/**
 	 * empty utility class constructor. 
 	 */
@@ -178,18 +181,25 @@ import control.ControlPainting;
         jlbl_border.setBackground(new Color(0, 0, 0, 2 * 2 * 2 * 2 * 2));
         jlbl_border.setBorder(BorderFactory.createLineBorder(Color.black));
         super.add(jlbl_border);
-        
+
         
         //JLabel for the painting and the raster
         jlbl_painting = new PaintLabel(jpnl_toMove);
-        jlbl_painting.setBackground(Color.white);
         jlbl_painting.setFocusable(false);
         jlbl_painting.setBorder(null);
         jlbl_painting.addMouseMotionListener(ControlPainting.getInstance());
         jlbl_painting.addMouseListener(ControlPainting.getInstance());
-        jlbl_painting.setOpaque(true);
+        jlbl_painting.setOpaque(false);
         super.add(jlbl_painting);
 
+        
+        jlbl_background = new JLabel();
+        jlbl_background.setBackground(Color.white);
+        jlbl_background.setFocusable(false);
+        jlbl_background.setBorder(null);
+        jlbl_background.setOpaque(true);
+        super.add(jlbl_background); 
+        
         removeButtons();
 
 	}
@@ -267,8 +277,11 @@ import control.ControlPainting;
                 ViewSettings.VIEW_SIZE_SP);
 
         jlbl_painting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
+        jlbl_background.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionBG.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionPainting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
+
+        jlbl_background.setIcon(new ImageIcon(Status.getBi_transparency()));
 	}
 	
 	
@@ -387,6 +400,14 @@ import control.ControlPainting;
      */
     public JLabel getJlbl_border() {
         return jlbl_border;
+    }
+
+
+    /**
+     * @return the jlbl_background
+     */
+    public JLabel getJlbl_background() {
+        return jlbl_background;
     }
 }
 

@@ -259,8 +259,8 @@ public final class Picture extends Observable {
             }
             addPaintObject(new PODiagramm(currentId, pen_current, lines, rows));
             break;
-        case Constants.CONTROL_PATINING_INDEX_PAINT_2:
-        case Constants.CONTROL_PATINING_INDEX_PAINT_1:
+        case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
+        case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
             addPaintObject(new PaintObjectWriting(currentId, pen_current));
             break;
         default:
@@ -419,7 +419,7 @@ public final class Picture extends Observable {
             return _bi;
         }
         
-        PaintBI.fillRectangleQuick(_bi, Color.white, 
+        PaintBI.fillRectangleQuick(_bi, new Color(0, 0, 0, 0), 
                 new Rectangle(_graphicX, _graphiY, rectWidth, rectHeight));
         
         return _bi;
@@ -458,23 +458,36 @@ public final class Picture extends Observable {
                 && !behindRectangle) {
             
             if (ls_po_sortedByX.getItem() != null) {
+
+                final double factorW = 1.0 * Status.getImageSize().width
+                        / Status.getImageShowSize().width;
                 
                 //check whether the current PaintObject is in the given 
                 //rectangle
                 if (ls_po_sortedByX.getItem().getSnapshotBounds().x 
-                        <= -Page.getInstance().getJlbl_painting()
+                        <= factorW * (-Page.getInstance().getJlbl_painting()
                         .getLocation().getX()
-                        + Page.getInstance().getJlbl_painting().getWidth()) {
+                        + Page.getInstance().getJlbl_painting().getWidth())) {
                     
-                    //paint the object.
-                    ls_po_sortedByX.getItem().paint(
-                            bi_normalSize, false, _bi,
-                            Page.getInstance().getJlbl_painting()
-                            .getLocation().x,
-                            Page.getInstance().getJlbl_painting()
-                            .getLocation().y);
+
+                    final double factorH = 1.0 * Status.getImageSize().width
+                            / Status.getImageShowSize().width;
+
+                    if (ls_po_sortedByX.getItem().getSnapshotBounds().y
+                            <= factorH * (-Page.getInstance().getJlbl_painting()
+                                    .getLocation().getY() + Page.getInstance()
+                                    .getJlbl_painting().getHeight())) {
+
+                        //paint the object.
+                        ls_po_sortedByX.getItem().paint(
+                                bi_normalSize, false, _bi,
+                                Page.getInstance().getJlbl_painting()
+                                .getLocation().x,
+                                Page.getInstance().getJlbl_painting()
+                                .getLocation().y);
+                    }
                 } else {
-                   behindRectangle = true; 
+                    behindRectangle = true; 
                 }
             }
             ls_po_sortedByX.next();

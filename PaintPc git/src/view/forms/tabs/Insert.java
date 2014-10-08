@@ -277,8 +277,9 @@ public final class Insert extends JPanel {
 	    final int number = 145;
 	    
 		JLabel jlbl_trennung = new JLabel();
-		jlbl_trennung.setBorder(BorderFactory.createLineBorder(
-		       ViewSettings.CLR_BACKGROUND_DARK_X));
+		jlbl_trennung.setBorder(
+                BorderFactory.createLineBorder(
+                        ViewSettings.CLR_BACKGROUND_DARK_XX));
 		jlbl_trennung.setBounds(_x, _y, 1, number);
 		super.add(jlbl_trennung);
 		

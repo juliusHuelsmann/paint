@@ -131,14 +131,14 @@ public final class CPaintStatus implements MouseListener {
                         Paint.getInstance().getIt_stift1()
                         .getTb_open().getActionCause())) {
             
-            return Constants.CONTROL_PATINING_INDEX_PAINT_1;
+            return Constants.CONTROL_PAINTING_INDEX_PAINT_1;
         
         } else if (_event.getSource().equals(Paint.getInstance()
                 .getJbtn_color2().getActionCause()) || _event.getSource()
                 .equals(Paint.getInstance().getIt_stift2()
                         .getTb_open().getActionCause())) {
 
-            return Constants.CONTROL_PATINING_INDEX_PAINT_2;
+            return Constants.CONTROL_PAINTING_INDEX_PAINT_2;
             
         } else if (_event.getSource().equals(Paint.getInstance()
                 .getIt_selection().getTb_open().getActionCause())) {
@@ -232,7 +232,7 @@ public final class CPaintStatus implements MouseListener {
                     Paint.getInstance().getJbtn_colors()[j])) {
                 
                 if (Status.getIndexOperation()
-                        == Constants.CONTROL_PATINING_INDEX_PAINT_1) {
+                        == Constants.CONTROL_PAINTING_INDEX_PAINT_1) {
                     Paint.getInstance().getJbtn_color1().setBackground(
                             Paint.getInstance().getJbtn_colors()[j]
                                     .getBackground());
@@ -240,7 +240,7 @@ public final class CPaintStatus implements MouseListener {
                     Picture.getInstance().changeColor(Paint.getInstance()
                             .getJbtn_colors()[j].getBackground());
                 } else if (Status.getIndexOperation()
-                        == Constants.CONTROL_PATINING_INDEX_PAINT_2) {
+                        == Constants.CONTROL_PAINTING_INDEX_PAINT_2) {
                     Paint.getInstance().getJbtn_color2().setBackground(
                             Paint.getInstance().getJbtn_colors()[j]
                                     .getBackground());
@@ -333,7 +333,7 @@ public final class CPaintStatus implements MouseListener {
                 case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
 //                    Insert.getInstance().getI2_g_line().
                     break;
-                case Constants.CONTROL_PATINING_INDEX_PAINT_1:
+                case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
 
                     //enable buttons
                     Paint.getInstance().getIt_stift1().getTb_open()
@@ -344,7 +344,7 @@ public final class CPaintStatus implements MouseListener {
                     setCursor(Paint.getInstance().getIt_stift1().getImagePath(),
                             "p1");
                     break;
-                case Constants.CONTROL_PATINING_INDEX_PAINT_2:
+                case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
 
                     //enable buttons
                     Paint.getInstance().getIt_stift2().getTb_open()

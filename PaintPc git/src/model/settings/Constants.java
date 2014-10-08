@@ -48,6 +48,11 @@ public final class Constants {
 	        SP_PATH_LEFT = "sb/s/t.png",
 	        SP_PATH_RIGHT = "sb/s/b.png";
 
+    /**
+     * The identifiers for the transparency.
+     */
+    public static final int ID_TRANSPARENCY_WHITE = 0, 
+            ID_TRANSPARENCY_RASTER = 1;
 	/**
 	 * The background constants.
 	 */
@@ -89,8 +94,8 @@ public final class Constants {
 	 * paint1 or paint2, different versions of selection, pipette, fill etc.).
 	 */
 	public static final int 
-	    CONTROL_PATINING_INDEX_PAINT_1 = 0,
-	    CONTROL_PATINING_INDEX_PAINT_2 = 1,
+	    CONTROL_PAINTING_INDEX_PAINT_1 = 0,
+	    CONTROL_PAINTING_INDEX_PAINT_2 = 1,
 	    CONTROL_PAINTING_INDEX_FILL = 2,
 	    CONTROL_PAINTING_INDEX_PIPETTE = 3,
 	    CONTROL_PAINTING_INDEX_SELECTION_CURVE = 4,

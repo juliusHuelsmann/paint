@@ -132,7 +132,7 @@ public final class ControlPainting implements MouseListener,
             
             Picture.getInstance().initializePen(
                     new BallPen(Constants.PEN_ID_POINT, 1, Color.black));
-            Status.setIndexOperation(Constants.CONTROL_PATINING_INDEX_PAINT_1);
+            Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);
             Paint.getInstance().getTb_color1().setActivated(true);
             Paint.getInstance().getIt_stift1().getTb_open().setActivated(true);
             
@@ -268,8 +268,8 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
-            case Constants.CONTROL_PATINING_INDEX_PAINT_2:
-            case Constants.CONTROL_PATINING_INDEX_PAINT_1:
+            case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
+            case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
 
                 // set currently selected pen. Differs if
                 if (_event.getButton() == MouseEvent.BUTTON1) {
@@ -385,8 +385,8 @@ public final class ControlPainting implements MouseListener,
             // it is not important for mousePressed whether
             // clicked right or left because the currently
             // selected pen is set in mousePressed
-            case Constants.CONTROL_PATINING_INDEX_PAINT_2:
-            case Constants.CONTROL_PATINING_INDEX_PAINT_1:
+            case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
+            case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
 
                 Picture.getInstance().changePaintObject(
                         new DPoint((_event.getX() - Page.getInstance()
@@ -561,25 +561,25 @@ public final class ControlPainting implements MouseListener,
                         .setLocation((oldLocation.x) / 2, (oldLocation.y) / 2);
 
                 Status.setImageShowSize(new Dimension(newWidth, newHeight));
+
+                Page.getInstance().releaseSelected();
                 Page.getInstance().flip(Status.isNormalRotation());
                 Page.getInstance().refrehsSps();
                 
-                Page.getInstance().releaseSelected();
                 Picture.getInstance().releaseSelected();
+                updateResizeLocation();
             } else {
                 Message.showMessage(Message.MESSAGE_ID_INFO, 
                         "max zoom out reached");
+                updateResizeLocation();
             }
 
             // TODO: hier die location aktualisieren.
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_copy().getActionCause())) {
-
-            
             MyClipboard.getInstance().copyPaintObjects(
                     Picture.getInstance().getLs_poSelected(), 
                     Picture.getInstance().paintSelectedBI());
-
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_paste().getActionCause())) {
 
@@ -708,9 +708,9 @@ public final class ControlPainting implements MouseListener,
         case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
         case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
         case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
-        case Constants.CONTROL_PATINING_INDEX_PAINT_2:
+        case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
         case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
-        case Constants.CONTROL_PATINING_INDEX_PAINT_1:
+        case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
             if (_event.getButton() == 1) {
                 // write the current working picture into the global picture.
                 Picture.getInstance().finish();
@@ -794,6 +794,7 @@ public final class ControlPainting implements MouseListener,
 
             if (_event.getButton() == 1) {
                 mr_zoom(_event);
+                updateResizeLocation();
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_PIPETTE:
@@ -898,27 +899,49 @@ public final class ControlPainting implements MouseListener,
             return;
         }
 
-        if (Status.getIndexOperation() 
-                == Constants.CONTROL_PAINTING_INDEX_ZOOM_IN) {
+        if (_event.getSource().equals(Page.getInstance().getJlbl_painting())) {
 
-            // save x and y location
-            int xLocation = _event.getX() - ViewSettings.ZOOM_SIZE.width / 2;
-            int yLocation = _event.getY() - ViewSettings.ZOOM_SIZE.height / 2;
+            switch (Status.getIndexOperation()) {
+            
+            case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
 
-            // check whether values are in range
+                // save x and y location
+                int xLocation = 
+                _event.getX() - ViewSettings.ZOOM_SIZE.width / 2;
+                int yLocation = 
+                        _event.getY() - ViewSettings.ZOOM_SIZE.height / 2;
 
-            // not smaller than zero
-            xLocation = Math.max(0, xLocation);
-            yLocation = Math.max(0, yLocation);
+                // check whether values are in range
 
-            // not greater than the entire shown image - the width of zoom
-            xLocation = Math.min(Status.getImageShowSize().width
-                    - ViewSettings.ZOOM_SIZE.width, xLocation);
-            yLocation = Math.min(Status.getImageShowSize().height
-                    - ViewSettings.ZOOM_SIZE.height, yLocation);
+                // not smaller than zero
+                xLocation = Math.max(0, xLocation);
+                yLocation = Math.max(0, yLocation);
 
-            // apply new location
-            Zoom.getInstance().setLocation(xLocation, yLocation);
+                // not greater than the entire shown image - the width of zoom
+                xLocation = Math.min(Status.getImageShowSize().width
+                        - ViewSettings.ZOOM_SIZE.width, xLocation);
+                yLocation = Math.min(Status.getImageShowSize().height
+                        - ViewSettings.ZOOM_SIZE.height, yLocation);
+
+                // apply new location
+                Zoom.getInstance().setLocation(xLocation, yLocation);
+                break;
+
+            case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
+            case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
+            case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
+                Picture.getInstance().getPen_current().preprint(
+                        _event.getX(), _event.getY());
+            default:
+                
+                break;
+            }
+                 
         }
     }
 
@@ -1361,6 +1384,28 @@ public final class ControlPainting implements MouseListener,
                 }
             }
         };
+    }
+    
+    
+    /**
+     * Update the location of the JButtons for resizing. Thus the user is
+     * able to resize the whole image.
+     */
+    private void updateResizeLocation() {
+
+        //the width and the height
+        int w = Status.getImageShowSize().width;
+        int h = Status.getImageShowSize().height;
+
+        //set location
+        Page.getInstance().getJbtn_resize()[1][2].setLocation(w, h / 2);
+        Page.getInstance().getJbtn_resize()[2][2].setLocation(w, h);
+        Page.getInstance().getJbtn_resize()[2][1].setLocation(w / 2, h);
+        
+        //set visible
+        Page.getInstance().getJbtn_resize()[1][2].setVisible(true);
+        Page.getInstance().getJbtn_resize()[2][2].setVisible(true);
+        Page.getInstance().getJbtn_resize()[2][1].setVisible(true);
     }
     
     /**

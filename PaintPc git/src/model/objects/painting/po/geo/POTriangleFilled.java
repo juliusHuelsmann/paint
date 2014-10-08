@@ -3,6 +3,7 @@ package model.objects.painting.po.geo;
 
 //import declarations
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -146,15 +147,9 @@ public class POTriangleFilled extends PaintObjectPen {
                 pnt_last, new DPoint(pnt_first.getX(), pnt_last.getY()),
                 _bi, _final, _g, new DPoint(_x, _y));
         
-        Dimension _finalSize = new Dimension(0, (int)pnt_last.getY());
-        
-        if (pnt_last.getY() > pnt_first.getY()) {
-        } else {
-            
-        }
-        
+        Point finalSize = new Point(0, (int) pnt_last.getY());
         paintLineIntegral(pnt_first, pnt_last, _bi, _final, _g, 
-                new DPoint(_x, _y), _finalSize);
+                new DPoint(_x, _y), finalSize);
         return _bi;
     }
     
@@ -179,7 +174,7 @@ public class POTriangleFilled extends PaintObjectPen {
     public final void paintLineIntegral(final DPoint _p1, final DPoint _p2, 
             final BufferedImage _bi, final boolean _final, 
             final BufferedImage _g, final DPoint _pnt_shift, 
-            final Dimension _finalSize) {
+            final Point _finalSize) {
 
         //compute delta values
         int dX = (int) (_p1.getX() - _p2.getX());
@@ -190,19 +185,19 @@ public class POTriangleFilled extends PaintObjectPen {
             int plusX = a * dX /  Math.max(Math.abs(dX), Math.abs(dY));
             int plusY = a * dY /  Math.max(Math.abs(dX), Math.abs(dY));
             
-            if (_finalSize.width == 0) {
+            if (_finalSize.x == 0) {
 
                 getPen().paintLine(
                         new DPoint(_p1.getX() - plusX, 
                                 _p1.getY() - plusY), 
                         new DPoint(_p1.getX() - plusX, 
-                                _finalSize.height),
+                                _finalSize.y),
                         _bi, _final, _g, _pnt_shift);
             } else {
                 getPen().paintLine(
                         new DPoint(_p1.getX() - plusX, 
                                 _p1.getY() - plusY), 
-                        new DPoint(_finalSize.height, 
+                        new DPoint(_finalSize.y, 
                                 _p1.getY() - plusY), 
                         _bi, _final, _g, _pnt_shift);
             }

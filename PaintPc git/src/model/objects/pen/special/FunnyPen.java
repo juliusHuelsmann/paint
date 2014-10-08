@@ -40,7 +40,7 @@ public class FunnyPen extends Pen {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override public final void paintPoint(final DPoint _p, 
+	@Override protected final void paintPoint(final DPoint _p, 
 	        final BufferedImage _bi, final boolean _final, 
 	        final DPoint _pnt_shift, final BufferedImage _g) {
 

@@ -56,6 +56,13 @@ public class CSelection implements MouseMotionListener, MouseListener {
      */
     private Rectangle r_selection;
     
+    
+    /**
+     * Whether the whole image is selected or it is just a selection of several
+     * PaintObjects.
+     */
+    private boolean wholeImageSelected = false;
+    
     /**
      * Constructor: initialize DPoint array.
      */
@@ -88,9 +95,18 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
                 for (int y = 0; y < pnt_startLocationButton.length; y++) {
                      
-                    Page.getInstance().getJbtn_resize()[x][y].setLocation(
-                            (int) pnt_startLocationButton[x][y].getX() + dX,
-                            (int) pnt_startLocationButton[x][y].getY() + dY);
+                    if ((x == 2 && y == 2)
+                            || (x == 2 && y == 1)
+                            || (x == 1 && y == 2)
+                            || (x == 0 && y == 2)
+                            || !wholeImageSelected) {
+
+                        Page.getInstance().getJbtn_resize()[x][y].setLocation(
+                                (int) pnt_startLocationButton[x][y].getX() 
+                                + dX,
+                                (int) pnt_startLocationButton[x][y].getY() 
+                                + dY);
+                    }
 
                 }
             }
@@ -135,7 +151,14 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
     @Override public final void mousePressed(final MouseEvent _event) {
         pnt_start = new DPoint(_event.getLocationOnScreen());
-        pnt_rSelectionStart = new DPoint(r_selection.getLocation());
+        
+        //nothing selected means resize whole image
+        if (r_selection == null) {
+            wholeImageSelected = true;
+        } else {
+            wholeImageSelected = false;
+            pnt_rSelectionStart = new DPoint(r_selection.getLocation());
+        }
         pnt_startLocationLabel = new DPoint(
                 Page.getInstance().getJlbl_selectionBG().getLocation());
 
@@ -183,12 +206,20 @@ public class CSelection implements MouseMotionListener, MouseListener {
             
         } else {
 
-            Picture.getInstance().getLs_poSelected().toFirst();
+            if (!wholeImageSelected) {
+
+                Picture.getInstance().getLs_poSelected().toFirst();
+            }
             
             //fetch DPoints from which the vectory may start
 
             if (_event.getSource() instanceof JButton) {
-                mr_stretchImage(_event);
+                if (wholeImageSelected) {
+                    mr_stretchPicture(_event);
+                } else {
+
+                    mr_stretchImage(_event);
+                }
             } else {
                 Status.getLogger().warning("Wrong action source? "
                         + "This warning should never occure.");
@@ -222,6 +253,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
             distanceXY2 = distanceY;
         }
         
+            
         if (_event.getSource().equals(j[0][0])) {
             //items at the same edges.
             j[0][0].setLocation((int) (p[0][0].getX() + distanceXY), 
@@ -283,9 +315,13 @@ public class CSelection implements MouseMotionListener, MouseListener {
             j[1][2].setLocation((int) (j[2][2].getX() - (j[2][2].getX()
                     - j[0][2].getX()) / 2), j[0][2].getY());
             j[2][2].setLocation((int) (p[2][2].getX()), j[0][2].getY());
-            j[0][0].setLocation((int) (j[0][2].getX()), (int) (p[0][0].getY()));
-            j[0][1].setLocation(j[0][2].getX(), j[0][2].getY()
-                    + (j[0][0].getY() - j[0][2].getY()) / 2);
+
+            if (!wholeImageSelected) {
+                j[0][0].setLocation((int) (j[0][2].getX()), 
+                        (int) (p[0][0].getY()));
+                j[0][1].setLocation(j[0][2].getX(), j[0][2].getY()
+                        + (j[0][0].getY() - j[0][2].getY()) / 2);
+            }
             
             
         } else if (_event.getSource().equals(j[2][1])) {
@@ -330,18 +366,25 @@ public class CSelection implements MouseMotionListener, MouseListener {
         }
 
         //center the buttons
-        j[1][0].setLocation(j[0][0].getX() + (j[2][0].getX() 
-                - j[0][0].getX()) / 2,  j[1][0].getY());
-        j[0][1].setLocation(j[0][1].getX(), j[0][0].getY() 
-                + (j[0][2].getY() - j[0][0].getY()) / 2);
+
+        if (!wholeImageSelected) {
+                
+            j[1][0].setLocation(j[0][0].getX() + (j[2][0].getX() 
+                    - j[0][0].getX()) / 2,  j[1][0].getY());
+            j[0][1].setLocation(j[0][1].getX(), j[0][0].getY() 
+                    + (j[0][2].getY() - j[0][0].getY()) / 2);
+
+        }
         j[1][2].setLocation(j[0][0].getX() + (j[2][0].getX() 
                 - j[0][0].getX()) / 2,  j[1][2].getY());
         j[2][1].setLocation(j[2][1].getX(), j[0][0].getY() 
                 + (j[0][2].getY() - j[0][0].getY()) / 2);
         
-        
-        j[1][1].setLocation(j[1][0].getX() + size - sizeButton, 
-                j[0][1].getY() + size - sizeButton);
+
+        if (!wholeImageSelected) {
+            j[1][1].setLocation(j[1][0].getX() + size - sizeButton, 
+                    j[0][1].getY() + size - sizeButton);
+        }
 
         Page.getInstance().getJlbl_border().setBounds(j[0][0].getX() + size,
                 j[0][0].getY() + size, j[2][0].getX() - j[0][0].getX(),
@@ -352,6 +395,14 @@ public class CSelection implements MouseMotionListener, MouseListener {
     
     }
     
+
+    /**
+     * Method for stretching the whole picture.
+     * @param _event the passed MouseEvent
+     */
+    private void mr_stretchPicture(final MouseEvent _event){
+        
+    }
 
     /**
      * Method for stretching image.

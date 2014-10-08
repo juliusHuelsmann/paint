@@ -1398,9 +1398,9 @@ public final class ControlPainting implements MouseListener,
         int h = Status.getImageShowSize().height;
 
         //set location
-        Page.getInstance().getJbtn_resize()[1][2].setLocation(w, h / 2);
+        Page.getInstance().getJbtn_resize()[2][1].setLocation(w, h / 2);
         Page.getInstance().getJbtn_resize()[2][2].setLocation(w, h);
-        Page.getInstance().getJbtn_resize()[2][1].setLocation(w / 2, h);
+        Page.getInstance().getJbtn_resize()[1][2].setLocation(w / 2, h);
         
         //set visible
         Page.getInstance().getJbtn_resize()[1][2].setVisible(true);

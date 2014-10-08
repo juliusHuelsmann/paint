@@ -154,42 +154,6 @@ public class POTriangleFilled extends POInsertion {
         }
     }
     
-    
-    /**
-     * check whether line selected.
-     * Has to work JUST LIKE the corresponding paint method paintLine!
-     * No matter, if it is penMath...
-     * 
-     * @see Pen.paintLine(...)
-     * 
-     * @param _p1 the first DPoint
-     * @param _p2 the secondDPoint
-     * @param _r the rectangle
-     * 
-     * @return true or false
-     */
-    private boolean pruefeLine(final DPoint _p1, final DPoint _p2, 
-            final Rectangle _r) {
-
-        //compute delta values
-        int dX = (int) (_p1.getX() - _p2.getX());
-        int dY = (int) (_p1.getY() - _p2.getY());
-
-        //print the line between the twoDPoints
-        for (int a = 0; a < Math.max(Math.abs(dX), Math.abs(dY)); a++) {
-            int plusX = a * dX /  Math.max(Math.abs(dX), Math.abs(dY));
-            int plusY = a * dY /  Math.max(Math.abs(dX), Math.abs(dY));
-            
-
-            if (isInSelectionPoint(_r, 
-                    new DPoint(_p1.getX() - plusX, _p1.getY() - plusY))) {
-                return true;
-            }
-            
-        }
-        
-        return false;
-    }
 
     /**
      * {@inheritDoc}

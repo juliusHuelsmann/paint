@@ -203,7 +203,7 @@ public abstract class POInsertion extends PaintObjectPen {
      * 
      * @return true or false
      */
-    private boolean pruefeLine(final DPoint _p1, final DPoint _p2, 
+    public final boolean pruefeLine(final DPoint _p1, final DPoint _p2, 
             final Rectangle _r) {
 
         //compute delta values

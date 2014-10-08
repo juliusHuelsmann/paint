@@ -25,6 +25,7 @@ import view.forms.Message;
 import view.forms.Page;
 import view.forms.tabs.Insert;
 import model.objects.PictureOverview;
+import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
 import model.objects.painting.po.PaintObjectPen;
@@ -397,7 +398,6 @@ public final class Picture {
      * @param _y the y coordinate
      * @param _width the width 
      * @param _height the height
-     * @param _graphics the graphics
      * 
      * @param _bi the BufferedImage
      * @param _final whether to paint finally to BufferedImage or not.
@@ -539,75 +539,16 @@ public final class Picture {
 	                }
 	            }
 	        }
-		} else if (po_current instanceof POLine) {
+		} else if (po_current instanceof POInsertion) {
 
-            POLine pow = (POLine) po_current;
+		    POInsertion pow = (POInsertion) po_current;
             if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
                 Page.getInstance().getJlbl_painting().refreshPaint();
             }
             
             po_current.addPoint(_pnt);
-        } else if (po_current instanceof PORectangle) {
+        } 
 
-            PORectangle pow = (PORectangle) po_current;
-            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
-            }
-            
-            po_current.addPoint(_pnt);
-        } else if (po_current instanceof PODiagramm) {
-
-            PODiagramm pow = (PODiagramm) po_current;
-            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
-            }
-            
-            po_current.addPoint(_pnt);
-        } else if (po_current instanceof POCurve) {
-
-            POCurve pow = (POCurve) po_current;
-            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
-            }
-            
-            po_current.addPoint(_pnt);
-        } else if (po_current instanceof POArch) {
-
-            POArch pow = (POArch) po_current;
-            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
-            }
-            
-            po_current.addPoint(_pnt);
-        } else if (po_current instanceof POArchFilled) {
-
-            POArchFilled pow = (POArchFilled) po_current;
-            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
-            }
-            po_current.addPoint(_pnt);
-        } else if (po_current instanceof POTriangle) {
-
-            POTriangle pow = (POTriangle) po_current;
-            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
-            }
-            po_current.addPoint(_pnt);
-        } else if (po_current instanceof POTriangleFilled) {
-
-            POTriangleFilled pow = (POTriangleFilled) po_current;
-            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
-            }
-            po_current.addPoint(_pnt);
-        } else if (po_current instanceof PoRectangleFilled) {
-
-            PoRectangleFilled pow = (PoRectangleFilled) po_current;
-            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
-            }
-            po_current.addPoint(_pnt);
-        }
         
         if (pen_current instanceof PenSelection) {
 

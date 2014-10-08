@@ -3,6 +3,7 @@ package model.objects.painting;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -12,16 +13,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Observable;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 import control.CSelection;
 import control.tabs.CTabSelection;
 import view.View;
-import view.ViewVorschau;
 import view.forms.Message;
 import view.forms.Page;
 import view.forms.tabs.Insert;
@@ -47,11 +44,16 @@ import model.util.DPoint;
 import model.util.list.List;
 
 /**
+ * Picture class which contains all the not selected and selected painted items 
+ * contained in two lists of PaintObjects. 
+ * 
+ * It handles the creation, changing and removing of PaintObjects, 
+ * selection methods, 
  * 
  * @author Julius Huelsmann
- *
+ * @version %I%, %U%
  */
-public final class Picture extends Observable {
+public final class Picture {
 	
 	/**
 	 * the only instance of this class.
@@ -63,14 +65,6 @@ public final class Picture extends Observable {
 	 */
 	private List<PaintObject> ls_po_sortedByX, ls_poSelected;
 
-	/**
-	 * buffered image with dimension of imageSize. not resized if the user 
-	 * zooms in or out, exists just for the purpose of being able to handle
-	 * actions like PIPETTE or FILL. It is possible to save this BufferedImage
-	 * at save operation directly to hard drive.
-	 */
-	private BufferedImage bi_normalSize;
-	
 	/**
 	 * current PaintObject which can be altered.
 	 */
@@ -97,9 +91,6 @@ public final class Picture extends Observable {
 	private void initialize() {
 
 	    reload();
-	    
-        //add observer which prints preview.
-        super.addObserver(ViewVorschau.getInstance());
 	}
 	
 	
@@ -108,10 +99,6 @@ public final class Picture extends Observable {
 	 */
 	public void reload() {
 
-	    //initializes the image with current width and height specified
-	    //in status
-	    refreshImage();
-
         //initialize both lists ordered by 
         this.ls_po_sortedByX = new List<PaintObject>();
         
@@ -119,26 +106,7 @@ public final class Picture extends Observable {
         this.currentId = 0;
         
 	}
-	
-	
-	/**
-	 * Reloads the image after resize operation.
-	 */
-	public void refreshImage() {
 
-        //initialize the BufferedImage
-        bi_normalSize = new BufferedImage(Status.getImageSize().width, 
-                Status.getImageSize().height, BufferedImage.TYPE_INT_ARGB);
-        
-        //initialize with colors.
-        for (int x = 0; x < bi_normalSize.getWidth(); x++) {
-            for (int y = 0; y < bi_normalSize.getHeight(); y++) {
-                bi_normalSize.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
-            }
-        }
-
-	}
-	
 	/**
      * Method for creating a new PaintObjectImage which is not directly added
      * to a list but returned to the demanding method.
@@ -310,37 +278,6 @@ public final class Picture extends Observable {
         
     }
 	
-	
-	/**
-	 * repaint a rectangle. For selection purpose.
-	 * @param _r the rectangle
-	 */
-	public void repaintRectangle(final Rectangle _r) {
-        
-        //set rectangle alpha
-        for (int x = _r.x; x < _r.width + _r.x; x++) {
-            for (int y = _r.y; y < _r.height + _r.y; y++) {
-                
-                if (x >= 0 && x < bi_normalSize.getWidth()
-                        && y >= 0 && y < bi_normalSize.getHeight()) {
-                    bi_normalSize.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
-                }
-            }
-        }
-    }
-	
-	/**
-	 * clear.
-	 */
-    public void clear() {
-        
-        //set rectangle alpha
-        for (int x = 0; x < bi_normalSize.getWidth(); x++) {
-            for (int y = 0; y < bi_normalSize.getHeight(); y++) {
-                bi_normalSize.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
-            }
-        }
-    }
     
     
     
@@ -385,8 +322,7 @@ public final class Picture extends Observable {
         Page.getInstance().getJlbl_painting().repaint();
 
       
-        ret =  repaintRectangle(_x, _y, _width, _height, 
-                _graphicX, _graphiY, ret);
+        ret =  repaintRectangle(_x, _y, _width, _height, ret, false);
         
         return ret;
     }
@@ -446,16 +382,16 @@ public final class Picture extends Observable {
      * @param _y the y coordinate
      * @param _width the width 
      * @param _height the height
-     * @param _graphicX the graphics x
-     * @param _graphiY the graphics y.
+     * @param _graphics the graphics
      * 
      * @param _bi the BufferedImage
+     * @param _final whether to paint finally to BufferedImage or not.
      * @return the graphics
      */
     public synchronized BufferedImage repaintRectangle(final int _x,
             final int _y, final int _width, final int _height,
-            final int _graphicX, final int _graphiY,
-            final BufferedImage _bi) {
+            final BufferedImage _bi,
+            final boolean _final) {
 
         //alle die in Frage kommen neu laden.
         if (ls_po_sortedByX == null
@@ -491,12 +427,25 @@ public final class Picture extends Observable {
                                     .getJlbl_painting().getHeight())) {
 
                         //paint the object.
-                        ls_po_sortedByX.getItem().paint(
-                                bi_normalSize, false, _bi,
-                                Page.getInstance().getJlbl_painting()
-                                .getLocation().x,
-                                Page.getInstance().getJlbl_painting()
-                                .getLocation().y);
+                        if (_final) {
+
+                            ls_po_sortedByX.getItem().paint(
+                                    _bi, _final, 
+                                    Page.getInstance().getJlbl_painting()
+                                    .getBi(),
+                                    Page.getInstance().getJlbl_painting()
+                                    .getLocation().x,
+                                    Page.getInstance().getJlbl_painting()
+                                    .getLocation().y);
+                        } else {
+
+                            ls_po_sortedByX.getItem().paint(
+                                    _bi, _final, _bi,
+                                    Page.getInstance().getJlbl_painting()
+                                    .getLocation().x,
+                                    Page.getInstance().getJlbl_painting()
+                                    .getLocation().y);
+                        }
                     }
                 } else {
                     behindRectangle = true; 
@@ -515,8 +464,8 @@ public final class Picture extends Observable {
       
 
       //notify preview-observer
-      setChanged();
-      notifyObservers(bi_normalSize);
+//      setChanged();
+//      notifyObservers(bi_normalSize);
       
       
       return _bi;
@@ -541,8 +490,10 @@ public final class Picture extends Observable {
 			
 			System.exit(1);
 		}
-		if (_pnt.getX() > bi_normalSize.getWidth() || _pnt.getX() < 0 
-				|| _pnt.getY() > bi_normalSize.getHeight() || _pnt.getY() < 0) {
+		if (_pnt.getX() > Status.getImageSize().getWidth() 
+		        || _pnt.getX() < 0 
+				|| _pnt.getY() > Status.getImageSize().getHeight()
+				|| _pnt.getY() < 0) {
 			return;
 		}
 
@@ -628,7 +579,7 @@ public final class Picture extends Observable {
         
         if (pen_current instanceof PenSelection) {
 
-            BufferedImage bi_transformed = Page.getInstance().getEmptyBI();
+            BufferedImage bi_transformed = Page.getInstance().getEmptyBISelection();
             bi_transformed = po_current.paint(bi_transformed, false, 
                     bi_transformed, 
                     Page.getInstance().getJlbl_painting().getLocation().x, 
@@ -722,9 +673,9 @@ public final class Picture extends Observable {
 		//reset current instance of PaintObject
 		po_current = null;
 
-		//notify preview-observer
-        setChanged();
-        notifyObservers(bi_normalSize);
+//		//notify preview-observer
+//        setChanged();
+//        notifyObservers(bi_normalSize);
         
         if (!(pen_current instanceof PenSelection)) {
 
@@ -870,8 +821,20 @@ public final class Picture extends Observable {
      * @param _wsLoc the path of the location.
      */
     public void savePNG(final String _wsLoc) {
+        
+        BufferedImage bi;
+        bi = Page.getInstance().getEmptyBI();
+        bi = repaintRectangle(
+                -Page.getInstance().getJlbl_painting().getLocation().x + 0, 
+                -Page.getInstance().getJlbl_painting().getLocation().y + 0, 
+                Status.getImageSize().width, Status.getImageSize().height, 
+                bi, true);
+                
+                
+        
+        
         try {
-            ImageIO.write(bi_normalSize, "png", new File(_wsLoc));
+            ImageIO.write(bi, "png", new File(_wsLoc));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -926,12 +889,14 @@ public final class Picture extends Observable {
 	/**
 	 * darken image.
 	 */
-	public void darken() {
-		for (int i = 0; i < bi_normalSize.getWidth(); i++) {
-			for (int j = 0; j < bi_normalSize.getHeight(); j++) {
+	public void darken(PaintObjectImage _poi) {
+
+        BufferedImage bi_snapshot = _poi.getSnapshot();
+		for (int i = 0; i < bi_snapshot.getWidth(); i++) {
+			for (int j = 0; j < bi_snapshot.getHeight(); j++) {
 				
 				final int minus = 30;
-				Color c = new Color(bi_normalSize.getRGB(i, j));
+				Color c = new Color(bi_snapshot.getRGB(i, j));
 				int red = c.getRed() - minus;
 				int blue =  c.getBlue() -  minus;
 				int green =  c.getGreen() - minus;
@@ -946,7 +911,7 @@ public final class Picture extends Observable {
 					blue = 0;
 				}
 				
-				bi_normalSize.setRGB(i, j, 
+				bi_snapshot.setRGB(i, j, 
 				        new Color(red, green, blue).getRGB());
 			}
 		}
@@ -956,11 +921,13 @@ public final class Picture extends Observable {
 	/**
 	 * transform white to alpha.
 	 */
-	public void transformToAlpha() {
-		for (int i = 0; i < bi_normalSize.getWidth(); i++) {
-			for (int j = 0; j < bi_normalSize.getHeight(); j++) {
+	public void transformToAlpha(PaintObjectImage _poi) {
+
+        BufferedImage bi_snapshot = _poi.getSnapshot();
+		for (int i = 0; i < bi_snapshot.getWidth(); i++) {
+			for (int j = 0; j < bi_snapshot.getHeight(); j++) {
 				
-				Color c = new Color(bi_normalSize.getRGB(i, j));
+				Color c = new Color(bi_snapshot.getRGB(i, j));
 			
 				int red = c.getRed();
 				int blue =  c.getBlue();
@@ -990,7 +957,7 @@ public final class Picture extends Observable {
 					blue = maxRGB;
 				}
 				
-				bi_normalSize.setRGB(i, j, new Color(
+				bi_snapshot.setRGB(i, j, new Color(
 				        red, green, blue, gesamt).getRGB());
 			}
 		}
@@ -998,13 +965,34 @@ public final class Picture extends Observable {
 	
 	
 	/**
+	 * Transform all PaintObjectImages to alpha.
+	 */
+	public void transformWhiteToAlpha() {
+	    
+	    if (ls_po_sortedByX != null) {
+
+	        ls_po_sortedByX.toFirst();
+	        while (!ls_po_sortedByX.isBehind() && !ls_po_sortedByX.isEmpty()) {
+	            
+	            if (ls_po_sortedByX.getItem() instanceof PaintObjectImage) {
+	                whiteToAlpha((PaintObjectImage) ls_po_sortedByX.getItem());
+	            }
+	            ls_po_sortedByX.next();
+	        }
+	    }
+	}
+	
+	/**
 	 * transform white pixel to alpha pixel.
 	 */
-	public void whiteToAlpha() {
-		for (int i = 0; i < bi_normalSize.getWidth(); i++) {
-			for (int j = 0; j < bi_normalSize.getHeight(); j++) {
+	private void whiteToAlpha(final PaintObjectImage _poi) {
+	    
+	    BufferedImage bi_snapshot = _poi.getSnapshot();
+	    
+		for (int i = 0; i < bi_snapshot.getWidth(); i++) {
+			for (int j = 0; j < bi_snapshot.getHeight(); j++) {
 				
-				Color c = new Color(bi_normalSize.getRGB(i, j));
+				Color c = new Color(bi_snapshot.getRGB(i, j));
 			
 				int red = c.getRed();
 				int blue =  c.getBlue();
@@ -1019,7 +1007,7 @@ public final class Picture extends Observable {
 					alpha = maxAlpha;
 				}
 				
-				bi_normalSize.setRGB(i, j, new Color(
+				bi_snapshot.setRGB(i, j, new Color(
 				        red, green, blue, alpha).getRGB());
 			}
 		}
@@ -1029,12 +1017,14 @@ public final class Picture extends Observable {
 	/**
 	 * transform image to gray image.
 	 */
-	public void blackWhite() {
+	public void blackWhite(PaintObjectImage _poi) {
 
-		for (int i = 0; i < bi_normalSize.getWidth(); i++) {
-			for (int j = 0; j < bi_normalSize.getHeight(); j++) {
+        BufferedImage bi_snapshot = _poi.getSnapshot();
+        
+		for (int i = 0; i < bi_snapshot.getWidth(); i++) {
+			for (int j = 0; j < bi_snapshot.getHeight(); j++) {
 				
-				Color c = new Color(bi_normalSize.getRGB(i, j));
+				Color c = new Color(bi_snapshot.getRGB(i, j));
 			
 				int red = c.getRed();
 				int blue =  c.getBlue();
@@ -1043,7 +1033,7 @@ public final class Picture extends Observable {
 				
 				int gesamt = (red + green + blue) / (2 + 1);
 				
-				bi_normalSize.setRGB(i, j, new Color(
+				bi_snapshot.setRGB(i, j, new Color(
 				        gesamt, gesamt, gesamt).getRGB());
 			}
 		}
@@ -1185,8 +1175,8 @@ public final class Picture extends Observable {
 	public boolean paintSelected() {
 
 	    Page.getInstance().getJlbl_selectionPainting().setLocation(0, 0);
-        BufferedImage verbufft = Page.getInstance().getEmptyBI();
-        BufferedImage verbufft2 = Page.getInstance().getEmptyBI();
+        BufferedImage verbufft = Page.getInstance().getEmptyBISelection();
+        BufferedImage verbufft2 = Page.getInstance().getEmptyBISelection();
 	    ls_poSelected.toFirst();
 	    Rectangle r_max = null;
         while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
@@ -1249,7 +1239,8 @@ public final class Picture extends Observable {
             realRect.x += Page.getInstance().getJlbl_painting().getLocation().x;
             realRect.y += Page.getInstance().getJlbl_painting().getLocation().y;
             
-            Picture.getInstance().repaintRectangle(realRect);
+            Page.getInstance().getJlbl_painting().refreshRectangle(
+                    realRect.x, realRect.y, realRect.width, realRect.height);
             CSelection.getInstance().setR_selection(realRect,
                     Page.getInstance().getJlbl_painting().getLocation());
             Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
@@ -1275,8 +1266,8 @@ public final class Picture extends Observable {
                 .getY()
                 - Page.getInstance().getJlbl_painting().getLocation().getY());
         
-        BufferedImage verbufft = Page.getInstance().getEmptyBI();
-        BufferedImage verbufft2 = Page.getInstance().getEmptyBI();
+        BufferedImage verbufft = Page.getInstance().getEmptyBISelection();
+        BufferedImage verbufft2 = Page.getInstance().getEmptyBISelection();
         ls_poSelected.toFirst();
         Rectangle r_max = null;
         while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
@@ -1341,7 +1332,8 @@ public final class Picture extends Observable {
             realRect.x += Page.getInstance().getJlbl_painting().getLocation().x;
             realRect.y += Page.getInstance().getJlbl_painting().getLocation().y;
             
-            Picture.getInstance().repaintRectangle(realRect);
+            Page.getInstance().getJlbl_painting().refreshRectangle(
+                    realRect.x, realRect.y, realRect.width, realRect.height);
             CSelection.getInstance().setR_selection(realRect,
                     Page.getInstance().getJlbl_painting().getLocation());
             Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
@@ -1444,13 +1436,21 @@ public final class Picture extends Observable {
 	 * @return the size of the image
 	 */
 	public DPoint load(final String _wsLoc) {
+	    BufferedImage bi_normalSize;
 		try {
 			bi_normalSize = ImageIO.read(new File(_wsLoc));
+			Status.setImageSize(new Dimension(bi_normalSize.getWidth(), 
+                    bi_normalSize.getHeight()));
+			Status.setImageShowSize(new Dimension(bi_normalSize.getWidth(), 
+			        bi_normalSize.getHeight()));
+			
+			createPOI(bi_normalSize);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		return new DPoint(bi_normalSize.getWidth(), bi_normalSize.getHeight());
+		return new DPoint(Status.getImageSize().getWidth(), 
+		        Status.getImageSize().getHeight());
 	}
 	
 	
@@ -1499,20 +1499,6 @@ public final class Picture extends Observable {
      */
     public void setLs_po_sortedByX(final List<PaintObject> _ls_po_sortedByX) {
         this.ls_po_sortedByX = _ls_po_sortedByX;
-    }
-
-    /**
-     * @return the bi_normalSize
-     */
-    public BufferedImage getBi_normalSize() {
-        return bi_normalSize;
-    }
-
-    /**
-     * @param _bi_normalSize the bi_normalSize to set
-     */
-    public void setBi_normalSize(final BufferedImage _bi_normalSize) {
-        this.bi_normalSize = _bi_normalSize;
     }
 
     /**

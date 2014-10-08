@@ -213,7 +213,6 @@ public final class Status {
     public static void setImageSize(final Dimension _imageSize) {
         
         Status.imageSize = _imageSize;
-        Picture.getInstance().refreshImage();
     }
 
     /**

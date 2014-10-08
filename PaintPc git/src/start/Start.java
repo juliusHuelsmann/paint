@@ -44,14 +44,14 @@ public final class Start {
                         && currentFile.getPath().endsWith(".png")) {
                     
                     p.load(currentFile.getPath());
-                    p.whiteToAlpha();
+                    p.transformWhiteToAlpha();
                     Status.getLogger().info(currentFile.getPath());
                     p.savePNG(currentFile.getPath() + "2");
                 } else if (currentFile.isFile()
                         && currentFile.getPath().endsWith(".gif")) {
                     
                     p.load(currentFile.getPath());
-                    p.whiteToAlpha();
+                    p.transformWhiteToAlpha();
                     p.savePNG(currentFile.getPath() + "2");
                 } else {
                     Status.getLogger().info("unknown type");

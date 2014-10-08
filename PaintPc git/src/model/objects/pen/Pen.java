@@ -851,7 +851,7 @@ public abstract class Pen implements Serializable {
                 / Status.getImageShowSize().width;
         final double factorH = 1.0 * Status.getImageSize().height
                 / Status.getImageShowSize().height;
-        BufferedImage bi = Page.getInstance().getEmptyBI();
+        BufferedImage bi = Page.getInstance().getEmptyBISelection();
         paintPoint(new DPoint(_x * factorW, _y * factorH), bi, false, 
                 new DPoint(0, 0),
                 bi);

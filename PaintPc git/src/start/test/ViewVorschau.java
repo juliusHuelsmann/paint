@@ -1,5 +1,5 @@
 //package declaration
-package view;
+package start.test;
 
 //import declarations
 import java.awt.Color;
@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 
 /**
  * singleton view class which shows the painted image.
+ * This observer can be readded to Picture but only for debugging purpose.
  * 
  * @author Julius Huelsmann
  * @version %I%, %U%

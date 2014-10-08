@@ -24,7 +24,7 @@ public class Test {
     public static final void testLoadSomething() {
 
         loadPicture();
-        Picture.getInstance().whiteToAlpha();
+        Picture.getInstance().transformWhiteToAlpha();
         
         Picture.getInstance().savePNG(Settings.getWsLocation() + "/result.png");
     }
@@ -57,7 +57,7 @@ public class Test {
     
         //change size
         Page.getInstance().setSize((int) newSize.getX(), (int) newSize.getY());
-        Picture.getInstance().whiteToAlpha();
+        Picture.getInstance().transformWhiteToAlpha();
         
         Picture.getInstance().savePNG("/home/juli/Arbeitsfläche/output.png");
         
@@ -186,7 +186,6 @@ public class Test {
 
         final int time = 5000;
         
-        _pic.clear();
         _pic.addPaintObjectWrinting();
         _pic.changePaintObject(_p1);
         _pic.changePaintObject(_p2);
@@ -210,7 +209,6 @@ public class Test {
         final int fifety = 50;
         final int twenty = 20;
         
-        _pic.clear();
         _pic.addPaintObjectWrinting();
         _pic.changePaintObject(new DPoint(fifety, fifety * 2 + twenty));
         _pic.changePaintObject(new DPoint(fifety * 2, fifety * (2 + 2)));

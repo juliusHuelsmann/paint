@@ -325,25 +325,44 @@ import control.ControlPainting;
 	}
 	
 	
-	
-	/**
-	 * return fully transparent BufferedImage.
-	 * 
-	 * @return the BufferedImage
-	 */
-	public  BufferedImage getEmptyBI() {
-	    BufferedImage bi = new BufferedImage(jlbl_selectionBG.getWidth(), 
-	            jlbl_selectionBG.getHeight(), BufferedImage.TYPE_INT_ARGB);
-	    
-	    int rgba = new Color(0, 0, 0, 0).getRGB();
-	    for (int x = 0; x < bi.getWidth(); x++) {
-	        for (int y = 0; y < bi.getHeight(); y++) {
-	            bi.setRGB(x, y, rgba);
-	        }
-	    }
-	    
-	    return bi;
-	}
+
+    /**
+     * return fully transparent BufferedImage.
+     * 
+     * @return the BufferedImage
+     */
+    public  BufferedImage getEmptyBISelection() {
+        BufferedImage bi = new BufferedImage(jlbl_selectionBG.getWidth(), 
+                jlbl_selectionBG.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        
+        int rgba = new Color(0, 0, 0, 0).getRGB();
+        for (int x = 0; x < bi.getWidth(); x++) {
+            for (int y = 0; y < bi.getHeight(); y++) {
+                bi.setRGB(x, y, rgba);
+            }
+        }
+        
+        return bi;
+    }
+    /**
+     * return fully transparent BufferedImage.
+     * 
+     * @return the BufferedImage
+     */
+    public  BufferedImage getEmptyBI() {
+        BufferedImage bi = new BufferedImage(
+                Status.getImageSize().width, 
+                Status.getImageSize().height, BufferedImage.TYPE_INT_ARGB);
+        
+        int rgba = new Color(0, 0, 0, 0).getRGB();
+        for (int x = 0; x < bi.getWidth(); x++) {
+            for (int y = 0; y < bi.getHeight(); y++) {
+                bi.setRGB(x, y, rgba);
+            }
+        }
+        
+        return bi;
+    }
 	
 	
 	/**
@@ -363,7 +382,7 @@ import control.ControlPainting;
 	    
 	    jlbl_painting.stopBorderThread();
 	    
-        BufferedImage emptyBI = getEmptyBI();
+        BufferedImage emptyBI = getEmptyBISelection();
         jlbl_selectionBG.setIcon(new ImageIcon(emptyBI));
         jlbl_selectionPainting.setIcon(new ImageIcon(emptyBI));
         jlbl_selectionPainting.repaint();

@@ -100,7 +100,7 @@ public class BorderThread extends Thread {
         final int sleepTimeRectangle = 40;
         final int sleepTimeLine = 400;
         int sleepTime;
-        BufferedImage bi_neutral = Page.getInstance().getEmptyBI();
+        BufferedImage bi_neutral = Page.getInstance().getEmptyBISelection();
         
         //perform border movement 
         while (!isInterrupted()) {
@@ -193,7 +193,7 @@ public class BorderThread extends Thread {
 
 
         //sample code; to be written later.
-        BufferedImage bi_transformed = Page.getInstance().getEmptyBI();
+        BufferedImage bi_transformed = Page.getInstance().getEmptyBISelection();
         bi_transformed = po_curr.paint(bi_transformed, false, 
                 bi_transformed, 
                 Page.getInstance().getJlbl_painting().getLocation().x, 

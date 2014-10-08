@@ -1266,7 +1266,9 @@ public final class ControlPainting implements MouseListener,
         }
         
 
-        Picture.getInstance().repaintRectangle(_r_sizeField);
+        Page.getInstance().getJlbl_painting().refreshRectangle(
+                _r_sizeField.x, _r_sizeField.y, 
+                _r_sizeField.width, _r_sizeField.height);
 
         
         Page.getInstance().getJlbl_painting().paintEntireSelectionRect(

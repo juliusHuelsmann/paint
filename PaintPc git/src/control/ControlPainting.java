@@ -268,6 +268,7 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
 
@@ -365,6 +366,7 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
             case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
@@ -709,6 +711,7 @@ public final class ControlPainting implements MouseListener,
         case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
         case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
         case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
         case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
         case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
             if (_event.getButton() == 1) {
@@ -930,6 +933,7 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
             case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
             case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:

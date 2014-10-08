@@ -13,9 +13,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
 import control.CSelection;
 import control.tabs.CTabSelection;
 import view.View;
@@ -29,6 +31,7 @@ import model.objects.painting.po.PaintObjectPen;
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.painting.po.diag.PODiagramm;
 import model.objects.painting.po.geo.POArch;
+import model.objects.painting.po.geo.POArchFilled;
 import model.objects.painting.po.geo.POCurve;
 import model.objects.painting.po.geo.POLine;
 import model.objects.painting.po.geo.PORectangle;
@@ -216,6 +219,11 @@ public final class Picture {
         case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
             addPaintObject(new POTriangle(currentId, pen_current));
             break;
+
+        case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
+            addPaintObject(new POArchFilled(currentId, pen_current));
+            break;
+            
         case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
             addPaintObject(new POArch(currentId, pen_current));
             break;
@@ -561,6 +569,14 @@ public final class Picture {
         } else if (po_current instanceof POArch) {
 
             POArch pow = (POArch) po_current;
+            if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
+                Page.getInstance().getJlbl_painting().refreshPaint();
+            }
+            
+            po_current.addPoint(_pnt);
+        } else if (po_current instanceof POArchFilled) {
+
+            POArchFilled pow = (POArchFilled) po_current;
             if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
                 Page.getInstance().getJlbl_painting().refreshPaint();
             }

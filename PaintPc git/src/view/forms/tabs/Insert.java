@@ -208,13 +208,13 @@ public final class Insert extends JPanel {
         i2_g_arch.addMouseListener(CPaintStatus.getInstance());
         i2_g_arch.setTitle("arch");
         ia_geo.add(i2_g_arch);
-        i2_g_arch.setIcon("icon/geoForm/arch.png");
+        i2_g_arch.setIcon("icon/geoForm/pfeilopen.png");
 
         i2_g_archFilled = new Item2();
         i2_g_archFilled.addMouseListener(CPaintStatus.getInstance());
         i2_g_archFilled.setTitle("arch filled");
         ia_geo.add(i2_g_archFilled);
-        i2_g_archFilled.setIcon("icon/geoForm/pfeilopen.png");
+        i2_g_archFilled.setIcon("icon/geoForm/arch.png");
 
         i2_g_round = new Item2();
         i2_g_round.addMouseListener(CPaintStatus.getInstance());

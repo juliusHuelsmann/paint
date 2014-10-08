@@ -182,8 +182,7 @@ public class POArchFilled extends PaintObjectPen {
                 pnt_last, pnt_a2, _bi, _final, _g, new DPoint(_x, _y));
         
 
-        final double lengthZwischen = 1;
-//                1.0 / 2;
+        final double lengthZwischen = 1.0 / 2;
         for (int i = 0; i < lengthTotal / lengthZwischen; i++) {
 
             DPoint pnt_a3 = new DPoint(

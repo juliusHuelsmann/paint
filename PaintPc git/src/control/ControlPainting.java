@@ -1391,7 +1391,7 @@ public final class ControlPainting implements MouseListener,
      * Update the location of the JButtons for resizing. Thus the user is
      * able to resize the whole image.
      */
-    private void updateResizeLocation() {
+    public void updateResizeLocation() {
 
         //the width and the height
         int w = Status.getImageShowSize().width;

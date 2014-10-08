@@ -108,6 +108,24 @@ public final class Picture extends Observable {
 	 */
 	public void reload() {
 
+	    //initializes the image with current width and height specified
+	    //in status
+	    refreshImage();
+
+        //initialize both lists ordered by 
+        this.ls_po_sortedByX = new List<PaintObject>();
+        
+        //save current id
+        this.currentId = 0;
+        
+	}
+	
+	
+	/**
+	 * Reloads the image after resize operation.
+	 */
+	public void refreshImage() {
+
         //initialize the BufferedImage
         bi_normalSize = new BufferedImage(Status.getImageSize().width, 
                 Status.getImageSize().height, BufferedImage.TYPE_INT_ARGB);
@@ -119,12 +137,6 @@ public final class Picture extends Observable {
             }
         }
 
-        //initialize both lists ordered by 
-        this.ls_po_sortedByX = new List<PaintObject>();
-        
-        //save current id
-        this.currentId = 0;
-        
 	}
 	
 	/**

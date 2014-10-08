@@ -358,6 +358,8 @@ import control.ControlPainting;
 	            jbtn_resize[i][j].setLocation(-width - 1, -1);
 	        }
 	    }
+	    //method for setting the JButtons to the size of the entire image.
+	    ControlPainting.getInstance().updateResizeLocation();
 	    
 	    jlbl_painting.stopBorderThread();
 	    

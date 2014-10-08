@@ -1,5 +1,6 @@
 package control;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -63,6 +64,17 @@ public class CSelection implements MouseMotionListener, MouseListener {
      */
     private boolean wholeImageSelected = false;
     
+    /*
+     * Whole image selected
+     */
+
+    /**
+     * The oldimage size and the zoom factor (if whole image selected).
+     */
+    private Dimension imageSizeOld, factor;
+    
+    
+    
     /**
      * Constructor: initialize DPoint array.
      */
@@ -116,7 +128,11 @@ public class CSelection implements MouseMotionListener, MouseListener {
             
             Page.getInstance().getJlbl_border().setBounds(r_selection);
         } else {
-            md_buttonLocation(_event);
+            if (wholeImageSelected) {
+                md_buttonLocationWholeImage(_event);
+            } else {
+                md_buttonLocation(_event);
+            }
             
         }
     }
@@ -231,7 +247,70 @@ public class CSelection implements MouseMotionListener, MouseListener {
         pnt_rSelectionStart = null;
     }
     
-    
+
+    /**
+     * Moves the buttons and the selection to the right location.
+     * @param _event the MouseEvent (from mouseDragged)
+     */
+    private void md_buttonLocationWholeImage(final MouseEvent _event) {
+
+        double distanceX = _event.getXOnScreen() - pnt_start.getX();
+        double distanceY = _event.getYOnScreen() - pnt_start.getY();
+        JButton[][] j = Page.getInstance().getJbtn_resize();
+        DPoint[][] p = pnt_startLocationButton;
+        double distanceXY;
+        if ((distanceX) < (distanceY)) {
+            distanceXY = distanceX;
+        } else {
+            distanceXY = distanceY;
+        }
+        
+            
+        
+        //bottom
+        if (_event.getSource().equals(j[1][2])) {
+            j[1][2].setLocation(
+                    (int) (p[1][2].getX()), (int) (p[1][2].getY() + distanceY));
+            j[2][2].setLocation(
+                    (int) (p[2][2].getX()), (int) (p[2][2].getY() + distanceY));
+            
+            
+        } else if (_event.getSource().equals(j[2][1])) {
+          
+            //right
+            j[2][1].setLocation((int) (p[2][1].getX() + distanceX),
+                    (int) (p[2][1].getY()));
+            j[2][2].setLocation((int) (p[2][2].getX() + distanceX), 
+                    (int) (p[2][2].getY()));
+            
+        } else if (_event.getSource().equals(j[2][2])) {
+            //items at the same edges.
+            j[2][2].setLocation(
+                    (int) (p[2][2].getX() + distanceXY), 
+                    (int) (p[2][2].getY() + distanceXY));
+            j[1][2].setLocation((int) (p[1][2].getX()),
+                    (int) (p[1][2].getY() + distanceXY));
+            j[2][1].setLocation((int) (p[2][1].getX() + distanceXY),
+                    (int) (p[2][1].getY()));
+            
+            //center 
+
+            j[1][2].setLocation(j[2][2].getX() / 2,  j[1][2].getY());
+            j[2][1].setLocation(j[2][1].getX(), j[2][2].getY() / 2);
+            
+        } 
+
+        final double mulitplicatorW = 1.0 * Status.getImageShowSize().width 
+                / Status.getImageSize().width;
+
+        final double mulitplicatorH = 1.0 * Status.getImageShowSize().height 
+                / Status.getImageSize().height;
+        
+        Status.setImageSize(_imageSize);
+        Status.setImageShowSize(_imageShowSize);
+
+        
+    }
     
     
     /**
@@ -316,12 +395,9 @@ public class CSelection implements MouseMotionListener, MouseListener {
                     - j[0][2].getX()) / 2), j[0][2].getY());
             j[2][2].setLocation((int) (p[2][2].getX()), j[0][2].getY());
 
-            if (!wholeImageSelected) {
-                j[0][0].setLocation((int) (j[0][2].getX()), 
-                        (int) (p[0][0].getY()));
-                j[0][1].setLocation(j[0][2].getX(), j[0][2].getY()
-                        + (j[0][0].getY() - j[0][2].getY()) / 2);
-            }
+            j[0][0].setLocation((int) (j[0][2].getX()), (int) (p[0][0].getY()));
+            j[0][1].setLocation(j[0][2].getX(), j[0][2].getY()
+                    + (j[0][0].getY() - j[0][2].getY()) / 2);
             
             
         } else if (_event.getSource().equals(j[2][1])) {
@@ -367,14 +443,10 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
         //center the buttons
 
-        if (!wholeImageSelected) {
-                
-            j[1][0].setLocation(j[0][0].getX() + (j[2][0].getX() 
-                    - j[0][0].getX()) / 2,  j[1][0].getY());
-            j[0][1].setLocation(j[0][1].getX(), j[0][0].getY() 
-                    + (j[0][2].getY() - j[0][0].getY()) / 2);
-
-        }
+        j[1][0].setLocation(j[0][0].getX() + (j[2][0].getX() 
+                - j[0][0].getX()) / 2,  j[1][0].getY());
+        j[0][1].setLocation(j[0][1].getX(), j[0][0].getY() 
+                + (j[0][2].getY() - j[0][0].getY()) / 2);
         j[1][2].setLocation(j[0][0].getX() + (j[2][0].getX() 
                 - j[0][0].getX()) / 2,  j[1][2].getY());
         j[2][1].setLocation(j[2][1].getX(), j[0][0].getY() 

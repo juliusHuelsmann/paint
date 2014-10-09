@@ -35,7 +35,7 @@ public final class Insert extends JPanel {
      * ia_geo Item2 menus.
      */
     private Item2 i2_g_line, i2_g_rect, i2_g_rect_round, 
-    i2_g_triangle, i2_g_arch, i2_g_curve,
+    i2_g_triangle, i2_g_arch, i2_g_curve, i2_g_curve2,
     i2_g_round, i2_g_archFilled, i2_g_rectFilled, i2_g_triangleFilled, 
     i2_g_roundFilled, i2_g_rect_roundFilled, i2_d_diagramm;
     
@@ -188,7 +188,7 @@ public final class Insert extends JPanel {
 
         ia_geo = new Item2Menu();
         ia_geo.setLocation(_x , tb_selected.getY());
-        ia_geo.setSize(locationX, itemButtonSize * 2);
+        ia_geo.setSize(locationX, itemButtonSize * (2 + 1));
         ia_geo.setItemsInRow(2 + 2);
         super.add(ia_geo);
 
@@ -204,17 +204,17 @@ public final class Insert extends JPanel {
         ia_geo.add(i2_g_curve);
         i2_g_curve.setIcon("icon/geoForm/curve.png");
 
+        i2_g_curve2 = new Item2();
+        i2_g_curve2.addMouseListener(CPaintStatus.getInstance());
+        i2_g_curve2.setTitle("curve");
+        ia_geo.add(i2_g_curve2);
+        i2_g_curve2.setIcon("icon/geoForm/curve.png");
+
         i2_g_arch = new Item2();
         i2_g_arch.addMouseListener(CPaintStatus.getInstance());
         i2_g_arch.setTitle("arch");
         ia_geo.add(i2_g_arch);
         i2_g_arch.setIcon("icon/geoForm/pfeilopen.png");
-
-        i2_g_archFilled = new Item2();
-        i2_g_archFilled.addMouseListener(CPaintStatus.getInstance());
-        i2_g_archFilled.setTitle("arch filled");
-        ia_geo.add(i2_g_archFilled);
-        i2_g_archFilled.setIcon("icon/geoForm/arch.png");
 
         i2_g_round = new Item2();
         i2_g_round.addMouseListener(CPaintStatus.getInstance());
@@ -263,6 +263,12 @@ public final class Insert extends JPanel {
         i2_g_triangleFilled.setTitle("triangle filled");
         ia_geo.add(i2_g_triangleFilled);
         i2_g_triangleFilled.setIcon("icon/geoForm/triangleFilled.png");
+
+        i2_g_archFilled = new Item2();
+        i2_g_archFilled.addMouseListener(CPaintStatus.getInstance());
+        i2_g_archFilled.setTitle("arch filled");
+        ia_geo.add(i2_g_archFilled);
+        i2_g_archFilled.setIcon("icon/geoForm/arch.png");
 
 	}
 	
@@ -424,12 +430,6 @@ public final class Insert extends JPanel {
         return i2_g_rectFilled;
     }
 
-    /**
-     * @param i2_g_rectFilled the i2_g_rectFilled to set
-     */
-    public void setI2_g_rectFilled(Item2 i2_g_rectFilled) {
-        this.i2_g_rectFilled = i2_g_rectFilled;
-    }
 
     /**
      * @return the i2_g_triangleFilled
@@ -438,12 +438,6 @@ public final class Insert extends JPanel {
         return i2_g_triangleFilled;
     }
 
-    /**
-     * @param i2_g_triangleFilled the i2_g_triangleFilled to set
-     */
-    public void setI2_g_triangleFilled(Item2 i2_g_triangleFilled) {
-        this.i2_g_triangleFilled = i2_g_triangleFilled;
-    }
 
     /**
      * @return the i2_g_roundFilled
@@ -452,12 +446,6 @@ public final class Insert extends JPanel {
         return i2_g_roundFilled;
     }
 
-    /**
-     * @param i2_g_roundFilled the i2_g_roundFilled to set
-     */
-    public void setI2_g_roundFilled(Item2 i2_g_roundFilled) {
-        this.i2_g_roundFilled = i2_g_roundFilled;
-    }
 
     /**
      * @return the i2_g_rect_roundFilled
@@ -467,16 +455,9 @@ public final class Insert extends JPanel {
     }
 
     /**
-     * @param i2_g_rect_roundFilled the i2_g_rect_roundFilled to set
+     * @return the i2_g_curve2
      */
-    public void setI2_g_rect_roundFilled(Item2 i2_g_rect_roundFilled) {
-        this.i2_g_rect_roundFilled = i2_g_rect_roundFilled;
-    }
-
-    /**
-     * @param i2_d_diagramm the i2_d_diagramm to set
-     */
-    public void setI2_d_diagramm(Item2 i2_d_diagramm) {
-        this.i2_d_diagramm = i2_d_diagramm;
+    public Item2 getI2_g_curve2() {
+        return i2_g_curve2;
     }
 }

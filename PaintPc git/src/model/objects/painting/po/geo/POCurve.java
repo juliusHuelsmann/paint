@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.Pen;
 import model.settings.Constants;
+import model.settings.Status;
 import model.util.DPoint;
 
 /**
@@ -42,11 +43,18 @@ public class POCurve extends PaintObjectWriting {
 	 * 
 	 * @param _elementId the id of the element.
 	 * @param _pen the pen which is painted
+	 * @param _casus whether to paint mathematical2 or mathematical3.
 	 */
-	public POCurve(final int _elementId, final Pen _pen) {
+	public POCurve(final int _elementId, final Pen _pen, final int _casus) {
 		
 	    //call super constructor
-	    super(Constants.PEN_ID_MATHS_SILENT, _pen);
+	    super(_casus, _pen);
+
+        if (_casus != Constants.PEN_ID_MATHS_SILENT 
+                && _casus != Constants.PEN_ID_MATHS_SILENT_2) {
+            Status.getLogger().severe("wrong case,.");
+        }
+        
 	    this.ready = true;
 	}
 	
@@ -126,7 +134,6 @@ public class POCurve extends PaintObjectWriting {
                 }
                 
                 if (!found) {
-                    System.out.println("not found.");
                     return;
                 }
                 getPoints().previous();
@@ -149,12 +156,10 @@ public class POCurve extends PaintObjectWriting {
                 getPoints().insertBehind(new DPoint(_pnt));
             }
             
-            System.out.println("insert 1");
             
             ready = false;
         } else {
             getPoints().replace(new DPoint(_pnt));
-            System.out.println("insert replace");
         }
     }
 

@@ -122,8 +122,6 @@ public abstract class Pen implements Serializable {
 		}	
 		
 		
-		System.out.println(Constants.PEN_ID_MATHS_SILENT);
-		System.out.println("ich " + id_operation);
 		//if the painting is not final and id is for mathematics.
 		int tempId_operation = id_operation;
 		if (!_final && id_operation == Constants.PEN_ID_MATHS) {
@@ -148,8 +146,17 @@ public abstract class Pen implements Serializable {
 
         case Constants.PEN_ID_MATHS_SILENT:
 
+            System.out.println("c1");
             operationMaths(
                     ls_point, _bi, _final, _p_start, _g);
+            break;
+
+        case Constants.PEN_ID_MATHS_SILENT_2:
+
+            System.out.println("c2");
+            operationMaths2(
+                    _o, _bi, _final, _p_start, _g);
+
             break;
 
         default:
@@ -207,9 +214,13 @@ public abstract class Pen implements Serializable {
           break;
         case Constants.PEN_ID_MATHS_SILENT:
 
-          operationMaths(
-                  ls_point, _bi, false, _p_start, _bi);
-          break;
+            operationMaths(
+                    ls_point, _bi, false, _p_start, _bi);
+            break;
+        case Constants.PEN_ID_MATHS_SILENT_2:
+
+            operationMaths2(_o, _bi, false, _p_start, _bi);
+            break;
 
         default:
             break;
@@ -351,6 +362,115 @@ public abstract class Pen implements Serializable {
         
     }
     
+
+    /**
+     *  paint certain PaintObject to image.
+     * 
+     * @param _o the PaintObjectWriting.
+     * @param _bi BufferedIsmage 
+     * @param _final wheter to print finally to bufferedImage or to paint to
+     *         Graphics _g of the VPaintLabel.
+     * @param _p_shift the point which is added to the coordinates of each 
+     *         point drawn at the image.
+     * @param _g the graphics to which is painted
+     */
+    private void operationMaths2(
+            final PaintObjectWriting _o,
+            final BufferedImage _bi,
+            final boolean _final,
+            final DPoint _p_shift,
+            final BufferedImage _g) {
+        
+        if (0 == 0)
+            return;
+        
+        List<DPoint> ls_point = _o.getPoints();
+        ls_point.toFirst();
+
+        if (ls_point.isEmpty()) {
+            try {
+                throw new Exception("asdf");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        
+
+        ls_point.toFirst();
+        DPoint p1 = ls_point.getItem();
+        ls_point.next();
+        
+        if (ls_point.isBehind()) {
+            paintPoint(new DPoint(p1), _bi, _final, _p_shift, _g);
+        } else {
+
+            DPoint p2 = ls_point.getItem();
+            int anzahl = 2;
+            
+            //direction
+            // +1 -> p1 > p2 wert -> p2 lieght weiter links
+            // -1 -> p2 > p1 wert -> p2 liegt weiter rechts
+            // 0 -> gerade, hier aufhoeren
+            int direction = (int) (p1.getX() - p2.getX() 
+                    / Math.abs(p1.getX() - p2.getX()));
+            boolean abschnitt = true;
+            while (abschnitt && !ls_point.isBehind()) {
+                ls_point.next();
+                DPoint p3 = ls_point.getItem();
+                if (p3 != null && p2 != null) {
+
+                    int directionTemp = (int) (p2.getX() - p3.getX() 
+                            / Math.abs(p2.getX() - p3.getX()));
+                    
+                    abschnitt = (directionTemp == direction);
+                    anzahl++;
+                    if (!abschnitt) {
+                        ls_point.previous();
+                        anzahl--;
+                    }
+                }
+            }
+
+            anzahl = anzahl + 0;
+            //funktion berechnen. Habe $anzahl polynome fom Grad $anzahl.
+        //  aXWERT³ + bXWERT² + cXWERT + d = YWERT
+        //  a = YWERT - bXWERT - 
+            
+        }
+        
+        
+        
+        
+        /*
+         * compute function
+         */
+        
+        
+        
+        int x = (int) ls_point.getItem().getX();
+        int y = (int) ls_point.getItem().getY();
+
+        paintPoint(new DPoint(x, y), _bi, _final, _p_shift, _g);
+
+        int xOld = x;
+        int yOld = y;
+
+        while (!ls_point.isEmpty() && !ls_point.isBehind()) {
+
+            x = (int) ls_point.getItem().getX();
+            y = (int) ls_point.getItem().getY();
+
+            paintLine(new DPoint(x, y), new DPoint(xOld, yOld), 
+                    _bi, _final, _g, _p_shift);
+
+            xOld = x;
+            yOld = y;
+            ls_point.next();
+        }
+    }
+
+    
     /**
      * paint certain PaintObject to image.
      * 
@@ -367,7 +487,6 @@ public abstract class Pen implements Serializable {
             final boolean _final, final DPoint _p_shift, 
             final BufferedImage _g) {
 
-        System.out.println("op Maths");
         final int amountOfRuns = 1;
         DPoint pnt_1 = null, pnt_2 = null, pnt_3 = null;
         

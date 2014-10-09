@@ -265,6 +265,7 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
             case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
@@ -274,14 +275,24 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
 
-                // set currently selected pen. Differs if
-                if (_event.getButton() == MouseEvent.BUTTON1) {
+                if ((Status.getIndexOperation() 
+                        != Constants.CONTROL_PAINTING_INDEX_I_G_CURVE
+                        && Status.getIndexOperation() 
+                        != Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2)
+                        || Picture.getInstance().isPaintObjectReady()) {
 
-                    Picture.getInstance().changePen(Status.getPenSelected1());
-                } else if (_event.getButton() == MouseEvent.BUTTON3) {
+                    // set currently selected pen. Differs if
+                    if (_event.getButton() == MouseEvent.BUTTON1) {
 
-                    Picture.getInstance().changePen(Status.getPenSelected2());
+                        Picture.getInstance().changePen(
+                                Status.getPenSelected1());
+                    } else if (_event.getButton() == MouseEvent.BUTTON3) {
+
+                        Picture.getInstance().changePen(
+                                Status.getPenSelected2());
+                    }
                 }
+                    
 
                 // add paintObject and point to Picture
                 Picture.getInstance().addPaintObject(
@@ -368,6 +379,7 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
             case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
             case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
@@ -711,6 +723,7 @@ public final class ControlPainting implements MouseListener,
 
         case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
         case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
         case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
         case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
         case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
@@ -939,6 +952,7 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
             case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
             case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
             case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
             case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:

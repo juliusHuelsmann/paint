@@ -216,6 +216,7 @@ public final class Picture {
      */
     public void addPaintObject(final int _id) {
 
+        int casus = -1;
         // switch index of operation
         switch (Status.getIndexOperation()) {
 
@@ -224,11 +225,18 @@ public final class Picture {
             break;
         case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
             
+            casus = Constants.PEN_ID_MATHS_SILENT;
+        case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
+            if (casus == -1) {
+
+                casus = Constants.PEN_ID_MATHS_SILENT_2;
+            } 
+
 
             Pen pen;
             if (pen_current instanceof BallPen) {
 
-                pen = new BallPen(Constants.PEN_ID_MATHS_SILENT,
+                pen = new BallPen(casus,
                         pen_current.getThickness(), 
                         pen_current.getClr_foreground());
             } else if (pen_current instanceof PenSelection) {
@@ -236,7 +244,7 @@ public final class Picture {
                 pen = new PenSelection();
             } else if (pen_current instanceof Pencil) {
 
-                pen = new Pencil(Constants.PEN_ID_MATHS_SILENT,
+                pen = new Pencil(casus,
                         pen_current.getThickness(), 
                         pen_current.getClr_foreground());
             } else {
@@ -247,7 +255,7 @@ public final class Picture {
                 //throw exception
                 throw new Error("Fehler: stift noch nicht hinzugefuegt.");
             }
-            addPaintObject(new POCurve(currentId, pen));
+            addPaintObject(new POCurve(casus, pen, casus));
             break;
         case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
             addPaintObject(new PORectangle(currentId, pen_current));
@@ -1534,6 +1542,24 @@ public final class Picture {
      */
     public List<PaintObject> getLs_poSelected() {
         return ls_poSelected;
+    }
+
+    /**
+     * Returns whether the current paint object is equal to zero; thus the 
+     * Picture is ready for creating a new PaintObject.
+     * 
+     * Used because there are PaintObjects (such as POCurve) that need multiple
+     * mouse presses, and releases.
+     * 
+     * Thus the Controller class for the painting has to check whether there is 
+     * a paintObejct ready if the 'new' PaintObject would be of one of the 
+     * above mentioned types.
+     * 
+     * @return whether the current paintObject does not exist.
+     */
+    public boolean isPaintObjectReady() {
+
+        return (po_current == null);
     }
 
 }

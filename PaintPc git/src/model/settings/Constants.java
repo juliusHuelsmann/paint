@@ -112,7 +112,8 @@ public final class Constants {
 	    CONTROL_PAINTING_INDEX_I_D_DIA = 15,
 	    CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED = 16,
 	    CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED = 17,
-	    CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED = 18;
+	    CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED = 18,
+	    CONTROL_PAINTING_INDEX_I_G_CURVE_2 = 19;
 	    
 			
 
@@ -126,8 +127,11 @@ public final class Constants {
     /**
      * constant integer indicates operation in pen (math/line/point).
      */
-	public static final int PEN_ID_MATHS = 0, PEN_ID_LINES = 1, 
-	        PEN_ID_POINT = 2,  PEN_ID_MATHS_SILENT = 3;
+	public static final int PEN_ID_MATHS = 0, 
+	        PEN_ID_LINES = 1, 
+	        PEN_ID_POINT = 2,  
+	        PEN_ID_MATHS_SILENT = 3,
+	        PEN_ID_MATHS_SILENT_2 = 4;
 	
 	
 	/**

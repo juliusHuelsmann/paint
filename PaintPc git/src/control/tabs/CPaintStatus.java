@@ -223,6 +223,9 @@ public final class CPaintStatus implements MouseListener {
         } else if (_event.getSource().equals(
                 Insert.getInstance().getI2_g_triangleFilled())) {
             return Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED;
+        }  else if (_event.getSource().equals(
+                Insert.getInstance().getI2_g_curve2())) {
+            return Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2;
         } else {
             return -1;
         }
@@ -343,6 +346,7 @@ public final class CPaintStatus implements MouseListener {
                 case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
                 case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
                 case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
+                case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
 //                    Insert.getInstance().getI2_g_line().
                     break;
                 case Constants.CONTROL_PAINTING_INDEX_PAINT_1:

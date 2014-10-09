@@ -46,7 +46,7 @@ public class POCurve extends PaintObjectWriting {
 	public POCurve(final int _elementId, final Pen _pen) {
 		
 	    //call super constructor
-	    super(Constants.PEN_ID_MATHS, _pen);
+	    super(Constants.PEN_ID_MATHS_SILENT, _pen);
 	    this.ready = true;
 	}
 	

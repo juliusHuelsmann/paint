@@ -127,7 +127,7 @@ public final class Constants {
      * constant integer indicates operation in pen (math/line/point).
      */
 	public static final int PEN_ID_MATHS = 0, PEN_ID_LINES = 1, 
-	        PEN_ID_POINT = 2;
+	        PEN_ID_POINT = 2,  PEN_ID_MATHS_SILENT = 3;
 	
 	
 	/**

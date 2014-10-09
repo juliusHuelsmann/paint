@@ -13,9 +13,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
 import control.CSelection;
 import control.tabs.CTabSelection;
 import view.View;
@@ -221,7 +223,31 @@ public final class Picture {
             addPaintObject(new POLine(currentId, pen_current));
             break;
         case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
-            addPaintObject(new POCurve(currentId, pen_current));
+            
+
+            Pen pen;
+            if (pen_current instanceof BallPen) {
+
+                pen = new BallPen(Constants.PEN_ID_MATHS_SILENT,
+                        pen_current.getThickness(), 
+                        pen_current.getClr_foreground());
+            } else if (pen_current instanceof PenSelection) {
+
+                pen = new PenSelection();
+            } else if (pen_current instanceof Pencil) {
+
+                pen = new Pencil(Constants.PEN_ID_MATHS_SILENT,
+                        pen_current.getThickness(), 
+                        pen_current.getClr_foreground());
+            } else {
+                
+
+                Status.getLogger().warning("fehler stiftz noch nicht hinzu");
+                
+                //throw exception
+                throw new Error("Fehler: stift noch nicht hinzugefuegt.");
+            }
+            addPaintObject(new POCurve(currentId, pen));
             break;
         case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
             addPaintObject(new PORectangle(currentId, pen_current));

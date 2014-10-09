@@ -122,7 +122,8 @@ public abstract class Pen implements Serializable {
 		}	
 		
 		
-		
+		System.out.println(Constants.PEN_ID_MATHS_SILENT);
+		System.out.println("ich " + id_operation);
 		//if the painting is not final and id is for mathematics.
 		int tempId_operation = id_operation;
 		if (!_final && id_operation == Constants.PEN_ID_MATHS) {
@@ -139,11 +140,17 @@ public abstract class Pen implements Serializable {
 			operationLine(ls_point, _bi, _final, _p_start, _g);
 			
 			break;
-		case Constants.PEN_ID_MATHS:
+        case Constants.PEN_ID_MATHS:
 
-		    operationMaths(
-		            ls_point, _bi, _final, _p_start, _g);
-		    break;
+            operationMaths(
+                    ls_point, _bi, _final, _p_start, _g);
+            break;
+
+        case Constants.PEN_ID_MATHS_SILENT:
+
+            operationMaths(
+                    ls_point, _bi, _final, _p_start, _g);
+            break;
 
         default:
             break;
@@ -195,9 +202,14 @@ public abstract class Pen implements Serializable {
             break;
         case Constants.PEN_ID_MATHS:
 
-//            operationMaths(
-//                    ls_point, _bi, _final, _p_start, _g);
-            break;
+//          operationMaths(
+//                  ls_point, _bi, _final, _p_start, _g);
+          break;
+        case Constants.PEN_ID_MATHS_SILENT:
+
+          operationMaths(
+                  ls_point, _bi, false, _p_start, _bi);
+          break;
 
         default:
             break;
@@ -355,6 +367,7 @@ public abstract class Pen implements Serializable {
             final boolean _final, final DPoint _p_shift, 
             final BufferedImage _g) {
 
+        System.out.println("op Maths");
         final int amountOfRuns = 1;
         DPoint pnt_1 = null, pnt_2 = null, pnt_3 = null;
         

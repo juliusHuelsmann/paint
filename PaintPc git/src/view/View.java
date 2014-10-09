@@ -6,10 +6,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
@@ -19,6 +21,7 @@ import view.forms.Page;
 import view.forms.Tabs;
 import view.forms.tabs.Paint;
 import control.ControlPainting;
+import control.util.MousePositionTracker;
 
 /**
  * singleton view class.
@@ -66,7 +69,15 @@ import control.ControlPainting;
         super.setLayout(null);
         super.setUndecorated(true);
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setFullscreen();
+        
+        if (ViewSettings.FULLSCREEN) {
+
+            this.setFullscreen();
+        } else {
+            MousePositionTracker mpt = new MousePositionTracker(this);
+            super.addMouseListener(mpt);
+            super.addMouseMotionListener(mpt);
+        }
         
         //fade in and show text.
         fadeIn();

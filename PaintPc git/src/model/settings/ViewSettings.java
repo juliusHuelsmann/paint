@@ -168,14 +168,25 @@ public final class ViewSettings {
     = new Dimension(275, 365);
 
     
+    
+    /**
+     * Whether fullscreen or not.
+     */
+    public static final boolean FULLSCREEN = false;
     //sizes
     
     /**
      * The size of the JFrame.
      */
-    public static final Dimension VIEW_SIZE_JFRAME = new Dimension(
-            (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()), 
-            (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
+    public static final Dimension VIEW_SIZE_JFRAME = 
+//            new Dimension(
+//            (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()), 
+//            (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
+            new Dimension(
+            (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() 
+                    * 2 / (2 + 1)), 
+            (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() 
+                    * 2 / (2 + 1)));
 
     /**
      * .

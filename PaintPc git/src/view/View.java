@@ -40,7 +40,7 @@ import control.util.MousePositionTracker;
 	/**
 	 * close button.
 	 */
-	private JButton jbtn_exit;
+	private JButton jbtn_exit, jbtn_fullscreen;
 
     /**
      * The maximum counter for design. Is used for fade in and out
@@ -81,7 +81,7 @@ import control.util.MousePositionTracker;
         
         //fade in and show text.
         fadeIn();
-        
+
         //exit
         jbtn_exit = new JButton();
         jbtn_exit.setContentAreaFilled(false);
@@ -90,6 +90,15 @@ import control.util.MousePositionTracker;
         jbtn_exit.setBorder(null);
         jbtn_exit.setFocusable(false);
         super.add(jbtn_exit);
+
+        //exit
+        jbtn_fullscreen = new JButton();
+        jbtn_fullscreen.setContentAreaFilled(false);
+        jbtn_fullscreen.setOpaque(false);
+        jbtn_fullscreen.addMouseListener(ControlPainting.getInstance());
+        jbtn_fullscreen.setBorder(null);
+        jbtn_fullscreen.setFocusable(false);
+        super.add(jbtn_fullscreen);
         
         //fade out
         fadeOut();
@@ -378,14 +387,20 @@ import control.util.MousePositionTracker;
         //if not flipped
 	    if (_normalFlip) {
 
+            Page.getInstance().setLocation(
+                    ViewSettings.VIEW_BOUNDS_PAGE.getLocation());
+
 	        
 	        jbtn_exit.setBounds(ViewSettings.VIEW_BOUNDS_JBTN_EXIT);
-	        Page.getInstance().setLocation(
-	                ViewSettings.VIEW_BOUNDS_PAGE.getLocation());
-
 	        jbtn_exit.setIcon(new ImageIcon(Utils.resizeImage(
 	                jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
 	                Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
+
+            jbtn_fullscreen.setBounds(ViewSettings.VIEW_BOUNDS_JBTN_FULLSCREEN);
+	        jbtn_fullscreen.setIcon(new ImageIcon(Utils.resizeImage(
+                    jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
+                    Constants.VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
+	        
 	        Tabs.getInstance().setLocation(ViewSettings.VIEW_LOCATION_TB);
 	        
 	    } else {

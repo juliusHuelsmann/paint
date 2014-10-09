@@ -201,12 +201,19 @@ public final class ViewSettings {
     = new Point((VIEW_SIZE_JFRAME.width - MESSAGE_SIZE.width) / 2, 
             VIEW_SIZE_JFRAME.height - MESSAGE_SIZE.height - 2 * 2 * 2 * 2 * 2);
 
-    
+
     /**
      * The Bounds of the Exit button.
      */
     public static final Rectangle VIEW_BOUNDS_JBTN_EXIT = new Rectangle(
             VIEW_SIZE_JFRAME.width - HUNDRED - TEN, 0, 
+            TWENTY_FIFE * 2 + FIFE, 2  * TEN);
+
+    /**
+     * The Bounds of the Exit button.
+     */
+    public static final Rectangle VIEW_BOUNDS_JBTN_FULLSCREEN = new Rectangle(
+            VIEW_SIZE_JFRAME.width - HUNDRED * (2 + 1) / 2 - TEN * 2, 0, 
             TWENTY_FIFE * 2 + FIFE, 2  * TEN);
     
     /**

@@ -12,9 +12,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+import view.View;
 import view.forms.Page;
 import model.objects.painting.po.PaintObjectWriting;
+import model.objects.pen.normal.BallPen;
+import model.objects.pen.normal.Pencil;
+import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
 import model.settings.Status;
 import model.util.DPoint;
@@ -88,6 +95,41 @@ public abstract class Pen implements Serializable {
 		this.clr_foreground = _clr;
 	}
 	
+	
+	
+	/**
+	 * Clone the pen.
+	 * @param _pen
+	 * @return
+	 */
+	public static final Pen clonePen(Pen _pen) {
+
+	    Pen pen;
+        if (_pen instanceof BallPen) {
+
+            pen = new BallPen(_pen.getId_operation(),
+                    _pen.getThickness(), _pen.getClr_foreground());
+        } else if (_pen instanceof PenSelection) {
+
+            pen = new PenSelection();
+        } else if (_pen instanceof Pencil) {
+
+            pen = new Pencil(_pen.getId_operation(),
+                    _pen.getThickness(), _pen.getClr_foreground());
+        } else {
+            
+            //alert user.
+            JOptionPane.showMessageDialog(View.getInstance(), 
+                    "PROGRAMMIERFEHLER @ paintobjectwriting: " 
+                    + "Stift noch nicht hinzugefuegt.");
+            
+            
+            //throw exception
+            throw new Error("Fehler: stift noch nicht hinzugefuegt.");
+        }
+        
+        return pen;
+	}
 	
 	/**
 	 * this method can be overwritten.
@@ -200,6 +242,8 @@ public abstract class Pen implements Serializable {
         switch(id_operation) {
         case Constants.PEN_ID_POINT:
             
+            paintPoint(new DPoint(ls_point.getItem()), 
+                    _bi, false, _p_start, _bi);
             break;
         case Constants.PEN_ID_LINES:
 
@@ -209,8 +253,10 @@ public abstract class Pen implements Serializable {
             break;
         case Constants.PEN_ID_MATHS:
 
-//          operationMaths(
-//                  ls_point, _bi, _final, _p_start, _g);
+//            paintLine(new DPoint(ls_point.getItem()),
+//                    pnt_previous, _bi, false, _bi, _p_start);
+          operationMaths(
+                  ls_point, _bi, false, _p_start, _bi);
           break;
         case Constants.PEN_ID_MATHS_SILENT:
 
@@ -248,6 +294,7 @@ public abstract class Pen implements Serializable {
 	        final BufferedImage _bi, final boolean _final, 
 	        final DPoint _p_start, final BufferedImage _g) {
     
+	    
         //go through the list of points and print point
         while (!_ls_point.isBehind()) {
     
@@ -258,6 +305,8 @@ public abstract class Pen implements Serializable {
         }
     }
 
+	
+	
 
 	
 	/**

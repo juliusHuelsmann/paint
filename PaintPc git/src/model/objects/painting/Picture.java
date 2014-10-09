@@ -1562,4 +1562,33 @@ public final class Picture {
         return (po_current == null);
     }
 
+    
+    
+    /**
+     * Set the pen after the user clicked at a pen button.
+     * Thus clone the pen and change its color afterwards to the last used one.
+     * 
+     * @param _pen the pen
+     * @param _id whether pen 1 or pen 2.
+     */
+    public void userSetPen(final Pen _pen, final int _id) {
+
+        Pen pen = Pen.clonePen(_pen);
+        if (pen_current != null) {
+
+            pen.setClr_foreground(pen_current.getClr_foreground());
+        }
+        
+        if (_id == 1) {
+            Status.setPenSelected1(Pen.clonePen(pen));
+        } else if (_id == 2) {
+            Status.setPenSelected1(Pen.clonePen(pen));
+        } else {
+            Status.getLogger().severe("wrong identifier.");
+        }
+        
+        
+        this.pen_current = pen;
+    }
+
 }

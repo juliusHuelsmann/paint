@@ -375,7 +375,6 @@ public final class ControlPainting implements MouseListener,
                         .getJlbl_painting()))) {
 
             switch (Status.getIndexOperation()) {
-
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
             case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
@@ -482,7 +481,6 @@ public final class ControlPainting implements MouseListener,
                             pnt_last.y - _event.getY());
                 }
                 //Scroll
-                
                 int x = pnt_startLocation.x + _event.getX() - pnt_start.x;
                 int y = pnt_startLocation.y +  _event.getY() - pnt_start.y;
 
@@ -491,11 +489,9 @@ public final class ControlPainting implements MouseListener,
                     x = -Status.getImageShowSize().width
                             + Page.getInstance().getJlbl_painting().getWidth();
                 }
-
                 if (x > 0) {
                     x = 0;
                 }
-                
                 if (y < -Status.getImageShowSize().height
                         + Page.getInstance().getJlbl_painting().getHeight()) {
                     y = -Status.getImageShowSize().height

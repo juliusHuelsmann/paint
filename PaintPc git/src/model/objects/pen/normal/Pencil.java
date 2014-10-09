@@ -67,9 +67,9 @@ public class Pencil extends Pen {
          *      |a4|  |  |a3|  |  |
          *      ---------------------
          */
-        for (int i = -1; i <= 2; i++) {
+        for (int i = -getThickness() / 2; i <= getThickness() / 2; i++) {
             
-            for (int j = -1; j <= 2; j++) {
+            for (int j = -getThickness() / 2; j <= getThickness() / 2; j++) {
 
 
                 //x and y location because is used twice for line 

@@ -5,7 +5,6 @@ package view.util;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,7 +14,8 @@ import javax.swing.JSlider;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
+import view.forms.tabs.Paint;
+import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.util.paint.Utils;
@@ -64,11 +64,18 @@ public class Item1PenSelection extends JPanel {
 	private int penSelection = 0;
 	
 	/**
+	 * The pen.
+	 */
+	private Pen pen;
+	
+	/**
 	 * Constructor: creates graphical user interface.
 	 * @param _title the title of the item
 	 * @param _imagePath the path of the image which is given to the itemMenu 
 	 *         and painted.
 	 * @param _pen the pen.
+	 * @param _penModel one instance of the Pen that will be used after the
+	 * user clicked at this button
 	 */
 	public Item1PenSelection(final String _title, final String _imagePath, 
 	        final int _pen, final Pen _penModel) {
@@ -83,6 +90,7 @@ public class Item1PenSelection extends JPanel {
 		//save current values
 		this.imagePath = _imagePath;
 		this.penSelection = _pen;
+		this.pen = _penModel;
 		
 		//initialize components
 		jlbl_image = new JLabel();
@@ -109,6 +117,21 @@ public class Item1PenSelection extends JPanel {
 			public void stateChanged(final ChangeEvent _e) {
 				jlbl_thickness.setText(((JSlider) _e.getSource()).getValue()
 						+ "px");
+				pen.setThickness(((JSlider) _e.getSource()).getValue());
+				Picture.getInstance().userSetPen(pen, penSelection);
+	            //set the image of the current pen, close the menu and
+	            //reset the last open menu; thus no menu has to be closed the 
+				//next time another menu is opened
+	            if (penSelection == 1) {
+	                
+	                Paint.getInstance().getIt_stift1().setIcon(getImagePath());
+	                
+	                
+	            } else if (penSelection == 2) {
+	                
+	                Paint.getInstance().getIt_stift2().setIcon(getImagePath());
+	            }
+	            CPaintVisualEffects.applyFocus(getInstance());
 			}
 		});
 		
@@ -197,6 +220,14 @@ public class Item1PenSelection extends JPanel {
 
 
 	/**
+	 * Return the instance of Item1PenSelection.
+	 * @return it.
+	 */
+	private Item1PenSelection getInstance() {
+	    return this;
+	}
+	
+	/**
 	 * @return the selected
 	 */
 	public final boolean isSelected() {
@@ -242,4 +273,20 @@ public class Item1PenSelection extends JPanel {
 	public final void setPenSelection(final int _penSelection) {
 		this.penSelection = _penSelection;
 	}
+
+
+    /**
+     * @return the pen
+     */
+    public final Pen getPen() {
+        return pen;
+    }
+
+
+    /**
+     * @param _pen the pen to set
+     */
+    public final void setPen(final Pen _pen) {
+        this.pen = _pen;
+    }
 }

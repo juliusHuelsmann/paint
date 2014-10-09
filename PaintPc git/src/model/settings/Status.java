@@ -5,10 +5,8 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
-
 import view.forms.Page;
 import model.objects.painting.PaintBI;
-import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.util.paint.Utils;

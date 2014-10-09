@@ -111,26 +111,30 @@ public final class CPaintVisualEffects implements MouseListener {
 			Item1PenSelection selected = (Item1PenSelection) 
 			        ((VButtonWrapper) _event.getSource()).wrapObject();
 			if (!selected.isSelected()) {
-				selected.setOpaque(true);
-				selected.setBackground(ViewSettings.CLR_BORDER);
+			    applyFocus(selected);
 			}
 			return; 
+		} else {
+
+	        //for loop for identifying the cause of the event
+	        for (int j = 0; j < Paint.getInstance().getJbtn_colors().length; 
+	                j++) {
+	            if (_event.getSource().equals(
+	                    Paint.getInstance().getJbtn_colors()[j])) {
+	                
+	                //highlight the border of the icon with mouse-over
+	                Paint.getInstance().getJbtn_colors()[j].setBorder(
+	                        BorderFactory.createCompoundBorder(
+	                                new LineBorder(Color.black),
+	                                new LineBorder(Color.black)));
+	                
+	                //return because only one item is performing action at one 
+	                //time
+	                return;
+	            }
+	        }
 		}
 		
-		//for loop for identifying the cause of the event
-		for (int j = 0; j < Paint.getInstance().getJbtn_colors().length; j++) {
-			if (_event.getSource().equals(
-			        Paint.getInstance().getJbtn_colors()[j])) {
-				
-				//highlight the border of the icon with mouse-over
-				Paint.getInstance().getJbtn_colors()[j].setBorder(BorderFactory
-						.createCompoundBorder(new LineBorder(Color.black),
-								new LineBorder(Color.black)));
-				
-				//return because only one item is performing action at one time
-				return;
-			}
-		}
 	}
 	
 	/**
@@ -173,6 +177,17 @@ public final class CPaintVisualEffects implements MouseListener {
 				return;
 			}
 		}
+	}
+	
+	/**
+	 * apply focus to selected item.
+	 * @param _selected the selected item
+	 */
+	public static void applyFocus(final Item1PenSelection _selected) {
+
+        _selected.setOpaque(true);
+        _selected.setBackground(ViewSettings.CLR_BORDER);
+    
 	}
 	
 	/**

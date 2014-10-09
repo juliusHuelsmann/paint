@@ -5,12 +5,7 @@ package model.objects.painting.po;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import javax.swing.JOptionPane;
-import view.View;
 import model.objects.pen.Pen;
-import model.objects.pen.normal.BallPen;
-import model.objects.pen.normal.Pencil;
-import model.objects.pen.special.PenSelection;
 import model.util.DPoint;
 
 /**
@@ -78,28 +73,7 @@ public abstract class PaintObjectPen extends PaintObject {
 	    super(_elementId);
 		//save values
 		
-		if (_pen instanceof BallPen) {
-
-            pen = new BallPen(_pen.getId_operation(),
-                    _pen.getThickness(), _pen.getClr_foreground());
-		} else if (_pen instanceof PenSelection) {
-
-            pen = new PenSelection();
-		} else if (_pen instanceof Pencil) {
-
-            pen = new Pencil(_pen.getId_operation(),
-                    _pen.getThickness(), _pen.getClr_foreground());
-		} else {
-		    
-		    //alert user.
-		    JOptionPane.showMessageDialog(View.getInstance(), 
-		            "PROGRAMMIERFEHLER @ paintobjectwriting: " 
-		            + "Stift noch nicht hinzugefuegt.");
-		    
-		    
-		    //throw exception
-		    throw new Error("Fehler: stift noch nicht hinzugefuegt.");
-		}
+	    pen = Pen.clonePen(_pen);
 	}
 	
 	/**

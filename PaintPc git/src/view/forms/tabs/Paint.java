@@ -5,6 +5,7 @@ package view.forms.tabs;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -12,6 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
+import model.objects.pen.normal.BallPen;
+import model.objects.pen.normal.Pencil;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.TextFactory;
@@ -45,9 +49,7 @@ public final class Paint extends JPanel {
 	 * pens for selection in Items it_stift1 and it_stift2.
 	 */
 	private Item1PenSelection sa_br1, sa_br2, sa_bn1, sa_bn2, sa_bp1, sa_bp2,
-	sa_fr1, sa_fr2, sa_fn1, sa_fn2, sa_fp1, sa_fp2, sa_kr1, sa_kr2, sa_kn1,
-	sa_kn2, sa_kp1, sa_kp2, sa_mr1, sa_mr2, sa_mn1, sa_mn2, sa_mp1, sa_mp2,
-	sa_pr1, sa_pr2, sa_pn1, sa_pn2, sa_pp1, sa_pp2;
+	sa_fr1, sa_fr2, sa_fn1, sa_fn2, sa_fp1, sa_fp2;
 
 	/**
 	 * array of colors to change the first or the second color.
@@ -133,7 +135,7 @@ public final class Paint extends JPanel {
 		        .getWidth(), ViewSettings.VIEW_HEIGHT_TB);
 
 		//set standard values (is going to be put into a new settings class)
-		it_stift1.setIcon(sa_pn1.getImagePath());
+		it_stift1.setIcon(sa_fn1.getImagePath());
 		it_stift2.setIcon(sa_bn2.getImagePath());
 	}
 
@@ -215,7 +217,7 @@ public final class Paint extends JPanel {
          }
 	    
 	    
-	    insertInformation("Zwischenablage", jlbl_separation[0].getX(), 
+	    insertInformation("Zwischenablage", 0, 
 	            jlbl_separation[0].getX() + jlbl_separation[0].getWidth(), 
 	            0, _paint);
 	       
@@ -752,75 +754,46 @@ public final class Paint extends JPanel {
 	 */
 	private void addPens() {
 
-        sa_br1 = new Item1PenSelection(
-                "Bleistift rund", "pen/bleiMaths.png", 1);
-        sa_bn1 = new Item1PenSelection(
-                "Bleistift Normal", "pen/bleiNormal.png", 1);
         sa_bp1 = new Item1PenSelection(
-                "Bleistift Punkte", "pen/bleiPoint.png", 1);
+                "Bleistift Punkte", "pen/bleiPoint.png", 1, new Pencil(
+                        Constants.PEN_ID_POINT, 1, Color.black));
+        sa_bn1 = new Item1PenSelection(
+                "Bleistift Normal", "pen/bleiNormal.png", 1, new Pencil(
+                        Constants.PEN_ID_LINES, 1, Color.black));
+        sa_br1 = new Item1PenSelection(
+                "Bleistift rund", "pen/bleiMaths.png", 1, new Pencil(
+                        Constants.PEN_ID_MATHS, 1, Color.black));
+
+        sa_fr1 = new Item1PenSelection(
+                "Fueller rund", "pen/fuellerMaths.png", 1, new BallPen(
+                        Constants.PEN_ID_MATHS, 1, Color.black));
+        sa_fn1 = new Item1PenSelection(
+                "Fueller Normal", "pen/fuellerNormal.png", 1, new BallPen(
+                        Constants.PEN_ID_LINES, 1, Color.black));
+        sa_fp1 = new Item1PenSelection(
+                "Fueller Punkte", "pen/fuellerPoint.png", 1, new BallPen(
+                        Constants.PEN_ID_POINT, 1, Color.black));
+
+        sa_bp2 = new Item1PenSelection(
+                "Bleistift Punkte", "pen/bleiPoint.png", 2, new Pencil(
+                        Constants.PEN_ID_POINT, 1, Color.black));
+        sa_bn2 = new Item1PenSelection(
+                "Bleistift Normal", "pen/bleiNormal.png", 2, new Pencil(
+                        Constants.PEN_ID_LINES, 1, Color.black));
+        sa_br2 = new Item1PenSelection(
+                "Bleistift rund", "pen/bleiMaths.png", 2, new Pencil(
+                        Constants.PEN_ID_MATHS, 1, Color.black));
+
+        sa_fr2 = new Item1PenSelection(
+                "Fueller rund", "pen/fuellerMaths.png", 2, new BallPen(
+                        Constants.PEN_ID_MATHS, 1, Color.black));
+        sa_fn2 = new Item1PenSelection(
+                "Fueller Normal", "pen/fuellerNormal.png", 2, new BallPen(
+                        Constants.PEN_ID_LINES, 1, Color.black));
+        sa_fp2 = new Item1PenSelection(
+                "Fueller Punkte", "pen/fuellerPoint.png", 2, new BallPen(
+                        Constants.PEN_ID_POINT, 1, Color.black));
     
-        sa_fr1 = (new Item1PenSelection(
-                "Fueller rund", "pen/fuellerMaths.png", 1));
-        sa_fn1 = (new Item1PenSelection(
-                "Fueller Normal", "pen/fuellerNormal.png", 1));
-        sa_fp1 = (new Item1PenSelection(
-                "Fueller Punkte", "pen/fuellerPoint.png", 1));
-    
-        sa_kr1 = (new Item1PenSelection(
-                "Kuli rund", "pen/kuliMaths.png", 1));
-        sa_kn1 = (new Item1PenSelection(
-                "Kuli Normal", "pen/kuliNormal.png", 1));
-        sa_kp1 = (new Item1PenSelection(
-                "Kuli Punkte", "pen/kuliPoint.png", 1));
-    
-        sa_mr1 = (new Item1PenSelection(
-                "Marker rund", "pen/markerMaths.png", 1));
-        sa_mn1 = (new Item1PenSelection(
-                "Marker Normal", "pen/markerNormal.png", 1));
-        sa_mp1 = (new Item1PenSelection(
-                "Marker Punkte", "pen/markerPoint.png", 1));
-    
-        sa_pr1 = (new Item1PenSelection(
-                "Pinsel rund", "pen/pinselMaths.png", 1));
-        sa_pn1 = (new Item1PenSelection(
-                "Pinsel Normal", "pen/pinselNormal.png", 1));
-        sa_pp1 = (new Item1PenSelection(
-                "Pinsel Punkte", "pen/pinselPoint.png", 1));
-    
-        sa_br2 = (new Item1PenSelection(
-                "Bleistift rund", "pen/bleiMaths.png", 2));
-        sa_bn2 = (new Item1PenSelection(
-                "Bleistift Normal", "pen/bleiNormal.png", 2));
-        sa_bp2 = (new Item1PenSelection(
-                "Bleistift Punkte", "pen/bleiPoint.png", 2));
-    
-        sa_fr2 = (new Item1PenSelection(
-                "Fueller rund", "pen/fuellerMaths.png", 2));
-        sa_fn2 = (new Item1PenSelection(
-                "Fueller Normal", "pen/fuellerNormal.png", 2));
-        sa_fp2 = (new Item1PenSelection(
-                "Fueller Punkte", "pen/fuellerPoint.png", 2));
-    
-        sa_kr2 = (new Item1PenSelection(
-                "Kuli rund", "pen/kuliMaths.png", 2));
-        sa_kn2 = (new Item1PenSelection(
-                "Kuli Normal", "pen/kuliNormal.png", 2));
-        sa_kp2 = (new Item1PenSelection(
-                "Kuli Punkte", "pen/kuliPoint.png", 2));
-    
-        sa_mr2 = (new Item1PenSelection(
-                "Marker rund", "pen/markerMaths.png", 2));
-        sa_mn2 = (new Item1PenSelection(
-                "Marker Normal", "pen/markerNormal.png", 2));
-        sa_mp2 = (new Item1PenSelection(
-                "Marker Punkte", "pen/markerPoint.png", 2));
-    
-        sa_pr2 = (new Item1PenSelection(
-                "Pinsel rund", "pen/pinselMaths.png", 2));
-        sa_pn2 = (new Item1PenSelection(
-                "Pinsel Normal", "pen/pinselNormal.png", 2));
-        sa_pp2 = (new Item1PenSelection(
-                "Pinsel Punkte", "pen/pinselPoint.png", 2));
         
         //add bleistift to both panels
         it_stift1.add(sa_br1);
@@ -840,33 +813,6 @@ public final class Paint extends JPanel {
         it_stift2.add(sa_fn2);
         it_stift2.add(sa_fp2);
     
-        //add kuli to both panels
-        it_stift1.add(sa_kr1);
-        it_stift1.add(sa_kn1);
-        it_stift1.add(sa_kp1);
-    
-        it_stift2.add(sa_kr2);
-        it_stift2.add(sa_kn2);
-        it_stift2.add(sa_kp2);
-    
-        //add marker to both panels
-        it_stift1.add(sa_mr1);
-        it_stift1.add(sa_mn1);
-        it_stift1.add(sa_mp1);
-    
-        it_stift2.add(sa_mr2);
-        it_stift2.add(sa_mn2);
-        it_stift2.add(sa_mp2);
-    
-        //add pinsel to both panels
-        it_stift1.add(sa_pr1);
-        it_stift1.add(sa_pn1);
-        it_stift1.add(sa_pp1);
-    
-        it_stift2.add(sa_pr2);
-        it_stift2.add(sa_pn2);
-        it_stift2.add(sa_pp2);
-        //save
     
 	}
 
@@ -1008,243 +954,6 @@ public final class Paint extends JPanel {
         return instance;
     }
 
-	/**
-	 * @return the sa_br1
-	 */
-	public Item1PenSelection getSa_br1() {
-		return sa_br1;
-	}
-
-
-	/**
-	 * @return the sa_br2
-	 */
-	public Item1PenSelection getSa_br2() {
-		return sa_br2;
-	}
-
-
-	/**
-	 * @return the sa_bn1
-	 */
-	public Item1PenSelection getSa_bn1() {
-		return sa_bn1;
-	}
-
-
-	/**
-	 * @return the sa_bn2
-	 */
-	public Item1PenSelection getSa_bn2() {
-		return sa_bn2;
-	}
-
-
-	/**
-	 * @return the sa_bp1
-	 */
-	public Item1PenSelection getSa_bp1() {
-		return sa_bp1;
-	}
-
-
-	/**
-	 * @return the sa_bp2
-	 */
-	public Item1PenSelection getSa_bp2() {
-		return sa_bp2;
-	}
-
-
-	/**
-	 * @return the sa_fr1
-	 */
-	public Item1PenSelection getSa_fr1() {
-		return sa_fr1;
-	}
-
-
-	/**
-	 * @return the sa_fr2
-	 */
-	public Item1PenSelection getSa_fr2() {
-		return sa_fr2;
-	}
-
-
-	/**
-	 * @return the sa_fn1
-	 */
-	public Item1PenSelection getSa_fn1() {
-		return sa_fn1;
-	}
-
-
-
-	/**
-	 * @return the sa_fn2
-	 */
-	public Item1PenSelection getSa_fn2() {
-		return sa_fn2;
-	}
-
-	
-	/**
-	 * @return the sa_fp1
-	 */
-	public Item1PenSelection getSa_fp1() {
-		return sa_fp1;
-	}
-
-
-	/**
-	 * @return the sa_fp2
-	 */
-	public Item1PenSelection getSa_fp2() {
-		return sa_fp2;
-	}
-
-
-	/**
-	 * @return the sa_kr1
-	 */
-	public Item1PenSelection getSa_kr1() {
-		return sa_kr1;
-	}
-
-
-	/**
-	 * @return the sa_kr2
-	 */
-	public Item1PenSelection getSa_kr2() {
-		return sa_kr2;
-	}
-
-	/**
-	 * @return the sa_kn1
-	 */
-	public Item1PenSelection getSa_kn1() {
-		return sa_kn1;
-	}
-
-
-	/**
-	 * @return the sa_kn2
-	 */
-	public Item1PenSelection getSa_kn2() {
-		return sa_kn2;
-	}
-
-
-
-	/**
-	 * @return the sa_kp1
-	 */
-	public Item1PenSelection getSa_kp1() {
-		return sa_kp1;
-	}
-
-
-
-	/**
-	 * @return the sa_kp2
-	 */
-	public Item1PenSelection getSa_kp2() {
-		return sa_kp2;
-	}
-
-
-	/**
-	 * @return the sa_mr1
-	 */
-	public Item1PenSelection getSa_mr1() {
-		return sa_mr1;
-	}
-
-
-	/**
-	 * @return the sa_mr2
-	 */
-	public Item1PenSelection getSa_mr2() {
-		return sa_mr2;
-	}
-
-
-	/**
-	 * @return the sa_mn1
-	 */
-	public Item1PenSelection getSa_mn1() {
-		return sa_mn1;
-	}
-
-
-	/**
-	 * @return the sa_mn2
-	 */
-	public Item1PenSelection getSa_mn2() {
-		return sa_mn2;
-	}
-
-
-	/**
-	 * @return the sa_mp1
-	 */
-	public Item1PenSelection getSa_mp1() {
-		return sa_mp1;
-	}
-
-
-	/**
-	 * @return the sa_mp2
-	 */
-	public Item1PenSelection getSa_mp2() {
-		return sa_mp2;
-	}
-
-
-	/**
-	 * @return the sa_pr1
-	 */
-	public Item1PenSelection getSa_pr1() {
-		return sa_pr1;
-	}
-
-
-	/**
-	 * @return the sa_pr2
-	 */
-	public Item1PenSelection getSa_pr2() {
-		return sa_pr2;
-	}
-
-
-	/**
-	 * @return the sa_pn1
-	 */
-	public Item1PenSelection getSa_pn1() {
-		return sa_pn1;
-	}
-
-	/**
-	 * @return the sa_pn2
-	 */
-	public Item1PenSelection getSa_pn2() {
-		return sa_pn2;
-	}
-
-	/**
-	 * @return the sa_pp1
-	 */
-	public Item1PenSelection getSa_pp1() {
-		return sa_pp1;
-	}
-
-	/**
-	 * @return the sa_pp2
-	 */
-	public Item1PenSelection getSa_pp2() {
-		return sa_pp2;
-	}
 
 
 	/**

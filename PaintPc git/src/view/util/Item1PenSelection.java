@@ -16,6 +16,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.util.paint.Utils;
 import control.tabs.CPaintStatus;
@@ -70,7 +71,7 @@ public class Item1PenSelection extends JPanel {
 	 * @param _pen the pen.
 	 */
 	public Item1PenSelection(final String _title, final String _imagePath, 
-	        final int _pen) {
+	        final int _pen, final Pen _penModel) {
 		
 		//initialize JFrame and alter settings
 		super();

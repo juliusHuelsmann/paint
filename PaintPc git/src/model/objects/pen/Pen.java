@@ -359,7 +359,6 @@ public abstract class Pen implements Serializable {
             }
             _ls_point.next();
         }
-        
     }
     
 
@@ -380,6 +379,9 @@ public abstract class Pen implements Serializable {
             final boolean _final,
             final DPoint _p_shift,
             final BufferedImage _g) {
+        
+        
+        //try to perform spline interpolation.
         
         if (0 == 0)
             return;

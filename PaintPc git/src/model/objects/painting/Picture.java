@@ -1281,6 +1281,7 @@ public final class Picture {
                     Page.getInstance().getJlbl_painting().getLocation());
             Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
                     realRect);
+
             return true;
         }
         return false;

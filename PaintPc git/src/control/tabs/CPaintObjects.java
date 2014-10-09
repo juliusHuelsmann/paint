@@ -107,6 +107,7 @@ public final class CPaintObjects implements ActionListener {
         Picture.getInstance().paintSelected();
         Page.getInstance().getJlbl_painting().refreshPaint();
         PaintObjects.getInstance().repaint();
+        Page.getInstance().getJlbl_background2().repaint();
        
     }
 

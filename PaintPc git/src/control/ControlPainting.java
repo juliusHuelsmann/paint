@@ -608,6 +608,7 @@ public final class ControlPainting implements MouseListener,
                         (BufferedImage) o);
                 Picture.getInstance().insertIntoSelected(poi);
                 Picture.getInstance().paintSelected();
+                Page.getInstance().getJlbl_background2().repaint();
             } else if (o instanceof List) {
                 @SuppressWarnings("unchecked")
                 List<PaintObject> ls = (List<PaintObject>) o;
@@ -654,6 +655,7 @@ public final class ControlPainting implements MouseListener,
                 Status.getLogger().warning("unknown return type of clipboard");
             }
             Picture.getInstance().paintSelected();
+            Page.getInstance().getJlbl_background2().repaint();
             Page.getInstance().getJlbl_painting().refreshPaint();
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_cut().getActionCause())) {
@@ -794,6 +796,7 @@ public final class ControlPainting implements MouseListener,
                 Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
                 CPaintStatus.getInstance().deactivate();
                 Paint.getInstance().getTb_move().setActivated(true);
+                Page.getInstance().getJlbl_background2().repaint();
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ERASE:
@@ -1135,6 +1138,8 @@ public final class ControlPainting implements MouseListener,
           Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
                   _r_size);
         }
+        Page.getInstance().getJlbl_background2().repaint();
+        
     }
     
     

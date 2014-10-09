@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -48,10 +49,11 @@ import control.util.MousePositionTracker;
     private final int dsgn_maxFadeIn = 200, dsgn_max_moveTitle = 200;
 	
 	/**
-	 * JLabel which contains the program title (for start fade in).
+	 * JLabel which contains the program title (for start fade in) and JLabel
+	 * for painting border of JFrame if non-fullscreen mode is enabled.
 	 * Only question of design (no real usage).
 	 */
-	private JLabel jlbl_title;
+	private JLabel jlbl_title, jlbl_border;
 	
 	/**
 	 * Constructor: initialize JFrame, alter settings and initialize items.
@@ -73,15 +75,21 @@ import control.util.MousePositionTracker;
         if (ViewSettings.FULLSCREEN) {
 
             this.setFullscreen();
+            //fade in and show text.
+            fadeIn();
+
         } else {
             MousePositionTracker mpt = new MousePositionTracker(this);
             super.addMouseListener(mpt);
             super.addMouseMotionListener(mpt);
         }
         
-        //fade in and show text.
-        fadeIn();
-
+        jlbl_border = new JLabel();
+        jlbl_border.setOpaque(false);
+        jlbl_border.setBorder(BorderFactory.createLineBorder(Color.gray));
+        jlbl_border.setFocusable(false);
+        super.add(jlbl_border);
+        
         //exit
         jbtn_exit = new JButton();
         jbtn_exit.setContentAreaFilled(false);
@@ -99,14 +107,21 @@ import control.util.MousePositionTracker;
         jbtn_fullscreen.setBorder(null);
         jbtn_fullscreen.setFocusable(false);
         super.add(jbtn_fullscreen);
-        
-        //fade out
-        fadeOut();
+
+        if (ViewSettings.FULLSCREEN) {
+
+            //fade out
+            fadeOut();
+        }
 
         //set some things visible and repaint the whole window.
         flip(true);
         repaint();
 
+        if (!ViewSettings.FULLSCREEN) {
+            super.getContentPane().setBackground(Color.white);
+            super.setLocationRelativeTo(null);
+        }
         /*
          * add Message form, tab, overview about paintObjects and Page
          */
@@ -365,7 +380,6 @@ import control.util.MousePositionTracker;
 
 	    //set gui bounds
         super.setSize(ViewSettings.VIEW_SIZE_JFRAME);
-        super.setLocation(0, 0);
 
         
         
@@ -383,6 +397,8 @@ import control.util.MousePositionTracker;
         Status.getLogger().info("   initialize Page\n");
         Page.getInstance().setSize(ViewSettings.VIEW_BOUNDS_PAGE.width, 
                 ViewSettings.VIEW_BOUNDS_PAGE.height);
+        Page.getInstance().setLocation(
+                ViewSettings.VIEW_BOUNDS_PAGE.getLocation());
 	    
         //if not flipped
 	    if (_normalFlip) {
@@ -431,6 +447,7 @@ import control.util.MousePositionTracker;
         Page.getInstance().flip(_normalFlip);
         Paint.getInstance().flip();
         Tabs.getInstance().flip(_normalFlip);
+        jlbl_border.setBounds(0, 0, getWidth(), getHeight());
 	}
 	
 	

@@ -30,6 +30,7 @@ import view.util.Item1PenSelection;
 import view.util.VColorPanel;
 import view.util.VLabel;
 import view.util.Item1Button;
+import view.util.VTabbedPane;
 
 
 /**
@@ -194,7 +195,7 @@ public final class Paint extends JPanel {
 	        tb_cut.setLocation(tb_copy.getX(), tb_copy.getHeight() 
 	                + ViewSettings.DISTANCE_BETWEEN_ITEMS + tb_copy.getY());
 	        insertTrennung(tb_cut.getWidth() + tb_cut.getX() 
-	                + ViewSettings.DISTANCE_BEFORE_LINE, tb_copy.getY(), 0, 
+	                + ViewSettings.DISTANCE_BEFORE_LINE, 0, 
 	                _paint);
 	    } else {
 
@@ -213,7 +214,6 @@ public final class Paint extends JPanel {
                     - tb_copy.getHeight() 
                     - ViewSettings.DISTANCE_BETWEEN_ITEMS);
             insertTrennung(tb_cut.getX() - ViewSettings.DISTANCE_BEFORE_LINE, 
-                    tb_copy.getY() + tb_copy.getHeight() - hundredFourtyFife, 
                     0, _paint);
          }
 	    
@@ -269,7 +269,7 @@ public final class Paint extends JPanel {
 	        tb_next.setLocation(
 	                tb_prev.getX(), tb_prev.getY() + tb_prev.getHeight());
 	        insertTrennung(tb_prev.getWidth() + tb_prev.getX() 
-	                + ViewSettings.DISTANCE_BEFORE_LINE, tb_prev.getY(), 
+	                + ViewSettings.DISTANCE_BEFORE_LINE, 
 	                1, _paint);
 	        insertInformation("history", _x, jlbl_separation[1].getX(), 1, 
 	                _paint);
@@ -285,8 +285,8 @@ public final class Paint extends JPanel {
 	                - ViewSettings.DISTANCE_BETWEEN_ITEMS 
 	                - tb_prev.getHeight());
             insertTrennung(tb_prev.getX() 
-                    - ViewSettings.DISTANCE_BEFORE_LINE, tb_prev.getY()
-                    + tb_prev.getHeight() - hundredFourtyFife, 1, _paint);
+                    - ViewSettings.DISTANCE_BEFORE_LINE,
+                    1, _paint);
 	        insertInformation("history", _x, jlbl_separation[1].getX(), 
 	                1, _paint);
   
@@ -447,7 +447,7 @@ public final class Paint extends JPanel {
         }
         insertTrennung(tb_move.getWidth() + tb_move.getX() 
                 + ViewSettings.DISTANCE_BEFORE_LINE, 
-                tb_move.getY(), 2, _paint);
+                2, _paint);
         insertInformation("Stifte", _x, jlbl_separation[2].getX(), 2, _paint);
     	
     	return jlbl_separation[2].getX() + ViewSettings.DISTANCE_AFTER_LINE;
@@ -486,9 +486,10 @@ public final class Paint extends JPanel {
     	super.add(tb_color2);
     
     	final int distanceBetweenColors = 2;
-    	int width = (2 + 2 + 1) * (2 + 2 + 1) - 2 - 2;
-    	int height = width + 2 + 1 + 2 * (2 + 1);
-    	int anzInR = 2 + 2 + 2 + 1;
+    	final int width = (2 + 2 + 1) * (2 + 2 + 1) - 2 - 2;
+    	final int height = ViewSettings.ITEM_MENU1_HEIGHT / 4 
+    	        -  distanceBetweenColors;
+    	final int anzInR = 7;
     	jbtn_colors = new JButton[anzInR * (2 + 2)];
     	for (int i = 0; i < jbtn_colors.length; i++) {
     		jbtn_colors[i] = new JButton();
@@ -604,7 +605,8 @@ public final class Paint extends JPanel {
         super.add(it_color);
         
     	insertTrennung(it_color.getWidth() + it_color.getX() + ViewSettings
-    	        .DISTANCE_BEFORE_LINE, it_color.getY(), 2 + 1, _paint);
+    	        .DISTANCE_BEFORE_LINE, 
+    	        2 + 1, _paint);
     	insertInformation("Farben", _x, jlbl_separation[2 + 1].getX(), 2 + 1, 
     	        _paint);
     	return jlbl_separation[2 + 1].getX() + ViewSettings.DISTANCE_AFTER_LINE;
@@ -648,7 +650,7 @@ public final class Paint extends JPanel {
 
 		insertTrennung(tb_zoomIn.getWidth() + tb_zoomIn.getX() 
 		        + ViewSettings.DISTANCE_BEFORE_LINE, 
-		        tb_zoomIn.getY(), 2 + 2, _paint);
+		        2 + 2, _paint);
 		insertInformation("Zoom", _x, jlbl_separation[2 + 2].getX(), 
 		        2 + 2, true);
 
@@ -738,7 +740,7 @@ public final class Paint extends JPanel {
         tb_turnNormal.setActivable(false);
 
 		insertTrennung(tb_turnMirror.getWidth() + tb_turnMirror.getX() 
-		        + ViewSettings.DISTANCE_BEFORE_LINE, tb_turnMirror.getY(), 
+		        + ViewSettings.DISTANCE_BEFORE_LINE,
 		        2 + 2 + 1, _paint);
 		insertInformation("Dateioperationen", jlbl_separation[2 + 2].getX(), 
 		        jlbl_separation[2 + 2 + 1].getX(), 2 + 2 + 1, _paint);
@@ -872,11 +874,10 @@ public final class Paint extends JPanel {
 	/**
 	 * 
 	 * @param _x the x coordinate in pX
-	 * @param _y the y coordinate in pX
 	 * @param _locInArray the location in array
 	 * @param _add whether to add or not
 	 */
-	private void insertTrennung(final int _x, final int _y, 
+	private void insertTrennung(final int _x, 
 	        final int _locInArray, final boolean _add) {
 	    
 	    //if new initialization is demanded
@@ -888,9 +889,14 @@ public final class Paint extends JPanel {
 	        super.add(this.jlbl_separation[_locInArray]);
 	        
 	    }
-	    final int twenty = 20;
-	    final int number = tb_cut.getHeight() + tb_cut.getY() + twenty;
-        this.jlbl_separation[_locInArray].setBounds(_x, _y, 1, number);
+        this.jlbl_separation[_locInArray].setBounds(
+                _x, 
+                ViewSettings.DISTANCE_BETWEEN_ITEMS, 
+                1, 
+                ViewSettings.VIEW_HEIGHT_TB_VISIBLE
+                - ViewSettings.DISTANCE_BETWEEN_ITEMS 
+                - ViewSettings.VIEW_HEIGHT_TB
+                / VTabbedPane.TITLE_PROPORTION_HEIGHT);
 	}
 	
 	/**
@@ -924,8 +930,9 @@ public final class Paint extends JPanel {
 
 		if (Status.isNormalRotation()) {
 
-		    final int distance = 5;
-            final int number = tb_cut.getHeight() + tb_cut.getY() + distance;
+            final int number = 
+                    ViewSettings.ITEM_MENU1_HEIGHT
+                    + ViewSettings.DISTANCE_BETWEEN_ITEMS;
             final int number2 = 15;
 	        jlbl_information[_locationInArray].setBounds(
 	                _x1, number, _x2 - _x1, number2);

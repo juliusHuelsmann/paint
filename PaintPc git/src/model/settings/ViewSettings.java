@@ -184,9 +184,11 @@ public final class ViewSettings {
 //            (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
             new Dimension(
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() 
-                    * 2 / (2 + 1)), 
+                    * 2 / (3)), 
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() 
-                    * 2 / (2 + 1)));
+                    * 2 / (3)));
+    
+    
 
     /**
      * .
@@ -219,18 +221,18 @@ public final class ViewSettings {
     /**
      * The bounds of the TabbedPanel.
      */
-    public static final Point VIEW_LOCATION_TB = new Point(0, 0);
+    public static final Point VIEW_LOCATION_TB = new Point(1, 1);
 
     /**
      * the width of the TabbedPane.
      */
-    public static final int VIEW_WIDTH_TB = VIEW_SIZE_JFRAME.width 
+    public static final int VIEW_WIDTH_TB = VIEW_SIZE_JFRAME.width - 2
             - ((2 * 2 * 2 * 2 + 1) * 2 + 1); //35
 
     /**
      * the height of the TabbedPane.
      */
-    public static final int VIEW_HEIGHT_TB = VIEW_SIZE_JFRAME.height;
+    public static final int VIEW_HEIGHT_TB = VIEW_SIZE_JFRAME.height - 1;
 
     /**
      * the visible height of the TabbedPane.
@@ -238,6 +240,11 @@ public final class ViewSettings {
     public static final int VIEW_HEIGHT_TB_VISIBLE = 
             (int) (VIEW_SIZE_JFRAME.height / (2 + 2 + 1 / 2));
 
+    /**
+     * The size of the tabbedPane opener.
+     */
+    public static final int VIEW_HEIGHT_TABBEDPANE_OPENER =
+            VIEW_HEIGHT_TB_VISIBLE / 9;
     /**
      * the bounds of the PaointObject.
      */
@@ -254,8 +261,8 @@ public final class ViewSettings {
      * the bounds of the Page.
      */
     public static final Rectangle VIEW_BOUNDS_PAGE_OPEN = new Rectangle(
-            0, VIEW_HEIGHT_TB_VISIBLE + TWENTY_FIFE , 
-            VIEW_SIZE_JFRAME.width - TWENTY_FIFE - TEN, 
+            1, VIEW_HEIGHT_TB_VISIBLE + TWENTY_FIFE , 
+            VIEW_SIZE_JFRAME.width - TWENTY_FIFE - TEN - 2, 
             VIEW_SIZE_JFRAME.height - VIEW_SIZE_JFRAME.height / FIFE 
             - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
             //the last 25 is the size 

@@ -20,6 +20,7 @@ import view.View;
 import view.forms.Page;
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.normal.BallPen;
+import model.objects.pen.normal.Marker;
 import model.objects.pen.normal.Pencil;
 import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
@@ -115,6 +116,10 @@ public abstract class Pen implements Serializable {
         } else if (_pen instanceof Pencil) {
 
             pen = new Pencil(_pen.getId_operation(),
+                    _pen.getThickness(), _pen.getClr_foreground());
+        } else if (_pen instanceof Marker) {
+
+            pen = new Marker(_pen.getId_operation(),
                     _pen.getThickness(), _pen.getClr_foreground());
         } else {
             

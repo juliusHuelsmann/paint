@@ -249,7 +249,7 @@ public class Pencil extends Pen {
             rgbInversNew = new Color(v, v + 1, v + 2);
         }
         
-        final Color clr_old = new Color(_bi.getRGB(_rX, _rY));
+        final Color clr_old = new Color(_bi.getRGB(_rX, _rY), true);
 
         //fetch old color if the color is not completely white
         //or transparent

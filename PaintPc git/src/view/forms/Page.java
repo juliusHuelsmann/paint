@@ -90,7 +90,7 @@ import control.ControlPainting;
     /**
      * The background JLabel (which is shown if image is transparent).
      */
-    private JLabel jlbl_background;
+    private JLabel jlbl_background, jlbl_background2;
     
 	/**
 	 * empty utility class constructor. 
@@ -200,6 +200,12 @@ import control.ControlPainting;
         jlbl_border.setBorder(BorderFactory.createLineBorder(Color.black));
         super.add(jlbl_border);
 
+        jlbl_background2 = new JLabel();
+        jlbl_background2.setBackground(Color.white);
+        jlbl_background2.setFocusable(false);
+        jlbl_background2.setBorder(null);
+        jlbl_background2.setOpaque(false);
+        super.add(jlbl_background2); 
         
         //JLabel for the painting and the raster
         jlbl_painting = new PaintLabel(jpnl_toMove);
@@ -210,13 +216,14 @@ import control.ControlPainting;
         jlbl_painting.setOpaque(false);
         super.add(jlbl_painting);
 
-        
+
         jlbl_background = new JLabel();
         jlbl_background.setBackground(Color.white);
         jlbl_background.setFocusable(false);
         jlbl_background.setBorder(null);
         jlbl_background.setOpaque(true);
         super.add(jlbl_background); 
+
         
         removeButtons();
 
@@ -296,6 +303,7 @@ import control.ControlPainting;
 
         jlbl_painting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_background.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
+        jlbl_background2.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionBG.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionPainting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
 
@@ -447,6 +455,15 @@ import control.ControlPainting;
      */
     public JLabel getJlbl_background() {
         return jlbl_background;
+    }
+
+
+
+    /**
+     * @return the jlbl_background
+     */
+    public JLabel getJlbl_background2() {
+        return jlbl_background2;
     }
 
 

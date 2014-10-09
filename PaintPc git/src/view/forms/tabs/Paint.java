@@ -15,6 +15,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import model.objects.pen.normal.BallPen;
+import model.objects.pen.normal.Marker;
 import model.objects.pen.normal.Pencil;
 import model.settings.Constants;
 import model.settings.Status;
@@ -49,7 +50,7 @@ public final class Paint extends JPanel {
 	 * pens for selection in Items it_stift1 and it_stift2.
 	 */
 	private Item1PenSelection sa_br1, sa_br2, sa_bn1, sa_bn2, sa_bp1, sa_bp2,
-	sa_fr1, sa_fr2, sa_fn1, sa_fn2, sa_fp1, sa_fp2;
+	sa_fr1, sa_fr2, sa_fn1, sa_fn2, sa_fp1, sa_fp2, sa_mn2, sa_mn1;
 
 	/**
 	 * array of colors to change the first or the second color.
@@ -774,6 +775,10 @@ public final class Paint extends JPanel {
                 "Fueller Punkte", "pen/fuellerPoint.png", 1, new BallPen(
                         Constants.PEN_ID_POINT, 1, Color.black));
 
+        sa_mn1 = new Item1PenSelection(
+                "Marker Normal", "pen/fuellerNormal.png", 1, new Marker(
+                        Constants.PEN_ID_LINES, 1, Color.black));
+        
         sa_bp2 = new Item1PenSelection(
                 "Bleistift Punkte", "pen/bleiPoint.png", 2, new Pencil(
                         Constants.PEN_ID_POINT, 1, Color.black));
@@ -793,7 +798,11 @@ public final class Paint extends JPanel {
         sa_fp2 = new Item1PenSelection(
                 "Fueller Punkte", "pen/fuellerPoint.png", 2, new BallPen(
                         Constants.PEN_ID_POINT, 1, Color.black));
-    
+
+        sa_mn2 = new Item1PenSelection(
+                "Marker Normal", "pen/fuellerNormal.png", 1, new Marker(
+                        Constants.PEN_ID_LINES, 1, Color.black));
+        
         
         //add bleistift to both panels
         it_stift1.add(sa_br1);
@@ -812,6 +821,10 @@ public final class Paint extends JPanel {
         it_stift2.add(sa_fr2);
         it_stift2.add(sa_fn2);
         it_stift2.add(sa_fp2);
+        
+        //marker
+        it_stift1.add(sa_mn1);
+        it_stift2.add(sa_mn2);
     
     
 	}

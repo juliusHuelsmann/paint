@@ -1296,6 +1296,8 @@ public final class Picture {
      */
     public boolean paintSelectedInline() {
 
+        //it occurred that the start point equal to 0. Why?
+        
         int px = (int) (CSelection.getInstance().getPnt_start()
                 .getX()
                 - Page.getInstance().getJlbl_painting().getLocation().getX());

@@ -261,7 +261,7 @@ public final class ViewSettings {
      * the bounds of the Page.
      */
     public static final Rectangle VIEW_BOUNDS_PAGE_OPEN = new Rectangle(
-            1, VIEW_HEIGHT_TB_VISIBLE + TWENTY_FIFE , 
+            1, VIEW_HEIGHT_TB_VISIBLE + TWENTY_FIFE, 
             VIEW_SIZE_JFRAME.width - TWENTY_FIFE - TEN - 2, 
             VIEW_SIZE_JFRAME.height - VIEW_SIZE_JFRAME.height / FIFE 
             - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);

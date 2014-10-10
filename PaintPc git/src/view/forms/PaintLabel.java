@@ -71,7 +71,43 @@ public class PaintLabel extends JLabel {
      */
     public final void refreshPaint() {
 
-        this.refreshRectangle(0, 0, getWidth(), getHeight());
+
+        Status.getLogger().finest("refreshing PaintLabel. \nValues: "
+                + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
+                + "\n\tgetLocation:\t" + getLocation() 
+                + " vs. " + super.getLocation()
+                + "\n\t" + "_x:\t\t"
+                + "\n\t" + "_y\t\t"
+                + "\n\t" + "_width\t\t" + getWidth()
+                + "\n\t" + "_height\t\t" + getHeight() + "\n");
+
+        //paint the painted stuff at graphics
+        setBi(Picture.getInstance().updateRectangle(
+                -getLocation().x, 
+                -getLocation().y, getWidth() , getHeight(), 0, 0, getBi()));
+
+        
+        //paint the painting background (e.g. raster / lines) at the graphical
+        //user interface.
+        if (Page.getInstance().getJlbl_background2().getWidth() != 0
+                && Page.getInstance().getJlbl_background2().getHeight() != 0) {
+
+            
+            BufferedImage ret = new BufferedImage(
+                    Page.getInstance().getJlbl_background2().getWidth(),
+                    Page.getInstance().getJlbl_background2().getHeight(),
+                    BufferedImage.TYPE_INT_ARGB);
+            ret = Picture.getInstance().emptyRectangle(
+                    -getLocation().x, 
+                    -getLocation().y, getWidth(), getHeight(), 0, 0, ret);
+            Page.getInstance().getJlbl_background2().setIcon(
+                    new ImageIcon((Utils.getBackground(ret, -getLocation().x, 
+                    -getLocation().y, -getLocation().x + getWidth(), 
+                    -getLocation().y + getHeight(), 0, 0))));  
+        }
+
+        setIcon(new ImageIcon(getBi()));
+        PaintObjects.getInstance().repaint();
     }
 
     @Override public final void repaint() {
@@ -163,29 +199,6 @@ public class PaintLabel extends JLabel {
         setBi(Picture.getInstance().updateRectangle(
                 -getLocation().x + _x, 
                 -getLocation().y + _y, _width, _height, _x, _y, getBi()));
-
-        
-        //paint the painting background (e.g. raster / lines) at the graphical
-        //user interface.
-        if (Page.getInstance().getJlbl_background2().getWidth() != 0
-                && Page.getInstance().getJlbl_background2().getHeight() != 0) {
-
-            
-            BufferedImage ret = new BufferedImage(
-                    Page.getInstance().getJlbl_background2().getWidth(),
-                    Page.getInstance().getJlbl_background2().getHeight(),
-                    BufferedImage.TYPE_INT_ARGB);
-            ret = Picture.getInstance().emptyRectangle(
-                    -getLocation().x + _x, 
-                    -getLocation().y + _y, _width, _height, _x, _y, ret);
-            Page.getInstance().getJlbl_background2().setIcon(
-                    new ImageIcon((Utils.getBackground(ret, -getLocation().x 
-                            + _x, 
-                    -getLocation().y + _y, -getLocation().x + _x + _width, 
-                    -getLocation().y + _y + _height, _x, _y))));  
-        }
-
-
 
         setIcon(new ImageIcon(getBi()));
         

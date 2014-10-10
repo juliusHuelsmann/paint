@@ -190,11 +190,9 @@ public class Marker extends Pen {
         int alpha1 = _c1.getAlpha();
         int alpha2 = _c2.getAlpha();
         int alphaTotal = alpha1 + alpha2;
-        System.out.println(alpha1 + "." + alpha2);
         
         int newAlpha = Math.min(Math.max(alpha1, alpha2) 
                 + Math.abs(alpha1 - alpha2) / divisor, maxRGB);
-        System.out.println(newAlpha);
         
         if (alphaTotal == 0) {
             return new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();

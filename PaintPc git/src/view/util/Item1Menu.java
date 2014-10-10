@@ -22,7 +22,6 @@ import model.util.list.List;
  * 
  * @author Julius Huelsmann 
  * @version %I%, %U%
- *
  */
 @SuppressWarnings("serial")
 public class Item1Menu extends JPanel {

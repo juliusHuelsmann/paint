@@ -11,13 +11,10 @@ import java.awt.event.MouseMotionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.text.View;
-
 import model.settings.Error;
 import model.settings.Status;
 import model.settings.ViewSettings;
@@ -348,9 +345,8 @@ public class VTabbedPane extends JPanel {
 	            final int max = 20;
 	            for (int i = 0; i < max; i++) {
 
-	                setComponentSize(getWidth(), startHeight
-	                        + (oldHeight / TITLE_PROPORTION_HEIGHT - startHeight)
-	                        * i / max);
+	                setComponentSize(getWidth(), startHeight + (oldHeight 
+	                        / TITLE_PROPORTION_HEIGHT - startHeight) * i / max);
 	                jpnl_close.setLocation(0, getHeight());
 	                jpnl_background.setSize(getWidth(), getHeight()
 	                        - jpnl_background.getY());
@@ -364,7 +360,8 @@ public class VTabbedPane extends JPanel {
 	                
 	            }
 
-	            setComponentSize(getWidth(), oldHeight / TITLE_PROPORTION_HEIGHT);
+	            setComponentSize(getWidth(), 
+	                    oldHeight / TITLE_PROPORTION_HEIGHT);
 	            jpnl_close.setLocation(0, getHeight() - jlbl_close.getHeight());
 	            jpnl_background.setSize(getWidth(), getHeight()
                         - jpnl_background.getY());

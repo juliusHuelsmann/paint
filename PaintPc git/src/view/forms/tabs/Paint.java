@@ -102,7 +102,7 @@ public final class Paint extends JPanel {
 	/**
 	 * constants.
 	 */
-    private final int fifety = 50,  hundredFourtyFife = 145;
+    private final int fifety = 50;
     
 	/**
 	 * Constructor of Paint.
@@ -460,7 +460,6 @@ public final class Paint extends JPanel {
 	 * @return the new position.
 	 */
     private int initializePageColors(final int _x, final boolean _paint) {
-    
     	//the first color for the first pen
     	tb_color1 = new Item1Button(null);
     	tb_color1.setOpaque(true);
@@ -472,7 +471,6 @@ public final class Paint extends JPanel {
     	        ViewSettings.ITEM_MENU1_WIDTH, ViewSettings.ITEM_MENU1_HEIGHT);
     	tb_color1.setText("Farbe 1");
     	super.add(tb_color1);
-    
     	//the second color for the second pen
     	tb_color2 = new Item1Button(null);
     	tb_color2.setOpaque(true);
@@ -487,16 +485,17 @@ public final class Paint extends JPanel {
     
     	final int distanceBetweenColors = 2;
     	final int width = (2 + 2 + 1) * (2 + 2 + 1) - 2 - 2;
-    	final int height = ViewSettings.ITEM_MENU1_HEIGHT / 4 
+    	final int amountOfItems = 4;
+    	final int height = ViewSettings.ITEM_MENU1_HEIGHT / amountOfItems
     	        -  distanceBetweenColors;
     	final int anzInR = 7;
     	jbtn_colors = new JButton[anzInR * (2 + 2)];
     	for (int i = 0; i < jbtn_colors.length; i++) {
     		jbtn_colors[i] = new JButton();
     		jbtn_colors[i].setBounds(tb_color2.getX() + tb_color2.getWidth() 
-    		        + distanceBetweenColors + (i % anzInR) 
-    		        * (width + distanceBetweenColors), 
-    		        distanceBetweenColors + (i / anzInR)
+    		        + distanceBetweenColors 
+    		        + (i % anzInR) * (width + distanceBetweenColors),
+    		        distanceBetweenColors + (i / anzInR) 
     		        * (height + distanceBetweenColors), width, height);
     		jbtn_colors[i].setOpaque(true);
     		jbtn_colors[i].addMouseListener(
@@ -509,41 +508,41 @@ public final class Paint extends JPanel {
     	int i = 0;
     	final int three = 3;
     	final Color 
-    	        c1n0 = Color.black,
-    	        c1n1 = new Color(80, 80, 80),
-    	        c1n2 = new Color(160, 160, 160),
-    	        c1n3 = Color.white,
-    	        
-    	        c2n0 = new Color(23, 32, 164),
-    	        c2n1 = new Color(63, 72, 204), 
-    	        c2n2 = new Color(103, 112, 244),
-    	        c2n3 = new Color(153, 162, 255), 
-
-    	        c3n0 = new Color(180, 10, 10),
-    	        c3n1 = new Color(200, 20, 20), 
-    	        c3n2 = new Color(250, 75, 75),
-    	        c3n3 = new Color(255, 100, 100), 
-
-    	        c4n0 = new Color(24, 157, 45),
-    	        c4n1 = new Color(34, 177, 67), 
-    	        c4n2 = new Color(64, 197, 97),
-    	        c4n3 = new Color(104, 255, 147), 
-    	                
-    	        c5n0 = new Color(235, 107, 73),
-    	        c5n1 = new Color(255, 127, 93), 
-    	        c5n2 = new Color(255, 147, 113),
-    	        c5n3 = new Color(255, 187, 153), 
-
-    	        c6n0 = new Color(133, 33, 134),
-    	        c6n1 = new Color(163, 73, 164), 
-    	        c6n2 = new Color(193, 103, 194),
-    	        c6n3 = new Color(255, 153, 254),
-    	                
-    	        c7n0 = new Color(112, 146, 190),
-    	        c7n1 = new Color(200, 191, 231), 
-    	        c7n2 = new Color(255, 201, 14),
-    	        c7n3 = new Color(120, 74, 50);
-    
+    	c1n0 = Color.black,
+    	c1n1 = new Color(80, 80, 80),
+    	c1n2 = new Color(160, 160, 160),
+    	c1n3 = Color.white,
+    	
+    	c2n0 = new Color(23, 32, 164),
+    	c2n1 = new Color(63, 72, 204), 
+    	c2n2 = new Color(103, 112, 244),
+    	c2n3 = new Color(153, 162, 255), 
+    	
+    	c3n0 = new Color(180, 10, 10),
+    	c3n1 = new Color(200, 20, 20), 
+    	c3n2 = new Color(250, 75, 75),
+    	c3n3 = new Color(255, 100, 100), 
+    	
+    	c4n0 = new Color(24, 157, 45),
+    	c4n1 = new Color(34, 177, 67), 
+    	c4n2 = new Color(64, 197, 97),
+    	c4n3 = new Color(104, 255, 147), 
+    	
+    	c5n0 = new Color(235, 107, 73),
+    	c5n1 = new Color(255, 127, 93), 
+    	c5n2 = new Color(255, 147, 113),
+    	c5n3 = new Color(255, 187, 153), 
+    	
+    	c6n0 = new Color(133, 33, 134),
+    	c6n1 = new Color(163, 73, 164), 
+    	c6n2 = new Color(193, 103, 194),
+    	c6n3 = new Color(255, 153, 254),
+    	
+    	c7n0 = new Color(112, 146, 190),
+    	c7n1 = new Color(200, 191, 231), 
+    	c7n2 = new Color(255, 201, 14),
+    	c7n3 = new Color(120, 74, 50);
+    	
     	//schwarz bis grau
     	jbtn_colors[i + anzInR * 0].setBackground(c1n0);
     	jbtn_colors[i + anzInR * 1].setBackground(c1n1);
@@ -605,8 +604,7 @@ public final class Paint extends JPanel {
         super.add(it_color);
         
     	insertTrennung(it_color.getWidth() + it_color.getX() + ViewSettings
-    	        .DISTANCE_BEFORE_LINE, 
-    	        2 + 1, _paint);
+    	        .DISTANCE_BEFORE_LINE, 2 + 1, _paint);
     	insertInformation("Farben", _x, jlbl_separation[2 + 1].getX(), 2 + 1, 
     	        _paint);
     	return jlbl_separation[2 + 1].getX() + ViewSettings.DISTANCE_AFTER_LINE;

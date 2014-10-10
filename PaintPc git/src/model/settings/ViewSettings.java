@@ -184,9 +184,9 @@ public final class ViewSettings {
 //            (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
             new Dimension(
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() 
-                    * 2 / (3)), 
+                    * 2 / (2 + 1)), 
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() 
-                    * 2 / (3)));
+                    * 2 / (2 + 1)));
     
     
 
@@ -244,7 +244,7 @@ public final class ViewSettings {
      * The size of the tabbedPane opener.
      */
     public static final int VIEW_HEIGHT_TABBEDPANE_OPENER =
-            VIEW_HEIGHT_TB_VISIBLE / 9;
+            VIEW_HEIGHT_TB_VISIBLE / (2 + 1) / (2 + 1);
     /**
      * the bounds of the PaointObject.
      */

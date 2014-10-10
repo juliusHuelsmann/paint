@@ -55,6 +55,14 @@ public final class Status {
      */
     private static final int START_IMAGE_HEIGHT = 2800; //3535;
     
+    
+    /**
+     * The border percentages.
+     */
+    private static int borderLeftPercent = 2 * 2 * 2 * 2 * 2, 
+    borderRightPercent = 2 * 2 * 2, borderTopPercent = 0, 
+    borderBottomPercent = 0;
+    
     /**
      * the size of the image.
      */
@@ -166,6 +174,41 @@ public final class Status {
                 //thus, it is impossible that the last boxes do not
                 //terminate.
                 + (imageShowSize.width % getRasterSize() - 1);
+    }
+    
+
+    /**
+     * Get the border size.
+     * @return the border size.
+     */
+    public static int getMargeLeft() {
+        final int hundred = 100;
+        return borderLeftPercent * getImageSize().width / hundred;
+    }
+
+    /**
+     * Get the border size.
+     * @return the border size.
+     */
+    public static int getMargeRight() {
+        final int hundred = 100;
+        return borderRightPercent * getImageSize().width / hundred;
+    }
+    /**
+     * Get the border size.
+     * @return the border size.
+     */
+    public static int getMargeTop() {
+        final int hundred = 100;
+        return borderTopPercent * getImageSize().height / hundred;
+    }
+    /**
+     * Get the border size.
+     * @return the border size.
+     */
+    public static int getMargeBottom() {
+        final int hundred = 100;
+        return borderBottomPercent * getImageSize().height / hundred;
     }
     
     /**
@@ -431,5 +474,43 @@ public final class Status {
             setId_transparency(id_transparency);
         }
         return bi_transparency;
+    }
+
+
+
+
+    /**
+     * @param _borderLeftPercent the borderLeftPercent to set
+     */
+    public static void setBorderLeftPercent(final int _borderLeftPercent) {
+        Status.borderLeftPercent = _borderLeftPercent;
+    }
+
+
+
+    /**
+     * @param _borderRightPercent the borderRightPercent to set
+     */
+    public static void setBorderRightPercent(final int _borderRightPercent) {
+        Status.borderRightPercent = _borderRightPercent;
+    }
+
+
+
+
+    /**
+     * @param _borderTopPercent the borderTopPercent to set
+     */
+    public static void setBorderTopPercent(final int _borderTopPercent) {
+        Status.borderTopPercent = _borderTopPercent;
+    }
+
+
+
+    /**
+     * @param _borderBottomPercent the borderBottomPercent to set
+     */
+    public static void setBorderBottomPercent(final int _borderBottomPercent) {
+        Status.borderBottomPercent = _borderBottomPercent;
     }
 }

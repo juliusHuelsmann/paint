@@ -12,10 +12,13 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import control.tabs.CPaintStatus;
+import model.settings.Status;
 import model.settings.ViewSettings;
 import view.util.Item2;
 import view.util.Item2Menu;
 import view.util.Item1Button;
+import view.util.VLabel;
+import view.util.VTabbedPane;
 
 
 /**
@@ -65,6 +68,16 @@ public final class Insert extends JPanel {
      */
     private final int distance = 5, itemButtonSize = 128, locationX = 285;
 
+    /**
+     * JLabels for the separation, linked with information.
+     */
+    private JLabel [] jlbl_separation;
+
+    /**
+     * JLabels for the information text, linked with separation line.
+     */
+    private VLabel [] jlbl_information;
+    
     
     /**
      * Empty utility class constructor.
@@ -80,10 +93,22 @@ public final class Insert extends JPanel {
 		//initialize JPanel and alter settings
 		super.setOpaque(false);
 		super.setLayout(null);
+
+        
+        jlbl_information = new VLabel[2 + 2];
+        jlbl_separation = new JLabel[2 + 2];
+        
 		
+        /*
+         * 
+         * 
+         * 
+         * 
+         * 
+         */
 		tb_selected = new Item1Button(null);
 		tb_selected.setOpaque(true);
-		tb_selected.setSize(itemButtonSize, itemButtonSize);
+		tb_selected.setSize(itemButtonSize, ViewSettings.ITEM_MENU1_HEIGHT);
 		tb_selected.setLocation(distance, distance);
 		tb_selected.setText("Viereck");
 		tb_selected.setBorder(BorderFactory.createCompoundBorder(
@@ -93,36 +118,52 @@ public final class Insert extends JPanel {
 		tb_selected.setIcon("paint/test.png");
 		super.add(tb_selected);
 		
-		JLabel jlbl_trennung = insertTrennung(tb_selected.getX() 
-		        + tb_selected.getWidth(), tb_selected.getY());
-        super.add(jlbl_trennung);
-        insertInformation("ausgewaehlt", 
-                tb_selected.getX(), jlbl_trennung.getX());
-        //
-        initializeGeo(jlbl_trennung.getX());
-        
-		jlbl_trennung = insertTrennung(ia_geo.getX() 
-		        + ia_geo.getWidth(), ia_geo.getY());
-        super.add(jlbl_trennung);
-        insertInformation("geometrische Formen", 
-                ia_geo.getX(), jlbl_trennung.getX());
-        //
+		insertTrennung(
+		        tb_selected.getX() + tb_selected.getWidth(), 0, true);
+        insertInformation(
+                "ausgewaehlt", 
+                tb_selected.getX(), jlbl_separation[0].getX(), 0, true);
+        /*
+         * 
+         * 
+         * 
+         * 
+         * 
+         */
+        initializeGeo(jlbl_separation[0].getX());
 
+        insertTrennung(
+                ia_geo.getX() + ia_geo.getWidth(), 1, true);
+        insertInformation(
+                "geometrische Formen", 
+                ia_geo.getX(), jlbl_separation[1].getX(), 1, true);
+        /*
+         * 
+         * 
+         * 
+         * 
+         * 
+         */
         ia_maths = new Item2Menu();
-        ia_maths.setLocation(jlbl_trennung.getX() + distance, distance);
-        ia_maths.setSize(ia_geo.getWidth(), ia_geo.getHeight() * 2);
+        ia_maths.setLocation(jlbl_separation[1].getX() + distance, distance);
+        ia_maths.setSize(ia_geo.getWidth(), ViewSettings.ITEM_MENU1_HEIGHT);
 		super.add(ia_maths);
 		
-		jlbl_trennung = insertTrennung(ia_maths.getX() 
-		        + ia_maths.getWidth(), ia_maths.getY());
-        super.add(jlbl_trennung);
-        insertInformation("mathematische Formen",
-                ia_maths.getX(), jlbl_trennung.getX());
-		
-
+        insertTrennung(
+                ia_maths.getX() + ia_maths.getWidth(), 2, true);
+        insertInformation(
+                "mathematische Formen", 
+                ia_maths.getX(), jlbl_separation[2].getX(), 2, true);
+        /*
+         * 
+         * 
+         * 
+         * 
+         * 
+         */
         ia_diagram = new Item2Menu();
-     	ia_diagram.setSize(ia_geo.getWidth(), ia_geo.getHeight() * 2);
-    	ia_diagram.setLocation(jlbl_trennung.getX() + distance, distance);
+     	ia_diagram.setSize(ia_geo.getWidth(), ViewSettings.ITEM_MENU1_HEIGHT);
+    	ia_diagram.setLocation(jlbl_separation[2].getX() + distance, distance);
 		super.add(ia_diagram);
 
         i2_d_diagramm = new Item2();
@@ -171,11 +212,13 @@ public final class Insert extends JPanel {
         jtf_amountRows.setSize(widthLabel, heightLabel);
         super.add(jtf_amountRows);
         
-		jlbl_trennung = insertTrennung(ia_diagram.getX() 
-		        + ia_diagram.getWidth(), ia_diagram.getY());
-		super.add(jlbl_trennung);
-        insertInformation("Diagramme", ia_diagram.getX(),
-                jlbl_trennung.getX());
+
+        insertTrennung(
+                ia_diagram.getX() + ia_diagram.getWidth(), 2 + 1, true);
+        insertInformation(
+                "Diagramme", 
+                ia_diagram.getX(), jlbl_separation[2 + 1].getX(), 2 + 1, true);
+        
         super.setSize((int) Toolkit.getDefaultToolkit()
                 .getScreenSize().getWidth(), _height);
 	}
@@ -188,7 +231,7 @@ public final class Insert extends JPanel {
 
         ia_geo = new Item2Menu();
         ia_geo.setLocation(_x , tb_selected.getY());
-        ia_geo.setSize(locationX, itemButtonSize * (2 + 1));
+        ia_geo.setSize(locationX, ViewSettings.ITEM_MENU1_HEIGHT);
         ia_geo.setItemsInRow(2 + 2);
         super.add(ia_geo);
 
@@ -271,49 +314,79 @@ public final class Insert extends JPanel {
         i2_g_archFilled.setIcon("icon/geoForm/arch.png");
 
 	}
-	
-	/**
-	 * insert a separation line.
-	 * @param _x the x start location
-	 * @param _y the y start location.
-	 * @return the JLabel
-	 */
-	private JLabel insertTrennung(final int _x, final int _y) {
 
-	    final int number = 145;
-	    
-		JLabel jlbl_trennung = new JLabel();
-		jlbl_trennung.setBorder(
-                BorderFactory.createLineBorder(
-                        ViewSettings.CLR_BACKGROUND_DARK_XX));
-		jlbl_trennung.setBounds(_x, _y, 1, number);
-		super.add(jlbl_trennung);
-		
-		return jlbl_trennung;
-	}
-	
-	
-	/**
-	 * insert information text as title for an area.
-	 * @param _text the information text
-	 * @param _x the lower x coordinate 
-	 * @param _upper the upper x coordinate
-	 */
-	private void insertInformation(final String _text, final int _x, 
-	        final int _upper) {
+    /**
+     * 
+     * @param _x the x coordinate in pX
+     * @param _locInArray the location in array
+     * @param _add whether to add or not
+     */
+    private void insertTrennung(final int _x, 
+            final int _locInArray, final boolean _add) {
+        
+        //if new initialization is demanded
+        if (_add) {
+            this.jlbl_separation[_locInArray] = new JLabel();
+            this.jlbl_separation[_locInArray].setBorder(
+                    BorderFactory.createLineBorder(
+                            ViewSettings.CLR_BACKGROUND_DARK_XX));
+            super.add(this.jlbl_separation[_locInArray]);
+            
+        }
+        this.jlbl_separation[_locInArray].setBounds(
+                _x, 
+                ViewSettings.DISTANCE_BETWEEN_ITEMS, 
+                1, 
+                ViewSettings.VIEW_HEIGHT_TB_VISIBLE
+                - ViewSettings.DISTANCE_BETWEEN_ITEMS 
+                - ViewSettings.VIEW_HEIGHT_TB
+                / VTabbedPane.TITLE_PROPORTION_HEIGHT);
+    }
+    
+    /**
+     * insert information text.
+     * @param _text the printed text
+     * @param _x1 first x coordinate (is between first and second coordinate)
+     * @param _x2 second x coordinate (is between first and second coordinate)
+     * @param _locationInArray the location in information array
+     * @param _insert whether to insert the item or just to change bounds
+     */
+    private void insertInformation(final String _text, 
+            final int _x1, final int _x2, final int _locationInArray, 
+            final boolean _insert) {
 
-		final int rgb = 190;
-		final int number = 135;
-		final int number2 = 20;
-		
-		JLabel jlbl_informationColor = new JLabel(_text);
-		jlbl_informationColor.setFont(ViewSettings.GENERAL_FONT_ITEM);
-		jlbl_informationColor.setBounds(_x , number, _upper - _x, number2);
-		jlbl_informationColor.setForeground(new Color(rgb, rgb, rgb));
-		jlbl_informationColor.setHorizontalAlignment(SwingConstants.CENTER);
-		super.add(jlbl_informationColor);
+        if (_insert) {
 
-	}
+            //final value for foreground for JLabel
+            final int rgb = 190;
+            
+            jlbl_information[_locationInArray] = new VLabel();
+            jlbl_information[_locationInArray].setFont(
+                    ViewSettings.TP_FONT_INFORMATION);
+            jlbl_information[_locationInArray].setForeground(
+                    new Color(rgb, rgb, rgb));
+            jlbl_information[_locationInArray].setHorizontalAlignment(
+                    SwingConstants.CENTER);
+            jlbl_information[_locationInArray].setText(_text);
+            super.add(jlbl_information[_locationInArray]);
+            
+        }
+
+        if (Status.isNormalRotation()) {
+
+            final int number = 
+                    ViewSettings.ITEM_MENU1_HEIGHT
+                    + ViewSettings.DISTANCE_BETWEEN_ITEMS;
+            final int number2 = 15;
+            jlbl_information[_locationInArray].setBounds(
+                    _x1, number, _x2 - _x1, number2);
+        } else {
+            jlbl_information[_locationInArray].setOpaque(true);
+            jlbl_information[_locationInArray].setBounds(-1, -1, -1, -1);
+        }
+
+    }
+	
 	
 	
 	

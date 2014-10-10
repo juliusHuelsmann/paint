@@ -5,34 +5,29 @@ package view.util;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
-
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
-
 import view.forms.Page;
 import view.forms.Tabs;
 import model.settings.ViewSettings;
 import control.util.CItemAufklappen;
 
-
-
 /**
- * a Menu which shows as much of the content as possible even if
+ * A Menu which shows as much of the content as possible even if
  * it is closed.
  * 
  * @author Julius Huelsmann 
  * @version %I%, %U%
- *
  */
 @SuppressWarnings("serial")
 public class Item2Menu extends JPanel {
 
     /**
-     * JLabel for the border.
+     * JButton for the border.
      */
-	private JLabel jlbl_border;
+	private JButton jlbl_border;
 	
 	/**
 	 * JButton for opening the Panel.
@@ -58,7 +53,14 @@ public class Item2Menu extends JPanel {
 	 * the amount of items which are added in one row to JPanel.
 	 */
 	private int itemsInRow;
-	
+
+    /**
+     * The set height of the Item2Menu if it is closed. Has to be saved because
+     * if the Item2Menu is opened the component height is overwritten.
+     */
+    private int height;
+    
+    
 	/**
 	 * Constructor: shows closed item.
 	 */
@@ -66,7 +68,7 @@ public class Item2Menu extends JPanel {
 		
 		//initialize JPanel and alter settings
 		super();
-		super.setOpaque(false);
+		super.setOpaque(true);
 		super.setLayout(null);
 		
 		//initialize items in row
@@ -87,7 +89,9 @@ public class Item2Menu extends JPanel {
 		super.add(jbtn_open);
 		
 		//contains stuff and is the border of the item
-		jlbl_border = new JLabel();
+		jlbl_border = new JButton();
+		jlbl_border.setContentAreaFilled(false);
+		jlbl_border.setOpaque(false);
 		jlbl_border.setLayout(null);
 		jlbl_border.setOpaque(true);
 		jlbl_border.setBackground(clr_background);
@@ -95,6 +99,7 @@ public class Item2Menu extends JPanel {
 		
 		//apply borders
 		applyMouseExited();
+		
 		
 	}
 	
@@ -138,7 +143,6 @@ public class Item2Menu extends JPanel {
         
 	}
 	
-	
 	/**
 	 * open or close the item2 menu from outside.
 	 * @param _open wheter open or not
@@ -148,6 +152,7 @@ public class Item2Menu extends JPanel {
 	    if (_open == !opened) {
 
 	        this.opened = _open;
+	        final int heightJButton = 15;
 
 	        //if is not opened set border.
 	        if (opened) {
@@ -158,15 +163,46 @@ public class Item2Menu extends JPanel {
 
 	        
 	        if (opened) {
-	            setSize(getWidth(), getHeight() * 2);   
+
+	                final int borderSpace = 2;
+	                final int totalWidth = jlbl_border.getWidth() 
+	                        - 2 * borderSpace;
+	                final int itemSize = totalWidth / itemsInRow;
+
+	                if (pnt_previousItem == null) {
+
+                        super.setSize(getWidth(), height); 
+	                } else {
+
+                        int realheight = pnt_previousItem.y + itemSize;
+	                    if (realheight < height) {
+	                        realheight = height;
+	                    }
+                        super.setSize(getWidth(), realheight);  
+	                } 
 	        } else {
 
-	            setSize(getWidth(), 
-	                    getHeight() + jbtn_open.getHeight() * 2 - 2 - 1);
+	            super.setSize(getWidth(), height);
+	        }
+
+	        jlbl_border.setBounds(
+	                distance, 
+	                distance, 
+	                getWidth() - distance * 2,
+	                getHeight() - distance * 2 - heightJButton);
+	        
+	        jbtn_open.setBounds(
+	                jlbl_border.getX(),
+	                jlbl_border.getY() + jlbl_border.getHeight(), 
+	                jlbl_border.getWidth(), 
+	                heightJButton);
+	        if (!opened) {
+
                 //when closed repaint.
                 Page.getInstance().getJlbl_painting().repaint();
                 Tabs.getInstance().repaint();
 	        }
+	        
 	    } //otherwise nothing to do
 	}
 	
@@ -195,20 +231,33 @@ public class Item2Menu extends JPanel {
 	 */
 	@Override public final void setSize(final int _width, final int _height) {
 		
+	    this.height = _height;
 		final int realheight;
 		final int heightJButton = 15;
 		if (opened) {
-			realheight = _height - heightJButton * 2 + (2 + 1);
+
+	        final int borderSpace = 2;
+		    final int totalWidth = jlbl_border.getWidth() - 2 * borderSpace;
+	        final int itemSize = totalWidth / itemsInRow;
+
+	        realheight = pnt_previousItem.y + itemSize;
 		} else {
-			realheight = _height / 2;
+			realheight = _height;
 		}
 		super.setSize(_width, realheight);
-		jlbl_border.setBounds(distance, distance, _width - distance * 2,
+		jlbl_border.setBounds(
+		        distance, 
+		        distance, 
+		        _width - distance * 2,
 		        realheight - distance * 2 - heightJButton);
-		jbtn_open.setBounds(jlbl_border.getX(), jlbl_border.getY() 
-		        + jlbl_border.getHeight(), jlbl_border.getWidth(), 
+		
+		jbtn_open.setBounds(
+		        jlbl_border.getX(),
+		        jlbl_border.getY() + jlbl_border.getHeight(), 
+		        jlbl_border.getWidth(), 
 		        heightJButton);
 	}
+	
 	
 	@Override public final Component add(final Component _c) {
 		

@@ -100,10 +100,10 @@ public abstract class Pen implements Serializable {
 	
 	/**
 	 * Clone the pen.
-	 * @param _pen
-	 * @return
+	 * @param _pen the pen
+	 * @return the cloned pen.
 	 */
-	public static final Pen clonePen(Pen _pen) {
+	public static final Pen clonePen(final Pen _pen) {
 
 	    Pen pen;
         if (_pen instanceof BallPen) {
@@ -436,9 +436,6 @@ public abstract class Pen implements Serializable {
         
         
         //try to perform spline interpolation.
-        
-        if (0 == 0)
-            return;
         
         List<DPoint> ls_point = _o.getPoints();
         ls_point.toFirst();

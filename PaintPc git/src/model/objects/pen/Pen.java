@@ -12,10 +12,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 import view.View;
 import view.forms.Page;
 import model.objects.painting.po.PaintObjectWriting;

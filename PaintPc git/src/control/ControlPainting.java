@@ -534,13 +534,11 @@ public final class ControlPainting implements MouseListener,
                             .getWidth(), View.getInstance().getJbtn_exit()
                             .getHeight(), 
                             Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
-
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_new().getActionCause())) {
             actionNew();
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_save().getActionCause())) {
-
             actionSave();
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_load().getActionCause())) {

@@ -1555,13 +1555,14 @@ public final class Picture {
      */
     public void userSetPen(final Pen _pen, final int _id) {
 
+        System.out.println("fick dich doch " + _id);
         Pen pen = Pen.clonePen(_pen);
         if (_id == 1) {
             pen.setClr_foreground(Status.getPenSelected1().getClr_foreground());
             Status.setPenSelected1(pen);
         } else if (_id == 2) {
             pen.setClr_foreground(Status.getPenSelected2().getClr_foreground());
-            Status.setPenSelected1(pen);
+            Status.setPenSelected2(pen);
         } else {
             Status.getLogger().severe("wrong identifier.");
         }

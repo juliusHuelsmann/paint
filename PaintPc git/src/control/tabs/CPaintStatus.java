@@ -286,7 +286,6 @@ public final class CPaintStatus implements MouseListener {
      */
     private boolean mouseReleasedPenChange(final MouseEvent _event) {
 
-        System.out.println("mrpc");
         /*
          * the different pens in open pen menu
          */

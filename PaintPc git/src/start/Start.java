@@ -46,7 +46,7 @@ public final class Start {
                     p.load(currentFile.getPath());
                     p.transformWhiteToAlpha();
                     Status.getLogger().info(currentFile.getPath());
-                    p.savePNG(currentFile.getPath() + "2");
+                    p.saveQuickPNG(currentFile.getPath() + "2");
                 } else if (currentFile.isFile()
                         && currentFile.getPath().endsWith(".gif")) {
                     

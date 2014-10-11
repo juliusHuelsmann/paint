@@ -6,7 +6,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 
+import javax.rmi.CORBA.Util;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -18,6 +20,7 @@ import control.util.CItem;
 import control.util.VisualTextButton;
 import model.settings.ViewSettings;
 import model.util.list.List;
+import model.util.paint.Utils;
 
 /**
  * 
@@ -349,6 +352,13 @@ public class Item1Menu extends JPanel {
             tb_open.setLocation(tb_select.getX(), 
                     tb_select.getY() + tb_select.getHeight());
             tb_open.setSize(closedWidth, closedHeight / (2 + 2 + 1));
+            
+            final int height = tb_open.getHeight() / (2 + 1);
+            final int imageWidth = 60;
+            final int imageHeight = 42;
+            tb_open.setIcon(new ImageIcon(Utils.resizeImage(
+                    height * imageWidth / imageHeight, 
+                    height, "open.png")));
 //             + 2));
 			
 		} else {

@@ -833,6 +833,7 @@ public final class Picture {
      */
     public void savePNG(final String _wsLoc) {
         
+        
         BufferedImage bi;
         bi = Page.getInstance().getEmptyBI();
         bi = repaintRectangle(
@@ -842,6 +843,36 @@ public final class Picture {
                 bi, true);
                 
                 
+        
+        
+        try {
+            ImageIO.write(bi, "png", new File(_wsLoc));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+
+    /**
+     * save the picture.
+     * @param _wsLoc the path of the location.
+     */
+    public void saveQuickPNG(final String _wsLoc) {
+        
+        
+        ls_po_sortedByX.toFirst();
+        Rectangle r = ls_po_sortedByX.getItem().getSnapshotBounds();
+        BufferedImage bi = new BufferedImage(
+                r.width, r.height, BufferedImage.TYPE_INT_ARGB);
+        
+        for (int i = 0; i < r.width; i++) {
+            for (int j = 0; j < r.height; j++) {
+                bi.setRGB(i, j, new Color(0, 0, 0, 0).getRGB());
+            }
+        }
+        
+        bi = ls_po_sortedByX.getItem().paint(bi, true, bi, 0, 0);
         
         
         try {
@@ -986,8 +1017,8 @@ public final class Picture {
 
 	        ls_po_sortedByX.toFirst();
 	        while (!ls_po_sortedByX.isBehind() && !ls_po_sortedByX.isEmpty()) {
-	            
 	            if (ls_po_sortedByX.getItem() instanceof PaintObjectImage) {
+	                
 	                whiteToAlpha((PaintObjectImage) ls_po_sortedByX.getItem());
 	            }
 	            ls_po_sortedByX.next();
@@ -1006,8 +1037,8 @@ public final class Picture {
 		for (int i = 0; i < bi_snapshot.getWidth(); i++) {
 			for (int j = 0; j < bi_snapshot.getHeight(); j++) {
 				
-				Color c = new Color(bi_snapshot.getRGB(i, j));
-			
+				Color c = new Color(bi_snapshot.getRGB(i, j), true);
+
 				int red = c.getRed();
 				int blue =  c.getBlue();
 				int green =  c.getGreen();
@@ -1016,6 +1047,7 @@ public final class Picture {
 				final int upTo = 240;
 				if (red + green + blue >= (2 + 1) * upTo) {
 					alpha = 0;
+	                System.out.println("hier");
 				} else {
 				    final int maxAlpha = 255;
 					alpha = maxAlpha;
@@ -1025,6 +1057,8 @@ public final class Picture {
 				        red, green, blue, alpha).getRGB());
 			}
 		}
+		
+		_poi.setImage(bi_snapshot);
 	}
 	
 	
@@ -1456,13 +1490,29 @@ public final class Picture {
 	public DPoint load(final String _wsLoc) {
 	    BufferedImage bi_normalSize;
 		try {
-			bi_normalSize = ImageIO.read(new File(_wsLoc));
+			BufferedImage bi_unnormalSchaizz = ImageIO.read(new File(_wsLoc));
+			bi_normalSize = new BufferedImage(bi_unnormalSchaizz.getWidth(), 
+			        bi_unnormalSchaizz.getHeight(), 
+			        BufferedImage.TYPE_INT_ARGB);
+			
+			for (int x = 0; x < bi_unnormalSchaizz.getWidth(); x++) {
+
+	            for (int y = 0; y < bi_unnormalSchaizz.getHeight(); y++) {
+	                bi_normalSize.setRGB(x, y, bi_unnormalSchaizz.getRGB(x, y));
+	            }
+			}
+			
 			Status.setImageSize(new Dimension(bi_normalSize.getWidth(), 
                     bi_normalSize.getHeight()));
 			Status.setImageShowSize(new Dimension(bi_normalSize.getWidth(), 
 			        bi_normalSize.getHeight()));
 			
-			createPOI(bi_normalSize);
+			if (ls_po_sortedByX == null) {
+			    createSelected();
+			}
+			
+			ls_po_sortedByX.toFirst();
+			ls_po_sortedByX.insertBehind(createPOI(bi_normalSize));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

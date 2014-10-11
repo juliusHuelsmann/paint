@@ -186,6 +186,14 @@ public class PaintObjectImage extends PaintObject {
         return bi_image;
     }
 
+    
+    /**
+     * set the bufferedImage.
+     * @param _bi the BI
+     */
+    public final void setImage(final BufferedImage _bi) {
+        this.bi_image = _bi;
+    }
 
     
     /**

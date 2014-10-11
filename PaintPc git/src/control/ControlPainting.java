@@ -573,6 +573,7 @@ public final class ControlPainting implements MouseListener,
         View.getInstance().setVisible(false);
         View.getInstance().setFullscreen();
         View.getInstance().flip(true);
+        View.getInstance().repaint();
         
     }
 

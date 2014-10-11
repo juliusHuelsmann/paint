@@ -48,7 +48,7 @@ public final class Outlook extends JPanel {
         super.setOpaque(false);
         super.setLayout(null);
         super.setSize((int) Toolkit.getDefaultToolkit().getScreenSize()
-                .getWidth(), ViewSettings.VIEW_HEIGHT_TB);
+                .getWidth(), ViewSettings.getView_heightTB());
         super.setVisible(true);
 
         

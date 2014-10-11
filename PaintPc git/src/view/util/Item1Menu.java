@@ -69,8 +69,8 @@ public class Item1Menu extends JPanel {
 	/**
 	 * size if closed.
 	 */
-	private int closedWidth = ViewSettings.ITEM_MENU1_WIDTH, 
-	        closedHeight = ViewSettings.ITEM_MENU1_HEIGHT;
+	private int closedWidth = ViewSettings.getItemMenu1Width(), 
+	        closedHeight = ViewSettings.getItemMenu1Height();
 	
 	/**
 	 * The ScrollPane for the menu items.

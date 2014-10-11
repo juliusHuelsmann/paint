@@ -24,8 +24,7 @@ public final class ViewSettings {
     /**
      * constants.
      */
-    private static final int FIFE = 5, TEN = 10, TWENTY_FIFE = 25, 
-            HUNDRED = 100;
+    private static final int FIFE = 5, TEN = 10, TWENTY_FIFE = 25;
     
     
     //class selection
@@ -135,6 +134,13 @@ public final class ViewSettings {
     public static final Font FONT_ITEM1_BUTTON = new Font(
             "Comic Sans MS", Font.PLAIN, 10);
 
+    /**
+     * The font for information.
+     */
+    public static final Font TP_FONT_INFORMATION
+    = new Font("Courier new", Font.ITALIC, 12);
+
+    
 
     /**
      * general font which can be used everywhere.
@@ -172,16 +178,13 @@ public final class ViewSettings {
     /**
      * Whether fullscreen or not.
      */
-    public static final boolean FULLSCREEN = false;
+    private static boolean fullscreen = false;
     //sizes
     
     /**
      * The size of the JFrame.
      */
-    public static final Dimension VIEW_SIZE_JFRAME = 
-//            new Dimension(
-//            (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()), 
-//            (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
+    private static Dimension size_jframe = 
             new Dimension(
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() 
                     * 2 / (2 + 1)), 
@@ -199,23 +202,23 @@ public final class ViewSettings {
     /**
      * .
      */
-    public static final Point MESSAGE_LOCATION
-    = new Point((VIEW_SIZE_JFRAME.width - MESSAGE_SIZE.width) / 2, 
-            VIEW_SIZE_JFRAME.height - MESSAGE_SIZE.height - 2 * 2 * 2 * 2 * 2);
+    private static Point messageLocation
+    = new Point((size_jframe.width - MESSAGE_SIZE.width) / 2, 
+            size_jframe.height - MESSAGE_SIZE.height - 2 * 2 * 2 * 2 * 2);
 
 
     /**
      * The Bounds of the Exit button.
      */
-    public static final Rectangle VIEW_BOUNDS_JBTN_EXIT = new Rectangle(
-            VIEW_SIZE_JFRAME.width - HUNDRED - TEN, 0, 
+    private static Rectangle view_bounds_jbtn_exit = new Rectangle(
+            size_jframe.width - TWENTY_FIFE * 2 - FIFE, 0, 
             TWENTY_FIFE * 2 + FIFE, 2  * TEN);
 
     /**
      * The Bounds of the Exit button.
      */
-    public static final Rectangle VIEW_BOUNDS_JBTN_FULLSCREEN = new Rectangle(
-            VIEW_SIZE_JFRAME.width - HUNDRED * (2 + 1) / 2 - TEN * 2, 0, 
+    private static Rectangle view_bounds_jbtn_fullscreen = new Rectangle(
+            getView_bounds_jbtn_exit().x - getView_bounds_jbtn_exit().width, 0, 
             TWENTY_FIFE * 2 + FIFE, 2  * TEN);
     
     /**
@@ -226,29 +229,29 @@ public final class ViewSettings {
     /**
      * the width of the TabbedPane.
      */
-    public static final int VIEW_WIDTH_TB = VIEW_SIZE_JFRAME.width - 2
+    private static int view_widthTb = size_jframe.width - 2
             - ((2 * 2 * 2 * 2 + 1) * 2 + 1); //35
 
     /**
      * the height of the TabbedPane.
      */
-    public static final int VIEW_HEIGHT_TB = VIEW_SIZE_JFRAME.height - 1;
+    private static int view_heightTB = size_jframe.height - 1;
 
     /**
      * the visible height of the TabbedPane.
      */
-    public static final int VIEW_HEIGHT_TB_VISIBLE = 
-            (int) (VIEW_SIZE_JFRAME.height / (2 + 2 + 1 / 2));
+    private static int view_heightTB_visible = 
+            (int) (size_jframe.height / (2 + 2 + 1 / 2));
 
     /**
      * The size of the tabbedPane opener.
      */
-    public static final int VIEW_HEIGHT_TABBEDPANE_OPENER =
-            VIEW_HEIGHT_TB_VISIBLE / (2 + 1) / (2 + 1);
+    private static int view_heightTB_opener =
+            view_heightTB_visible / (2 + 1) / (2 + 1);
     /**
      * the bounds of the PaointObject.
      */
-    public static final Rectangle VIEW_BOUNDS_PO = new Rectangle(
+    private static Rectangle view_bounds_po = new Rectangle(
             2, 180, 190, 560);
 
 
@@ -266,50 +269,43 @@ public final class ViewSettings {
     /**
      * the bounds of the Page.
      */
-    public static final Rectangle VIEW_BOUNDS_PAGE_OPEN = new Rectangle(
-            1, 1 + VIEW_HEIGHT_TB_VISIBLE 
-            + ViewSettings.VIEW_HEIGHT_TABBEDPANE_OPENER, 
-            VIEW_SIZE_JFRAME.width - TWENTY_FIFE - TEN - 2, 
-            VIEW_SIZE_JFRAME.height - VIEW_SIZE_JFRAME.height / FIFE 
+    private static Rectangle view_bounds_page_open = new Rectangle(
+            1, 1 + view_heightTB_visible 
+            + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
+            size_jframe.width - TWENTY_FIFE - TEN - 2, 
+            size_jframe.height - size_jframe.height / FIFE 
             - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
             //the last 25 is the size 
     /**
      * the bounds of the Page.
      */
-    public static final Rectangle VIEW_BOUNDS_PAGE_CLOSED = new Rectangle(
-            VIEW_BOUNDS_PAGE_OPEN.x, 
-            VIEW_BOUNDS_PAGE_OPEN.y - VIEW_HEIGHT_TB_VISIBLE, 
-            VIEW_BOUNDS_PAGE_OPEN.width, 
-            VIEW_BOUNDS_PAGE_OPEN.height + VIEW_HEIGHT_TB_VISIBLE 
+    private static Rectangle view_bounds_page_closed = new Rectangle(
+            view_bounds_page_open.x, 
+            view_bounds_page_open.y - view_heightTB_visible, 
+            view_bounds_page_open.width, 
+            view_bounds_page_open.height + view_heightTB_visible 
             - TWENTY_FIFE);
     
     /**
      * the bounds of the Page.
      */
-    public static final Rectangle VIEW_BOUNDS_PAGE = new Rectangle(
-            VIEW_BOUNDS_PAGE_OPEN);
+    private static Rectangle view_bounds_page = new Rectangle(
+            view_bounds_page_open);
 
-    /**
-     * The font for information.
-     */
-    public static final Font TP_FONT_INFORMATION
-    = new Font("Courier new", Font.ITALIC, 12);
-
-    
     /**
      * distances for items.
      */
-    public static final int DISTANCE_AFTER_LINE = 3, 
-            DISTANCE_BEFORE_LINE = 2, DISTANCE_BETWEEN_ITEMS = 3, 
-            ITEM_WIDTH = VIEW_SIZE_JFRAME.width / (TWENTY_FIFE - 2 - 1), 
-            ITEM_HEIGHT = VIEW_SIZE_JFRAME.height / (TEN + 2);
+    private static int distanceAfterLine = 3, distanceBeforeLine = 2, 
+            distanceBetweenItems = 3, 
+            itemWidth = size_jframe.width / (TWENTY_FIFE - 2 - 1), 
+            itemHeight = size_jframe.height / (TEN + 2);
     
     /**
      * width of item1 menues.
      */
-    public static final int ITEM_MENU1_WIDTH 
-    = (int) (ViewSettings.ITEM_WIDTH * 1.4),
-            ITEM_MENU1_HEIGHT = 2 * ViewSettings.ITEM_HEIGHT;
+    private static int itemMenu1Width 
+    = (int) (ViewSettings.getItemWidth() * 1.4),
+    itemMenu1Height = 2 * ViewSettings.getItemHeight();
     
     /**
      * The size of the history.
@@ -345,13 +341,343 @@ public final class ViewSettings {
      * the size of the zoom.
      */
     public static final Dimension ZOOM_SIZE 
-    = new Dimension(VIEW_BOUNDS_PAGE.width / ZOOM_MULITPLICATOR, 
-            VIEW_BOUNDS_PAGE.height / ZOOM_MULITPLICATOR);
+    = new Dimension(getView_bounds_page().width / ZOOM_MULITPLICATOR, 
+            getView_bounds_page().height / ZOOM_MULITPLICATOR);
     
     
     /**
      * utility class constructor.
      */
     private ViewSettings() { }
+
+
+    /**
+     * @return the vIEW_SIZE_JFRAME
+     */
+    public static Dimension getSizeJFrame() {
+        return size_jframe;
+    }
+
+
+    /**
+     * @param _size the vIEW_SIZE_JFRAME to set
+     */
+    public static void setSize_jframe(final Dimension _size) {
+        size_jframe = _size;
+    }
+
+
+    /**
+     * @return the fULLSCREEN
+     */
+    public static boolean isFullscreen() {
+        return fullscreen;
+    }
+
+
+    /**
+     * @param fULLSCREEN the fULLSCREEN to set
+     */
+    public static void setFULLSCREEN(boolean fULLSCREEN) {
+        fullscreen = fULLSCREEN;
+    }
+
+
+    /**
+     * @return the messagelocation
+     */
+    public static Point getMessagelocation() {
+        return messageLocation;
+    }
+
+
+    /**
+     * @return the viewBoundsJbtnExit
+     */
+    public static Rectangle getViewBoundsJbtnExit() {
+        return getView_bounds_jbtn_exit();
+    }
+
+
+    /**
+     * @return the viewWidthtb
+     */
+    public static int getViewWidthtb() {
+        return view_widthTb;
+    }
+
+
+    /**
+     * @return the view_widthTb
+     */
+    public static int getView_widthTb() {
+        return view_widthTb;
+    }
+
+
+    /**
+     * @param view_widthTb the view_widthTb to set
+     */
+    public static void setView_widthTb(int view_widthTb) {
+        ViewSettings.view_widthTb = view_widthTb;
+    }
+
+
+    /**
+     * @return the view_heightTB
+     */
+    public static int getView_heightTB() {
+        return view_heightTB;
+    }
+
+
+    /**
+     * @param view_heightTB the view_heightTB to set
+     */
+    public static void setView_heightTB(int view_heightTB) {
+        ViewSettings.view_heightTB = view_heightTB;
+    }
+
+
+    /**
+     * @return the view_heightTB_visible
+     */
+    public static int getView_heightTB_visible() {
+        return view_heightTB_visible;
+    }
+
+
+    /**
+     * @param view_heightTB_visible the view_heightTB_visible to set
+     */
+    public static void setView_heightTB_visible(int view_heightTB_visible) {
+        ViewSettings.view_heightTB_visible = view_heightTB_visible;
+    }
+
+
+    /**
+     * @return the view_bounds_jbtn_fullscreen
+     */
+    public static Rectangle getView_bounds_jbtn_fullscreen() {
+        return view_bounds_jbtn_fullscreen;
+    }
+
+
+    /**
+     * @param view_bounds_jbtn_fullscreen the view_bounds_jbtn_fullscreen to set
+     */
+    public static void setView_bounds_jbtn_fullscreen(
+            Rectangle view_bounds_jbtn_fullscreen) {
+        ViewSettings.view_bounds_jbtn_fullscreen = view_bounds_jbtn_fullscreen;
+    }
+
+
+    /**
+     * @return the view_bounds_jbtn_exit
+     */
+    public static Rectangle getView_bounds_jbtn_exit() {
+        return view_bounds_jbtn_exit;
+    }
+
+
+    /**
+     * @param view_bounds_jbtn_exit the view_bounds_jbtn_exit to set
+     */
+    public static void setView_bounds_jbtn_exit(Rectangle view_bounds_jbtn_exit) {
+        ViewSettings.view_bounds_jbtn_exit = view_bounds_jbtn_exit;
+    }
+
+
+    /**
+     * @return the view_heightTB_opener
+     */
+    public static int getView_heightTB_opener() {
+        return view_heightTB_opener;
+    }
+
+
+    /**
+     * @param view_heightTB_opener the view_heightTB_opener to set
+     */
+    public static void setView_heightTB_opener(int view_heightTB_opener) {
+        ViewSettings.view_heightTB_opener = view_heightTB_opener;
+    }
+
+
+    /**
+     * @return the view_bounds_po
+     */
+    public static Rectangle getView_bounds_po() {
+        return view_bounds_po;
+    }
+
+
+    /**
+     * @param view_bounds_po the view_bounds_po to set
+     */
+    public static void setView_bounds_po(Rectangle view_bounds_po) {
+        ViewSettings.view_bounds_po = view_bounds_po;
+    }
+
+
+    /**
+     * @return the view_bounds_page_open
+     */
+    public static Rectangle getView_bounds_page_open() {
+        return view_bounds_page_open;
+    }
+
+
+    /**
+     * @param view_bounds_page_open the view_bounds_page_open to set
+     */
+    public static void setView_bounds_page_open(Rectangle view_bounds_page_open) {
+        ViewSettings.view_bounds_page_open = view_bounds_page_open;
+    }
+
+
+    /**
+     * @return the view_bounds_page_closed
+     */
+    public static Rectangle getView_bounds_page_closed() {
+        return view_bounds_page_closed;
+    }
+
+
+    /**
+     * @param view_bounds_page_closed the view_bounds_page_closed to set
+     */
+    public static void setView_bounds_page_closed(
+            Rectangle view_bounds_page_closed) {
+        ViewSettings.view_bounds_page_closed = view_bounds_page_closed;
+    }
+
+
+    /**
+     * @return the view_bounds_page
+     */
+    public static Rectangle getView_bounds_page() {
+        return view_bounds_page;
+    }
+
+
+    /**
+     * @param view_bounds_page the view_bounds_page to set
+     */
+    public static void setView_bounds_page(Rectangle view_bounds_page) {
+        ViewSettings.view_bounds_page = view_bounds_page;
+    }
+
+
+    /**
+     * @return the distanceAfterLine
+     */
+    public static int getDistanceAfterLine() {
+        return distanceAfterLine;
+    }
+
+
+    /**
+     * @param distanceAfterLine the distanceAfterLine to set
+     */
+    public static void setDistanceAfterLine(int distanceAfterLine) {
+        ViewSettings.distanceAfterLine = distanceAfterLine;
+    }
+
+
+    /**
+     * @return the distanceBetweenItems
+     */
+    public static int getDistanceBetweenItems() {
+        return distanceBetweenItems;
+    }
+
+
+    /**
+     * @param distanceBetweenItems the distanceBetweenItems to set
+     */
+    public static void setDistanceBetweenItems(int distanceBetweenItems) {
+        ViewSettings.distanceBetweenItems = distanceBetweenItems;
+    }
+
+
+    /**
+     * @return the distanceBeforeLine
+     */
+    public static int getDistanceBeforeLine() {
+        return distanceBeforeLine;
+    }
+
+
+    /**
+     * @param distanceBeforeLine the distanceBeforeLine to set
+     */
+    public static void setDistanceBeforeLine(int distanceBeforeLine) {
+        ViewSettings.distanceBeforeLine = distanceBeforeLine;
+    }
+
+
+    /**
+     * @return the itemWidth
+     */
+    public static int getItemWidth() {
+        return itemWidth;
+    }
+
+
+    /**
+     * @param itemWidth the itemWidth to set
+     */
+    public static void setItemWidth(int itemWidth) {
+        ViewSettings.itemWidth = itemWidth;
+    }
+
+
+    /**
+     * @return the itemHeight
+     */
+    public static int getItemHeight() {
+        return itemHeight;
+    }
+
+
+    /**
+     * @param itemHeight the itemHeight to set
+     */
+    public static void setItemHeight(int itemHeight) {
+        ViewSettings.itemHeight = itemHeight;
+    }
+
+
+    /**
+     * @return the itemMenu1Width
+     */
+    public static int getItemMenu1Width() {
+        return itemMenu1Width;
+    }
+
+
+    /**
+     * @param itemMenu1Width the itemMenu1Width to set
+     */
+    public static void setItemMenu1Width(int itemMenu1Width) {
+        ViewSettings.itemMenu1Width = itemMenu1Width;
+    }
+
+
+    /**
+     * @return the itemMenu1Height
+     */
+    public static int getItemMenu1Height() {
+        return itemMenu1Height;
+    }
+
+
+    /**
+     * @param itemMenu1Height the itemMenu1Height to set
+     */
+    public static void setItemMenu1Height(int itemMenu1Height) {
+        ViewSettings.itemMenu1Height = itemMenu1Height;
+    }
     
 }

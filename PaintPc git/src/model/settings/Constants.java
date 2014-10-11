@@ -23,10 +23,16 @@ public final class Constants {
      * for class view.View.jbtn_exit.
      * static path of the normal image path 
      */
-	public static final String VIEW_JBTN_EXIT_NORMAL_PATH = "normal.png", 
-	        VIEW_JBTN_FULLSCREEN_NORMAL_PATH = "normal.png", 
-	        VIEW_JBTN_EXIT_MOUSEOVER_PATH = "mouseover.png", 
-	        VIEW_JBTN_EXIT_PRESSED_PATH = "pressed.png",
+	public static final String 
+	        VIEW_JBTN_EXIT_NORMAL_PATH = "icon/exit/normal.png", 
+	        VIEW_JBTN_EXIT_MOUSEOVER_PATH = "icon/exit/mouseover.png", 
+	        VIEW_JBTN_EXIT_PRESSED_PATH = "icon/exit/pressed.png",
+
+	        VIEW_JBTN_FULLSCREEN_NORMAL_PATH = "icon/fullscreen/normal.png", 
+	        VIEW_JBTN_FULLSCREEN_MOUSEOVER_PATH = 
+	        "icon/fullscreen/mouseover.png", 
+	        VIEW_JBTN_FULLSCREEN_PRESSED_PATH = "icon/fullscreen/pressed.png", 
+	        
 	        VIEW_TB_PASTE_PATH = "icon/paste.png",
 	        VIEW_TB_COPY_PATH = "icon/copy.png", 
 	        VIEW_TB_CUT_PATH = "icon/cut.png", 

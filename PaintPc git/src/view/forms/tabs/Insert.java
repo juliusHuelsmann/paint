@@ -3,14 +3,12 @@ package view.forms.tabs;
 //import declarations
 import java.awt.Color;
 import java.awt.Toolkit;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-
 import control.tabs.CPaintStatus;
 import model.settings.Status;
 import model.settings.ViewSettings;
@@ -18,7 +16,6 @@ import view.util.Item2;
 import view.util.Item2Menu;
 import view.util.Item1Button;
 import view.util.VLabel;
-import view.util.VTabbedPane;
 
 
 /**
@@ -108,7 +105,7 @@ public final class Insert extends JPanel {
          */
 		tb_selected = new Item1Button(null);
 		tb_selected.setOpaque(true);
-		tb_selected.setSize(itemButtonSize, ViewSettings.ITEM_MENU1_HEIGHT);
+		tb_selected.setSize(itemButtonSize, ViewSettings.getItemMenu1Height());
 		tb_selected.setLocation(distance, distance);
 		tb_selected.setText("Viereck");
 		tb_selected.setBorder(BorderFactory.createCompoundBorder(
@@ -146,7 +143,7 @@ public final class Insert extends JPanel {
          */
         ia_maths = new Item2Menu();
         ia_maths.setLocation(jlbl_separation[1].getX() + distance, distance);
-        ia_maths.setSize(ia_geo.getWidth(), ViewSettings.ITEM_MENU1_HEIGHT);
+        ia_maths.setSize(ia_geo.getWidth(), ViewSettings.getItemMenu1Height());
 		super.add(ia_maths);
 		
         insertTrennung(
@@ -162,7 +159,7 @@ public final class Insert extends JPanel {
          * 
          */
         ia_diagram = new Item2Menu();
-     	ia_diagram.setSize(ia_geo.getWidth(), ViewSettings.ITEM_MENU1_HEIGHT);
+     	ia_diagram.setSize(ia_geo.getWidth(), ViewSettings.getItemMenu1Height());
     	ia_diagram.setLocation(jlbl_separation[2].getX() + distance, distance);
 		super.add(ia_diagram);
 
@@ -231,7 +228,7 @@ public final class Insert extends JPanel {
 
         ia_geo = new Item2Menu();
         ia_geo.setLocation(_x , tb_selected.getY());
-        ia_geo.setSize(locationX, ViewSettings.ITEM_MENU1_HEIGHT);
+        ia_geo.setSize(locationX, ViewSettings.getItemMenu1Height());
         ia_geo.setItemsInRow(2 + 2);
         super.add(ia_geo);
 
@@ -335,11 +332,11 @@ public final class Insert extends JPanel {
         }
         this.jlbl_separation[_locInArray].setBounds(
                 _x, 
-                ViewSettings.DISTANCE_BETWEEN_ITEMS, 
+                ViewSettings.getDistanceBetweenItems(), 
                 1, 
-                ViewSettings.VIEW_HEIGHT_TB_VISIBLE
-                - ViewSettings.DISTANCE_BETWEEN_ITEMS 
-                - ViewSettings.VIEW_HEIGHT_TB
+                ViewSettings.getView_heightTB_visible()
+                - ViewSettings.getDistanceBetweenItems() 
+                - ViewSettings.getView_heightTB()
                 / ViewSettings.TABBED_PANE_TITLE_PROPORTION_HEIGHT);
     }
     
@@ -375,8 +372,8 @@ public final class Insert extends JPanel {
         if (Status.isNormalRotation()) {
 
             final int number = 
-                    ViewSettings.ITEM_MENU1_HEIGHT
-                    + ViewSettings.DISTANCE_BETWEEN_ITEMS;
+                    ViewSettings.getItemMenu1Height()
+                    + ViewSettings.getDistanceBetweenItems();
             final int number2 = 15;
             jlbl_information[_locationInArray].setBounds(
                     _x1, number, _x2 - _x1, number2);
@@ -398,7 +395,7 @@ public final class Insert extends JPanel {
 	    
 	    if (instance == null) {
 	        instance = new Insert();
-	        instance.initialize(ViewSettings.VIEW_HEIGHT_TB);
+	        instance.initialize(ViewSettings.getView_heightTB());
 	    }
 	    
 	    return instance;

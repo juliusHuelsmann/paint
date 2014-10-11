@@ -167,7 +167,7 @@ public final class New extends JPanel {
         jbtn_exit.addMouseListener(CNew.getInstance());
         jbtn_exit.setBorder(null);
         jbtn_exit.setFocusable(false);
-        jbtn_exit.setBounds(ViewSettings.VIEW_BOUNDS_JBTN_EXIT);
+        jbtn_exit.setBounds(ViewSettings.getViewBoundsJbtnExit());
         jbtn_exit.setLocation(jpnl_stuff.getWidth() - jbtn_exit.getWidth() 
                 - distanceLeftRight, 1);
         jbtn_exit.setIcon(new ImageIcon(Utils.resizeImage(

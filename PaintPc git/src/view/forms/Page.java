@@ -282,10 +282,10 @@ import control.ControlPainting;
                     Status.getImageShowSize().width,
                     Status.getImageShowSize().height);
 
-	        sp_ub.setLocation(ViewSettings.VIEW_SIZE_JFRAME.width 
+	        sp_ub.setLocation(ViewSettings.getSizeJFrame().width 
 	                - sp_ub.getWidth(), ViewSettings.VIEW_SIZE_SP);
 
-	        sp_lr.setLocation(0, ViewSettings.VIEW_SIZE_JFRAME.height 
+	        sp_lr.setLocation(0, ViewSettings.getSizeJFrame().height 
 	                - sp_lr.getHeight());
             
 
@@ -296,9 +296,9 @@ import control.ControlPainting;
  
 	    }
         sp_ub.setSize(ViewSettings.VIEW_SIZE_SP, 
-                ViewSettings.VIEW_SIZE_JFRAME.height 
+                ViewSettings.getSizeJFrame().height 
                 - ViewSettings.VIEW_SIZE_SP);
-        sp_lr.setSize(ViewSettings.VIEW_SIZE_JFRAME.width, 
+        sp_lr.setSize(ViewSettings.getSizeJFrame().width, 
                 ViewSettings.VIEW_SIZE_SP);
 
         jlbl_painting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);

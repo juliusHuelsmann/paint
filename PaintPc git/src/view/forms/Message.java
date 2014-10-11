@@ -76,7 +76,7 @@ public final class Message extends JPanel {
     private void initialize() {
 
         super.setSize(ViewSettings.MESSAGE_SIZE);
-        super.setLocation(ViewSettings.MESSAGE_LOCATION);
+        super.setLocation(ViewSettings.getMessagelocation());
         super.setOpaque(true);
         super.setLayout(null);
         super.setBackground(Color.darkGray);

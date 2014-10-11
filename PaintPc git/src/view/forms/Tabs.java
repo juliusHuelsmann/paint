@@ -46,9 +46,9 @@ public class Tabs extends VTabbedPane {
         //TabbedPane for different pages
         super();
         super.setSize(
-                ViewSettings.VIEW_WIDTH_TB, 
-                ViewSettings.VIEW_HEIGHT_TB,
-                ViewSettings.VIEW_HEIGHT_TB_VISIBLE);
+                ViewSettings.getView_widthTb(), 
+                ViewSettings.getView_heightTB(),
+                ViewSettings.getView_heightTB_visible());
         super.setOpaque(true);
         super.setFocusable(false);
         super.setVisible(false);
@@ -63,6 +63,12 @@ public class Tabs extends VTabbedPane {
         tabNumber++;
 
         /*
+         * 
+         */
+        super.addTab("Schreiben");
+        tabNumber++;
+        
+        /*
          * tab insert
          */
         super.addTab("einfuegen");
@@ -75,7 +81,7 @@ public class Tabs extends VTabbedPane {
          */
         super.addTab("auswahl");
         Selection tab_selection = Selection.getInstance(
-                ViewSettings.VIEW_HEIGHT_TB);
+                ViewSettings.getView_heightTB());
         super.addToTab(tabNumber, tab_selection);
         tabNumber++;
         /*
@@ -124,7 +130,7 @@ public class Tabs extends VTabbedPane {
         PaintObjects tab_pos = PaintObjects.getInstance();
         PaintObjects.getInstance().setSize(
                 (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
-                ViewSettings.VIEW_HEIGHT_TB);
+                ViewSettings.getView_heightTB());
         super.addToTab(tabNumber, tab_pos);
         tabNumber++;
         
@@ -140,7 +146,6 @@ public class Tabs extends VTabbedPane {
         super.addTab("");
         super.addTab("");
         super.addTab("");
-        tabNumber++;
 
     }
     

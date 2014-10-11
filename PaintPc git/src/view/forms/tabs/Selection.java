@@ -118,9 +118,9 @@ public final class Selection extends JPanel {
         tb_color.addMouseListener(CPaintStatus.getInstance());
         tb_color.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black), new LineBorder(Color.white)));
-        tb_color.setLocation(_x, ViewSettings.DISTANCE_BETWEEN_ITEMS);
+        tb_color.setLocation(_x, ViewSettings.getDistanceBetweenItems());
         tb_color.setSize(
-                ViewSettings.ITEM_MENU1_WIDTH, ViewSettings.ITEM_MENU1_HEIGHT);
+                ViewSettings.getItemMenu1Width(), ViewSettings.getItemMenu1Height());
         tb_color.setText("Farbe 1");
         tb_color.setActivable(false);
         super.add(tb_color);
@@ -237,16 +237,16 @@ public final class Selection extends JPanel {
         it_color.setBorder(false);
         it_color.setText("+ Farben");
         it_color.setLocation(jbtn_colors[jbtn_colors.length - 1].getX() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS 
+                + ViewSettings.getDistanceBetweenItems() 
                 + jbtn_colors[jbtn_colors.length - 1].getWidth(), 
-                ViewSettings.DISTANCE_BETWEEN_ITEMS);
+                ViewSettings.getDistanceBetweenItems());
         it_color.getJPanel().add(new VColorPanel(jbtn_colors));
         it_color.setBorder(false);
         it_color.setIcon("icon/palette.png");
         super.add(it_color);
         
         insertTrennung(it_color.getWidth() + it_color.getX() + ViewSettings
-                .DISTANCE_BEFORE_LINE, it_color.getY(), 0, _paint);
+                .getDistanceBeforeLine(), it_color.getY(), 0, _paint);
         insertInformation("Farben", _x, jlbl_separation[0].getX(), 0, 
                 _paint);
 
@@ -296,7 +296,7 @@ public final class Selection extends JPanel {
     
 
         insertTrennung(jcb_maths.getWidth() + jcb_maths.getX() 
-                + ViewSettings.DISTANCE_BEFORE_LINE, 
+                + ViewSettings.getDistanceBeforeLine(), 
                 jcb_maths.getY(), 1, _paint);
         insertInformation("Pen", _x, jlbl_separation[1].getX(), 1, 
                 _paint);
@@ -353,7 +353,7 @@ public final class Selection extends JPanel {
         super.add(it_stift1);
 
         insertTrennung(it_stift1.getWidth() + it_stift1.getX() + ViewSettings
-                .DISTANCE_BEFORE_LINE, it_stift1.getY(), 1, _paint);
+                .getDistanceBeforeLine(), it_stift1.getY(), 1, _paint);
         insertInformation("Farben", _x, jlbl_separation[1].getX(), 1, 
                 _paint);
 	}

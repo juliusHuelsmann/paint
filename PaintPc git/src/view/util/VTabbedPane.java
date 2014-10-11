@@ -309,7 +309,7 @@ public class VTabbedPane extends JPanel {
             jpnl_background.setSize(getWidth(), getHeight());
 
             Page.getInstance().setLocation(
-                            ViewSettings.VIEW_BOUNDS_PAGE.x,
+                            ViewSettings.getView_bounds_page().x,
                             getHeight() + 1);
             setComponentZOrder(jpnl_close, 0);
             jlbl_closeTime.setVisible(false);
@@ -350,7 +350,7 @@ public class VTabbedPane extends JPanel {
 	                jpnl_background.setSize(getWidth(), getHeight()
 	                        - jpnl_background.getY());
 	                Page.getInstance().setLocation(
-                            ViewSettings.VIEW_BOUNDS_PAGE.x, getHeight() + 1);
+                            ViewSettings.getView_bounds_page().x, getHeight() + 1);
 	                
 	                try {
 	                    Thread.sleep(2);
@@ -372,21 +372,21 @@ public class VTabbedPane extends JPanel {
 	            setComponentZOrder(jpnl_close, 1);
 	            jlbl_closeTime.setVisible(true);
 
-                ViewSettings.VIEW_BOUNDS_PAGE.y
-                = ViewSettings.VIEW_BOUNDS_PAGE_CLOSED.y;
-                ViewSettings.VIEW_BOUNDS_PAGE.height
-                = ViewSettings.VIEW_BOUNDS_PAGE_CLOSED.height;
+                ViewSettings.getView_bounds_page().y
+                = ViewSettings.getView_bounds_page_closed().y;
+                ViewSettings.getView_bounds_page().height
+                = ViewSettings.getView_bounds_page_closed().height;
 	            //adapt image size.
                 Page.getInstance().setSize(
-                        ViewSettings.VIEW_BOUNDS_PAGE_CLOSED.getSize());
+                        ViewSettings.getView_bounds_page_closed().getSize());
                 Page.getInstance().getJlbl_painting().setSize(
-                        ViewSettings.VIEW_BOUNDS_PAGE_CLOSED.getSize().width,
-                        ViewSettings.VIEW_BOUNDS_PAGE_CLOSED.getSize().height 
+                        ViewSettings.getView_bounds_page_closed().getSize().width,
+                        ViewSettings.getView_bounds_page_closed().getSize().height 
                         - 1);
                 Page.getInstance().getJlbl_selectionBG().setSize(
-                        ViewSettings.VIEW_BOUNDS_PAGE_CLOSED.getSize());
+                        ViewSettings.getView_bounds_page_closed().getSize());
                 Page.getInstance().getJlbl_selectionPainting().setSize(
-                        ViewSettings.VIEW_BOUNDS_PAGE_CLOSED.getSize());
+                        ViewSettings.getView_bounds_page_closed().getSize());
                 Page.getInstance().getJlbl_painting().refreshPaint();
 	        }
 	    };
@@ -422,7 +422,7 @@ public class VTabbedPane extends JPanel {
                             * i / max
                             - jpnl_background.getY());
                     Page.getInstance().setLocation(
-                            ViewSettings.VIEW_BOUNDS_PAGE.x, startHeight2 
+                            ViewSettings.getView_bounds_page().x, startHeight2 
                             + (oldVisibleHeight - startHeight2) * i / max);
                     
                     try {
@@ -444,21 +444,21 @@ public class VTabbedPane extends JPanel {
                 setComponentZOrder(jpnl_close, 1);
 
 
-                ViewSettings.VIEW_BOUNDS_PAGE.y
-                = ViewSettings.VIEW_BOUNDS_PAGE_OPEN.y;
-                ViewSettings.VIEW_BOUNDS_PAGE.height
-                = ViewSettings.VIEW_BOUNDS_PAGE_OPEN.height;
+                ViewSettings.getView_bounds_page().y
+                = ViewSettings.getView_bounds_page_open().y;
+                ViewSettings.getView_bounds_page().height
+                = ViewSettings.getView_bounds_page_open().height;
                 //adapt image size.
                 Page.getInstance().setSize(
-                        ViewSettings.VIEW_BOUNDS_PAGE_OPEN.getSize());
+                        ViewSettings.getView_bounds_page_open().getSize());
                 Page.getInstance().getJlbl_painting().setSize(
-                        ViewSettings.VIEW_BOUNDS_PAGE_CLOSED.getSize().width,
-                        ViewSettings.VIEW_BOUNDS_PAGE_CLOSED.getSize().height 
+                        ViewSettings.getView_bounds_page_closed().getSize().width,
+                        ViewSettings.getView_bounds_page_closed().getSize().height 
                         - 1);
                 Page.getInstance().getJlbl_selectionBG().setSize(
-                        ViewSettings.VIEW_BOUNDS_PAGE_OPEN.getSize());
+                        ViewSettings.getView_bounds_page_open().getSize());
                 Page.getInstance().getJlbl_selectionPainting().setSize(
-                        ViewSettings.VIEW_BOUNDS_PAGE_OPEN.getSize());
+                        ViewSettings.getView_bounds_page_open().getSize());
                 Page.getInstance().getJlbl_painting().refreshPaint(); 
             }
         };
@@ -502,6 +502,8 @@ public class VTabbedPane extends JPanel {
             if (_title.equals("")) {
                 
                 jbtn_stuff2[jpnl_stuff.length].setVisible(false);
+                jbtn_stuff2[jpnl_stuff.length].setSize(
+                        jbtn_stuff2[jpnl_stuff.length].getWidth(), 1);
             }
 			//save the new created JPanel and JButton arrays.
 			jpnl_stuff = jpnl_stuff2;
@@ -787,9 +789,9 @@ public class VTabbedPane extends JPanel {
             jpnl_background.setLocation(0, titleHeight + titleY - 1);
             jpnl_contains.setLocation(0, 0);
             jlbl_close.setSize(getWidth(),
-                    ViewSettings.VIEW_HEIGHT_TABBEDPANE_OPENER);
+                    ViewSettings.getView_heightTB_opener());
             jpnl_close.setBounds(0, visibleHeight, getWidth(), 
-                    ViewSettings.VIEW_HEIGHT_TABBEDPANE_OPENER);
+                    ViewSettings.getView_heightTB_opener());
             
 
             //set size and location of headlines and tabs.

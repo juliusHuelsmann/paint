@@ -13,18 +13,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 import control.CSelection;
 import control.tabs.CTabSelection;
 import view.View;
 import view.forms.Message;
 import view.forms.Page;
 import view.forms.tabs.Insert;
-import view.forms.tabs.Paint;
 import model.objects.PictureOverview;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;

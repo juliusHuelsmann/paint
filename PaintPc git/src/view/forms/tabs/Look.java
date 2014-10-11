@@ -75,7 +75,7 @@ public final class Look extends JPanel {
         super.setOpaque(false);
         super.setLayout(null);
         super.setSize((int) Toolkit.getDefaultToolkit().getScreenSize()
-                .getWidth(), ViewSettings.VIEW_HEIGHT_TB);
+                .getWidth(), ViewSettings.getView_heightTB());
         super.setVisible(true);
 
         //initialize the content for the background
@@ -93,8 +93,8 @@ public final class Look extends JPanel {
     private void initializeFirstColumn() {
 
         jlbl_backgroundTitle = new JLabel("Background:");
-        jlbl_backgroundTitle.setBounds(ViewSettings.DISTANCE_BETWEEN_ITEMS,
-                ViewSettings.DISTANCE_BETWEEN_ITEMS, 
+        jlbl_backgroundTitle.setBounds(ViewSettings.getDistanceBetweenItems(),
+                ViewSettings.getDistanceBetweenItems(), 
                 buttonWidth, buttonHeight);
         jlbl_backgroundTitle.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
         jlbl_backgroundTitle.setFocusable(false);
@@ -105,7 +105,7 @@ public final class Look extends JPanel {
         jcb_raster.setOpaque(false);
         jcb_raster.addActionListener(COutlook.getInstance());
         jcb_raster.setLocation(jlbl_backgroundTitle.getX(), 
-                ViewSettings.DISTANCE_BETWEEN_ITEMS
+                ViewSettings.getDistanceBetweenItems()
                 + jlbl_backgroundTitle.getY()
                 + jlbl_backgroundTitle.getHeight());
         jcb_raster.setSize(buttonWidth * 2 / (2 + 1), buttonHeight);
@@ -118,7 +118,7 @@ public final class Look extends JPanel {
         jcb_lines.setOpaque(false);
         jcb_lines.addActionListener(COutlook.getInstance());
         jcb_lines.setLocation(jcb_raster.getWidth() + jcb_raster.getX() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS, jcb_raster.getY());
+                + ViewSettings.getDistanceBetweenItems(), jcb_raster.getY());
         jcb_lines.setSize(jcb_raster.getSize());
         jcb_lines.setFont(ViewSettings.GENERAL_FONT_ITEM);
         super.add(jcb_lines);
@@ -128,16 +128,16 @@ public final class Look extends JPanel {
         jcb_nothing.setOpaque(false);
         jcb_nothing.addActionListener(COutlook.getInstance());
         jcb_nothing.setLocation(jcb_lines.getWidth() + jcb_lines.getX() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS, jcb_raster.getY());
+                + ViewSettings.getDistanceBetweenItems(), jcb_raster.getY());
         jcb_nothing.setSize(jcb_raster.getSize());
         jcb_nothing.setFont(ViewSettings.GENERAL_FONT_ITEM);
         super.add(jcb_nothing);
 
 
         jlbl_borderTitle = new JLabel("Border [percent]:");
-        jlbl_borderTitle.setBounds(ViewSettings.DISTANCE_BETWEEN_ITEMS, 
+        jlbl_borderTitle.setBounds(ViewSettings.getDistanceBetweenItems(), 
                 jcb_nothing.getY() + jcb_nothing.getHeight() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS, 
+                + ViewSettings.getDistanceBetweenItems(), 
                 buttonWidth, buttonHeight);
         jlbl_borderTitle.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
         jlbl_borderTitle.setFocusable(false);
@@ -150,7 +150,7 @@ public final class Look extends JPanel {
         jlbl_subtitle_borderTop = new JLabel("Top");
         jlbl_subtitle_borderTop.setSize(buttonWidth / 2, buttonHeight);
         jlbl_subtitle_borderTop.setLocation(jlbl_borderTitle.getX(), 
-                ViewSettings.DISTANCE_BETWEEN_ITEMS + jlbl_borderTitle.getY()
+                ViewSettings.getDistanceBetweenItems() + jlbl_borderTitle.getY()
                 + jlbl_borderTitle.getHeight());
         jlbl_subtitle_borderTop.setFont(ViewSettings.GENERAL_FONT_ITEM_PLAIN);
         jlbl_subtitle_borderTop.setFocusable(false);
@@ -160,7 +160,7 @@ public final class Look extends JPanel {
         jcb_margeTop.setSize(jlbl_subtitle_borderTop.getSize());
         jcb_margeTop.setLocation(jlbl_subtitle_borderTop.getX() 
                 + jlbl_subtitle_borderTop.getWidth() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS, 
+                + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderTop.getY());
         super.add(jcb_margeTop);
         
@@ -168,7 +168,7 @@ public final class Look extends JPanel {
         jlbl_subtitle_borderLeft = new JLabel("Left");
         jlbl_subtitle_borderLeft.setSize(jlbl_subtitle_borderTop.getSize());
         jlbl_subtitle_borderLeft.setLocation(jlbl_subtitle_borderTop.getX(), 
-                ViewSettings.DISTANCE_BETWEEN_ITEMS 
+                ViewSettings.getDistanceBetweenItems() 
                 + jlbl_subtitle_borderTop.getY()
                 + jlbl_subtitle_borderTop.getHeight());
         jlbl_subtitle_borderLeft.setFont(ViewSettings.GENERAL_FONT_ITEM_PLAIN);
@@ -179,7 +179,7 @@ public final class Look extends JPanel {
         jcb_margeLeft.setSize(jlbl_subtitle_borderTop.getSize());
         jcb_margeLeft.setLocation(jlbl_subtitle_borderLeft.getX() 
                 + jlbl_subtitle_borderLeft.getWidth() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS, 
+                + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderLeft.getY());
         super.add(jcb_margeLeft);
 
@@ -187,7 +187,7 @@ public final class Look extends JPanel {
         jlbl_subtitle_borderBottom = new JLabel("Bottom");
         jlbl_subtitle_borderBottom.setSize(jlbl_subtitle_borderTop.getSize());
         jlbl_subtitle_borderBottom.setLocation(jcb_margeTop.getX()
-                + jcb_margeTop.getWidth() + ViewSettings.DISTANCE_BETWEEN_ITEMS,
+                + jcb_margeTop.getWidth() + ViewSettings.getDistanceBetweenItems(),
                 jcb_margeTop.getY());
         jlbl_subtitle_borderBottom.setFont(
                 ViewSettings.GENERAL_FONT_ITEM_PLAIN);
@@ -198,7 +198,7 @@ public final class Look extends JPanel {
         jcb_margeBottom.setSize(jlbl_subtitle_borderTop.getSize());
         jcb_margeBottom.setLocation(jlbl_subtitle_borderBottom.getX() 
                 + jlbl_subtitle_borderBottom.getWidth() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS, 
+                + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderBottom.getY());
         super.add(jcb_margeBottom);
 
@@ -207,8 +207,8 @@ public final class Look extends JPanel {
         jlbl_subtitle_borderRight.setSize(jlbl_subtitle_borderTop.getSize());
         jlbl_subtitle_borderRight.setLocation(jcb_margeLeft.getX() 
                 + jcb_margeLeft.getWidth() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS, 
-                ViewSettings.DISTANCE_BETWEEN_ITEMS
+                + ViewSettings.getDistanceBetweenItems(), 
+                ViewSettings.getDistanceBetweenItems()
                 + jlbl_subtitle_borderTop.getY()
                 + jlbl_subtitle_borderTop.getHeight());
         jlbl_subtitle_borderRight.setFont(ViewSettings.GENERAL_FONT_ITEM_PLAIN);
@@ -219,16 +219,16 @@ public final class Look extends JPanel {
         jcb_margeRight.setSize(jlbl_subtitle_borderTop.getSize());
         jcb_margeRight.setLocation(jlbl_subtitle_borderRight.getX() 
                 + jlbl_subtitle_borderRight.getWidth() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS, 
+                + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderRight.getY());
         super.add(jcb_margeRight);
         
         insertTrennung(jcb_nothing.getX() + jcb_nothing.getWidth() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS,
-                ViewSettings.DISTANCE_BETWEEN_ITEMS);
+                + ViewSettings.getDistanceBetweenItems(),
+                ViewSettings.getDistanceBetweenItems());
         insertInformation("Image Background", 0, jcb_margeRight.getX()
                 + jcb_margeRight.getWidth() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS);
+                + ViewSettings.getDistanceBetweenItems());
     }
     
     
@@ -246,7 +246,7 @@ public final class Look extends JPanel {
         jlbl_displayAlphaTitle = new JLabel("Visualization");
         jlbl_displayAlphaTitle.setSize(buttonWidth, buttonHeight);
         jlbl_displayAlphaTitle.setLocation(jcb_nothing.getX()
-                + jcb_nothing.getWidth() + ViewSettings.DISTANCE_BETWEEN_ITEMS,
+                + jcb_nothing.getWidth() + ViewSettings.getDistanceBetweenItems(),
                 jlbl_backgroundTitle.getY());
         jlbl_displayAlphaTitle.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
         jlbl_displayAlphaTitle.setFocusable(false);
@@ -257,7 +257,7 @@ public final class Look extends JPanel {
         jlbl_subtitle_alpha.setLocation(jlbl_displayAlphaTitle.getX(),
                 jlbl_displayAlphaTitle.getHeight() 
                 + jlbl_displayAlphaTitle.getY()
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS);
+                + ViewSettings.getDistanceBetweenItems());
         jlbl_subtitle_alpha.setFont(ViewSettings.GENERAL_FONT_ITEM_PLAIN);
         jlbl_subtitle_alpha.setFocusable(false);
         super.add(jlbl_subtitle_alpha);
@@ -266,17 +266,17 @@ public final class Look extends JPanel {
         jcb_displayAlpha.setSize(jlbl_subtitle_borderTop.getSize());
         jcb_displayAlpha.setLocation(jlbl_subtitle_alpha.getX() 
                 + jlbl_subtitle_alpha.getWidth() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS,
+                + ViewSettings.getDistanceBetweenItems(),
                 jlbl_subtitle_alpha.getY());
         super.add(jcb_displayAlpha);
 
         insertTrennung(jcb_nothing.getX() + jcb_nothing.getWidth() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS,
-                ViewSettings.DISTANCE_BETWEEN_ITEMS);
+                + ViewSettings.getDistanceBetweenItems(),
+                ViewSettings.getDistanceBetweenItems());
         insertInformation("Visualization", jlbl_displayAlphaTitle.getX(), 
                 jcb_displayAlpha.getX()
                 + jcb_displayAlpha.getWidth()
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS);
+                + ViewSettings.getDistanceBetweenItems());
     }
 
     /**

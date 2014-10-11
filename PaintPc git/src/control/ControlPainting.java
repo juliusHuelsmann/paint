@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -234,13 +235,18 @@ public final class ControlPainting implements MouseListener,
 
         // source: exit button at the top of the window
         if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
-            View.getInstance()
-                    .getJbtn_exit()
-                    .setIcon(
-                            new ImageIcon(Utils.resizeImage(View.getInstance()
-                                    .getJbtn_exit().getWidth(), View
-                                    .getInstance().getJbtn_exit().getHeight(),
-                                    Constants.VIEW_JBTN_EXIT_PRESSED_PATH)));
+            View.getInstance().getJbtn_exit().setIcon(
+                    new ImageIcon(Utils.resizeImage(View.getInstance()
+                            .getJbtn_exit().getWidth(), View
+                            .getInstance().getJbtn_exit().getHeight(),
+                            Constants.VIEW_JBTN_EXIT_PRESSED_PATH)));
+        } else if (_event.getSource().equals(
+                View.getInstance().getJbtn_fullscreen())) {
+            View.getInstance().getJbtn_fullscreen().setIcon(new ImageIcon(Utils
+                    .resizeImage(View.getInstance().getJbtn_exit().getWidth(), 
+                            View.getInstance().getJbtn_exit().getHeight(),
+                                    Constants
+                                    .VIEW_JBTN_FULLSCREEN_PRESSED_PATH)));
         } else if (_event.getSource().equals(
                 Page.getInstance().getJlbl_painting())) {
 
@@ -527,6 +533,9 @@ public final class ControlPainting implements MouseListener,
         if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
             mr_exit();
         } else if (_event.getSource().equals(
+                View.getInstance().getJbtn_fullscreen())) {
+            mr_fullscreen();
+        } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_new().getActionCause())) {
             mr_new();
         } else if (_event.getSource().equals(
@@ -555,6 +564,18 @@ public final class ControlPainting implements MouseListener,
     
 
 
+    private void mr_fullscreen() {
+        ViewSettings.setFULLSCREEN(true);
+        ViewSettings.setSize_jframe(
+            new Dimension(
+            (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()), 
+            (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight())));
+        View.getInstance().setVisible(false);
+        View.getInstance().setFullscreen();
+        View.getInstance().flip(true);
+        
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -569,13 +590,17 @@ public final class ControlPainting implements MouseListener,
 
         // source: exit button at the top of the window
         if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
-            View.getInstance()
-                    .getJbtn_exit()
-                    .setIcon(
-                            new ImageIcon(Utils.resizeImage(View.getInstance()
-                                    .getJbtn_exit().getWidth(), View
-                                    .getInstance().getJbtn_exit().getHeight(),
-                                    "normal.png")));
+            View.getInstance().getJbtn_exit().setIcon(new ImageIcon(Utils
+                    .resizeImage(View.getInstance().getJbtn_exit().getWidth(), 
+                            View.getInstance().getJbtn_exit().getHeight(),
+                                    Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
+        } else if (_event.getSource().equals(
+                View.getInstance().getJbtn_fullscreen())) {
+            View.getInstance().getJbtn_fullscreen().setIcon(new ImageIcon(Utils
+                    .resizeImage(View.getInstance().getJbtn_exit().getWidth(), 
+                            View.getInstance().getJbtn_exit().getHeight(),
+                                    Constants
+                                    .VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
         }
     }
 
@@ -594,13 +619,18 @@ public final class ControlPainting implements MouseListener,
         // source: exit button at the top of the window
         if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
 
-            View.getInstance()
-                    .getJbtn_exit()
-                    .setIcon(
-                            new ImageIcon(Utils.resizeImage(View.getInstance()
-                                    .getJbtn_exit().getWidth(), View
-                                    .getInstance().getJbtn_exit().getHeight(),
-                                    Constants.VIEW_JBTN_EXIT_MOUSEOVER_PATH)));
+            View.getInstance().getJbtn_exit().setIcon(
+                    new ImageIcon(Utils.resizeImage(View.getInstance()
+                            .getJbtn_exit().getWidth(), View
+                            .getInstance().getJbtn_exit().getHeight(),
+                            Constants.VIEW_JBTN_EXIT_MOUSEOVER_PATH)));
+        } else if (_event.getSource().equals(
+                View.getInstance().getJbtn_fullscreen())) {
+            View.getInstance().getJbtn_fullscreen().setIcon(new ImageIcon(Utils
+                    .resizeImage(View.getInstance().getJbtn_exit().getWidth(), 
+                            View.getInstance().getJbtn_exit().getHeight(),
+                                    Constants
+                                    .VIEW_JBTN_FULLSCREEN_MOUSEOVER_PATH)));
         }
     }
 

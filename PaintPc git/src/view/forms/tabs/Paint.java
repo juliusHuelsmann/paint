@@ -5,7 +5,6 @@ package view.forms.tabs;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -13,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Marker;
 import model.objects.pen.normal.Pencil;
@@ -30,7 +28,6 @@ import view.util.Item1PenSelection;
 import view.util.VColorPanel;
 import view.util.VLabel;
 import view.util.Item1Button;
-import view.util.VTabbedPane;
 
 
 /**
@@ -134,7 +131,7 @@ public final class Paint extends JPanel {
 
 		//set size
 		super.setSize((int) Toolkit.getDefaultToolkit().getScreenSize()
-		        .getWidth(), ViewSettings.VIEW_HEIGHT_TB);
+		        .getWidth(), ViewSettings.getView_heightTB());
 
 		//TODO: directly apply to status values.
 		//set standard values (is going to be put into a new settings class)
@@ -156,7 +153,7 @@ public final class Paint extends JPanel {
 
 	        //paste
 	        tb_paste = new Item1Button(tb_paste);
-	        tb_paste.setSize(ViewSettings.ITEM_WIDTH, ViewSettings.ITEM_HEIGHT);
+	        tb_paste.setSize(ViewSettings.getItemWidth(), ViewSettings.getItemHeight());
 	        tb_paste.setBorder(false);
 	        tb_paste.addMouseListener(ControlPainting.getInstance());
 	        initializeTextButton(tb_paste,
@@ -166,7 +163,7 @@ public final class Paint extends JPanel {
 
 	        //copy
 	        tb_copy = new Item1Button(tb_copy);
-	        tb_copy.setSize(ViewSettings.ITEM_WIDTH, ViewSettings.ITEM_HEIGHT);
+	        tb_copy.setSize(ViewSettings.getItemWidth(), ViewSettings.getItemHeight());
 	        tb_copy.setBorder(false);
 	        tb_copy.addMouseListener(ControlPainting.getInstance());
 	        initializeTextButton(tb_copy,
@@ -176,7 +173,7 @@ public final class Paint extends JPanel {
 
 	        //cut
 	        tb_cut = new Item1Button(tb_cut);
-	        tb_cut.setSize(ViewSettings.ITEM_WIDTH, ViewSettings.ITEM_HEIGHT);
+	        tb_cut.setSize(ViewSettings.getItemWidth(), ViewSettings.getItemHeight());
 	        tb_cut.setBorder(false);
 	        tb_cut.addMouseListener(ControlPainting.getInstance());
 	        initializeTextButton(tb_cut,
@@ -188,33 +185,33 @@ public final class Paint extends JPanel {
 	    
 	    if (Status.isNormalRotation()) {
 
-	        tb_paste.setLocation(_x + ViewSettings.DISTANCE_BETWEEN_ITEMS,
-	                ViewSettings.DISTANCE_BETWEEN_ITEMS);
+	        tb_paste.setLocation(_x + ViewSettings.getDistanceBetweenItems(),
+	                ViewSettings.getDistanceBetweenItems());
 	        tb_copy.setLocation(tb_paste.getX() 
-	                + ViewSettings.DISTANCE_BETWEEN_ITEMS 
-	                + tb_paste.getWidth(), ViewSettings.DISTANCE_BETWEEN_ITEMS);
+	                + ViewSettings.getDistanceBetweenItems() 
+	                + tb_paste.getWidth(), ViewSettings.getDistanceBetweenItems());
 	        tb_cut.setLocation(tb_copy.getX(), tb_copy.getHeight() 
-	                + ViewSettings.DISTANCE_BETWEEN_ITEMS + tb_copy.getY());
+	                + ViewSettings.getDistanceBetweenItems() + tb_copy.getY());
 	        insertTrennung(tb_cut.getWidth() + tb_cut.getX() 
-	                + ViewSettings.DISTANCE_BEFORE_LINE, 0, 
+	                + ViewSettings.getDistanceBeforeLine(), 0, 
 	                _paint);
 	    } else {
 
             tb_paste.setLocation(
-                    ViewSettings.VIEW_WIDTH_TB 
-                    - _x - ViewSettings.DISTANCE_BETWEEN_ITEMS
-                    - ViewSettings.ITEM_WIDTH, 
-                    ViewSettings.VIEW_HEIGHT_TB 
-                    - ViewSettings.DISTANCE_BETWEEN_ITEMS 
-                    - ViewSettings.ITEM_HEIGHT - fifety);
+                    ViewSettings.getView_widthTb() 
+                    - _x - ViewSettings.getDistanceBetweenItems()
+                    - ViewSettings.getItemWidth(), 
+                    ViewSettings.getView_heightTB() 
+                    - ViewSettings.getDistanceBetweenItems() 
+                    - ViewSettings.getItemHeight() - fifety);
            
             tb_copy.setLocation(tb_paste.getX()
-                    - ViewSettings.DISTANCE_BETWEEN_ITEMS 
+                    - ViewSettings.getDistanceBetweenItems() 
                     - tb_paste.getWidth(), tb_paste.getY());
             tb_cut.setLocation(tb_copy.getX(), tb_copy.getY()
                     - tb_copy.getHeight() 
-                    - ViewSettings.DISTANCE_BETWEEN_ITEMS);
-            insertTrennung(tb_cut.getX() - ViewSettings.DISTANCE_BEFORE_LINE, 
+                    - ViewSettings.getDistanceBetweenItems());
+            insertTrennung(tb_cut.getX() - ViewSettings.getDistanceBeforeLine(), 
                     0, _paint);
          }
 	    
@@ -229,7 +226,7 @@ public final class Paint extends JPanel {
         
         
 	    
-		return jlbl_separation[0].getX() + ViewSettings.DISTANCE_AFTER_LINE;
+		return jlbl_separation[0].getX() + ViewSettings.getDistanceAfterLine();
 	}
 	
 	
@@ -248,14 +245,14 @@ public final class Paint extends JPanel {
 	    if (_paint) {
 
 	        tb_prev = new Item1Button(null);
-	        tb_prev.setSize(ViewSettings.ITEM_WIDTH, ViewSettings.ITEM_HEIGHT);
+	        tb_prev.setSize(ViewSettings.getItemWidth(), ViewSettings.getItemHeight());
 	        tb_prev.setBorder(false);
 	        initializeTextButton(tb_prev,
 	                "previous",
 	                Constants.VIEW_TB_PREV_PATH, 0);
 
 	        tb_next = new Item1Button(null);
-	        tb_next.setSize(ViewSettings.ITEM_WIDTH, ViewSettings.ITEM_HEIGHT);
+	        tb_next.setSize(ViewSettings.getItemWidth(), ViewSettings.getItemHeight());
 	        tb_next.setBorder(false);
 	        initializeTextButton(tb_next,
 	                "next",
@@ -266,11 +263,11 @@ public final class Paint extends JPanel {
 	    
 	    if (Status.isNormalRotation()) {
 
-	        tb_prev.setLocation(_x, ViewSettings.DISTANCE_BETWEEN_ITEMS);
+	        tb_prev.setLocation(_x, ViewSettings.getDistanceBetweenItems());
 	        tb_next.setLocation(
 	                tb_prev.getX(), tb_prev.getY() + tb_prev.getHeight());
 	        insertTrennung(tb_prev.getWidth() + tb_prev.getX() 
-	                + ViewSettings.DISTANCE_BEFORE_LINE, 
+	                + ViewSettings.getDistanceBeforeLine(), 
 	                1, _paint);
 	        insertInformation("history", _x, jlbl_separation[1].getX(), 1, 
 	                _paint);
@@ -278,21 +275,21 @@ public final class Paint extends JPanel {
 	    } else  {
 
 	        tb_prev.setLocation(_x - tb_prev.getWidth() 
-	                - ViewSettings.DISTANCE_AFTER_LINE, 
-	                ViewSettings.VIEW_HEIGHT_TB 
-                    - ViewSettings.DISTANCE_BETWEEN_ITEMS 
-                    - ViewSettings.ITEM_HEIGHT - fifety);
+	                - ViewSettings.getDistanceAfterLine(), 
+	                ViewSettings.getView_heightTB() 
+                    - ViewSettings.getDistanceBetweenItems() 
+                    - ViewSettings.getItemHeight() - fifety);
 	        tb_next.setLocation(tb_prev.getX(), tb_prev.getY() 
-	                - ViewSettings.DISTANCE_BETWEEN_ITEMS 
+	                - ViewSettings.getDistanceBetweenItems() 
 	                - tb_prev.getHeight());
             insertTrennung(tb_prev.getX() 
-                    - ViewSettings.DISTANCE_BEFORE_LINE,
+                    - ViewSettings.getDistanceBeforeLine(),
                     1, _paint);
 	        insertInformation("history", _x, jlbl_separation[1].getX(), 
 	                1, _paint);
   
 	    }
-        return jlbl_separation[1].getX() + ViewSettings.DISTANCE_AFTER_LINE;
+        return jlbl_separation[1].getX() + ViewSettings.getDistanceAfterLine();
 
 	}
 
@@ -425,33 +422,33 @@ public final class Paint extends JPanel {
         
         if (Status.isNormalRotation()) {
 
-            it_stift1.setLocation(_x, ViewSettings.DISTANCE_BETWEEN_ITEMS);
+            it_stift1.setLocation(_x, ViewSettings.getDistanceBetweenItems());
             it_stift2.setLocation(it_stift1.getX() + it_stift1.getWidth() 
-                    + ViewSettings.DISTANCE_BETWEEN_ITEMS,
-                    ViewSettings.DISTANCE_BETWEEN_ITEMS);
+                    + ViewSettings.getDistanceBetweenItems(),
+                    ViewSettings.getDistanceBetweenItems());
             it_selection.setLocation(it_stift2.getWidth() + it_stift2.getX() 
-                    + ViewSettings.DISTANCE_BETWEEN_ITEMS, 
-                    ViewSettings.DISTANCE_BETWEEN_ITEMS);
+                    + ViewSettings.getDistanceBetweenItems(), 
+                    ViewSettings.getDistanceBetweenItems());
             tb_pipette.setLocation(it_selection.getX() + it_selection.getWidth()
-                    + ViewSettings.DISTANCE_BETWEEN_ITEMS,
+                    + ViewSettings.getDistanceBetweenItems(),
                     it_stift2.getY());
             tb_fill.setLocation(tb_pipette.getX(),
                     tb_pipette.getY() + tb_pipette.getHeight() 
-                    + ViewSettings.DISTANCE_BETWEEN_ITEMS);
+                    + ViewSettings.getDistanceBetweenItems());
             
             tb_move.setLocation(tb_pipette.getX() + tb_pipette.getWidth()
-                    + ViewSettings.DISTANCE_BETWEEN_ITEMS,
+                    + ViewSettings.getDistanceBetweenItems(),
                     tb_pipette.getY());
             tb_erase.setLocation(tb_move.getX(),
                     tb_move.getY() + tb_move.getHeight() 
-                    + ViewSettings.DISTANCE_BETWEEN_ITEMS);
+                    + ViewSettings.getDistanceBetweenItems());
         }
         insertTrennung(tb_move.getWidth() + tb_move.getX() 
-                + ViewSettings.DISTANCE_BEFORE_LINE, 
+                + ViewSettings.getDistanceBeforeLine(), 
                 2, _paint);
         insertInformation("Stifte", _x, jlbl_separation[2].getX(), 2, _paint);
     	
-    	return jlbl_separation[2].getX() + ViewSettings.DISTANCE_AFTER_LINE;
+    	return jlbl_separation[2].getX() + ViewSettings.getDistanceAfterLine();
     }
 
 	/**
@@ -467,9 +464,9 @@ public final class Paint extends JPanel {
     	tb_color1.addMouseListener(CPaintStatus.getInstance());
     	tb_color1.setBorder(BorderFactory.createCompoundBorder(
     	        new LineBorder(Color.black), new LineBorder(Color.white)));
-    	tb_color1.setLocation(_x, ViewSettings.DISTANCE_BETWEEN_ITEMS);
+    	tb_color1.setLocation(_x, ViewSettings.getDistanceBetweenItems());
     	tb_color1.setSize(
-    	        ViewSettings.ITEM_MENU1_WIDTH, ViewSettings.ITEM_MENU1_HEIGHT);
+    	        ViewSettings.getItemMenu1Width(), ViewSettings.getItemMenu1Height());
     	tb_color1.setText("Farbe 1");
     	super.add(tb_color1);
     	//the second color for the second pen
@@ -479,7 +476,7 @@ public final class Paint extends JPanel {
     	tb_color2.setBorder(BorderFactory.createCompoundBorder(
     	        new LineBorder(Color.black), new LineBorder(Color.white)));
     	tb_color2.setLocation(tb_color1.getWidth() + tb_color1.getX() 
-    	        + 2 + 2 + 2 + 1, ViewSettings.DISTANCE_BETWEEN_ITEMS);
+    	        + 2 + 2 + 2 + 1, ViewSettings.getDistanceBetweenItems());
     	tb_color2.setSize(tb_color1.getWidth(), tb_color1.getHeight());
     	tb_color2.setText("Farbe 2");
     	super.add(tb_color2);
@@ -487,7 +484,7 @@ public final class Paint extends JPanel {
     	final int distanceBetweenColors = 2;
     	final int width = (2 + 2 + 1) * (2 + 2 + 1) - 2 - 2;
     	final int amountOfItems = 4;
-    	final int height = ViewSettings.ITEM_MENU1_HEIGHT / amountOfItems
+    	final int height = ViewSettings.getItemMenu1Height() / amountOfItems
     	        -  distanceBetweenColors;
     	final int anzInR = 7;
     	jbtn_colors = new JButton[anzInR * (2 + 2)];
@@ -596,19 +593,19 @@ public final class Paint extends JPanel {
     	it_color.setBorder(false);
     	it_color.setText("+ Farben");
     	it_color.setLocation(jbtn_colors[jbtn_colors.length - 1].getX() 
-    	        + ViewSettings.DISTANCE_BETWEEN_ITEMS 
+    	        + ViewSettings.getDistanceBetweenItems() 
     	        + jbtn_colors[jbtn_colors.length - 1].getWidth(), 
-    	        ViewSettings.DISTANCE_BETWEEN_ITEMS);
+    	        ViewSettings.getDistanceBetweenItems());
         it_color.getJPanel().add(new VColorPanel(jbtn_colors));
         it_color.setBorder(false);
         it_color.setIcon("icon/palette.png");
         super.add(it_color);
         
     	insertTrennung(it_color.getWidth() + it_color.getX() + ViewSettings
-    	        .DISTANCE_BEFORE_LINE, 2 + 1, _paint);
+    	        .getDistanceBeforeLine(), 2 + 1, _paint);
     	insertInformation("Farben", _x, jlbl_separation[2 + 1].getX(), 2 + 1, 
     	        _paint);
-    	return jlbl_separation[2 + 1].getX() + ViewSettings.DISTANCE_AFTER_LINE;
+    	return jlbl_separation[2 + 1].getX() + ViewSettings.getDistanceAfterLine();
     }
 
     /**
@@ -627,7 +624,7 @@ public final class Paint extends JPanel {
 		tb_zoomIn.setSize(tb_copy.getWidth(), tb_copy.getHeight());
 		tb_zoomIn.setLocation(tb_paste.getX(), 
 		        tb_paste.getHeight() + 2 + 2 + 2 + 1);
-		tb_zoomIn.setLocation(_x , ViewSettings.DISTANCE_BETWEEN_ITEMS);
+		tb_zoomIn.setLocation(_x , ViewSettings.getDistanceBetweenItems());
 		tb_zoomIn.setBorder(false);
 		initializeTextButton(tb_zoomIn,
 				TextFactory.getInstance().getTextViewTb_zoomIn(),
@@ -638,7 +635,7 @@ public final class Paint extends JPanel {
 		tb_zoomOut = new Item1Button(tb_zoomOut);
 		tb_zoomOut.setSize(tb_copy.getWidth(), tb_copy.getHeight());
 		tb_zoomOut.setLocation(tb_zoomIn.getX(),
-				tb_zoomIn.getY() + ViewSettings.DISTANCE_BETWEEN_ITEMS 
+				tb_zoomIn.getY() + ViewSettings.getDistanceBetweenItems() 
 				+ tb_zoomIn.getHeight());
 		tb_zoomOut.addMouseListener(ControlPainting.getInstance());
 		tb_zoomOut.setBorder(false);
@@ -648,13 +645,13 @@ public final class Paint extends JPanel {
 		tb_zoomOut.setActivable(false);
 
 		insertTrennung(tb_zoomIn.getWidth() + tb_zoomIn.getX() 
-		        + ViewSettings.DISTANCE_BEFORE_LINE, 
+		        + ViewSettings.getDistanceBeforeLine(), 
 		        2 + 2, _paint);
 		insertInformation("Zoom", _x, jlbl_separation[2 + 2].getX(), 
 		        2 + 2, true);
 
         return jlbl_separation[2 + 2].getX() 
-                + ViewSettings.DISTANCE_AFTER_LINE;
+                + ViewSettings.getDistanceAfterLine();
 	}
 	
 	/**
@@ -669,7 +666,7 @@ public final class Paint extends JPanel {
         //save
         tb_save = new Item1Button(tb_save);
         tb_save.setSize(tb_copy.getWidth(), tb_copy.getHeight());
-        tb_save.setLocation(_x + ViewSettings.DISTANCE_AFTER_LINE,
+        tb_save.setLocation(_x + ViewSettings.getDistanceAfterLine(),
                 tb_zoomIn.getY());
         tb_save.setBorder(false);
         tb_save.addMouseListener(ControlPainting.getInstance());
@@ -683,7 +680,7 @@ public final class Paint extends JPanel {
         tb_saveAs.setSize(tb_copy.getWidth(), tb_copy.getHeight());
         tb_saveAs.setLocation(tb_save.getX(),
                 tb_save.getY() + tb_save.getHeight() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS);
+                + ViewSettings.getDistanceBetweenItems());
         tb_saveAs.setBorder(false);
         tb_saveAs.addMouseListener(ControlPainting.getInstance());
         initializeTextButton(tb_saveAs,
@@ -695,7 +692,7 @@ public final class Paint extends JPanel {
 		tb_load = new Item1Button(tb_load);
 		tb_load.setSize(tb_copy.getWidth(), tb_copy.getHeight());
 		tb_load.setLocation(tb_save.getWidth() + tb_save.getX()
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS, tb_save.getY());
+                + ViewSettings.getDistanceBetweenItems(), tb_save.getY());
 		tb_load.setBorder(false);
 		tb_load.addMouseListener(ControlPainting.getInstance());
 		initializeTextButton(tb_load,
@@ -707,7 +704,7 @@ public final class Paint extends JPanel {
         tb_new = new Item1Button(null);
         tb_new.setSize(tb_copy.getWidth(), tb_copy.getHeight());
         tb_new.setLocation(tb_saveAs.getWidth() + tb_saveAs.getX()
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS, tb_saveAs.getY());
+                + ViewSettings.getDistanceBetweenItems(), tb_saveAs.getY());
         tb_new.setBorder(false);
         tb_new.addMouseListener(ControlPainting.getInstance());
         initializeTextButton(tb_new,
@@ -719,7 +716,7 @@ public final class Paint extends JPanel {
         tb_turnMirror = new Item1Button(null);
         tb_turnMirror.setSize(tb_load.getWidth(), tb_load.getHeight());
         tb_turnMirror.setLocation(tb_load.getWidth() + tb_load.getX() 
-                + ViewSettings.DISTANCE_BETWEEN_ITEMS, tb_load.getY());
+                + ViewSettings.getDistanceBetweenItems(), tb_load.getY());
         tb_turnMirror.setBorder(false);
         tb_turnMirror.addActionListener(ControlPainting.getInstance());
         initializeTextButton(tb_turnMirror,
@@ -739,14 +736,14 @@ public final class Paint extends JPanel {
         tb_turnNormal.setActivable(false);
 
 		insertTrennung(tb_turnMirror.getWidth() + tb_turnMirror.getX() 
-		        + ViewSettings.DISTANCE_BEFORE_LINE,
+		        + ViewSettings.getDistanceBeforeLine(),
 		        2 + 2 + 1, _paint);
 		insertInformation("Dateioperationen", jlbl_separation[2 + 2].getX(), 
 		        jlbl_separation[2 + 2 + 1].getX(), 2 + 2 + 1, _paint);
 
 
         return jlbl_separation[2 + 2 + 1].getX() 
-                + ViewSettings.DISTANCE_AFTER_LINE;
+                + ViewSettings.getDistanceAfterLine();
 	}
 	
 	
@@ -890,11 +887,11 @@ public final class Paint extends JPanel {
 	    }
         this.jlbl_separation[_locInArray].setBounds(
                 _x, 
-                ViewSettings.DISTANCE_BETWEEN_ITEMS, 
+                ViewSettings.getDistanceBetweenItems(), 
                 1, 
-                ViewSettings.VIEW_HEIGHT_TB_VISIBLE
-                - ViewSettings.DISTANCE_BETWEEN_ITEMS 
-                - ViewSettings.VIEW_HEIGHT_TB
+                ViewSettings.getView_heightTB_visible()
+                - ViewSettings.getDistanceBetweenItems() 
+                - ViewSettings.getView_heightTB()
                 / ViewSettings.TABBED_PANE_TITLE_PROPORTION_HEIGHT);
 	}
 	
@@ -930,8 +927,8 @@ public final class Paint extends JPanel {
 		if (Status.isNormalRotation()) {
 
             final int number = 
-                    ViewSettings.ITEM_MENU1_HEIGHT
-                    + ViewSettings.DISTANCE_BETWEEN_ITEMS;
+                    ViewSettings.getItemMenu1Height()
+                    + ViewSettings.getDistanceBetweenItems();
             final int number2 = 15;
 	        jlbl_information[_locationInArray].setBounds(
 	                _x1, number, _x2 - _x1, number2);

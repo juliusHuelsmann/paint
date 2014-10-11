@@ -72,7 +72,7 @@ import control.util.MousePositionTracker;
         super.setUndecorated(true);
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
         
-        if (ViewSettings.FULLSCREEN) {
+        if (ViewSettings.isFullscreen()) {
 
             this.setFullscreen();
             //fade in and show text.
@@ -108,7 +108,7 @@ import control.util.MousePositionTracker;
         jbtn_fullscreen.setFocusable(false);
         super.add(jbtn_fullscreen);
 
-        if (ViewSettings.FULLSCREEN) {
+        if (ViewSettings.isFullscreen()) {
 
             //fade out
             fadeOut();
@@ -118,7 +118,7 @@ import control.util.MousePositionTracker;
         flip(true);
         repaint();
 
-        if (!ViewSettings.FULLSCREEN) {
+        if (!ViewSettings.isFullscreen()) {
             super.getContentPane().setBackground(Color.white);
             super.setLocationRelativeTo(null);
         }
@@ -335,7 +335,7 @@ import control.util.MousePositionTracker;
 	/**
 	 * set FullscreenMode.
 	 */
-	private void setFullscreen() {
+	public void setFullscreen() {
 
 		//initialize instances
         GraphicsEnvironment ge 
@@ -345,7 +345,10 @@ import control.util.MousePositionTracker;
  
         //if fullScreen modus is supported
         if (device.isFullScreenSupported()) {
-            setUndecorated(true);
+            if (!isUndecorated()) {
+
+                setUndecorated(true);
+            }
             device.setFullScreenWindow(this);
         } else {
             device.setFullScreenWindow(null);
@@ -379,40 +382,40 @@ import control.util.MousePositionTracker;
 	public void flip(final boolean _normalFlip) {
 
 	    //set gui bounds
-        super.setSize(ViewSettings.VIEW_SIZE_JFRAME);
+        super.setSize(ViewSettings.getSizeJFrame());
 
         
         
         //initialize tabs
         Status.getLogger().info("   initialize Tabs\n");
         Tabs.getInstance().setSize(
-                ViewSettings.VIEW_WIDTH_TB, 
-                ViewSettings.VIEW_HEIGHT_TB,
-                ViewSettings.VIEW_HEIGHT_TB_VISIBLE);
+                ViewSettings.getView_widthTb(), 
+                ViewSettings.getView_heightTB(),
+                ViewSettings.getView_heightTB_visible());
         
         //initialize PaintObjects
         Status.getLogger().info("   initialize PaintObjects\n");
 
         //initialize PaintObjects
         Status.getLogger().info("   initialize Page\n");
-        Page.getInstance().setSize(ViewSettings.VIEW_BOUNDS_PAGE.width, 
-                ViewSettings.VIEW_BOUNDS_PAGE.height);
+        Page.getInstance().setSize(ViewSettings.getView_bounds_page().width, 
+                ViewSettings.getView_bounds_page().height);
         Page.getInstance().setLocation(
-                ViewSettings.VIEW_BOUNDS_PAGE.getLocation());
+                ViewSettings.getView_bounds_page().getLocation());
 	    
         //if not flipped
 	    if (_normalFlip) {
 
             Page.getInstance().setLocation(
-                    ViewSettings.VIEW_BOUNDS_PAGE.getLocation());
+                    ViewSettings.getView_bounds_page().getLocation());
 
 	        
-	        jbtn_exit.setBounds(ViewSettings.VIEW_BOUNDS_JBTN_EXIT);
+	        jbtn_exit.setBounds(ViewSettings.getViewBoundsJbtnExit());
 	        jbtn_exit.setIcon(new ImageIcon(Utils.resizeImage(
 	                jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
 	                Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
 
-            jbtn_fullscreen.setBounds(ViewSettings.VIEW_BOUNDS_JBTN_FULLSCREEN);
+            jbtn_fullscreen.setBounds(ViewSettings.getView_bounds_jbtn_fullscreen());
 	        jbtn_fullscreen.setIcon(new ImageIcon(Utils.resizeImage(
                     jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
                     Constants.VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
@@ -421,26 +424,26 @@ import control.util.MousePositionTracker;
 	        
 	    } else {
 	        jbtn_exit.setLocation(
-                    ViewSettings.VIEW_SIZE_JFRAME.width
-                    - ViewSettings.VIEW_BOUNDS_JBTN_EXIT.x
-                    - ViewSettings.VIEW_BOUNDS_JBTN_EXIT.height, 
-	                ViewSettings.VIEW_SIZE_JFRAME.height 
-	                - ViewSettings.VIEW_BOUNDS_JBTN_EXIT.height 
-	                - ViewSettings.VIEW_BOUNDS_JBTN_EXIT.y);
+                    ViewSettings.getSizeJFrame().width
+                    - ViewSettings.getViewBoundsJbtnExit().x
+                    - ViewSettings.getViewBoundsJbtnExit().height, 
+	                ViewSettings.getSizeJFrame().height 
+	                - ViewSettings.getViewBoundsJbtnExit().height 
+	                - ViewSettings.getViewBoundsJbtnExit().y);
 
 	        jbtn_exit.setIcon(new ImageIcon(Utils.flipImage(
 	                jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
 	                Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
 
             Page.getInstance().setLocation(
-                    ViewSettings.VIEW_SIZE_JFRAME.width
-                    - ViewSettings.VIEW_BOUNDS_PAGE.x
-                    - ViewSettings.VIEW_BOUNDS_PAGE.width,
-                    ViewSettings.VIEW_SIZE_JFRAME.height
-                    - ViewSettings.VIEW_BOUNDS_PAGE.y 
-                    - ViewSettings.VIEW_BOUNDS_PAGE.height);
-            Tabs.getInstance().setLocation(ViewSettings.VIEW_SIZE_JFRAME.width 
-                    - ViewSettings.VIEW_WIDTH_TB, 0);
+                    ViewSettings.getSizeJFrame().width
+                    - ViewSettings.getView_bounds_page().x
+                    - ViewSettings.getView_bounds_page().width,
+                    ViewSettings.getSizeJFrame().height
+                    - ViewSettings.getView_bounds_page().y 
+                    - ViewSettings.getView_bounds_page().height);
+            Tabs.getInstance().setLocation(ViewSettings.getSizeJFrame().width 
+                    - ViewSettings.getView_widthTb(), 0);
             
 	    }
 
@@ -480,4 +483,11 @@ import control.util.MousePositionTracker;
 	public JButton getJbtn_exit() {
 		return jbtn_exit;
 	}
+
+    /**
+     * @return the jbtn_fullscreen
+     */
+    public JButton getJbtn_fullscreen() {
+        return jbtn_fullscreen;
+    }
 }

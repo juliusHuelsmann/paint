@@ -5,19 +5,15 @@ package view.util;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-
-import javax.rmi.CORBA.Util;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
-
 import view.forms.Page;
 import view.forms.Tabs;
 import control.tabs.CPaintStatus;
 import control.util.CItem;
-import control.util.VisualTextButton;
 import model.settings.ViewSettings;
 import model.util.list.List;
 import model.util.paint.Utils;
@@ -93,8 +89,10 @@ public class Item1Menu extends JPanel {
 	
 	/**
 	 * Constructor: shows closed item.
+	 * @param _openSelectOneButton whether to open and to select at the same 
+	 * button
 	 */
-	public Item1Menu(boolean _openTwice) {
+	public Item1Menu(final boolean _openSelectOneButton) {
 		
 		//initialize JPanel and alter settings
 		super();
@@ -120,14 +118,14 @@ public class Item1Menu extends JPanel {
 		tb_select.addMouseListener(CPaintStatus.getInstance());
 		tb_select.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		tb_select.setFocusable(false);
-		if (_openTwice) {
+		if (_openSelectOneButton) {
 
 		    tb_select.addMouseListener(CItem.getInstance());
 		}
 		tb_select.setOpaque(true);
 		super.add(tb_select);
 
-		if (!_openTwice) {
+		if (!_openSelectOneButton) {
 
 	        //initialize JButton
 	        tb_open = new VButtonWrapper(this);
@@ -354,7 +352,7 @@ public class Item1Menu extends JPanel {
 			jpnl_stuff.setSize(closedWidth, jpnl_stuff.getHeight());
            
             
-            if (tb_open != null){
+            if (tb_open != null) {
                 tb_select.setSize(closedWidth, closedHeight * (2 + 2) 
                         / (2 + 2 + 1));
                 tb_open.setLocation(tb_select.getX(), 

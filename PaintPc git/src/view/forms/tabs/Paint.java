@@ -411,7 +411,7 @@ public final class Paint extends JPanel {
             tb_move.setSize(tb_copy.getWidth(), tb_copy.getHeight());
             tb_move.setBorder(false);
             initializeTextButton(tb_move, "nothing",
-                    Constants.VIEW_TB_PIPETTE_PATH, 0);
+                    Constants.VIEW_TB_MOVE_PATH, 0);
             tb_move.setActivable(true);
     
             tb_erase = new Item1Button(null);
@@ -895,7 +895,7 @@ public final class Paint extends JPanel {
                 ViewSettings.VIEW_HEIGHT_TB_VISIBLE
                 - ViewSettings.DISTANCE_BETWEEN_ITEMS 
                 - ViewSettings.VIEW_HEIGHT_TB
-                / VTabbedPane.TITLE_PROPORTION_HEIGHT);
+                / ViewSettings.TABBED_PANE_TITLE_PROPORTION_HEIGHT);
 	}
 	
 	/**

@@ -340,7 +340,7 @@ public final class Insert extends JPanel {
                 ViewSettings.VIEW_HEIGHT_TB_VISIBLE
                 - ViewSettings.DISTANCE_BETWEEN_ITEMS 
                 - ViewSettings.VIEW_HEIGHT_TB
-                / VTabbedPane.TITLE_PROPORTION_HEIGHT);
+                / ViewSettings.TABBED_PANE_TITLE_PROPORTION_HEIGHT);
     }
     
     /**

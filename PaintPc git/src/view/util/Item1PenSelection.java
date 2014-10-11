@@ -5,7 +5,6 @@ package view.util;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,7 +14,6 @@ import javax.swing.JSlider;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import view.forms.tabs.Paint;
 import model.objects.painting.Picture;
 import model.objects.pen.Pen;
@@ -23,7 +21,6 @@ import model.settings.Constants;
 import model.util.paint.Utils;
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
-import control.util.VisualTextButton;
 
 /**
  * Class item pen selection, contains one pen which can be selected.

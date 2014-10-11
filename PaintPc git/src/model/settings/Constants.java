@@ -44,6 +44,7 @@ public final class Constants {
 	        VIEW_TB_PREV_PATH = "icon/prev.png",
 	        VIEW_TB_FILL_PATH = "icon/fill.png",
 	        VIEW_TB_PIPETTE_PATH = "icon/pipette.png",
+	        VIEW_TB_MOVE_PATH = "centerResize.png",
 	        SP_PATH_UP = "sb/n/t.png",
 	        SP_PATH_DOWN = "sb/n/b.png",
 	        SP_PATH_LEFT = "sb/s/t.png",

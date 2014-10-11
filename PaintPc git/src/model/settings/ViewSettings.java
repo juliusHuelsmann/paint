@@ -221,7 +221,7 @@ public final class ViewSettings {
     /**
      * The bounds of the TabbedPanel.
      */
-    public static final Point VIEW_LOCATION_TB = new Point(1, 1);
+    public static final Point VIEW_LOCATION_TB = new Point(2, 2);
 
     /**
      * the width of the TabbedPane.
@@ -258,10 +258,17 @@ public final class ViewSettings {
     public static final int VIEW_SIZE_SP = 30;
 
     /**
+     * The size of the title JButton getSize() / the size of title JButton
+     * is the real size.
+     */
+    public static final int TABBED_PANE_TITLE_PROPORTION_WIDTH = 15,
+           TABBED_PANE_TITLE_PROPORTION_HEIGHT = 20;
+    /**
      * the bounds of the Page.
      */
     public static final Rectangle VIEW_BOUNDS_PAGE_OPEN = new Rectangle(
-            1, VIEW_HEIGHT_TB_VISIBLE + TWENTY_FIFE, 
+            1, 1 + VIEW_HEIGHT_TB_VISIBLE 
+            + ViewSettings.VIEW_HEIGHT_TABBEDPANE_OPENER, 
             VIEW_SIZE_JFRAME.width - TWENTY_FIFE - TEN - 2, 
             VIEW_SIZE_JFRAME.height - VIEW_SIZE_JFRAME.height / FIFE 
             - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);

@@ -67,12 +67,6 @@ public class VTabbedPane extends JPanel {
 	 */
 	private int titleX = 1, titleY = 1;
 	
-	/**
-	 * The size of the title JButton getSize() / the size of title JButton
-	 * is the real size.
-	 */
-	public static final int TITLE_PROPORTION_WIDTH = 15,
-	        TITLE_PROPORTION_HEIGHT = 20;
 	
 	/**
 	 * The visible height.
@@ -169,7 +163,8 @@ public class VTabbedPane extends JPanel {
             @Override public void mouseReleased(final MouseEvent _event) {
                 press = false;
                 if (getHeight() <= (oldVisibleHeight + (oldVisibleHeight 
-                        / TITLE_PROPORTION_HEIGHT)) / 2) {
+                        / ViewSettings
+                        .TABBED_PANE_TITLE_PROPORTION_HEIGHT)) / 2) {
                     closeTabbedPane();
                 } else {
                     openTabbedPane();
@@ -312,7 +307,10 @@ public class VTabbedPane extends JPanel {
                     - view.View.getInstance().getY()); 
             jpnl_close.setLocation(0, getHeight() - jlbl_close.getHeight());
             jpnl_background.setSize(getWidth(), getHeight());
-            Page.getInstance().setLocation(0, getHeight());
+
+            Page.getInstance().setLocation(
+                            ViewSettings.VIEW_BOUNDS_PAGE.x,
+                            getHeight() + 1);
             setComponentZOrder(jpnl_close, 0);
             jlbl_closeTime.setVisible(false);
             
@@ -346,11 +344,13 @@ public class VTabbedPane extends JPanel {
 	            for (int i = 0; i < max; i++) {
 
 	                setComponentSize(getWidth(), startHeight + (oldHeight 
-	                        / TITLE_PROPORTION_HEIGHT - startHeight) * i / max);
+	                        / ViewSettings.TABBED_PANE_TITLE_PROPORTION_HEIGHT 
+	                        - startHeight) * i / max);
 	                jpnl_close.setLocation(0, getHeight());
 	                jpnl_background.setSize(getWidth(), getHeight()
 	                        - jpnl_background.getY());
-	                Page.getInstance().setLocation(0, getHeight());
+	                Page.getInstance().setLocation(
+                            ViewSettings.VIEW_BOUNDS_PAGE.x, getHeight() + 1);
 	                
 	                try {
 	                    Thread.sleep(2);
@@ -361,11 +361,13 @@ public class VTabbedPane extends JPanel {
 	            }
 
 	            setComponentSize(getWidth(), 
-	                    oldHeight / TITLE_PROPORTION_HEIGHT);
+	                    oldHeight / ViewSettings
+                        .TABBED_PANE_TITLE_PROPORTION_HEIGHT);
 	            jpnl_close.setLocation(0, getHeight() - jlbl_close.getHeight());
 	            jpnl_background.setSize(getWidth(), getHeight()
                         - jpnl_background.getY());
-	            Page.getInstance().setLocation(0, getHeight());
+	            Page.getInstance().setLocation(Page.getInstance().getX(),
+	                    getHeight() + getY() + 1);
 
 	            setComponentZOrder(jpnl_close, 1);
 	            jlbl_closeTime.setVisible(true);
@@ -419,7 +421,8 @@ public class VTabbedPane extends JPanel {
                             startHeight2 + (oldVisibleHeight - startHeight2) 
                             * i / max
                             - jpnl_background.getY());
-                    Page.getInstance().setLocation(0, startHeight2 
+                    Page.getInstance().setLocation(
+                            ViewSettings.VIEW_BOUNDS_PAGE.x, startHeight2 
                             + (oldVisibleHeight - startHeight2) * i / max);
                     
                     try {
@@ -435,8 +438,9 @@ public class VTabbedPane extends JPanel {
                 jpnl_background.setSize(getWidth(), oldVisibleHeight 
                         - jpnl_background.getY());
                 jpnl_background.repaint();
-                Page.getInstance().setLocation(0, oldVisibleHeight 
-                        + jpnl_close.getHeight());
+                Page.getInstance().setLocation(Page.getInstance().getX(),
+                        oldVisibleHeight 
+                        + jpnl_close.getHeight() + getY() + 1);
                 setComponentZOrder(jpnl_close, 1);
 
 
@@ -760,9 +764,12 @@ public class VTabbedPane extends JPanel {
      */
     public final void flip(final boolean _normalRotation) {
 
-        final int titleWidth = getWidth() / TITLE_PROPORTION_WIDTH,
-                selectedtitleWidth = getWidth() / (TITLE_PROPORTION_WIDTH),
-                titleHeight = getHeight() / TITLE_PROPORTION_HEIGHT;
+        final int titleWidth = getWidth() / ViewSettings
+                .TABBED_PANE_TITLE_PROPORTION_WIDTH,
+                selectedtitleWidth = getWidth() / (ViewSettings
+                        .TABBED_PANE_TITLE_PROPORTION_WIDTH),
+                titleHeight = getHeight() / ViewSettings
+                        .TABBED_PANE_TITLE_PROPORTION_HEIGHT;
         
         //set the size of container JPanel (whole width and height)
         jpnl_contains.setSize(getWidth(), getHeight());

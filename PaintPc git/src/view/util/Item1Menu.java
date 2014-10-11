@@ -15,6 +15,7 @@ import view.forms.Page;
 import view.forms.Tabs;
 import control.tabs.CPaintStatus;
 import control.util.CItem;
+import control.util.VisualTextButton;
 import model.settings.ViewSettings;
 import model.util.list.List;
 
@@ -41,9 +42,15 @@ public class Item1Menu extends JPanel {
 	private boolean orderHeight = false;
 	
 	/**
-	 * JButton for opening stuff.
+	 * JButton for selection and for selecting.
 	 */
-	private Item1Button tb_open;
+	private Item1Button tb_select;
+	
+	
+	/**
+	 * JButton for selection and for selecting and opening.
+	 */
+	private VButtonWrapper tb_open;
 
 	/**
 	 * JPanel which contains stuff.
@@ -105,15 +112,24 @@ public class Item1Menu extends JPanel {
 
 
 		//initialize JButton
-		tb_open = new Item1Button(this);
-		tb_open.setActivable(false);
-		tb_open.addMouseListener(CPaintStatus.getInstance());
-        tb_open.addMouseListener(CItem.getInstance());
-		tb_open.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		tb_open.setFocusable(false);
-		tb_open.setOpaque(true);
-		super.add(tb_open);
+		tb_select = new Item1Button(this);
+		tb_select.setActivable(false);
+		tb_select.addMouseListener(CPaintStatus.getInstance());
+		tb_select.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+		tb_select.setFocusable(false);
+		tb_select.setOpaque(true);
+		super.add(tb_select);
 
+
+        //initialize JButton
+        tb_open = new VButtonWrapper(this);
+        tb_open.setContentAreaFilled(false);
+        tb_open.addMouseListener(CPaintStatus.getInstance());
+        tb_open.addMouseListener(CItem.getInstance());
+        tb_open.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+        tb_open.setFocusable(false);
+        tb_open.setOpaque(true);
+        super.add(tb_open);
         
 
 		
@@ -202,8 +218,9 @@ public class Item1Menu extends JPanel {
 	 * @param _border whether has border or not.
 	 */
 	public final void setBorder(final boolean _border) {
-		tb_open.setBorder(null);
-		tb_open.setBorder(_border);
+		tb_select.setBorder(null);
+		tb_select.setBorder(_border);
+		tb_open.setBorder(BorderFactory.createLineBorder(Color.lightGray));
         jpnl_stuff.setBorder(null);
         jpnl_container.setBorder(null);
 	}
@@ -330,7 +347,12 @@ public class Item1Menu extends JPanel {
 			
 			super.setSize(closedWidth, closedHeight);
 			jpnl_stuff.setSize(closedWidth, jpnl_stuff.getHeight());
-			tb_open.setSize(closedWidth, closedHeight);
+            tb_select.setSize(closedWidth, closedHeight * (2 + 2) 
+                    / (2 + 2 + 1));
+            tb_open.setLocation(tb_select.getX(), 
+                    tb_select.getY() + tb_select.getHeight());
+            tb_open.setSize(closedWidth, closedHeight / (2 + 2 + 1));
+//             + 2));
 			
 		} else {
 			
@@ -428,7 +450,7 @@ public class Item1Menu extends JPanel {
 	 * @param _text the path of the icon
 	 */
     public final void setIcon(final String _text) {
-        tb_open.setIcon(_text);
+        tb_select.setIcon(_text);
         imagePath = _text;
     }
     
@@ -437,7 +459,7 @@ public class Item1Menu extends JPanel {
      */
     public final void setActivable() {
 
-        tb_open.setActivable(true);
+        tb_select.setActivable(true);
     }
     
     /**
@@ -445,7 +467,7 @@ public class Item1Menu extends JPanel {
      * @param _text the text
      */
     public final void setText(final String _text) {
-        tb_open.setText(_text);
+        tb_select.setText(_text);
     }
     
     /**
@@ -453,7 +475,7 @@ public class Item1Menu extends JPanel {
      */
     public final void setNullIcon() {
         imagePath = "";
-        tb_open.setNullIcon();
+        tb_select.setNullIcon();
     }
     
     /**
@@ -488,7 +510,7 @@ public class Item1Menu extends JPanel {
 	 * @return the tb_open
 	 */
 	public final Item1Button getTb_open() {
-		return tb_open;
+		return tb_select;
 	}
 
 
@@ -498,7 +520,7 @@ public class Item1Menu extends JPanel {
 	 * @param _tb_open the ITem1Button
 	 */
 	public final void setTb_open(final Item1Button _tb_open) {
-		this.tb_open = _tb_open;
+		this.tb_select = _tb_open;
 	}
 
     /**

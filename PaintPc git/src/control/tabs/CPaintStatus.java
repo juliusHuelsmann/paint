@@ -2,6 +2,7 @@
 package control.tabs;
 
 //import declarations
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
@@ -11,6 +12,7 @@ import javax.swing.ImageIcon;
 
 import control.util.CItem;
 import model.objects.painting.Picture;
+import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.Status;
 import model.util.paint.Utils;
@@ -244,19 +246,34 @@ public final class CPaintStatus implements MouseListener {
                     Paint.getInstance().getJbtn_colors()[j])) {
                 
                 if (Status.getIndexOperation()
-                        == Constants.CONTROL_PAINTING_INDEX_PAINT_1) {
-                    Paint.getInstance().getJbtn_color1().setBackground(
-                            Paint.getInstance().getJbtn_colors()[j]
-                                    .getBackground());
+                        != Constants.CONTROL_PAINTING_INDEX_PAINT_2) {
 
-                    Picture.getInstance().changeColor(Paint.getInstance()
-                            .getJbtn_colors()[j].getBackground());
+                    Pen pen = Status.getPenSelected1();
+                    
+                    Color newBG = Paint.getInstance().getJbtn_colors()[j]
+                                    .getBackground();
+                    
+                    Paint.getInstance().getJbtn_color1().setBackground(
+                            new Color(newBG.getRGB(), true));
+                    pen.setClr_foreground(
+                            new Color(newBG.getRGB(), true));
+                    
+                    Status.setPenSelected1(pen);
+                    
                 } else if (Status.getIndexOperation()
                         == Constants.CONTROL_PAINTING_INDEX_PAINT_2) {
-                    Paint.getInstance().getJbtn_color2().setBackground(
-                            Paint.getInstance().getJbtn_colors()[j]
-                                    .getBackground());
-                }
+
+                    Pen pen = Status.getPenSelected2();
+                    
+                    Color newBG = Paint.getInstance().getJbtn_colors()[j]
+                                    .getBackground();
+                    
+                    Paint.getInstance().getJbtn_color2().setBackground(newBG);
+                    pen.setClr_foreground(newBG);
+                    
+                    Status.setPenSelected2(pen);
+                    
+                } 
             }
         }
     }
@@ -269,6 +286,7 @@ public final class CPaintStatus implements MouseListener {
      */
     private boolean mouseReleasedPenChange(final MouseEvent _event) {
 
+        System.out.println("mrpc");
         /*
          * the different pens in open pen menu
          */
@@ -283,16 +301,20 @@ public final class CPaintStatus implements MouseListener {
                 
                 Paint.getInstance().getIt_stift1().setIcon(sa.getImagePath());
                 Paint.getInstance().getIt_stift1().setOpen(false);
-                CItem.getInstance().reset();
+                Status.setIndexOperation(
+                        Constants.CONTROL_PAINTING_INDEX_PAINT_1);
                 
                 
             } else if (sa.getPenSelection() == 2) {
                 
                 Paint.getInstance().getIt_stift2().setIcon(sa.getImagePath());
                 Paint.getInstance().getIt_stift2().setOpen(false);
-                CItem.getInstance().reset();
+                Status.setIndexOperation(
+                        Constants.CONTROL_PAINTING_INDEX_PAINT_2);
             }
+            CPaintVisualEffects.applyFocus(sa);
             Picture.getInstance().userSetPen(sa.getPen(), sa.getPenSelection());
+            CItem.getInstance().reset();
             
             //return that this operation has been performed
             return true;

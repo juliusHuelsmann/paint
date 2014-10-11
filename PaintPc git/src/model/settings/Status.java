@@ -5,10 +5,12 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
+
 import view.forms.Page;
 import model.objects.painting.PaintBI;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
+import model.objects.pen.normal.Pencil;
 import model.util.paint.Utils;
 
 /**
@@ -93,7 +95,7 @@ public final class Status {
      */
     private static Pen 
     penSelected1 = new BallPen(Constants.PEN_ID_LINES, 2, Color.black), 
-    penSelected2 = new BallPen(Constants.PEN_ID_LINES, 2, Color.black);
+    penSelected2 = new Pencil(Constants.PEN_ID_LINES, 2, Color.white);
     
     
     /**

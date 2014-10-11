@@ -5,6 +5,7 @@ package view.util;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,6 +15,7 @@ import javax.swing.JSlider;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import view.forms.tabs.Paint;
 import model.objects.painting.Picture;
 import model.objects.pen.Pen;
@@ -21,6 +23,7 @@ import model.settings.Constants;
 import model.util.paint.Utils;
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
+import control.util.VisualTextButton;
 
 /**
  * Class item pen selection, contains one pen which can be selected.
@@ -103,7 +106,7 @@ public class Item1PenSelection extends JPanel {
 		jlbl_name.setOpaque(false);
 		super.add(jlbl_name);
 		
-		jsl_thickness = new JSlider(1, Constants.MAX_PEN_THICKNESS, 1);
+		jsl_thickness = new JSlider(1, Constants.MAX_PEN_THICKNESS, 2);
 		jsl_thickness.setPaintTicks(true);
 		jsl_thickness.setMajorTickSpacing(
 		        Constants.MAX_PEN_THICKNESS / (2 + 2));

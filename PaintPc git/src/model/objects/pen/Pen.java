@@ -107,18 +107,21 @@ public abstract class Pen implements Serializable {
         if (_pen instanceof BallPen) {
 
             pen = new BallPen(_pen.getId_operation(),
-                    _pen.getThickness(), _pen.getClr_foreground());
+                    _pen.getThickness(), 
+                    new Color(_pen.getClr_foreground().getRGB(), true));
         } else if (_pen instanceof PenSelection) {
 
             pen = new PenSelection();
         } else if (_pen instanceof Pencil) {
 
             pen = new Pencil(_pen.getId_operation(),
-                    _pen.getThickness(), _pen.getClr_foreground());
+                    _pen.getThickness(), 
+                    new Color(_pen.getClr_foreground().getRGB(), true));
         } else if (_pen instanceof Marker) {
 
             pen = new Marker(_pen.getId_operation(),
-                    _pen.getThickness(), _pen.getClr_foreground());
+                    _pen.getThickness(), 
+                    new Color(_pen.getClr_foreground().getRGB(), true));
         } else {
             
             //alert user.

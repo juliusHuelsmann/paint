@@ -24,6 +24,7 @@ import view.View;
 import view.forms.Message;
 import view.forms.Page;
 import view.forms.tabs.Insert;
+import view.forms.tabs.Paint;
 import model.objects.PictureOverview;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
@@ -212,9 +213,8 @@ public final class Picture {
 
     /**
      * Add the paintObject.
-     * @param _id the id of the item
      */
-    public void addPaintObject(final int _id) {
+    public void addPaintObject() {
 
         int casus = -1;
         // switch index of operation
@@ -774,27 +774,6 @@ public final class Picture {
 	}
     
     
-    
-    /**
-     * change color of current pen.
-     * @param _clr the new color.
-     */
-    public void changeColor(final Color _clr) {
-        
-        //set in picture
-        pen_current.setClr_foreground(
-                new Color(_clr.getRed(), _clr.getGreen(), _clr.getBlue()));
-        
-        //set in current paint object
-        if (po_current != null) {
-            po_current.changeColor(
-                    new Color(_clr.getRed(), _clr.getGreen(), 
-                            _clr.getBlue()));   
-        }
-
-        //set uncommitted changes.
-        Status.setUncommittedChanges(true);
-    }
 	
     
     
@@ -1577,21 +1556,15 @@ public final class Picture {
     public void userSetPen(final Pen _pen, final int _id) {
 
         Pen pen = Pen.clonePen(_pen);
-        if (pen_current != null) {
-
-            pen.setClr_foreground(pen_current.getClr_foreground());
-        }
-        
         if (_id == 1) {
-            Status.setPenSelected1(Pen.clonePen(pen));
+            pen.setClr_foreground(Status.getPenSelected1().getClr_foreground());
+            Status.setPenSelected1(pen);
         } else if (_id == 2) {
-            Status.setPenSelected1(Pen.clonePen(pen));
+            pen.setClr_foreground(Status.getPenSelected2().getClr_foreground());
+            Status.setPenSelected1(pen);
         } else {
             Status.getLogger().severe("wrong identifier.");
         }
-        
-        
-        this.pen_current = pen;
     }
 
 }

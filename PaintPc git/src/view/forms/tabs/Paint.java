@@ -129,16 +129,17 @@ public final class Paint extends JPanel {
 
         //activate first color and set colors.
         tb_color1.setActivated(true);
-		tb_color1.setBackground(Color.black);
-		tb_color2.setBackground(Color.white);
+		tb_color1.setBackground(Status.getPenSelected1().getClr_foreground());
+		tb_color2.setBackground(Status.getPenSelected2().getClr_foreground());
 
 		//set size
 		super.setSize((int) Toolkit.getDefaultToolkit().getScreenSize()
 		        .getWidth(), ViewSettings.VIEW_HEIGHT_TB);
 
+		//TODO: directly apply to status values.
 		//set standard values (is going to be put into a new settings class)
-		it_stift1.setIcon(sa_fn1.getImagePath());
-		it_stift2.setIcon(sa_bn2.getImagePath());
+		it_stift1.setIcon(sa_bn1.getImagePath());
+		it_stift2.setIcon(sa_fn2.getImagePath());
 	}
 
 	/**

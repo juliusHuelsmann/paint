@@ -94,8 +94,13 @@ public final class Status {
      * selected pens.
      */
     private static Pen 
-    penSelected1 = new BallPen(Constants.PEN_ID_LINES, 2, Color.black), 
-    penSelected2 = new Pencil(Constants.PEN_ID_LINES, 2, Color.white);
+    penSelected1 = new Pencil(Constants.PEN_ID_LINES, 2, Color.gray), 
+    penSelected2 = new BallPen(Constants.PEN_ID_LINES, 2, 
+            new Color(2 * 2 * 2 * 2 * 2 * 2, 
+                    (int) (Math.pow(2, 2 + 2 + 2 + 1) 
+                            + Math.pow(2, 2 + 2 + 2) + 2 + 2 + 1), 
+                    (2 + 1) * (2 + 1) * (2 + 1) + (2 + 2 + 2 + 1) 
+                    * (2 + 2 + 2 + 2 + 2)));
     
     
     /**

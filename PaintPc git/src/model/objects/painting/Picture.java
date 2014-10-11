@@ -1555,7 +1555,6 @@ public final class Picture {
      */
     public void userSetPen(final Pen _pen, final int _id) {
 
-        System.out.println("fick dich doch " + _id);
         Pen pen = Pen.clonePen(_pen);
         if (_id == 1) {
             pen.setClr_foreground(Status.getPenSelected1().getClr_foreground());

@@ -312,7 +312,7 @@ public final class Paint extends JPanel {
         final int sizeHeight = 110;
         
         if (_paint) {
-        	it_stift1 = new Item1Menu();
+        	it_stift1 = new Item1Menu(false);
         	it_stift1.setBorder(null);
         	it_stift1.setText("Stift 1");
             it_stift1.setItemsInRow((byte) 1);
@@ -322,7 +322,7 @@ public final class Paint extends JPanel {
         	it_stift1.setBorder(false);
         	super.add(it_stift1);
         
-        	it_stift2 = new Item1Menu();
+        	it_stift2 = new Item1Menu(false);
         	it_stift2.setText("Stift 2");
         	it_stift2.setSize(sizeIT);
         	it_stift2.setActivable();
@@ -332,7 +332,7 @@ public final class Paint extends JPanel {
         	super.add(it_stift2);
         	addPens();
         	
-            it_selection = new Item1Menu();
+            it_selection = new Item1Menu(false);
             it_selection.setText("Auswahl");
             it_selection.setBorder(false);
             it_selection.setActivable();
@@ -591,7 +591,7 @@ public final class Paint extends JPanel {
     	jbtn_colors[i + anzInR * three].setBackground(c7n3);
     
     	//
-    	it_color = new Item1Menu();
+    	it_color = new Item1Menu(false);
         it_color.setSize(ViewSettings.PAINT_SIZE);
     	it_color.setBorder(false);
     	it_color.setText("+ Farben");

@@ -94,7 +94,7 @@ public class Item1Menu extends JPanel {
 	/**
 	 * Constructor: shows closed item.
 	 */
-	public Item1Menu() {
+	public Item1Menu(boolean _openTwice) {
 		
 		//initialize JPanel and alter settings
 		super();
@@ -120,18 +120,24 @@ public class Item1Menu extends JPanel {
 		tb_select.addMouseListener(CPaintStatus.getInstance());
 		tb_select.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		tb_select.setFocusable(false);
+		if (_openTwice) {
+
+		    tb_select.addMouseListener(CItem.getInstance());
+		}
 		tb_select.setOpaque(true);
 		super.add(tb_select);
 
-        //initialize JButton
-        tb_open = new VButtonWrapper(this);
-        tb_open.setContentAreaFilled(false);
-//        tb_open.addMouseListener(CPaintStatus.getInstance());
-        tb_open.addMouseListener(CItem.getInstance());
-        tb_open.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-        tb_open.setFocusable(false);
-        tb_open.setOpaque(true);
-        super.add(tb_open);
+		if (!_openTwice) {
+
+	        //initialize JButton
+	        tb_open = new VButtonWrapper(this);
+	        tb_open.setContentAreaFilled(false);
+	        tb_open.addMouseListener(CItem.getInstance());
+	        tb_open.setBorder(null);
+	        tb_open.setFocusable(false);
+	        tb_open.setOpaque(false);
+	        super.add(tb_open);
+		}
 		
 		jpnl_container.setLayout(null);
 		jpnl_container.setOpaque(false);
@@ -220,7 +226,6 @@ public class Item1Menu extends JPanel {
 	public final void setBorder(final boolean _border) {
 		tb_select.setBorder(null);
 		tb_select.setBorder(_border);
-		tb_open.setBorder(BorderFactory.createLineBorder(Color.lightGray));
         jpnl_stuff.setBorder(null);
         jpnl_container.setBorder(null);
 	}
@@ -347,19 +352,26 @@ public class Item1Menu extends JPanel {
 			
 			super.setSize(closedWidth, closedHeight);
 			jpnl_stuff.setSize(closedWidth, jpnl_stuff.getHeight());
-            tb_select.setSize(closedWidth, closedHeight * (2 + 2) 
-                    / (2 + 2 + 1));
-            tb_open.setLocation(tb_select.getX(), 
-                    tb_select.getY() + tb_select.getHeight());
-            tb_open.setSize(closedWidth, closedHeight / (2 + 2 + 1));
+           
             
-            final int height = tb_open.getHeight() / (2 + 1);
-            final int imageWidth = 60;
-            final int imageHeight = 42;
-            tb_open.setIcon(new ImageIcon(Utils.resizeImage(
-                    height * imageWidth / imageHeight, 
-                    height, "open.png")));
-//             + 2));
+            if (tb_open != null){
+                tb_select.setSize(closedWidth, closedHeight * (2 + 2) 
+                        / (2 + 2 + 1));
+                tb_open.setLocation(tb_select.getX(), 
+                        tb_select.getY() + tb_select.getHeight());
+                tb_open.setSize(closedWidth, closedHeight / (2 + 2 + 1));
+                
+                final int height = tb_open.getHeight() / (2 + 1);
+                final int imageWidth = 60;
+                final int imageHeight = 42;
+                tb_open.setIcon(new ImageIcon(Utils.resizeImage(
+                        height * imageWidth / imageHeight, 
+                        height, "open.png")));
+            } else {
+
+                tb_select.setSize(closedWidth, closedHeight);
+            }
+            
 			
 		} else {
 			

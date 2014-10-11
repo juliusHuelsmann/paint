@@ -232,7 +232,7 @@ public final class Selection extends JPanel {
         jbtn_colors[i + anzInR * three].setBackground(c7n3);
     
         //
-        it_color = new Item1Menu();
+        it_color = new Item1Menu(true);
         it_color.setSize(ViewSettings.PAINT_SIZE);
         it_color.setBorder(false);
         it_color.setText("+ Farben");
@@ -339,7 +339,7 @@ public final class Selection extends JPanel {
         super.add(tb_changePen);
 
         //pen 1
-        Item1Menu it_stift1 = new Item1Menu();
+        Item1Menu it_stift1 = new Item1Menu(false);
         it_stift1.setBorder(null);
         it_stift1.setBorder(false);
         it_stift1.setText("Drehen/Spiegeln");

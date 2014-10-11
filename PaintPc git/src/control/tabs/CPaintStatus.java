@@ -303,6 +303,11 @@ public final class CPaintStatus implements MouseListener {
                 Paint.getInstance().getIt_stift1().setOpen(false);
                 Status.setIndexOperation(
                         Constants.CONTROL_PAINTING_INDEX_PAINT_1);
+                deactivate();
+                Paint.getInstance().getIt_stift1().getTb_open()
+                .setActivated(true);
+                Paint.getInstance().getTb_color1()
+                .setActivated(true);
                 
                 
             } else if (sa.getPenSelection() == 2) {
@@ -311,6 +316,12 @@ public final class CPaintStatus implements MouseListener {
                 Paint.getInstance().getIt_stift2().setOpen(false);
                 Status.setIndexOperation(
                         Constants.CONTROL_PAINTING_INDEX_PAINT_2);
+
+                deactivate();
+                Paint.getInstance().getIt_stift2().getTb_open()
+                .setActivated(true);
+                Paint.getInstance().getTb_color2()
+                .setActivated(true);
             }
             CPaintVisualEffects.applyFocus(sa);
             Picture.getInstance().userSetPen(sa.getPen(), sa.getPenSelection());

@@ -120,18 +120,15 @@ public class Item1Menu extends JPanel {
 		tb_select.setOpaque(true);
 		super.add(tb_select);
 
-
         //initialize JButton
         tb_open = new VButtonWrapper(this);
         tb_open.setContentAreaFilled(false);
-        tb_open.addMouseListener(CPaintStatus.getInstance());
+//        tb_open.addMouseListener(CPaintStatus.getInstance());
         tb_open.addMouseListener(CItem.getInstance());
         tb_open.setBorder(BorderFactory.createLineBorder(Color.lightGray));
         tb_open.setFocusable(false);
         tb_open.setOpaque(true);
         super.add(tb_open);
-        
-
 		
 		jpnl_container.setLayout(null);
 		jpnl_container.setOpaque(false);

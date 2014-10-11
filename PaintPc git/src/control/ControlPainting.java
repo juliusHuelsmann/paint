@@ -269,17 +269,6 @@ public final class ControlPainting implements MouseListener,
                         || Picture.getInstance().isPaintObjectReady()) {
                     
 
-                    System.out.println(".start");
-                    System.out.println(Status.getPenSelected1().getID());
-                    System.out.println(Status.getPenSelected1().getClr_foreground());
-                    System.out.println(Status.getPenSelected1().getId_operation());
-
-                    System.out.println(Status.getPenSelected2().getID());
-                    System.out.println(Status.getPenSelected2().getClr_foreground());
-                    System.out.println(Status.getPenSelected2().getId_operation());
-
-                    System.out.println("hier die solution des bösen" + Status.getIndexOperation());
-                    System.out.println(".");
                     // set currently selected pen. Differs if
                     if (_event.getButton() == MouseEvent.BUTTON1) {
 

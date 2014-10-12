@@ -1186,8 +1186,11 @@ public final class ControlPainting implements MouseListener,
         
         int xShift = -_ldp.getSnapshotBounds().x,
                 yShift = -_ldp.getSnapshotBounds().y;
-//        Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
-//                -_ldp.getSnapshotBounds().y);
+        
+        //necessary because the points are painted directly to the buffered
+        //image which starts at the _ldp snaphsot x.
+        Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
+                -_ldp.getSnapshotBounds().y);
 //        int xShift = 0, yShift = 0;
         BufferedImage transform = _ldp.getSnapshot();
         

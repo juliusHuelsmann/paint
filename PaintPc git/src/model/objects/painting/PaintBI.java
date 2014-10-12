@@ -141,6 +141,7 @@ public final class PaintBI {
             final Color _clr,
             final Point[] _p) {
         PolygonReturn pr = paintPolygonN(_bi, _clr, 1, _p, true);
+//        drawPaintBI(pr);
         pr.schwabbel();
 //        drawPaintBI(pr);
         return pr.getField();
@@ -567,6 +568,7 @@ public final class PaintBI {
 
                 str = "|  ";
             }
+            str = "|" + _pbi.getField()[y][x] + " ";
                 System.out.print(str);
         }
         System.out.print("|");

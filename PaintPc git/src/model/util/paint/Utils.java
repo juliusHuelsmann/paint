@@ -1,6 +1,7 @@
 package model.util.paint;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -282,6 +283,8 @@ public final class Utils {
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {
         
+        Dimension d = new Dimension(Status.getImageShowSize());
+        Status.setImageShowSize(new Dimension(Status.getImageSize()));
         
         //fetch show percentages; thus able to reset them because the 
         //called methods work with show - percentages; thus save the export
@@ -325,6 +328,7 @@ public final class Utils {
         Status.setBorderTopPercentExport(borderTShow);
         Status.setBorderBottomPercentExport(borderBShow);
 
+        Status.setImageShowSize(d);
         return bi;
     }
 

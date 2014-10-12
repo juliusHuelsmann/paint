@@ -8,6 +8,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import control.tabs.CExport;
@@ -136,9 +137,6 @@ public final class Export extends Tab {
         jlbl_borderTitle.setFocusable(false);
         super.add(jlbl_borderTitle);
 
-        String [] s_amount = new String[] {"0%", "4%", "8%", "12%", 
-                "16%", "24%"};
-
         //top
         jlbl_subtitle_borderTop = new JLabel("Top");
         jlbl_subtitle_borderTop.setSize(buttonWidth / 2, buttonHeight);
@@ -149,12 +147,13 @@ public final class Export extends Tab {
         jlbl_subtitle_borderTop.setFocusable(false);
         super.add(jlbl_subtitle_borderTop);
         
-        jcb_margeTop = new JComboBox(s_amount);
+        jcb_margeTop = new JComboBox(Constants.getBorderPercentagesTitle());
         jcb_margeTop.setSize(jlbl_subtitle_borderTop.getSize());
         jcb_margeTop.setLocation(jlbl_subtitle_borderTop.getX() 
                 + jlbl_subtitle_borderTop.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderTop.getY());
+        jcb_margeTop.addActionListener(CExport.getInstance());
         super.add(jcb_margeTop);
         
         //left
@@ -168,12 +167,13 @@ public final class Export extends Tab {
         jlbl_subtitle_borderLeft.setFocusable(false);
         super.add(jlbl_subtitle_borderLeft);
         
-        jcb_margeLeft = new JComboBox(s_amount);
+        jcb_margeLeft = new JComboBox(Constants.getBorderPercentagesTitle());
         jcb_margeLeft.setSize(jlbl_subtitle_borderTop.getSize());
         jcb_margeLeft.setLocation(jlbl_subtitle_borderLeft.getX() 
                 + jlbl_subtitle_borderLeft.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderLeft.getY());
+        jcb_margeLeft.addActionListener(CExport.getInstance());
         super.add(jcb_margeLeft);
 
         //bottom
@@ -188,12 +188,13 @@ public final class Export extends Tab {
         jlbl_subtitle_borderBottom.setFocusable(false);
         super.add(jlbl_subtitle_borderBottom);
         
-        jcb_margeBottom = new JComboBox(s_amount);
+        jcb_margeBottom = new JComboBox(Constants.getBorderPercentagesTitle());
         jcb_margeBottom.setSize(jlbl_subtitle_borderTop.getSize());
         jcb_margeBottom.setLocation(jlbl_subtitle_borderBottom.getX() 
                 + jlbl_subtitle_borderBottom.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderBottom.getY());
+        jcb_margeBottom.addActionListener(CExport.getInstance());
         super.add(jcb_margeBottom);
 
         //right
@@ -209,12 +210,13 @@ public final class Export extends Tab {
         jlbl_subtitle_borderRight.setFocusable(false);
         super.add(jlbl_subtitle_borderRight);
         
-        jcb_margeRight = new JComboBox(s_amount);
+        jcb_margeRight = new JComboBox(Constants.getBorderPercentagesTitle());
         jcb_margeRight.setSize(jlbl_subtitle_borderTop.getSize());
         jcb_margeRight.setLocation(jlbl_subtitle_borderRight.getX() 
                 + jlbl_subtitle_borderRight.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderRight.getY());
+        jcb_margeRight.addActionListener(CExport.getInstance());
         super.add(jcb_margeRight);
         
 

@@ -58,7 +58,7 @@ public final class CExport implements ActionListener {
             Status.setIndexPageBackgroundExport(backgroundID);
         
         } else if (_event.getSource().equals(
-                Look.getInstance().getJcb_margeBottom())) {
+                Export.getInstance().getJcb_margeBottom())) {
             
             String str_selected = Export.getInstance().getJcb_margeBottom()
                     .getSelectedItem().toString().replace("%", "");
@@ -72,7 +72,7 @@ public final class CExport implements ActionListener {
                         "error: change border size: wrong input");
             }
         } else if (_event.getSource().equals(
-                Look.getInstance().getJcb_margeLeft())) {
+                Export.getInstance().getJcb_margeLeft())) {
             
 
             String str_selected = Export.getInstance().getJcb_margeLeft()
@@ -87,7 +87,7 @@ public final class CExport implements ActionListener {
                         "error: change border size: wrong input");
             }
         } else if (_event.getSource().equals(
-                Look.getInstance().getJcb_margeTop())) {
+                Export.getInstance().getJcb_margeTop())) {
 
             String str_selected = Export.getInstance().getJcb_margeTop()
                     .getSelectedItem().toString().replace("%", "");
@@ -101,7 +101,7 @@ public final class CExport implements ActionListener {
                         "error: change border size: wrong input");
             }
         } else if (_event.getSource().equals(
-                Look.getInstance().getJcb_margeRight())) {
+                Export.getInstance().getJcb_margeRight())) {
 
             String str_selected = Export.getInstance().getJcb_margeRight()
                     .getSelectedItem().toString().replace("%", "");

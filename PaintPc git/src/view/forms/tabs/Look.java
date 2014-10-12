@@ -85,6 +85,9 @@ public final class Look extends Tab {
         
         //initialize the content for the visualization
         initializeSecondColumn(x);
+        
+        //apply the right settings to components (out of Status class)
+        applySettings();
     }
     
     
@@ -226,6 +229,23 @@ public final class Look extends Tab {
         jcb_margeRight.addActionListener(CLook.getInstance());
         super.add(jcb_margeRight);
         
+        
+        insertSectionStuff("Image Background", 0, jcb_margeRight.getX()
+                + jcb_margeRight.getWidth() 
+                + ViewSettings.getDistanceBetweenItems(), 0, true);
+        return jcb_margeRight.getX()
+                + jcb_margeRight.getWidth() 
+                + ViewSettings.getDistanceBetweenItems();
+    }
+    
+    
+
+    
+    /**
+     * Apply the values set in Settings to the components.
+     */
+    private void applySettings() {
+
         //apply the values set in Settings to the components:
         jcb_margeLeft.setSelectedIndex(getBorderPercentagesSettingsIndex(
                 Status.getBorderLeftPercent()));
@@ -236,13 +256,37 @@ public final class Look extends Tab {
         jcb_margeBottom.setSelectedIndex(getBorderPercentagesSettingsIndex(
                 Status.getBorderBottomPercent()));
         
-        insertSectionStuff("Image Background", 0, jcb_margeRight.getX()
-                + jcb_margeRight.getWidth() 
-                + ViewSettings.getDistanceBetweenItems(), 0, true);
-        return jcb_margeRight.getX()
-                + jcb_margeRight.getWidth() 
-                + ViewSettings.getDistanceBetweenItems();
+        
+        switch (Status.getIndexPageBackground()) {
+        case Constants.CONTROL_PAGE_BACKGROUND_RASTAR:
+            jcb_raster.setSelected(true);
+            jcb_lines.setSelected(false);
+            jcb_nothing.setSelected(false);
+            break;
+        case Constants.CONTROL_PAGE_BACKGROUND_LINES:
+            jcb_raster.setSelected(false);
+            jcb_lines.setSelected(true);
+            jcb_nothing.setSelected(false);
+            break;
+        case Constants.CONTROL_PAGE_BACKGROUND_NONE:
+            jcb_raster.setSelected(false);
+            jcb_lines.setSelected(false);
+            jcb_nothing.setSelected(true);
+            break;
+        default:
+            Status.getLogger().severe("error: unknown type of background");
+            break;
+        }
+        
+        if (Status.isShowAlpha()) {
+
+            jcb_displayAlpha.setSelectedIndex(1);
+        } else {
+
+            jcb_displayAlpha.setSelectedIndex(0);
+        }
     }
+    
     
     
     

@@ -677,6 +677,10 @@ public final class Status {
         
         Status.showAlpha = _showAlpha;
         
+        if (Page.getInstance().getJlbl_background().getWidth() <= 0
+                || Page.getInstance().getJlbl_background().getHeight() <= 0) {
+            return;
+        }
         if (_showAlpha) {
 
             final int transparencyRectanlgeSize = 25;

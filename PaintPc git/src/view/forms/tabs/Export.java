@@ -232,23 +232,9 @@ public final class Export extends Tab {
         jcb_margeRight.addActionListener(CExport.getInstance());
         super.add(jcb_margeRight);
         
-
-        //apply the values set in Settings to the components:
-        jcb_margeLeft.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
-                Status.getBorderLeftPercent()));
-        jcb_margeRight.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
-                Status.getBorderRightPercent()));
-        jcb_margeTop.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
-                Status.getBorderTopPercent()));
-        jcb_margeBottom.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
-                Status.getBorderBottomPercent()));
-        
-        
         /*
          * Alpha
          */
-
-        
         //right
         jlbl_displayAlphaTitle = new JLabel("Transpareny");
         jlbl_displayAlphaTitle.setSize(buttonWidth, buttonHeight);
@@ -281,17 +267,59 @@ public final class Export extends Tab {
         jcb_displayAlpha.addActionListener(CExport.getInstance());
         super.add(jcb_displayAlpha);
 
-        
-        
-        
-        
-        
+        applySettings();
         insertSectionStuff("Image Background", 0, 
                 ViewSettings.getDistanceBetweenItems() 
                 + jcb_displayAlpha.getX() + jcb_displayAlpha.getWidth(), 
                 0, true);
     }
     
+    
+    
+    /**
+     * Apply the values set in Settings to the components.
+     */
+    private void applySettings() {
+
+        //apply the values set in Settings to the components:
+        jcb_margeLeft.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
+                Status.getBorderLeftPercent()));
+        jcb_margeRight.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
+                Status.getBorderRightPercent()));
+        jcb_margeTop.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
+                Status.getBorderTopPercent()));
+        jcb_margeBottom.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
+                Status.getBorderBottomPercent()));
+        
+        switch (Status.getIndexPageBackgroundExport()) {
+        case Constants.CONTROL_PAGE_BACKGROUND_RASTAR:
+            jcb_raster.setSelected(true);
+            jcb_lines.setSelected(false);
+            jcb_nothing.setSelected(false);
+            break;
+        case Constants.CONTROL_PAGE_BACKGROUND_LINES:
+            jcb_raster.setSelected(false);
+            jcb_lines.setSelected(true);
+            jcb_nothing.setSelected(false);
+            break;
+        case Constants.CONTROL_PAGE_BACKGROUND_NONE:
+            jcb_raster.setSelected(false);
+            jcb_lines.setSelected(false);
+            jcb_nothing.setSelected(true);
+            break;
+        default:
+            Status.getLogger().severe("error: unknown type of background");
+            break;
+        }
+        
+        if (Status.isExportAlpha()) {
+
+            jcb_displayAlpha.setSelectedIndex(1);
+        } else {
+
+            jcb_displayAlpha.setSelectedIndex(0);
+        }
+    }
     
 
     /**

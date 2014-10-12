@@ -120,7 +120,11 @@ public final class CLook implements ActionListener {
             Status.setShowAlpha(Look.getInstance().getJcb_displayAlpha()
                     .getSelectedItem().equals(Constants.ID_DISPLAY_ALPHA));
             
-            Page.getInstance().flip();
+            if (Page.getInstance().getWidth() > 0) {
+
+                
+                Page.getInstance().flip();
+            }
             
         }
         Page.getInstance().getJlbl_painting().refreshPaint();

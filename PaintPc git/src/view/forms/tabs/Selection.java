@@ -233,7 +233,7 @@ public final class Selection extends JPanel {
     
         //
         it_color = new Item1Menu(true);
-        it_color.setSize(ViewSettings.PAINT_SIZE);
+        it_color.setSize(ViewSettings.getSIZE_PNL_CLR());
         it_color.setBorder(false);
         it_color.setText("+ Farben");
         it_color.setLocation(jbtn_colors[jbtn_colors.length - 1].getX() 
@@ -375,7 +375,7 @@ public final class Selection extends JPanel {
             this.jlbl_separation[_locInArray] = new JLabel();
             this.jlbl_separation[_locInArray].setBorder(
                     BorderFactory.createLineBorder(
-                            ViewSettings.CLR_BACKGROUND_DARK_XX));
+                            ViewSettings.GENERAL_CLR_BACKGROUND_DARK_XX));
             super.add(this.jlbl_separation[_locInArray]);
             
         }
@@ -402,7 +402,7 @@ public final class Selection extends JPanel {
             
             jlbl_information[_locationInArray] = new VLabel();
             jlbl_information[_locationInArray].setFont(
-                    ViewSettings.TP_FONT_INFORMATION);
+                    ViewSettings.GENERAL_TP_FONT_INFORMATION);
             jlbl_information[_locationInArray].setForeground(
                     new Color(rgb, rgb, rgb));
             jlbl_information[_locationInArray].setHorizontalAlignment(

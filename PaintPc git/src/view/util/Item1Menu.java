@@ -5,15 +5,18 @@ package view.util;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
+
 import view.forms.Page;
 import view.forms.Tabs;
 import control.tabs.CPaintStatus;
 import control.util.CItem;
+import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.list.List;
 import model.util.paint.Utils;
@@ -192,7 +195,7 @@ public class Item1Menu extends JPanel {
             setSize(openedWidth, openedHeight);
 
             jpnl_container.setBorder(BorderFactory.createLineBorder(
-                    ViewSettings.CLR_BORDER));
+                    ViewSettings.GENERAL_CLR_BORDER));
 
             jpnl_container.requestFocus();
             
@@ -268,6 +271,16 @@ public class Item1Menu extends JPanel {
 	}
 	
 	
+	/**
+	 * resize.
+	 */
+	public final void flip() {
+	    open = false;
+	    closedWidth = ViewSettings.getItemMenu1Width();
+	    closedHeight = ViewSettings.getItemMenu1Height();
+	    setSize(closedWidth, closedHeight);
+	    tb_select.flip(Status.isNormalRotation());
+	}
 	
 	/**
 	 * add a component.

@@ -84,7 +84,7 @@ import control.util.CColorPanel;
 		super();
 		super.setOpaque(false);
 		super.setLayout(null);
-		super.setBackground(ViewSettings.CLR_BACKGROUND);
+		super.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND);
 		super.setVisible(false);
 
         //save the JButton 
@@ -145,7 +145,7 @@ import control.util.CColorPanel;
 		        + distanceItems, jlbl_g.getY());
 		jtf_b.setLocation(jlbl_b.getX() + jlbl_b.getWidth(), jlbl_b.getY());
 	        
-		super.setSize(ViewSettings.PAINT_SIZE);
+		super.setSize(ViewSettings.getSIZE_PNL_CLR());
 		super.setVisible(true);
 	}
 	

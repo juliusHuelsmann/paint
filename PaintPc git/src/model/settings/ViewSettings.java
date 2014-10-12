@@ -33,23 +33,44 @@ public final class ViewSettings {
      * The maximal zoom in and the maximal zoom out.
      */
     public static final int MAX_ZOOM_IN = 7, MAX_ZOOM_OUT = 3;
+    
+    /*
+     * general stuff.
+     */
+    
     /**
      * colors.
      */
     public static final Color 
-    CLR_BACKGROUND_DARK = new Color(241, 242, 243), 
-    CLR_BACKGROUND_DARK_X = new Color(236, 237, 238),
-    CLR_BACKGROUND_DARK_XX = new Color(226, 227, 228),
-    CLR_BORDER = new Color(218, 219, 220),
-    CLR_ITEM1BUTTON_BACKGROUND = new Color(212, 229, 255),
-    CLR_BACKGROUND = new Color(246, 246, 246);    
-    
-    
+    GENERAL_CLR_BACKGROUND_DARK = new Color(241, 242, 243), 
+    GENERAL_CLR_BACKGROUND_DARK_X = new Color(236, 237, 238),
+    GENERAL_CLR_BACKGROUND_DARK_XX = new Color(226, 227, 228),
+    GENERAL_CLR_BORDER = new Color(218, 219, 220),
+    GENERAL_CLR_ITEM1BUTTON_BACKGROUND = new Color(212, 229, 255),
+    GENERAL_CLR_BACKGROUND = new Color(246, 246, 246), 
+    GENERAL_CLR_BACKGROUND_LIGHT = new Color(250, 250, 250),
+    GENERAL_CLR_BACKGROUND_LIGHT_FOCUS = new Color(245, 246, 247);
+
     /**
-     * size of a border block in selection.
-     * If changed, reinitialize border in Selection.
+     * headline font which can be used everywhere.
+     * 
+     * usages:
+     *      PaintObject  at Constructor
      */
-    public static final int SELECTION_BORDER_BLOCK_SIZE = 9;
+    public static final Font 
+    GENERAL_FONT_HEADLINE_1 = new Font("Courier New", Font.BOLD, 19),
+    GENERAL_FONT_HEADLINE_2 = new Font("Courier New", Font.BOLD, 15),
+    GENERAL_FONT_ITEM1_BUTTON = new Font("Comic Sans MS", Font.PLAIN, 10),
+    GENERAL_TP_FONT_INFORMATION = new Font("Courier new", Font.ITALIC, 12),
+    GENERAL_FONT_ITEM_PLAIN = new Font("Courier New", Font.PLAIN, 11),
+    GENERAL_FONT_ITEM_SMALL = new Font("Courier New", Font.PLAIN, 10),
+    GENERAL_FONT_ITEM = new Font("Courier New", Font.ITALIC, 11);
+    
+    /*
+     * 
+     *
+     * Selection stuff
+     */
     
     /**
      * array of colors of border in selection.
@@ -57,6 +78,13 @@ public final class ViewSettings {
      */
     public static final Color[] SELECTION_BORDER_CLR_BORDER = new Color[] { 
             Color.darkGray, Color.white };
+    
+    
+    /**
+     * size of a border block in selection.
+     * If changed, reinitialize border in Selection.
+     */
+    public static final int SELECTION_BORDER_BLOCK_SIZE = 9;
     
     /**
      * time to sleep before recreating border.
@@ -76,7 +104,6 @@ public final class ViewSettings {
      * If changed, reinitialize background in Selection.
      */
     public static final Color[] SELECTION_BACKGROUND_CLR = new Color[] { 
-//        new Color(25, 25, 255, 15), new Color(125, 125, 255, 15) };
         new Color(120, 125, 140, 15), new Color(30, 30, 50, 15) };
     /**
      * color for simple background of selection (shown if resizing).
@@ -96,84 +123,6 @@ public final class ViewSettings {
      * general
      */
 
-    /**
-     * the light background color which can be used everywhere in a view class.
-     * 
-     * usages:
-     *      PaintObject  at Constructor
-     */
-    public static final Color GENERAL_CLR_BACKGROUND_LIGHT = new Color(
-            250, 250, 250);
-
-    /**
-     * the light background color which can be used everywhere in a view class.
-     * 
-     * usages:
-     *      PaintObject  at Constructor
-     */
-    public static final Color GENERAL_CLR_BACKGROUND_LIGHT_FOCUS = new Color(
-            245, 246, 247);
-
-    /**
-     * headline font which can be used everywhere.
-     * 
-     * usages:
-     *      PaintObject  at Constructor
-     */
-    public static final Font GENERAL_FONT_HEADLINE_1 = new Font(
-            "Courier New", Font.BOLD, 19),
-            GENERAL_FONT_HEADLINE_2 = new Font(
-                    "Courier New", Font.BOLD, 15);
-
-    /**
-     * headline font which can be used everywhere.
-     * 
-     * usages:
-     *      PaintObject  at Constructor
-     */
-    public static final Font FONT_ITEM1_BUTTON = new Font(
-            "Comic Sans MS", Font.PLAIN, 10);
-
-    /**
-     * The font for information.
-     */
-    public static final Font TP_FONT_INFORMATION
-    = new Font("Courier new", Font.ITALIC, 12);
-
-    
-
-    /**
-     * general font which can be used everywhere.
-     * 
-     * usages:
-     *      PaintObject  at Constructor
-     */
-    public static final Font GENERAL_FONT_ITEM = new Font(
-            "Courier New", Font.ITALIC, 11);
-
-    /**
-     * general small font which can be used everywhere.
-     * 
-     * usages:
-     *      PaintObject  at Constructor
-     */
-    public static final Font GENERAL_FONT_ITEM_SMALL = new Font(
-            "Courier New", Font.PLAIN, 10);
-    /**
-     * general small font which can be used everywhere.
-     * 
-     */
-    public static final Font GENERAL_FONT_ITEM_PLAIN = new Font(
-            "Courier New", Font.PLAIN, 11);
-
-    
-    /**
-     * .
-     */
-    public static final Dimension PAINT_SIZE 
-    = new Dimension(275, 365);
-
-    
     
     /**
      * Whether fullscreen or not.
@@ -190,21 +139,28 @@ public final class ViewSettings {
                     * 2 / (2 + 1)), 
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() 
                     * 2 / (2 + 1)));
+
+
+    
+    /**
+     * The size of the opened color panel.
+     */
+    private static Dimension sizePnlClr = new Dimension(275, 365);
+
     
     
 
     /**
      * .
      */
-    public static final Dimension MESSAGE_SIZE
-    = new Dimension(500, 40);
+    private static Dimension sizeMessage = new Dimension(500, 40);
     
     /**
      * .
      */
     private static Point messageLocation
-    = new Point((size_jframe.width - MESSAGE_SIZE.width) / 2, 
-            size_jframe.height - MESSAGE_SIZE.height - 2 * 2 * 2 * 2 * 2);
+    = new Point((size_jframe.width - getSizeMessage().width) / 2, 
+            size_jframe.height - getSizeMessage().height - 2 * 2 * 2 * 2 * 2);
 
 
     /**
@@ -355,8 +311,8 @@ public final class ViewSettings {
     private static void recalculate() {
         System.out.println("hier");
          messageLocation
-        = new Point((size_jframe.width - MESSAGE_SIZE.width) / 2, 
-                size_jframe.height - MESSAGE_SIZE.height - 2 * 2 * 2 * 2 * 2);
+        = new Point((size_jframe.width - getSizeMessage().width) / 2, 
+                size_jframe.height - getSizeMessage().height - 2 * 2 * 2 * 2 * 2);
 
          view_bounds_jbtn_exit = new Rectangle(
                 size_jframe.width - TWENTY_FIFE * 2 - FIFE, 0, 
@@ -743,6 +699,42 @@ public final class ViewSettings {
      */
     public static void setItemMenu1Height(int itemMenu1Height) {
         ViewSettings.itemMenu1Height = itemMenu1Height;
+    }
+
+
+
+    /**
+     * @return the sIZE_PNL_CLR
+     */
+    public static Dimension getSIZE_PNL_CLR() {
+        return sizePnlClr;
+    }
+
+
+
+    /**
+     * @param sIZE_PNL_CLR the sIZE_PNL_CLR to set
+     */
+    public static void setSIZE_PNL_CLR(Dimension sIZE_PNL_CLR) {
+        sizePnlClr = sIZE_PNL_CLR;
+    }
+
+
+
+    /**
+     * @return the sizeMessage
+     */
+    public static Dimension getSizeMessage() {
+        return sizeMessage;
+    }
+
+
+
+    /**
+     * @param sizeMessage the sizeMessage to set
+     */
+    public static void setSizeMessage(Dimension sizeMessage) {
+        ViewSettings.sizeMessage = sizeMessage;
     }
     
 }

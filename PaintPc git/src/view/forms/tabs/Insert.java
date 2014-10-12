@@ -326,7 +326,7 @@ public final class Insert extends JPanel {
             this.jlbl_separation[_locInArray] = new JLabel();
             this.jlbl_separation[_locInArray].setBorder(
                     BorderFactory.createLineBorder(
-                            ViewSettings.CLR_BACKGROUND_DARK_XX));
+                            ViewSettings.GENERAL_CLR_BACKGROUND_DARK_XX));
             super.add(this.jlbl_separation[_locInArray]);
             
         }
@@ -359,7 +359,7 @@ public final class Insert extends JPanel {
             
             jlbl_information[_locationInArray] = new VLabel();
             jlbl_information[_locationInArray].setFont(
-                    ViewSettings.TP_FONT_INFORMATION);
+                    ViewSettings.GENERAL_TP_FONT_INFORMATION);
             jlbl_information[_locationInArray].setForeground(
                     new Color(rgb, rgb, rgb));
             jlbl_information[_locationInArray].setHorizontalAlignment(

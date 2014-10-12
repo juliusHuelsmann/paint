@@ -127,9 +127,9 @@ public class VTabbedPane extends JPanel {
         jpnl_background.setFocusable(false);
         jpnl_background.setOpaque(true);
         jpnl_background.setLayout(null);
-        jpnl_background.setBackground(ViewSettings.CLR_BACKGROUND_DARK);
+        jpnl_background.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
         jpnl_background.setBorder(BorderFactory.createMatteBorder(
-                1, 0, 1, 1, ViewSettings.CLR_BORDER));
+                1, 0, 1, 1, ViewSettings.GENERAL_CLR_BORDER));
         jpnl_contains.add(jpnl_background);
 
         jpnl_close = new JPanel();
@@ -639,7 +639,7 @@ public class VTabbedPane extends JPanel {
                 //each not selected panel and button
                 jbtn_stuffHeadline[i].setBackground(Color.white);
                 jbtn_stuffHeadline[i].setBorder(BorderFactory.createMatteBorder(
-                        0, 0, 1, 0, ViewSettings.CLR_BORDER));
+                        0, 0, 1, 0, ViewSettings.GENERAL_CLR_BORDER));
 
                 //make the tab JPanel visible
                 jpnl_stuff[i].setLocation(getWidth() * (i - lastTab), 
@@ -650,10 +650,10 @@ public class VTabbedPane extends JPanel {
             //set the selected background for the currently selected tab
             //and create a border everywhere except at the bottom
             jbtn_stuffHeadline[_index].setBackground(
-                    ViewSettings.CLR_BACKGROUND_DARK);
+                    ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
             jbtn_stuffHeadline[_index].setBorder(
                     BorderFactory.createMatteBorder(
-                    1, 1, 0, 1, ViewSettings.CLR_BORDER));
+                    1, 1, 0, 1, ViewSettings.GENERAL_CLR_BORDER));
             jpnl_contains.setComponentZOrder(jbtn_stuffHeadline[_index], 1);
 
             super.setSize(getWidth(), visibleHeight);
@@ -713,16 +713,16 @@ public class VTabbedPane extends JPanel {
                 //each not selected panel and button
                 jbtn_stuffHeadline[i].setBackground(Color.white);
                 jbtn_stuffHeadline[i].setBorder(BorderFactory.createMatteBorder(
-                        0, 0, 1, 0, ViewSettings.CLR_BORDER));
+                        0, 0, 1, 0, ViewSettings.GENERAL_CLR_BORDER));
             }
             
             //set the selected background for the currently selected tab
             //and create a border everywhere except at the bottom
             jbtn_stuffHeadline[_index].setBackground(
-                    ViewSettings.CLR_BACKGROUND_DARK);
+                    ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
             jbtn_stuffHeadline[_index].setBorder(
                     BorderFactory.createMatteBorder(
-                    1, 1, 0, 1, ViewSettings.CLR_BORDER));
+                    1, 1, 0, 1, ViewSettings.GENERAL_CLR_BORDER));
             
             //make the tab JPanel visible
             jpnl_stuff[_index].setVisible(true);

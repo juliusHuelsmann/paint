@@ -111,11 +111,11 @@ import control.ControlPainting;
         super.setFocusable(false);
         super.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(
-                        0, 0, 0, 1, ViewSettings.CLR_BORDER), 
+                        0, 0, 0, 1, ViewSettings.GENERAL_CLR_BORDER), 
 
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(
-                                0, 0, 1, 0, ViewSettings.CLR_BORDER),
+                                0, 0, 1, 0, ViewSettings.GENERAL_CLR_BORDER),
                         BorderFactory.createMatteBorder(
                                 0, 0, 1, 1, Color.white))));
         super.setVisible(false);

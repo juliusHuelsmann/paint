@@ -155,7 +155,7 @@ public final class New extends JPanel {
         //The container JPanel
         jpnl_stuff = new JPanel();
         jpnl_stuff.setSize(width, height);
-        jpnl_stuff.setBackground(ViewSettings.CLR_BACKGROUND_DARK);
+        jpnl_stuff.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
         jpnl_stuff.setLayout(null);
         jpnl_stuff.setBorder(BorderFactory.createLineBorder(Color.black));
         super.add(jpnl_stuff);

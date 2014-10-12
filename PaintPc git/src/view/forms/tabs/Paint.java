@@ -256,12 +256,12 @@ public final class Paint extends JPanel {
 
             tb_prev = new Item1Button(null);
             tb_next = new Item1Button(null);
-            tb_prev.setSize(ViewSettings.getItemWidth(), 
-                    ViewSettings.getItemHeight());
-            tb_next.setSize(ViewSettings.getItemWidth(), 
-                    ViewSettings.getItemHeight());
 	    }
 
+        tb_prev.setSize(ViewSettings.getItemWidth(), 
+                ViewSettings.getItemHeight());
+        tb_next.setSize(ViewSettings.getItemWidth(), 
+                ViewSettings.getItemHeight());
 	    if (_paint) {
 
 	        tb_prev.setBorder(false);
@@ -323,64 +323,81 @@ public final class Paint extends JPanel {
         final Dimension sizeIT_selection = new Dimension(350, 370);
 //        = new Dimension(350, 270);//for my laptop
         final int sizeHeight = 110;
+
+        if (_paint) {
+            it_stift1 = new Item1Menu(false);
+            tb_erase = new Item1Button(null);
+            tb_move = new Item1Button(null);
+            tb_fill = new Item1Button(null);
+            tb_pipette = new Item1Button(null);
+            tb_selectionMagic = new Item1Button(null);
+            tb_selectionCurve = new Item1Button(null);
+            tb_selectionLine = new Item1Button(null);
+            it_selection = new Item1Menu(false);
+            it_stift2 = new Item1Menu(false);
+        }
+
+        it_stift1.flip();
+        it_stift2.flip();
+        it_selection.flip();
+        
+        it_stift1.setSize(sizeIT);
+        it_stift1.setSizeHeight(fifety);
+        it_stift2.setSize(sizeIT);
+        it_stift2.setSizeHeight(fifety);
+        it_selection.setSize(sizeIT_selection);
+        it_selection.setSizeHeight(sizeHeight);
+
+        tb_erase.setSize(tb_copy.getWidth(), tb_copy.getHeight());
+        tb_move.setSize(tb_copy.getWidth(), tb_copy.getHeight());
+        tb_fill.setSize(tb_copy.getWidth(), tb_copy.getHeight());
+        tb_pipette.setSize(tb_copy.getWidth(), tb_copy.getHeight());
+        tb_selectionLine.setSize(tb_selectionLine.getWidth(), 
+                tb_selectionLine.getHeight());
+        tb_selectionCurve.setSize(tb_selectionCurve.getWidth(), 
+                tb_selectionCurve.getHeight());
+        tb_selectionMagic.setSize(tb_selectionMagic.getWidth(), 
+                tb_selectionMagic.getHeight());
         
         if (_paint) {
-        	it_stift1 = new Item1Menu(false);
         	it_stift1.setBorder(null);
         	it_stift1.setText("Stift 1");
             it_stift1.setItemsInRow((byte) 1);
             it_stift1.setActivable();
-            it_stift1.setSize(sizeIT);
-            it_stift1.setSizeHeight(fifety);
         	it_stift1.setBorder(false);
         	super.add(it_stift1);
-        
-        	it_stift2 = new Item1Menu(false);
+
         	it_stift2.setText("Stift 2");
-        	it_stift2.setSize(sizeIT);
         	it_stift2.setActivable();
         	it_stift2.setItemsInRow((byte) 1);
-        	it_stift2.setSizeHeight(fifety);
         	it_stift2.setBorder(false);
         	super.add(it_stift2);
         	addPens();
-        	
-            it_selection = new Item1Menu(false);
+
             it_selection.setText("Auswahl");
             it_selection.setBorder(false);
             it_selection.setActivable();
-            it_selection.setSize(sizeIT_selection);
             it_selection.setIcon(Constants.VIEW_TB_SELECT_LINE_PATH);
             it_selection.setItemsInRow((byte) (2 + 1));
-            it_selection.setSizeHeight(sizeHeight);
             it_selection.removeScroll();
-        
-            tb_selectionLine = new Item1Button(null);
+
             tb_selectionLine.setBorder(false);
             it_selection.add(tb_selectionLine);
             initializeTextButtonOhneAdd(tb_selectionLine,
                     "line",
                     Constants.VIEW_TB_SELECT_LINE_PATH);
-            tb_selectionLine.setSize(tb_selectionLine.getWidth(), 
-                    tb_selectionLine.getHeight());
             tb_selectionLine.setOpaque(false);
-        
-            tb_selectionCurve = new Item1Button(null);
+
             tb_selectionCurve.setBorder(false);
             it_selection.add(tb_selectionCurve);
             initializeTextButtonOhneAdd(tb_selectionCurve, "curve",
                     Constants.VIEW_TB_SELECT_CURVE_PATH);
-            tb_selectionCurve.setSize(tb_selectionCurve.getWidth(), 
-                    tb_selectionCurve.getHeight());
             tb_selectionCurve.setOpaque(false);
-        
-            tb_selectionMagic = new Item1Button(null);
+
             tb_selectionMagic.setBorder(false);
             it_selection.add(tb_selectionMagic);
             initializeTextButtonOhneAdd(tb_selectionMagic, "magic",
                     Constants.VIEW_TB_SELECT_MAGIC_PATH);
-            tb_selectionMagic.setSize(tb_selectionMagic.getWidth(), 
-                    tb_selectionMagic.getHeight());
             tb_selectionMagic.setOpaque(false);
         
             JCheckBox jcb_whole = new JCheckBox("whole");
@@ -405,31 +422,23 @@ public final class Paint extends JPanel {
             it_selection.setBorder(false);
             super.add(it_selection);
 
-            tb_pipette = new Item1Button(null);
-            tb_pipette.setSize(tb_copy.getWidth(), tb_copy.getHeight());
             tb_pipette.setBorder(false);
             initializeTextButton(tb_pipette, "pipette",
                     Constants.VIEW_TB_PIPETTE_PATH, 0);
             tb_pipette.setActivable(true);
-    
-            tb_fill = new Item1Button(null);
+
             tb_fill.setActivable(true);
-            tb_fill.setSize(tb_copy.getWidth(), tb_copy.getHeight());
             tb_fill.setBorder(false);
             initializeTextButton(tb_fill, "fuellen",
                     Constants.VIEW_TB_FILL_PATH, 0);
             tb_fill.setActivable(true);
-            
-            tb_move = new Item1Button(null);
-            tb_move.setSize(tb_copy.getWidth(), tb_copy.getHeight());
+
             tb_move.setBorder(false);
             initializeTextButton(tb_move, "nothing",
                     Constants.VIEW_TB_MOVE_PATH, 0);
             tb_move.setActivable(true);
     
-            tb_erase = new Item1Button(null);
             tb_erase.setActivable(true);
-            tb_erase.setSize(tb_copy.getWidth(), tb_copy.getHeight());
             tb_erase.setBorder(false);
             initializeTextButton(tb_erase, "Erase",
                     Constants.VIEW_TB_PIPETTE_PATH, 0);
@@ -605,7 +614,7 @@ public final class Paint extends JPanel {
     
     	//
     	it_color = new Item1Menu(false);
-        it_color.setSize(ViewSettings.PAINT_SIZE);
+        it_color.setSize(ViewSettings.getSIZE_PNL_CLR());
     	it_color.setBorder(false);
     	it_color.setText("+ Farben");
     	it_color.setLocation(jbtn_colors[jbtn_colors.length - 1].getX() 
@@ -897,7 +906,7 @@ public final class Paint extends JPanel {
 	        this.jlbl_separation[_locInArray] = new JLabel();
 	        this.jlbl_separation[_locInArray].setBorder(
 	                BorderFactory.createLineBorder(
-	                        ViewSettings.CLR_BACKGROUND_DARK_XX));
+	                        ViewSettings.GENERAL_CLR_BACKGROUND_DARK_XX));
 	        super.add(this.jlbl_separation[_locInArray]);
 	        
 	    }
@@ -930,7 +939,7 @@ public final class Paint extends JPanel {
 	        
 	        jlbl_information[_locationInArray] = new VLabel();
 	        jlbl_information[_locationInArray].setFont(
-	                ViewSettings.TP_FONT_INFORMATION);
+	                ViewSettings.GENERAL_TP_FONT_INFORMATION);
 	        jlbl_information[_locationInArray].setForeground(
 	                new Color(rgb, rgb, rgb));
 	        jlbl_information[_locationInArray].setHorizontalAlignment(

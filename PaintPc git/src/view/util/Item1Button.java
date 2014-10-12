@@ -76,7 +76,7 @@ public class Item1Button extends JPanel {
 		//initialize JPanel and alter settings
 		super();
 		super.setLayout(null);
-		super.setBackground(ViewSettings.CLR_BACKGROUND_DARK);
+		super.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
 		super.setOpaque(true);
 		
 		//set values
@@ -89,7 +89,7 @@ public class Item1Button extends JPanel {
 		jlbl_title.setBorder(null);
 		jlbl_title.setFocusable(false);
 		jlbl_title.setOpaque(false);
-		jlbl_title.setFont(ViewSettings.FONT_ITEM1_BUTTON);
+		jlbl_title.setFont(ViewSettings.GENERAL_FONT_ITEM1_BUTTON);
 		jlbl_title.setForeground(Color.gray);
 		jlbl_title.setHorizontalAlignment(SwingConstants.CENTER);
 		super.add(jlbl_title);
@@ -131,12 +131,12 @@ public class Item1Button extends JPanel {
 			
 			//if not activated
 			if (!_activate) {
-                super.setBackground(ViewSettings.CLR_BACKGROUND_DARK);
+                super.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
 				setOwnBorder(null);
 			} else {
 
 				//if activated
-				setOwnBackground(ViewSettings.CLR_ITEM1BUTTON_BACKGROUND);
+				setOwnBackground(ViewSettings.GENERAL_CLR_ITEM1BUTTON_BACKGROUND);
 				setOwnBorder(ViewSettings.BRD_ITEM1BUTTON);
 			}
 		}
@@ -291,7 +291,7 @@ public class Item1Button extends JPanel {
 	    
 	    if (_normalOrientation) {
 
-	        jlbl_title.setFont(ViewSettings.FONT_ITEM1_BUTTON);
+	        jlbl_title.setFont(ViewSettings.GENERAL_FONT_ITEM1_BUTTON);
 	        //set size of color - and title JLabel
 	        if (imageWidth == -1 || imageHeight == -1) {
 	            jlbl_color.setBounds(distance * (2 + 1), distance, 

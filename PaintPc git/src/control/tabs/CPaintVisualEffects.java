@@ -186,7 +186,7 @@ public final class CPaintVisualEffects implements MouseListener {
 	public static void applyFocus(final Item1PenSelection _selected) {
 
         _selected.setOpaque(true);
-        _selected.setBackground(ViewSettings.CLR_BORDER);
+        _selected.setBackground(ViewSettings.GENERAL_CLR_BORDER);
     
 	}
 	
@@ -231,7 +231,7 @@ public final class CPaintVisualEffects implements MouseListener {
 			//select the current pen
 			stift_event.setSelected(true);
 			stift_event.setOpaque(true);
-			stift_event.setBackground(ViewSettings.CLR_BORDER);
+			stift_event.setBackground(ViewSettings.GENERAL_CLR_BORDER);
 			
 			//set the last selected
 			lastSelected[stift_event.getPenSelection() - 1] = stift_event;

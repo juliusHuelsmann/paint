@@ -75,7 +75,7 @@ public final class Message extends JPanel {
      */
     private void initialize() {
 
-        super.setSize(ViewSettings.MESSAGE_SIZE);
+        super.setSize(ViewSettings.getSizeMessage());
         super.setLocation(ViewSettings.getMessagelocation());
         super.setOpaque(true);
         super.setLayout(null);
@@ -88,9 +88,9 @@ public final class Message extends JPanel {
         jbtn_hide.setOpaque(false);
         jbtn_hide.addActionListener(CMessage.getInstance());
         jbtn_hide.setBorder(BorderFactory.createLineBorder(Color.gray));
-        jbtn_hide.setSize(ViewSettings.MESSAGE_SIZE.height,
-                ViewSettings.MESSAGE_SIZE.height - 2 * 2);
-        jbtn_hide.setLocation(getWidth() - ViewSettings.MESSAGE_SIZE.height 
+        jbtn_hide.setSize(ViewSettings.getSizeMessage().height,
+                ViewSettings.getSizeMessage().height - 2 * 2);
+        jbtn_hide.setLocation(getWidth() - ViewSettings.getSizeMessage().height 
                 - borderDistance, 2);
         jbtn_hide.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
         jbtn_hide.setFocusable(false);

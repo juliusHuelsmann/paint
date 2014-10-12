@@ -35,10 +35,17 @@ public final class Status {
             Constants.CONTROL_PAINTING_INDEX_PAINT_1;
     
     /**
-     * The Background of the pages.
+     * The displayed Background of the pages.
      */
     private static int indexPageBackground = 
             Constants.CONTROL_PAGE_BACKGROUND_RASTAR;
+    
+    
+    /**
+     * The exported background of pages.
+     */
+    private static int indexPageBackgroundExport 
+    = Constants.CONTROL_PAGE_BACKGROUND_RASTAR;
     
     /**
      * index contains selection kind. (separate paintObjects,
@@ -402,6 +409,21 @@ public final class Status {
      */
     public static void setIndexPageBackground(final int _indexPageBackground) {
         Status.indexPageBackground = _indexPageBackground;
+    }
+
+
+    /**
+     * @param _indexPageBackground the indexPageBackground to set
+     */
+    public static void setIndexPageBackgroundExport(
+            final int _indexPageBackground) {
+        Status.indexPageBackgroundExport = _indexPageBackground;
+    }
+    /**
+     * @return the indexPageBackground
+     */
+    public static int getIndexPageBackgroundExport() {
+        return indexPageBackgroundExport;
     }
 
 

@@ -13,9 +13,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
 import control.CSelection;
 import control.tabs.CTabSelection;
 import view.View;
@@ -45,6 +47,7 @@ import model.settings.Constants;
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.list.List;
+import model.util.paint.Utils;
 
 /**
  * Picture class which contains all the not selected and selected painted items 
@@ -832,7 +835,21 @@ public final class Picture {
         
         
         BufferedImage bi;
-        bi = Page.getInstance().getEmptyBI();
+        final boolean transparent = false;
+        if (transparent) {
+
+            bi = Page.getInstance().getEmptyBITransparent();
+        } else {
+            bi = Page.getInstance().getEmptyBIWhite();
+        }
+        
+
+        bi = Utils.getBackgroundExport(bi, 0, 0, Status.getImageSize().width, 
+                Status.getImageSize().height, 0, 0);
+        
+        
+        
+        
         bi = repaintRectangle(
                 -Page.getInstance().getJlbl_painting().getLocation().x + 0, 
                 -Page.getInstance().getJlbl_painting().getLocation().y + 0, 

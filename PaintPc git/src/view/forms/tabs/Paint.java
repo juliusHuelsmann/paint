@@ -75,16 +75,16 @@ public final class Paint extends JPanel {
 	 * JLabels for the separation, linked with information.
 	 */
 	private JLabel [] jlbl_separation;
-	
+	   /**
+     * JLabels for the information text, linked with separation line.
+     */
+    private VLabel [] jlbl_information;
 	/**
 	 * buttons.
 	 */
 	private Item1Button tb_pipette, tb_fill, tb_move, tb_erase, 
 	tb_selectionLine, tb_selectionMagic, tb_selectionCurve, tb_saveAs;
-	/**
-	 * JLabels for the information text, linked with separation line.
-	 */
-	private VLabel [] jlbl_information;
+
 	
 	/**
 	 * Selection menu.

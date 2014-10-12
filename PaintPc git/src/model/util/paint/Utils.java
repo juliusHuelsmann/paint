@@ -260,6 +260,45 @@ public final class Utils {
         }
     }
 
+    
+    /**
+     * Print background.
+     * @param _f the bufferedImage
+     * 
+     * @param _fromX the start point
+     * @param _fromY the start point
+     * @param _untilX the end point
+     * @param _untilY the end point
+     * 
+     * @param _graphiX the location at the component where the painting 
+     *                  process starts.
+     * @param _graphiY the location at the component where the painting 
+     *                  process starts.
+     *                  
+     * @return the transformed BufferedImage
+     */
+    public static BufferedImage getBackgroundExport(
+            final BufferedImage _f, final int _fromX, 
+            final int _fromY, final int _untilX, final int _untilY, 
+            final int _graphiX, final int _graphiY) {
+        
+        switch (Status.getIndexPageBackgroundExport()) {
+        case Constants.CONTROL_PAGE_BACKGROUND_LINES:
+            return getLinedImage(_f, _fromX, _fromY, _untilX, _untilY, 
+                    _graphiX, _graphiY);
+
+        case Constants.CONTROL_PAGE_BACKGROUND_NONE:
+            return printWhiteBackground(_f, _fromX, _fromY, _untilX, _untilY, 
+                    _graphiX, _graphiY);
+            
+        case Constants.CONTROL_PAGE_BACKGROUND_RASTAR:
+            return getRastarImage(_f, _fromX, _fromY, _untilX, _untilY, 
+                    _graphiX, _graphiY);
+        default:
+            Status.getLogger().warning("unknown background type.");
+            return null;
+        }
+    }
 
     /**
      * returns a raster BufferedImage as background.

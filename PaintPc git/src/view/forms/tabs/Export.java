@@ -15,7 +15,7 @@ import javax.swing.SwingConstants;
 import view.util.VLabel;
 import model.settings.Status;
 import model.settings.ViewSettings;
-import control.tabs.CLook;
+import control.tabs.CExport;
 
 
 /**
@@ -27,7 +27,7 @@ import control.tabs.CLook;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public final class Look extends JPanel {
+public final class Export extends JPanel {
 
     /**
      * JLabels for the separation, linked with information.
@@ -40,7 +40,7 @@ public final class Look extends JPanel {
     /**
      * The only instance of this class.
      */
-    private static Look instance;
+    private static Export instance;
 
     /**
      * The JCheckBox for background of new Image.
@@ -53,18 +53,13 @@ public final class Look extends JPanel {
     private JComboBox jcb_margeTop, jcb_margeLeft, jcb_margeRight,
     jcb_margeBottom;
     
-    /**
-     * The JCombo box for displaying of alpha.
-     */
-    private JComboBox jcb_displayAlpha;
 
     /**
      * Title JLabel.
      */
     private JLabel jlbl_backgroundTitle, jlbl_borderTitle, 
     jlbl_subtitle_borderTop, jlbl_subtitle_borderBottom, 
-    jlbl_subtitle_borderLeft, jlbl_subtitle_borderRight,
-    jlbl_displayAlphaTitle, jlbl_subtitle_alpha;
+    jlbl_subtitle_borderLeft, jlbl_subtitle_borderRight;
     
 
     /**
@@ -75,7 +70,7 @@ public final class Look extends JPanel {
     /**
      * Empty utility class constructor.
      */
-    private Look() { }
+    private Export() { }
     
     
     /**
@@ -95,9 +90,6 @@ public final class Look extends JPanel {
         
         //initialize the content for the background
         initializeFirstColumn();
-        
-        //initialize the content for the visualization
-        initializeSecondColumn();
     }
     
     
@@ -118,7 +110,7 @@ public final class Look extends JPanel {
         jcb_raster = new JCheckBox("Raster");
         jcb_raster.setFocusable(false);
         jcb_raster.setOpaque(false);
-        jcb_raster.addActionListener(CLook.getInstance());
+        jcb_raster.addActionListener(CExport.getInstance());
         jcb_raster.setLocation(jlbl_backgroundTitle.getX(), 
                 ViewSettings.getDistanceBetweenItems()
                 + jlbl_backgroundTitle.getY()
@@ -131,7 +123,7 @@ public final class Look extends JPanel {
         jcb_lines = new JCheckBox("Lines");
         jcb_lines.setFocusable(false);
         jcb_lines.setOpaque(false);
-        jcb_lines.addActionListener(CLook.getInstance());
+        jcb_lines.addActionListener(CExport.getInstance());
         jcb_lines.setLocation(jcb_raster.getWidth() + jcb_raster.getX() 
                 + ViewSettings.getDistanceBetweenItems(), jcb_raster.getY());
         jcb_lines.setSize(jcb_raster.getSize());
@@ -141,7 +133,7 @@ public final class Look extends JPanel {
         jcb_nothing = new JCheckBox("Nothing");
         jcb_nothing.setFocusable(false);
         jcb_nothing.setOpaque(false);
-        jcb_nothing.addActionListener(CLook.getInstance());
+        jcb_nothing.addActionListener(CExport.getInstance());
         jcb_nothing.setLocation(jcb_lines.getWidth() + jcb_lines.getX() 
                 + ViewSettings.getDistanceBetweenItems(), jcb_raster.getY());
         jcb_nothing.setSize(jcb_raster.getSize());
@@ -202,7 +194,7 @@ public final class Look extends JPanel {
         jlbl_subtitle_borderBottom = new JLabel("Bottom");
         jlbl_subtitle_borderBottom.setSize(jlbl_subtitle_borderTop.getSize());
         jlbl_subtitle_borderBottom.setLocation(jcb_margeTop.getX()
-                + jcb_margeTop.getWidth() 
+                + jcb_margeTop.getWidth()
                 + ViewSettings.getDistanceBetweenItems(),
                 jcb_margeTop.getY());
         jlbl_subtitle_borderBottom.setFont(
@@ -247,51 +239,6 @@ public final class Look extends JPanel {
     }
     
     
-    
-    /**
-     * Initialize the second column.
-     */
-    private void initializeSecondColumn() {
-
-        /*
-         * Alpha
-         */
-
-        //right
-        jlbl_displayAlphaTitle = new JLabel("Visualization");
-        jlbl_displayAlphaTitle.setSize(buttonWidth, buttonHeight);
-        jlbl_displayAlphaTitle.setLocation(jcb_nothing.getX()
-                + jcb_nothing.getWidth()
-                + ViewSettings.getDistanceBetweenItems(),
-                jlbl_backgroundTitle.getY());
-        jlbl_displayAlphaTitle.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
-        jlbl_displayAlphaTitle.setFocusable(false);
-        super.add(jlbl_displayAlphaTitle);
-        
-        jlbl_subtitle_alpha = new JLabel("of pure alpha");
-        jlbl_subtitle_alpha.setSize(jlbl_subtitle_borderTop.getSize());
-        jlbl_subtitle_alpha.setLocation(jlbl_displayAlphaTitle.getX(),
-                jlbl_displayAlphaTitle.getHeight() 
-                + jlbl_displayAlphaTitle.getY()
-                + ViewSettings.getDistanceBetweenItems());
-        jlbl_subtitle_alpha.setFont(ViewSettings.GENERAL_FONT_ITEM_PLAIN);
-        jlbl_subtitle_alpha.setFocusable(false);
-        super.add(jlbl_subtitle_alpha);
-        
-        jcb_displayAlpha = new JComboBox(new String[]{"white", "boxes"});
-        jcb_displayAlpha.setSize(jlbl_subtitle_borderTop.getSize());
-        jcb_displayAlpha.setLocation(jlbl_subtitle_alpha.getX() 
-                + jlbl_subtitle_alpha.getWidth() 
-                + ViewSettings.getDistanceBetweenItems(),
-                jlbl_subtitle_alpha.getY());
-        super.add(jcb_displayAlpha);
-
-        insertTrennung(jcb_nothing.getX() + jcb_nothing.getWidth() 
-                + ViewSettings.getDistanceBetweenItems(), 1, true);
-        insertInformation("Visualization", jlbl_displayAlphaTitle.getX(), 
-                jcb_displayAlpha.getX() + jcb_displayAlpha.getWidth()
-                + ViewSettings.getDistanceBetweenItems(), 1, true);
-    }
 
     /**
      * @return the jcb_raster
@@ -390,10 +337,10 @@ public final class Look extends JPanel {
     /**
      * @return the instance
      */
-    public static Look getInstance() {
+    public static Export getInstance() {
         
         if (instance == null) {
-            instance = new Look();
+            instance = new Export();
             instance.initialize();
         }
         return instance;
@@ -432,11 +379,4 @@ public final class Look extends JPanel {
         return jcb_margeBottom;
     }
 
-
-    /**
-     * @return the jcb_displayAlpha
-     */
-    public JComboBox getJcb_displayAlpha() {
-        return jcb_displayAlpha;
-    }
 }

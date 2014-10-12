@@ -361,7 +361,7 @@ import control.ControlPainting;
      * 
      * @return the BufferedImage
      */
-    public  BufferedImage getEmptyBI() {
+    public  BufferedImage getEmptyBITransparent() {
         BufferedImage bi = new BufferedImage(
                 Status.getImageSize().width, 
                 Status.getImageSize().height, BufferedImage.TYPE_INT_ARGB);
@@ -370,6 +370,27 @@ import control.ControlPainting;
         for (int x = 0; x < bi.getWidth(); x++) {
             for (int y = 0; y < bi.getHeight(); y++) {
                 bi.setRGB(x, y, rgba);
+            }
+        }
+        
+        return bi;
+    }
+    
+    /**
+     * return fully transparent BufferedImage.
+     * 
+     * @return the BufferedImage
+     */
+    public  BufferedImage getEmptyBIWhite() {
+        BufferedImage bi = new BufferedImage(
+                Status.getImageSize().width, 
+                Status.getImageSize().height, BufferedImage.TYPE_INT_RGB);
+        
+        final int max = 255;
+        int rgb = new Color(max, max, max).getRGB();
+        for (int x = 0; x < bi.getWidth(); x++) {
+            for (int y = 0; y < bi.getHeight(); y++) {
+                bi.setRGB(x, y, rgb);
             }
         }
         

@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 
 import model.settings.ViewSettings;
 import control.util.CItem;
+import view.forms.tabs.Export;
 import view.forms.tabs.Insert;
 import view.forms.tabs.Look;
 import view.forms.tabs.Paint;
@@ -95,6 +96,7 @@ public class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Export");
+        super.addToTab(tabNumber, Export.getInstance());
         tabNumber++;
         
 

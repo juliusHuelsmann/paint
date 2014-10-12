@@ -3,7 +3,7 @@ package control.tabs;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import view.forms.Page;
-import view.forms.tabs.Look;
+import view.forms.tabs.Export;
 import model.settings.Constants;
 import model.settings.Status;
 
@@ -14,49 +14,49 @@ import model.settings.Status;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class COutlook implements ActionListener {
+public final class CExport implements ActionListener {
 
     /**
      * Empty utility class constructor.
      */
-    private COutlook() { }
+    private CExport() { }
 
 
     
     /**
      * The only instance of this class.
      */
-    private static COutlook instance;
+    private static CExport instance;
     
     
     @Override public void actionPerformed(final ActionEvent _event) {
 
         int backgroundID;
-        if (_event.getSource().equals(Look.getInstance().getJcb_raster())) {
+        if (_event.getSource().equals(Export.getInstance().getJcb_raster())) {
             backgroundID = Constants.CONTROL_PAGE_BACKGROUND_RASTAR;
-            Look.getInstance().getJcb_raster().setSelected(true);
-            Look.getInstance().getJcb_nothing().setSelected(false);
-            Look.getInstance().getJcb_lines().setSelected(false);
+            Export.getInstance().getJcb_raster().setSelected(true);
+            Export.getInstance().getJcb_nothing().setSelected(false);
+            Export.getInstance().getJcb_lines().setSelected(false);
         
         } else if (_event.getSource().equals(
-                Look.getInstance().getJcb_lines())) {
+                Export.getInstance().getJcb_lines())) {
             backgroundID = Constants.CONTROL_PAGE_BACKGROUND_LINES;
-            Look.getInstance().getJcb_lines().setSelected(true);
-            Look.getInstance().getJcb_nothing().setSelected(false);
-            Look.getInstance().getJcb_raster().setSelected(false);
+            Export.getInstance().getJcb_lines().setSelected(true);
+            Export.getInstance().getJcb_nothing().setSelected(false);
+            Export.getInstance().getJcb_raster().setSelected(false);
         
         } else if (_event.getSource().equals(
-                Look.getInstance().getJcb_nothing())) {
+                Export.getInstance().getJcb_nothing())) {
             backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
-            Look.getInstance().getJcb_nothing().setSelected(true);
-            Look.getInstance().getJcb_lines().setSelected(false);
-            Look.getInstance().getJcb_raster().setSelected(false);
+            Export.getInstance().getJcb_nothing().setSelected(true);
+            Export.getInstance().getJcb_lines().setSelected(false);
+            Export.getInstance().getJcb_raster().setSelected(false);
         
         } else {
             Status.getLogger().warning("no background selected.");
             backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
         } 
-        Status.setIndexPageBackground(backgroundID);
+        Status.setIndexPageBackgroundExport(backgroundID);
         Page.getInstance().getJlbl_painting().refreshPaint();
         
     }
@@ -66,9 +66,9 @@ public final class COutlook implements ActionListener {
      * Return the only instance of this class.
      * @return the only instance of this class.
      */
-    public static COutlook getInstance() {
+    public static CExport getInstance() {
         if (instance == null) {
-            instance = new COutlook();
+            instance = new CExport();
         }
         return instance;
     }

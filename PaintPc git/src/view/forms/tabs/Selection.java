@@ -119,8 +119,8 @@ public final class Selection extends JPanel {
         tb_color.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black), new LineBorder(Color.white)));
         tb_color.setLocation(_x, ViewSettings.getDistanceBetweenItems());
-        tb_color.setSize(
-                ViewSettings.getItemMenu1Width(), ViewSettings.getItemMenu1Height());
+        tb_color.setSize(ViewSettings.getItemMenu1Width(), 
+                ViewSettings.getItemMenu1Height());
         tb_color.setText("Farbe 1");
         tb_color.setActivable(false);
         super.add(tb_color);

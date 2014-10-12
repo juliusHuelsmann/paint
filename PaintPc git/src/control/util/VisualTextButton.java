@@ -51,7 +51,8 @@ public final class VisualTextButton implements MouseListener {
 		
 		//if the button selection is enabled (isActivabe) activate the button
 		if (!currentButton.isActivated()) {
-			currentButton.setOwnBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
+			currentButton.setOwnBackground(
+			        ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
 			currentButton.setOwnBorder(null);
 		}
 	}
@@ -67,7 +68,8 @@ public final class VisualTextButton implements MouseListener {
 		
 		//if the button selection is enabled (isActivabe) activate the button
 		if (!currentButton.isActivated()) {
-			currentButton.setOwnBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK_X);
+			currentButton.setOwnBackground(
+			        ViewSettings.GENERAL_CLR_BACKGROUND_DARK_X);
 			currentButton.setOwnBorder(ViewSettings.BRD_ITEM1BUTTON);
 		}
 	}

@@ -136,7 +136,8 @@ public class Item1Button extends JPanel {
 			} else {
 
 				//if activated
-				setOwnBackground(ViewSettings.GENERAL_CLR_ITEM1BUTTON_BACKGROUND);
+				setOwnBackground(
+				        ViewSettings.GENERAL_CLR_ITEM1BUTTON_BACKGROUND);
 				setOwnBorder(ViewSettings.BRD_ITEM1BUTTON);
 			}
 		}

@@ -200,7 +200,8 @@ public final class Paint extends JPanel {
 	                ViewSettings.getDistanceBetweenItems());
 	        tb_copy.setLocation(tb_paste.getX() 
 	                + ViewSettings.getDistanceBetweenItems() 
-	                + tb_paste.getWidth(), ViewSettings.getDistanceBetweenItems());
+	                + tb_paste.getWidth(),
+	                ViewSettings.getDistanceBetweenItems());
 	        tb_cut.setLocation(tb_copy.getX(), tb_copy.getHeight() 
 	                + ViewSettings.getDistanceBetweenItems() + tb_copy.getY());
 	        insertTrennung(tb_cut.getWidth() + tb_cut.getX() 
@@ -222,7 +223,8 @@ public final class Paint extends JPanel {
             tb_cut.setLocation(tb_copy.getX(), tb_copy.getY()
                     - tb_copy.getHeight() 
                     - ViewSettings.getDistanceBetweenItems());
-            insertTrennung(tb_cut.getX() - ViewSettings.getDistanceBeforeLine(), 
+            insertTrennung(tb_cut.getX() 
+                    - ViewSettings.getDistanceBeforeLine(), 
                     0, _paint);
          }
 	    
@@ -323,7 +325,6 @@ public final class Paint extends JPanel {
         final Dimension sizeIT_selection = new Dimension(350, 370);
 //        = new Dimension(350, 270);//for my laptop
         final int sizeHeight = 110;
-
         if (_paint) {
             it_stift1 = new Item1Menu(false);
             tb_erase = new Item1Button(null);
@@ -336,11 +337,9 @@ public final class Paint extends JPanel {
             it_selection = new Item1Menu(false);
             it_stift2 = new Item1Menu(false);
         }
-
         it_stift1.flip();
         it_stift2.flip();
         it_selection.flip();
-        
         it_stift1.setSize(sizeIT);
         it_stift1.setSizeHeight(fifety);
         it_stift2.setSize(sizeIT);
@@ -358,7 +357,6 @@ public final class Paint extends JPanel {
                 tb_selectionCurve.getHeight());
         tb_selectionMagic.setSize(tb_selectionMagic.getWidth(), 
                 tb_selectionMagic.getHeight());
-        
         if (_paint) {
         	it_stift1.setBorder(null);
         	it_stift1.setText("Stift 1");
@@ -384,8 +382,7 @@ public final class Paint extends JPanel {
             tb_selectionLine.setBorder(false);
             it_selection.add(tb_selectionLine);
             initializeTextButtonOhneAdd(tb_selectionLine,
-                    "line",
-                    Constants.VIEW_TB_SELECT_LINE_PATH);
+                    "line", Constants.VIEW_TB_SELECT_LINE_PATH);
             tb_selectionLine.setOpaque(false);
 
             tb_selectionCurve.setBorder(false);
@@ -469,10 +466,8 @@ public final class Paint extends JPanel {
                     + ViewSettings.getDistanceBetweenItems());
         }
         insertTrennung(tb_move.getWidth() + tb_move.getX() 
-                + ViewSettings.getDistanceBeforeLine(), 
-                2, _paint);
+                + ViewSettings.getDistanceBeforeLine(), 2, _paint);
         insertInformation("Stifte", _x, jlbl_separation[2].getX(), 2, _paint);
-    	
     	return jlbl_separation[2].getX() + ViewSettings.getDistanceAfterLine();
     }
 
@@ -490,8 +485,8 @@ public final class Paint extends JPanel {
     	tb_color1.setBorder(BorderFactory.createCompoundBorder(
     	        new LineBorder(Color.black), new LineBorder(Color.white)));
     	tb_color1.setLocation(_x, ViewSettings.getDistanceBetweenItems());
-    	tb_color1.setSize(
-    	        ViewSettings.getItemMenu1Width(), ViewSettings.getItemMenu1Height());
+    	tb_color1.setSize(ViewSettings.getItemMenu1Width(), 
+    	        ViewSettings.getItemMenu1Height());
     	tb_color1.setText("Farbe 1");
     	super.add(tb_color1);
     	//the second color for the second pen
@@ -584,7 +579,6 @@ public final class Paint extends JPanel {
     	jbtn_colors[i + anzInR * 1].setBackground(c3n1);
     	jbtn_colors[i + anzInR * 2].setBackground(c3n2);
     	jbtn_colors[i + anzInR * three].setBackground(c3n3);
-    
     	//green
     	i++;
     	jbtn_colors[i + anzInR * 0].setBackground(c4n0);
@@ -598,7 +592,6 @@ public final class Paint extends JPanel {
     	jbtn_colors[i + anzInR * 1].setBackground(c5n1);
     	jbtn_colors[i + anzInR * 2].setBackground(c5n2);
     	jbtn_colors[i + anzInR * three].setBackground(c5n3);
-    
     	//pink
     	i++;
     	jbtn_colors[i + anzInR * 0].setBackground(c6n0);
@@ -630,7 +623,8 @@ public final class Paint extends JPanel {
     	        .getDistanceBeforeLine(), 2 + 1, _paint);
     	insertInformation("Farben", _x, jlbl_separation[2 + 1].getX(), 2 + 1, 
     	        _paint);
-    	return jlbl_separation[2 + 1].getX() + ViewSettings.getDistanceAfterLine();
+    	return jlbl_separation[2 + 1].getX()
+    	        + ViewSettings.getDistanceAfterLine();
     }
 
     /**

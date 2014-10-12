@@ -349,8 +349,8 @@ public class VTabbedPane extends JPanel {
 	                jpnl_close.setLocation(0, getHeight());
 	                jpnl_background.setSize(getWidth(), getHeight()
 	                        - jpnl_background.getY());
-	                Page.getInstance().setLocation(
-                            ViewSettings.getView_bounds_page().x, getHeight() + 1);
+	                Page.getInstance().setLocation(ViewSettings
+	                        .getView_bounds_page().x, getHeight() + 1);
 	                
 	                try {
 	                    Thread.sleep(2);
@@ -380,8 +380,9 @@ public class VTabbedPane extends JPanel {
                 Page.getInstance().setSize(
                         ViewSettings.getView_bounds_page_closed().getSize());
                 Page.getInstance().getJlbl_painting().setSize(
-                        ViewSettings.getView_bounds_page_closed().getSize().width,
-                        ViewSettings.getView_bounds_page_closed().getSize().height 
+                        ViewSettings.getView_bounds_page_closed().getSize()
+                        .width, ViewSettings.getView_bounds_page_closed()
+                        .getSize().height 
                         - 1);
                 Page.getInstance().getJlbl_selectionBG().setSize(
                         ViewSettings.getView_bounds_page_closed().getSize());
@@ -452,8 +453,9 @@ public class VTabbedPane extends JPanel {
                 Page.getInstance().setSize(
                         ViewSettings.getView_bounds_page_open().getSize());
                 Page.getInstance().getJlbl_painting().setSize(
-                        ViewSettings.getView_bounds_page_closed().getSize().width,
-                        ViewSettings.getView_bounds_page_closed().getSize().height 
+                        ViewSettings.getView_bounds_page_closed().getSize()
+                        .width, ViewSettings.getView_bounds_page_closed()
+                        .getSize().height 
                         - 1);
                 Page.getInstance().getJlbl_selectionBG().setSize(
                         ViewSettings.getView_bounds_page_open().getSize());

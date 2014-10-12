@@ -415,7 +415,8 @@ import control.util.MousePositionTracker;
 	                jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
 	                Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
 
-            jbtn_fullscreen.setBounds(ViewSettings.getView_bounds_jbtn_fullscreen());
+            jbtn_fullscreen.setBounds(
+                    ViewSettings.getView_bounds_jbtn_fullscreen());
 	        jbtn_fullscreen.setIcon(new ImageIcon(Utils.resizeImage(
                     jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
                     Constants.VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));

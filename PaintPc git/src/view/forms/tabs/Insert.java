@@ -159,7 +159,8 @@ public final class Insert extends JPanel {
          * 
          */
         ia_diagram = new Item2Menu();
-     	ia_diagram.setSize(ia_geo.getWidth(), ViewSettings.getItemMenu1Height());
+     	ia_diagram.setSize(ia_geo.getWidth(), 
+     	        ViewSettings.getItemMenu1Height());
     	ia_diagram.setLocation(jlbl_separation[2].getX() + distance, distance);
 		super.add(ia_diagram);
 

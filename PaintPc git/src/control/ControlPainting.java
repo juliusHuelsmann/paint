@@ -565,13 +565,13 @@ public final class ControlPainting implements MouseListener,
 
 
     private void mr_fullscreen() {
+        View.getInstance().setFullscreen();
         ViewSettings.setFULLSCREEN(true);
         ViewSettings.setSize_jframe(
             new Dimension(
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()), 
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight())));
         View.getInstance().setVisible(false);
-        View.getInstance().setFullscreen();
         View.getInstance().flip(true);
         View.getInstance().repaint();
         

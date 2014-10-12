@@ -3,9 +3,12 @@ package view.forms.tabs;
 
 //import declarations
 import java.awt.Toolkit;
+
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+
+import model.settings.Status;
 import model.settings.ViewSettings;
 import control.tabs.CExport;
 
@@ -214,6 +217,16 @@ public final class Export extends Tab {
                 jlbl_subtitle_borderRight.getY());
         super.add(jcb_margeRight);
         
+
+        //apply the values set in Settings to the components:
+        jcb_margeLeft.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
+                Status.getBorderLeftPercent()));
+        jcb_margeRight.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
+                Status.getBorderRightPercent()));
+        jcb_margeTop.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
+                Status.getBorderTopPercent()));
+        jcb_margeBottom.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
+                Status.getBorderBottomPercent()));
         insertSectionStuff("Image Background", 0, 
                 ViewSettings.getDistanceBetweenItems() 
                 + jcb_nothing.getX() + jcb_nothing.getWidth() 

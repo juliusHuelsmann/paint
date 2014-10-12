@@ -379,7 +379,14 @@ public final class Picture {
 
         BufferedImage ret = emptyRectangle(_x, _y, _width, _height, 
                 _graphicX, _graphiY, _bi);
+        
+        //if the graphical user interface is not set up yet.
+        if (Page.getInstance().getJlbl_painting() == null
+                || ret == null) {
+            return new BufferedImage(2, 2, BufferedImage.TYPE_INT_ARGB);
+        }
         Page.getInstance().getJlbl_painting().setBi(ret);
+        
         Page.getInstance().getJlbl_painting().setIcon(new ImageIcon(ret));
 
         Page.getInstance().getJlbl_painting().repaint();

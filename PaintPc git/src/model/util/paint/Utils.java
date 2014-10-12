@@ -282,22 +282,50 @@ public final class Utils {
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {
         
+        
+        //fetch show percentages; thus able to reset them because the 
+        //called methods work with show - percentages; thus save the export
+        //percentages inside the show percentages.
+        int borderLShow = Status.getBorderLeftPercent();
+        int borderRShow = Status.getBorderRightPercent();
+        int borderTShow = Status.getBorderTopPercent();
+        int borderBShow = Status.getBorderBottomPercent();
+
+        //set percentages
+        Status.setBorderLeftPercent(Status.getBorderLeftPercentExport());
+        Status.setBorderRightPercent(Status.getBorderRightPercentExport());
+        Status.setBorderTopPercent(Status.getBorderTopPercentExport());
+        Status.setBorderBottomPercent(Status.getBorderBottomPercentExport());
+
+        BufferedImage bi = null;
         switch (Status.getIndexPageBackgroundExport()) {
         case Constants.CONTROL_PAGE_BACKGROUND_LINES:
-            return getLinedImage(_f, _fromX, _fromY, _untilX, _untilY, 
+            bi = getLinedImage(_f, _fromX, _fromY, _untilX, _untilY, 
                     _graphiX, _graphiY);
+            break;
 
         case Constants.CONTROL_PAGE_BACKGROUND_NONE:
-            return printWhiteBackground(_f, _fromX, _fromY, _untilX, _untilY, 
+            bi = printWhiteBackground(_f, _fromX, _fromY, _untilX, _untilY, 
                     _graphiX, _graphiY);
+            break;
             
         case Constants.CONTROL_PAGE_BACKGROUND_RASTAR:
-            return getRastarImage(_f, _fromX, _fromY, _untilX, _untilY, 
+            bi = getRastarImage(_f, _fromX, _fromY, _untilX, _untilY, 
                     _graphiX, _graphiY);
+            break;
         default:
             Status.getLogger().warning("unknown background type.");
-            return null;
+            bi = null;
+            break;
         }
+
+        //reset percentages
+        Status.setBorderLeftPercentExport(borderLShow);
+        Status.setBorderRightPercentExport(borderRShow);
+        Status.setBorderTopPercentExport(borderTShow);
+        Status.setBorderBottomPercentExport(borderBShow);
+
+        return bi;
     }
 
     /**
@@ -404,7 +432,6 @@ public final class Utils {
      *                  
      * @return the transformed BufferedImage
      */
-    @SuppressWarnings("unused")
     private static BufferedImage getRastarImage(
             final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
@@ -430,22 +457,17 @@ public final class Utils {
         boolean print = true;
         //vertical lines    |  |  |  |  |  |  |  |  |
         //                  |  |  |  |  |  |  |  |  |
-        //                  |  |  |  |  |  |  |  |  |
         for (int x = 
                 //either the starting coordinate (_fromX) matched at the
                 //raster size or the merge front if 
                 Math.max(Status.getRasterBorderFront(), 
                         (_fromX / Status.getRasterSize()) 
                         * Status.getRasterSize());
-                
                 //coordinate smaller than the last merge or the until x
                 //value
                 x < Math.min(width - Status.getRasterBorderEnd(), _untilX); 
-                
                 //proceeds in size steps
                 x += Math.max(Status.getRasterSize() / 2, 1)) {
-            
-            
             //edit last x coordinate
             if (x > Math.min(width - Status.getRasterBorderEnd(), _untilX) 
                     - Math.max(Status.getRasterSize() / 2, 1)) {
@@ -454,13 +476,13 @@ public final class Utils {
             
             for (int y = 
                     //the fromX (the window from x)
-                    (_fromY / distancePoints) * distancePoints; 
-                    
+                    Math.max(Status.getRasterBorderTop(), 
+                    (_fromY / distancePoints) * distancePoints); 
                     //either the height merge (the height minus the height
                     //modulo the distance of the different points or until 
                     //x coordinate
-                    y < Math.min(height -  (height % distancePoints), _untilY); 
-                    
+                    y < Math.min(Math.min(height -  (height % distancePoints), 
+                            _untilY), height - Status.getRasterBorderBottom()); 
                     //proceeds with the speed of distancePoints
                     y += distancePoints) {
 
@@ -471,8 +493,7 @@ public final class Utils {
                 
                 if (print) {
                     //paint the point
-                    PaintBI.paintScilentPoint(
-                            _f, coordinateX, coordinateY,
+                    PaintBI.paintScilentPoint(_f, coordinateX, coordinateY,
                             RASTAR_COLOR.getRGB());
 
                    //if the loop has reached the last values paint a line.
@@ -481,30 +502,13 @@ public final class Utils {
                            - Status.getRasterSize() + 1) {
                         
                         if (y + 1 < height) {
-                            PaintBI.paintScilentPoint(
-                                    _f, coordinateX, coordinateY + 1,
-                                    RASTAR_COLOR.getRGB());
+                            PaintBI.paintScilentPoint(_f, coordinateX, 
+                                    coordinateY + 1, RASTAR_COLOR.getRGB());
                         }
                         if (y + 2 < height) {
-                            PaintBI.paintScilentPoint(
-                                    _f, coordinateX, coordinateY + 2,
-                                    RASTAR_COLOR.getRGB());
+                            PaintBI.paintScilentPoint(_f, coordinateX, 
+                                    coordinateY + 2, RASTAR_COLOR.getRGB());
                         }
-                    }
-                } else if (!print && y % Status.getRasterSize()
-                        == Status.getRasterSize() / 2 && Status.isDebug()) {
-
-                    //the identifier of the small box
-                    int xBoxID = (x / Status.getRasterSize()), 
-                            yBoxID = (y / Status.getRasterSize());
-                    
-                    //the location of the information text about the box id
-                    int xBoxLoc = coordinateX - Status.getRasterSize() / 2 + 2, 
-                            yBoxLoc = coordinateY;
-                    
-                    //shift the text every second x entity
-                    if (xBoxID % 2 == 0) {
-                        yBoxLoc += 2 * (2 + 1);
                     }
                 }
             }
@@ -514,9 +518,10 @@ public final class Utils {
         //                  _______________________
         //                  _______________________
         //                  _______________________
-        for (int y = Math.max(0, 
+        for (int y = Math.max(Status.getRasterBorderTop(),  
                 (_fromY / Status.getRasterSize()) * Status.getRasterSize());
-                y < Math.min(height -  (height % distancePoints), _untilY); 
+                y < Math.min(Math.min(height -  (height % distancePoints), 
+                        _untilY), height - Status.getRasterBorderBottom()); 
                 y += Status.getRasterSize()) {
             
             for (int x =  Math.max(Status.getRasterBorderFront(), 
@@ -535,6 +540,23 @@ public final class Utils {
                     PaintBI.paintScilentPoint(
                             _f, newX, newY, RASTAR_COLOR.getRGB());
                 }
+
+                //if the loop has reached the last values paint a line.
+                if (y == Status.getRasterBorderTop() 
+                        || y >= height - Status.getRasterBorderBottom() 
+                        - Status.getRasterSize() + 1) {
+                     
+                     if (y + 1 < height) {
+                         PaintBI.paintScilentPoint(
+                                 _f, newX + 1, newY, RASTAR_COLOR.getRGB());
+                     }
+                     if (y + 2 < height) {
+                         PaintBI.paintScilentPoint(
+                                 _f, newX + 2, newY, RASTAR_COLOR.getRGB());
+                     }
+                 }
+                
+                
                 if (y == (height - height % Status.getRasterSize() - 1)) {
                     if (x + 1 < width) {
 
@@ -607,12 +629,14 @@ public final class Utils {
             width - Status.getRasterBorderEnd()}) {
             for (int y = 
                     //the fromX (the window from x)
-                    (_fromY / distancePoints) * distancePoints; 
+                    Math.max((_fromY / distancePoints) * distancePoints,
+                            Status.getRasterBorderTop()); 
                     
                     //either the height merge (the height minus the height
                     //modulo the distance of the different points or until 
                     //x coordinate
-                    y < Math.min(height -  (height % distancePoints), _untilY); 
+                    y < Math.min(Math.min(height -  (height % distancePoints), 
+                            _untilY), height - Status.getRasterBorderBottom()); 
                     
                     //proceeds with the speed of distancePoints
                     y += distancePoints) {
@@ -667,9 +691,10 @@ public final class Utils {
         //                  _______________________
         //                  _______________________
         //                  _______________________
-        for (int y = Math.max(0, 
+        for (int y = Math.max(Status.getRasterBorderTop(),  
                 (_fromY / Status.getRasterSize()) * Status.getRasterSize());
-                y < Math.min(height -  (height % distancePoints), _untilY); 
+                y < Math.min(Math.min(height -  (height % distancePoints), 
+                        _untilY), height - Status.getRasterBorderBottom()); 
                 y += Status.getRasterSize()) {
             
             for (int x =  Math.max(Status.getRasterBorderFront(), 
@@ -683,7 +708,21 @@ public final class Utils {
 
                PaintBI.paintScilentPoint(
                        _f, newX, newY, RASTAR_COLOR.getRGB());
-               
+
+               //if the loop has reached the last values paint a line.
+               if (y == Status.getRasterBorderTop() 
+                       || y >= height - Status.getRasterBorderBottom() 
+                       - Status.getRasterSize() + 1) {
+                    
+                    if (y + 1 < height) {
+                        PaintBI.paintScilentPoint(
+                                _f, newX + 1, newY, RASTAR_COLOR.getRGB());
+                    }
+                    if (y + 2 < height) {
+                        PaintBI.paintScilentPoint(
+                                _f, newX + 2, newY, RASTAR_COLOR.getRGB());
+                    }
+                }
                 if (y / Status.getRasterSize() % (2 + 1) == 0) {
                     PaintBI.paintScilentPoint(
                             _f, newX, newY, RASTAR_COLOR.getRGB());
@@ -758,12 +797,14 @@ public final class Utils {
             width - Status.getRasterBorderEnd()}) {
             for (int y = 
                     //the fromX (the window from x)
-                    (_fromY / distancePoints) * distancePoints; 
+                    Math.max((_fromY / distancePoints) * distancePoints,
+                            Status.getRasterBorderTop()); 
                     
                     //either the height merge (the height minus the height
                     //modulo the distance of the different points or until 
                     //x coordinate
-                    y < Math.min(height -  (height % distancePoints), _untilY); 
+                    y < Math.min(Math.min(height -  (height % distancePoints), 
+                            _untilY), height - Status.getRasterBorderBottom()); 
                     
                     //proceeds with the speed of distancePoints
                     y += distancePoints) {
@@ -798,6 +839,46 @@ public final class Utils {
                 } 
             }
         }
+        
+        
+        
+
+        //horizontal lines  _______________________
+        //                  _______________________
+        //                  _______________________
+        //                  _______________________
+        for (int y = Math.max(Status.getRasterBorderTop(),  
+                (_fromY / Status.getRasterSize()) * Status.getRasterSize());
+                y < Math.min(Math.min(height -  (height % distancePoints), 
+                        _untilY), height - Status.getRasterBorderBottom()); 
+                y += Status.getRasterSize()) {
+            
+            for (int x =  Math.max(Status.getRasterBorderFront(), 
+                    _fromX / distancePoints * distancePoints); 
+                    x < Math.min(width - Status.getRasterBorderEnd(), _untilX); 
+                    x += distancePoints) {
+
+                //calculate correct coordinate values for the graphics
+                final int newX = x - _fromX + _graphiX;
+                final int newY = y - _fromY + _graphiY;
+
+                //if the loop has reached the last values paint a line.
+                if (y == Status.getRasterBorderTop() 
+                        || y >= height - Status.getRasterBorderBottom() 
+                        - Status.getRasterSize() + 1) {
+                     
+                     if (y + 1 < height) {
+                         PaintBI.paintScilentPoint(
+                                 _f, newX + 1, newY, RASTAR_COLOR.getRGB());
+                     }
+                     if (y + 2 < height) {
+                         PaintBI.paintScilentPoint(
+                                 _f, newX + 2, newY, RASTAR_COLOR.getRGB());
+                     }
+                 }
+            }
+        }
+        
         //paint the non image and the border of the page.
         if (width < _untilX || height < _untilY) {
             paintNonImage(_f, _untilX, _untilY, width, height);

@@ -158,6 +158,32 @@ public final class Constants {
 	SIZE_A6 = new Dimension(SIZE_A5.width / 2, SIZE_A5.height),
     SIZE_A7 = new Dimension(SIZE_A6.width, SIZE_A6.height / 2);
 
+	
+	
+	/**
+	 * The selection possibilities for border [percentage] of page background.
+	 */
+	public static final int[] BORDER_PRERCENTAGES = new int[]
+	        {0, 2, 4, 8, 15, 20, 25, 50};
+	
+	
+	/**
+	 * Return the selection possibilities for border as a string with a 
+	 * percentage sign.
+	 * @return the selection possibilities for border [percentage] of page 
+	 * background
+	 */
+	public static String[] getBorderPercentagesTitle() {
+	    String [] s = new String[BORDER_PRERCENTAGES.length];
+	    
+	    for (int i = 0; i < s.length; i++) {
+	        s[i] = BORDER_PRERCENTAGES[i] + "%";
+	    }
+	    
+	    return s;
+	}
+	
+	
 	/**
 	 * empty private Constructor; is private because class is designed
 	 * to be singleton. This private constructor is only called once in

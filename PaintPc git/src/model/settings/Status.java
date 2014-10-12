@@ -64,14 +64,24 @@ public final class Status {
      */
     private static final int START_IMAGE_HEIGHT = 2800; //3535;
     
+
+    /**
+     * The border show percentages.
+     */
+    private static int borderLeftPercentShow = 2 * 2 * 2, 
+    borderRightPercentShow = 0, borderTopPercentShow = 0, 
+    borderBottomPercentShow = 0;
     
     /**
-     * The border percentages.
+     * The border export percentages.
      */
-    private static int borderLeftPercent = 2 * 2 * 2 * 2 * 2, 
-    borderRightPercent = 2 * 2 * 2, borderTopPercent = 0, 
-    borderBottomPercent = 0;
+    private static int borderLeftPercentExport = 2 * 2 * 2, 
+    borderRightPercentExport = 0, borderTopPercentExport = 0, 
+    borderBottomPercentExport = 0;
     
+
+
+
     /**
      * the size of the image.
      */
@@ -171,9 +181,8 @@ public final class Status {
      */
     public static int getRasterBorderFront() {
         
-        //the amount of boxes which are empty.
-        final int amountOfBoxes = 6;
-        return getRasterSize() * amountOfBoxes;
+        final int maxPercent = 100;
+        return Status.getImageShowSize().width * borderLeftPercentShow / maxPercent;
     }
 
     /**
@@ -183,11 +192,50 @@ public final class Status {
      * @return the size
      */
     public static int getRasterBorderEnd() {
-        return (getRasterBorderFront() / 2) / getRasterSize() * getRasterSize()
 
+        final int maxPercent = 100;
+
+        int lastBorder = Status.getImageShowSize().width 
+                * borderRightPercentShow / maxPercent;
+        int size = imageShowSize.width - getRasterBorderFront() - lastBorder;
+        
+        return lastBorder
                 //thus, it is impossible that the last boxes do not
                 //terminate.
-                + (imageShowSize.width % getRasterSize() - 1);
+                + (size % getRasterSize() - 1);
+    }
+    
+    
+    /**
+     * return the size of the first border (left edge) for the raster.
+     * (the border is not filled with background raster).
+     * 
+     * @return the size
+     */
+    public static int getRasterBorderTop() {
+        
+        final int maxPercent = 100;
+        return Status.getImageShowSize().height * borderTopPercentShow / maxPercent;
+    }
+
+    /**
+     * return the size of the last border (right edge) for the raster.
+     * (the border is not filled with background raster).
+     * 
+     * @return the size
+     */
+    public static int getRasterBorderBottom() {
+
+        final int maxPercent = 100;
+
+        int lastBorder = Status.getImageShowSize().height 
+                * borderBottomPercentShow / maxPercent;
+        int size = imageShowSize.height - getRasterBorderTop() - lastBorder;
+        
+        return lastBorder
+                //thus, it is impossible that the last boxes do not
+                //terminate.
+                + (size % getRasterSize() - 1);
     }
     
 
@@ -197,7 +245,7 @@ public final class Status {
      */
     public static int getMargeLeft() {
         final int hundred = 100;
-        return borderLeftPercent * getImageSize().width / hundred;
+        return borderLeftPercentShow * getImageSize().width / hundred;
     }
 
     /**
@@ -206,7 +254,7 @@ public final class Status {
      */
     public static int getMargeRight() {
         final int hundred = 100;
-        return borderRightPercent * getImageSize().width / hundred;
+        return borderRightPercentShow * getImageSize().width / hundred;
     }
     /**
      * Get the border size.
@@ -214,7 +262,7 @@ public final class Status {
      */
     public static int getMargeTop() {
         final int hundred = 100;
-        return borderTopPercent * getImageSize().height / hundred;
+        return borderTopPercentShow * getImageSize().height / hundred;
     }
     /**
      * Get the border size.
@@ -222,7 +270,7 @@ public final class Status {
      */
     public static int getMargeBottom() {
         final int hundred = 100;
-        return borderBottomPercent * getImageSize().height / hundred;
+        return borderBottomPercentShow * getImageSize().height / hundred;
     }
     
     /**
@@ -512,7 +560,7 @@ public final class Status {
      * @param _borderLeftPercent the borderLeftPercent to set
      */
     public static void setBorderLeftPercent(final int _borderLeftPercent) {
-        Status.borderLeftPercent = _borderLeftPercent;
+        Status.borderLeftPercentShow = _borderLeftPercent;
     }
 
 
@@ -521,7 +569,7 @@ public final class Status {
      * @param _borderRightPercent the borderRightPercent to set
      */
     public static void setBorderRightPercent(final int _borderRightPercent) {
-        Status.borderRightPercent = _borderRightPercent;
+        Status.borderRightPercentShow = _borderRightPercent;
     }
 
 
@@ -531,7 +579,7 @@ public final class Status {
      * @param _borderTopPercent the borderTopPercent to set
      */
     public static void setBorderTopPercent(final int _borderTopPercent) {
-        Status.borderTopPercent = _borderTopPercent;
+        Status.borderTopPercentShow = _borderTopPercent;
     }
 
 
@@ -540,6 +588,102 @@ public final class Status {
      * @param _borderBottomPercent the borderBottomPercent to set
      */
     public static void setBorderBottomPercent(final int _borderBottomPercent) {
-        Status.borderBottomPercent = _borderBottomPercent;
+        Status.borderBottomPercentShow = _borderBottomPercent;
     }
+    
+
+    /**
+     * Simple getter method.
+     * @return the percentage
+     */
+    public static int getBorderLeftPercent() {
+        return borderLeftPercentShow;
+    }
+    /**
+     * Simple getter method.
+     * @return the percentage
+     */
+    public static int getBorderRightPercent() {
+        return borderRightPercentShow;
+    }
+    /**
+     * Simple getter method.
+     * @return the percentage
+     */
+    public static int getBorderTopPercent() {
+        return borderTopPercentShow;
+    }
+    /**
+     * Simple getter method.
+     * @return the percentage
+     */
+    public static int getBorderBottomPercent() {
+        return borderBottomPercentShow;
+    }
+
+
+    /**
+     * @return the borderLeftPercentExport
+     */
+    public static int getBorderLeftPercentExport() {
+        return borderLeftPercentExport;
+    }
+
+
+    /**
+     * @param borderLeftPercentExport the borderLeftPercentExport to set
+     */
+    public static void setBorderLeftPercentExport(int borderLeftPercentExport) {
+        Status.borderLeftPercentExport = borderLeftPercentExport;
+    }
+
+
+    /**
+     * @return the borderRightPercentExport
+     */
+    public static int getBorderRightPercentExport() {
+        return borderRightPercentExport;
+    }
+
+
+    /**
+     * @param borderRightPercentExport the borderRightPercentExport to set
+     */
+    public static void setBorderRightPercentExport(int borderRightPercentExport) {
+        Status.borderRightPercentExport = borderRightPercentExport;
+    }
+
+
+    /**
+     * @return the borderTopPercentExport
+     */
+    public static int getBorderTopPercentExport() {
+        return borderTopPercentExport;
+    }
+
+
+    /**
+     * @param borderTopPercentExport the borderTopPercentExport to set
+     */
+    public static void setBorderTopPercentExport(int borderTopPercentExport) {
+        Status.borderTopPercentExport = borderTopPercentExport;
+    }
+
+
+    /**
+     * @return the borderBottomPercentExport
+     */
+    public static int getBorderBottomPercentExport() {
+        return borderBottomPercentExport;
+    }
+
+
+    /**
+     * @param borderBottomPercentExport the borderBottomPercentExport to set
+     */
+    public static void setBorderBottomPercentExport(
+            int borderBottomPercentExport) {
+        Status.borderBottomPercentExport = borderBottomPercentExport;
+    }
+
 }

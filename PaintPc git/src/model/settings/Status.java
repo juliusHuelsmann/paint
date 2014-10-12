@@ -22,6 +22,17 @@ import model.util.paint.Utils;
  */
 public final class Status {
 
+
+    /**
+     * Whether to export alpha transparently or to replace it with white color.
+     */
+    private static boolean exportAlpha = false;
+
+    /**
+     * Whether to export alpha transparently or to replace it with white color.
+     */
+    private static boolean showAlpha = false;
+    
     /**
      * The open project.
      */
@@ -132,10 +143,6 @@ public final class Status {
     private static String savePath = "";
     
     
-    /**
-     * The transparency id.
-     */
-    private static int id_transparency = Constants.ID_TRANSPARENCY_WHITE;
     
     /**
      * The BufferedImage which is shown for the transparency.
@@ -491,55 +498,6 @@ public final class Status {
     }
 
 
-    /**
-     * @param _id_transparency the id_transparency to set
-     */
-    public static void setId_transparency(final int _id_transparency) {
-        
-
-        id_transparency = _id_transparency;
-        
-        switch (id_transparency) {
-        case Constants.ID_TRANSPARENCY_RASTER:
-
-            final int transparencyRectanlgeSize = 25;
-            final Color color1 = new Color(234, 239, 242);
-            final Color color2 = new Color(250, 252, 255);
-            
-            bi_transparency = Utils.paintRastarBlock(
-                    new BufferedImage(
-                            Page.getInstance().getJlbl_background().getWidth(), 
-                            Page.getInstance().getJlbl_background()
-                            .getHeight(), 
-                            BufferedImage.TYPE_INT_RGB), 
-                    new Color[]{color1, color2},
-                    new Rectangle(0, 0, 
-                            Page.getInstance().getJlbl_background().getWidth(), 
-                            Page.getInstance().getJlbl_background()
-                            .getHeight()), 
-                            transparencyRectanlgeSize);
-            break;
-        case Constants.ID_TRANSPARENCY_WHITE:
-            
-            bi_transparency =  
-                    new BufferedImage(
-                            Page.getInstance().getJlbl_background().getWidth(), 
-                            Page.getInstance().getJlbl_background()
-                            .getHeight(), 
-                            BufferedImage.TYPE_INT_RGB);
-            PaintBI.fillRectangleQuick(bi_transparency, Color.white, 
-                    new Rectangle(0, 0, 
-                            Page.getInstance().getJlbl_background().getWidth(), 
-                            Page.getInstance().getJlbl_background()
-                            .getHeight()));
-            break;
-        default: 
-            getLogger().warning("Wrong transparency id.");
-            break;
-        }
-        
-    }
-
 
     /**
      * @return the bi_transparency
@@ -548,7 +506,7 @@ public final class Status {
         
         if (bi_transparency == null) {
             
-            setId_transparency(id_transparency);
+            setShowAlpha(showAlpha);
         }
         return bi_transparency;
     }
@@ -684,6 +642,76 @@ public final class Status {
     public static void setBorderBottomPercentExport(
             int borderBottomPercentExport) {
         Status.borderBottomPercentExport = borderBottomPercentExport;
+    }
+
+
+    /**
+     * @return the exportAlpha
+     */
+    public static boolean isExportAlpha() {
+        return exportAlpha;
+    }
+
+
+    /**
+     * @param exportAlpha the exportAlpha to set
+     */
+    public static void setExportAlpha(boolean _exportAlpha) {
+        exportAlpha = _exportAlpha;
+    }
+
+
+    /**
+     * @return the showAlpha
+     */
+    public static boolean isShowAlpha() {
+        return showAlpha;
+    }
+
+
+    /**
+     * @param _showAlpha the showAlpha to set
+     */
+    public static void setShowAlpha(final boolean _showAlpha) {
+        
+        
+        Status.showAlpha = _showAlpha;
+        
+        if (_showAlpha) {
+
+            final int transparencyRectanlgeSize = 25;
+            final Color color1 = new Color(234, 239, 242);
+            final Color color2 = new Color(250, 252, 255);
+            
+            bi_transparency = Utils.paintRastarBlock(
+                    new BufferedImage(
+                            Page.getInstance().getJlbl_background().getWidth(), 
+                            Page.getInstance().getJlbl_background()
+                            .getHeight(), 
+                            BufferedImage.TYPE_INT_RGB), 
+                    new Color[]{color1, color2},
+                    new Rectangle(0, 0, 
+                            Page.getInstance().getJlbl_background().getWidth(), 
+                            Page.getInstance().getJlbl_background()
+                            .getHeight()), 
+                            transparencyRectanlgeSize);
+
+        } else {
+            
+            bi_transparency =  
+                    new BufferedImage(
+                            Page.getInstance().getJlbl_background().getWidth(), 
+                            Page.getInstance().getJlbl_background()
+                            .getHeight(), 
+                            BufferedImage.TYPE_INT_RGB);
+            PaintBI.fillRectangleQuick(bi_transparency, Color.white, 
+                    new Rectangle(0, 0, 
+                            Page.getInstance().getJlbl_background().getWidth(), 
+                            Page.getInstance().getJlbl_background()
+                            .getHeight()));
+        }
+        
+        
     }
 
 }

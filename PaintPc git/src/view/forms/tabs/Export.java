@@ -51,6 +51,19 @@ public final class Export extends Tab {
     
 
     /**
+     * Titles for JCombobox by which the user ins able to set the exported
+     * alpha color from alpha to white.
+     */
+    private JLabel jlbl_displayAlphaTitle, jlbl_subtitle_alpha;
+    
+
+    /**
+     * JCombobox by which the user ins able to set the exported alpha color 
+     * from alpha to white.
+     */
+    private JComboBox jcb_displayAlpha;
+
+    /**
      * Final values for the size and location.
      */
     private final int buttonHeight = 20, buttonWidth = 200;
@@ -229,10 +242,54 @@ public final class Export extends Tab {
                 Status.getBorderTopPercent()));
         jcb_margeBottom.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
                 Status.getBorderBottomPercent()));
+        
+        
+        /*
+         * Alpha
+         */
+
+        
+        //right
+        jlbl_displayAlphaTitle = new JLabel("Transpareny");
+        jlbl_displayAlphaTitle.setSize(buttonWidth, buttonHeight);
+        jlbl_displayAlphaTitle.setLocation(
+                ViewSettings.getDistanceBetweenItems() 
+                + jcb_margeBottom.getX() + jcb_margeBottom.getWidth()
+                + ViewSettings.getDistanceBetweenItems(),
+                jlbl_backgroundTitle.getY());
+        jlbl_displayAlphaTitle.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
+        jlbl_displayAlphaTitle.setFocusable(false);
+        super.add(jlbl_displayAlphaTitle);
+        
+        jlbl_subtitle_alpha = new JLabel("alpha values ...");
+        jlbl_subtitle_alpha.setSize(jlbl_subtitle_borderTop.getSize());
+        jlbl_subtitle_alpha.setLocation(jlbl_displayAlphaTitle.getX(),
+                jlbl_displayAlphaTitle.getHeight() 
+                + jlbl_displayAlphaTitle.getY()
+                + ViewSettings.getDistanceBetweenItems());
+        jlbl_subtitle_alpha.setFont(ViewSettings.GENERAL_FONT_ITEM_PLAIN);
+        jlbl_subtitle_alpha.setFocusable(false);
+        super.add(jlbl_subtitle_alpha);
+        
+        jcb_displayAlpha = new JComboBox(new String[]{Constants.ID_WHITE,
+                Constants.ID_DISPLAY_ALPHA});
+        jcb_displayAlpha.setSize(jlbl_subtitle_borderTop.getSize());
+        jcb_displayAlpha.setLocation(jlbl_subtitle_alpha.getX() 
+                + jlbl_subtitle_alpha.getWidth() 
+                + ViewSettings.getDistanceBetweenItems(),
+                jlbl_subtitle_alpha.getY());
+        jcb_displayAlpha.addActionListener(CExport.getInstance());
+        super.add(jcb_displayAlpha);
+
+        
+        
+        
+        
+        
         insertSectionStuff("Image Background", 0, 
                 ViewSettings.getDistanceBetweenItems() 
-                + jcb_nothing.getX() + jcb_nothing.getWidth() 
-                + ViewSettings.getDistanceBetweenItems(), 0, true);
+                + jcb_displayAlpha.getX() + jcb_displayAlpha.getWidth(), 
+                0, true);
     }
     
     
@@ -301,6 +358,14 @@ public final class Export extends Tab {
      */
     public JComboBox getJcb_margeBottom() {
         return jcb_margeBottom;
+    }
+
+
+    /**
+     * @return the jcb_displayAlpha
+     */
+    public JComboBox getJcb_displayAlpha() {
+        return jcb_displayAlpha;
     }
 
 }

@@ -57,6 +57,12 @@ public final class Constants {
 	        SP_PATH_RIGHT = "sb/s/b.png",
 	        VIEW_JBTN_RESIZE_PATH = "centerResize.png";
 
+	/**
+	 * Identifier for the exporting of alpha pixel.
+	 */
+	public static final String ID_DISPLAY_ALPHA = "transparent", 
+	        ID_WHITE = "white";
+	
     /**
      * The identifiers for the transparency.
      */

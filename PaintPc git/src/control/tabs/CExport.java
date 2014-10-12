@@ -8,6 +8,7 @@ import view.forms.tabs.Export;
 import view.forms.tabs.Look;
 import model.settings.Constants;
 import model.settings.Status;
+import model.settings.ViewSettings;
 
 
 
@@ -114,7 +115,11 @@ public final class CExport implements ActionListener {
                 Status.getLogger().severe(
                         "error: change border size: wrong input");
             }
-        } 
+        } else if (_event.getSource().equals(Export.getInstance()
+                .getJcb_displayAlpha())) {
+            Status.setExportAlpha(Export.getInstance().getJcb_displayAlpha()
+                    .getSelectedItem().equals(Constants.ID_DISPLAY_ALPHA));
+        }
         
     }
     

@@ -1088,7 +1088,7 @@ public final class ControlPainting implements MouseListener,
             Status.setImageShowSize(new Dimension(newWidth, newHeight));
 
             Page.getInstance().releaseSelected();
-            Page.getInstance().flip(Status.isNormalRotation());
+            Page.getInstance().flip();
             Page.getInstance().refrehsSps();
             
             Picture.getInstance().releaseSelected();
@@ -1126,7 +1126,7 @@ public final class ControlPainting implements MouseListener,
                     .getJlbl_painting().getLocation().y);
 
             Status.setImageShowSize(new Dimension(newWidth, newHeight));
-            Page.getInstance().flip(Status.isNormalRotation());
+            Page.getInstance().flip();
 
             /*
              * set the location of the panel.

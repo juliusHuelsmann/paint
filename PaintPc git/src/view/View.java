@@ -448,7 +448,7 @@ import control.util.MousePositionTracker;
             
 	    }
 
-        Page.getInstance().flip(_normalFlip);
+        Page.getInstance().flip();
         Paint.getInstance().flip();
         Tabs.getInstance().flip(_normalFlip);
         jlbl_border.setBounds(0, 0, getWidth(), getHeight());

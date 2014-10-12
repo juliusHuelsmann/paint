@@ -268,7 +268,7 @@ import control.ControlPainting;
 	    //set standard size
 	    super.setSize(_width, _height);
 	    
-	    flip(true);
+	    flip();
 	}
 	
 
@@ -278,8 +278,8 @@ import control.ControlPainting;
 	 * .
 	 * @param _normalSize whether flipped or not
 	 */
-	public void flip(final boolean _normalSize) {
-
+	public void flip() {
+	    final boolean _normalSize = Status.isNormalRotation();
 	    if (_normalSize) {
 
             jpnl_toMove.setBounds(0, 0,

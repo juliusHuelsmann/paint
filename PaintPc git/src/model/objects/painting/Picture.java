@@ -842,8 +842,7 @@ public final class Picture {
         
         
         BufferedImage bi;
-        final boolean transparent = false;
-        if (transparent) {
+        if (Status.isExportAlpha()) {
 
             bi = Page.getInstance().getEmptyBITransparent();
         } else {

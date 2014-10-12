@@ -2,7 +2,9 @@ package control.tabs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import view.forms.Page;
+import view.forms.tabs.Export;
 import view.forms.tabs.Look;
 import model.settings.Constants;
 import model.settings.Status;
@@ -112,7 +114,15 @@ public final class CLook implements ActionListener {
                 Status.getLogger().severe(
                         "error: change border size: wrong input");
             }
-        } 
+        } else if (_event.getSource().equals(Look.getInstance()
+                .getJcb_displayAlpha())) {
+
+            Status.setShowAlpha(Look.getInstance().getJcb_displayAlpha()
+                    .getSelectedItem().equals(Constants.ID_DISPLAY_ALPHA));
+            
+            Page.getInstance().flip();
+            
+        }
         Page.getInstance().getJlbl_painting().refreshPaint();
         
     }

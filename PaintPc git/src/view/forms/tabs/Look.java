@@ -301,12 +301,14 @@ public final class Look extends Tab {
         jlbl_subtitle_alpha.setFocusable(false);
         super.add(jlbl_subtitle_alpha);
         
-        jcb_displayAlpha = new JComboBox(new String[]{"white", "boxes"});
+        jcb_displayAlpha = new JComboBox(new String[]{Constants.ID_WHITE,
+                Constants.ID_DISPLAY_ALPHA});
         jcb_displayAlpha.setSize(jlbl_subtitle_borderTop.getSize());
         jcb_displayAlpha.setLocation(jlbl_subtitle_alpha.getX() 
                 + jlbl_subtitle_alpha.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(),
                 jlbl_subtitle_alpha.getY());
+        jcb_displayAlpha.addActionListener(CLook.getInstance());
         super.add(jcb_displayAlpha);
 
         insertSectionStuff("Visualization", jlbl_displayAlphaTitle.getX(), 

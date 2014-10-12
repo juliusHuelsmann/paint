@@ -89,15 +89,43 @@ public final class Export extends Tab {
         super.setVisible(true);
 
         //initialize the content for the background
-        initializeFirstColumn();
+        initializeColumn1();
     }
-    
     
 
     /**
      * Initialize the first column.
      */
-    private void initializeFirstColumn() {
+    private void initializeColumn1() {
+        
+        //initialize the first part of the first column containing the 
+        //possibility to choose an image background for the export and
+        //to set its border sizes.
+        initializeColumn1BG();
+        
+        //initializes the second part of the first column which contains
+        //the components for changing the displaying of alpha values.
+        //Choices: Save pure alpha as alpha value or save it as white pixel.
+        initializeColumn1Alpha();
+
+        //apply the settings set in the Status class to the view items 
+        //initialized above; Thus the user settings can be saved and restored
+        applySettings();
+        
+        //insert the section border and the subtitle
+        insertSectionStuff("Image Background", 0, 
+                ViewSettings.getDistanceBetweenItems() + jcb_displayAlpha
+                .getX() + jcb_displayAlpha.getWidth(), 0, true);
+    }
+    
+
+
+    /**
+     * Initialize the first part of the first column containing the 
+     * possibility to choose an image background for the export and
+     * to set its border sizes.
+     */
+    private void initializeColumn1BG() {
 
         jlbl_backgroundTitle = new JLabel("Background:");
         jlbl_backgroundTitle.setBounds(ViewSettings.getDistanceBetweenItems(),
@@ -139,7 +167,6 @@ public final class Export extends Tab {
         jcb_nothing.setSize(jcb_raster.getSize());
         jcb_nothing.setFont(ViewSettings.GENERAL_FONT_ITEM);
         super.add(jcb_nothing);
-
 
         jlbl_borderTitle = new JLabel("Border [percent]:");
         jlbl_borderTitle.setBounds(ViewSettings.getDistanceBetweenItems(), 
@@ -231,7 +258,16 @@ public final class Export extends Tab {
                 jlbl_subtitle_borderRight.getY());
         jcb_margeRight.addActionListener(CExport.getInstance());
         super.add(jcb_margeRight);
-        
+    }
+    
+    
+    /**
+     * Initializes the second part of the first column which contains
+     * the components for changing the displaying of alpha values.
+     * Choices: Save pure alpha as alpha value or save it as white pixel.
+     */
+    private void initializeColumn1Alpha() {
+
         /*
          * Alpha
          */
@@ -266,15 +302,7 @@ public final class Export extends Tab {
                 jlbl_subtitle_alpha.getY());
         jcb_displayAlpha.addActionListener(CExport.getInstance());
         super.add(jcb_displayAlpha);
-
-        applySettings();
-        insertSectionStuff("Image Background", 0, 
-                ViewSettings.getDistanceBetweenItems() 
-                + jcb_displayAlpha.getX() + jcb_displayAlpha.getWidth(), 
-                0, true);
     }
-    
-    
     
     /**
      * Apply the values set in Settings to the components.

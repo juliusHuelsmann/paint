@@ -276,11 +276,10 @@ import control.ControlPainting;
 	
 	/**
 	 * .
-	 * @param _normalSize whether flipped or not
 	 */
 	public void flip() {
-	    final boolean _normalSize = Status.isNormalRotation();
-	    if (_normalSize) {
+	    final boolean normalSize = Status.isNormalRotation();
+	    if (normalSize) {
 
             jpnl_toMove.setBounds(0, 0,
                     Status.getImageShowSize().width,

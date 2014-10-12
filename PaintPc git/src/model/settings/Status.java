@@ -79,16 +79,20 @@ public final class Status {
     /**
      * The border show percentages.
      */
-    private static int borderLeftPercentShow = 2 * 2 * 2, 
-    borderRightPercentShow = 0, borderTopPercentShow = 0, 
-    borderBottomPercentShow = 0;
+    private static int
+    borderLeftPercentShow = Constants.BORDER_PRERCENTAGES[2 + 1], 
+    borderRightPercentShow = borderLeftPercentShow, 
+    borderTopPercentShow = Constants.BORDER_PRERCENTAGES[1], 
+    borderBottomPercentShow = Constants.BORDER_PRERCENTAGES[1];
     
     /**
      * The border export percentages.
      */
-    private static int borderLeftPercentExport = 2 * 2 * 2, 
-    borderRightPercentExport = 0, borderTopPercentExport = 0, 
-    borderBottomPercentExport = 0;
+    private static int 
+    borderLeftPercentExport = Constants.BORDER_PRERCENTAGES[2 + 1], 
+    borderRightPercentExport = borderLeftPercentExport, 
+    borderTopPercentExport = Constants.BORDER_PRERCENTAGES[1], 
+    borderBottomPercentExport = Constants.BORDER_PRERCENTAGES[1];
     
 
 
@@ -189,7 +193,8 @@ public final class Status {
     public static int getRasterBorderFront() {
         
         final int maxPercent = 100;
-        return Status.getImageShowSize().width * borderLeftPercentShow / maxPercent;
+        return Status.getImageShowSize().width 
+                * borderLeftPercentShow / maxPercent;
     }
 
     /**
@@ -222,7 +227,8 @@ public final class Status {
     public static int getRasterBorderTop() {
         
         final int maxPercent = 100;
-        return Status.getImageShowSize().height * borderTopPercentShow / maxPercent;
+        return Status.getImageShowSize().height
+                * borderTopPercentShow / maxPercent;
     }
 
     /**
@@ -589,10 +595,11 @@ public final class Status {
 
 
     /**
-     * @param borderLeftPercentExport the borderLeftPercentExport to set
+     * @param _borderLeftPercentExport the borderLeftPercentExport to set
      */
-    public static void setBorderLeftPercentExport(int borderLeftPercentExport) {
-        Status.borderLeftPercentExport = borderLeftPercentExport;
+    public static void setBorderLeftPercentExport(
+            final int _borderLeftPercentExport) {
+        Status.borderLeftPercentExport = _borderLeftPercentExport;
     }
 
 
@@ -605,10 +612,11 @@ public final class Status {
 
 
     /**
-     * @param borderRightPercentExport the borderRightPercentExport to set
+     * @param _borderRightPercentExport the borderRightPercentExport to set
      */
-    public static void setBorderRightPercentExport(int borderRightPercentExport) {
-        Status.borderRightPercentExport = borderRightPercentExport;
+    public static void setBorderRightPercentExport(
+            final int _borderRightPercentExport) {
+        Status.borderRightPercentExport = _borderRightPercentExport;
     }
 
 
@@ -621,10 +629,11 @@ public final class Status {
 
 
     /**
-     * @param borderTopPercentExport the borderTopPercentExport to set
+     * @param _borderTopPercentExport the borderTopPercentExport to set
      */
-    public static void setBorderTopPercentExport(int borderTopPercentExport) {
-        Status.borderTopPercentExport = borderTopPercentExport;
+    public static void setBorderTopPercentExport(
+            final int _borderTopPercentExport) {
+        Status.borderTopPercentExport = _borderTopPercentExport;
     }
 
 
@@ -637,11 +646,11 @@ public final class Status {
 
 
     /**
-     * @param borderBottomPercentExport the borderBottomPercentExport to set
+     * @param _borderBottomPercentExport the borderBottomPercentExport to set
      */
     public static void setBorderBottomPercentExport(
-            int borderBottomPercentExport) {
-        Status.borderBottomPercentExport = borderBottomPercentExport;
+            final int _borderBottomPercentExport) {
+        Status.borderBottomPercentExport = _borderBottomPercentExport;
     }
 
 
@@ -654,9 +663,9 @@ public final class Status {
 
 
     /**
-     * @param exportAlpha the exportAlpha to set
+     * @param _exportAlpha the exportAlpha to set
      */
-    public static void setExportAlpha(boolean _exportAlpha) {
+    public static void setExportAlpha(final boolean _exportAlpha) {
         exportAlpha = _exportAlpha;
     }
 

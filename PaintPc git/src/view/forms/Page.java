@@ -4,11 +4,14 @@ package view.forms;
 //import declarations
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
@@ -182,7 +185,8 @@ import control.ControlPainting;
                 (2 + 2 + 2) * (2 + 2 + 1));
         jbtn_resize[1][1].setIcon(new ImageIcon(Utils.resizeImage(
                 jbtn_resize[1][1].getWidth(), jbtn_resize[1][1].getHeight(),
-                "centerResize.png")));
+                Constants.VIEW_JBTN_RESIZE_PATH)));
+        jbtn_resize[1][1].setOpaque(false);
         
         jlbl_selectionBG = new JLabel();
         jlbl_selectionBG.setOpaque(false);

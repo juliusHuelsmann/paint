@@ -1181,9 +1181,16 @@ public final class ControlPainting implements MouseListener,
      */
     private void mr_sel_curve_complete(final MouseEvent _event, 
             final PaintObjectWriting _ldp) {
+        
+        
+        
         Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
                 -_ldp.getSnapshotBounds().y);
         BufferedImage transform = _ldp.getSnapshot();
+        
+        
+        
+        
         PaintBI.printFillPolygonN(transform,
                 Color.green, model.util.Util.dpntToPntArray(
                         model.util.Util.pntLsToArray(_ldp.getPoints())));

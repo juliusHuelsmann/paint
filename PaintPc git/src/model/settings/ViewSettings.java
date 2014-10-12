@@ -151,7 +151,8 @@ public final class ViewSettings {
     
 
     /**
-     * .
+     * The size of the message dialog opened in case of a warning, an error or
+     * just for information purpose.
      */
     private static Dimension sizeMessage = new Dimension(500, 40);
     

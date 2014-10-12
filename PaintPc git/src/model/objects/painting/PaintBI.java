@@ -2,9 +2,11 @@ package model.objects.painting;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Status;
 
 
@@ -136,7 +138,8 @@ public final class PaintBI {
             final BufferedImage _bi, 
             final Color _clr,
             final Point[] _p) {
-        PolygonReturn pr = fillPolygonN(_bi, _clr, _p);
+        PolygonReturn pr = paintPolygonN(_bi, _clr, 1, _p, true);
+        pr.schwabbel();
         drawPaintBI(pr);
         return pr;
     }
@@ -398,7 +401,7 @@ public final class PaintBI {
                     _bi.setRGB(x, y, _clr.getRGB());
                     
                     if (_field != null) {
-                        _field[x][y] = 1;
+                        _field[x][y] = PolygonReturn.OCCUPIED;
                     } else {
                         System.out.println("problem2");
                     }
@@ -555,7 +558,7 @@ public final class PaintBI {
                 
             String str = "|t ";
             if (_pbi.getField()[y][x] != 1) {
-                str = "|  ";
+                str = "|" + _pbi.getField()[y][x] + " ";
             }
                 System.out.print(str);
         }
@@ -576,6 +579,10 @@ public final class PaintBI {
  */
 class PolygonReturn {
 
+    public static final byte OCCUPIED = 1, FREE = -1, START_BYTE = 2;
+    
+    private byte  currentByte = START_BYTE;
+    model.util.list.List<Byte> ls_bytesOutside = new model.util.list.List<Byte>();
     /**
      * The length of the curve.
      */
@@ -669,6 +676,39 @@ class PolygonReturn {
     }
     
     
+    public void schwabbel() {
+        for (int x = 0; x < field.length; x++) { 
+            for (int y = 0; y < field[x].length; y++) { 
+                if (field[x][y] == FREE) {
+                    
+                    start(x, y, currentByte);
+                    currentByte++;
+                }
+            }
+        }
+    }
+    
+    
+    public void start(int x, int y, byte _byte) {
+        
+        if (x < 0 || y < 0 || x >= field.length || y >= field[x].length) {
+            if (!ls_bytesOutside.find(new Byte(_byte))) {
+
+                ls_bytesOutside.insertSorted(new Byte(_byte), _byte);
+            } 
+            
+        } else if (field [x][y] == FREE) {
+
+            field [x][y] = _byte;
+            
+            start(x - 1, y, _byte);
+            start(x + 1, y, _byte);
+            start(x, y - 1, _byte);
+            start(x, y + 1, _byte);
+        }
+    }
+
+
     /**
      * Update length and field in this object. Getting the
      * new stuff from other PolygonReturn instance.

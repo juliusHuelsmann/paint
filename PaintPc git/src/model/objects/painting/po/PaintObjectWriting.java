@@ -167,6 +167,8 @@ public class PaintObjectWriting extends PaintObjectPen {
 	public final BufferedImage getSnapshot() {
 		
 		Rectangle rect = getSnapshotBounds();
+        rect.width += 1;
+        rect.height += 1;
 		if (rect.width <= 0 || rect.height <= 0) {
 			rect.width = 1;
 			rect.height = 1;
@@ -175,6 +177,7 @@ public class PaintObjectWriting extends PaintObjectPen {
 			rect.x = 0;
 			rect.y = 0;
 		}
+		
 		
 
 		int x = rect.x, y = rect.y;

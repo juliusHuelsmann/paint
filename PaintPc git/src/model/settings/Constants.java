@@ -54,7 +54,8 @@ public final class Constants {
 	        SP_PATH_UP = "sb/n/t.png",
 	        SP_PATH_DOWN = "sb/n/b.png",
 	        SP_PATH_LEFT = "sb/s/t.png",
-	        SP_PATH_RIGHT = "sb/s/b.png";
+	        SP_PATH_RIGHT = "sb/s/b.png",
+	        VIEW_JBTN_RESIZE_PATH = "centerResize.png";
 
     /**
      * The identifiers for the transparency.
@@ -156,6 +157,7 @@ public final class Constants {
 	SIZE_A5 = new Dimension(SIZE_A4.width, SIZE_A4.height / 2),
 	SIZE_A6 = new Dimension(SIZE_A5.width / 2, SIZE_A5.height),
     SIZE_A7 = new Dimension(SIZE_A6.width, SIZE_A6.height / 2);
+
 	/**
 	 * empty private Constructor; is private because class is designed
 	 * to be singleton. This private constructor is only called once in

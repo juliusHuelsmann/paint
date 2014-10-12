@@ -326,7 +326,7 @@ public class List<Type> implements Serializable {
         toFirst();
     	
     	//go through list
-    	while (!isBehind()) {
+    	while (!isBehind() && !isEmpty()) {
 
     	    //if found item return (and exit)
     		if (getItem().equals(_type)) {

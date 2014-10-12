@@ -194,17 +194,22 @@ public class BorderThread extends Thread {
 
         //sample code; to be written later.
         BufferedImage bi_transformed = Page.getInstance().getEmptyBISelection();
-        bi_transformed = po_curr.paint(bi_transformed, false, 
-                bi_transformed, 
-                Page.getInstance().getJlbl_painting().getLocation().x, 
-                Page.getInstance().getJlbl_painting().getLocation().y);
+        if (po_curr == null) {
+            interrupt();
+        } else {
+
+            bi_transformed = po_curr.paint(bi_transformed, false, 
+                    bi_transformed, 
+                    Page.getInstance().getJlbl_painting().getLocation().x, 
+                    Page.getInstance().getJlbl_painting().getLocation().y);
 
 
-        Page.getInstance().getJlbl_selectionBG().setIcon(
-                new javax.swing.ImageIcon(bi_transformed));
-        //color shift.
-        pen_curr.resetCurrentBorderValue();
-        
+            Page.getInstance().getJlbl_selectionBG().setIcon(
+                    new javax.swing.ImageIcon(bi_transformed));
+            //color shift.
+            pen_curr.resetCurrentBorderValue();
+            
+        }
     
     }
     

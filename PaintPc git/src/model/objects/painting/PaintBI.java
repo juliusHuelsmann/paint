@@ -142,6 +142,7 @@ public final class PaintBI {
             final Point[] _p) {
         PolygonReturn pr = paintPolygonN(_bi, _clr, 1, _p, true);
         pr.schwabbel();
+        drawPaintBI(pr);
         return pr.getField();
     }
     

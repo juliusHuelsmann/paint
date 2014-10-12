@@ -90,7 +90,45 @@ public class PaintObjectWriting extends PaintObjectPen {
         //if the item has not been found return false
         return false;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override public final boolean isInSelectionImage(final byte[][] _r,
+            final int _dx, final int _dy) {
+
+        /*
+         * check whether firstDPoint is in rectangle.
+         */
+
+        ls_point.toFirst();
+        DPoint pnt_previous = new DPoint(ls_point.getItem());
+        if (isInSelectionPoint(_r, _dx, _dy, pnt_previous)) {
+            return true;
+        }
+        
+
+        /*
+         * go through the list ofDPoints and check the lines between
+         * the following items.
+         */
+        ls_point.next();
+        while (!ls_point.isBehind()) {
+
+            //if one part of the line is in rectangle return true
+            if (pruefeLine(ls_point.getItem(), pnt_previous, _r, _dx, _dy)) {
+                return true;
+            }
+            
+            //otherwise save the currentDPoint as the previousDPoint
+            //for the next time the loop is passed.
+            pnt_previous = new DPoint(ls_point.getItem());
+            ls_point.next();
+        }
+        
+        //if the item has not been found return false
+        return false;
+    }
 
 	/**
 	 * Constructor creates new instance
@@ -317,7 +355,31 @@ public class PaintObjectWriting extends PaintObjectPen {
         
         return false;
     }
+    
 
+    public static boolean pruefeLine(final DPoint _p1, final DPoint _p2, 
+
+            final byte[][] _r, final int _shiftX, final int _shiftY) {
+
+        //compute delta values
+        int dX = (int) (_p1.getX() - _p2.getX());
+        int dY = (int) (_p1.getY() - _p2.getY());
+
+        //print the line between the twoDPoints
+        for (int a = 0; a < Math.max(Math.abs(dX), Math.abs(dY)); a++) {
+            int plusX = a * dX /  Math.max(Math.abs(dX), Math.abs(dY));
+            int plusY = a * dY /  Math.max(Math.abs(dX), Math.abs(dY));
+            
+
+            if (isInSelectionPoint(_r, _shiftX, _shiftY, new DPoint(
+                    _p1.getX() - plusX, _p1.getY() - plusY))) {
+                return true;
+            }
+            
+        }
+        
+        return false;
+    }
     /**
      * 
      * {@inheritDoc}

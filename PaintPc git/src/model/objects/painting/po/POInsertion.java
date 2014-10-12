@@ -4,6 +4,7 @@ package model.objects.painting.po;
 //import declarations
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import view.forms.Page;
 import model.objects.pen.Pen;
 import model.settings.Status;
@@ -303,6 +304,12 @@ public abstract class POInsertion extends PaintObjectPen {
 
 
 
+    @Override
+    public boolean isInSelectionImage(byte[][] _field, int _xShift, int _yShift) {
+
+        new Exception("not implemented yet").printStackTrace();
+        return false;
+    }
 
     /**
      * @return the pnt_first

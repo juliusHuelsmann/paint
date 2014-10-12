@@ -5,6 +5,8 @@ package model.objects.painting.po;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
+import model.objects.painting.PaintBI;
 import model.objects.pen.Pen;
 import model.util.DPoint;
 
@@ -41,16 +43,16 @@ public abstract class PaintObjectPen extends PaintObject {
 	 */
 	@Override public abstract boolean isInSelectionImage(final Rectangle _r);
     
-    
 
-	/**
-	 * checks whether a certainDPoint is inside a given rectangle.
-	 * 
-	 * @param _r the rectangle of which is checked whether theDPoint is inside
-	 * @param _p theDPoint which is maybe inside the rectangle _r
-	 * 
-	 * @return whether theDPoint is inside the given rectangle.
-	 */
+
+    /**
+     * checks whether a certainDPoint is inside a given rectangle.
+     * 
+     * @param _r the rectangle of which is checked whether theDPoint is inside
+     * @param _p theDPoint which is maybe inside the rectangle _r
+     * 
+     * @return whether theDPoint is inside the given rectangle.
+     */
     protected static boolean isInSelectionPoint(
             final Rectangle _r, final DPoint _p) {
         
@@ -58,6 +60,30 @@ public abstract class PaintObjectPen extends PaintObject {
         return (_p.getX() >= _r.x && _p.getY() >= _r.y 
                 && _p.getX() <= _r.x + _r.width 
                 && _p.getY() <= _r.y + _r.height);
+    }
+
+    /**
+     * checks whether a certainDPoint is inside a given rectangle.
+     * 
+     * @param _r the rectangle of which is checked whether theDPoint is inside
+     * @param _p theDPoint which is maybe inside the rectangle _r
+     * 
+     * @return whether theDPoint is inside the given rectangle.
+     */
+    protected static boolean isInSelectionPoint(
+            final byte[][] _r, final int _shiftX, final int _shiftY,
+            final DPoint _p) {
+        
+
+        int newX = (int) _p.getX() + _shiftX,
+                newY = (int) _p.getY() + _shiftY;
+        
+        if (newX < 0 || newY < 0 
+                || newX >= _r.length || newY >= _r[newX].length) {
+            return false;
+        }
+        return (_r[newX][newY] 
+                != PaintBI.FREE);
     }
 
 	/**

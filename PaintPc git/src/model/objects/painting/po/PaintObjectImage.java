@@ -253,4 +253,12 @@ public class PaintObjectImage extends PaintObject {
                 (int) _pnt_from.getX(), (int) _pnt_from.getY());
         
     }
+
+
+    @Override
+    public boolean isInSelectionImage(byte[][] _field, int _xShift, int _yShift) {
+
+        new Exception("not implemented yet").printStackTrace();
+        return false;
+    }
 }

@@ -1184,6 +1184,8 @@ public final class ControlPainting implements MouseListener,
         
         
         
+        int xShift = -_ldp.getSnapshotBounds().x,
+                yShift = -_ldp.getSnapshotBounds().y;
         Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
                 -_ldp.getSnapshotBounds().y);
         BufferedImage transform = _ldp.getSnapshot();
@@ -1191,10 +1193,73 @@ public final class ControlPainting implements MouseListener,
         
         
         
-        PaintBI.printFillPolygonN(transform,
+        byte[][] field = PaintBI.printFillPolygonN(transform,
                 Color.green, model.util.Util.dpntToPntArray(
                         model.util.Util.pntLsToArray(_ldp.getPoints())));
         BufferedViewer.show((transform));
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // initialize selection list
+        Picture.getInstance().getLs_po_sortedByX().toFirst();
+        Picture.getInstance().createSelected();
+        
+        // create and initialize current values (current PO and its coordinates)
+        PaintObject po_current = Picture.getInstance().getLs_po_sortedByX()
+                .getItem();
+        
+        // go through list. until either list is empty or it is
+        // impossible for the paintSelection to paint inside the
+        // selected area
+        while (po_current != null) {
+
+            //The y condition has to be in here because the items are just 
+            //sorted by x coordinate; thus it is possible that one PaintObject 
+            //is not suitable for the specified rectangle but some of its 
+            //predecessors in sorted list do.
+            if (po_current.isInSelectionImage(field, xShift, yShift)) {
+
+                //move current item from normal list into selected list 
+                Picture.getInstance().insertIntoSelected(po_current);
+                Picture.getInstance().getLs_po_sortedByX().remove();
+                //remove item out of PictureOverview and paint and refresh paint
+                //otherwise it is not possible to select more than one item
+                PictureOverview.getInstance().remove(po_current);
+                Picture.getInstance().getLs_po_sortedByX().toFirst();
+            } else {
+                // next; in if clause the next is realized by remove()
+                Picture.getInstance().getLs_po_sortedByX().next();
+            }
+            // update current values
+            po_current = Picture.getInstance().getLs_po_sortedByX().getItem();
+        }
+
+        Page.getInstance().getJlbl_painting().refreshPaint();
+
+        if (!Picture.getInstance().paintSelected()) {
+            System.out.println("frei");
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 
     /**

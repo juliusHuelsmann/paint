@@ -17,6 +17,8 @@ import model.settings.Status;
  */
 public final class PaintBI {
 
+    public static final byte OCCUPIED = 1, FREE = -1, START_BYTE = 3, BORDER = 2;
+    
     /**
      * Empty utility class constructor.
      */
@@ -134,14 +136,13 @@ public final class PaintBI {
      * @return  a new PolygonReturn instance which contains both length of the
      *          field and the field (as a two dimensional boolean array)
      */
-    public static PolygonReturn printFillPolygonN(
+    public static byte[][] printFillPolygonN(
             final BufferedImage _bi, 
             final Color _clr,
             final Point[] _p) {
         PolygonReturn pr = paintPolygonN(_bi, _clr, 1, _p, true);
         pr.schwabbel();
-//        drawPaintBI(pr);
-        return pr;
+        return pr.getField();
     }
     
     /**
@@ -401,7 +402,7 @@ public final class PaintBI {
                     _bi.setRGB(x, y, _clr.getRGB());
                     
                     if (_field != null) {
-                        _field[x][y] = PolygonReturn.OCCUPIED;
+                        _field[x][y] = OCCUPIED;
                     } else {
                         System.out.println("problem2");
                     }
@@ -557,8 +558,8 @@ public final class PaintBI {
         for (int x = 0; x < _pbi.getField()[0].length; x++) {
                 
             String str = "|t ";
-            if (_pbi.getField()[y][x] == PolygonReturn.OCCUPIED
-                    || _pbi.getField()[y][x] != PolygonReturn.BORDER) {
+            if (_pbi.getField()[y][x] == OCCUPIED
+                    || _pbi.getField()[y][x] != BORDER) {
 
                 str = "|t ";
             } else {
@@ -584,9 +585,7 @@ public final class PaintBI {
  */
 class PolygonReturn {
 
-    public static final byte OCCUPIED = 1, FREE = -1, START_BYTE = 3, BORDER = 2;
-    
-    private byte  currentByte = START_BYTE;
+    private byte  currentByte = PaintBI.START_BYTE;
     model.util.list.List<Byte> ls_bytesOutside = new model.util.list.List<Byte>();
     /**
      * The length of the curve.
@@ -694,7 +693,7 @@ class PolygonReturn {
 
         return (_x < 0 || _y < 0 
                 || _x >= field.length || _y >= field[_x].length
-                || field[_x][_y] == BORDER);
+                || field[_x][_y] == PaintBI.BORDER);
             
     }
         
@@ -702,13 +701,13 @@ class PolygonReturn {
 
         for (int x = 0; x < field.length; x++) { 
             for (int y = 0; y < field[x].length; y++) { 
-                if (field[x][y] == FREE) {
+                if (field[x][y] == PaintBI.FREE) {
 
                     if (check (x - 1, y)
                             || check (x + 1, y)
                             || check (x, y - 1)
                             || check (x, y + 1)){
-                        field[x][y] = BORDER;
+                        field[x][y] = PaintBI.BORDER;
                         startchange = true;
                     }
                 }

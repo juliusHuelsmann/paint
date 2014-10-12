@@ -35,16 +35,29 @@ public abstract class PaintObject implements Serializable {
 	 * identified (e.g. if it is deleted, changed or something).
 	 */
 	private int elementId;
-	
-	
-	/**
-	 * This method checks whether this paintObject is inside the given 
-	 * selection rectangle _r. It checks every point in list of points
-	 * 
-	 * @param _r the rectangle.
-	 * @return whether is in rectangle.
-	 */
-	public abstract boolean isInSelectionImage(final Rectangle _r);
+
+    
+    /**
+     * This method checks whether this paintObject is inside the given 
+     * selection rectangle _r. It checks every point in list of points
+     * 
+     * @param _r the rectangle.
+     * @return whether is in rectangle.
+     */
+    public abstract boolean isInSelectionImage(final Rectangle _r);
+
+    
+    /**
+     * This method checks whether this paintObject is inside the given 
+     * selection rectangle _r. It checks every point in list of points
+     * 
+     * @param _field the field .
+     * @param _xShift the shift of the field in x direction.
+     * @param _yShift the shift of the field in y direction.
+     * @return whether is in rectangle.
+     */
+    public abstract boolean isInSelectionImage(final byte[][] _field, 
+            final int _xShift, final int _yShift);
     
 	
 	/**

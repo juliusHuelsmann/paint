@@ -675,23 +675,35 @@ class PolygonReturn {
         
     }
     
-    
+    boolean startchange = false;
     public void schwabbel() {
+        while (startchange) {
+
+            startchange = false;
+            start();   
+        }
+    
+    }
+    private void check (int _x, int _y) {
+        
+    }
+        
+    private void start() {
+
         for (int x = 0; x < field.length; x++) { 
             for (int y = 0; y < field[x].length; y++) { 
                 if (field[x][y] == FREE) {
-                    
+
+                    if (x < 0 || y < 0 
+                            || x >= field.length || y >= field[x].length
+                            || )
+                   
                     start(x, y, currentByte);
                     currentByte++;
                 }
             }
         }
-    }
-    
-    
-    public void start(int x, int y, byte _byte) {
-        
-        if (x < 0 || y < 0 || x >= field.length || y >= field[x].length) {
+        if () {
             if (!ls_bytesOutside.find(new Byte(_byte))) {
 
                 ls_bytesOutside.insertSorted(new Byte(_byte), _byte);

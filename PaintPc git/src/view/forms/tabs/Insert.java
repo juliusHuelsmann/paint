@@ -5,17 +5,13 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import control.tabs.CPaintStatus;
-import model.settings.Status;
 import model.settings.ViewSettings;
 import view.util.Item2;
 import view.util.Item2Menu;
 import view.util.Item1Button;
-import view.util.VLabel;
 
 
 /**
@@ -24,7 +20,7 @@ import view.util.VLabel;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public final class Insert extends JPanel {
+public final class Insert extends Tab {
 
     /**
      * The item2menus.
@@ -65,21 +61,13 @@ public final class Insert extends JPanel {
      */
     private final int distance = 5, itemButtonSize = 128, locationX = 285;
 
-    /**
-     * JLabels for the separation, linked with information.
-     */
-    private JLabel [] jlbl_separation;
-
-    /**
-     * JLabels for the information text, linked with separation line.
-     */
-    private VLabel [] jlbl_information;
-    
     
     /**
      * Empty utility class constructor.
      */
-	private Insert() { }
+	private Insert() { 
+	    super(2 + 2);
+	}
 	
 	/**
 	 * initializes Panel.
@@ -91,10 +79,6 @@ public final class Insert extends JPanel {
 		super.setOpaque(false);
 		super.setLayout(null);
 
-        
-        jlbl_information = new VLabel[2 + 2];
-        jlbl_separation = new JLabel[2 + 2];
-        
 		
         /*
          * 
@@ -115,11 +99,8 @@ public final class Insert extends JPanel {
 		tb_selected.setIcon("paint/test.png");
 		super.add(tb_selected);
 		
-		insertTrennung(
+		insertSectionStuff("ausgewaehlt", tb_selected.getX(), 
 		        tb_selected.getX() + tb_selected.getWidth(), 0, true);
-        insertInformation(
-                "ausgewaehlt", 
-                tb_selected.getX(), jlbl_separation[0].getX(), 0, true);
         /*
          * 
          * 
@@ -127,13 +108,10 @@ public final class Insert extends JPanel {
          * 
          * 
          */
-        initializeGeo(jlbl_separation[0].getX());
+        initializeGeo(getJlbl_separation()[0].getX());
 
-        insertTrennung(
-                ia_geo.getX() + ia_geo.getWidth(), 1, true);
-        insertInformation(
-                "geometrische Formen", 
-                ia_geo.getX(), jlbl_separation[1].getX(), 1, true);
+        insertSectionStuff("geometrische Formen", 
+                ia_geo.getX(), ia_geo.getX() + ia_geo.getWidth(), 1, true);
         /*
          * 
          * 
@@ -142,15 +120,13 @@ public final class Insert extends JPanel {
          * 
          */
         ia_maths = new Item2Menu();
-        ia_maths.setLocation(jlbl_separation[1].getX() + distance, distance);
+        ia_maths.setLocation(getJlbl_separation()[1].getX() 
+                + distance, distance);
         ia_maths.setSize(ia_geo.getWidth(), ViewSettings.getItemMenu1Height());
 		super.add(ia_maths);
 		
-        insertTrennung(
+        insertSectionStuff("mathematische Formen", ia_maths.getX(), 
                 ia_maths.getX() + ia_maths.getWidth(), 2, true);
-        insertInformation(
-                "mathematische Formen", 
-                ia_maths.getX(), jlbl_separation[2].getX(), 2, true);
         /*
          * 
          * 
@@ -161,7 +137,8 @@ public final class Insert extends JPanel {
         ia_diagram = new Item2Menu();
      	ia_diagram.setSize(ia_geo.getWidth(), 
      	        ViewSettings.getItemMenu1Height());
-    	ia_diagram.setLocation(jlbl_separation[2].getX() + distance, distance);
+    	ia_diagram.setLocation(getJlbl_separation()[2].getX() 
+    	        + distance, distance);
 		super.add(ia_diagram);
 
         i2_d_diagramm = new Item2();
@@ -211,11 +188,8 @@ public final class Insert extends JPanel {
         super.add(jtf_amountRows);
         
 
-        insertTrennung(
-                ia_diagram.getX() + ia_diagram.getWidth(), 2 + 1, true);
-        insertInformation(
-                "Diagramme", 
-                ia_diagram.getX(), jlbl_separation[2 + 1].getX(), 2 + 1, true);
+        insertSectionStuff("Diagramme", ia_diagram.getX(), 
+                jtf_amountRows.getX() + jtf_amountRows.getWidth(), 2 + 1, true);
         
         super.setSize((int) Toolkit.getDefaultToolkit()
                 .getScreenSize().getWidth(), _height);
@@ -313,77 +287,6 @@ public final class Insert extends JPanel {
 
 	}
 
-    /**
-     * 
-     * @param _x the x coordinate in pX
-     * @param _locInArray the location in array
-     * @param _add whether to add or not
-     */
-    private void insertTrennung(final int _x, 
-            final int _locInArray, final boolean _add) {
-        
-        //if new initialization is demanded
-        if (_add) {
-            this.jlbl_separation[_locInArray] = new JLabel();
-            this.jlbl_separation[_locInArray].setBorder(
-                    BorderFactory.createLineBorder(
-                            ViewSettings.GENERAL_CLR_BACKGROUND_DARK_XX));
-            super.add(this.jlbl_separation[_locInArray]);
-            
-        }
-        this.jlbl_separation[_locInArray].setBounds(
-                _x, 
-                ViewSettings.getDistanceBetweenItems(), 
-                1, 
-                ViewSettings.getView_heightTB_visible()
-                - ViewSettings.getDistanceBetweenItems() 
-                - ViewSettings.getView_heightTB()
-                / ViewSettings.TABBED_PANE_TITLE_PROPORTION_HEIGHT);
-    }
-    
-    /**
-     * insert information text.
-     * @param _text the printed text
-     * @param _x1 first x coordinate (is between first and second coordinate)
-     * @param _x2 second x coordinate (is between first and second coordinate)
-     * @param _locationInArray the location in information array
-     * @param _insert whether to insert the item or just to change bounds
-     */
-    private void insertInformation(final String _text, 
-            final int _x1, final int _x2, final int _locationInArray, 
-            final boolean _insert) {
-
-        if (_insert) {
-
-            //final value for foreground for JLabel
-            final int rgb = 190;
-            
-            jlbl_information[_locationInArray] = new VLabel();
-            jlbl_information[_locationInArray].setFont(
-                    ViewSettings.GENERAL_TP_FONT_INFORMATION);
-            jlbl_information[_locationInArray].setForeground(
-                    new Color(rgb, rgb, rgb));
-            jlbl_information[_locationInArray].setHorizontalAlignment(
-                    SwingConstants.CENTER);
-            jlbl_information[_locationInArray].setText(_text);
-            super.add(jlbl_information[_locationInArray]);
-            
-        }
-
-        if (Status.isNormalRotation()) {
-
-            final int number = 
-                    ViewSettings.getItemMenu1Height()
-                    + ViewSettings.getDistanceBetweenItems();
-            final int number2 = 15;
-            jlbl_information[_locationInArray].setBounds(
-                    _x1, number, _x2 - _x1, number2);
-        } else {
-            jlbl_information[_locationInArray].setOpaque(true);
-            jlbl_information[_locationInArray].setBounds(-1, -1, -1, -1);
-        }
-
-    }
 	
 	
 	

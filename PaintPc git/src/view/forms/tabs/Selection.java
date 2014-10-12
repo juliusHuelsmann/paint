@@ -8,12 +8,8 @@ import java.awt.Toolkit;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-
-import model.settings.Status;
 import model.settings.ViewSettings;
 import control.tabs.CPaintStatus;
 import control.tabs.CTabSelection;
@@ -21,7 +17,6 @@ import control.tabs.CPaintVisualEffects;
 import view.util.Item1Menu;
 import view.util.Item1Button;
 import view.util.VColorPanel;
-import view.util.VLabel;
 
 /**
  * The Selection Tab.
@@ -30,12 +25,8 @@ import view.util.VLabel;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public final class Selection extends JPanel {
+public final class Selection extends Tab {
 
-    /**
-     * JLabels for the separation, linked with information.
-     */
-    private JLabel [] jlbl_separation, jlbl_information;
 
     /**
      * array of colors to change the first or the second color.
@@ -72,7 +63,7 @@ public final class Selection extends JPanel {
      * Empty Utility class Constructor.
      */
 	private Selection() {
-	    
+	    super(2);
 	}
 	
 	
@@ -87,11 +78,6 @@ public final class Selection extends JPanel {
         super.setLayout(null);
 
 
-        //initialize items 
-        final int amountOfSeparations = 2;
-        jlbl_separation = new JLabel[amountOfSeparations];
-        jlbl_information = new VLabel[amountOfSeparations];
-        
 
         int x = initCololrs(distance, true);
         x = initPen(x, true);
@@ -245,13 +231,12 @@ public final class Selection extends JPanel {
         it_color.setIcon("icon/palette.png");
         super.add(it_color);
         
-        insertTrennung(it_color.getWidth() + it_color.getX() + ViewSettings
-                .getDistanceBeforeLine(), it_color.getY(), 0, _paint);
-        insertInformation("Farben", _x, jlbl_separation[0].getX(), 0, 
-                _paint);
+        int xLocationSeparation = it_color.getWidth() + it_color.getX() 
+                + ViewSettings.getDistanceBeforeLine();
+        insertSectionStuff("Farben", _x, xLocationSeparation, 0, _paint);
 
         
-        return jlbl_separation[0].getX();
+        return xLocationSeparation + ViewSettings.getDistanceBetweenItems();
 	}
 	
 	
@@ -295,13 +280,11 @@ public final class Selection extends JPanel {
         CTabSelection.deactivateOp();
     
 
-        insertTrennung(jcb_maths.getWidth() + jcb_maths.getX() 
-                + ViewSettings.getDistanceBeforeLine(), 
-                jcb_maths.getY(), 1, _paint);
-        insertInformation("Pen", _x, jlbl_separation[1].getX(), 1, 
-                _paint);
+        int xLocationSeparation = jcb_maths.getWidth() + jcb_maths.getX() 
+                + ViewSettings.getDistanceBeforeLine();
+        insertSectionStuff("Pen", _x, xLocationSeparation, 1, _paint);
 
-        return jlbl_separation[1].getX();
+        return xLocationSeparation + ViewSettings.getDistanceBetweenItems();
         
 	}
 	
@@ -352,78 +335,16 @@ public final class Selection extends JPanel {
         it_stift1.setBorder(false);
         super.add(it_stift1);
 
-        insertTrennung(it_stift1.getWidth() + it_stift1.getX() + ViewSettings
-                .getDistanceBeforeLine(), it_stift1.getY(), 1, _paint);
-        insertInformation("Farben", _x, jlbl_separation[1].getX(), 1, 
-                _paint);
+        
+
+        int xLocationSeparation = it_stift1.getWidth() + it_stift1.getX()
+                + ViewSettings.getDistanceBeforeLine();
+        insertSectionStuff("Farben", _x, xLocationSeparation, 1, _paint);
+//        return xLocationSeparation + ViewSettings.getDistanceBetweenItems();
 	}
 	
 	
 
-    /**
-     * 
-     * @param _x the x coordinate in pX
-     * @param _y the y coordinate in pX
-     * @param _locInArray the location in array
-     * @param _add whether to add or not
-     */
-    private void insertTrennung(final int _x, final int _y, 
-            final int _locInArray, final boolean _add) {
-        
-        //if new initialization is demanded
-        if (_add) {
-            this.jlbl_separation[_locInArray] = new JLabel();
-            this.jlbl_separation[_locInArray].setBorder(
-                    BorderFactory.createLineBorder(
-                            ViewSettings.GENERAL_CLR_BACKGROUND_DARK_XX));
-            super.add(this.jlbl_separation[_locInArray]);
-            
-        }
-        final int number = 145;
-        this.jlbl_separation[_locInArray].setBounds(_x, _y, 1, number);
-    }
-    
-    /**
-     * insert information text.
-     * @param _text the printed text
-     * @param _x1 first x coordinate (is between first and second coordinate)
-     * @param _x2 second x coordinate (is between first and second coordinate)
-     * @param _locationInArray the location in information array
-     * @param _insert whether to insert the item or just to change bounds
-     */
-    private void insertInformation(final String _text, 
-            final int _x1, final int _x2, final int _locationInArray, 
-            final boolean _insert) {
-
-        if (_insert) {
-
-            //final value for foreground for JLabel
-            final int rgb = 190;
-            
-            jlbl_information[_locationInArray] = new VLabel();
-            jlbl_information[_locationInArray].setFont(
-                    ViewSettings.GENERAL_TP_FONT_INFORMATION);
-            jlbl_information[_locationInArray].setForeground(
-                    new Color(rgb, rgb, rgb));
-            jlbl_information[_locationInArray].setHorizontalAlignment(
-                    SwingConstants.CENTER);
-            jlbl_information[_locationInArray].setText(_text);
-            super.add(jlbl_information[_locationInArray]);
-            
-        }
-
-        if (Status.isNormalRotation()) {
-
-            final int number = 135;
-            final int number2 = 15;
-            jlbl_information[_locationInArray].setBounds(
-                    _x1, number, _x2 - _x1, number2);
-        } else {
-            jlbl_information[_locationInArray].setOpaque(true);
-            jlbl_information[_locationInArray].setBounds(-1, -1, -1, -1);
-        }
-
-    }
     
 
     /**

@@ -29,7 +29,7 @@ import view.util.Item1Button;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public final class PaintObjects extends JPanel implements Observer {
+public final class PaintObjects extends Tab implements Observer {
 
 	/**
 	 * the only instance of this class.
@@ -107,7 +107,7 @@ public final class PaintObjects extends JPanel implements Observer {
 	private PaintObjects() {
 		
 		//initialize JPanel and alter settings
-		super();
+		super(0);
 		super.setLayout(null);
 		super.setOpaque(false);
 

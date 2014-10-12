@@ -8,8 +8,6 @@ import java.awt.Toolkit;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import model.objects.pen.normal.BallPen;
@@ -26,7 +24,6 @@ import control.tabs.CPaintSelection;
 import view.util.Item1Menu;
 import view.util.Item1PenSelection;
 import view.util.VColorPanel;
-import view.util.VLabel;
 import view.util.Item1Button;
 
 
@@ -36,7 +33,7 @@ import view.util.Item1Button;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public final class Paint extends JPanel {
+public final class Paint extends Tab {
 
 
     /**
@@ -72,14 +69,6 @@ public final class Paint extends JPanel {
 	private Item1Menu it_stift1, it_stift2;
 	
 	/**
-	 * JLabels for the separation, linked with information.
-	 */
-	private JLabel [] jlbl_separation;
-	   /**
-     * JLabels for the information text, linked with separation line.
-     */
-    private VLabel [] jlbl_information;
-	/**
 	 * buttons.
 	 */
 	private Item1Button tb_pipette, tb_fill, tb_move, tb_erase, 
@@ -107,14 +96,10 @@ public final class Paint extends JPanel {
 	private Paint() {
 
 		//initialize JPanel and alter settings
-		super();
+		super((2 + 1) * 2);
 		super.setOpaque(false);
 		super.setLayout(null);
 		
-		//initialize items 
-		final int amountOfSeparations = 6;
-        jlbl_separation = new JLabel[amountOfSeparations];
-        jlbl_information = new VLabel[amountOfSeparations];
 		
 		int x = initializeClipboard(0, true);
         x = initializeHistory(x, true);
@@ -194,6 +179,8 @@ public final class Paint extends JPanel {
 
 	    }
 	    
+	    int xLocationSeparation;
+	    
 	    if (Status.isNormalRotation()) {
 
 	        tb_paste.setLocation(_x + ViewSettings.getDistanceBetweenItems(),
@@ -204,9 +191,9 @@ public final class Paint extends JPanel {
 	                ViewSettings.getDistanceBetweenItems());
 	        tb_cut.setLocation(tb_copy.getX(), tb_copy.getHeight() 
 	                + ViewSettings.getDistanceBetweenItems() + tb_copy.getY());
-	        insertTrennung(tb_cut.getWidth() + tb_cut.getX() 
-	                + ViewSettings.getDistanceBeforeLine(), 0, 
-	                _paint);
+
+	        xLocationSeparation = tb_cut.getWidth() + tb_cut.getX() 
+                    + ViewSettings.getDistanceBeforeLine();
 	    } else {
 
             tb_paste.setLocation(
@@ -223,23 +210,20 @@ public final class Paint extends JPanel {
             tb_cut.setLocation(tb_copy.getX(), tb_copy.getY()
                     - tb_copy.getHeight() 
                     - ViewSettings.getDistanceBetweenItems());
-            insertTrennung(tb_cut.getX() 
-                    - ViewSettings.getDistanceBeforeLine(), 
-                    0, _paint);
+
+            xLocationSeparation = tb_cut.getX() 
+                    - ViewSettings.getDistanceBeforeLine();
          }
 	    
-	    
-	    insertInformation("Zwischenablage", 0, 
-	            jlbl_separation[0].getX() + jlbl_separation[0].getWidth(), 
-	            0, _paint);
+
+        insertSectionStuff("Zwischenablage", 0, xLocationSeparation, 
+                0, _paint);
 	       
         tb_paste.flip(Status.isNormalRotation());
         tb_copy.flip(Status.isNormalRotation());
         tb_cut.flip(Status.isNormalRotation());
         
-        
-	    
-		return jlbl_separation[0].getX() + ViewSettings.getDistanceAfterLine();
+		return xLocationSeparation + ViewSettings.getDistanceAfterLine();
 	}
 	
 	
@@ -279,16 +263,15 @@ public final class Paint extends JPanel {
 	    
 	    }
 
+	    int xLocationSeparation;
 	    if (Status.isNormalRotation()) {
 
 	        tb_prev.setLocation(_x, ViewSettings.getDistanceBetweenItems());
 	        tb_next.setLocation(
 	                tb_prev.getX(), tb_prev.getY() + tb_prev.getHeight());
-	        insertTrennung(tb_prev.getWidth() + tb_prev.getX() 
-	                + ViewSettings.getDistanceBeforeLine(), 
-	                1, _paint);
-	        insertInformation("history", _x, jlbl_separation[1].getX(), 1, 
-	                _paint);
+	        xLocationSeparation = tb_prev.getWidth() + tb_prev.getX() 
+                    + ViewSettings.getDistanceBeforeLine();
+	        
   
 	    } else  {
 
@@ -300,14 +283,15 @@ public final class Paint extends JPanel {
 	        tb_next.setLocation(tb_prev.getX(), tb_prev.getY() 
 	                - ViewSettings.getDistanceBetweenItems() 
 	                - tb_prev.getHeight());
-            insertTrennung(tb_prev.getX() 
-                    - ViewSettings.getDistanceBeforeLine(),
-                    1, _paint);
-	        insertInformation("history", _x, jlbl_separation[1].getX(), 
-	                1, _paint);
+            
+            xLocationSeparation = tb_prev.getX() 
+                    - ViewSettings.getDistanceBeforeLine();
   
 	    }
-        return jlbl_separation[1].getX() + ViewSettings.getDistanceAfterLine();
+
+        insertSectionStuff("history", _x, xLocationSeparation, 1, 
+                _paint);
+        return xLocationSeparation + ViewSettings.getDistanceAfterLine();
 
 	}
 
@@ -465,10 +449,10 @@ public final class Paint extends JPanel {
                     tb_move.getY() + tb_move.getHeight() 
                     + ViewSettings.getDistanceBetweenItems());
         }
-        insertTrennung(tb_move.getWidth() + tb_move.getX() 
-                + ViewSettings.getDistanceBeforeLine(), 2, _paint);
-        insertInformation("Stifte", _x, jlbl_separation[2].getX(), 2, _paint);
-    	return jlbl_separation[2].getX() + ViewSettings.getDistanceAfterLine();
+        int xLocationSeparation = tb_move.getWidth() + tb_move.getX() 
+                + ViewSettings.getDistanceBeforeLine();
+        insertSectionStuff("Stifte", _x, xLocationSeparation, 2, _paint);
+    	return xLocationSeparation + ViewSettings.getDistanceAfterLine();
     }
 
 	/**
@@ -619,12 +603,10 @@ public final class Paint extends JPanel {
         it_color.setIcon("icon/palette.png");
         super.add(it_color);
         
-    	insertTrennung(it_color.getWidth() + it_color.getX() + ViewSettings
-    	        .getDistanceBeforeLine(), 2 + 1, _paint);
-    	insertInformation("Farben", _x, jlbl_separation[2 + 1].getX(), 2 + 1, 
-    	        _paint);
-    	return jlbl_separation[2 + 1].getX()
-    	        + ViewSettings.getDistanceAfterLine();
+        int xLocationSeparation = it_color.getWidth() + it_color.getX() 
+                + ViewSettings.getDistanceBeforeLine();
+    	insertSectionStuff("Farben", _x, xLocationSeparation, 2 + 1, _paint);
+    	return xLocationSeparation + ViewSettings.getDistanceAfterLine();
     }
 
     /**
@@ -663,14 +645,12 @@ public final class Paint extends JPanel {
 				Constants.VIEW_TB_ZOOM_OUT_PATH, 0);
 		tb_zoomOut.setActivable(false);
 
-		insertTrennung(tb_zoomIn.getWidth() + tb_zoomIn.getX() 
-		        + ViewSettings.getDistanceBeforeLine(), 
-		        2 + 2, _paint);
-		insertInformation("Zoom", _x, jlbl_separation[2 + 2].getX(), 
+		int xLocationSeparation = tb_zoomIn.getWidth() + tb_zoomIn.getX() 
+                + ViewSettings.getDistanceBeforeLine();
+		insertSectionStuff("Zoom", _x, xLocationSeparation, 
 		        2 + 2, true);
 
-        return jlbl_separation[2 + 2].getX() 
-                + ViewSettings.getDistanceAfterLine();
+        return xLocationSeparation + ViewSettings.getDistanceAfterLine();
 	}
 	
 	/**
@@ -754,15 +734,14 @@ public final class Paint extends JPanel {
                 Constants.VIEW_TB_UP_PATH, 0);
         tb_turnNormal.setActivable(false);
 
-		insertTrennung(tb_turnMirror.getWidth() + tb_turnMirror.getX() 
-		        + ViewSettings.getDistanceBeforeLine(),
+        int xLocationSeparation = tb_turnMirror.getWidth() 
+                + tb_turnMirror.getX() 
+                + ViewSettings.getDistanceBeforeLine();
+		insertSectionStuff("Dateioperationen", _x, xLocationSeparation,
 		        2 + 2 + 1, _paint);
-		insertInformation("Dateioperationen", jlbl_separation[2 + 2].getX(), 
-		        jlbl_separation[2 + 2 + 1].getX(), 2 + 2 + 1, _paint);
 
 
-        return jlbl_separation[2 + 2 + 1].getX() 
-                + ViewSettings.getDistanceAfterLine();
+        return xLocationSeparation + ViewSettings.getDistanceAfterLine();
 	}
 	
 	
@@ -885,78 +864,6 @@ public final class Paint extends JPanel {
         _tb.setActivable(true);
         _tb.setIcon(_path);
     }
-	
-	/**
-	 * 
-	 * @param _x the x coordinate in pX
-	 * @param _locInArray the location in array
-	 * @param _add whether to add or not
-	 */
-	private void insertTrennung(final int _x, 
-	        final int _locInArray, final boolean _add) {
-	    
-	    //if new initialization is demanded
-	    if (_add) {
-	        this.jlbl_separation[_locInArray] = new JLabel();
-	        this.jlbl_separation[_locInArray].setBorder(
-	                BorderFactory.createLineBorder(
-	                        ViewSettings.GENERAL_CLR_BACKGROUND_DARK_XX));
-	        super.add(this.jlbl_separation[_locInArray]);
-	        
-	    }
-        this.jlbl_separation[_locInArray].setBounds(
-                _x, 
-                ViewSettings.getDistanceBetweenItems(), 
-                1, 
-                ViewSettings.getView_heightTB_visible()
-                - ViewSettings.getDistanceBetweenItems() 
-                - ViewSettings.getView_heightTB()
-                / ViewSettings.TABBED_PANE_TITLE_PROPORTION_HEIGHT);
-	}
-	
-	/**
-	 * insert information text.
-	 * @param _text the printed text
-	 * @param _x1 first x coordinate (is between first and second coordinate)
-	 * @param _x2 second x coordinate (is between first and second coordinate)
-	 * @param _locationInArray the location in information array
-	 * @param _insert whether to insert the item or just to change bounds
-	 */
-	private void insertInformation(final String _text, 
-	        final int _x1, final int _x2, final int _locationInArray, 
-	        final boolean _insert) {
-
-		if (_insert) {
-
-	        //final value for foreground for JLabel
-	        final int rgb = 190;
-	        
-	        jlbl_information[_locationInArray] = new VLabel();
-	        jlbl_information[_locationInArray].setFont(
-	                ViewSettings.GENERAL_TP_FONT_INFORMATION);
-	        jlbl_information[_locationInArray].setForeground(
-	                new Color(rgb, rgb, rgb));
-	        jlbl_information[_locationInArray].setHorizontalAlignment(
-	                SwingConstants.CENTER);
-	        jlbl_information[_locationInArray].setText(_text);
-	        super.add(jlbl_information[_locationInArray]);
-	        
-		}
-
-		if (Status.isNormalRotation()) {
-
-            final int number = 
-                    ViewSettings.getItemMenu1Height()
-                    + ViewSettings.getDistanceBetweenItems();
-            final int number2 = 15;
-	        jlbl_information[_locationInArray].setBounds(
-	                _x1, number, _x2 - _x1, number2);
-		} else {
-		    jlbl_information[_locationInArray].setOpaque(true);
-            jlbl_information[_locationInArray].setBounds(-1, -1, -1, -1);
-		}
-
-	}
 	
 	
 	/**

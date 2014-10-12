@@ -2,18 +2,10 @@
 package view.forms.tabs;
 
 //import declarations
-import java.awt.Color;
 import java.awt.Toolkit;
-
-import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
-import view.util.VLabel;
-import model.settings.Status;
 import model.settings.ViewSettings;
 import control.tabs.CExport;
 
@@ -27,16 +19,8 @@ import control.tabs.CExport;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public final class Export extends JPanel {
+public final class Export extends Tab {
 
-    /**
-     * JLabels for the separation, linked with information.
-     */
-    private JLabel [] jlbl_separation;
-       /**
-     * JLabels for the information text, linked with separation line.
-     */
-    private VLabel [] jlbl_information;
     /**
      * The only instance of this class.
      */
@@ -70,7 +54,9 @@ public final class Export extends JPanel {
     /**
      * Empty utility class constructor.
      */
-    private Export() { }
+    private Export() { 
+        super(2);
+    }
     
     
     /**
@@ -85,9 +71,6 @@ public final class Export extends JPanel {
                 .getWidth(), ViewSettings.getView_heightTB());
         super.setVisible(true);
 
-        jlbl_information = new VLabel[2];
-        jlbl_separation = new JLabel[2];
-        
         //initialize the content for the background
         initializeFirstColumn();
     }
@@ -231,10 +214,9 @@ public final class Export extends JPanel {
                 jlbl_subtitle_borderRight.getY());
         super.add(jcb_margeRight);
         
-        insertTrennung(jcb_nothing.getX() + jcb_nothing.getWidth() 
-                + ViewSettings.getDistanceBetweenItems(), 0, true);
-        insertInformation("Image Background", 0, jcb_margeRight.getX()
-                + jcb_margeRight.getWidth() 
+        insertSectionStuff("Image Background", 0, 
+                ViewSettings.getDistanceBetweenItems() 
+                + jcb_nothing.getX() + jcb_nothing.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(), 0, true);
     }
     
@@ -246,79 +228,6 @@ public final class Export extends JPanel {
     public JCheckBox getJcb_raster() {
         return jcb_raster;
     }
-
-    /**
-     * 
-     * @param _x the x coordinate in pX
-     * @param _locInArray the location in array
-     * @param _add whether to add or not
-     */
-    private void insertTrennung(final int _x, 
-            final int _locInArray, final boolean _add) {
-        
-        //if new initialization is demanded
-        if (_add) {
-            this.jlbl_separation[_locInArray] = new JLabel();
-            this.jlbl_separation[_locInArray].setBorder(
-                    BorderFactory.createLineBorder(
-                            ViewSettings.GENERAL_CLR_BACKGROUND_DARK_XX));
-            super.add(this.jlbl_separation[_locInArray]);
-            
-        }
-        this.jlbl_separation[_locInArray].setBounds(
-                _x, 
-                ViewSettings.getDistanceBetweenItems(), 
-                1, 
-                ViewSettings.getView_heightTB_visible()
-                - ViewSettings.getDistanceBetweenItems() 
-                - ViewSettings.getView_heightTB()
-                / ViewSettings.TABBED_PANE_TITLE_PROPORTION_HEIGHT);
-    }
-    
-    /**
-     * insert information text.
-     * @param _text the printed text
-     * @param _x1 first x coordinate (is between first and second coordinate)
-     * @param _x2 second x coordinate (is between first and second coordinate)
-     * @param _locationInArray the location in information array
-     * @param _insert whether to insert the item or just to change bounds
-     */
-    private void insertInformation(final String _text, 
-            final int _x1, final int _x2, final int _locationInArray, 
-            final boolean _insert) {
-
-        if (_insert) {
-
-            //final value for foreground for JLabel
-            final int rgb = 190;
-            
-            jlbl_information[_locationInArray] = new VLabel();
-            jlbl_information[_locationInArray].setFont(
-                    ViewSettings.GENERAL_TP_FONT_INFORMATION);
-            jlbl_information[_locationInArray].setForeground(
-                    new Color(rgb, rgb, rgb));
-            jlbl_information[_locationInArray].setHorizontalAlignment(
-                    SwingConstants.CENTER);
-            jlbl_information[_locationInArray].setText(_text);
-            super.add(jlbl_information[_locationInArray]);
-            
-        }
-
-        if (Status.isNormalRotation()) {
-
-            final int number = 
-                    ViewSettings.getItemMenu1Height()
-                    + ViewSettings.getDistanceBetweenItems();
-            final int number2 = 15;
-            jlbl_information[_locationInArray].setBounds(
-                    _x1, number, _x2 - _x1, number2);
-        } else {
-            jlbl_information[_locationInArray].setOpaque(true);
-            jlbl_information[_locationInArray].setBounds(-1, -1, -1, -1);
-        }
-
-    }
-    
 
 
     /**

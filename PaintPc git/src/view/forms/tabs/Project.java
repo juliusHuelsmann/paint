@@ -1,15 +1,23 @@
 package view.forms.tabs;
 
-import javax.swing.JPanel;
-
 /**
  * Panel for the Tab.
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class Project extends JPanel {
+public class Project extends Tab {
 
+    
+    
+    
+    /**
+     * Constructor. Call super-constructor with the amount of sections the 
+     * project tab contains.
+     */
+    public Project() {
+        super(0);
+    }
 	/*
 	 * Tab
 	 */

@@ -191,8 +191,6 @@ public final class Insert extends Tab {
         insertSectionStuff("Diagramme", ia_diagram.getX(), 
                 jtf_amountRows.getX() + jtf_amountRows.getWidth(), 2 + 1, true);
         
-        super.setSize((int) Toolkit.getDefaultToolkit()
-                .getScreenSize().getWidth(), _height);
 	}
 
 	/**

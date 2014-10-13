@@ -234,7 +234,7 @@ public final class PaintObjects extends Tab implements Observer {
 		final int iconSize = 16;
 		final int twentyFife = 25;
 		
-		super.setSize(_width, htf);
+		
         sp_up.setIcon_size(iconSize);
         
         final int amountOfItems = 7;

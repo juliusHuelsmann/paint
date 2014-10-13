@@ -737,5 +737,12 @@ public final class ViewSettings {
     public static void setSizeMessage(Dimension sizeMessage) {
         ViewSettings.sizeMessage = sizeMessage;
     }
+
+
+
+    public static int getView_heightTab() {
+        return size_jframe.height - getView_heightTB() / ViewSettings
+                .TABBED_PANE_TITLE_PROPORTION_HEIGHT - 1;
+    }
     
 }

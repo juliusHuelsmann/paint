@@ -69,9 +69,8 @@ public final class Selection extends Tab {
 	
 	/**
 	 * real constructor.
-	 * @param _height the height
 	 */
-	private void init(final int _height) {
+	private void init() {
         
         //initialize JPanel and alter settings
         super.setOpaque(false);
@@ -83,10 +82,6 @@ public final class Selection extends Tab {
         x = initPen(x, true);
         initOthers(x, true);
         
-        super.setSize(
-                (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(),
-                _height);
-    
 	}
 	
 	
@@ -349,25 +344,14 @@ public final class Selection extends Tab {
 
     /**
      * getter method for only instance of this class.
-     * @param _height the height of the selection view.
-     * @return the only instance of CChangeSelection
-     */
-    public static Selection getInstance(final int _height) {
-        
-        if (instance == null) {
-            instance = new Selection();
-            instance.init(_height);
-        }
-        
-        return instance;
-        
-    }
-
-    /**
-     * getter method for only instance of this class.
      * @return the only instance of CChangeSelection
      */
     public static Selection getInstance() {
+        
+        if (instance == null) {
+            instance = new Selection();
+            instance.init();
+        }
         
         return instance;
         

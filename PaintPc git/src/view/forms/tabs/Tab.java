@@ -1,6 +1,7 @@
 package view.forms.tabs;
 
 import java.awt.Color;
+import java.awt.Component;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -10,6 +11,7 @@ import javax.swing.SwingConstants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import view.util.VLabel;
+import view.util.mega.MPanel;
 
 
 /**
@@ -19,7 +21,7 @@ import view.util.VLabel;
  *
  */
 @SuppressWarnings("serial")
-public abstract class Tab extends JPanel {
+public abstract class Tab extends MPanel {
 
     /**
      * JLabels for the separation, linked with information.
@@ -42,9 +44,11 @@ public abstract class Tab extends JPanel {
         //initialize the Labels
         jlbl_information = new VLabel[_amount];
         jlbl_separation = new JLabel[_amount];
+        super.setSize(ViewSettings.getView_widthTb(), 
+                ViewSettings.getView_heightTab());
     }
     
-    
+
     
     
     /**

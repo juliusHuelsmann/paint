@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 
 import view.forms.Page;
 import view.forms.Tabs;
+import view.util.mega.MLabel;
+import view.util.mega.MPanel;
 import control.tabs.CPaintStatus;
 import control.util.CItem;
 import model.settings.Status;
@@ -27,7 +29,7 @@ import model.util.paint.Utils;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class Item1Menu extends JPanel {
+public class Item1Menu extends MPanel {
 
 	/**
 	 * final value for items placed in one row.

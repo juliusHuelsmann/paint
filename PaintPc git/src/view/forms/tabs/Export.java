@@ -98,8 +98,6 @@ public final class Export extends Tab {
         //initialize JPanel and alter settings
         super.setOpaque(false);
         super.setLayout(null);
-        super.setSize((int) Toolkit.getDefaultToolkit().getScreenSize()
-                .getWidth(), ViewSettings.getView_heightTB());
         super.setVisible(true);
 
         //initialize the content for the background

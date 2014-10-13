@@ -83,8 +83,7 @@ public class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("auswahl");
-        Selection tab_selection = Selection.getInstance(
-                ViewSettings.getView_heightTB());
+        Selection tab_selection = Selection.getInstance();
         super.addToTab(tabNumber, tab_selection);
         tabNumber++;
         /*

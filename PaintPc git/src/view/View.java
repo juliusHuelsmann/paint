@@ -4,8 +4,12 @@ package view;
 //import declarations
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -135,6 +139,7 @@ import control.util.MousePositionTracker;
         Page.getInstance().setVisible(true);
 
 	}
+	
 
     /**
      * Background color fading in at startup.

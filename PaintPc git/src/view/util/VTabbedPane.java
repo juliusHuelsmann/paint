@@ -811,7 +811,7 @@ public class VTabbedPane extends JPanel {
 	                jbtn_stuffHeadline[index].setSize(titleWidth, titleHeight);
 	            }
                 jpnl_stuff[index].setSize(
-                        getWidth(), getHeight() - titleHeight - titleY);
+                        getWidth(), getTabHeight());
                 
                 //set locations depending on previous locations.
                 //if index == 0 there is no previous location, it has to be
@@ -833,6 +833,14 @@ public class VTabbedPane extends JPanel {
 	    }
 
 	}
+    
+    
+    public int getTabHeight() {
+        final int 
+        titleHeight = getHeight() / ViewSettings
+        .TABBED_PANE_TITLE_PROPORTION_HEIGHT;;
+        return getHeight() - titleHeight - titleY;
+    }
 
     /**
      * @return the openTab

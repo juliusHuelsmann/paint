@@ -3,6 +3,7 @@ package view.forms.tabs;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -117,9 +118,9 @@ public final class Paint extends Tab {
 		tb_color1.setBackground(Status.getPenSelected1().getClr_foreground());
 		tb_color2.setBackground(Status.getPenSelected2().getClr_foreground());
 
-		//set size
-		super.setSize((int) Toolkit.getDefaultToolkit().getScreenSize()
-		        .getWidth(), ViewSettings.getView_heightTB());
+//		//set size
+//		super.setSize((int) Toolkit.getDefaultToolkit().getScreenSize()
+//		        .getWidth(), ViewSettings.getView_heightTab());
 
 		//TODO: directly apply to status values.
 		//set standard values (is going to be put into a new settings class)
@@ -869,21 +870,6 @@ public final class Paint extends Tab {
         _tb.setIcon(_path);
     }
 	
-	
-	/**
-	 * flip.
-	 */
-	public void flip() {
-
-	    int x = initializeClipboard(0, false);
-        x = initializeHistory(x, false);
-        x = initializePagePens(x, false);
-//        x = initializePageColors(x, false);
-//        x = initializeZoom(x, false);
-//        x = initializeFileOperations(x, false);
-        
-        
-	}
 
     
     /**

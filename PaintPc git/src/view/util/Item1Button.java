@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import view.util.mega.MLabel;
+import view.util.mega.MPanel;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
@@ -26,7 +28,7 @@ import control.util.VisualTextButton;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class Item1Button extends JPanel {
+public class Item1Button extends MPanel {
 
 	/**
 	 * wrapper button which delivers this TextButton to the ActionListener.
@@ -36,12 +38,12 @@ public class Item1Button extends JPanel {
 	/**
 	 * JLabel for text.
 	 */
-	private VLabel jlbl_title;
+	private MLabel jlbl_title;
 
     /**
      * JLabel for color or image.
      */
-	private JLabel jlbl_color;
+	private MLabel jlbl_color;
 
 	/**
 	 * boolean which indicate whether activated or it is possible to activate.
@@ -85,7 +87,7 @@ public class Item1Button extends JPanel {
 		this.border = true;
 		
 		//initialize title JLabel
-		jlbl_title = new VLabel();
+		jlbl_title = new MLabel();
 		jlbl_title.setBorder(null);
 		jlbl_title.setFocusable(false);
 		jlbl_title.setOpaque(false);
@@ -110,7 +112,7 @@ public class Item1Button extends JPanel {
 		super.add(jbtn_touch);
 
 		//initialize color JLabel
-		jlbl_color = new JLabel();
+		jlbl_color = new MLabel();
 		jlbl_color.setBorder(null);
 		jlbl_color.setOpaque(true);
 		jlbl_color.setFocusable(false);

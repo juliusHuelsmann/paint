@@ -143,7 +143,7 @@ public final class Write extends Tab {
         tb_pen_headline1.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
-        tb_pen_headline1.setActivable(false);
+        tb_pen_headline1.setActivable(true);
         tb_pen_headline1.setIcon("paint/test.png");
         tb_pen_headline1.addActionListener(CWrite.getInstance());
         super.add(tb_pen_headline1);
@@ -160,7 +160,7 @@ public final class Write extends Tab {
         tb_pen_headline2.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
-        tb_pen_headline2.setActivable(false);
+        tb_pen_headline2.setActivable(true);
         tb_pen_headline2.setIcon("paint/test.png");
         tb_pen_headline2.addActionListener(CWrite.getInstance());
         super.add(tb_pen_headline2);
@@ -177,7 +177,7 @@ public final class Write extends Tab {
         tb_pen_headline3.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
-        tb_pen_headline3.setActivable(false);
+        tb_pen_headline3.setActivable(true);
         tb_pen_headline3.setIcon("paint/test.png");
         tb_pen_headline3.addActionListener(CWrite.getInstance());
         super.add(tb_pen_headline3);
@@ -189,9 +189,6 @@ public final class Write extends Tab {
                 tb_pen_headline3.getX() + tb_pen_headline3.getWidth() 
                 + ViewSettings.getDistanceBeforeLine(), 0, true);
 
-        
-        super.setSize((int) Toolkit.getDefaultToolkit()
-                .getScreenSize().getWidth(), _height);
 	}
 
 	

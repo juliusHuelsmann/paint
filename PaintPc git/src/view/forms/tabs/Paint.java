@@ -5,11 +5,14 @@ package view.forms.tabs;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
+import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Marker;
 import model.objects.pen.normal.Pencil;
@@ -120,8 +123,8 @@ public final class Paint extends Tab {
 
 		//TODO: directly apply to status values.
 		//set standard values (is going to be put into a new settings class)
-		it_stift1.setIcon(sa_bn1.getImagePath());
-		it_stift2.setIcon(sa_fn2.getImagePath());
+		it_stift1.setIcon(Status.getPenSelected1().getIconPath());
+		it_stift2.setIcon(Status.getPenSelected2().getIconPath());
 	}
 
 	/**
@@ -751,53 +754,54 @@ public final class Paint extends Tab {
 	 */
 	private void addPens() {
 
+
+        Pen pen_bp1 = new Pencil(Constants.PEN_ID_POINT, 2, Color.black);
+        Pen pen_bn1 = new Pencil(Constants.PEN_ID_LINES, 2, Color.black);
+        Pen pen_br1 = new Pencil(Constants.PEN_ID_MATHS, 2, Color.black);
         sa_bp1 = new Item1PenSelection(
-                "Bleistift Punkte", "pen/bleiPoint.png", 1, new Pencil(
-                        Constants.PEN_ID_POINT, 2, Color.black));
+                "Bleistift Punkte", pen_bp1.getIconPath(), 1, pen_bp1);
         sa_bn1 = new Item1PenSelection(
-                "Bleistift Normal", "pen/bleiNormal.png", 1, new Pencil(
-                        Constants.PEN_ID_LINES, 2, Color.black));
+                "Bleistift Normal", pen_bn1.getIconPath(), 1, pen_bn1);
         sa_br1 = new Item1PenSelection(
-                "Bleistift rund", "pen/bleiMaths.png", 1, new Pencil(
-                        Constants.PEN_ID_MATHS, 2, Color.black));
+                "Bleistift rund", pen_br1.getIconPath(), 1, pen_br1);
 
+        Pen pen_fr1 = new BallPen(Constants.PEN_ID_MATHS, 2, Color.black);
+        Pen pen_fn1 = new BallPen(Constants.PEN_ID_LINES, 2, Color.black);
+        Pen pen_fp1 = new BallPen(Constants.PEN_ID_POINT, 2, Color.black);
         sa_fr1 = new Item1PenSelection(
-                "Fueller rund", "pen/fuellerMaths.png", 1, new BallPen(
-                        Constants.PEN_ID_MATHS, 2, Color.black));
+                "Fueller rund", pen_fr1.getIconPath(), 1, pen_fr1);
         sa_fn1 = new Item1PenSelection(
-                "Fueller Normal", "pen/fuellerNormal.png", 1, new BallPen(
-                        Constants.PEN_ID_LINES, 2, Color.black));
+                "Fueller Normal", pen_fn1.getIconPath(), 1, pen_fn1);
         sa_fp1 = new Item1PenSelection(
-                "Fueller Punkte", "pen/fuellerPoint.png", 1, new BallPen(
-                        Constants.PEN_ID_POINT, 2, Color.black));
+                "Fueller Punkte", pen_fp1.getIconPath(), 1, pen_fp1);
 
+        Pen pen_mn1 = new Marker(Constants.PEN_ID_LINES, 2, Color.black);
         sa_mn1 = new Item1PenSelection(
-                "Marker Normal", "pen/fuellerNormal.png", 1, new Marker(
-                        Constants.PEN_ID_LINES, 2, Color.black));
-        
+                "Marker Normal", pen_mn1.getIconPath(), 1, pen_mn1);
+
+        Pen pen_bp2 = new Pencil(Constants.PEN_ID_POINT, 2, Color.black);
+        Pen pen_bn2 = new Pencil(Constants.PEN_ID_LINES, 2, Color.black);
+        Pen pen_br2 = new Pencil(Constants.PEN_ID_MATHS, 2, Color.black);
         sa_bp2 = new Item1PenSelection(
-                "Bleistift Punkte", "pen/bleiPoint.png", 2, new Pencil(
-                        Constants.PEN_ID_POINT, 2, Color.black));
+                "Bleistift Punkte", pen_bp2.getIconPath(), 2, pen_bp2);
         sa_bn2 = new Item1PenSelection(
-                "Bleistift Normal", "pen/bleiNormal.png", 2, new Pencil(
-                        Constants.PEN_ID_LINES, 2, Color.black));
+                "Bleistift Normal", pen_bn2.getIconPath(), 2, pen_bn2);
         sa_br2 = new Item1PenSelection(
-                "Bleistift rund", "pen/bleiMaths.png", 2, new Pencil(
-                        Constants.PEN_ID_MATHS, 2, Color.black));
+                "Bleistift rund", pen_br2.getIconPath(), 2, pen_br2);
 
+        Pen pen_fr2 = new BallPen(Constants.PEN_ID_MATHS, 2, Color.black);
+        Pen pen_fn2 = new BallPen(Constants.PEN_ID_LINES, 2, Color.black);
+        Pen pen_fp2 = new BallPen(Constants.PEN_ID_POINT, 2, Color.black);
         sa_fr2 = new Item1PenSelection(
-                "Fueller rund", "pen/fuellerMaths.png", 2, new BallPen(
-                        Constants.PEN_ID_MATHS, 2, Color.black));
+                "Fueller rund", pen_fr2.getIconPath(), 2, pen_fr2);
         sa_fn2 = new Item1PenSelection(
-                "Fueller Normal", "pen/fuellerNormal.png", 2, new BallPen(
-                        Constants.PEN_ID_LINES, 2, Color.black));
+                "Fueller Normal", pen_fn2.getIconPath(), 2, pen_fn2);
         sa_fp2 = new Item1PenSelection(
-                "Fueller Punkte", "pen/fuellerPoint.png", 2, new BallPen(
-                        Constants.PEN_ID_POINT, 2, Color.black));
+                "Fueller Punkte", pen_fp2.getIconPath(), 2, pen_fp2);
 
+        Pen pen_mn2 = new Marker(Constants.PEN_ID_LINES, 2, Color.black);
         sa_mn2 = new Item1PenSelection(
-                "Marker Normal", "pen/fuellerNormal.png", 2, new Marker(
-                        Constants.PEN_ID_LINES, 2, Color.black));
+                "Marker Normal", pen_mn2.getIconPath(), 2, pen_mn2);
         
         
         //add bleistift to both panels

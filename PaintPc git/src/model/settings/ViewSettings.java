@@ -127,7 +127,7 @@ public final class ViewSettings {
     /**
      * Whether fullscreen or not.
      */
-    private static boolean fullscreen = false;
+    private static boolean fullscreen = true;
     //sizes
     
     /**
@@ -136,9 +136,9 @@ public final class ViewSettings {
     private static Dimension size_jframe = 
             new Dimension(
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() 
-                    * 2 / (2 + 1)), 
+                    ), 
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() 
-                    * 2 / (2 + 1)));
+                    ));
 
 
     

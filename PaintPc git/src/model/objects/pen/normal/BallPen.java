@@ -4,8 +4,10 @@ package model.objects.pen.normal;
 //import declarations
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+
 import view.forms.Page;
 import model.objects.pen.Pen;
+import model.settings.Constants;
 import model.settings.Error;
 import model.settings.Status;
 import model.util.DPoint;
@@ -34,7 +36,27 @@ public class BallPen extends Pen {
 	        final Color _background) {
 		
 		//call super constructor
-		super(_index, _thickness, _background);
+		super(_index, _thickness, _background, getPath(_index));
+	}
+	
+	
+	/**
+	 * Return the path of the icon depending on kind of pen.
+	 * @param _kind the kind of pen
+	 * @return the path
+	 */
+	private static String getPath(final int _kind) {
+	    switch (_kind) {
+	    case Constants.PEN_ID_LINES:
+            return Constants.PATH_PEN_KULI_LINE;
+	    case Constants.PEN_ID_MATHS:
+            return Constants.PATH_PEN_KULI_MATHS;
+	    case Constants.PEN_ID_POINT:
+	        return Constants.PATH_PEN_KULI_POINT;
+	    default:
+	        Status.getLogger().severe("unknown paint index");
+	        return null;
+	    }
 	}
 	
 	/**

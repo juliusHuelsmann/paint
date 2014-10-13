@@ -115,6 +115,10 @@ public final class CExport implements ActionListener {
                 .getJcb_displayAlpha())) {
             Status.setExportAlpha(Export.getInstance().getJcb_displayAlpha()
                     .getSelectedItem().equals(Constants.ID_DISPLAY_ALPHA));
+        } else if (_event.getSource().equals(Export.getInstance()
+                .getJcb_saveFormats())) {
+            Status.setSaveFormat(Export.getInstance().getJcb_saveFormats()
+                    .getSelectedItem().toString());
         }
         
     }

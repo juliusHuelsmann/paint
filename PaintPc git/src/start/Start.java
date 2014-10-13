@@ -52,7 +52,7 @@ public final class Start {
                     
                     p.load(currentFile.getPath());
                     p.transformWhiteToAlpha();
-                    p.savePNG(currentFile.getPath() + "2");
+                    p.saveIMAGE(currentFile.getPath() + "2");
                 } else {
                     Status.getLogger().info("unknown type");
                 }

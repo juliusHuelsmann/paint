@@ -838,7 +838,7 @@ public final class Picture {
      * save the picture.
      * @param _wsLoc the path of the location.
      */
-    public void savePNG(final String _wsLoc) {
+    public void saveIMAGE(final String _wsLoc) {
         
         
         BufferedImage bi;
@@ -866,7 +866,8 @@ public final class Picture {
         
         
         try {
-            ImageIO.write(bi, "png", new File(_wsLoc));
+            ImageIO.write(bi, Status.getSaveFormat(),
+                    new File(_wsLoc + Status.getSaveFormat()));
         } catch (IOException e) {
             e.printStackTrace();
         }

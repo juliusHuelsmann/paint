@@ -12,8 +12,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
 import view.View;
 import view.forms.Page;
 import model.objects.painting.po.PaintObjectWriting;
@@ -77,6 +79,10 @@ public abstract class Pen implements Serializable {
 	 */
 	private boolean selected = false;
 	
+	/**
+	 * The icon path.
+	 */
+	private String iconPath = "";
 	
 	/**
 	 * Constructor: saves the operation.
@@ -84,14 +90,16 @@ public abstract class Pen implements Serializable {
 	 * @param _operation the operation
 	 * @param _thickness the thickness
 	 * @param _clr the percentage
+	 * @param _iconPath the path of the icon
 	 */
 	public Pen(final int _operation, final int _thickness, 
-	        final Color _clr) {
+	        final Color _clr, final String _iconPath) {
 	
 	    //save the operation
 	    this.id_operation = _operation;
 		this.thickness = _thickness;
 		this.clr_foreground = _clr;
+		this.iconPath = _iconPath;
 	}
 	
 	
@@ -1045,5 +1053,55 @@ public abstract class Pen implements Serializable {
                 bi);
         
         Page.getInstance().getJlbl_selectionBG().setIcon(new ImageIcon(bi));
+    }
+
+    
+    
+    /**
+     * Check whether the object equals the current pen object.
+     * @param _obj the object.
+     * @return whether equals
+     */
+    @Override
+    public final boolean equals(final Object _obj) {
+
+        Class<? extends Object> classname = _obj.getClass();
+        Class<? extends Object> classname2 = getClass();
+        
+        
+        if (_obj instanceof Pen) {
+
+            final boolean b1 = id_operation == ((Pen) _obj).getId_operation();
+            final boolean b2 = clr_foreground.equals(
+                    ((Pen) _obj).getClr_foreground());
+            final boolean b3 = thickness == ((Pen) _obj).getThickness();
+            final boolean b4 = iconPath.equals(((Pen) _obj).getIconPath());
+            final boolean b5 = (classname.equals(classname2));
+            return b1 && b2 && b3 && b4 && b5;
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override public final int hashCode() {
+        return super.hashCode();
+    }
+
+    /**
+     * @return the iconPath
+     */
+    public final String getIconPath() {
+        return iconPath;
+    }
+
+
+
+    /**
+     * @param _iconPath the iconPath to set
+     */
+    public final void setIconPath(final String _iconPath) {
+        this.iconPath = _iconPath;
     }
 }

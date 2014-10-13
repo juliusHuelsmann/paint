@@ -29,7 +29,8 @@ public class FunnyPen extends Pen {
      * Constructor calls super constructor.
      */
 	public FunnyPen() {
-		super(Constants.PEN_ID_POINT, 1, Color.black);
+		super(Constants.PEN_ID_POINT, 1, Color.black, 
+		        Constants.PATH_PEN_FILLER_LINE);
 	}
 	
 	/**

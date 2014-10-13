@@ -3,6 +3,8 @@ package model.settings;
 
 import java.awt.Dimension;
 
+import javax.imageio.ImageIO;
+
 
 /**
  * singleton class containing static constants (e.g. static paths or integers)
@@ -55,7 +57,17 @@ public final class Constants {
 	        SP_PATH_DOWN = "sb/n/b.png",
 	        SP_PATH_LEFT = "sb/s/t.png",
 	        SP_PATH_RIGHT = "sb/s/b.png",
-	        VIEW_JBTN_RESIZE_PATH = "centerResize.png";
+	        VIEW_JBTN_RESIZE_PATH = "centerResize.png",
+	        PATH_PEN_KULI_POINT = "pen/kuliPoint.png",
+	        PATH_PEN_KULI_LINE = "pen/kuliNormal.png",
+	        PATH_PEN_KULI_MATHS = "pen/kuliMaths.png",
+	        PATH_PEN_BLEI_POINT = "pen/bleiPoint.png",
+	        PATH_PEN_BLEI_LINE = "pen/bleiNormal.png",
+	        PATH_PEN_BLEI_MATHS = "pen/bleiMaths.png",
+	        PATH_PEN_FILLER_POINT = "pen/fuellerPoint.png",
+	        PATH_PEN_FILLER_LINE = "pen/fuellerNormal.png",
+	        PATH_PEN_FILLER_MATHS = "pen/fuellerMaths.png",
+	        PATH_PEN_MARKER_LINE = "pen/markerNormal.png";
 
 	/**
 	 * Identifier for the exporting of alpha pixel.
@@ -171,6 +183,12 @@ public final class Constants {
 	 */
 	public static final int[] BORDER_PRERCENTAGES = new int[]
 	        {0, 2, 4, 8, 15, 20, 25, 50};
+
+	
+	/**
+	 * The save formats.
+	 */
+    public static final String[] SAVE_FORMATS =  ImageIO.getWriterFormatNames();
 	
 	
 	/**

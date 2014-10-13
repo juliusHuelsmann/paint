@@ -4,8 +4,10 @@ package model.objects.pen.normal;
 //import declarations
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+
 import view.forms.Page;
 import model.objects.pen.Pen;
+import model.settings.Constants;
 import model.settings.Error;
 import model.settings.Status;
 import model.util.DPoint;
@@ -39,7 +41,7 @@ public class Marker extends Pen {
 	        final Color _background) {
 		
 		//call super constructor
-		super(_index, _thickness, _background);
+		super(_index, _thickness, _background, Constants.PATH_PEN_MARKER_LINE);
 
         setClr_foreground(new Color(
                 _background.getRed(), 

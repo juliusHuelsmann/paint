@@ -63,6 +63,20 @@ public final class Export extends Tab {
      */
     private JComboBox jcb_displayAlpha;
 
+    /*
+     * Save as
+     */
+    /**
+     * Contains the different saveFormats.
+     */
+    private JComboBox jcb_saveFormats;
+    
+    /**
+     * Titles for save as.
+     */
+    private JLabel jlbl_subtitle_saveOptions, jlbl_saveOptionsTitle;
+    
+    
     /**
      * Final values for the size and location.
      */
@@ -107,6 +121,11 @@ public final class Export extends Tab {
         //the components for changing the displaying of alpha values.
         //Choices: Save pure alpha as alpha value or save it as white pixel.
         initializeColumn1Alpha();
+
+
+        //initializes the second part of the first column which contains
+        //the components for changing the export format of the image.
+        initializeColumn1SaveOptions();
 
         //apply the settings set in the Status class to the view items 
         //initialized above; Thus the user settings can be saved and restored
@@ -259,7 +278,7 @@ public final class Export extends Tab {
         jcb_margeRight.addActionListener(CExport.getInstance());
         super.add(jcb_margeRight);
     }
-    
+
     
     /**
      * Initializes the second part of the first column which contains
@@ -304,6 +323,49 @@ public final class Export extends Tab {
         super.add(jcb_displayAlpha);
     }
     
+
+    
+    /**
+     * Initializes the second part of the first column which contains
+     * the components for changing the export format of the image.
+     */
+    private void initializeColumn1SaveOptions() {
+
+        /*
+         * Alpha
+         */
+        //right
+        jlbl_saveOptionsTitle = new JLabel("Save options");
+        jlbl_saveOptionsTitle.setSize(buttonWidth, buttonHeight);
+        jlbl_saveOptionsTitle.setLocation(
+                jlbl_displayAlphaTitle.getX(),
+                jcb_displayAlpha.getY() + jcb_displayAlpha.getHeight()
+                + ViewSettings.getDistanceBetweenItems());
+        jlbl_saveOptionsTitle.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
+        jlbl_saveOptionsTitle.setFocusable(false);
+        super.add(jlbl_saveOptionsTitle);
+        
+        jlbl_subtitle_saveOptions = new JLabel("save file as");
+        jlbl_subtitle_saveOptions.setSize(jlbl_subtitle_borderTop.getSize());
+        jlbl_subtitle_saveOptions.setLocation(jlbl_saveOptionsTitle.getX(),
+                jlbl_saveOptionsTitle.getHeight() 
+                + jlbl_saveOptionsTitle.getY()
+                + ViewSettings.getDistanceBetweenItems());
+        jlbl_subtitle_saveOptions.setFont(ViewSettings.GENERAL_FONT_ITEM_PLAIN);
+        jlbl_subtitle_saveOptions.setFocusable(false);
+        super.add(jlbl_subtitle_saveOptions);
+        
+        jcb_saveFormats = new JComboBox(Constants.SAVE_FORMATS);
+        jcb_saveFormats.setSize(jlbl_subtitle_borderTop.getSize());
+        jcb_saveFormats.setLocation(jlbl_subtitle_saveOptions.getX() 
+                + jlbl_subtitle_saveOptions.getWidth() 
+                + ViewSettings.getDistanceBetweenItems(),
+                jlbl_subtitle_saveOptions.getY());
+        jcb_saveFormats.addActionListener(CExport.getInstance());
+        super.add(jcb_saveFormats);
+    }
+    
+    
     /**
      * Apply the values set in Settings to the components.
      */
@@ -347,6 +409,8 @@ public final class Export extends Tab {
 
             jcb_displayAlpha.setSelectedIndex(0);
         }
+        
+        jcb_saveFormats.setSelectedItem(Status.getSaveFormat());
     }
     
 
@@ -422,6 +486,14 @@ public final class Export extends Tab {
      */
     public JComboBox getJcb_displayAlpha() {
         return jcb_displayAlpha;
+    }
+
+
+    /**
+     * @return the jcb_saveFormats
+     */
+    public JComboBox getJcb_saveFormats() {
+        return jcb_saveFormats;
     }
 
 }

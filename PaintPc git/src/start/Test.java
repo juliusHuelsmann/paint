@@ -26,7 +26,7 @@ public class Test {
         loadPicture();
         Picture.getInstance().transformWhiteToAlpha();
         
-        Picture.getInstance().savePNG(Settings.getWsLocation() + "/result.png");
+        Picture.getInstance().saveIMAGE(Settings.getWsLocation() + "/result.png");
     }
     
     
@@ -59,7 +59,7 @@ public class Test {
         Page.getInstance().setSize((int) newSize.getX(), (int) newSize.getY());
         Picture.getInstance().transformWhiteToAlpha();
         
-        Picture.getInstance().savePNG("/home/juli/Arbeitsfläche/output.png");
+        Picture.getInstance().saveIMAGE("/home/juli/Arbeitsfläche/output.png");
         
     }
 

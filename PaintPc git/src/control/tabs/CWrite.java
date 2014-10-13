@@ -37,6 +37,7 @@ public final class CWrite implements ActionListener {
      * 
      */
     private static final Color 
+    CLR_GRAY = new Color(160, 160, 160),
     CLR_GREEN = new Color(64, 197, 153),
     CLR_PINK = new Color(255, 153, 254),
     CLR_BLUE = new Color(153, 162, 255),
@@ -54,13 +55,13 @@ public final class CWrite implements ActionListener {
      * The pens.
      */
     public static final Pen 
-    PEN_THEOREM_1 = new Pencil(Constants.PEN_ID_LINES, 2, Color.gray),
+    PEN_THEOREM_1 = new Pencil(Constants.PEN_ID_LINES, 2, CLR_GRAY),
     PEN_THEOREM_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_GREEN),
     PEN_PROOF_1 = new Pencil(Constants.PEN_ID_LINES, 2, CLR_BLUE), 
-    PEN_PROOF_2 = new BallPen(Constants.PEN_ID_LINES, 2, Color.gray), 
+    PEN_PROOF_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_PINK), 
     PEN_EXMPL_1 = new Pencil(Constants.PEN_ID_LINES, 2, CLR_PINK), 
     PEN_EXMPL_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_BLUE_2),
-    PEN_CMMNT_1 = new Pencil(Constants.PEN_ID_LINES, 2, Color.gray),
+    PEN_CMMNT_1 = new Pencil(Constants.PEN_ID_LINES, 2, CLR_GRAY),
     PEN_CMMNT_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_PINK);
     
     /*
@@ -134,6 +135,11 @@ public final class CWrite implements ActionListener {
             //TODO: update paint gui.
         }
 
+        Paint.getInstance().getIt_stift1().setIcon(
+                Status.getPenSelected1().getIconPath());
+        Paint.getInstance().getIt_stift2().setIcon(
+                Status.getPenSelected2().getIconPath());
+
         Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);
         CPaintStatus.getInstance().deactivate();
         Paint.getInstance().getIt_stift1().getTb_open().setActivated(true);
@@ -171,6 +177,29 @@ public final class CWrite implements ActionListener {
         Write.getInstance().getTb_bemerkung().setActivated(false);
         Write.getInstance().getTb_beweis().setActivated(false);
         Write.getInstance().getTb_satz().setActivated(false);
+    }
+    
+    
+    /**
+     * If the pen in Status changed, check whether the current pen settings
+     * match with the current ones. The equals method is implemented inside 
+     * Pen.
+     */
+    public void penChanged() {
+        deactivate();
+        if (Status.getPenSelected1().equals(PEN_THEOREM_1)
+                && Status.getPenSelected2().equals(PEN_THEOREM_2)) {
+            Write.getInstance().getTb_satz().setActivated(true);
+        } else if (Status.getPenSelected1().equals(PEN_PROOF_1)
+                && Status.getPenSelected2().equals(PEN_PROOF_2)) {
+            Write.getInstance().getTb_beweis().setActivated(true);
+        } else if (Status.getPenSelected1().equals(PEN_EXMPL_1)
+                && Status.getPenSelected2().equals(PEN_EXMPL_2)) {
+            Write.getInstance().getTb_beispiel().setActivated(true);
+        } else if (Status.getPenSelected1().equals(PEN_CMMNT_1)
+                && Status.getPenSelected2().equals(PEN_CMMNT_2)) {
+            Write.getInstance().getTb_bemerkung().setActivated(true);
+        } 
     }
     
     

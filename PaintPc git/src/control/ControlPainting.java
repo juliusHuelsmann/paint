@@ -943,7 +943,7 @@ public final class ControlPainting implements MouseListener,
             String firstPath = Status.getSavePath().substring(0, d);
             
             // save images in both formats.
-            Picture.getInstance().savePNG(firstPath + "png");
+            Picture.getInstance().saveIMAGE(firstPath);
             Picture.getInstance().savePicture(firstPath + "pic");
 
 

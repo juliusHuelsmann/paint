@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import view.forms.Page;
 import view.forms.tabs.Look;
+import view.forms.tabs.Paint;
 import view.forms.tabs.Write;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
@@ -64,16 +65,30 @@ public final class CWrite implements ActionListener {
         if (_event.getSource().equals(Write.getInstance()
                 .getTb_beispiel())) {
             deactivate();
+            Paint.getInstance().getJbtn_color1().setBackground(
+                    penExmpl1.getClr_foreground());
+            Paint.getInstance().getJbtn_color2().setBackground(
+                    penExmpl2.getClr_foreground());
             Status.setPenSelected1(Pen.clonePen(penExmpl1));
             Status.setPenSelected2(Pen.clonePen(penExmpl2));
+
         } else if (_event.getSource().equals(Write.getInstance()
                 .getTb_bemerkung())) {
             deactivate();
+            Paint.getInstance().getJbtn_color1().setBackground(
+                    penCmmnt1.getClr_foreground());
+            Paint.getInstance().getJbtn_color2().setBackground(
+                    penCmmnt2.getClr_foreground());
             Status.setPenSelected1(Pen.clonePen(penCmmnt1));
             Status.setPenSelected2(Pen.clonePen(penCmmnt2));
+
         } else if (_event.getSource().equals(Write.getInstance()
                 .getTb_beweis())) {
             deactivate();
+            Paint.getInstance().getJbtn_color1().setBackground(
+                    penProof1.getClr_foreground());
+            Paint.getInstance().getJbtn_color2().setBackground(
+                    penProof2.getClr_foreground());
             Status.setPenSelected1(Pen.clonePen(penProof1));
             Status.setPenSelected2(Pen.clonePen(penProof2));
         } else if (_event.getSource().equals(Write.getInstance()
@@ -88,10 +103,19 @@ public final class CWrite implements ActionListener {
         } else if (_event.getSource().equals(Write.getInstance()
                 .getTb_satz())) {
             deactivate();
+            Paint.getInstance().getJbtn_color1().setBackground(
+                    penWrite1.getClr_foreground());
+            Paint.getInstance().getJbtn_color2().setBackground(
+                    penWrite2.getClr_foreground());
             Status.setPenSelected1(Pen.clonePen(penWrite1));
             Status.setPenSelected2(Pen.clonePen(penWrite2));
             //TODO: update paint gui.
         }
+
+        Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);
+        CPaintStatus.getInstance().deactivate();
+        Paint.getInstance().getIt_stift1().getTb_open().setActivated(true);
+        Paint.getInstance().getTb_color1().setActivated(true);
     }
     
     

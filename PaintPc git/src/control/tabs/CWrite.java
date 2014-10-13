@@ -1,11 +1,10 @@
+//package declaration
 package control.tabs;
 
+//import declarations
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import view.forms.Page;
-import view.forms.tabs.Look;
 import view.forms.tabs.Paint;
 import view.forms.tabs.Write;
 import model.objects.pen.Pen;
@@ -14,8 +13,6 @@ import model.objects.pen.normal.Pencil;
 import model.settings.Constants;
 import model.settings.Status;
 
-
-
 /**
  * 
  * @author Julius Huelsmann
@@ -23,45 +20,65 @@ import model.settings.Status;
  */
 public final class CWrite implements ActionListener {
 
-    /**
-     * Empty utility class constructor.
+    /*
+     * Singleton
      */
-    private CWrite() { }
+    
+    /**
+     * The only instance of this class.
+     */
+    private static CWrite instance;
 
+    /*
+     * Identifiers
+     */
+    
     /**
      * 
      */
     private static final Color 
-    clr_green = new Color(2 * 2 * 2 * 2 * 2 * 2, 
-            (int) (Math.pow(2, 2 + 2 + 2 + 1) 
-                    + Math.pow(2, 2 + 2 + 2) + 2 + 2 + 1), 
-            (2 + 1) * (2 + 1) * (2 + 1) + (2 + 2 + 2 + 1) 
-            * (2 + 2 + 2 + 2 + 2)),
-            clr_pink = new Color(255, 153, 254),
-            clr_blue = new Color(153, 162, 255),
-            clr_darkBlue = new Color(112, 146, 190);
+    CLR_GREEN = new Color(64, 197, 153),
+    CLR_PINK = new Color(255, 153, 254),
+    CLR_BLUE = new Color(153, 162, 255),
+    CLR_BLUE_2 = new Color(112, 146, 190);
+    
+    /**
+     * Headline identifiers.
+     */
+    private static final int
+    HEADLINE_1 = 0,
+    HEADLINE_2 = 1,
+    HEADLINE_3 = 2;
     
     /**
      * The pens.
      */
     public static final Pen 
     PEN_THEOREM_1 = new Pencil(Constants.PEN_ID_LINES, 2, Color.gray),
-    PEN_THEOREM_2 = new BallPen(Constants.PEN_ID_LINES, 2, clr_green),
-    PEN_PROOF_1 = new Pencil(Constants.PEN_ID_LINES, 2, clr_blue), 
+    PEN_THEOREM_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_GREEN),
+    PEN_PROOF_1 = new Pencil(Constants.PEN_ID_LINES, 2, CLR_BLUE), 
     PEN_PROOF_2 = new BallPen(Constants.PEN_ID_LINES, 2, Color.gray), 
-    PEN_EXMPL_1 = new Pencil(Constants.PEN_ID_LINES, 2, clr_pink), 
-    PEN_EXMPL_2 = new BallPen(Constants.PEN_ID_LINES, 2, clr_darkBlue),
+    PEN_EXMPL_1 = new Pencil(Constants.PEN_ID_LINES, 2, CLR_PINK), 
+    PEN_EXMPL_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_BLUE_2),
     PEN_CMMNT_1 = new Pencil(Constants.PEN_ID_LINES, 2, Color.gray),
-    PEN_CMMNT_2 = new BallPen(Constants.PEN_ID_LINES, 2, clr_pink);
+    PEN_CMMNT_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_PINK);
     
-    
+    /*
+     * Constructor
+     */
     
     /**
-     * The only instance of this class.
+     * Empty utility class constructor.
      */
-    private static CWrite instance;
+    private CWrite() { }
+
+    /*
+     * ActionListener
+     */
     
-    
+    /**
+     * {@inheritDoc}
+     */
     @Override public void actionPerformed(final ActionEvent _event) {
 
         if (_event.getSource().equals(Write.getInstance()
@@ -98,13 +115,13 @@ public final class CWrite implements ActionListener {
             Status.setPenSelected2(Pen.clonePen(PEN_PROOF_2));
         } else if (_event.getSource().equals(Write.getInstance()
                 .getTb_headline1().getActionCause())) {
-                
+                insertHeadline(HEADLINE_1);
         } else if (_event.getSource().equals(Write.getInstance()
                 .getTb_headline2().getActionCause())) {
-                
+            insertHeadline(HEADLINE_2);
         } else if (_event.getSource().equals(Write.getInstance()
                 .getTb_headline3().getActionCause())) {
-                
+            insertHeadline(HEADLINE_3);
         } else if (_event.getSource().equals(Write.getInstance()
                 .getTb_satz().getActionCause())) {
             deactivate();
@@ -124,6 +141,31 @@ public final class CWrite implements ActionListener {
     }
     
     
+    
+    /**
+     * Insert a headline somewhere (into the selected items) after releasing
+     * selection if necessary.
+     * 
+     * @param _importance the importance.
+     */
+    private void insertHeadline(final int _importance) {
+        switch (_importance) {
+        case HEADLINE_1:
+            break;
+        case HEADLINE_2:
+            break;
+        case HEADLINE_3:
+            break;
+        default:
+            Status.getLogger().severe("Wrong kind of headline");
+            break;
+        }
+    }
+    
+    
+    /**
+     * Deactivate all graphical user interface items.
+     */
     public void deactivate() {
         Write.getInstance().getTb_beispiel().setActivated(false);
         Write.getInstance().getTb_bemerkung().setActivated(false);

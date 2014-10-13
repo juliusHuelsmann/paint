@@ -175,13 +175,19 @@ public final class ControlPainting implements MouseListener,
         if (_event.getSource().equals(
                 Paint.getInstance().getTb_turnMirror().getActionCause())) {
 
-            View.getInstance().turn();
-            Status.setNormalRotation(false);
+            if (Status.isNormalRotation()) {
+
+                View.getInstance().turn();
+                Status.setNormalRotation(false);
+            }
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_turnNormal().getActionCause())) {
 
-            View.getInstance().turn();
-            Status.setNormalRotation(true);
+            if (!Status.isNormalRotation()) {
+
+                View.getInstance().turn();
+                Status.setNormalRotation(true);
+            }
         }
     }
 
@@ -309,19 +315,7 @@ public final class ControlPainting implements MouseListener,
                     
                 // add paintObject and point to Picture
                 Picture.getInstance().addPaintObject();
-                Picture.getInstance().changePaintObject(
-                        new DPoint((_event.getX() 
-                                - Page.getInstance()
-                                .getJlbl_painting().getLocation().x
-                                )
-                                * Status.getImageSize().width
-                                / Status.getImageShowSize().width, (_event
-                                .getY() 
-                                - Page.getInstance().getJlbl_painting()
-                                .getLocation().y
-                                )
-                                * Status.getImageSize().height
-                                / Status.getImageShowSize().height));
+                changePO(_event);
                 break;
             
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
@@ -358,6 +352,45 @@ public final class ControlPainting implements MouseListener,
         }
     }
 
+    
+    /**
+     * Change PaintObject.
+     * @param _event the event.
+     */
+    private void changePO(final MouseEvent _event) {
+
+        if (Status.isNormalRotation()) {
+
+            Picture.getInstance().changePaintObject(
+                    new DPoint((_event.getX() 
+                            - Page.getInstance()
+                            .getJlbl_painting().getLocation().x
+                            )
+                            * Status.getImageSize().width
+                            / Status.getImageShowSize().width, (_event
+                            .getY() 
+                            - Page.getInstance().getJlbl_painting()
+                            .getLocation().y
+                            )
+                            * Status.getImageSize().height
+                            / Status.getImageShowSize().height));
+        } else {
+
+            Picture.getInstance()
+            .changePaintObject(new DPoint((_event.getX() 
+                    - Page.getInstance().getJlbl_painting().getWidth()
+                    + Page.getInstance().getJlbl_painting().getLocation().x)
+                    * Status.getImageSize().width
+                    / Status.getImageShowSize().width, 
+                    (_event.getY() 
+                    - Page.getInstance().getJlbl_painting().getHeight()
+                    + Page.getInstance().getJlbl_painting()
+                    .getLocation().y
+                    )
+                    * Status.getImageSize().height
+                    / Status.getImageShowSize().height));
+        }
+    }
     /**
      * {@inheritDoc}
      */
@@ -391,16 +424,7 @@ public final class ControlPainting implements MouseListener,
 
 
                 // add paintObject and point to Picture
-                Picture.getInstance().changePaintObject(
-                        new DPoint((_event.getX() 
-                                - Page.getInstance()
-                                .getJlbl_painting().getLocation().x)
-                                * Status.getImageSize().width
-                                / Status.getImageShowSize().width, (_event
-                                .getY() - Page.getInstance().getJlbl_painting()
-                                .getLocation().y)
-                                * Status.getImageSize().height
-                                / Status.getImageShowSize().height));
+                changePO(_event);
                 break;
 
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
@@ -713,8 +737,19 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
-                Picture.getInstance().getPen_current().preprint(
-                        _event.getX(), _event.getY());
+                
+                if (Status.isNormalRotation()) {
+
+                    Picture.getInstance().getPen_current().preprint(
+                            _event.getX(), _event.getY());
+                } else {
+
+                    Picture.getInstance().getPen_current().preprint(
+                            Page.getInstance().getJlbl_painting().getWidth() 
+                            - _event.getX(), 
+                            Page.getInstance().getJlbl_painting().getHeight() 
+                            - _event.getY());
+                }
             default:
                 
                 break;

@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 
 import model.settings.Constants;
 import model.settings.Error;
+import model.settings.Status;
 import model.util.paint.Utils;
 import view.forms.Page;
 import view.forms.Tabs;
@@ -212,45 +213,80 @@ implements MouseMotionListener, MouseListener, KeyListener {
             //vertical scroll versus horizontal scroll
             if (view.isVerticalScroll()) {
 
-                int y = (int) (
-                        pnt_centerStartLocation.getY() 
-                        - pnt_dragStartOnScreen.getY() 
-                        + _event.getYOnScreen());
-           
-                if (y - view.getJbtn_toTop().getHeight() 
-                        > view.getJbtn_toBottom().getY() 
-                        - view.getJbtn_toTop().getHeight() 
-                        - view.getJbtn_center().getHeight()) {
-                    
-                    y = view.getJbtn_toBottom().getY() 
+                if (Status.isNormalRotation()) {
+                    int y = (int) (
+                            pnt_centerStartLocation.getY() 
+                            - pnt_dragStartOnScreen.getY() 
+                            + _event.getYOnScreen());
+               
+                    if (y - view.getJbtn_toTop().getHeight() 
+                            > view.getJbtn_toBottom().getY() 
                             - view.getJbtn_toTop().getHeight() 
-                            - view.getJbtn_center().getHeight() 
-                            + view.getJbtn_toTop().getHeight();
-                } else if (y < view.getJbtn_toTop().getHeight()) {
-                    y = view.getJbtn_toTop().getHeight();
+                            - view.getJbtn_center().getHeight()) {
+                        
+                        y = view.getJbtn_toBottom().getY() 
+                                - view.getJbtn_toTop().getHeight() 
+                                - view.getJbtn_center().getHeight() 
+                                + view.getJbtn_toTop().getHeight();
+                    } else if (y < view.getJbtn_toTop().getHeight()) {
+                        y = view.getJbtn_toTop().getHeight();
+                    }
+
+                    view.getJbtn_center().setLocation(
+                            view.getJbtn_center().getX(), y);
+                } else {
+                    int y = (int) 
+                            (pnt_centerStartLocation.getY() 
+                            - pnt_dragStartOnScreen.getY() 
+                            + _event.getYOnScreen());
+
+                    //thus the scrollPane does never quit its borders.
+                    y = Math.min(y, -view.getJbtn_center().getHeight() 
+                            + view.getJbtn_toTop().getY());
+                    y = Math.max(y, view.getJbtn_toBottom().getHeight() 
+                            + view.getJbtn_toBottom().getY());
+
+                    //set location of the center button.
+                    view.getJbtn_center().setLocation(
+                            view.getJbtn_center().getX(), y);
                 }
-                view.getJbtn_center().setLocation(
-                        view.getJbtn_center().getX(), y);
             } else {
 
-                int x = (int) (pnt_centerStartLocation.getX() 
-                        - pnt_dragStartOnScreen.getX() 
-                        + _event.getXOnScreen());
-                
-                if (x - view.getJbtn_toTop().getWidth()
-                        > view.getJbtn_toBottom().getX()
-                        - view.getJbtn_toTop().getWidth()
-                        - view.getJbtn_center().getWidth()) {
-                    x = view.getJbtn_toBottom().getX() 
+                if (Status.isNormalRotation()) {
+                    int x = (int) (pnt_centerStartLocation.getX() 
+                            - pnt_dragStartOnScreen.getX() 
+                            + _event.getXOnScreen());
+                    
+                    if (x - view.getJbtn_toTop().getWidth()
+                            > view.getJbtn_toBottom().getX()
                             - view.getJbtn_toTop().getWidth()
-                            - view.getJbtn_center().getWidth() 
-                            + view.getJbtn_toTop().getWidth();
-                } else if (x < view.getJbtn_toTop().getWidth()) {
-                    x = view.getJbtn_toTop().getWidth();
+                            - view.getJbtn_center().getWidth()) {
+                        x = view.getJbtn_toBottom().getX() 
+                                - view.getJbtn_toTop().getWidth()
+                                - view.getJbtn_center().getWidth() 
+                                + view.getJbtn_toTop().getWidth();
+                    } else if (x < view.getJbtn_toTop().getWidth()) {
+                        x = view.getJbtn_toTop().getWidth();
+                    }
+                    
+                    view.getJbtn_center().setLocation(
+                            x, view.getJbtn_center().getY());
+                } else {
+                    int x = (int) (pnt_centerStartLocation.getX() 
+                            - pnt_dragStartOnScreen.getX() 
+                            + _event.getXOnScreen());
+
+                    //thus the scrollPane does never quit its borders.
+                    x = Math.min(x, -view.getJbtn_center().getWidth() 
+                            + view.getJbtn_toTop().getX());
+                    x = Math.max(x, view.getJbtn_toBottom().getWidth() 
+                            + view.getJbtn_toBottom().getX());
+
+                    //set location of the center button.
+                    view.getJbtn_center().setLocation(x, 
+                            view.getJbtn_center().getY());
                 }
                 
-                view.getJbtn_center().setLocation(
-                        x, view.getJbtn_center().getY());
                 
             }
             refreshA();     
@@ -471,16 +507,28 @@ implements MouseMotionListener, MouseListener, KeyListener {
      */
     private void removeXLocation() {
         
-        int x = view.getJpnl_toLocate().getLocation().x - moveStep;
-        if (x < -view.getJpnl_toLocate().getWidth()
-                + view.getJpnl_owner().getWidth()) {
-            x = -view.getJpnl_toLocate().getWidth()
-                    + view.getJpnl_owner().getWidth();
+        if (Status.isNormalRotation()) {
+
+            int x = view.getJpnl_toLocate().getLocation().x - moveStep;
+            if (x < -view.getJpnl_toLocate().getWidth()
+                    + view.getJpnl_owner().getWidth()) {
+                x = -view.getJpnl_toLocate().getWidth()
+                        + view.getJpnl_owner().getWidth();
+            }
+            
+            view.getJpnl_toLocate().setLocation(x, 
+                    view.getJpnl_toLocate().getLocation().y);
+            view.recalculateCenterBounds();
+        } else {
+
+            int x = view.getJpnl_toLocate().getLocation().x + moveStep;
+            //thus the scrollPane does never quit its borders.
+            x = Math.max(x, 0);
+
+            //set location of the center button.
+            view.getJbtn_center().setLocation(x, 
+                    view.getJbtn_center().getY());
         }
-        
-        view.getJpnl_toLocate().setLocation(x, 
-                view.getJpnl_toLocate().getLocation().y);
-        view.recalculateCenterBounds();
     
     }
     
@@ -490,14 +538,28 @@ implements MouseMotionListener, MouseListener, KeyListener {
      */
     private void addXLocation() {
         
-        int x = view.getJpnl_toLocate().getLocation().x + moveStep;
         
-        if (x > 0) {
-            x = 0;
+        
+        if (Status.isNormalRotation()) {
+
+            int x = view.getJpnl_toLocate().getLocation().x + moveStep;
+            if (x > 0) {
+                x = 0;
+            }
+            view.getJpnl_toLocate().setLocation(x, 
+                    view.getJpnl_toLocate().getLocation().y);
+            view.recalculateCenterBounds();
+        } else {
+
+            int x = view.getJpnl_toLocate().getLocation().x - moveStep;
+            //thus the scrollPane does never quit its borders.
+            x = Math.max(x, -view.getJpnl_toLocate().getWidth()
+                    + view.getJpnl_owner().getWidth());
+
+            //set location of the center button.
+            view.getJbtn_center().setLocation(x, 
+                    view.getJbtn_center().getY());
         }
-        view.getJpnl_toLocate().setLocation(x, 
-                view.getJpnl_toLocate().getLocation().y);
-        view.recalculateCenterBounds();
     }
     
     
@@ -506,17 +568,32 @@ implements MouseMotionListener, MouseListener, KeyListener {
      * decrease y location.
      */
     private void removeYLocation() {
-        
-        int y = view.getJpnl_toLocate().getLocation().y - moveStep;
-        if (y < -view.getJpnl_toLocate().getHeight()
-                + view.getJpnl_owner().getHeight()) {
-            y = -view.getJpnl_toLocate().getHeight()
-                    + view.getJpnl_owner().getHeight();
-        }
-        view.getJpnl_toLocate().setLocation(
-                view.getJpnl_toLocate().getLocation().x, y);
 
-        view.recalculateCenterBounds();
+        int y = view.getJpnl_toLocate().getLocation().y - moveStep;
+        if (Status.isNormalRotation()) {
+            if (y < -view.getJpnl_toLocate().getHeight()
+                    + view.getJpnl_owner().getHeight()) {
+                y = -view.getJpnl_toLocate().getHeight()
+                        + view.getJpnl_owner().getHeight();
+            }
+            view.getJpnl_toLocate().setLocation(
+                    view.getJpnl_toLocate().getLocation().x, y);
+
+            view.recalculateCenterBounds();
+        } else {
+
+            //thus the scrollPane does never quit its borders.
+            y = Math.min(y, -view.getJbtn_center().getHeight() 
+                    + view.getJbtn_toTop().getY());
+            y = Math.max(y, view.getJbtn_toBottom().getHeight() 
+                    + view.getJbtn_toBottom().getY());
+
+            //set location of the center button.
+            view.getJbtn_center().setLocation(
+                    view.getJbtn_center().getX(), y);
+        
+        }
+
     }
 
 
@@ -526,12 +603,27 @@ implements MouseMotionListener, MouseListener, KeyListener {
     private void addYLocation() {
         int y = view.getJpnl_toLocate().getLocation().y + moveStep;
         
-        if (y > 0) {
-            y = 0;
+        if (Status.isNormalRotation()) {
+
+            if (y > 0) {
+                y = 0;
+            }
+            view.getJpnl_toLocate().setLocation(
+                    view.getJpnl_toLocate().getLocation().x, y);
+            view.recalculateCenterBounds();
+        } else {
+
+            //thus the scrollPane does never quit its borders.
+            y = Math.min(y, -view.getJbtn_center().getHeight() 
+                    + view.getJbtn_toTop().getY());
+            y = Math.max(y, view.getJbtn_toBottom().getHeight() 
+                    + view.getJbtn_toBottom().getY());
+
+            //set location of the center button.
+            view.getJbtn_center().setLocation(
+                    view.getJbtn_center().getX(), y);
+        
         }
-        view.getJpnl_toLocate().setLocation(
-                view.getJpnl_toLocate().getLocation().x, y);
-        view.recalculateCenterBounds();
     }
 
     

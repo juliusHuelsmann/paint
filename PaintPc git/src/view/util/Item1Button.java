@@ -195,8 +195,11 @@ public class Item1Button extends MPanel {
 	 */
 	public final void setIcon(final BufferedImage _i) {
 		jlbl_color.setOpaque(false);
-		jlbl_color.setIcon(new ImageIcon(Utils.resizeImage(
-				jlbl_color.getWidth(), jlbl_color.getHeight(), _i)));
+		if (jlbl_color.getWidth() > 0 && jlbl_color.getHeight() > 0) {
+
+	        jlbl_color.setIcon(new ImageIcon(Utils.resizeImage(
+	                jlbl_color.getWidth(), jlbl_color.getHeight(), _i)));
+		}
 	}
 
 	/**

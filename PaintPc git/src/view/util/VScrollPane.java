@@ -7,6 +7,7 @@ import java.awt.Component;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import view.util.mega.MButton;
 import view.util.mega.MPanel;

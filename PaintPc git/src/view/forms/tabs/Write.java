@@ -22,8 +22,9 @@ public final class Write extends Tab {
     /**
      * The item2menus.
      */
-    private Item1Button tb_bemerkung, tb_satz, tb_beweis, tb_beispiel, 
-    tb_headline1, tb_headline2, tb_headline3;
+    private Item1Button tb_pen_comment, tb_pen_theorem, tb_pen_proof, 
+    tb_pen_example, tb_pen_headline1, tb_pen_headline2, tb_pen_headline3;
+    
     
     /**
      * The only instance of this class.
@@ -57,134 +58,135 @@ public final class Write extends Tab {
          * 
          * 
          */
-		
-
-        tb_satz = new Item1Button(null);
-        tb_satz.setOpaque(true);
-        tb_satz.setSize(ViewSettings.getItemMenu1Width(),
+        tb_pen_theorem = new Item1Button(null);
+        tb_pen_theorem.setOpaque(true);
+        tb_pen_theorem.setSize(ViewSettings.getItemMenu1Width(),
                 ViewSettings.getItemMenu1Height());
-        tb_satz.setLocation(ViewSettings.getDistanceBetweenItems(), 
+        tb_pen_theorem.setLocation(ViewSettings.getDistanceBetweenItems(), 
                 ViewSettings.getDistanceBetweenItems());
-        tb_satz.setText("Satz");
-        tb_satz.setBorder(BorderFactory.createCompoundBorder(
+        tb_pen_theorem.setText("Satz");
+        tb_pen_theorem.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
-        tb_satz.setActivable(true);
-        tb_satz.addActionListener(CWrite.getInstance());
-        tb_satz.setIcon("paint/test.png");
-        super.add(tb_satz);
+        tb_pen_theorem.setActivable(true);
+        tb_pen_theorem.addActionListener(CWrite.getInstance());
+        tb_pen_theorem.setIcon("paint/test.png");
+        super.add(tb_pen_theorem);
 
-        tb_beweis = new Item1Button(null);
-        tb_beweis.setOpaque(true);
-        tb_beweis.setSize(ViewSettings.getItemMenu1Width(),
+        tb_pen_proof = new Item1Button(null);
+        tb_pen_proof.setOpaque(true);
+        tb_pen_proof.setSize(ViewSettings.getItemMenu1Width(),
                 ViewSettings.getItemMenu1Height());
-        tb_beweis.setLocation(tb_satz.getWidth() + tb_satz.getX() 
+        tb_pen_proof.setLocation(tb_pen_theorem.getWidth() 
+                + tb_pen_theorem.getX() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 ViewSettings.getDistanceBetweenItems());
-        tb_beweis.setText("Beweis");
-        tb_beweis.setBorder(BorderFactory.createCompoundBorder(
+        tb_pen_proof.setText("Beweis");
+        tb_pen_proof.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
-        tb_beweis.setActivable(true);
-        tb_beweis.addActionListener(CWrite.getInstance());
-        tb_beweis.setIcon("paint/test.png");
-        super.add(tb_beweis);
+        tb_pen_proof.setActivable(true);
+        tb_pen_proof.addActionListener(CWrite.getInstance());
+        tb_pen_proof.setIcon("paint/test.png");
+        super.add(tb_pen_proof);
 
-        tb_beispiel = new Item1Button(null);
-        tb_beispiel.setOpaque(true);
-        tb_beispiel.setSize(ViewSettings.getItemMenu1Width(),
+        tb_pen_example = new Item1Button(null);
+        tb_pen_example.setOpaque(true);
+        tb_pen_example.setSize(ViewSettings.getItemMenu1Width(),
                 ViewSettings.getItemMenu1Height());
-        tb_beispiel.setLocation(tb_beweis.getWidth() + tb_beweis.getX() 
+        tb_pen_example.setLocation(tb_pen_proof.getWidth() 
+                + tb_pen_proof.getX() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 ViewSettings.getDistanceBetweenItems());
-        tb_beispiel.setText("Beispiel");
-        tb_beispiel.setBorder(BorderFactory.createCompoundBorder(
+        tb_pen_example.setText("Beispiel");
+        tb_pen_example.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
-        tb_beispiel.setActivable(true);
-        tb_beispiel.addActionListener(CWrite.getInstance());
-        tb_beispiel.setIcon("paint/test.png");
-        super.add(tb_beispiel);
+        tb_pen_example.setActivable(true);
+        tb_pen_example.addActionListener(CWrite.getInstance());
+        tb_pen_example.setIcon("paint/test.png");
+        super.add(tb_pen_example);
 
 
-        tb_bemerkung = new Item1Button(null);
-        tb_bemerkung.setOpaque(true);
-        tb_bemerkung.setSize(ViewSettings.getItemMenu1Width(),
+        tb_pen_comment = new Item1Button(null);
+        tb_pen_comment.setOpaque(true);
+        tb_pen_comment.setSize(ViewSettings.getItemMenu1Width(),
                 ViewSettings.getItemMenu1Height());
-        tb_bemerkung.setLocation(tb_beispiel.getWidth() + tb_beispiel.getX() 
+        tb_pen_comment.setLocation(tb_pen_example.getWidth() 
+                + tb_pen_example.getX() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 ViewSettings.getDistanceBetweenItems());
-        tb_bemerkung.setText("Bemerkung");
-        tb_bemerkung.setBorder(BorderFactory.createCompoundBorder(
+        tb_pen_comment.setText("Bemerkung");
+        tb_pen_comment.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
-        tb_bemerkung.setActivable(true);
-        tb_bemerkung.setIcon("paint/test.png");
-        tb_bemerkung.addActionListener(CWrite.getInstance());
-        super.add(tb_bemerkung);
+        tb_pen_comment.setActivable(true);
+        tb_pen_comment.setIcon("paint/test.png");
+        tb_pen_comment.addActionListener(CWrite.getInstance());
+        super.add(tb_pen_comment);
 
-        
-		
-		
 		
 
-        insertSectionStuff("fertige Stifte", 0, 
-                tb_bemerkung.getX() + tb_bemerkung.getWidth()
+        insertSectionStuff("pen settings content", 0, 
+                tb_pen_comment.getX() + tb_pen_comment.getWidth()
                 + ViewSettings.getDistanceBeforeLine(), 0, true);
 
-        tb_headline1 = new Item1Button(null);
-        tb_headline1.setOpaque(true);
-        tb_headline1.setSize(ViewSettings.getItemMenu1Width(),
+        tb_pen_headline1 = new Item1Button(null);
+        tb_pen_headline1.setOpaque(true);
+        tb_pen_headline1.setSize(ViewSettings.getItemMenu1Width(),
                 ViewSettings.getItemMenu1Height());
-        tb_headline1.setLocation(tb_bemerkung.getWidth() + tb_bemerkung.getX() 
+        tb_pen_headline1.setLocation(tb_pen_comment.getWidth()
+                + tb_pen_comment.getX() 
                 + ViewSettings.getDistanceBeforeLine() * 2, 
                 ViewSettings.getDistanceBetweenItems());
-        tb_headline1.setText("Headline 1");
-        tb_headline1.setBorder(BorderFactory.createCompoundBorder(
+        tb_pen_headline1.setText("Headline 1");
+        tb_pen_headline1.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
-        tb_headline1.setActivable(false);
-        tb_headline1.setIcon("paint/test.png");
-        tb_headline1.addActionListener(CWrite.getInstance());
-        super.add(tb_headline1);
+        tb_pen_headline1.setActivable(false);
+        tb_pen_headline1.setIcon("paint/test.png");
+        tb_pen_headline1.addActionListener(CWrite.getInstance());
+        super.add(tb_pen_headline1);
 
-        tb_headline2 = new Item1Button(null);
-        tb_headline2.setOpaque(true);
-        tb_headline2.setSize(ViewSettings.getItemMenu1Width(),
+        tb_pen_headline2 = new Item1Button(null);
+        tb_pen_headline2.setOpaque(true);
+        tb_pen_headline2.setSize(ViewSettings.getItemMenu1Width(),
                 ViewSettings.getItemMenu1Height());
-        tb_headline2.setLocation(tb_headline1.getWidth() + tb_headline1.getX() 
+        tb_pen_headline2.setLocation(tb_pen_headline1.getWidth() 
+                + tb_pen_headline1.getX() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 ViewSettings.getDistanceBetweenItems());
-        tb_headline2.setText("Headline 2");
-        tb_headline2.setBorder(BorderFactory.createCompoundBorder(
+        tb_pen_headline2.setText("Headline 2");
+        tb_pen_headline2.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
-        tb_headline2.setActivable(false);
-        tb_headline2.setIcon("paint/test.png");
-        tb_headline2.addActionListener(CWrite.getInstance());
-        super.add(tb_headline2);
+        tb_pen_headline2.setActivable(false);
+        tb_pen_headline2.setIcon("paint/test.png");
+        tb_pen_headline2.addActionListener(CWrite.getInstance());
+        super.add(tb_pen_headline2);
         
-        tb_headline3 = new Item1Button(null);
-        tb_headline3.setOpaque(true);
-        tb_headline3.setSize(ViewSettings.getItemMenu1Width(),
+        tb_pen_headline3 = new Item1Button(null);
+        tb_pen_headline3.setOpaque(true);
+        tb_pen_headline3.setSize(ViewSettings.getItemMenu1Width(),
                 ViewSettings.getItemMenu1Height());
-        tb_headline3.setLocation(tb_headline2.getWidth() + tb_headline2.getX() 
+        tb_pen_headline3.setLocation(tb_pen_headline2.getWidth() 
+                + tb_pen_headline2.getX() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 ViewSettings.getDistanceBetweenItems());
-        tb_headline3.setText("Headline 3");
-        tb_headline3.setBorder(BorderFactory.createCompoundBorder(
+        tb_pen_headline3.setText("Headline 3");
+        tb_pen_headline3.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
-        tb_headline3.setActivable(false);
-        tb_headline3.setIcon("paint/test.png");
-        tb_headline3.addActionListener(CWrite.getInstance());
-        super.add(tb_headline3);
+        tb_pen_headline3.setActivable(false);
+        tb_pen_headline3.setIcon("paint/test.png");
+        tb_pen_headline3.addActionListener(CWrite.getInstance());
+        super.add(tb_pen_headline3);
 
 
-        insertSectionStuff("Headlines", 
-                tb_bemerkung.getX() + tb_bemerkung.getWidth()
+        insertSectionStuff("pen settings headline", 
+                tb_pen_comment.getX() + tb_pen_comment.getWidth()
                 + ViewSettings.getDistanceBeforeLine(),
-                tb_headline3.getX() + tb_headline3.getWidth() 
+                tb_pen_headline3.getX() + tb_pen_headline3.getWidth() 
                 + ViewSettings.getDistanceBeforeLine(), 0, true);
 
         
@@ -214,48 +216,48 @@ public final class Write extends Tab {
      * @return the tb_bemerkung
      */
     public Item1Button getTb_bemerkung() {
-        return tb_bemerkung;
+        return tb_pen_comment;
     }
 
     /**
      * @return the tb_satz
      */
     public Item1Button getTb_satz() {
-        return tb_satz;
+        return tb_pen_theorem;
     }
 
     /**
      * @return the tb_beweis
      */
     public Item1Button getTb_beweis() {
-        return tb_beweis;
+        return tb_pen_proof;
     }
 
     /**
      * @return the tb_beispiel
      */
     public Item1Button getTb_beispiel() {
-        return tb_beispiel;
+        return tb_pen_example;
     }
 
     /**
      * @return the tb_headline1
      */
     public Item1Button getTb_headline1() {
-        return tb_headline1;
+        return tb_pen_headline1;
     }
 
     /**
      * @return the tb_headline2
      */
     public Item1Button getTb_headline2() {
-        return tb_headline2;
+        return tb_pen_headline2;
     }
 
     /**
      * @return the tb_headline3
      */
     public Item1Button getTb_headline3() {
-        return tb_headline3;
+        return tb_pen_headline3;
     }
 }

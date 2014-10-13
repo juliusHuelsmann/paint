@@ -40,16 +40,22 @@ public final class CWrite implements ActionListener {
     CLR_GRAY = new Color(160, 160, 160),
     CLR_GREEN = new Color(64, 197, 153),
     CLR_PINK = new Color(255, 153, 254),
+    CLR_PINK_2 = new Color(133, 33, 134),
     CLR_BLUE = new Color(153, 162, 255),
     CLR_BLUE_2 = new Color(112, 146, 190);
     
+//    /**
+//     * Headline identifiers.
+//     */
+//    private static final int
+//    HEADLINE_1 = 0,
+//    HEADLINE_2 = 1,
+//    HEADLINE_3 = 2;
+    
     /**
-     * Headline identifiers.
+     * The sizes of the headlines.
      */
-    private static final int
-    HEADLINE_1 = 0,
-    HEADLINE_2 = 1,
-    HEADLINE_3 = 2;
+    private static final int SIZE_H1 = 8, SIZE_H2 = 6, SIZE_H3 = 4;
     
     /**
      * The pens.
@@ -58,11 +64,17 @@ public final class CWrite implements ActionListener {
     PEN_THEOREM_1 = new Pencil(Constants.PEN_ID_LINES, 2, CLR_GRAY),
     PEN_THEOREM_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_GREEN),
     PEN_PROOF_1 = new Pencil(Constants.PEN_ID_LINES, 2, CLR_BLUE), 
-    PEN_PROOF_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_PINK), 
+    PEN_PROOF_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_PINK_2), 
     PEN_EXMPL_1 = new Pencil(Constants.PEN_ID_LINES, 2, CLR_PINK), 
     PEN_EXMPL_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_BLUE_2),
     PEN_CMMNT_1 = new Pencil(Constants.PEN_ID_LINES, 2, CLR_GRAY),
-    PEN_CMMNT_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_PINK);
+    PEN_CMMNT_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_PINK_2),
+    PEN_HEADLINE_1_1 = new BallPen(Constants.PEN_ID_LINES, SIZE_H1, CLR_BLUE_2),
+    PEN_HEADLINE_1_2 = new Pencil(Constants.PEN_ID_LINES, SIZE_H1, CLR_PINK_2), 
+    PEN_HEADLINE_2_1 = new BallPen(Constants.PEN_ID_LINES, SIZE_H2, CLR_BLUE_2),
+    PEN_HEADLINE_2_2 = new Pencil(Constants.PEN_ID_LINES, SIZE_H2, CLR_PINK_2), 
+    PEN_HEADLINE_3_1 = new BallPen(Constants.PEN_ID_LINES, SIZE_H3, CLR_BLUE_2),
+    PEN_HEADLINE_3_2 = new Pencil(Constants.PEN_ID_LINES, SIZE_H3, CLR_PINK_2);
     
     /*
      * Constructor
@@ -116,13 +128,34 @@ public final class CWrite implements ActionListener {
             Status.setPenSelected2(Pen.clonePen(PEN_PROOF_2));
         } else if (_event.getSource().equals(Write.getInstance()
                 .getTb_headline1().getActionCause())) {
-                insertHeadline(HEADLINE_1);
+            deactivate();
+            Paint.getInstance().getJbtn_color1().setBackground(
+                    PEN_HEADLINE_1_1.getClr_foreground());
+            Paint.getInstance().getJbtn_color2().setBackground(
+                    PEN_HEADLINE_1_2.getClr_foreground());
+            Status.setPenSelected1(Pen.clonePen(PEN_HEADLINE_1_1));
+            Status.setPenSelected2(Pen.clonePen(PEN_HEADLINE_1_2));
+            //TODO: update paint gui.
         } else if (_event.getSource().equals(Write.getInstance()
                 .getTb_headline2().getActionCause())) {
-            insertHeadline(HEADLINE_2);
+            deactivate();
+            Paint.getInstance().getJbtn_color1().setBackground(
+                    PEN_HEADLINE_2_1.getClr_foreground());
+            Paint.getInstance().getJbtn_color2().setBackground(
+                    PEN_HEADLINE_2_2.getClr_foreground());
+            Status.setPenSelected1(Pen.clonePen(PEN_HEADLINE_2_1));
+            Status.setPenSelected2(Pen.clonePen(PEN_HEADLINE_2_2));
+            //TODO: update paint gui.
         } else if (_event.getSource().equals(Write.getInstance()
                 .getTb_headline3().getActionCause())) {
-            insertHeadline(HEADLINE_3);
+            deactivate();
+            Paint.getInstance().getJbtn_color1().setBackground(
+                    PEN_HEADLINE_3_1.getClr_foreground());
+            Paint.getInstance().getJbtn_color2().setBackground(
+                    PEN_HEADLINE_3_2.getClr_foreground());
+            Status.setPenSelected1(Pen.clonePen(PEN_HEADLINE_3_1));
+            Status.setPenSelected2(Pen.clonePen(PEN_HEADLINE_3_2));
+            //TODO: update paint gui.
         } else if (_event.getSource().equals(Write.getInstance()
                 .getTb_satz().getActionCause())) {
             deactivate();
@@ -148,25 +181,25 @@ public final class CWrite implements ActionListener {
     
     
     
-    /**
-     * Insert a headline somewhere (into the selected items) after releasing
-     * selection if necessary.
-     * 
-     * @param _importance the importance.
-     */
-    private void insertHeadline(final int _importance) {
-        switch (_importance) {
-        case HEADLINE_1:
-            break;
-        case HEADLINE_2:
-            break;
-        case HEADLINE_3:
-            break;
-        default:
-            Status.getLogger().severe("Wrong kind of headline");
-            break;
-        }
-    }
+//    /**
+//     * Insert a headline somewhere (into the selected items) after releasing
+//     * selection if necessary.
+//     * 
+//     * @param _importance the importance.
+//     */
+//    private void insertHeadline(final int _importance) {
+//        switch (_importance) {
+//        case HEADLINE_1:
+//            break;
+//        case HEADLINE_2:
+//            break;
+//        case HEADLINE_3:
+//            break;
+//        default:
+//            Status.getLogger().severe("Wrong kind of headline");
+//            break;
+//        }
+//    }
     
     
     /**
@@ -177,6 +210,9 @@ public final class CWrite implements ActionListener {
         Write.getInstance().getTb_bemerkung().setActivated(false);
         Write.getInstance().getTb_beweis().setActivated(false);
         Write.getInstance().getTb_satz().setActivated(false);
+        Write.getInstance().getTb_headline1().setActivated(false);
+        Write.getInstance().getTb_headline2().setActivated(false);
+        Write.getInstance().getTb_headline3().setActivated(false);
     }
     
     
@@ -199,6 +235,15 @@ public final class CWrite implements ActionListener {
         } else if (Status.getPenSelected1().equals(PEN_CMMNT_1)
                 && Status.getPenSelected2().equals(PEN_CMMNT_2)) {
             Write.getInstance().getTb_bemerkung().setActivated(true);
+        } else if (Status.getPenSelected1().equals(PEN_HEADLINE_1_1)
+                && Status.getPenSelected2().equals(PEN_HEADLINE_1_2)) {
+            Write.getInstance().getTb_headline1().setActivated(true);
+        } else if (Status.getPenSelected1().equals(PEN_HEADLINE_2_1)
+                && Status.getPenSelected2().equals(PEN_HEADLINE_2_2)) {
+            Write.getInstance().getTb_headline2().setActivated(true);
+        } else if (Status.getPenSelected1().equals(PEN_HEADLINE_3_1)
+                && Status.getPenSelected2().equals(PEN_HEADLINE_3_2)) {
+            Write.getInstance().getTb_headline3().setActivated(true);
         } 
     }
     

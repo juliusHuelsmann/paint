@@ -54,7 +54,6 @@ public class Matrix {
 		if (content.length + 1 != content[0].length) {
 		    Status.getLogger().severe(
 			        "unable to solve matrix: not quadratic!");
-			System.exit(1);
 		}
 		
 		

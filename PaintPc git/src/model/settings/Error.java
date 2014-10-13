@@ -79,8 +79,6 @@ public final class Error {
                     ERROR_MESSAGE_PRINT_ALL);
             System.err.println("\n\ninterrupt because of this error.");
             
-            //interrupt
-            System.exit(1);
             
         default:
             

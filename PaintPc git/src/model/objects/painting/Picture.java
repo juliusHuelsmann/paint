@@ -151,15 +151,13 @@ public final class Picture {
             if (!(po_current instanceof POCurve)) {
                 
 
-                System.out.println(po_current);
                 //throw error message and kill program.
-                Status.getLogger().warning(
+                Status.getLogger().severe(
                         "Es soll ein neues pen objekt geadded werden, obwohl "
                         + "das Alte nicht null ist also nicht gefinished "
                         + "wurde.\n"
                         + "Programm wird beendet.");
-                
-                System.exit(1);
+                ls_po_sortedByX.insertBehind(po_current);
             }
             
         }
@@ -186,12 +184,12 @@ public final class Picture {
         if (po_current != null) {
             
             //throw error message and kill program.
-            Status.getLogger().warning(
+            Status.getLogger().severe(
                     "Es soll ein neues image objekt geadded werden, obwohl das "
                     + "Alte nicht null ist also nicht gefinished wurde.\n"
                     + "Programm wird beendet.");
+            ls_po_sortedByX.insertBehind(po_current);
             
-            System.exit(1);
         }
         
         if (_bi == null) {
@@ -317,12 +315,12 @@ public final class Picture {
 
                 
                 //throw error message and kill program.
-                Status.getLogger().warning(
+                Status.getLogger().severe(
                         "Es soll ein neues objekt geadded werden, obwohl das "
                         + "alte nicht null ist also nicht gefinished wurde.\n"
                         + "Programm wird beendet.");
+                ls_po_sortedByX.insertBehind(po_current);
                 
-                System.exit(1);
             }
         }
         
@@ -556,8 +554,6 @@ public final class Picture {
 		    Status.getLogger().warning(
 					"Es soll ein nicht existentes Objekt veraendert werden.\n"
 					+ "Programm wird beendet.");
-			
-			System.exit(1);
 		}
 		if (_pnt.getX() > Status.getImageSize().getWidth() 
 		        || _pnt.getX() < 0 
@@ -689,11 +685,9 @@ public final class Picture {
 		if (po_current == null) {
 			
 			//throw error message and kill program.
-		    Status.getLogger().warning(
+		    Status.getLogger().severe(
 					"Es soll ein nicht existentes Objekt beendet werden.\n"
 					+ "Programm wird beendet.");
-			
-			System.exit(1);
 		}
 		
 

@@ -81,15 +81,15 @@ public abstract class PaintObjectPen extends PaintObject {
         
         //TODO: spaeter angleichen an zoom und an page scroll. 
 
-        int newX = (int) _p.getX() + _shiftX,
-                newY = (int) _p.getY() + _shiftY;
+        int newX = (int) _p.getX() - _shiftX,
+                newY = (int) _p.getY() - _shiftY;
         
         if (newX < 0 || newY < 0 
                 || newX >= _r.length || newY >= _r[newX].length) {
             return false;
         }
-        System.out.println(_r[newX][newY]);
-        return (_r[newX][newY]  != PaintBI.FREE);
+//        PaintBI.drawPaintBI(_r);
+        return (_r[newX][newY]  == PaintBI.FREE);
     }
 
 	/**

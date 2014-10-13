@@ -4,6 +4,7 @@ package model.objects.painting.po.geo;
 //import declarations
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import model.objects.painting.PaintBI;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
@@ -155,5 +156,16 @@ public class PoRectangleFilled extends POInsertion {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final PaintObject[][] separate(final byte[][] _r, final int _xShift, 
+            final int _yShift) {
+
+        new Exception(getClass() + " not implemenented yet")
+        .printStackTrace();
+        return null;
+    }
 
 }

@@ -4,6 +4,7 @@ package model.objects.painting.po.diag;
 //import declarations
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.Pen;
@@ -142,6 +143,19 @@ public class PODiagramm extends POInsertion {
     @Override public final synchronized PaintObject[][] separate(
             final Rectangle _r) {
         Status.getLogger().severe("not impklemented yet");
+        return null;
+    }
+    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final PaintObject[][] separate(final byte[][] _r, final int _xShift, 
+            final int _yShift) {
+
+        new Exception(getClass() + " not implemenented yet")
+        .printStackTrace();
         return null;
     }
 }

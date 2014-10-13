@@ -31,6 +31,7 @@ import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
+import model.objects.painting.po.PaintObjectPen;
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
@@ -1234,33 +1235,20 @@ public final class ControlPainting implements MouseListener,
     private void mr_sel_curve_complete(final MouseEvent _event, 
             final PaintObjectWriting _ldp) {
         
+        int xShift = _ldp.getSnapshotBounds().x,
+                yShift = _ldp.getSnapshotBounds().y;
         
-        
-        int xShift = -_ldp.getSnapshotBounds().x,
-                yShift = -_ldp.getSnapshotBounds().y;
         
         //necessary because the points are painted directly to the buffered
         //image which starts at the _ldp snaphsot x.
         Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
                 -_ldp.getSnapshotBounds().y);
-//        int xShift = 0, yShift = 0;
         BufferedImage transform = _ldp.getSnapshot();
-        
-        
         
         
         byte[][] field = PaintBI.printFillPolygonN(transform,
                 Color.green, model.util.Util.dpntToPntArray(
                         model.util.Util.pntLsToArray(_ldp.getPoints())));
-        BufferedViewer.show((transform));
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         // initialize selection list
@@ -1297,23 +1285,10 @@ public final class ControlPainting implements MouseListener,
             po_current = Picture.getInstance().getLs_po_sortedByX().getItem();
         }
 
-        Page.getInstance().getJlbl_painting().refreshPaint();
+        
+        Picture.getInstance().paintSelected();
 
-        if (!Picture.getInstance().paintSelected()) {
-            System.out.println("frei");
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        Page.getInstance().getJlbl_painting().refreshPaint();
         
         
     }
@@ -1325,8 +1300,152 @@ public final class ControlPainting implements MouseListener,
      * @param _event
      *            the mouseEvent.
      */
-    private void mr_sel_curve_destroy(final MouseEvent _event) {
+    private void mr_sel_curve_destroy(final MouseEvent _event, 
+            final PaintObjectWriting _ldp) {
+
+        int xShift = _ldp.getSnapshotBounds().x,
+                yShift = _ldp.getSnapshotBounds().y;
         
+        
+        //necessary because the points are painted directly to the buffered
+        //image which starts at the _ldp snaphsot x.
+        Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
+                -_ldp.getSnapshotBounds().y);
+        BufferedImage transform = _ldp.getSnapshot();
+        
+        
+        byte[][] field = PaintBI.printFillPolygonN(transform,
+                Color.green, model.util.Util.dpntToPntArray(
+                        model.util.Util.pntLsToArray(_ldp.getPoints())));
+        
+        
+        /*
+         * whole item selection.
+         */
+        // find paintObjects and move them from image to Selection
+        Picture.getInstance().getLs_po_sortedByX().toFirst();
+
+        // initialize selection list
+        Picture.getInstance().createSelected();
+
+        // go to the beginning of the list
+        Picture.getInstance().getLs_po_sortedByX().toFirst();
+        if (!Picture.getInstance().getLs_po_sortedByX().isEmpty()) {
+
+            // go to the beginning of the list
+            Picture.getInstance().getLs_po_sortedByX().toFirst();
+            
+            // create and initialize current values
+            PaintObject po_current = Picture.getInstance().getLs_po_sortedByX()
+                    .getItem();
+
+            
+            /**
+             * Because it is impossible to insert the new created items directly
+             * to list (otherwise there would be an infinite loop because of 
+             * sort order they reappear inside the while
+             * loop and are destroyed once again and thus reappear etc.
+             */
+            List<PaintObject> ls_toInsert = new List<PaintObject>();
+
+            
+            // go through list. until either list is empty or it is
+            // impossible for the paintSelection to paint inside the
+            // selected area
+            while (po_current != null) {
+
+                //The y condition has to be in here because the items are just 
+                //sorted by x coordinate; thus it is possible that one 
+                //PaintObject 
+                //is not suitable for the specified rectangle but some of its 
+                //predecessors in sorted list do.
+                if (po_current.isInSelectionImage(field, xShift, yShift)) {
+
+                    // get item; remove it out of lists and add it to
+                    // selection list
+
+                    PaintObject [][] separatedPO = po_current.separate(
+                            field, xShift, yShift);
+//                    PaintObject [][] p2 = po_current.separate(
+//                            new Rectangle(r_sizeField.x - 2,
+//                    r_sizeField.y - 2,
+//                            r_sizeField.width + 2 * 2, 
+//                            r_sizeField.height + 2 * 2));
+//                    
+//                    PaintObject [][] separatedPO = 
+//                    Util.mergeDoubleArray(p, p2);
+                    PictureOverview.getInstance().remove(Picture.getInstance()
+                            .getLs_po_sortedByX().getItem());
+                    Picture.getInstance().getLs_po_sortedByX().remove();
+                    
+                    //go through the list of elements.
+                    for (int current = 0; current < separatedPO[1].length;
+                            current++) {
+
+                        if (separatedPO[1][current] != null) {
+
+                            //recalculate snapshot bounds for being able to 
+                            //insert the item into the sorted list.
+                            separatedPO[1][current].recalculateSnapshotBounds();
+                            Picture.getInstance().insertIntoSelected(
+                                    separatedPO[1][current]);
+                        } else {
+                            
+                            Status.getLogger().warning("separated paintObject "
+                                    + "is null");
+                        }
+                    }
+                    for (int current = 0; current < separatedPO[0].length;
+                            current++) {
+
+                        if (separatedPO[0][current] != null) {
+                            //recalculate snapshot bounds for being able to
+                            //insert the item into the sorted list.
+                            separatedPO[0][current].recalculateSnapshotBounds();
+                            ls_toInsert.insertBehind(separatedPO[0][current]);
+    
+                            PictureOverview.getInstance().add(
+                                    separatedPO[0][current]);
+                        } else {
+
+                            Status.getLogger().warning("separated paintObject "
+                                    + "is null");
+                        }
+                    }
+                    Picture.getInstance().getLs_po_sortedByX().toFirst();
+                } else {
+                    
+                    // next
+                    Picture.getInstance().getLs_po_sortedByX().next();
+                }
+
+
+                // update current values
+                po_current = Picture.getInstance().getLs_po_sortedByX()
+                        .getItem();
+            }
+
+            
+            //insert the to insert items to graphical user interface.
+            ls_toInsert.toFirst();
+            while (!ls_toInsert.isBehind() && !ls_toInsert.isEmpty()) {
+
+                Picture.getInstance().getLs_po_sortedByX().insertSorted(
+                        ls_toInsert.getItem(), 
+                        ls_toInsert.getItem().getSnapshotBounds().x);
+                ls_toInsert.next();
+            }
+            if (Picture.getInstance().paintSelected()) {
+                Page.getInstance().getJlbl_painting().refreshPaint();
+            }
+
+        }
+        
+
+        Picture.getInstance().paintSelected();
+
+        Page.getInstance().getJlbl_painting().refreshPaint();
+
     }
     /**
      * The event which is performed after performed a mouseReleased with id
@@ -1627,16 +1746,23 @@ public final class ControlPainting implements MouseListener,
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
             if (_event.getButton() == 1) {
 
-                PaintObjectWriting ldp 
-                = Picture.getInstance().abortPaintObject();
+//                PaintObjectWriting ldp 
+//                = Picture.getInstance().abortPaintObject();
                 //remove old rectangle.
                 Page.getInstance().getJlbl_border().setBounds(-1, -1, 0, 0);
                 switch (Status.getIndexSelection()) {
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
-                    mr_sel_curve_complete(_event, ldp);
+                    
+
+                        PaintObjectWriting pow 
+                        = Picture.getInstance().abortPaintObject();
+                        mr_sel_curve_complete(_event, pow);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
-                    mr_sel_curve_destroy(_event);
+
+                    PaintObjectWriting pow2 
+                    = Picture.getInstance().abortPaintObject();
+                    mr_sel_curve_destroy(_event, pow2);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
                     break;

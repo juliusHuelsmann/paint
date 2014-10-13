@@ -178,6 +178,15 @@ public class PaintObjectImage extends PaintObject {
 
 
     
+    @Override
+    public PaintObject[][] separate(byte[][] _r, int _xShift, int _yShift) {
+
+        new Exception(getClass() + " not implemenented yet")
+        .printStackTrace();
+        return null;
+    }
+
+
     /**
      * {@inheritDoc}
      */

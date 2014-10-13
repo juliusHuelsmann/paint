@@ -86,6 +86,7 @@ public final class Picture {
 	 */
 	private int currentId;
 	
+	
 	/**
 	 * Empty utility class constructor.
 	 */

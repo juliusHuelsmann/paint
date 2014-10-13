@@ -144,7 +144,7 @@ public final class PaintBI {
             final Point[] _p) {
         PolygonReturn pr = paintPolygonN(_bi, _clr, 1, _p, true);
 //        drawPaintBI(pr);
-        pr.schwabbel();
+        pr.schwabbel(_bi);
 //        drawPaintBI(pr);
         return pr.getField();
     }
@@ -483,7 +483,7 @@ public final class PaintBI {
                 new BufferedImage(four * five, four * five * two,
                         BufferedImage.TYPE_INT_ARGB), 
                         Color.black, 1, p, true);
-        drawPaintBI(pr);
+        drawPaintBI(pr.getField());
         
         System.out.println();
         
@@ -491,7 +491,7 @@ public final class PaintBI {
                 new BufferedImage(four * five, four * five * two,
                         BufferedImage.TYPE_INT_ARGB), 
                         Color.black, p);
-        drawPaintBI(pr);
+        drawPaintBI(pr.getField());
         
         System.out.println();
 
@@ -500,7 +500,7 @@ public final class PaintBI {
 //                        BufferedImage.TYPE_INT_ARGB), 
 //                        Color.black, new Rectangle(
 //                                five, five, five * two, five));
-        drawPaintBI(pr);
+        drawPaintBI(pr.getField());
 
         System.out.println();
         
@@ -508,7 +508,7 @@ public final class PaintBI {
                 new BufferedImage(four * five, four * five * two,
                         BufferedImage.TYPE_INT_ARGB), 
                         Color.black, 1, p2, true);
-        drawPaintBI(pr);
+        drawPaintBI(pr.getField());
         
         System.out.println();
         
@@ -516,7 +516,7 @@ public final class PaintBI {
                 new BufferedImage(four * five, four * five * two,
                         BufferedImage.TYPE_INT_ARGB), 
                         Color.black, p2);
-        drawPaintBI(pr);
+        drawPaintBI(pr.getField());
         
         System.out.println();
 
@@ -533,11 +533,11 @@ public final class PaintBI {
      * 
      * @param _pbi the stuff returned from method.
      */
-    public static void drawPaintBI(final PolygonReturn _pbi) {
+    public static void drawPaintBI(final byte[][] _pbi) {
         
         
         System.out.print("  \t");
-        for (int x = 1; x <= _pbi.getField()[0].length; x++) {
+        for (int x = 1; x <= _pbi[0].length; x++) {
 
             switch ((x + "").length()) {
             case 1:
@@ -551,26 +551,26 @@ public final class PaintBI {
             }
         }
         System.out.println("");
-        for (int y = 0; y < _pbi.getField().length; y++) {
+        for (int y = 0; y < _pbi.length; y++) {
             System.out.print("  \t");
-            for (int x = 0; x < _pbi.getField()[0].length; x++) {
+            for (int x = 0; x < _pbi[0].length; x++) {
                 System.out.print("+--");
             }
             System.out.print("+");
             System.out.println();
             System.out.print((y + 1) + "\t");
-        for (int x = 0; x < _pbi.getField()[0].length; x++) {
+        for (int x = 0; x < _pbi[0].length; x++) {
                 
             String str = "|t ";
-            if (_pbi.getField()[y][x] == OCCUPIED
-                    || _pbi.getField()[y][x] != BORDER) {
+            if (_pbi[y][x] == OCCUPIED
+                    || _pbi[y][x] != BORDER) {
 
                 str = "|t ";
             } else {
 
                 str = "|  ";
             }
-            str = "|" + _pbi.getField()[y][x] + " ";
+            str = "|" + _pbi[y][x] + " ";
                 System.out.print(str);
         }
         System.out.print("|");
@@ -690,15 +690,23 @@ class PolygonReturn {
     private boolean startchange = false;
     
     /**
-     * 
+     * @param _bi the BufferedImage for painting test stuff.
      */
-    public void schwabbel() {
+    public void schwabbel(final BufferedImage _bi) {
         startchange = true;
         while (startchange) {
 
             startchange = false;
-            start();   
+            start(_bi);   
         }
+
+//        Page.getInstance().getJlbl_background().setIcon(new ImageIcon(_bi));
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
     
     }
     
@@ -719,8 +727,9 @@ class PolygonReturn {
     
     /**
      * Start one process.
+     * @param _bi the BufferedImage for painting test stuff.
      */
-    private void start() {
+    private void start(final BufferedImage _bi) {
 
         for (int x = 0; x < field.length; x++) { 
             for (int y = 0; y < field[x].length; y++) { 
@@ -731,6 +740,7 @@ class PolygonReturn {
                             || check(x, y - 1)
                             || check(x, y + 1)) {
                         field[x][y] = PaintBI.BORDER;
+//                        _bi.setRGB(x, y, new Color(150, 120, 10).getRGB());
                         startchange = true;
                     }
                 }

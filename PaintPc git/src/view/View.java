@@ -121,7 +121,7 @@ import control.util.MousePositionTracker;
         }
 
         //set some things visible and repaint the whole window.
-        flip(true);
+        flip();
         repaint();
 
         if (!ViewSettings.isFullscreen()) {
@@ -386,7 +386,7 @@ import control.util.MousePositionTracker;
 	 * apply the sizes of the items.
 	 * @param _normalFlip the real size.
 	 */
-	public void flip(final boolean _normalFlip) {
+	public void flip() {
 
 	    //set gui bounds
         super.setSize(ViewSettings.getSizeJFrame());
@@ -410,8 +410,6 @@ import control.util.MousePositionTracker;
         Page.getInstance().setLocation(
                 ViewSettings.getView_bounds_page().getLocation());
 	    
-        //if not flipped
-	    if (_normalFlip) {
 
             Page.getInstance().setLocation(
                     ViewSettings.getView_bounds_page().getLocation());
@@ -430,33 +428,8 @@ import control.util.MousePositionTracker;
 	        
 	        Tabs.getInstance().setLocation(ViewSettings.VIEW_LOCATION_TB);
 	        
-	    } else {
-	        jbtn_exit.setLocation(
-                    ViewSettings.getSizeJFrame().width
-                    - ViewSettings.getViewBoundsJbtnExit().x
-                    - ViewSettings.getViewBoundsJbtnExit().height, 
-	                ViewSettings.getSizeJFrame().height 
-	                - ViewSettings.getViewBoundsJbtnExit().height 
-	                - ViewSettings.getViewBoundsJbtnExit().y);
-
-	        jbtn_exit.setIcon(new ImageIcon(Utils.flipImage(
-	                jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
-	                Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
-
-            Page.getInstance().setLocation(
-                    ViewSettings.getSizeJFrame().width
-                    - ViewSettings.getView_bounds_page().x
-                    - ViewSettings.getView_bounds_page().width,
-                    ViewSettings.getSizeJFrame().height
-                    - ViewSettings.getView_bounds_page().y 
-                    - ViewSettings.getView_bounds_page().height);
-            Tabs.getInstance().setLocation(ViewSettings.getSizeJFrame().width 
-                    - ViewSettings.getView_widthTb(), 0);
-            
-	    }
-
         Page.getInstance().flip();
-        Tabs.getInstance().flip(_normalFlip);
+        Tabs.getInstance().flip();
         jlbl_border.setBounds(0, 0, getWidth(), getHeight());
 	}
 	

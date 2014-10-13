@@ -185,7 +185,6 @@ public final class Paint extends Tab {
 	    
 	    int xLocationSeparation;
 	    
-	    if (Status.isNormalRotation()) {
 
 	        tb_paste.setLocation(_x + ViewSettings.getDistanceBetweenItems(),
 	                ViewSettings.getDistanceBetweenItems());
@@ -198,34 +197,14 @@ public final class Paint extends Tab {
 
 	        xLocationSeparation = tb_cut.getWidth() + tb_cut.getX() 
                     + ViewSettings.getDistanceBeforeLine();
-	    } else {
-
-            tb_paste.setLocation(
-                    ViewSettings.getView_widthTb() 
-                    - _x - ViewSettings.getDistanceBetweenItems()
-                    - ViewSettings.getItemWidth(), 
-                    ViewSettings.getView_heightTB() 
-                    - ViewSettings.getDistanceBetweenItems() 
-                    - ViewSettings.getItemHeight() - fifety);
-           
-            tb_copy.setLocation(tb_paste.getX()
-                    - ViewSettings.getDistanceBetweenItems() 
-                    - tb_paste.getWidth(), tb_paste.getY());
-            tb_cut.setLocation(tb_copy.getX(), tb_copy.getY()
-                    - tb_copy.getHeight() 
-                    - ViewSettings.getDistanceBetweenItems());
-
-            xLocationSeparation = tb_cut.getX() 
-                    - ViewSettings.getDistanceBeforeLine();
-         }
 	    
 
         insertSectionStuff("Zwischenablage", 0, xLocationSeparation, 
                 0, _paint);
 	       
-        tb_paste.flip(Status.isNormalRotation());
-        tb_copy.flip(Status.isNormalRotation());
-        tb_cut.flip(Status.isNormalRotation());
+        tb_paste.flip();
+        tb_copy.flip();
+        tb_cut.flip();
         
 		return xLocationSeparation + ViewSettings.getDistanceAfterLine();
 	}
@@ -267,35 +246,33 @@ public final class Paint extends Tab {
 	    
 	    }
 
-	    int xLocationSeparation;
-	    if (Status.isNormalRotation()) {
+            int xLocationSeparation;
 
-	        tb_prev.setLocation(_x, ViewSettings.getDistanceBetweenItems());
-	        tb_next.setLocation(
-	                tb_prev.getX(), tb_prev.getY() + tb_prev.getHeight());
-	        xLocationSeparation = tb_prev.getWidth() + tb_prev.getX() 
+                tb_prev.setLocation(_x, ViewSettings.getDistanceBetweenItems());
+
+
+                tb_next.setLocation(
+
+                        tb_prev.getX(), tb_prev.getY() + tb_prev.getHeight());
+
+
+                xLocationSeparation = tb_prev.getWidth() + tb_prev.getX() 
+
+
                     + ViewSettings.getDistanceBeforeLine();
-	        
-  
-	    } else  {
 
-	        tb_prev.setLocation(_x - tb_prev.getWidth() 
-	                - ViewSettings.getDistanceAfterLine(), 
-	                ViewSettings.getView_heightTB() 
-                    - ViewSettings.getDistanceBetweenItems() 
-                    - ViewSettings.getItemHeight() - fifety);
-	        tb_next.setLocation(tb_prev.getX(), tb_prev.getY() 
-	                - ViewSettings.getDistanceBetweenItems() 
-	                - tb_prev.getHeight());
-            
-            xLocationSeparation = tb_prev.getX() 
-                    - ViewSettings.getDistanceBeforeLine();
-  
-	    }
+
+
+
 
         insertSectionStuff("history", _x, xLocationSeparation, 1, 
+
+
                 _paint);
+
+
         return xLocationSeparation + ViewSettings.getDistanceAfterLine();
+
 
 	}
 
@@ -430,7 +407,6 @@ public final class Paint extends Tab {
             tb_erase.setActivable(true);
         }
         
-        if (Status.isNormalRotation()) {
 
             it_stift1.setLocation(_x, ViewSettings.getDistanceBetweenItems());
             it_stift2.setLocation(it_stift1.getX() + it_stift1.getWidth() 
@@ -452,7 +428,6 @@ public final class Paint extends Tab {
             tb_erase.setLocation(tb_move.getX(),
                     tb_move.getY() + tb_move.getHeight() 
                     + ViewSettings.getDistanceBetweenItems());
-        }
         int xLocationSeparation = tb_move.getWidth() + tb_move.getX() 
                 + ViewSettings.getDistanceBeforeLine();
         insertSectionStuff("Stifte", _x, xLocationSeparation, 2, _paint);

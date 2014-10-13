@@ -592,7 +592,7 @@ public final class ControlPainting implements MouseListener,
         }
         
         View.getInstance().setVisible(true);
-        View.getInstance().flip(true);
+        View.getInstance().flip();
         View.getInstance().repaint();
         Tabs.getInstance().repaint();
         Tabs.getInstance().openTab(0);

@@ -126,7 +126,6 @@ public abstract class Tab extends MPanel {
             
         }
 
-        if (Status.isNormalRotation()) {
 
             final int number = 
                     ViewSettings.getItemMenu1Height()
@@ -134,10 +133,6 @@ public abstract class Tab extends MPanel {
             final int number2 = 15;
             jlbl_information[_locationInArray].setBounds(
                     _x1, number, _x2 - _x1, number2);
-        } else {
-            jlbl_information[_locationInArray].setOpaque(true);
-            jlbl_information[_locationInArray].setBounds(-1, -1, -1, -1);
-        }
     }
 
 

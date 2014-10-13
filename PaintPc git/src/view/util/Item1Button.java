@@ -271,7 +271,7 @@ public class Item1Button extends MPanel {
 		super.setSize(_width, _height);
 		jbtn_touch.setSize(getSize());
 		
-		flip(Status.isNormalRotation());
+		flip();
 	}
 	
 	
@@ -287,12 +287,11 @@ public class Item1Button extends MPanel {
 	 * flip the object.
 	 * @param _normalOrientation the orientation
 	 */
-	public final void flip(final boolean _normalOrientation) {
+	public final void flip() {
 	    
 	    final int distance = 5;
 	    final int colorSize = 30;
 	    
-	    if (Status.isNormalRotation()) {
 
 	        jlbl_title.setFont(ViewSettings.GENERAL_FONT_ITEM1_BUTTON);
 	        //set size of color - and title JLabel
@@ -303,16 +302,6 @@ public class Item1Button extends MPanel {
 	            jlbl_title.setBounds(0, jlbl_color.getHeight() 
 	                    + jlbl_color.getY(), getWidth(), getHeight() 
 	                    - jlbl_color.getHeight() - jlbl_color.getY());
-	        } else {
-
-	            jlbl_color.setBounds(
-	                    distance, distance, imageWidth, imageHeight);
-
-	            jlbl_title.setBounds(jlbl_color.getWidth() + jlbl_color.getX(),
-	                    jlbl_color.getY(), getWidth() - jlbl_color.getWidth() 
-	                    - jlbl_color.getX() - distance, getHeight() 
-	                    - jlbl_color.getY() - distance);
-	        } 
 	    } 
 	}
 	

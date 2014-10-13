@@ -279,7 +279,7 @@ public class Item1Menu extends MPanel {
 	    closedWidth = ViewSettings.getItemMenu1Width();
 	    closedHeight = ViewSettings.getItemMenu1Height();
 	    setSize(closedWidth, closedHeight);
-	    tb_select.flip(Status.isNormalRotation());
+	    tb_select.flip();
 	}
 	
 	/**

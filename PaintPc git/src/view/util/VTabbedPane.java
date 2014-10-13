@@ -519,7 +519,7 @@ public class VTabbedPane extends MPanel {
                 jpnl_background, jpnl_stuff.length - 1);
 		//open the first tab by default and repaint the TabbedPane
 		openTab(openTab);
-		flip(true);
+		flip();
 	}
 	
 	
@@ -732,7 +732,7 @@ public class VTabbedPane extends MPanel {
             jpnl_stuff[_index].setVisible(true);
             
             //set the size of open tab
-            flip(Status.isNormalRotation());
+            flip();
 	    }
 	}
 	
@@ -758,7 +758,7 @@ public class VTabbedPane extends MPanel {
     	
     	//set the size and location of the components depending on 
     	//the current rotation
-    	flip(Status.isNormalRotation());
+    	flip();
     }
 
 
@@ -768,7 +768,7 @@ public class VTabbedPane extends MPanel {
      * 
      * @param _normalRotation whether normal rotation or not
      */
-    public final void flip(final boolean _normalRotation) {
+    public final void flip() {
 
         final int titleWidth = getWidth() / ViewSettings
                 .TABBED_PANE_TITLE_PROPORTION_WIDTH,
@@ -786,8 +786,6 @@ public class VTabbedPane extends MPanel {
 
         jlbl_whiteBackground.setSize(getWidth(), visibleHeight);
         
-        //if is normal rotated.
-	    if (_normalRotation) {
 	        
 	        //because the border should be visible 
             jpnl_background.setLocation(0, titleHeight + titleY - 1);
@@ -828,11 +826,6 @@ public class VTabbedPane extends MPanel {
                 }
 	            jpnl_stuff[index].setLocation(0, titleHeight + titleY);
 	        }
-	    } else {
-
-	        jpnl_background.setLocation(0, getHeight() 
-	                - (titleHeight + titleY - 1 + jpnl_background.getHeight()));
-	    }
 
 	}
     

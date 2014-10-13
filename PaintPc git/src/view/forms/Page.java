@@ -277,8 +277,6 @@ import view.util.mega.MButton;
 	 * .
 	 */
 	public void flip() {
-	    final boolean normalSize = Status.isNormalRotation();
-	    if (normalSize) {
 
             jpnl_toMove.setBounds(0, 0,
                     Status.getImageShowSize().width,
@@ -291,12 +289,6 @@ import view.util.mega.MButton;
 	                - sp_lr.getHeight());
             
 
-	    } else {
-
-            sp_ub.setLocation(0, ViewSettings.VIEW_SIZE_SP);
-            sp_lr.setLocation(ViewSettings.VIEW_SIZE_SP, 0);
- 
-	    }
         sp_ub.setSize(ViewSettings.VIEW_SIZE_SP, 
                 ViewSettings.getSizeJFrame().height 
                 - ViewSettings.VIEW_SIZE_SP);

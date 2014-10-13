@@ -22,7 +22,8 @@ public class MFrame extends JFrame implements Mega {
 
         //go through the list of contained components and change location
         //and e.g. call turn method of components.
-        for (Component c : getComponents()) {
+        for (Component c : getContentPane().getComponents()) {
+
             c.setLocation(getWidth() - c.getX() - c.getWidth(),
                     getHeight() - c.getY() - c.getHeight());
             if (c instanceof Mega) {

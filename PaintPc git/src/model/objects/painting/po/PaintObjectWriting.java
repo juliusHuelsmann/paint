@@ -636,7 +636,6 @@ public class PaintObjectWriting extends PaintObjectPen {
         
         while (!ls_point.isBehind()) {
             
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNeu");
             
             //Initialize current Point and verify whether it is outside or 
             //inside the rectangle
@@ -678,7 +677,6 @@ public class PaintObjectWriting extends PaintObjectPen {
             
             } else if (!cInside && lInside) {
 
-                System.out.println("1 drinnen und zwei draussen");
 
                 //calculate borderDPoint
                 DPoint pnt_border = findIntersection(pc, new DPoint(
@@ -734,7 +732,6 @@ public class PaintObjectWriting extends PaintObjectPen {
                             + "");
                 } else {
 
-                    System.out.println("Doppelt");
                     pow_current.addPoint(new DPoint(pnt_border1));
                     ls_pow_outside.insertBehind(pow_current);
                     
@@ -747,7 +744,6 @@ public class PaintObjectWriting extends PaintObjectPen {
                     pow_current = new PaintObjectWriting(getElementId(), 
                             getPen());
                     pow_current.addPoint(new DPoint(pnt_border2));
-                    pow_current.addPoint(new DPoint(pcNew));
                 }
             }
 
@@ -755,6 +751,7 @@ public class PaintObjectWriting extends PaintObjectPen {
             lInside = cInside;
             ls_point.next();
         }
+        ls_point = null;
         if (lInside) {
 
             ls_pow_inside.insertBehind(pow_current); 

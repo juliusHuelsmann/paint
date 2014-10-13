@@ -7,11 +7,11 @@ import java.awt.Component;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 
 import view.util.mega.MButton;
 import view.util.mega.MPanel;
 import model.settings.Constants;
+import model.settings.Status;
 import model.util.paint.Utils;
 import control.util.CScrollPane;
 
@@ -251,6 +251,15 @@ public class VScrollPane extends MPanel {
                 - jbtn_toTop.getHeight() - jbtn_center.getHeight();
         int cmp_toLocate100percentPX = jpnl_toLocate.getHeight()
                 - jpnl_owner.getHeight();
+
+        
+        if (!Status.isNormalRotation()) {
+
+            jbtn_center100percentPX = (-jbtn_center.getHeight() 
+                    + jbtn_toTop.getY()) 
+                    - (jbtn_toBottom.getHeight() 
+                    + jbtn_toBottom.getY());
+        }
         
         
         /*
@@ -277,12 +286,21 @@ public class VScrollPane extends MPanel {
             //calculate the currently real percentage of the jbtn_center
             float percentage = -jpnl_toLocate.getY() * Constants.MAX_PERCENTAGE 
                     / cmp_toLocate100percentPX;
-            
-            //set location of the MButton jbtn_center
-            jbtn_center.setLocation(0, (int) (percentage 
-                    * jbtn_center100percentPX / Constants.MAX_PERCENTAGE)
-                    + jbtn_toTop.getHeight());
-                
+
+            if (Status.isNormalRotation()) {
+
+                //set location of the MButton jbtn_center
+                jbtn_center.setLocation(0, (int) (percentage 
+                        * jbtn_center100percentPX / Constants.MAX_PERCENTAGE)
+                        + jbtn_toTop.getHeight());
+            } else {
+
+                int y = jbtn_toTop.getY() - jbtn_center.getHeight()
+                        - (int) (percentage 
+                        * jbtn_center100percentPX / Constants.MAX_PERCENTAGE);
+                //set location of the MButton jbtn_center
+                jbtn_center.setLocation(0, y);
+            }
         }
     } 
     
@@ -305,7 +323,14 @@ public class VScrollPane extends MPanel {
         int cmp_toLocate100percentPX = jpnl_toLocate.getWidth()
                 - jpnl_owner.getWidth();
         
-        
+
+        if (!Status.isNormalRotation()) {
+
+            jbtn_center100percentPX = (-jbtn_center.getWidth() 
+                    + jbtn_toTop.getX()) 
+                    - (jbtn_toBottom.getWidth() 
+                    + jbtn_toBottom.getX());
+        }
         /*
          * set location of the MButton jbtn_center
          */
@@ -331,11 +356,21 @@ public class VScrollPane extends MPanel {
             float percentage = -jpnl_toLocate.getX() * Constants.MAX_PERCENTAGE 
                     / cmp_toLocate100percentPX;
             
-            //set location of the MButton jbtn_center
-            jbtn_center.setLocation((int) (percentage 
-                    * jbtn_center100percentPX / Constants.MAX_PERCENTAGE)
-                    + jbtn_toTop.getWidth(), 0);
-                
+            if (Status.isNormalRotation()) {
+
+                //set location of the MButton jbtn_center
+                jbtn_center.setLocation((int) (percentage 
+                        * jbtn_center100percentPX / Constants.MAX_PERCENTAGE)
+                        + jbtn_toTop.getWidth(), 0);
+                    
+            } else {
+
+                int x = jbtn_toTop.getX() - jbtn_center.getWidth()
+                        - (int) (percentage * jbtn_center100percentPX 
+                                / Constants.MAX_PERCENTAGE);
+                //set location of the MButton jbtn_center
+                jbtn_center.setLocation(x, 0);
+            }
         }
     }
     

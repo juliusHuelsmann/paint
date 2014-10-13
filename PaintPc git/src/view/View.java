@@ -13,7 +13,6 @@ import java.awt.geom.AffineTransform;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -25,6 +24,9 @@ import view.forms.Message;
 import view.forms.Page;
 import view.forms.Tabs;
 import view.forms.tabs.Paint;
+import view.util.mega.MButton;
+import view.util.mega.MFrame;
+import view.util.mega.MLabel;
 import control.ControlPainting;
 import control.util.MousePositionTracker;
 
@@ -35,7 +37,7 @@ import control.util.MousePositionTracker;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-@SuppressWarnings("serial") public final class View extends JFrame {
+@SuppressWarnings("serial") public final class View extends MFrame {
 
 	/**
 	 * the only instance of this class.
@@ -45,7 +47,7 @@ import control.util.MousePositionTracker;
 	/**
 	 * close button.
 	 */
-	private JButton jbtn_exit, jbtn_fullscreen;
+	private MButton jbtn_exit, jbtn_fullscreen;
 
     /**
      * The maximum counter for design. Is used for fade in and out
@@ -57,7 +59,7 @@ import control.util.MousePositionTracker;
 	 * for painting border of JFrame if non-fullscreen mode is enabled.
 	 * Only question of design (no real usage).
 	 */
-	private JLabel jlbl_title, jlbl_border;
+	private MLabel jlbl_title, jlbl_border;
 	
 	/**
 	 * Constructor: initialize JFrame, alter settings and initialize items.
@@ -88,14 +90,14 @@ import control.util.MousePositionTracker;
             super.addMouseMotionListener(mpt);
         }
         
-        jlbl_border = new JLabel();
+        jlbl_border = new MLabel();
         jlbl_border.setOpaque(false);
         jlbl_border.setBorder(BorderFactory.createLineBorder(Color.gray));
         jlbl_border.setFocusable(false);
         super.add(jlbl_border);
         
         //exit
-        jbtn_exit = new JButton();
+        jbtn_exit = new MButton();
         jbtn_exit.setContentAreaFilled(false);
         jbtn_exit.setOpaque(false);
         jbtn_exit.addMouseListener(ControlPainting.getInstance());
@@ -104,7 +106,7 @@ import control.util.MousePositionTracker;
         super.add(jbtn_exit);
 
         //exit
-        jbtn_fullscreen = new JButton();
+        jbtn_fullscreen = new MButton();
         jbtn_fullscreen.setContentAreaFilled(false);
         jbtn_fullscreen.setOpaque(false);
         jbtn_fullscreen.addMouseListener(ControlPainting.getInstance());
@@ -186,7 +188,7 @@ import control.util.MousePositionTracker;
         final int movementEnforce = 60;
         
         //initialize the JLabel and set view visible
-        jlbl_title = new JLabel("Paint!");
+        jlbl_title = new MLabel("Paint!");
         jlbl_title.setBounds(title_start_x, title_start_y,
                 title_start_width, title_start_height);
         jlbl_title.setOpaque(false);
@@ -454,7 +456,6 @@ import control.util.MousePositionTracker;
 	    }
 
         Page.getInstance().flip();
-        Paint.getInstance().flip();
         Tabs.getInstance().flip(_normalFlip);
         jlbl_border.setBounds(0, 0, getWidth(), getHeight());
 	}
@@ -486,14 +487,14 @@ import control.util.MousePositionTracker;
 	/**
 	 * @return the jbtn_exit
 	 */
-	public JButton getJbtn_exit() {
+	public MButton getJbtn_exit() {
 		return jbtn_exit;
 	}
 
     /**
      * @return the jbtn_fullscreen
      */
-    public JButton getJbtn_fullscreen() {
+    public MButton getJbtn_fullscreen() {
         return jbtn_fullscreen;
     }
 }

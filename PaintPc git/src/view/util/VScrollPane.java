@@ -7,9 +7,9 @@ import java.awt.Component;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
+import view.util.mega.MButton;
+import view.util.mega.MPanel;
 import model.settings.Constants;
 import model.util.paint.Utils;
 import control.util.CScrollPane;
@@ -21,16 +21,16 @@ import control.util.CScrollPane;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class VScrollPane extends JPanel {
+public class VScrollPane extends MPanel {
 
     /*
      * Components.
      */
     
 	/**
-	 * The JButtons for moving.
+	 * The MButtons for moving.
 	 */
-	private JButton jbtn_toTop, jbtn_toBottom, jbtn_center;
+	private MButton jbtn_toTop, jbtn_toBottom, jbtn_center;
 	
 	/**
 	 * Component which is moved.
@@ -38,9 +38,9 @@ public class VScrollPane extends JPanel {
 	private Component jpnl_toLocate;
 	
 	/**
-	 * JPanel for owner.
+	 * MPanel for owner.
 	 */
-	private JPanel jpnl_owner;
+	private MPanel jpnl_owner;
 
 	/*
 	 * Controller
@@ -79,7 +79,7 @@ public class VScrollPane extends JPanel {
 	 * @param _vertical whether vertical or not
 	 */
 	public VScrollPane(final Component _jpnl_toLocate, 
-	        final JPanel _jpnl_owener, final boolean _vertical) {
+	        final MPanel _jpnl_owener, final boolean _vertical) {
 	    
 	    //initialize
 		super();
@@ -98,30 +98,30 @@ public class VScrollPane extends JPanel {
         jpnl_toLocate.addMouseMotionListener(control);
         super.addKeyListener(control);
 		
-		//initialize JButtons for up, button and center.
+		//initialize MButtons for up, button and center.
 		if (_vertical) {
 		    
-			jbtn_toTop = initializeJButton(Constants.SP_PATH_UP);
-			jbtn_toBottom = initializeJButton(Constants.SP_PATH_DOWN);
+			jbtn_toTop = initializeMButton(Constants.SP_PATH_UP);
+			jbtn_toBottom = initializeMButton(Constants.SP_PATH_DOWN);
 			
 		} else {
 
-			jbtn_toTop = initializeJButton(Constants.SP_PATH_LEFT);
-			jbtn_toBottom = initializeJButton(Constants.SP_PATH_RIGHT);
+			jbtn_toTop = initializeMButton(Constants.SP_PATH_LEFT);
+			jbtn_toBottom = initializeMButton(Constants.SP_PATH_RIGHT);
 		}
-		jbtn_center = initializeJButton(null);
+		jbtn_center = initializeMButton(null);
 	}
 	
 	
 	/**
-	 * Method for initializing JButton for scrolling.
+	 * Method for initializing MButton for scrolling.
 	 * @param _icon the path of the icon.
-	 * @return the JButton 
+	 * @return the MButton 
 	 */
-	private JButton initializeJButton(final String _icon) {
+	private MButton initializeMButton(final String _icon) {
 	    
-	    //initialize JButton.
-		JButton jbtn = new JButton();
+	    //initialize MButton.
+		MButton jbtn = new MButton();
 		jbtn.setContentAreaFilled(false);
 		jbtn.setSize(icon_size, icon_size);
 		jbtn.setOpaque(true);
@@ -142,7 +142,7 @@ public class VScrollPane extends JPanel {
 			        jbtn.getWidth(), jbtn.getWidth(), _icon)));
 		}
 		
-		//add and return the JButton
+		//add and return the MButton
 		super.add(jbtn);
 		return jbtn;
 	}
@@ -191,7 +191,7 @@ public class VScrollPane extends JPanel {
 
 	
     /**
-     * recalculate the current size of the center - JButton (used if size
+     * recalculate the current size of the center - MButton (used if size
      * of one of the components is changed).
      */
     public final void recalculateCenterBounds() {
@@ -200,33 +200,33 @@ public class VScrollPane extends JPanel {
         if (verticalScroll) {
 
             /*
-             * set size of the JButton jbtn_center
+             * set size of the MButton jbtn_center
              */
 
             //calculate the current relationship between the Component which 
             //is to be located and its owner and then update the size of the
-            //center JButton
+            //center MButton
             float percentage = Constants.MAX_PERCENTAGE 
                     * jpnl_owner.getHeight() / jpnl_toLocate.getHeight();
             jbtn_center.setSize(icon_size, (int) (jpnl_owner.getHeight() 
                     * percentage / Constants.MAX_PERCENTAGE));
             
             /*
-             * set location of the JButton jbtn_center
+             * set location of the MButton jbtn_center
              */
             setCenterLocationVertical();
         } else {
 
             //calculate the current relationship between the Component which 
             //is to be located and its owner and then update the size of the
-            //center JButton
+            //center MButton
             float percentage = Constants.MAX_PERCENTAGE * jpnl_owner.getWidth() 
                     / jpnl_toLocate.getWidth();
             jbtn_center.setSize((int) (jpnl_owner.getWidth() * percentage 
                     / Constants.MAX_PERCENTAGE), jbtn_center.getHeight());
             
             /*
-             * set location of the JButton jbtn_center
+             * set location of the MButton jbtn_center
              */
             setCenterLocationHorizontal();
         }
@@ -235,7 +235,7 @@ public class VScrollPane extends JPanel {
     
     
     /**
-     * set the location of the center JButton jbtn_center.
+     * set the location of the center MButton jbtn_center.
      */
     private void setCenterLocationVertical() {
 
@@ -253,12 +253,12 @@ public class VScrollPane extends JPanel {
         
         
         /*
-         * set location of the JButton jbtn_center
+         * set location of the MButton jbtn_center
          */
         
         //if the component is not great enough to be scrolled, make the
         //scrollPane invisible.
-        //otherwise calculate the current position of the center JButton
+        //otherwise calculate the current position of the center MButton
         if (cmp_toLocate100percentPX <= 0) {
 
             //set visible false
@@ -277,7 +277,7 @@ public class VScrollPane extends JPanel {
             float percentage = -jpnl_toLocate.getY() * Constants.MAX_PERCENTAGE 
                     / cmp_toLocate100percentPX;
             
-            //set location of the JButton jbtn_center
+            //set location of the MButton jbtn_center
             jbtn_center.setLocation(0, (int) (percentage 
                     * jbtn_center100percentPX / Constants.MAX_PERCENTAGE)
                     + jbtn_toTop.getHeight());
@@ -288,7 +288,7 @@ public class VScrollPane extends JPanel {
     
     
     /**
-     * set the location of the center JButton jbtn_center.
+     * set the location of the center MButton jbtn_center.
      */
     private void setCenterLocationHorizontal() {
 
@@ -306,12 +306,12 @@ public class VScrollPane extends JPanel {
         
         
         /*
-         * set location of the JButton jbtn_center
+         * set location of the MButton jbtn_center
          */
         
         //if the component is not great enough to be scrolled, make the
         //scrollPane invisible.
-        //otherwise calculate the current position of the center JButton
+        //otherwise calculate the current position of the center MButton
         if (cmp_toLocate100percentPX <= 0) {
 
             //set visible false
@@ -330,7 +330,7 @@ public class VScrollPane extends JPanel {
             float percentage = -jpnl_toLocate.getX() * Constants.MAX_PERCENTAGE 
                     / cmp_toLocate100percentPX;
             
-            //set location of the JButton jbtn_center
+            //set location of the MButton jbtn_center
             jbtn_center.setLocation((int) (percentage 
                     * jbtn_center100percentPX / Constants.MAX_PERCENTAGE)
                     + jbtn_toTop.getWidth(), 0);
@@ -361,7 +361,7 @@ public class VScrollPane extends JPanel {
     /**
      * @return the jbtn_toTop
      */
-    public final JButton getJbtn_toTop() {
+    public final MButton getJbtn_toTop() {
         return jbtn_toTop;
     }
 
@@ -370,7 +370,7 @@ public class VScrollPane extends JPanel {
     /**
      * @return the jbtn_toBottom
      */
-    public final JButton getJbtn_toBottom() {
+    public final MButton getJbtn_toBottom() {
         return jbtn_toBottom;
     }
 
@@ -378,7 +378,7 @@ public class VScrollPane extends JPanel {
     /**
      * @return the jbtn_center
      */
-    public final JButton getJbtn_center() {
+    public final MButton getJbtn_center() {
         return jbtn_center;
     }
 
@@ -410,7 +410,7 @@ public class VScrollPane extends JPanel {
     /**
      * @return the jpnl_owner
      */
-    public final JPanel getJpnl_owner() {
+    public final MPanel getJpnl_owner() {
         return jpnl_owner;
     }
 }

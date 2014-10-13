@@ -2,8 +2,8 @@
 package view.util;
 
 //import declaration
-import javax.swing.JButton;
 
+import view.util.mega.MButton;
 import model.settings.Error;
 
 
@@ -14,7 +14,7 @@ import model.settings.Error;
  * @version %U%, %I%
  */
 @SuppressWarnings("serial")
-public class VButtonWrapper extends JButton {
+public class VButtonWrapper extends MButton {
 
 	/**
 	 * The object that is to be delivered to the actionListener.

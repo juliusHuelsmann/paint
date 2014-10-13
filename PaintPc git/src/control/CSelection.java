@@ -7,12 +7,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import javax.swing.JButton;
-
 import model.objects.painting.Picture;
 import model.settings.Status;
 import model.util.DPoint;
 import view.forms.Page;
+import view.util.mega.MButton;
 
 
 /**
@@ -239,7 +238,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
             
             //fetch DPoints from which the vectory may start
 
-            if (_event.getSource() instanceof JButton) {
+            if (_event.getSource() instanceof MButton) {
                 
 
                 final int jrssW = Page.getInstance()
@@ -275,7 +274,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
-        JButton[][] j = Page.getInstance().getJbtn_resize();
+        MButton[][] j = Page.getInstance().getJbtn_resize();
         DPoint[][] p = pnt_startLocationButton;
         double distanceXY;
         if ((distanceX) < (distanceY)) {
@@ -378,7 +377,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
-        JButton[][] j = Page.getInstance().getJbtn_resize();
+        MButton[][] j = Page.getInstance().getJbtn_resize();
         DPoint[][] p = pnt_startLocationButton;
         double distanceXY, distanceXY2;
         if (Math.abs(distanceX) < Math.abs(distanceY)) {
@@ -542,7 +541,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
-        JButton[][] j = Page.getInstance().getJbtn_resize();
+        MButton[][] j = Page.getInstance().getJbtn_resize();
         double distanceXY, distanceXY2;
         if (Math.abs(distanceX) < Math.abs(distanceY)) {
             distanceXY = distanceX;

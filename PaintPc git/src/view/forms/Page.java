@@ -7,25 +7,24 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
 import view.View;
 import view.util.VScrollPane;
+import view.util.mega.MLabel;
+import view.util.mega.MPanel;
 import control.CSelection;
 import control.ControlPainting;
+import view.util.mega.MButton;
 
 /**
  * 
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-@SuppressWarnings("serial") public final class Page extends JPanel {
+@SuppressWarnings("serial") public final class Page extends MPanel {
 
     /*
      * Only instance of this class (singleton)
@@ -54,7 +53,7 @@ import control.ControlPainting;
      * The panel serves to be able to scroll and handles the location change 
      * further to the Painting JLabel
      */
-    private JPanel jpnl_toMove;
+    private MPanel jpnl_toMove;
     
 	/**
 	 * two ScrollPanels for both dimensions.
@@ -66,34 +65,34 @@ import control.ControlPainting;
 	 */
 	
     /**
-     * JButtons for resizing the selection.
+     * MButtons for resizing the selection.
      */
-    private JButton[][] jbtn_resize;
+    private MButton[][] jbtn_resize;
 
     /**
      * Contains the size of a selection while resizing.
      */
-    private JLabel jlbl_resizeSelectionSize;
+    private MLabel jlbl_resizeSelectionSize;
 
     /**
      * Selection JLabel.
      */
-    private JLabel jlbl_selectionBG;
+    private MLabel jlbl_selectionBG;
 
     /**
      * Selection JLabel.
      */
-    private JLabel jlbl_selectionPainting;
+    private MLabel jlbl_selectionPainting;
 
     /**
      * The border JLabel.
      */
-    private JLabel jlbl_border;
+    private MLabel jlbl_border;
 	
     /**
      * The background JLabel (which is shown if image is transparent).
      */
-    private JLabel jlbl_background, jlbl_background2;
+    private MLabel jlbl_background, jlbl_background2;
     
 	/**
 	 * empty utility class constructor. 
@@ -127,7 +126,7 @@ import control.ControlPainting;
         super.add(New.getInstance());
         
         //initialize JPanel jpnl_toMove
-        jpnl_toMove = new JPanel() {
+        jpnl_toMove = new MPanel() {
             
             @Override public void setLocation(final int _x, final int _y) {
 
@@ -142,7 +141,7 @@ import control.ControlPainting;
         sp_lr = new VScrollPane(jpnl_toMove, this, false);
         View.getInstance().add(sp_lr);
         
-        jlbl_resizeSelectionSize = new JLabel();
+        jlbl_resizeSelectionSize = new MLabel();
         jlbl_resizeSelectionSize.setOpaque(true);
         jlbl_resizeSelectionSize.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
         jlbl_resizeSelectionSize.setBackground(Color.white);
@@ -156,14 +155,14 @@ import control.ControlPainting;
                 Color.black));
         super.add(jlbl_resizeSelectionSize);
         
-        //initialize resize JButton
-        jbtn_resize = new JButton[2 + 1][2 + 1];
+        //initialize resize MButton
+        jbtn_resize = new MButton[2 + 1][2 + 1];
         for (int x = 0; x < jbtn_resize.length; x++) {
             for (int y = 0; y < jbtn_resize[x].length; y++) {
         
                 final int buttonSize = 10;
                 
-                jbtn_resize[x][y] = new JButton();
+                jbtn_resize[x][y] = new MButton();
                 jbtn_resize[x][y].setSize(buttonSize, buttonSize);
                 jbtn_resize[x][y].setContentAreaFilled(false);
                 jbtn_resize[x][y].setBorder(
@@ -188,23 +187,23 @@ import control.ControlPainting;
                 Constants.VIEW_JBTN_RESIZE_PATH)));
         jbtn_resize[1][1].setOpaque(false);
         
-        jlbl_selectionBG = new JLabel();
+        jlbl_selectionBG = new MLabel();
         jlbl_selectionBG.setOpaque(false);
         jlbl_selectionBG.setFocusable(false);
         super.add(jlbl_selectionBG);
         
-        jlbl_selectionPainting = new JLabel();
+        jlbl_selectionPainting = new MLabel();
         jlbl_selectionPainting.setOpaque(false);
         jlbl_selectionPainting.setFocusable(false);
         super.add(jlbl_selectionPainting);
 
-        jlbl_border = new JLabel();
+        jlbl_border = new MLabel();
         jlbl_border.setOpaque(true);
         jlbl_border.setBackground(new Color(0, 0, 0, 2 * 2 * 2 * 2 * 2));
         jlbl_border.setBorder(BorderFactory.createLineBorder(Color.black));
         super.add(jlbl_border);
 
-        jlbl_background2 = new JLabel();
+        jlbl_background2 = new MLabel();
         jlbl_background2.setBackground(Color.white);
         jlbl_background2.setFocusable(false);
         jlbl_background2.setBorder(null);
@@ -221,7 +220,7 @@ import control.ControlPainting;
         super.add(jlbl_painting);
 
 
-        jlbl_background = new JLabel();
+        jlbl_background = new MLabel();
         jlbl_background.setBackground(Color.white);
         jlbl_background.setFocusable(false);
         jlbl_background.setBorder(null);
@@ -409,7 +408,7 @@ import control.ControlPainting;
 	            jbtn_resize[i][j].setLocation(-width - 1, -1);
 	        }
 	    }
-	    //method for setting the JButtons to the size of the entire image.
+	    //method for setting the MButtons to the size of the entire image.
 	    ControlPainting.getInstance().updateResizeLocation();
 	    
 	    jlbl_painting.stopBorderThread();
@@ -445,7 +444,7 @@ import control.ControlPainting;
     /**
      * @return the jlbl_selection
      */
-    public JLabel getJlbl_selectionBG() {
+    public MLabel getJlbl_selectionBG() {
         return jlbl_selectionBG;
     }
     
@@ -453,7 +452,7 @@ import control.ControlPainting;
     /**
      * @return the jlbl_selectionPainting
      */
-    public JLabel getJlbl_selectionPainting() {
+    public MLabel getJlbl_selectionPainting() {
         return jlbl_selectionPainting;
     }
 
@@ -461,7 +460,7 @@ import control.ControlPainting;
     /**
      * @return the jbtn_resize
      */
-    public JButton[][] getJbtn_resize() {
+    public MButton[][] getJbtn_resize() {
         return jbtn_resize;
     }
 
@@ -469,7 +468,7 @@ import control.ControlPainting;
     /**
      * @return the jlbl_border
      */
-    public JLabel getJlbl_border() {
+    public MLabel getJlbl_border() {
         return jlbl_border;
     }
 
@@ -477,7 +476,7 @@ import control.ControlPainting;
     /**
      * @return the jlbl_background
      */
-    public JLabel getJlbl_background() {
+    public MLabel getJlbl_background() {
         return jlbl_background;
     }
 
@@ -486,7 +485,7 @@ import control.ControlPainting;
     /**
      * @return the jlbl_background
      */
-    public JLabel getJlbl_background2() {
+    public MLabel getJlbl_background2() {
         return jlbl_background2;
     }
 
@@ -494,7 +493,7 @@ import control.ControlPainting;
     /**
      * @return the jlbl_resizeSelectionSize
      */
-    public JLabel getJlbl_resizeSelectionSize() {
+    public MLabel getJlbl_resizeSelectionSize() {
         return jlbl_resizeSelectionSize;
     }
 }

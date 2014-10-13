@@ -3,15 +3,18 @@ package view.forms.tabs;
 //import declarations
 import java.awt.Color;
 import java.awt.Toolkit;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
 import control.tabs.CPaintStatus;
 import model.settings.ViewSettings;
 import view.util.Item2;
 import view.util.Item2Menu;
 import view.util.Item1Button;
+import view.util.mega.MLabel;
 
 
 /**
@@ -45,7 +48,7 @@ public final class Insert extends Tab {
     /**
      * Titles for the amount of lines and rows of diagrams.
      */
-    private JLabel jlbl_amountLines, jlbl_amountRows;
+    private MLabel jlbl_amountLines, jlbl_amountRows;
     
     /**
      * Input fields for the amount of lines and rows of diagrams.
@@ -148,7 +151,7 @@ public final class Insert extends Tab {
         i2_d_diagramm.setIcon("icon/geoForm/line.png");
 
         final int widthLabel = 125, heightLabel = 20;
-        jlbl_amountLines = new JLabel("# lines");
+        jlbl_amountLines = new MLabel("# lines");
         jlbl_amountLines.setLocation(distance 
                 + ia_diagram.getX() + ia_diagram.getWidth(),
                 ia_diagram.getY());
@@ -167,7 +170,7 @@ public final class Insert extends Tab {
         jtf_amountLines.setSize(widthLabel, heightLabel);
         super.add(jtf_amountLines);
         
-        jlbl_amountRows = new JLabel("# rows");
+        jlbl_amountRows = new MLabel("# rows");
         jlbl_amountRows.setLocation(distance 
                 + ia_diagram.getX() + ia_diagram.getWidth(),
                 jlbl_amountLines.getY() + jlbl_amountLines.getHeight() 

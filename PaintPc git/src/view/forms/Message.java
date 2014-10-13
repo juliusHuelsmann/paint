@@ -1,13 +1,15 @@
 package view.forms;
 
 import java.awt.Color;
+
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
+
 import control.forms.CMessage;
 import view.View;
 import view.util.RoundedBorder;
+import view.util.mega.MButton;
+import view.util.mega.MPanel;
 import model.settings.ViewSettings;
 
 
@@ -18,7 +20,7 @@ import model.settings.ViewSettings;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public final class Message extends JPanel {
+public final class Message extends MPanel {
 
     
     /**
@@ -38,9 +40,9 @@ public final class Message extends JPanel {
     
     
     /**
-     * JButton for hiding the message.
+     * MButton for hiding the message.
      */
-    private JButton jbtn_hide;
+    private MButton jbtn_hide;
     
     
     /**
@@ -83,7 +85,7 @@ public final class Message extends JPanel {
         super.setBorder(new RoundedBorder());
         super.setVisible(false);
     
-        jbtn_hide = new JButton("OK");
+        jbtn_hide = new MButton("OK");
         jbtn_hide.setContentAreaFilled(false);
         jbtn_hide.setOpaque(false);
         jbtn_hide.addActionListener(CMessage.getInstance());

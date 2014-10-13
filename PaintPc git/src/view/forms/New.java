@@ -5,19 +5,20 @@ import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
 import model.settings.Constants;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
 import control.forms.CNew;
 import control.util.MousePositionTracker;
 import view.util.Item1Button;
+import view.util.mega.MButton;
+import view.util.mega.MLabel;
+import view.util.mega.MPanel;
 
 /**
  * This class is the user interface for creating a new page.
@@ -25,7 +26,7 @@ import view.util.Item1Button;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public final class New extends JPanel {
+public final class New extends MPanel {
 
     /*
      * singleton
@@ -43,21 +44,21 @@ public final class New extends JPanel {
     /**
      * The JPanel which contains for instance the itemButtons.
      */
-    private JPanel jpnl_stuff;
+    private MPanel jpnl_stuff;
 
     /**
      * Exit button for this tab.
      */
-    private JButton jbtn_exit;    
+    private MButton jbtn_exit;    
     
     /*
      * Rather unimportant title dummies
      */
 
     /**
-     * Title JLabel.
+     * Title MLabel.
      */
-    private JLabel jlbl_sizeTitle, jlbl_backgroundTitle;
+    private MLabel jlbl_sizeTitle, jlbl_backgroundTitle;
     
     /*
      * pages sizes to be choosen.
@@ -69,9 +70,9 @@ public final class New extends JPanel {
     private Item1Button i1b_a4, i1b_a5, i1b_a6, i1b_a7, i1b_custom;
 
     /**
-     * The JLabels which serve as border of Item1Button.
+     * The MLabels which serve as border of Item1Button.
      */
-    private JLabel jlbl_bg1, jlbl_bg2, jlbl_bg3, jlbl_bg4, jlbl_bg5;
+    private MLabel jlbl_bg1, jlbl_bg2, jlbl_bg3, jlbl_bg4, jlbl_bg5;
 
     /*
      * Settings general
@@ -87,19 +88,19 @@ public final class New extends JPanel {
     private JComboBox jcb_project;
     
     /**
-     * JButton for selecting something and thus completing the creation of the
+     * MButton for selecting something and thus completing the creation of the
      * new item.
      */
-    private JButton jbtn_enter;
+    private MButton jbtn_enter;
 
     /*
      * Settings Custom
      */
     
     /**
-     * JLabels showing the description for setting width and height manually.
+     * MLabels showing the description for setting width and height manually.
      */
-    private JLabel jlbl_customWidth, jlbl_customHeight;
+    private MLabel jlbl_customWidth, jlbl_customHeight;
     
     /**
      * JTextFields which will be filled manually by user with the custom
@@ -140,7 +141,7 @@ public final class New extends JPanel {
         
         /*
          * Initialize JPanel and its most important elements such as the
-         * exit button, the headline JLabel and the JPanel which contains 
+         * exit button, the headline MLabel and the JPanel which contains 
          * every other components.
          */
         super.setSize(width, height);
@@ -153,7 +154,7 @@ public final class New extends JPanel {
         super.addMouseListener(mpt);
 
         //The container JPanel
-        jpnl_stuff = new JPanel();
+        jpnl_stuff = new MPanel();
         jpnl_stuff.setSize(width, height);
         jpnl_stuff.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
         jpnl_stuff.setLayout(null);
@@ -161,7 +162,7 @@ public final class New extends JPanel {
         super.add(jpnl_stuff);
 
         //The exit button which makes the JPanel invisible
-        jbtn_exit = new JButton();
+        jbtn_exit = new MButton();
         jbtn_exit.setContentAreaFilled(false);
         jbtn_exit.setOpaque(false);
         jbtn_exit.addMouseListener(CNew.getInstance());
@@ -175,8 +176,8 @@ public final class New extends JPanel {
                 Constants.VIEW_JBTN_EXIT_MOUSEOVER_PATH)));
         jpnl_stuff.add(jbtn_exit);
         
-        //The JLabel which shows the headline
-        JLabel jlbl_title = new JLabel("Create new Page");
+        //The MLabel which shows the headline
+        MLabel jlbl_title = new MLabel("Create new Page");
         jlbl_title.setFont(ViewSettings.GENERAL_FONT_HEADLINE_1);
         jlbl_title.setOpaque(false);
         jlbl_title.setBorder(null);
@@ -233,7 +234,7 @@ public final class New extends JPanel {
         initialize(i1b_a4, "Din A4 (" + Constants.SIZE_A4.width + "x" 
                 + Constants.SIZE_A4.height + ")", 0, distanceTop);
         
-        jlbl_bg1 = new JLabel();
+        jlbl_bg1 = new MLabel();
         jlbl_bg1.setFocusable(false);
         jlbl_bg1.setBounds(i1b_a4.getX() - 1, i1b_a4.getY() - 1, 
                 i1b_a4.getWidth() + 2, i1b_a4.getHeight() + 2);
@@ -248,7 +249,7 @@ public final class New extends JPanel {
                 + Constants.SIZE_A5.height + ")",
                 0, i1b_a4.getHeight() + i1b_a4.getY() + distanceBetweenItems);
 
-        jlbl_bg2 = new JLabel();
+        jlbl_bg2 = new MLabel();
         jlbl_bg2.setFocusable(false);
         jlbl_bg2.setBounds(i1b_a5.getX() - 1, i1b_a5.getY() - 1, 
                 i1b_a5.getWidth() + 2, i1b_a5.getHeight() + 2);
@@ -263,7 +264,7 @@ public final class New extends JPanel {
                 + Constants.SIZE_A6.height + ")", 
                 0, i1b_a5.getHeight() + i1b_a5.getY() + distanceBetweenItems);
 
-        jlbl_bg3 = new JLabel();
+        jlbl_bg3 = new MLabel();
         jlbl_bg3.setFocusable(false);
         jlbl_bg3.setBounds(i1b_a6.getX() - 1, i1b_a6.getY() - 1, 
                 i1b_a6.getWidth() + 2, i1b_a6.getHeight() + 2);
@@ -278,7 +279,7 @@ public final class New extends JPanel {
                 + Constants.SIZE_A7.height + ")", 
                 0, i1b_a6.getHeight() + i1b_a6.getY() + distanceBetweenItems);
 
-        jlbl_bg4 = new JLabel();
+        jlbl_bg4 = new MLabel();
         jlbl_bg4.setFocusable(false);
         jlbl_bg4.setBounds(i1b_a7.getX() - 1, i1b_a7.getY() - 1, 
                 i1b_a7.getWidth() + 2, i1b_a7.getHeight() + 2);
@@ -292,7 +293,7 @@ public final class New extends JPanel {
         initialize(i1b_custom, "Custom ", 
                 0, i1b_a7.getHeight() + i1b_a7.getY() + distanceBetweenItems);
 
-        jlbl_bg5 = new JLabel();
+        jlbl_bg5 = new MLabel();
         jlbl_bg5.setFocusable(false);
         jlbl_bg5.setBounds(i1b_custom.getX() - 1, i1b_custom.getY() - 1, 
                 i1b_custom.getWidth() + 2, i1b_custom.getHeight() + 2);
@@ -309,7 +310,7 @@ public final class New extends JPanel {
      */
     private void initializeGeneralSettings() {
 
-        jlbl_backgroundTitle = new JLabel("Background:");
+        jlbl_backgroundTitle = new MLabel("Background:");
         jlbl_backgroundTitle.setBounds(getWidth() / 2 + distanceLeftRight, 
                 distanceTop, getWidth() / 2 - 2 * distanceLeftRight, 
                 buttonHeight);
@@ -352,7 +353,7 @@ public final class New extends JPanel {
         jcb_nothing.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jpnl_stuff.add(jcb_nothing);
 
-        JLabel jlbl_sizeProject = new JLabel("Project");
+        MLabel jlbl_sizeProject = new MLabel("Project");
         jlbl_sizeProject.setBounds(jlbl_backgroundTitle.getX(), 
                 jcb_nothing.getHeight() + jcb_nothing.getY() 
                 + distanceBetweenItems * 2, jlbl_backgroundTitle.getWidth() / 2
@@ -380,7 +381,7 @@ public final class New extends JPanel {
      */
     private void initializeCustomSettings() {
 
-        jlbl_sizeTitle = new JLabel("Size");
+        jlbl_sizeTitle = new MLabel("Size");
         jlbl_sizeTitle.setBounds(jlbl_backgroundTitle.getX(), 
                 jcb_project.getHeight() + jcb_project.getY() 
                 + distanceBetweenItems * 2, jlbl_backgroundTitle.getWidth() / 2
@@ -390,7 +391,7 @@ public final class New extends JPanel {
         jlbl_sizeTitle.setFocusable(false);
         jpnl_stuff.add(jlbl_sizeTitle);
 
-        jlbl_customHeight = new JLabel("Height: ");
+        jlbl_customHeight = new MLabel("Height: ");
         jlbl_customHeight.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jlbl_customHeight.setFocusable(false);
         jlbl_customHeight.setBounds(jlbl_sizeTitle.getX(), 
@@ -411,7 +412,7 @@ public final class New extends JPanel {
                 jlbl_customHeight.getHeight());
         jpnl_stuff.add(jtf_customHeight);
         
-        jlbl_customWidth = new JLabel("Width: ");
+        jlbl_customWidth = new MLabel("Width: ");
         jlbl_customWidth.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jlbl_customWidth.setFocusable(false);
         jlbl_customWidth.setBounds(jlbl_customHeight.getX(), 
@@ -432,7 +433,7 @@ public final class New extends JPanel {
                 jlbl_customWidth.getHeight());
         jpnl_stuff.add(jtf_customWidth);
         
-        jbtn_enter = new JButton("Create");
+        jbtn_enter = new MButton("Create");
         jbtn_enter.setBounds(getWidth() / 2 + distanceLeftRight, 
                 getHeight() - distanceBetweenItems - buttonHeight,
                 getWidth() / 2 - 2 * distanceLeftRight, buttonHeight);
@@ -576,7 +577,7 @@ public final class New extends JPanel {
     /**
      * @return the jbtn_exit
      */
-    public JButton getJbtn_exit() {
+    public MButton getJbtn_exit() {
         return jbtn_exit;
     }
 
@@ -584,7 +585,7 @@ public final class New extends JPanel {
     /**
      * @return the jlbl_bg1
      */
-    public JLabel getJlbl_bg1() {
+    public MLabel getJlbl_bg1() {
         return jlbl_bg1;
     }
 
@@ -592,7 +593,7 @@ public final class New extends JPanel {
     /**
      * @return the jlbl_bg2
      */
-    public JLabel getJlbl_bg2() {
+    public MLabel getJlbl_bg2() {
         return jlbl_bg2;
     }
 
@@ -600,7 +601,7 @@ public final class New extends JPanel {
     /**
      * @return the jlbl_bg3
      */
-    public JLabel getJlbl_bg3() {
+    public MLabel getJlbl_bg3() {
         return jlbl_bg3;
     }
 
@@ -608,7 +609,7 @@ public final class New extends JPanel {
     /**
      * @return the jlbl_bg4
      */
-    public JLabel getJlbl_bg4() {
+    public MLabel getJlbl_bg4() {
         return jlbl_bg4;
     }
 
@@ -616,7 +617,7 @@ public final class New extends JPanel {
     /**
      * @return the jlbl_bg5
      */
-    public JLabel getJlbl_bg5() {
+    public MLabel getJlbl_bg5() {
         return jlbl_bg5;
     }
 
@@ -661,7 +662,7 @@ public final class New extends JPanel {
     /**
      * @return the jbtn_enter
      */
-    public JButton getJbtn_enter() {
+    public MButton getJbtn_enter() {
         return jbtn_enter;
     }
 

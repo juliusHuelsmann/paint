@@ -10,11 +10,11 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import model.settings.Error;
 import view.util.VColorPanel;
+import view.util.mega.MPanel;
 
 /**
  * singleton class which handles the ActionEvents of ColorPanel.
@@ -196,7 +196,7 @@ MouseMotionListener {
 		try {
 			
 			//fetch color 
-			Color clr_background = ((JPanel) _event.getSource())
+			Color clr_background = ((MPanel) _event.getSource())
 			        .getBackground();
 
 			//update the displayed selected color

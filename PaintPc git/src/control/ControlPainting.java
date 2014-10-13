@@ -175,13 +175,13 @@ public final class ControlPainting implements MouseListener,
         if (_event.getSource().equals(
                 Paint.getInstance().getTb_turnMirror().getActionCause())) {
 
+            View.getInstance().turn();
             Status.setNormalRotation(false);
-            View.getInstance().flip(false);
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_turnNormal().getActionCause())) {
 
+            View.getInstance().turn();
             Status.setNormalRotation(true);
-            View.getInstance().flip(true);
         }
     }
 
@@ -594,7 +594,6 @@ public final class ControlPainting implements MouseListener,
         View.getInstance().setVisible(true);
         View.getInstance().flip(true);
         View.getInstance().repaint();
-        Paint.getInstance().flip();
         Tabs.getInstance().repaint();
         Tabs.getInstance().openTab(0);
         

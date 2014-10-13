@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import start.test.BufferedViewer;
 import view.forms.tabs.PaintObjects;
 import view.util.BorderThread;
+import view.util.mega.MLabel;
+import view.util.mega.MPanel;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.special.PenSelection;
@@ -53,7 +55,7 @@ public class PaintLabel extends JLabel {
      * JPanel which is to be updated if location changes in
      * PaintLabel.
      */
-    private JPanel jpnl_toMove;
+    private MPanel jpnl_toMove;
     
     /**
      * Constructor.
@@ -61,7 +63,7 @@ public class PaintLabel extends JLabel {
      * @param _jpnl_toMove JPanel which is to be updated if location changes in
      * PaintLabel.
      */
-    public PaintLabel(final JPanel _jpnl_toMove) {
+    public PaintLabel(final MPanel _jpnl_toMove) {
         this.jpnl_toMove = _jpnl_toMove;
     }
 

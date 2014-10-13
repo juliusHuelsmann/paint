@@ -4,26 +4,25 @@ import java.awt.Component;
 
 import javax.swing.JPanel;
 
-public class MPanel extends JPanel {
+public class MPanel extends JPanel implements Mega{
 
-    private boolean first = true;
     
     /**
      * flip.
      */
-    public void flip() {
+    public void turn() {
 
         
         
         for (Component c : getComponents()) {
 
-            if (!first) {
 
                 c.setLocation(getWidth() - c.getX() - c.getWidth(),
                         getHeight() - c.getY() - c.getHeight());
+                if (c instanceof Mega) {
+                    ((Mega) c).turn();
+                }
             }
-        }
         
-        first = false;
     }
 }

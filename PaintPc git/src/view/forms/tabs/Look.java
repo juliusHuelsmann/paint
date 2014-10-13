@@ -8,6 +8,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import view.util.mega.MLabel;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
@@ -49,7 +50,7 @@ public final class Look extends Tab {
     /**
      * Title JLabel.
      */
-    private JLabel jlbl_backgroundTitle, jlbl_borderTitle, 
+    private MLabel jlbl_backgroundTitle, jlbl_borderTitle, 
     jlbl_subtitle_borderTop, jlbl_subtitle_borderBottom, 
     jlbl_subtitle_borderLeft, jlbl_subtitle_borderRight,
     jlbl_displayAlphaTitle, jlbl_subtitle_alpha;
@@ -97,7 +98,7 @@ public final class Look extends Tab {
      */
     private int initializeFirstColumn(final int _x) {
 
-        jlbl_backgroundTitle = new JLabel("Background:");
+        jlbl_backgroundTitle = new MLabel("Background:");
         jlbl_backgroundTitle.setBounds(ViewSettings.getDistanceBetweenItems(),
                 ViewSettings.getDistanceBetweenItems(), 
                 buttonWidth, buttonHeight);
@@ -139,7 +140,7 @@ public final class Look extends Tab {
         super.add(jcb_nothing);
 
 
-        jlbl_borderTitle = new JLabel("Border [percent]:");
+        jlbl_borderTitle = new MLabel("Border [percent]:");
         jlbl_borderTitle.setBounds(ViewSettings.getDistanceBetweenItems(), 
                 jcb_nothing.getY() + jcb_nothing.getHeight() 
                 + ViewSettings.getDistanceBetweenItems(), 
@@ -148,7 +149,7 @@ public final class Look extends Tab {
         jlbl_borderTitle.setFocusable(false);
         super.add(jlbl_borderTitle);
         //top
-        jlbl_subtitle_borderTop = new JLabel("Top");
+        jlbl_subtitle_borderTop = new MLabel("Top");
         jlbl_subtitle_borderTop.setSize(buttonWidth / 2, buttonHeight);
         jlbl_subtitle_borderTop.setLocation(jlbl_borderTitle.getX(), 
                 ViewSettings.getDistanceBetweenItems() + jlbl_borderTitle.getY()
@@ -166,7 +167,7 @@ public final class Look extends Tab {
         jcb_margeTop.addActionListener(CLook.getInstance());
         super.add(jcb_margeTop);
         //left
-        jlbl_subtitle_borderLeft = new JLabel("Left");
+        jlbl_subtitle_borderLeft = new MLabel("Left");
         jlbl_subtitle_borderLeft.setSize(jlbl_subtitle_borderTop.getSize());
         jlbl_subtitle_borderLeft.setLocation(jlbl_subtitle_borderTop.getX(), 
                 ViewSettings.getDistanceBetweenItems() 
@@ -185,7 +186,7 @@ public final class Look extends Tab {
         jcb_margeLeft.addActionListener(CLook.getInstance());
         super.add(jcb_margeLeft);
         //bottom
-        jlbl_subtitle_borderBottom = new JLabel("Bottom");
+        jlbl_subtitle_borderBottom = new MLabel("Bottom");
         jlbl_subtitle_borderBottom.setSize(jlbl_subtitle_borderTop.getSize());
         jlbl_subtitle_borderBottom.setLocation(jcb_margeTop.getX()
                 + jcb_margeTop.getWidth() 
@@ -206,7 +207,7 @@ public final class Look extends Tab {
         super.add(jcb_margeBottom);
 
         //right
-        jlbl_subtitle_borderRight = new JLabel("Right");
+        jlbl_subtitle_borderRight = new MLabel("Right");
         jlbl_subtitle_borderRight.setSize(jlbl_subtitle_borderTop.getSize());
         jlbl_subtitle_borderRight.setLocation(jcb_margeLeft.getX() 
                 + jcb_margeLeft.getWidth() 
@@ -324,7 +325,7 @@ public final class Look extends Tab {
          */
 
         //right
-        jlbl_displayAlphaTitle = new JLabel("Visualization");
+        jlbl_displayAlphaTitle = new MLabel("Visualization");
         jlbl_displayAlphaTitle.setSize(buttonWidth, buttonHeight);
         jlbl_displayAlphaTitle.setLocation(_x
                 + ViewSettings.getDistanceBetweenItems(),
@@ -333,7 +334,7 @@ public final class Look extends Tab {
         jlbl_displayAlphaTitle.setFocusable(false);
         super.add(jlbl_displayAlphaTitle);
         
-        jlbl_subtitle_alpha = new JLabel("of pure alpha");
+        jlbl_subtitle_alpha = new MLabel("of pure alpha");
         jlbl_subtitle_alpha.setSize(jlbl_subtitle_borderTop.getSize());
         jlbl_subtitle_alpha.setLocation(jlbl_displayAlphaTitle.getX(),
                 jlbl_displayAlphaTitle.getHeight() 

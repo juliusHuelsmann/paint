@@ -21,6 +21,8 @@ import model.settings.ViewSettings;
 import control.tabs.CPaintObjects;
 import view.util.VScrollPane;
 import view.util.Item1Button;
+import view.util.mega.MLabel;
+import view.util.mega.MPanel;
 
 /**
  * JPanel which shows the list of PaintObjects and details about them.
@@ -73,14 +75,14 @@ public final class PaintObjects extends Tab implements Observer {
 	 * Contains the amount of items contained in JPanel, title and the 
 	 * detailed position in an image of the view.
 	 */
-	private JLabel jlbl_amountOfItems, jlbl_title, jlbl_detailedPosition;
+	private MLabel jlbl_amountOfItems, jlbl_title, jlbl_detailedPosition;
 	
 	//Items shown in in ScrollPanel
 	
 	/**
 	 * Contains the items .
 	 */
-	private final JPanel jpnl_items, jpnl_owner;
+	private final MPanel jpnl_items, jpnl_owner;
 	
 	/**
 	 * ScrollPanel for items.
@@ -90,7 +92,7 @@ public final class PaintObjects extends Tab implements Observer {
 	/**
 	 * JPanel which contains the JScrollPane of the JTextArea.
 	 */
-	private final JPanel jpnl_container;
+	private final MPanel jpnl_container;
 
 	/**
 	 * JTextArea containing information on the selected item.
@@ -115,21 +117,21 @@ public final class PaintObjects extends Tab implements Observer {
 		final int tabSize = 10;
 		
 		//title
-		jlbl_title = new JLabel("Paint Objects");
+		jlbl_title = new MLabel("Paint Objects");
 		jlbl_title.setFocusable(false);
 		jlbl_title.setBorder(null);
 		jlbl_title.setFont(ViewSettings.GENERAL_FONT_HEADLINE_1);
 		super.add(jlbl_title);
 		
 		//owner of items panel and items panel
-		jpnl_owner = new JPanel();
+		jpnl_owner = new MPanel();
 		jpnl_owner.setLayout(null);
 		jpnl_owner.setVisible(true);
 		jpnl_owner.setBorder(null);
 		jpnl_owner.setOpaque(false);
 		super.add(jpnl_owner);
 
-		jpnl_items = new JPanel();
+		jpnl_items = new MPanel();
 		jpnl_items.setLayout(null);
 		jpnl_items.setVisible(true);
 		jpnl_items.setBorder(null);
@@ -137,7 +139,7 @@ public final class PaintObjects extends Tab implements Observer {
 		jpnl_owner.add(jpnl_items);
 
 		//JLabel for amount of items
-		jlbl_amountOfItems = new JLabel();
+		jlbl_amountOfItems = new MLabel();
 		jlbl_amountOfItems.setFocusable(false);
 		jlbl_amountOfItems.setBorder(null);
 		jlbl_amountOfItems.setFont(ViewSettings.GENERAL_FONT_ITEM);
@@ -149,7 +151,7 @@ public final class PaintObjects extends Tab implements Observer {
         jpnl_owner.add(sp_up);
     
 		//JTextArea, container and ScrollPane
-		jpnl_container = new JPanel();
+		jpnl_container = new MPanel();
 		jpnl_container.setLayout(new BorderLayout());
 		super.add(jpnl_container);
 		
@@ -167,7 +169,7 @@ public final class PaintObjects extends Tab implements Observer {
 		        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		jpnl_container.add(scrollPane, BorderLayout.CENTER);
 		
-		jlbl_detailedPosition = new JLabel();
+		jlbl_detailedPosition = new MLabel();
 		jlbl_detailedPosition.setFocusable(false);
 		jlbl_detailedPosition.setBorder(
 		        BorderFactory.createLineBorder(Color.black));
@@ -370,7 +372,7 @@ public final class PaintObjects extends Tab implements Observer {
     /**
      * @return the jlbl_detailedPosition
      */
-    public JLabel getJlbl_detailedPosition() {
+    public MLabel getJlbl_detailedPosition() {
         return jlbl_detailedPosition;
     }
 
@@ -378,7 +380,7 @@ public final class PaintObjects extends Tab implements Observer {
     /**
      * @return the jlbl_title
      */
-    public JLabel getJlbl_title() {
+    public MLabel getJlbl_title() {
         return jlbl_title;
     }
 
@@ -386,7 +388,7 @@ public final class PaintObjects extends Tab implements Observer {
     /**
      * @return the jlbl_amountOfItems
      */
-    public JLabel getJlbl_amountOfItems() {
+    public MLabel getJlbl_amountOfItems() {
         return jlbl_amountOfItems;
     }
 
@@ -394,7 +396,7 @@ public final class PaintObjects extends Tab implements Observer {
     /**
      * @return the jpnl_items
      */
-    public JPanel getJpnl_items() {
+    public MPanel getJpnl_items() {
         return jpnl_items;
     }
 }

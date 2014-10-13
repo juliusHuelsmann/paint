@@ -8,7 +8,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
@@ -29,6 +28,7 @@ import view.util.Item1Menu;
 import view.util.Item1PenSelection;
 import view.util.VColorPanel;
 import view.util.Item1Button;
+import view.util.mega.MButton;
 
 
 /**
@@ -54,7 +54,7 @@ public final class Paint extends Tab {
 	/**
 	 * array of colors to change the first or the second color.
 	 */
-	private JButton [] jbtn_colors;
+	private MButton [] jbtn_colors;
 
 	/**
 	 * Buttons for the second and the first color.
@@ -495,9 +495,9 @@ public final class Paint extends Tab {
     	final int height = ViewSettings.getItemMenu1Height() / amountOfItems
     	        -  distanceBetweenColors;
     	final int anzInR = 7;
-    	jbtn_colors = new JButton[anzInR * (2 + 2)];
+    	jbtn_colors = new MButton[anzInR * (2 + 2)];
     	for (int i = 0; i < jbtn_colors.length; i++) {
-    		jbtn_colors[i] = new JButton();
+    		jbtn_colors[i] = new MButton();
     		jbtn_colors[i].setBounds(tb_color2.getX() + tb_color2.getWidth() 
     		        + distanceBetweenColors 
     		        + (i % anzInR) * (width + distanceBetweenColors),
@@ -602,7 +602,7 @@ public final class Paint extends Tab {
     	        + ViewSettings.getDistanceBetweenItems() 
     	        + jbtn_colors[jbtn_colors.length - 1].getWidth(), 
     	        ViewSettings.getDistanceBetweenItems());
-        it_color.getJPanel().add(new VColorPanel(jbtn_colors));
+        it_color.getMPanel().add(new VColorPanel(jbtn_colors));
         it_color.setBorder(false);
         it_color.setIcon("icon/palette.png");
         super.add(it_color);
@@ -907,7 +907,7 @@ public final class Paint extends Tab {
 	/**
 	 * @return the jbtn_colors
 	 */
-	public JButton [] getJbtn_colors() {
+	public MButton [] getJbtn_colors() {
 		return jbtn_colors;
 	}
 

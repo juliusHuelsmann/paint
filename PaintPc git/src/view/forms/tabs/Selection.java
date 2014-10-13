@@ -6,10 +6,10 @@ import java.awt.Color;
 import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
 import model.settings.ViewSettings;
 import control.tabs.CPaintStatus;
 import control.tabs.CTabSelection;
@@ -17,6 +17,7 @@ import control.tabs.CPaintVisualEffects;
 import view.util.Item1Menu;
 import view.util.Item1Button;
 import view.util.VColorPanel;
+import view.util.mega.MButton;
 
 /**
  * The Selection Tab.
@@ -31,7 +32,7 @@ public final class Selection extends Tab {
     /**
      * array of colors to change the first or the second color.
      */
-    private JButton [] jbtn_colors;
+    private MButton [] jbtn_colors;
 
     /**
      * Buttons for the second and the first color.
@@ -111,9 +112,9 @@ public final class Selection extends Tab {
         int width = (2 + 2 + 1) * (2 + 2 + 1) - 2 - 2;
         int height = width + 2 + 1 + 2 * (2 + 1);
         int anzInR = 2 + 2 + 2 + 1;
-        jbtn_colors = new JButton[anzInR * (2 + 2)];
+        jbtn_colors = new MButton[anzInR * (2 + 2)];
         for (int i = 0; i < jbtn_colors.length; i++) {
-            jbtn_colors[i] = new JButton();
+            jbtn_colors[i] = new MButton();
             jbtn_colors[i].setBounds(tb_color.getX() + tb_color.getWidth() 
                     + distanceBetweenColors + (i % anzInR) 
                     * (width + distanceBetweenColors), 
@@ -221,7 +222,7 @@ public final class Selection extends Tab {
                 + ViewSettings.getDistanceBetweenItems() 
                 + jbtn_colors[jbtn_colors.length - 1].getWidth(), 
                 ViewSettings.getDistanceBetweenItems());
-        it_color.getJPanel().add(new VColorPanel(jbtn_colors));
+        it_color.getMPanel().add(new VColorPanel(jbtn_colors));
         it_color.setBorder(false);
         it_color.setIcon("icon/palette.png");
         super.add(it_color);
@@ -384,7 +385,7 @@ public final class Selection extends Tab {
     /**
      * @return the jbtn_colors
      */
-    public JButton [] getJbtn_colors() {
+    public MButton [] getJbtn_colors() {
         return jbtn_colors;
     }
 

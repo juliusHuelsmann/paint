@@ -4,19 +4,19 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 
+import view.util.mega.MButton;
 import control.util.CItem2;
 import model.util.paint.Utils;
 
 /**
- * JButton for inserting a form into image.
+ * MButton for inserting a form into image.
  * 
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class Item2 extends JButton {
+public class Item2 extends MButton {
 
     /**
      * The icon.
@@ -37,7 +37,7 @@ public class Item2 extends JButton {
 	}
 	
     /**
-     * Set the icon of the JButton.
+     * Set the icon of the MButton.
      * @param _s the path
      */
 	public final void setIcon(final String _s) {

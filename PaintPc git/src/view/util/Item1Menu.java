@@ -8,13 +8,11 @@ import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JPanel;
 
 import view.forms.Page;
 import view.forms.Tabs;
-import view.util.mega.MLabel;
+import view.util.mega.MButton;
 import view.util.mega.MPanel;
 import control.tabs.CPaintStatus;
 import control.util.CItem;
@@ -46,20 +44,20 @@ public class Item1Menu extends MPanel {
 	private boolean orderHeight = false;
 	
 	/**
-	 * JButton for selection and for selecting.
+	 * MButton for selection and for selecting.
 	 */
 	private Item1Button tb_select;
 	
 	
 	/**
-	 * JButton for selection and for selecting and opening.
+	 * MButton for selection and for selecting and opening.
 	 */
 	private VButtonWrapper tb_open;
 
 	/**
-	 * JPanel which contains stuff.
+	 * MPanel which contains stuff.
 	 */
-	private JPanel jpnl_stuff, jpnl_container, jpnl_subContainer;
+	private MPanel jpnl_stuff, jpnl_container, jpnl_subContainer;
 	
 	/**
 	 * the size.
@@ -99,7 +97,7 @@ public class Item1Menu extends MPanel {
 	 */
 	public Item1Menu(final boolean _openSelectOneButton) {
 		
-		//initialize JPanel and alter settings
+		//initialize MPanel and alter settings
 		super();
 		super.setLayout(null);
 		super.setOpaque(false);
@@ -107,17 +105,17 @@ public class Item1Menu extends MPanel {
 		super.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
 		super.setFocusable(false);
 
-		jpnl_stuff = new JPanel();
+		jpnl_stuff = new MPanel();
 		ls_item = new List<Component>();
-		jpnl_container = new JPanel();
-		jpnl_subContainer = new JPanel();
+		jpnl_container = new MPanel();
+		jpnl_subContainer = new MPanel();
 
 		sp_scroll = new VScrollPane(jpnl_stuff, jpnl_container, true);
 		sp_scroll.setOpaque(true);
 		super.add(sp_scroll);
 
 
-		//initialize JButton
+		//initialize MButton
 		tb_select = new Item1Button(this);
 		tb_select.setActivable(false);
 		tb_select.addMouseListener(CPaintStatus.getInstance());
@@ -132,7 +130,7 @@ public class Item1Menu extends MPanel {
 
 		if (!_openSelectOneButton) {
 
-	        //initialize JButton
+	        //initialize MButton
 	        tb_open = new VButtonWrapper(this);
 	        tb_open.setContentAreaFilled(false);
 	        tb_open.addMouseListener(CItem.getInstance());
@@ -236,22 +234,22 @@ public class Item1Menu extends MPanel {
 	
     
     /**
-     * add a JPanel to item1menu.
-     * @param _jpnl the JPanel
-     * @return the JPanel
+     * add a MPanel to item1menu.
+     * @param _jpnl the MPanel
+     * @return the MPanel
      */
-	public final Component add(final JPanel _jpnl) {
+	public final Component add(final MPanel _jpnl) {
 
 		_jpnl.setOpaque(false);
 		return addd(_jpnl);
 	}
     
     /**
-     * add a JButton to item1menu.
-     * @param _jbtn the JButton
-     * @return the JButton
+     * add a MButton to item1menu.
+     * @param _jbtn the MButton
+     * @return the MButton
      */
-	public final Component add(final JButton _jbtn) {
+	public final Component add(final MButton _jbtn) {
 
 		_jbtn.setContentAreaFilled(false);
 		_jbtn.setOpaque(false);
@@ -529,9 +527,9 @@ public class Item1Menu extends MPanel {
     /**
      * 
      * getter method.
-     * @return the JPanel jpnl_stuff.
+     * @return the MPanel jpnl_stuff.
      */
-    public final JPanel getJPanel() {
+    public final MPanel getMPanel() {
         return jpnl_stuff;
     }
 	

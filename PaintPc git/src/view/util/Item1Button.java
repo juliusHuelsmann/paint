@@ -292,7 +292,7 @@ public class Item1Button extends MPanel {
 	    final int distance = 5;
 	    final int colorSize = 30;
 	    
-	    if (_normalOrientation) {
+	    if (Status.isNormalRotation()) {
 
 	        jlbl_title.setFont(ViewSettings.GENERAL_FONT_ITEM1_BUTTON);
 	        //set size of color - and title JLabel
@@ -313,35 +313,7 @@ public class Item1Button extends MPanel {
 	                    - jlbl_color.getX() - distance, getHeight() 
 	                    - jlbl_color.getY() - distance);
 	        } 
-	    } else {
-
-	        jlbl_color.setIcon(new ImageIcon(Utils.resizeImage(
-	                jlbl_color.getWidth(), jlbl_color.getHeight(), imgPath)));
-
-	        //rotate text
-	        rotateText();
-
-	        //set size of color - and title JLabel
-            if (imageWidth == -1 || imageHeight == -1) {
-                jlbl_color.setBounds(distance * (2 + 1), getHeight() 
-                        - distance - getWidth() + colorSize, 
-                        getWidth() - colorSize, getWidth() - colorSize);
-
-                jlbl_title.setLocation(
-                        getWidth() - getWidth() - 0, getHeight() - (getHeight()
-                                - jlbl_color.getHeight() - jlbl_color.getY()) 
-                        - (jlbl_color.getHeight() + jlbl_color.getY()));
-            } else {
-
-                jlbl_color.setBounds(distance, distance, 
-                        imageWidth, imageHeight);
-
-                jlbl_title.setBounds(jlbl_color.getWidth() + jlbl_color.getX(),
-                        jlbl_color.getY(), getWidth() - jlbl_color.getWidth() 
-                        - jlbl_color.getX() - distance,
-                        getHeight() - jlbl_color.getY() - distance);
-            } 
-	    }
+	    } 
 	}
 	
 	/**

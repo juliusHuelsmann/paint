@@ -10,7 +10,7 @@ import javax.swing.SwingConstants;
 
 import model.settings.Status;
 import model.settings.ViewSettings;
-import view.util.VLabel;
+import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
 
@@ -26,12 +26,12 @@ public abstract class Tab extends MPanel {
     /**
      * JLabels for the separation, linked with information.
      */
-    private JLabel [] jlbl_separation;
+    private MLabel [] jlbl_separation;
 
     /**
      * JLabels for the information text, linked with separation line.
      */
-    private VLabel [] jlbl_information;
+    private MLabel [] jlbl_information;
     
     
     /**
@@ -42,8 +42,8 @@ public abstract class Tab extends MPanel {
     public Tab(final int _amount) {
         
         //initialize the Labels
-        jlbl_information = new VLabel[_amount];
-        jlbl_separation = new JLabel[_amount];
+        jlbl_information = new MLabel[_amount];
+        jlbl_separation = new MLabel[_amount];
         super.setSize(ViewSettings.getView_widthTb(), 
                 ViewSettings.getView_heightTab());
     }
@@ -80,7 +80,7 @@ public abstract class Tab extends MPanel {
         
         //if new initialization is demanded
         if (_insert) {
-            this.getJlbl_separation()[_locationInArray] = new JLabel();
+            this.getJlbl_separation()[_locationInArray] = new MLabel();
             this.getJlbl_separation()[_locationInArray].setBorder(
                     BorderFactory.createLineBorder(
                             ViewSettings.GENERAL_CLR_BACKGROUND_DARK_XX));
@@ -114,7 +114,7 @@ public abstract class Tab extends MPanel {
             //final value for foreground for JLabel
             final int rgb = 190;
             
-            jlbl_information[_locationInArray] = new VLabel();
+            jlbl_information[_locationInArray] = new MLabel();
             jlbl_information[_locationInArray].setFont(
                     ViewSettings.GENERAL_TP_FONT_INFORMATION);
             jlbl_information[_locationInArray].setForeground(
@@ -144,7 +144,7 @@ public abstract class Tab extends MPanel {
     /**
      * @return the jlbl_separation
      */
-    public final JLabel [] getJlbl_separation() {
+    public final MLabel [] getJlbl_separation() {
         return jlbl_separation;
     }
 
@@ -152,7 +152,7 @@ public abstract class Tab extends MPanel {
     /**
      * @return the jlbl_information
      */
-    public final VLabel [] getJlbl_information() {
+    public final MLabel [] getJlbl_information() {
         return jlbl_information;
     }
 }

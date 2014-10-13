@@ -10,13 +10,13 @@ import javax.swing.JLabel;
 
 import model.settings.Status;
 
-public class MLabel extends JLabel implements Mega {
+public class MButton extends JButton implements Mega{
 
     
-    public MLabel() {
+    public MButton() {
         super();
     }
-    public MLabel(String _t) {
+    public MButton(String _t) {
         super(_t);
     }
     

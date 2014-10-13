@@ -6,12 +6,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import view.util.mega.MButton;
+import view.util.mega.MLabel;
+import view.util.mega.MPanel;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import control.util.CColorPanel;
@@ -23,7 +23,7 @@ import control.util.CColorPanel;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-@SuppressWarnings("serial") public class VColorPanel extends JPanel {
+@SuppressWarnings("serial") public class VColorPanel extends MPanel {
 
 	/**
 	 * JTextFields for entering special color.
@@ -33,20 +33,20 @@ import control.util.CColorPanel;
 	/**
 	 * JLabel for selected color and RGB - titles.
 	 */
-	private JLabel jlbl_selectedColor, 
+	private MLabel jlbl_selectedColor, 
 	jlbl_r , jlbl_g, jlbl_b;
 
 	/**
-	 * JButton for applying the changes.
+	 * MButton for applying the changes.
 	 */
-	private JButton jbtn_applyCanges;
+	private MButton jbtn_applyCanges;
 	
 	/**
 	 * Array of buttons which 
 	 *     are already there and have to be updated
 	 *     have to be added to the colorPanel.
 	 */
-	private JButton [] jbtn_colorsUpdate, jbtn_colorsPanel;
+	private MButton [] jbtn_colorsUpdate, jbtn_colorsPanel;
 	
 	
 	/**
@@ -64,7 +64,7 @@ import control.util.CColorPanel;
 	private final int distanceItems = 10;
 
 	/**
-	 * amount of items in row in JButton array for colors.
+	 * amount of items in row in MButton array for colors.
 	 */
     private final int amountInRows = 7;
     
@@ -76,9 +76,9 @@ import control.util.CColorPanel;
 	/**
 	 * Constructor: initializes things.
 	 * 
-	 * @param _jbtn_toUpdate the JButtons which are being updated.
+	 * @param _jbtn_toUpdate the MButtons which are being updated.
 	 */
-	public VColorPanel(final JButton[] _jbtn_toUpdate) {
+	public VColorPanel(final MButton[] _jbtn_toUpdate) {
 
 		//initialize JPanel and alter settings
 		super();
@@ -87,7 +87,7 @@ import control.util.CColorPanel;
 		super.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND);
 		super.setVisible(false);
 
-        //save the JButton 
+        //save the MButton 
         this.jbtn_colorsPanel = _jbtn_toUpdate;
         control = new CColorPanel(this);
 
@@ -127,7 +127,7 @@ import control.util.CColorPanel;
 		            .addMouseListener(control);
 		}
 	        
-		//JButton for applying changes
+		//MButton for applying changes
 		getJbtn_applyCanges().addMouseListener(control);
 
 		//set location
@@ -164,7 +164,7 @@ import control.util.CColorPanel;
 
 
         //JLabel for the selected Color
-        jlbl_selectedColor = new JLabel();
+        jlbl_selectedColor = new MLabel();
         jlbl_selectedColor.setSize(sizeBigColor, sizeBigColor);
         jlbl_selectedColor.setBackground(Color.pink);
         jlbl_selectedColor.setOpaque(true);
@@ -175,7 +175,7 @@ import control.util.CColorPanel;
         /*
          * JLabels and JTextFields for color RGB Values
          */
-        jlbl_r = new JLabel(TextFactory.getInstance().getTextColorPanel_red());
+        jlbl_r = new MLabel(TextFactory.getInstance().getTextColorPanel_red());
         jlbl_r.setSize(dim_JLabel);
         jlbl_r.setOpaque(false);
         jlbl_r.setFont(ViewSettings.GENERAL_FONT_ITEM);
@@ -189,7 +189,7 @@ import control.util.CColorPanel;
         jtf_r.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         super.add(jtf_r);
 
-        jlbl_g = new JLabel(
+        jlbl_g = new MLabel(
                 TextFactory.getInstance().getTextColorPanel_green());
         jlbl_g.setSize(dim_JLabel);
         jlbl_g.setOpaque(false);
@@ -204,7 +204,7 @@ import control.util.CColorPanel;
         jtf_g.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         super.add(jtf_g);
         
-        jlbl_b = new JLabel(
+        jlbl_b = new MLabel(
                 TextFactory.getInstance().getTextColorPanel_blue());
         jlbl_b.setSize(dim_JLabel);
         jlbl_b.setOpaque(false);
@@ -221,9 +221,9 @@ import control.util.CColorPanel;
         super.add(jtf_b);
 
         /*
-         * JButton for inserting.
+         * MButton for inserting.
          */
-        jbtn_applyCanges = new JButton(
+        jbtn_applyCanges = new MButton(
                 TextFactory.getInstance().getTextColorPanel_submit());
         jbtn_applyCanges.setContentAreaFilled(false);
         jbtn_applyCanges.setFont(ViewSettings.GENERAL_FONT_ITEM);
@@ -238,9 +238,9 @@ import control.util.CColorPanel;
         int width = sizeBigColor / 2;
         int height = sizeBigColor / (2 + 1);
         
-        jbtn_colorsUpdate = new JButton[jbtn_colorsPanel.length];
+        jbtn_colorsUpdate = new MButton[jbtn_colorsPanel.length];
         for (int i = 0; i < jbtn_colorsUpdate.length; i++) {
-            jbtn_colorsUpdate[i] = new JButton();
+            jbtn_colorsUpdate[i] = new MButton();
             jbtn_colorsUpdate[i].setBounds(distanceItems 
                     + (i % amountInRows) * (width + 2), -distanceItems 
                     + currentHeight + (i / amountInRows) * (height + 2),
@@ -407,18 +407,18 @@ import control.util.CColorPanel;
             }
         }
 
-        it_color1.getJPanel().setVisible(true);
-        it_color1.getJPanel().setLocation(distanceItems, distanceItems);
-        it_color1.getJPanel().setSize(dim_it_color);
+        it_color1.getMPanel().setVisible(true);
+        it_color1.getMPanel().setLocation(distanceItems, distanceItems);
+        it_color1.getMPanel().setSize(dim_it_color);
 
-        it_color2.getJPanel().setVisible(true);
-        it_color2.getJPanel().setLocation(it_color1.getJPanel().getX(),
+        it_color2.getMPanel().setVisible(true);
+        it_color2.getMPanel().setLocation(it_color1.getMPanel().getX(),
                 yThing2);
-        it_color2.getJPanel().setSize(dim_it_color);
-        super.add(it_color2.getJPanel());
-        super.add(it_color1.getJPanel());
+        it_color2.getMPanel().setSize(dim_it_color);
+        super.add(it_color2.getMPanel());
+        super.add(it_color1.getMPanel());
         
-        return it_color1.getJPanel().getHeight();
+        return it_color1.getMPanel().getHeight();
 	}
 
 	
@@ -429,7 +429,7 @@ import control.util.CColorPanel;
 	 */
 	private void insertPanel(final Item1Menu _it_color, 
 	        final Color _color) {
-        JPanel jpnl_currentColor = new JPanel();
+	    MPanel jpnl_currentColor = new MPanel();
         _it_color.add(jpnl_currentColor);
         jpnl_currentColor.addMouseMotionListener(control); 
         jpnl_currentColor.addMouseListener(control);
@@ -468,7 +468,7 @@ import control.util.CColorPanel;
 	/**
 	 * @return the jlbl_selectedColor
 	 */
-	public final JLabel getJlbl_selectedColor() {
+	public final MLabel getJlbl_selectedColor() {
 		return jlbl_selectedColor;
 	}
 
@@ -476,7 +476,7 @@ import control.util.CColorPanel;
 	/**
 	 * @return the jbtn_schonDa
 	 */
-	public final JButton [] getJbtn_colorsUpdate() {
+	public final MButton [] getJbtn_colorsUpdate() {
 		return jbtn_colorsUpdate;
 	}
 
@@ -484,7 +484,7 @@ import control.util.CColorPanel;
 	/**
 	 * @return the jbtn_copy
 	 */
-	public final JButton [] getJbtn_colorsPanel() {
+	public final MButton [] getJbtn_colorsPanel() {
 		return jbtn_colorsPanel;
 	}
 
@@ -492,7 +492,7 @@ import control.util.CColorPanel;
 	/**
 	 * @return the jbtn_applyCanges
 	 */
-	public final JButton getJbtn_applyCanges() {
+	public final MButton getJbtn_applyCanges() {
 		return jbtn_applyCanges;
 	}
 }

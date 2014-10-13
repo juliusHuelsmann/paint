@@ -11,15 +11,17 @@ import java.awt.event.MouseMotionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+
 import model.settings.Error;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import control.util.CTabbedPane;
 import view.forms.Page;
+import view.util.mega.MButton;
+import view.util.mega.MLabel;
+import view.util.mega.MPanel;
 
 
 /**
@@ -29,41 +31,41 @@ import view.forms.Page;
  * @version %I% %U%
  */
 @SuppressWarnings("serial")
-public class VTabbedPane extends JPanel {
+public class VTabbedPane extends MPanel {
 
 	/**
-	 * array of headline JButtons.
+	 * array of headline MButtons.
 	 */
-	private JButton [] jbtn_stuffHeadline;
+	private MButton [] jbtn_stuffHeadline;
 	
 	/**
-	 * JButton for closing the tabbedPane.
+	 * MButton for closing the tabbedPane.
 	 */
-	private JLabel jlbl_close;
+	private MLabel jlbl_close;
 	
 	/**
-	 * array of Panels for each JButton.
+	 * array of Panels for each MButton.
 	 */
-	private JPanel  [] jpnl_stuff;
+	private MPanel  [] jpnl_stuff;
 	
 	/**
-	 * JLabel for the background.
+	 * MLabel for the background.
 	 */
-	private JLabel jpnl_background, jlbl_whiteBackground;
+	private MLabel jpnl_background, jlbl_whiteBackground;
 	
 	/**
-	 * JPanel for the content 
-	 *     JButton for title
-	 *     JPanel for content of tab.
+	 * MPanel for the content 
+	 *     MButton for title
+	 *     MPanel for content of tab.
 	 */
-	private JPanel jpnl_contains;
+	private MPanel jpnl_contains;
 	
 	/*
 	 * settings
 	 */
 	
 	/**
-	 * The bounds of the title JButton and location of the Tab JPanel.
+	 * The bounds of the title MButton and location of the Tab MPanel.
 	 */
 	private int titleX = 1, titleY = 1;
 	
@@ -94,36 +96,36 @@ public class VTabbedPane extends JPanel {
 	private boolean press = false;
 	
 	/**
-	 * The closing JPanel.
+	 * The closing MPanel.
 	 */
-	private JPanel jpnl_close;
+	private MPanel jpnl_close;
 	
 	/**
-	 * JLabel containing the time, date and the working time.
+	 * MLabel containing the time, date and the working time.
 	 */
-	private JLabel jlbl_closeTime;
+	private MLabel jlbl_closeTime;
 	
 	/**
 	 * Constructor initialize view and corresponding controller class..
 	 */
 	public VTabbedPane() {
 		
-		//initialize JPanel and alter settings
+		//initialize MPanel and alter settings
 		super();
 		super.setFocusable(false);
 		super.setLayout(null);
 		super.setOpaque(false);
 		
-		//initialize the container for the title JButton and the tab  JPanels
-		jpnl_contains = new JPanel();
+		//initialize the container for the title MButton and the tab  MPanels
+		jpnl_contains = new MPanel();
 		jpnl_contains.setFocusable(false);
 		jpnl_contains.setOpaque(true);
 		jpnl_contains.setBackground(new Color(0, 0, 0, 0));
 		jpnl_contains.setLayout(null);
 		super.add(jpnl_contains);
 
-        //initialize the Background JLabel
-        jpnl_background = new JLabel();
+        //initialize the Background MLabel
+        jpnl_background = new MLabel();
         jpnl_background.setFocusable(false);
         jpnl_background.setOpaque(true);
         jpnl_background.setLayout(null);
@@ -132,14 +134,14 @@ public class VTabbedPane extends JPanel {
                 1, 0, 1, 1, ViewSettings.GENERAL_CLR_BORDER));
         jpnl_contains.add(jpnl_background);
 
-        jpnl_close = new JPanel();
+        jpnl_close = new MPanel();
         jpnl_close.setFocusable(false);
         jpnl_close.setOpaque(true);
         jpnl_close.setBackground(Color.white);
         jpnl_close.setLayout(null);
         super.add(jpnl_close);
         
-        jlbl_closeTime = new JLabel("Sonntag, 2014 09 14\t 20:17:40");
+        jlbl_closeTime = new MLabel("Sonntag, 2014 09 14\t 20:17:40");
         jlbl_closeTime.setForeground(Color.black);
         jlbl_closeTime.setOpaque(false);
         jlbl_closeTime.setFocusable(false);
@@ -148,7 +150,7 @@ public class VTabbedPane extends JPanel {
         jlbl_closeTime.setVisible(false);
         jpnl_close.add(jlbl_closeTime);
         
-        jlbl_close = new JLabel();
+        jlbl_close = new MLabel();
         jlbl_close.setFocusable(false);
         jlbl_close.setOpaque(false);
         jlbl_close.addMouseMotionListener(new MouseMotionListener() {
@@ -183,7 +185,7 @@ public class VTabbedPane extends JPanel {
         jpnl_close.add(jlbl_close);
 
         //background at the top where the buttons can be found.
-        jlbl_whiteBackground = new JLabel();
+        jlbl_whiteBackground = new MLabel();
         jlbl_whiteBackground.setBackground(Color.white);
         jlbl_whiteBackground.setOpaque(true);
         jlbl_whiteBackground.setFocusable(false);
@@ -472,31 +474,31 @@ public class VTabbedPane extends JPanel {
 	 */
 	public final void addTab(final String _title) {
 
-		//if the JPanel is not initialized yet.
+		//if the MPanel is not initialized yet.
 		if (jpnl_stuff == null) {
 			
-		    //create arrays for content JPanel and headline JButton
-			jpnl_stuff = new JPanel[1];
-			jbtn_stuffHeadline = new JButton[1];
+		    //create arrays for content MPanel and headline MButton
+			jpnl_stuff = new MPanel[1];
+			jbtn_stuffHeadline = new MButton[1];
 
-			//initialize title button and content JPanel
+			//initialize title button and content MPanel
 			jbtn_stuffHeadline[0] = initJbtn_title(0, _title);
 			jpnl_stuff[0] = initJpnl_tab();
 			
 		} else {
 			
 		    //create new arrays
-			JPanel [] jpnl_stuff2 = new JPanel [jpnl_stuff.length + 1];
-			JButton[] jbtn_stuff2 = new JButton[jpnl_stuff.length + 1];
+			MPanel [] jpnl_stuff2 = new MPanel [jpnl_stuff.length + 1];
+			MButton[] jbtn_stuff2 = new MButton[jpnl_stuff.length + 1];
 
-			//save old JPanels
+			//save old MPanels
 			for (int i = 0; i < jpnl_stuff.length; i++) {
 				jpnl_stuff2[i] = jpnl_stuff[i];
 				jbtn_stuff2[i] = jbtn_stuffHeadline[i];
 				jpnl_stuff2[i].setVisible(true);
 			}
 			
-			//initialize the new JPanels.
+			//initialize the new MPanels.
 			jbtn_stuff2[jpnl_stuff.length] = initJbtn_title(
 			        jpnl_stuff.length, _title);
 			jpnl_stuff2[jpnl_stuff.length] = initJpnl_tab();
@@ -507,7 +509,7 @@ public class VTabbedPane extends JPanel {
                 jbtn_stuff2[jpnl_stuff.length].setSize(
                         jbtn_stuff2[jpnl_stuff.length].getWidth(), 1);
             }
-			//save the new created JPanel and JButton arrays.
+			//save the new created MPanel and MButton arrays.
 			jpnl_stuff = jpnl_stuff2;
 			jbtn_stuffHeadline = jbtn_stuff2;
 		}
@@ -532,14 +534,14 @@ public class VTabbedPane extends JPanel {
     public final Component addToTab(final int _index, final Component _c) {
     	
     
-           //if the JPanel for the stuff does not exist yet, not a single
+           //if the MPanel for the stuff does not exist yet, not a single
         //tab has been added before and it is thus impossible to add
         //a component to a special tab.
         if (jpnl_stuff == null) {
             
             //print error message
             Error.printError(getClass().getSimpleName(), "add(...)", 
-                    "add an item to a not existing JPanel (no item added yet)", 
+                    "add an item to a not existing MPanel (no item added yet)", 
                     new Exception("no item added yet."), 
                     Error.ERROR_MESSAGE_INTERRUPT);
     
@@ -550,7 +552,7 @@ public class VTabbedPane extends JPanel {
     
             //print error message
             Error.printError(getClass().getSimpleName(), "add(...)", 
-                    "add an item to a not existing JPanel"
+                    "add an item to a not existing MPanel"
                             + "(index out of range)",
                             new Exception("index out of range."), 
                             Error.ERROR_MESSAGE_INTERRUPT);
@@ -562,7 +564,7 @@ public class VTabbedPane extends JPanel {
     
             //print error message
     	    Error.printError(getClass().getSimpleName(), "add(...)", 
-    	            "add an item to a not existing JPanel" 
+    	            "add an item to a not existing MPanel" 
     	                    + "(Component to add is null)", 
     	                    new Exception("Component to add is null"),
     	                    Error.ERROR_MESSAGE_INTERRUPT);
@@ -577,13 +579,13 @@ public class VTabbedPane extends JPanel {
 
 
     /**
-	 * initialize a new headline for JButton which is added to TabbedPane.
+	 * initialize a new headline for MButton which is added to TabbedPane.
 	 * 
 	 * @param _index the current index of tab
 	 * @param _text the headline
-	 * @return the JButton.
+	 * @return the MButton.
 	 */
-	private JButton initJbtn_title(final int _index, final String _text) {
+	private MButton initJbtn_title(final int _index, final String _text) {
 	
 		VButtonWrapper jbtn = new VButtonWrapper(_index);
 		jbtn.setVisible(true);
@@ -601,12 +603,12 @@ public class VTabbedPane extends JPanel {
 	
 	
 	/**
-	 * initialize a new JPanel for the tab.
-	 * @return the ready JPanel.
+	 * initialize a new MPanel for the tab.
+	 * @return the ready MPanel.
 	 */
-	private JPanel initJpnl_tab() {
+	private MPanel initJpnl_tab() {
 
-		JPanel jpnl = new JPanel();
+		MPanel jpnl = new MPanel();
 		jpnl.setVisible(true);
 		jpnl.setLayout(null);
 		jpnl.setFocusable(false);
@@ -633,7 +635,7 @@ public class VTabbedPane extends JPanel {
             //save currently open tab
             openTab = _index;
 
-            //go through the list of headline JButtons and tab JPanels
+            //go through the list of headline MButtons and tab MPanels
             for (int i = 0; i < jbtn_stuffHeadline.length; i++) {
 
                 
@@ -643,7 +645,7 @@ public class VTabbedPane extends JPanel {
                 jbtn_stuffHeadline[i].setBorder(BorderFactory.createMatteBorder(
                         0, 0, 1, 0, ViewSettings.GENERAL_CLR_BORDER));
 
-                //make the tab JPanel visible
+                //make the tab MPanel visible
                 jpnl_stuff[i].setLocation(getWidth() * (i - lastTab), 
                         jpnl_stuff[i].getY());
                 jpnl_stuff[i].setVisible(true);
@@ -664,15 +666,15 @@ public class VTabbedPane extends JPanel {
 
                     final int max = 150;
                     
-                    //go through the list of headline JButtons and tab 
-                    //JPanels
+                    //go through the list of headline MButtons and tab 
+                    //MPanels
                     for (int percent = 0; percent <= max; percent++) {
                         for (int i = 0; i < jbtn_stuffHeadline.length; i++) {
 
                             int cStartLocation = getWidth() * (i - lastTab);
                             int cEndLocation = getWidth() * (i - _index);
                             
-                            //make the tab JPanel visible
+                            //make the tab MPanel visible
                             jpnl_stuff[i].setLocation(cStartLocation
                                     + (cEndLocation - cStartLocation)
                                     * percent / max,
@@ -705,7 +707,7 @@ public class VTabbedPane extends JPanel {
             //save currently open tab
             openTab = _index;
             
-            //go through the list of headline JButtons and tab JPanels
+            //go through the list of headline MButtons and tab MPanels
             for (int i = 0; i < jbtn_stuffHeadline.length; i++) {
 
                 //set the tab invisible
@@ -726,7 +728,7 @@ public class VTabbedPane extends JPanel {
                     BorderFactory.createMatteBorder(
                     1, 1, 0, 1, ViewSettings.GENERAL_CLR_BORDER));
             
-            //make the tab JPanel visible
+            //make the tab MPanel visible
             jpnl_stuff[_index].setVisible(true);
             
             //set the size of open tab
@@ -775,7 +777,7 @@ public class VTabbedPane extends JPanel {
                 titleHeight = getHeight() / ViewSettings
                         .TABBED_PANE_TITLE_PROPORTION_HEIGHT;
         
-        //set the size of container JPanel (whole width and height)
+        //set the size of container MPanel (whole width and height)
         jpnl_contains.setSize(getWidth(), getHeight());
         
         //set background size (only visible width and height shown)

@@ -9,14 +9,12 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import view.forms.tabs.Paint;
+import view.tabs.Paint;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 import model.objects.painting.Picture;

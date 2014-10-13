@@ -68,6 +68,9 @@ public abstract class PaintObjectPen extends PaintObject {
      * @param _r the rectangle of which is checked whether theDPoint is inside
      * @param _p theDPoint which is maybe inside the rectangle _r
      * 
+     * @param _shiftX the x shift
+     * @param _shiftY the y shift
+     * 
      * @return whether theDPoint is inside the given rectangle.
      */
     protected static boolean isInSelectionPoint(

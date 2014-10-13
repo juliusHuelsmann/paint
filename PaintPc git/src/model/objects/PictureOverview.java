@@ -3,7 +3,7 @@ package model.objects;
 import java.util.Observable;
 
 import model.objects.painting.po.PaintObject;
-import view.forms.tabs.PaintObjects;
+import view.tabs.PaintObjects;
 
 /**
  * The class corresponding to the view PaintObjects class. 

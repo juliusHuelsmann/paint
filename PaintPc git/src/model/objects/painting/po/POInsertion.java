@@ -304,8 +304,12 @@ public abstract class POInsertion extends PaintObjectPen {
 
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean isInSelectionImage(byte[][] _field, int _xShift, int _yShift) {
+    public final boolean isInSelectionImage(
+            final byte[][] _field, final int _xShift, final int _yShift) {
 
         new Exception("not implemented yet").printStackTrace();
         return false;

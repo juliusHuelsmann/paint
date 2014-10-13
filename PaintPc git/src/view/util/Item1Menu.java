@@ -5,18 +5,15 @@ package view.util;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
-
 import view.forms.Page;
 import view.forms.Tabs;
 import view.util.mega.MButton;
 import view.util.mega.MPanel;
 import control.tabs.CPaintStatus;
 import control.util.CItem;
-import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.list.List;
 import model.util.paint.Utils;

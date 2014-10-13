@@ -252,8 +252,8 @@ public final class ViewSettings {
     /**
      * distances for items.
      */
-    private static int distanceAfterLine = 3, distanceBeforeLine = 2, 
-            distanceBetweenItems = 3, 
+    private static int distanceAfterLine = 2 + 1, distanceBeforeLine = 2, 
+            distanceBetweenItems = 2 + 1,
             itemWidth = size_jframe.width / (TWENTY_FIFE - 2 - 1), 
             itemHeight = size_jframe.height / (TEN + 2);
     
@@ -309,17 +309,23 @@ public final class ViewSettings {
 
     
     
+    
+    /**
+     * Recalculate the contents after the image size (sizeJframe has been 
+     * changed).
+     */
     private static void recalculate() {
-        System.out.println("hier");
          messageLocation
         = new Point((size_jframe.width - getSizeMessage().width) / 2, 
-                size_jframe.height - getSizeMessage().height - 2 * 2 * 2 * 2 * 2);
+                size_jframe.height 
+                - getSizeMessage().height - 2 * 2 * 2 * 2 * 2);
 
          view_bounds_jbtn_exit = new Rectangle(
                 size_jframe.width - TWENTY_FIFE * 2 - FIFE, 0, 
                 TWENTY_FIFE * 2 + FIFE, 2  * TEN);
          view_bounds_jbtn_fullscreen = new Rectangle(
-                getView_bounds_jbtn_exit().x - getView_bounds_jbtn_exit().width, 0, 
+                getView_bounds_jbtn_exit().x 
+                - getView_bounds_jbtn_exit().width, 0, 
                 TWENTY_FIFE * 2 + FIFE, 2  * TEN);
         
 
@@ -329,10 +335,11 @@ public final class ViewSettings {
          view_heightTB_visible = 
                 (int) (size_jframe.height / (2 + 2 + 1 / 2));
 
+         final int h1 = 180, h2 = 190, h3 = 560;
          view_heightTB_opener =
                 view_heightTB_visible / (2 + 1) / (2 + 1);
          view_bounds_po = new Rectangle(
-                2, 180, 190, 560);
+                2, h1, h2, h3);
 
          view_bounds_page_open = new Rectangle(
                 1, 1 + view_heightTB_visible 
@@ -351,13 +358,13 @@ public final class ViewSettings {
          view_bounds_page = new Rectangle(
                 view_bounds_page_open);
 
-         distanceAfterLine = 3; distanceBeforeLine = 2; 
-                distanceBetweenItems = 3; 
+         distanceAfterLine = 2 + 1; distanceBeforeLine = 2; 
+                distanceBetweenItems = 2 + 1; 
                 itemWidth = size_jframe.width / (TWENTY_FIFE - 2 - 1); 
                 itemHeight = size_jframe.height / (TEN + 2);
         
          itemMenu1Width 
-        = (int) (ViewSettings.getItemWidth() * 1.4);
+        = (int) (ViewSettings.getItemWidth() * (1 + 1.0 / (2 + 2)));
         itemMenu1Height = 2 * ViewSettings.getItemHeight();
 
         
@@ -433,10 +440,10 @@ public final class ViewSettings {
 
 
     /**
-     * @param view_widthTb the view_widthTb to set
+     * @param _view_widthTb the view_widthTb to set
      */
-    public static void setView_widthTb(final int view_widthTb) {
-        ViewSettings.view_widthTb = view_widthTb;
+    public static void setView_widthTb(final int _view_widthTb) {
+        ViewSettings.view_widthTb = _view_widthTb;
     }
 
 
@@ -567,11 +574,11 @@ public final class ViewSettings {
 
 
     /**
-     * @param view_bounds_page_closed the view_bounds_page_closed to set
+     * @param _view_bounds_page_closed the view_bounds_page_closed to set
      */
     public static void setView_bounds_page_closed(
-            Rectangle view_bounds_page_closed) {
-        ViewSettings.view_bounds_page_closed = view_bounds_page_closed;
+            final Rectangle _view_bounds_page_closed) {
+        ViewSettings.view_bounds_page_closed = _view_bounds_page_closed;
     }
 
 
@@ -584,10 +591,10 @@ public final class ViewSettings {
 
 
     /**
-     * @param view_bounds_page the view_bounds_page to set
+     * @param _view_bounds_page the view_bounds_page to set
      */
-    public static void setView_bounds_page(Rectangle view_bounds_page) {
-        ViewSettings.view_bounds_page = view_bounds_page;
+    public static void setView_bounds_page(final Rectangle _view_bounds_page) {
+        ViewSettings.view_bounds_page = _view_bounds_page;
     }
 
 
@@ -600,10 +607,10 @@ public final class ViewSettings {
 
 
     /**
-     * @param distanceAfterLine the distanceAfterLine to set
+     * @param _distanceAfterLine the distanceAfterLine to set
      */
-    public static void setDistanceAfterLine(int distanceAfterLine) {
-        ViewSettings.distanceAfterLine = distanceAfterLine;
+    public static void setDistanceAfterLine(final int _distanceAfterLine) {
+        ViewSettings.distanceAfterLine = _distanceAfterLine;
     }
 
 
@@ -616,10 +623,11 @@ public final class ViewSettings {
 
 
     /**
-     * @param distanceBetweenItems the distanceBetweenItems to set
+     * @param _distanceBetweenItems the distanceBetweenItems to set
      */
-    public static void setDistanceBetweenItems(int distanceBetweenItems) {
-        ViewSettings.distanceBetweenItems = distanceBetweenItems;
+    public static void setDistanceBetweenItems(
+            final int _distanceBetweenItems) {
+        ViewSettings.distanceBetweenItems = _distanceBetweenItems;
     }
 
 
@@ -632,10 +640,10 @@ public final class ViewSettings {
 
 
     /**
-     * @param distanceBeforeLine the distanceBeforeLine to set
+     * @param _distanceBeforeLine the distanceBeforeLine to set
      */
-    public static void setDistanceBeforeLine(int distanceBeforeLine) {
-        ViewSettings.distanceBeforeLine = distanceBeforeLine;
+    public static void setDistanceBeforeLine(final int _distanceBeforeLine) {
+        ViewSettings.distanceBeforeLine = _distanceBeforeLine;
     }
 
 
@@ -648,10 +656,10 @@ public final class ViewSettings {
 
 
     /**
-     * @param itemWidth the itemWidth to set
+     * @param _itemWidth the itemWidth to set
      */
-    public static void setItemWidth(int itemWidth) {
-        ViewSettings.itemWidth = itemWidth;
+    public static void setItemWidth(final int _itemWidth) {
+        ViewSettings.itemWidth = _itemWidth;
     }
 
 
@@ -664,10 +672,10 @@ public final class ViewSettings {
 
 
     /**
-     * @param itemHeight the itemHeight to set
+     * @param _itemHeight the itemHeight to set
      */
-    public static void setItemHeight(int itemHeight) {
-        ViewSettings.itemHeight = itemHeight;
+    public static void setItemHeight(final int _itemHeight) {
+        ViewSettings.itemHeight = _itemHeight;
     }
 
 
@@ -680,10 +688,10 @@ public final class ViewSettings {
 
 
     /**
-     * @param itemMenu1Width the itemMenu1Width to set
+     * @param _itemMenu1Width the itemMenu1Width to set
      */
-    public static void setItemMenu1Width(int itemMenu1Width) {
-        ViewSettings.itemMenu1Width = itemMenu1Width;
+    public static void setItemMenu1Width(final int _itemMenu1Width) {
+        ViewSettings.itemMenu1Width = _itemMenu1Width;
     }
 
 
@@ -696,10 +704,10 @@ public final class ViewSettings {
 
 
     /**
-     * @param itemMenu1Height the itemMenu1Height to set
+     * @param _itemMenu1Height the itemMenu1Height to set
      */
-    public static void setItemMenu1Height(int itemMenu1Height) {
-        ViewSettings.itemMenu1Height = itemMenu1Height;
+    public static void setItemMenu1Height(final int _itemMenu1Height) {
+        ViewSettings.itemMenu1Height = _itemMenu1Height;
     }
 
 
@@ -714,10 +722,10 @@ public final class ViewSettings {
 
 
     /**
-     * @param sIZE_PNL_CLR the sIZE_PNL_CLR to set
+     * @param _sizePnlClr the sIZE_PNL_CLR to set
      */
-    public static void setSIZE_PNL_CLR(Dimension sIZE_PNL_CLR) {
-        sizePnlClr = sIZE_PNL_CLR;
+    public static void setSIZE_PNL_CLR(final Dimension _sizePnlClr) {
+        sizePnlClr = _sizePnlClr;
     }
 
 
@@ -732,14 +740,17 @@ public final class ViewSettings {
 
 
     /**
-     * @param sizeMessage the sizeMessage to set
+     * @param _sizeMessage the sizeMessage to set
      */
-    public static void setSizeMessage(Dimension sizeMessage) {
-        ViewSettings.sizeMessage = sizeMessage;
+    public static void setSizeMessage(final Dimension _sizeMessage) {
+        ViewSettings.sizeMessage = _sizeMessage;
     }
 
 
-
+    /**
+     * Return the height of tab added to tabbedPane.
+     * @return the height of each tab
+     */
     public static int getView_heightTab() {
         return size_jframe.height - getView_heightTB() / ViewSettings
                 .TABBED_PANE_TITLE_PROPORTION_HEIGHT - 1;

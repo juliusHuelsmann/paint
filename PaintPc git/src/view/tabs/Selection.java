@@ -1,15 +1,12 @@
 //package declaration
-package view.forms.tabs;
+package view.tabs;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Toolkit;
-
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-
 import model.settings.ViewSettings;
 import control.tabs.CPaintStatus;
 import control.tabs.CTabSelection;

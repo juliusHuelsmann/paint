@@ -2,11 +2,8 @@ package model.objects.painting;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
-import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Status;
 
 
@@ -17,7 +14,12 @@ import model.settings.Status;
  */
 public final class PaintBI {
 
-    public static final byte OCCUPIED = 1, FREE = -1, START_BYTE = 3, BORDER = 2;
+    
+    /**
+     * Final values for array.
+     */
+    public static final byte OCCUPIED = 1, FREE = -1, 
+            START_BYTE = 3, BORDER = 2;
     
     /**
      * Empty utility class constructor.
@@ -588,8 +590,7 @@ public final class PaintBI {
  */
 class PolygonReturn {
 
-    private byte  currentByte = PaintBI.START_BYTE;
-    model.util.list.List<Byte> ls_bytesOutside = new model.util.list.List<Byte>();
+    
     /**
      * The length of the curve.
      */
@@ -682,7 +683,15 @@ class PolygonReturn {
         
     }
     
-    boolean startchange = false;
+    
+    /**
+     * Whether something changed during the last time the process has been done.
+     */
+    private boolean startchange = false;
+    
+    /**
+     * 
+     */
     public void schwabbel() {
         startchange = true;
         while (startchange) {
@@ -692,7 +701,14 @@ class PolygonReturn {
         }
     
     }
-    private boolean check (int _x, int _y) {
+    
+    /**
+     * Check whether value is outside selection.
+     * @param _x coordinate
+     * @param _y coordinate
+     * @return whether value is outside selection.
+     */
+    private boolean check(final int _x, final int _y) {
 
         return (_x < 0 || _y < 0 
                 || _x >= field.length || _y >= field[_x].length
@@ -700,16 +716,20 @@ class PolygonReturn {
             
     }
         
+    
+    /**
+     * Start one process.
+     */
     private void start() {
 
         for (int x = 0; x < field.length; x++) { 
             for (int y = 0; y < field[x].length; y++) { 
                 if (field[x][y] == PaintBI.FREE) {
 
-                    if (check (x - 1, y)
-                            || check (x + 1, y)
-                            || check (x, y - 1)
-                            || check (x, y + 1)){
+                    if (check(x - 1, y)
+                            || check(x + 1, y)
+                            || check(x, y - 1)
+                            || check(x, y + 1)) {
                         field[x][y] = PaintBI.BORDER;
                         startchange = true;
                     }

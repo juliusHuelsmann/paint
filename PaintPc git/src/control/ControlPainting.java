@@ -50,7 +50,7 @@ import view.forms.Message;
 import view.forms.New;
 import view.forms.Page;
 import view.forms.Tabs;
-import view.forms.tabs.Paint;
+import view.tabs.Paint;
 
 /**
  * Controller class.

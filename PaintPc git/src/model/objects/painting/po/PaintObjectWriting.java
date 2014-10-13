@@ -357,6 +357,20 @@ public class PaintObjectWriting extends PaintObjectPen {
     }
     
 
+    
+    /**
+     * check whether line selected.
+     * Has to work JUST LIKE the corresponding paint method paintLine!
+     * No matter, if it is penMath...
+     * 
+     * 
+     * @param _p1 point 1
+     * @param _p2 point 2
+     * @param _r the byte array of booleans
+     * @param _shiftX the shiftX
+     * @param _shiftY the shiftY
+     * @return whether between the line is selected.
+     */
     public static boolean pruefeLine(final DPoint _p1, final DPoint _p2, 
 
             final byte[][] _r, final int _shiftX, final int _shiftY) {

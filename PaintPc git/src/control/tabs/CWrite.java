@@ -5,8 +5,9 @@ package control.tabs;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import view.forms.tabs.Paint;
-import view.forms.tabs.Write;
+
+import view.tabs.Paint;
+import view.tabs.Write;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Pencil;
@@ -69,12 +70,14 @@ public final class CWrite implements ActionListener {
     PEN_EXMPL_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_BLUE_2),
     PEN_CMMNT_1 = new Pencil(Constants.PEN_ID_LINES, 2, CLR_GRAY),
     PEN_CMMNT_2 = new BallPen(Constants.PEN_ID_LINES, 2, CLR_PINK_2),
-    PEN_HEADLINE_1_1 = new BallPen(Constants.PEN_ID_LINES, SIZE_H1, CLR_GRAY),
-    PEN_HEADLINE_1_2 = new Pencil(Constants.PEN_ID_LINES, SIZE_H1, CLR_PINK_2), 
-    PEN_HEADLINE_2_1 = new BallPen(Constants.PEN_ID_LINES, SIZE_H2, CLR_GRAY),
-    PEN_HEADLINE_2_2 = new Pencil(Constants.PEN_ID_LINES, SIZE_H2, CLR_PINK_2), 
-    PEN_HEADLINE_3_1 = new BallPen(Constants.PEN_ID_LINES, SIZE_H3, CLR_GRAY),
-    PEN_HEADLINE_3_2 = new Pencil(Constants.PEN_ID_LINES, SIZE_H3, CLR_PINK_2);
+    PEN_HEADLINE_1_1 = new Pencil(Constants.PEN_ID_LINES, SIZE_H1, CLR_GRAY),
+    PEN_HEADLINE_1_2 = new BallPen(Constants.PEN_ID_LINES, SIZE_H1, 
+            CLR_PINK_2), 
+    PEN_HEADLINE_2_1 = new Pencil(Constants.PEN_ID_LINES, SIZE_H2, CLR_GRAY),
+    PEN_HEADLINE_2_2 = new BallPen(Constants.PEN_ID_LINES, SIZE_H2,
+            CLR_PINK_2), 
+    PEN_HEADLINE_3_1 = new Pencil(Constants.PEN_ID_LINES, SIZE_H3, CLR_GRAY),
+    PEN_HEADLINE_3_2 = new BallPen(Constants.PEN_ID_LINES, SIZE_H3, CLR_PINK_2);
     
     /*
      * Constructor

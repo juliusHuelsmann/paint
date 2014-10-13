@@ -6,13 +6,13 @@ import java.awt.Toolkit;
 
 import model.settings.ViewSettings;
 import control.util.CItem;
-import view.forms.tabs.Export;
-import view.forms.tabs.Insert;
-import view.forms.tabs.Look;
-import view.forms.tabs.Paint;
-import view.forms.tabs.PaintObjects;
-import view.forms.tabs.Selection;
-import view.forms.tabs.Write;
+import view.tabs.Export;
+import view.tabs.Insert;
+import view.tabs.Look;
+import view.tabs.Paint;
+import view.tabs.PaintObjects;
+import view.tabs.Selection;
+import view.tabs.Write;
 import view.util.VTabbedPane;
 
 

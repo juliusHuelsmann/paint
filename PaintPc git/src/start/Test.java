@@ -26,7 +26,8 @@ public class Test {
         loadPicture();
         Picture.getInstance().transformWhiteToAlpha();
         
-        Picture.getInstance().saveIMAGE(Settings.getWsLocation() + "/result.png");
+        Picture.getInstance().saveIMAGE(
+                Settings.getWsLocation() + "/result.png");
     }
     
     

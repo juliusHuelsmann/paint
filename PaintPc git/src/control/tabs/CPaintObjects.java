@@ -20,7 +20,7 @@ import model.settings.Status;
 import model.util.DPoint;
 import model.util.list.List;
 import view.forms.Page;
-import view.forms.tabs.PaintObjects;
+import view.tabs.PaintObjects;
 import view.util.Item1Button;
 
 

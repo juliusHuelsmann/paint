@@ -1,13 +1,9 @@
 //package declarations
-package view.forms.tabs;
+package view.tabs;
 
 //import declarations
-import java.awt.Toolkit;
-
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
-
 import view.util.mega.MLabel;
 import model.settings.Constants;
 import model.settings.Status;

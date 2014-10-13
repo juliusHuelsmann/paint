@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 
-import view.forms.tabs.Insert;
+import view.tabs.Insert;
 import view.util.Item2;
 
 /**

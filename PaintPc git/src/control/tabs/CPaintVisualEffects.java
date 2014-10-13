@@ -10,7 +10,7 @@ import javax.swing.border.LineBorder;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import view.View;
-import view.forms.tabs.Paint;
+import view.tabs.Paint;
 import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;
 

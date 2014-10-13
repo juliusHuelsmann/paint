@@ -1,4 +1,4 @@
-package view.forms.tabs;
+package view.tabs;
 
 /**
  * Panel for the Tab.

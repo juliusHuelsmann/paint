@@ -6,11 +6,9 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import start.test.BufferedViewer;
-import view.forms.tabs.PaintObjects;
+import view.tabs.PaintObjects;
 import view.util.BorderThread;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;

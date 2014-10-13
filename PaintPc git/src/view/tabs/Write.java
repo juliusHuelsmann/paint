@@ -1,9 +1,7 @@
-package view.forms.tabs;
+package view.tabs;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Toolkit;
-
 import javax.swing.BorderFactory;
 import javax.swing.border.LineBorder;
 import control.tabs.CWrite;

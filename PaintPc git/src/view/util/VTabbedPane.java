@@ -11,11 +11,8 @@ import java.awt.event.MouseMotionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import javax.swing.BorderFactory;
-
 import model.settings.Error;
-import model.settings.Status;
 import model.settings.ViewSettings;
 import control.util.CTabbedPane;
 import view.forms.Page;
@@ -766,7 +763,6 @@ public class VTabbedPane extends MPanel {
      * set size and location of contents depending on the current
      * rotation given in parameter.
      * 
-     * @param _normalRotation whether normal rotation or not
      */
     public final void flip() {
 
@@ -811,7 +807,8 @@ public class VTabbedPane extends MPanel {
 	                jbtn_stuffHeadline[index].setSize(titleWidth, titleHeight);
 	            }
                 jpnl_stuff[index].setSize(
-                        getWidth(), getTabHeight());
+                        getWidth(), getHeight() - getHeight() / ViewSettings
+                                .TABBED_PANE_TITLE_PROPORTION_HEIGHT - titleY);
                 
                 //set locations depending on previous locations.
                 //if index == 0 there is no previous location, it has to be
@@ -830,12 +827,6 @@ public class VTabbedPane extends MPanel {
 	}
     
     
-    public int getTabHeight() {
-        final int 
-        titleHeight = getHeight() / ViewSettings
-        .TABBED_PANE_TITLE_PROPORTION_HEIGHT;;
-        return getHeight() - titleHeight - titleY;
-    }
 
     /**
      * @return the openTab

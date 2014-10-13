@@ -23,7 +23,7 @@ import control.tabs.CTabSelection;
 import view.View;
 import view.forms.Message;
 import view.forms.Page;
-import view.forms.tabs.Insert;
+import view.tabs.Insert;
 import model.objects.PictureOverview;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;

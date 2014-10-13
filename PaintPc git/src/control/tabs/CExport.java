@@ -2,7 +2,8 @@ package control.tabs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import view.forms.tabs.Export;
+
+import view.tabs.Export;
 import model.settings.Constants;
 import model.settings.Status;
 

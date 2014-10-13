@@ -19,8 +19,8 @@ import model.util.paint.Utils;
 import view.View;
 import view.forms.Page;
 import view.forms.Tabs;
-import view.forms.tabs.Insert;
-import view.forms.tabs.Paint;
+import view.tabs.Insert;
+import view.tabs.Paint;
 import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;
 

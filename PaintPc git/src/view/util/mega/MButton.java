@@ -1,41 +1,56 @@
+//package declaration
 package view.util.mega;
 
+//import declarations
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-
 import javax.swing.JButton;
-import javax.swing.JLabel;
-
 import model.settings.Status;
 
-public class MButton extends JButton implements Mega{
 
-    
+/**
+ * View class for which add the possibility to rotate the components 
+ * by overwriting paintComponents(Graphics g) and by overwriting the method 
+ * paintComponent(Graphics g) for rotating the images and the icons.
+ * 
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
+@SuppressWarnings("serial")
+public class MButton extends JButton implements Mega {
+
+    /**
+     * Constructor. Call super - constructor.
+     */
     public MButton() {
         super();
     }
-    public MButton(String _t) {
+
+    /**
+     * Constructor. Call super - constructor.
+     * @param _t the text of the Label.
+     */
+    public MButton(final String _t) {
         super(_t);
     }
-    
+
     /**
-     * flip.
+     * Turn the owned components.
      */
-    public void turn() {
+    @Override public final void turn() {
 
-        
-        
+        //go through the list of contained components and change location
+        //and e.g. call turn method of components.
         for (Component c : getComponents()) {
-
-
-                c.setLocation(getWidth() - c.getX() - c.getWidth(),
-                        getHeight() - c.getY() - c.getHeight());
+            c.setLocation(getWidth() - c.getX() - c.getWidth(),
+                    getHeight() - c.getY() - c.getHeight());
+            if (c instanceof Mega) {
+                ((Mega) c).turn();
+            }
         }
-        
     }
-    
 
     /**
      * paintComponent which paints the component. Flips if Status is 

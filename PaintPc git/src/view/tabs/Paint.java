@@ -1,17 +1,13 @@
 //package declaration
-package view.forms.tabs;
+package view.tabs;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Toolkit;
-
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Marker;
@@ -569,7 +565,7 @@ public final class Paint extends Tab {
     	jbtn_colors[i + anzInR * three].setBackground(c7n3);
     
     	//
-    	it_color = new Item1Menu(false);
+    	it_color = new Item1Menu(true);
         it_color.setSize(ViewSettings.getSIZE_PNL_CLR());
     	it_color.setBorder(false);
     	it_color.setText("+ Farben");

@@ -6,17 +6,12 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
-import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
 import control.util.VisualTextButton;
@@ -54,11 +49,6 @@ public class Item1Button extends MPanel {
      * image width and height.
      */
     private int imageWidth = -1, imageHeight = -1;
-    
-    /**
-     * the path of the image.
-     */
-    private String imgPath;
     
     
     /**
@@ -160,13 +150,6 @@ public class Item1Button extends MPanel {
 		}
 	}
 	
-	/**
-	 * rotate the text.
-	 */
-	private void rotateText() {
-	    
-	    jlbl_title.repaint();
-	}
 	
 	
 	/**
@@ -182,7 +165,6 @@ public class Item1Button extends MPanel {
 	 * @param _i the path of the Icon.
 	 */
 	public final void setIcon(final String _i) {
-	    imgPath = _i;
 		jlbl_color.setOpaque(false);
 		jlbl_color.setIcon(new ImageIcon(Utils.resizeImage(
 				jlbl_color.getWidth(), jlbl_color.getHeight(), _i)));
@@ -288,7 +270,6 @@ public class Item1Button extends MPanel {
 	
 	/**
 	 * flip the object.
-	 * @param _normalOrientation the orientation
 	 */
 	public final void flip() {
 	    

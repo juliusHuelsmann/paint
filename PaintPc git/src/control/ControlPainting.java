@@ -376,19 +376,22 @@ public final class ControlPainting implements MouseListener,
                             / Status.getImageShowSize().height));
         } else {
 
-            Picture.getInstance()
-            .changePaintObject(new DPoint((_event.getX() 
-                    - Page.getInstance().getJlbl_painting().getWidth()
-                    + Page.getInstance().getJlbl_painting().getLocation().x)
-                    * Status.getImageSize().width
-                    / Status.getImageShowSize().width, 
-                    (_event.getY() 
-                    - Page.getInstance().getJlbl_painting().getHeight()
-                    + Page.getInstance().getJlbl_painting()
-                    .getLocation().y
-                    )
-                    * Status.getImageSize().height
-                    / Status.getImageShowSize().height));
+            Picture.getInstance().changePaintObject(
+                    new DPoint(
+                            Page.getInstance().getJlbl_painting().getWidth()
+                            - (_event.getX() 
+                            + Page.getInstance()
+                            .getJlbl_painting().getLocation().x
+                            )
+                            * Status.getImageSize().width
+                            / Status.getImageShowSize().width, 
+                            Page.getInstance().getJlbl_painting().getHeight()
+                            - (_event.getY() 
+                            + Page.getInstance().getJlbl_painting()
+                            .getLocation().y
+                            )
+                            * Status.getImageSize().height
+                            / Status.getImageShowSize().height));
         }
     }
     /**

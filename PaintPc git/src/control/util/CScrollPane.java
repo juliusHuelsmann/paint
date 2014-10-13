@@ -641,6 +641,22 @@ implements MouseMotionListener, MouseListener, KeyListener {
                     * (view.getJbtn_center().getY()
                             - view.getJbtn_toTop().getHeight()) 
                             / bar100Percent;
+            if (!Status.isNormalRotation()) {
+
+                bar100Percent = (-view.getJbtn_center().getHeight() 
+                        + view.getJbtn_toTop().getY()) 
+                        - (view.getJbtn_toBottom().getHeight() 
+                        + view.getJbtn_toBottom().getY());
+
+                
+                percentage = Constants.MAX_PERCENTAGE 
+                        - Constants.MAX_PERCENTAGE 
+                        * (view.getJbtn_center().getY() 
+                                -  view.getJbtn_toBottom().getY()
+                                -  view.getJbtn_toBottom().getHeight()) 
+                                / bar100Percent;
+            }
+            
             view.getJpnl_toLocate().setLocation(
                     view.getJpnl_toLocate().getLocation().x, 
                     -percentage * (view.getJpnl_toLocate().getHeight() 
@@ -654,6 +670,22 @@ implements MouseMotionListener, MouseListener, KeyListener {
                     * (view.getJbtn_center().getX() 
                             - view.getJbtn_toTop().getWidth()) 
                             / bar100Percent;
+            
+            if (!Status.isNormalRotation()) {
+
+                bar100Percent = (-view.getJbtn_center().getWidth() 
+                        + view.getJbtn_toTop().getX()) 
+                        - (view.getJbtn_toBottom().getWidth() 
+                        + view.getJbtn_toBottom().getX());
+
+                
+                percentage = Constants.MAX_PERCENTAGE 
+                        - Constants.MAX_PERCENTAGE 
+                        * (view.getJbtn_center().getX() 
+                                -  view.getJbtn_toBottom().getX()
+                                -  view.getJbtn_toBottom().getWidth()) 
+                                / bar100Percent;
+            }
             view.getJpnl_toLocate().setLocation(-percentage 
                     * (view.getJpnl_toLocate().getWidth() 
                             - view.getJpnl_owner().getWidth()) / cent, 

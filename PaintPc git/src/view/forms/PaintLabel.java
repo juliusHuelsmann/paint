@@ -27,7 +27,7 @@ import model.util.paint.Utils;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class PaintLabel extends JLabel {
+public class PaintLabel extends MLabel {
 
     /**
      * The bufferedImage.

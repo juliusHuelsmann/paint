@@ -12,6 +12,7 @@ import view.forms.tabs.Look;
 import view.forms.tabs.Paint;
 import view.forms.tabs.PaintObjects;
 import view.forms.tabs.Selection;
+import view.forms.tabs.Write;
 import view.util.VTabbedPane;
 
 
@@ -67,6 +68,7 @@ public class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Schreiben");
+        super.addToTab(tabNumber, Write.getInstance());
         tabNumber++;
         
         /*

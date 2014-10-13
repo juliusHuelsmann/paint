@@ -507,11 +507,26 @@ public final class ControlPainting implements MouseListener,
                         pnt_movementSpeed = new Point(
                                 pnt_last.x - _event.getX(), 
                                 pnt_last.y - _event.getY());
+                        if (!Status.isNormalRotation()) {
+
+                            pnt_movementSpeed = new Point(
+                                    -pnt_last.x + _event.getX(), 
+                                    -pnt_last.y + _event.getY());
+
+                        }
+                        
                     }
                     //Scroll
                     int x = pnt_startLocation.x + _event.getX() - pnt_start.x;
                     int y = pnt_startLocation.y +  _event.getY() - pnt_start.y;
 
+                    if (!Status.isNormalRotation()) {
+
+                        x = pnt_startLocation.x - _event.getX() + pnt_start.x;
+                        y = pnt_startLocation.y -  _event.getY() + pnt_start.y;
+
+                    }
+                    
                     if (x < -Status.getImageShowSize().width + Page
                             .getInstance().getJlbl_painting().getWidth()) {
                         x = -Status.getImageShowSize().width + Page

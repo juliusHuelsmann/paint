@@ -5,10 +5,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
-
 import javax.swing.ImageIcon;
-
 import start.test.BufferedViewer;
 import view.tabs.PaintObjects;
 import view.util.BorderThread;
@@ -89,6 +86,15 @@ public class PaintLabel extends MLabel {
                 -getLocation().y, getWidth() , getHeight(), 0, 0, getBi()));
 
         
+        refreshPaintBackground();
+        
+        setIcon(new ImageIcon(getBi()));
+        PaintObjects.getInstance().repaint();
+    }
+
+    
+    private void refreshPaintBackground() {
+
         //paint the painting background (e.g. raster / lines) at the graphical
         //user interface.
         if (Page.getInstance().getJlbl_background2().getWidth() != 0
@@ -108,10 +114,8 @@ public class PaintLabel extends MLabel {
                     -getLocation().y + getHeight(), 0, 0))));  
         }
 
-        setIcon(new ImageIcon(getBi()));
-        PaintObjects.getInstance().repaint();
     }
-
+    
     @Override public final void repaint() {
         super.repaint();
         PaintObjects.getInstance().repaint(); 
@@ -188,7 +192,7 @@ public class PaintLabel extends MLabel {
     public final BufferedImage refreshRectangle(final int _x, final int _y, 
             final int _width, final int _height) {
 
-        System.out.println("refreshing PaintLabel. \nValues: "
+        Status.getLogger().finest("refreshing PaintLabel. \nValues: "
                 + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
                 + "\n\tgetLocation:\t" + getLocation() 
                 + " vs. " + super.getLocation()
@@ -276,56 +280,42 @@ public class PaintLabel extends MLabel {
             	int shiftedStartX = 0,
             		shiftedStartY = 0;
             	
-            	//move to the right (new location is greater than the old one)
-            	//
+            	//move to the left (new location is smaller than the old one)
             	if (_x > x) {
 
             		shiftedStartX = _x - x;
-            		
             		maintainStartX = 0;
             		maintainWidth = bi.getWidth() - shiftedStartX;
-            		
             	} else if (_x < x) {
 
             		shiftedStartX = 0;
-            		
             		maintainStartX =  x - _x;
             		maintainWidth = bi.getWidth() - maintainStartX;
             	}
 
             	//moved up (old location is greater than new location)
             	if (_y > y) {
-
-            		shiftedStartY = _y - y;
             		
+            		shiftedStartY = _y - y;
             		maintainStartY = 0;
             		maintainHeight = bi.getHeight() - shiftedStartY;
             	} else if (_y < y) {
 
             		shiftedStartY = 0;
-
-//                		maintainStartY =  _x - x;
-                		maintainStartY =  y - _y;
+            		maintainStartY =  y - _y;
             		maintainHeight = bi.getHeight() - maintainStartY;
-            		
             	}
             	
             	/*
             	 * shift the maintained stuff
             	 */
             	
-            	System.out.println("maintain:\tnew\n"
-            			+ "x:\t" + maintainStartX
-            			+ "\t" + shiftedStartX
-            			+ "\ny: \t" + maintainStartY
-            			+ "\t" + shiftedStartY
-//            			+ "\n\nw:\t" + maintainWidth 
-//            			+ "\nh:\t" + maintainHeight
-            			);
             	//fetch the the RGB array of the subImage which is to be 
             	//maintained but moved somewhere.
+            	//TODO: zoom error occurs.
             	int[] rgbArray = new int[maintainWidth * maintainHeight];
-            	rgbArray = bi.getRGB(maintainStartX, 
+            	rgbArray = bi.getRGB(
+            			maintainStartX, 
             			maintainStartY, 
             			maintainWidth, 
             			maintainHeight, 
@@ -338,8 +328,6 @@ public class PaintLabel extends MLabel {
             			maintainWidth,
             			maintainHeight, 
             			rgbArray,  0, maintainWidth);
-            	setBi(bi );
-            	setIcon(new ImageIcon(bi));
             	
             	/*
             	 * paint the new stuff. 
@@ -388,46 +376,50 @@ public class PaintLabel extends MLabel {
             	/*
             	 * height
             	 */
-
             	int refreshHeightWidth = bi.getWidth() - maintainWidth;
             	int refreshHeightHeight = bi.getHeight() - refreshWidthHeight;
             	int refreshHeightY = 0;
             	int refreshHeightX = 0;
             	
-            	if (shiftedStartY == 0) {
-            		refreshHeightY = 0;
-            	} else {
-            		refreshHeightY = shiftedStartY;
+            	if (shiftedStartX == 0) {
+            		refreshHeightX = maintainWidth;
             	}
-            	refreshHeightX = shiftedStartX;
-
 
                 //save values
                 this.x = _x;
                 this.y = _y;
 
-                for (int xw = 0; xw < refreshWidthWidth; xw ++) {
-                	for (int yw = 0; yw < refreshWidthHeight; yw ++) {
-                    	bi.setRGB(xw + refreshWidthX, 
-                    			yw + refreshWidthY, 
-                    			Color.red.getRGB());
-                    }
-                }
-                for (int xw = 0; xw < refreshHeightWidth; xw ++) {
-                	for (int yw = 0; yw < refreshHeightHeight; yw ++) {
-                    	bi.setRGB(xw + refreshHeightX, 
-                    			yw + refreshHeightY, 
-                    			Color.green.getRGB());
-                    }
-                }
+//                for (int xw = 0; xw < refreshWidthWidth; xw ++) {
+//                	for (int yw = 0; yw < refreshWidthHeight; yw ++) {
+//                    	getBi().setRGB(xw + refreshWidthX, 
+//                    			yw + refreshWidthY, 
+//                    			Color.red.getRGB());
+//                    }
+//                }
+//                for (int xw = 0; xw < refreshHeightWidth; xw ++) {
+//                	for (int yw = 0; yw < refreshHeightHeight; yw ++) {
+//                    	getBi().setRGB(xw + refreshHeightX, 
+//                    			yw + refreshHeightY, 
+//                    			Color.green.getRGB());
+//                    }
+//                }
                 
                 
                 //BufferedImage
-            //	refreshRectangle(refreshWidthX, refreshWidthY, 
-            //			refreshWidthWidth, refreshWidthHeight);
+                refreshPaintBackground();
+            	refreshRectangle(refreshWidthX, refreshWidthY, 
+            			refreshWidthWidth, refreshWidthHeight);
             	refreshRectangle(refreshHeightX, refreshHeightY, 
             			refreshHeightWidth, refreshHeightHeight);
-            	
+
+//            	System.out.println("maintain:\tnew"
+//            			+ "\nx:\t" 	+ maintainStartX
+//            			+ "\t" 		+ shiftedStartX
+//            			+ "\ny: \t"	+ maintainStartY
+//            			+ "\t" 		+ shiftedStartY
+//            			+ "\n\nw:\t" + maintainWidth 
+//            			+ "\nh:\t" + maintainHeight
+//            			);
 
                 
             }

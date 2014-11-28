@@ -130,6 +130,8 @@ import view.util.mega.MButton;
             
             @Override public void setLocation(final int _x, final int _y) {
 
+            	//in here the ScrollPane is changing the location of the 
+            	//painting label
                 jlbl_painting.setLocation(_x, _y);
             }
         };

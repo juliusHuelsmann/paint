@@ -4,6 +4,7 @@ package view.forms;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 
 import javax.swing.ImageIcon;
 
@@ -28,7 +29,7 @@ import model.util.paint.Utils;
 public class PaintLabel extends MLabel {
 
     /**
-     * The bufferedImage.
+     * The bufferedImage containing the currently displayed painting stuff.
      */
     private BufferedImage bi;
     
@@ -186,7 +187,7 @@ public class PaintLabel extends MLabel {
     public final BufferedImage refreshRectangle(final int _x, final int _y, 
             final int _width, final int _height) {
 
-        Status.getLogger().finest("refreshing PaintLabel. \nValues: "
+        System.out.println("refreshing PaintLabel. \nValues: "
                 + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
                 + "\n\tgetLocation:\t" + getLocation() 
                 + " vs. " + super.getLocation()
@@ -262,14 +263,162 @@ public class PaintLabel extends MLabel {
         //if something changed, repaint
         if (_x != x || _y != y) {
 
+            if (isVisible()) {
+            	
+            	
+            	int maintainStartX = 0, 
+	            	maintainStartY = 0, 
+	            	maintainWidth = bi.getWidth(), 
+	            	maintainHeight = bi.getHeight();
+            	
+
+            	int shiftedStartX = 0,
+            		shiftedStartY = 0;
+            	
+            	//move to the right (new location is greater than the old one)
+            	//
+            	if (_x > x) {
+
+            		shiftedStartX = _x - x;
+            		
+            		maintainStartX = 0;
+            		maintainWidth = bi.getWidth() - shiftedStartX;
+            		
+            	} else if (_x < x) {
+
+            		shiftedStartX = 0;
+            		
+            		maintainStartX =  x - _x;
+            		maintainWidth = bi.getWidth() - maintainStartX;
+            	}
+
+            	//moved down (old location is smaller than new location)
+            	if (_y > y) {
+
+            		shiftedStartY = _y - y;
+            		
+            		maintainStartY = 0;
+            		maintainHeight = bi.getHeight() - shiftedStartY;
+            	} else if (_y < y) {
+
+            		shiftedStartY = 0;
+            		
+            		maintainStartY =  x - _x;
+            		maintainHeight = bi.getHeight() - shiftedStartY;
+            	}
+            	
+            	/*
+            	 * shift the maintained stuff
+            	 */
+            	
+            	System.out.println("maintain:\tnew\n"
+            			+ "x:\t" + maintainStartX
+            			+ "\t" + shiftedStartX
+            			+ "\ny: \t" + maintainStartY
+            			+ "\t" + shiftedStartY
+//            			+ "\n\nw:\t" + maintainWidth 
+//            			+ "\nh:\t" + maintainHeight
+            			);
+            	//fetch the the RGB array of the subImage which is to be 
+            	//maintained but moved somewhere.
+            	int[] rgbArray = new int[maintainWidth * maintainHeight];
+            	rgbArray = bi.getRGB(maintainStartX, 
+            			maintainStartY, 
+            			maintainWidth, 
+            			maintainHeight, 
+            			rgbArray, 0, maintainWidth);
+            	
+            	
+            	//write the maintained RGB array to shifted coordinates.
+            	bi.setRGB(shiftedStartX, 
+            			shiftedStartY, 
+            			maintainWidth,
+            			maintainHeight, 
+            			rgbArray,  0, maintainWidth);
+            	setBi(bi );
+            	setIcon(new ImageIcon(bi));
+            	
+            	/*
+            	 * paint the new stuff. 
+            	 * The rectangle location is the complement of the maintained
+            	 * in size of bufferedImage.
+            	 */
+            	
+            	//Refresh both in direction of width and of height.
+            	//In the simplest way of doing this, there may be an area which 
+            	//is painted twice (depicted with '!'). 
+            	//For further optimization of displaying speed this should be
+            	//eliminated by the way of refreshing done beneath the picture. 
+            	
+            	//Picture:
+            	//							shiftedStartY == 0
+            	//		____________		____________
+            	//		| ! W W W W	|		| H	x      	|
+            	// 		| H	x x x x |		| H	x       |
+            	// 		| H	x      	|		| H	x     	|
+            	// 		| H	x      	|		| H	x     	|
+            	// 		| H	x       |		| H	x x x x	|
+            	//		|_H_x_______|		|_!_W_W_W_W_|
+            	//		____________		____________
+            	//		| W	W W W! !|		|     x	H H	|
+            	// 		| x x x x H	|		|     x	H H	|
+            	// 		|  	   	x H	|		|     x	H H	|
+            	// 		|      	x H	|		|     x	H H	|
+            	// 		|       x H	|		| x x x	H H	|
+            	//		|_______x_H_|		|_W_W_W_!_!_|
+            	
+            	
+            	/*
+            	 * Width
+            	 */
+            	//here the (!) are painted!
+            	int refreshWidthWidth = bi.getWidth();
+            	int refreshWidthHeight = bi.getHeight() - maintainHeight;
+            	int refreshWidthY = 0;
+            	int refreshWidthX = 0;
+            	
+            	if (shiftedStartY == 0) {
+            		refreshWidthY = maintainHeight;
+            	}
+
+            	
+            	/*
+            	 * height
+            	 */
+
+            	int refreshHeightWidth = bi.getWidth() - maintainWidth;
+            	int refreshHeightHeight = bi.getHeight() - refreshWidthHeight;
+            	int refreshHeightY = 0;
+            	int refreshHeightX = 0;
+            	
+            	if (shiftedStartY == 0) {
+            		refreshHeightY = 0;
+            	} else {
+            		refreshHeightY = shiftedStartY;
+            	}
+            	refreshHeightX = shiftedStartX;
+
+
+                //save values
+                this.x = _x;
+                this.y = _y;
+
+                //BufferedImage
+            	refreshRectangle(refreshWidthX, refreshWidthY, 
+            			refreshWidthWidth, refreshWidthHeight);
+            	refreshRectangle(refreshHeightX, refreshHeightY, 
+            			refreshHeightWidth, refreshHeightHeight);
+            	
+
+                
+            }
+            
             //save values
             this.x = _x;
             this.y = _y;
             
             if (isVisible()) {
-                
-                //set changed
-                refreshPaint();
+//            	refreshPaint();
             }
         }
     }

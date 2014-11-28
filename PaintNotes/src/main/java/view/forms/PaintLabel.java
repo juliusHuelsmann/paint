@@ -1,6 +1,7 @@
 package view.forms;
 
 //import declarations
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -292,7 +293,7 @@ public class PaintLabel extends MLabel {
             		maintainWidth = bi.getWidth() - maintainStartX;
             	}
 
-            	//moved down (old location is smaller than new location)
+            	//moved up (old location is greater than new location)
             	if (_y > y) {
 
             		shiftedStartY = _y - y;
@@ -302,9 +303,11 @@ public class PaintLabel extends MLabel {
             	} else if (_y < y) {
 
             		shiftedStartY = 0;
+
+//                		maintainStartY =  _x - x;
+                		maintainStartY =  y - _y;
+            		maintainHeight = bi.getHeight() - maintainStartY;
             		
-            		maintainStartY =  x - _x;
-            		maintainHeight = bi.getHeight() - shiftedStartY;
             	}
             	
             	/*
@@ -403,9 +406,25 @@ public class PaintLabel extends MLabel {
                 this.x = _x;
                 this.y = _y;
 
+                for (int xw = 0; xw < refreshWidthWidth; xw ++) {
+                	for (int yw = 0; yw < refreshWidthHeight; yw ++) {
+                    	bi.setRGB(xw + refreshWidthX, 
+                    			yw + refreshWidthY, 
+                    			Color.red.getRGB());
+                    }
+                }
+                for (int xw = 0; xw < refreshHeightWidth; xw ++) {
+                	for (int yw = 0; yw < refreshHeightHeight; yw ++) {
+                    	bi.setRGB(xw + refreshHeightX, 
+                    			yw + refreshHeightY, 
+                    			Color.green.getRGB());
+                    }
+                }
+                
+                
                 //BufferedImage
-            	refreshRectangle(refreshWidthX, refreshWidthY, 
-            			refreshWidthWidth, refreshWidthHeight);
+            //	refreshRectangle(refreshWidthX, refreshWidthY, 
+            //			refreshWidthWidth, refreshWidthHeight);
             	refreshRectangle(refreshHeightX, refreshHeightY, 
             			refreshHeightWidth, refreshHeightHeight);
             	

@@ -1033,7 +1033,7 @@ public class PaintObjectWriting extends PaintObjectPen {
                     ) {
                 intersection4 = null;
             } else {
-                System.err.println("f4" + factor4[0]);
+//                System.err.println("f4" + factor4[0]);
                 if (_sortAbs) {
                     ls.insertSorted(intersection4, Math.abs(factor4[0]));
                 } else {

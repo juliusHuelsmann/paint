@@ -154,10 +154,10 @@ public class CheckPOW {
 	public static void main(String[]args){
     	errorOccurred = false;
     	
-    	boolean check1_1 = false, check1_2 = false, check1_3 = false, 
-    			check1_4 = false,
-    			check2_1 = false, check2_2 = true, check2_3 = false, 
-    			check2_4 = false;
+    	boolean check1_1 = true, check1_2 = true, check1_3 = true, 
+    			check1_4 = true,
+    			check2_1 = true, check2_2 = true, check2_3 = true, 
+    			check2_4 = true;
     	
     	
     	if (check1_1) {
@@ -181,9 +181,10 @@ public class CheckPOW {
     		checkBothOutside2_2();
     	}
     	if (check2_3) {
-//    		checkBothOutside2_3();
+    		checkBothOutside2_3();
     	}
     	if (check2_4) {
+    		checkBothOutside2_4();
     	}
     	
 	}    
@@ -204,73 +205,73 @@ public class CheckPOW {
     	CheckEnvironment 
     	cv_bothOutside = new CheckEnvironment();
     	Rectangle r = new Rectangle(60, 56, 5, 5);
-    	
-    	
+
+    	String returnString = "";
     	/*
     	 * first scenario
     	 */
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	+ "			1	_____________\n"
     	+ "			*	|            |\n"
     	+ "			*	|            |\n"
     	+ "			*	|____________|\n"
-    	+ "			2");
+    	+ "			2 \n");
     	PaintObjectWriting[][] result = cv_bothOutside.p_top2Bottom.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
     			
     			//result
-    			result[1]));
+    			result[1]) + "\n");
     	
-    	System.out.println("outsidelist:");
+    	returnString +=("outsidelist:" + "\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_top2Bottom},
     			
     			//result
-    			result[0]));
+    			result[0]) + "\n");
     			
     	/*
     	 * second scenario
     	 */
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	+ "			2	_____________\n"
     	+ "			*	|            |\n"
     	+ "			*	|            |\n"
     	+ "			*	|____________|\n"
-    	+ "			1");
+    	+ "			1\n");
     	result = cv_bothOutside.p_bottom2Top.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
     			
     			//result
-    			result[1]));
+    			result[1]) + "");
     	
-    	System.out.println("outsidelist:");
+    	returnString +=("outsidelist:" + "\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_bottom2Top},
     			
     			//result
-    			result[0]));
+    			result[0]) + "");
     	
 
     	/*
     	 * 3rd scenario
     	 */
-    	System.out.println("\n \n"
+    	returnString +=("\n \n"
     	+ "			2	\n"
     	+ "			*	\n"
     	+ "			*	\n"
@@ -279,34 +280,34 @@ public class CheckPOW {
     	+ "			___________\n"
     	+ "			|         |\n"
     	+ "			|         |\n"
-    	+ "			|_________|\n");
+    	+ "			|_________|\n" + "\n");
     	r = new Rectangle(55, 61, 5, 5);
     	result = cv_bothOutside.p_bottom2Top.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString +=("EXPECTED\t\tRESULT\t\t" + "\n");
+    	returnString +=("insideList:" + "\n");
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
     			
     			//result
-    			result[1]));
+    			result[1]) + "");
     	
-    	System.out.println("outsidelist:");
+    	returnString +=("outsidelist:" + "\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_bottom2Top},
     			
     			//result
-    			result[0]));
+    			result[0]) + "");
     	
     	
     	
     	
 
-    	System.out.println("\n\n"
+    	returnString +=("\n\n"
     	+ "			1	\n"
     	+ "			*	\n"
     	+ "			*	\n"
@@ -315,28 +316,28 @@ public class CheckPOW {
     	+ "			___________\n"
     	+ "			|         |\n"
     	+ "			|         |\n"
-    	+ "			|_________|\n");
+    	+ "			|_________|\n" + "\n");
     	r = new Rectangle(55, 61, 5, 5);
     	result = cv_bothOutside.p_top2Bottom.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString +=("EXPECTED\t\tRESULT\t\t" + "\n");
+    	returnString +=("insideList:" + "\n");
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
     			
     			//result
-    			result[1]));
+    			result[1]) );
     	
-    	System.out.println("outsidelist:");
+    	returnString +=("outsidelist:" + "\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_top2Bottom},
     			
     			//result
-    			result[0]));
+    			result[0]) + "");
     	
     	
     	
@@ -349,7 +350,7 @@ public class CheckPOW {
     	/*
     	 * 3rd scenario
     	 */
-    	System.out.println("\n \n"
+    	returnString +=("\n \n"
     	+ "			    2	\n"
     	+ "			    *	\n"
     	+ "			    *	\n"
@@ -358,34 +359,34 @@ public class CheckPOW {
     	+ "			___________\n"
     	+ "			|         |\n"
     	+ "			|         |\n"
-    	+ "			|_________|\n");
+    	+ "			|_________|\n" + "\n");
     	r = new Rectangle(50, 61, 5, 5);
     	result = cv_bothOutside.p_bottom2Top.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString +=("EXPECTED\t\tRESULT\t\t" + "\n");
+    	returnString +=("insideList:" + "\n");
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
     			
     			//result
-    			result[1]));
+    			result[1]) + "");
     	
-    	System.out.println("outsidelist:");
+    	returnString +=("outsidelist:" + "\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_bottom2Top},
     			
     			//result
-    			result[0]));
+    			result[0]) + "");
     	
     	
     	
     	
 
-    	System.out.println("\n\n"
+    	returnString +=("\n\n"
     	+ "			    1	\n"
     	+ "			    *	\n"
     	+ "			    *	\n"
@@ -394,35 +395,35 @@ public class CheckPOW {
     	+ "			___________\n"
     	+ "			|         |\n"
     	+ "			|         |\n"
-    	+ "			|_________|\n");
+    	+ "			|_________|\n" + "\n");
     	r = new Rectangle(50, 61, 5, 5);
     	result = cv_bothOutside.p_top2Bottom.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString +=("EXPECTED\t\tRESULT\t\t" + "\n");
+    	returnString +=("insideList:" + "\n");
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
     			
     			//result
-    			result[1]));
+    			result[1]) + "");
     	
-    	System.out.println("outsidelist:");
+    	returnString +=("outsidelist:" + "\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_top2Bottom},
     			
     			//result
-    			result[0]));
+    			result[0]) + "");
     	
 
 
     	/*
     	 * 3rd scenario
     	 */
-    	System.out.println("\n \n"
+    	returnString +=("\n \n"
     	+ "			          2	\n"
     	+ "			          *	\n"
     	+ "			          *	\n"
@@ -431,22 +432,22 @@ public class CheckPOW {
     	+ "			___________\n"
     	+ "			|         |\n"
     	+ "			|         |\n"
-    	+ "			|_________|\n");
+    	+ "			|_________|\n" + "\n");
     	r = new Rectangle(60, 61, 5, 5);
     	result = cv_bothOutside.p_bottom2Top.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString +=("EXPECTED\t\tRESULT\t\t" + "\n");
+    	returnString +=("insideList:" + "\n");
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
     			
     			//result
-    			result[1]));
+    			result[1]) );
     	
-    	System.out.println("outsidelist:");
-    	
-    	System.out.print(comparePaintObjects(
+    	returnString +=("outsidelist:" + "\n");
+
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_bottom2Top},
@@ -458,7 +459,7 @@ public class CheckPOW {
     	
     	
 
-    	System.out.println("\n\n"
+    	returnString +=("\n\n"
     	+ "			          1	\n"
     	+ "			          *	\n"
     	+ "			          *	\n"
@@ -467,28 +468,28 @@ public class CheckPOW {
     	+ "			___________\n"
     	+ "			|         |\n"
     	+ "			|         |\n"
-    	+ "			|_________|\n");
+    	+ "			|_________|\n" + "\n");
     	r = new Rectangle(60, 61, 5, 5);
     	result = cv_bothOutside.p_top2Bottom.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString +=("EXPECTED\t\tRESULT\t\t" + "\n");
+    	returnString +=("insideList:" + "\n");
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
     			
     			//result
-    			result[1]));
+    			result[1]) + "");
     	
-    	System.out.println("outsidelist:");
-    	
-    	System.out.print(comparePaintObjects(
+    	returnString +=("outsidelist:" + "\n");
+
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_top2Bottom},
     			
     			//result
-    			result[0]));
+    			result[0]) + "\n");
     	
 
 
@@ -496,7 +497,7 @@ public class CheckPOW {
     	/*
     	 * 3rd scenario
     	 */
-    	System.out.println("\n \n"
+    	returnString +=("\n \n"
     	+ "			               2	\n"
     	+ "			               *	\n"
     	+ "			               *	\n"
@@ -505,22 +506,22 @@ public class CheckPOW {
     	+ "			___________\n"
     	+ "			|         |\n"
     	+ "			|         |\n"
-    	+ "			|_________|\n");
+    	+ "			|_________|\n" + "\n");
     	r = new Rectangle(65, 61, 5, 5);
     	result = cv_bothOutside.p_bottom2Top.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString +=("EXPECTED\t\tRESULT\t\t" + "\n");
+    	returnString +=("insideList:" + "\n");
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
     			
     			//result
-    			result[1]));
+    			result[1]) + "");
     	
-    	System.out.println("outsidelist:");
+    	returnString +=("outsidelist:" + "\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_bottom2Top},
@@ -532,7 +533,7 @@ public class CheckPOW {
     	
     	
 
-    	System.out.println("\n\n"
+    	returnString +=("\n\n"
     	+ "			               1	\n"
     	+ "			               *	\n"
     	+ "			               *	\n"
@@ -541,29 +542,34 @@ public class CheckPOW {
     	+ "			___________\n"
     	+ "			|         |\n"
     	+ "			|         |\n"
-    	+ "			|_________|\n");
+    	+ "			|_________|\n" + "\n");
     	r = new Rectangle(65, 61, 5, 5);
     	result = cv_bothOutside.p_top2Bottom.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString +=("EXPECTED\t\tRESULT\t\t" + "\n");
+    	returnString +=("insideList:" + "\n");
+    	returnString +=(comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
     			
     			//result 
-    			result[1]));
+    			result[1]) + "");
     	
-    	System.out.println("outsidelist:");
+    	returnString +=("outsidelist:" + "\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_top2Bottom},
     			
     			//result
-    			result[0]));
-    	System.out.println("both outside TB, BT error occurred: \t" + errorOccurred);
+    			result[0]) + "\n");
+    	
+
+    	if (errorOccurred) {
+        	System.out.println(returnString);
+    	}
+    	System.out.println("checkBothOutside1_1 error occured: \t" + errorOccurred);
     }
 	
 	
@@ -580,20 +586,21 @@ public class CheckPOW {
     	cv_bothOutside = new CheckEnvironment();
     	Rectangle r = new Rectangle(56, 56, 5, 5);
     	
+    	String returnString = "";
     	
     	/*
     	 * first scenario ((55 to 60)
     	 */
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	+ "			1*************************2"
     	+ "			    _____________\n"
     	+ "				|            |\n"
     	+ "				|            |\n"
-    	+ "				|____________|\n");
+    	+ "				|____________|\n\n");
     	PaintObjectWriting[][] result = cv_bothOutside.p_left2Right.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -601,9 +608,9 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_left2Right},
@@ -614,16 +621,16 @@ public class CheckPOW {
     	/*
     	 * second scenario
     	 */
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	    	+ "			2*************************1"
     	    	+ "			    _____________\n"
     	    	+ "				|            |\n"
     	    	+ "				|            |\n"
-    	    	+ "				|____________|\n");
+    	    	+ "				|____________|\n\n");
     	result = cv_bothOutside.p_right2Left.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -631,9 +638,9 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_right2Left},
@@ -645,16 +652,16 @@ public class CheckPOW {
     	/*
     	 * 3rd scenario
     	 */
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	    	+ "  1*****2    _____________\n"
     	    	+ "             |            |\n"
     	    	+ "             |            |\n"
-    	    	+ "             |____________|\n");
+    	    	+ "             |____________|\n\n");
     	r = new Rectangle(61, 55, 5, 5);
     	result = cv_bothOutside.p_left2Right.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -662,9 +669,9 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_left2Right},
@@ -676,16 +683,16 @@ public class CheckPOW {
     	
     	
 
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	    	+ " 2*****1     _____________\n"
     	    	+ "             |            |\n"
     	    	+ "             |            |\n"
-    	    	+ "             |____________|\n");
+    	    	+ "             |____________|\n\n");
     	r = new Rectangle(61, 55, 5, 5);
     	result = cv_bothOutside.p_right2Left.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -693,9 +700,9 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_right2Left},
@@ -714,16 +721,16 @@ public class CheckPOW {
     	/*
     	 * 3rd scenario
     	 */
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	    	+ "             _____________\n"
     	    	+ "             |            |\n"
     	    	+ " 1*****2     |            |\n"
-    	    	+ "             |____________|\n");
+    	    	+ "             |____________|\n\n");
     	r = new Rectangle(61, 56, 5, 5);
     	result = cv_bothOutside.p_left2Right.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -731,9 +738,9 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_left2Right},
@@ -745,16 +752,16 @@ public class CheckPOW {
     	
     	
 
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	    	+ "             _____________\n"
     	    	+ "             |            |\n"
     	    	+ " 2*****1     |            |\n"
-    	    	+ "             |____________|\n");
+    	    	+ "             |____________|\n\n");
     	r = new Rectangle(61, 56, 5, 5);
     	result = cv_bothOutside.p_right2Left.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -762,9 +769,9 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_right2Left},
@@ -779,16 +786,16 @@ public class CheckPOW {
 		/*
 		 * 3rd scenario
 		 */
-		System.out.println("\n \n"
+		returnString += ("\n \n"
 		    	+ "              _____________\n"
 		    	+ "             |            |\n"
 		    	+ "             |            |\n"
-		    	+ "   1*****2   |____________|\n");
+		    	+ "   1*****2   |____________|\n\n");
 		r = new Rectangle(61, 50, 5, 5);
 		result = cv_bothOutside.p_left2Right.separate(r);
-		System.out.println("EXPECTED\t\tRESULT\t\t");
-		System.out.println("insideList:");
-		System.out.print(comparePaintObjects(
+		returnString += ("EXPECTED\t\tRESULT\t\t\n");
+		returnString += ("insideList:\n");
+		returnString += (comparePaintObjects(
 				
 				//expected
 				new PaintObjectWriting[0], 
@@ -796,9 +803,9 @@ public class CheckPOW {
 				//result
 				result[1]));
 		
-		System.out.println("outsidelist:");
+		returnString += ("outsidelist:\n");
 		
-		System.out.print(comparePaintObjects(
+		returnString += (comparePaintObjects(
 				
 				//expected
 				new PaintObjectWriting[]{cv_bothOutside.p_left2Right},
@@ -810,16 +817,16 @@ public class CheckPOW {
 		
 		
 		
-		System.out.println("\n \n"
+		returnString += ("\n \n"
 		    	+ "              _____________\n"
 		    	+ "             |            |\n"
 		    	+ "             |            |\n"
-		    	+ " 2*****1     |____________|\n");
+		    	+ " 2*****1     |____________|\n\n");
 		r = new Rectangle(61, 50, 5, 5);
 		result = cv_bothOutside.p_right2Left.separate(r);
-		System.out.println("EXPECTED\t\tRESULT\t\t");
-		System.out.println("insideList:");
-		System.out.print(comparePaintObjects(
+		returnString += ("EXPECTED\t\tRESULT\t\t\n");
+		returnString += ("insideList:\n");
+		returnString += (comparePaintObjects(
 				
 				//expected
 				new PaintObjectWriting[0], 
@@ -827,9 +834,9 @@ public class CheckPOW {
 				//result
 				result[1]));
 		
-		System.out.println("outsidelist:");
+		returnString += ("outsidelist:\n");
 		
-		System.out.print(comparePaintObjects(
+		returnString += (comparePaintObjects(
 				
 				//expected
 				new PaintObjectWriting[]{cv_bothOutside.p_right2Left},
@@ -838,8 +845,12 @@ public class CheckPOW {
 				result[0]));
 
     	
-    	System.out.println("both outside LR, RL error occurred: \t"
-    			+ errorOccurred);
+
+    	if (errorOccurred) {
+        	System.out.println(returnString);
+    	}
+    	System.out.println("checkBothOutside1_2 error occured: \t"
+    	+ errorOccurred);
     }
  
     
@@ -864,19 +875,21 @@ public class CheckPOW {
     	CheckEnvironment 
     	cv_bothOutside = new CheckEnvironment();
     	Rectangle r = new Rectangle(50, 61, 5, 5);
+
+    	String returnString = "";
     	
     	
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	    	+ "                                    1    \n"
     	    	+ "                                 2  \n"
     	    	+ "             _____________\n"
     	    	+ "             |            |\n"
 		    	+ "             |            |\n"
-		    	+ "             |____________|\n");
-    	PaintObjectWriting[][] result = cv_bothOutside.p_mixed_LB2RT.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+		    	+ "             |____________|\n\n");
+    	PaintObjectWriting[][] result = cv_bothOutside.p_mixedLB2RT.separate(r);
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -884,28 +897,28 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
-    			new PaintObjectWriting[]{cv_bothOutside.p_mixed_LB2RT},
+    			new PaintObjectWriting[]{cv_bothOutside.p_mixedLB2RT},
     			
     			//result
     			result[0]));
 
     	
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	    	+ "                                    2    \n"
     	    	+ "                                 1  \n"
     	    	+ "             _____________\n"
     	    	+ "             |            |\n"
 		    	+ "             |            |\n"
-		    	+ "             |____________|\n");
-    	result = cv_bothOutside.p_mixed_RT2LB.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+		    	+ "             |____________|\n\n");
+    	result = cv_bothOutside.p_mixedRT2LB.separate(r);
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -913,12 +926,12 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
-    			new PaintObjectWriting[]{cv_bothOutside.p_mixed_RT2LB},
+    			new PaintObjectWriting[]{cv_bothOutside.p_mixedRT2LB},
     			
     			//result
     			result[0]));
@@ -928,17 +941,17 @@ public class CheckPOW {
     	
 
     	r = new Rectangle(55, 61, 5, 5);
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	    	+ "                      1                  \n"
     	    	+ "                    2               \n"
     	    	+ "             _____________\n"
     	    	+ "             |            |\n"
 		    	+ "             |            |\n"
-		    	+ "             |____________|\n");
-    	result = cv_bothOutside.p_mixed_LB2RT.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+		    	+ "             |____________|\n\n");
+    	result = cv_bothOutside.p_mixedLB2RT.separate(r);
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -946,28 +959,28 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
-    			new PaintObjectWriting[]{cv_bothOutside.p_mixed_LB2RT},
+    			new PaintObjectWriting[]{cv_bothOutside.p_mixedLB2RT},
     			
     			//result
     			result[0]));
 
     	
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	    	+ "                      2                  \n"
     	    	+ "                    1               \n"
     	    	+ "             _____________\n"
     	    	+ "             |            |\n"
 		    	+ "             |            |\n"
-		    	+ "             |____________|\n");
-    	result = cv_bothOutside.p_mixed_RT2LB.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+		    	+ "             |____________|\n\n");
+    	result = cv_bothOutside.p_mixedRT2LB.separate(r);
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -975,18 +988,21 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
-    			new PaintObjectWriting[]{cv_bothOutside.p_mixed_RT2LB},
+    			new PaintObjectWriting[]{cv_bothOutside.p_mixedRT2LB},
     			
     			//result
     			result[0]));
-    	
-    	System.out.println("both outside LR, RL error occurred: \t"
-    			+ errorOccurred);
+
+    	if (errorOccurred) {
+        	returnString += (returnString);
+    	}
+    	System.out.println("checkBothOutside1_3 error occured: \t" 
+    	+ errorOccurred);
     }
     
     
@@ -1002,19 +1018,21 @@ public class CheckPOW {
     	CheckEnvironment 
     	cv_bothOutside = new CheckEnvironment();
     	Rectangle r = new Rectangle(50, 61, 5, 5);
+
+    	String returnString = "";
     	
     	
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	    	+ "       1                                \n"
     	    	+ "          2                        \n"
     	    	+ "             _____________\n"
     	    	+ "             |            |\n"
 		    	+ "             |            |\n"
-		    	+ "             |____________|\n");
+		    	+ "             |____________|\n\n");
     	PaintObjectWriting[][] result = cv_bothOutside.p_mixedLT2BR.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -1022,9 +1040,9 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_mixedLT2BR},
@@ -1033,17 +1051,17 @@ public class CheckPOW {
     			result[0]));
 
     	
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	    	+ "       1                                \n"
     	    	+ "          2                         \n"
     	    	+ "             _____________\n"
     	    	+ "             |            |\n"
 		    	+ "             |            |\n"
-		    	+ "             |____________|\n");
+		    	+ "             |____________|\n\n");
     	result = cv_bothOutside.p_mixedBR2LT.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -1051,9 +1069,9 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_mixedBR2LT},
@@ -1066,15 +1084,15 @@ public class CheckPOW {
     	
 
     	r = new Rectangle(61, 55, 10, 10);
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	    	+ "             _____________\n"
     	    	+ "      1      |            |\n"
 		    	+ "          2  |            |\n"
-		    	+ "             |____________|\n");
+		    	+ "             |____________|\n\n");
     	result = cv_bothOutside.p_mixedLT2BR.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -1082,9 +1100,9 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_mixedLT2BR},
@@ -1093,15 +1111,15 @@ public class CheckPOW {
     			result[0]));
 
     	
-    	System.out.println("\n \n"
+    	returnString += ("\n \n"
     	    	+ "             _____________\n"
     	    	+ "       2     |            |\n"
 		    	+ "          1  |            |\n"
-		    	+ "             |____________|\n");
+		    	+ "             |____________|\n\n");
     	result = cv_bothOutside.p_mixedBR2LT.separate(r);
-    	System.out.println("EXPECTED\t\tRESULT\t\t");
-    	System.out.println("insideList:");
-    	System.out.print(comparePaintObjects(
+    	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+    	returnString += ("insideList:\n");
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[0], 
@@ -1109,18 +1127,21 @@ public class CheckPOW {
     			//result
     			result[1]));
     	
-    	System.out.println("outsidelist:");
+    	returnString += ("outsidelist:\n");
     	
-    	System.out.print(comparePaintObjects(
+    	returnString += (comparePaintObjects(
     			
     			//expected
     			new PaintObjectWriting[]{cv_bothOutside.p_mixedBR2LT},
     			
     			//result
     			result[0]));
-    	
-    	System.out.println("both outside LR, RL error occurred: \t"
-    			+ errorOccurred);
+
+    	if (errorOccurred) {
+        	returnString += (returnString);
+    	}
+    	System.out.println("checkBothOutside1_4 error occured: \t" 
+    	+ errorOccurred);
     }
     
     
@@ -1148,9 +1169,11 @@ public class CheckPOW {
   	CheckEnvironment 
   	cv_bothOutside = new CheckEnvironment();
   	Rectangle r;
+
+	String returnString = "";
+	
   	
-  	
-  	System.out.println("\n \n"
+  	returnString += ("\n \n"
   	+ "			2	\n"
   	+ "			*	\n"
   	+ "			*	\n"
@@ -1159,12 +1182,12 @@ public class CheckPOW {
   	+ "			|         |\n"
   	+ "			|_________|\n"
   	+ "			*	\n"
-  	+ "			1 \n");
+  	+ "			1 \n\n");
   	r = new Rectangle(55, 56, 5, 2);
   	PaintObjectWriting[][] result = cv_bothOutside.p_bottom2Top.separate(r);
-  	System.out.println("EXPECTED\t\tRESULT\t\t");
-  	System.out.println("insideList:");
-  	System.out.print(comparePaintObjects(
+  	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+  	returnString += ("insideList:\n");
+  	returnString += (comparePaintObjects(
   			
   			//expected
   			new PaintObjectWriting[]{
@@ -1180,9 +1203,9 @@ public class CheckPOW {
   			//result
   			result[1]));
   	
-  	System.out.println("outsidelist:");
+  	returnString += ("outsidelist:\n");
   	
-  	System.out.print(comparePaintObjects(
+  	returnString += (comparePaintObjects(
   			
   			//expected
   			new PaintObjectWriting[]{
@@ -1213,7 +1236,7 @@ public class CheckPOW {
   	
   	
 
-  	System.out.println("\n \n"
+  	returnString += ("\n \n"
   	+ "			1	\n"
   	+ "			*	\n"
   	+ "			*	\n"
@@ -1222,12 +1245,12 @@ public class CheckPOW {
   	+ "			|         |\n"
   	+ "			|_________|\n"
   	+ "			*	\n"
-  	+ "			2 \n");
+  	+ "			2 \n\n");
   	r = new Rectangle(55, 56, 5, 2);
   	result = cv_bothOutside.p_top2Bottom.separate(r);
-  	System.out.println("EXPECTED\t\tRESULT\t\t");
-  	System.out.println("insideList:");
-  	System.out.print(comparePaintObjects(
+  	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+  	returnString += ("insideList:\n");
+  	returnString += (comparePaintObjects(
   			
   			//expected
   			new PaintObjectWriting[]{
@@ -1243,9 +1266,9 @@ public class CheckPOW {
   			//result
   			result[1]));
   	
-  	System.out.println("outsidelist:");
+  	returnString += ("outsidelist:\n");
   	
-  	System.out.print(comparePaintObjects(
+  	returnString += (comparePaintObjects(
   			
   			//expected
   			new PaintObjectWriting[]{
@@ -1284,7 +1307,7 @@ public class CheckPOW {
   	
 
   	
-  	System.out.println("\n \n"
+  	returnString += ("\n \n"
   	+ "			          2	\n"
   	+ "		              *	\n"
   	+ "			          *	\n"
@@ -1293,12 +1316,12 @@ public class CheckPOW {
   	+ "			|         |\n"
   	+ "			|_________|\n"
   	+ "			          *	\n"
-  	+ "			          1 \n");
+  	+ "			          1 \n\n");
   	r = new Rectangle(50, 56, 5, 2);
   	result = cv_bothOutside.p_bottom2Top.separate(r);
-  	System.out.println("EXPECTED\t\tRESULT\t\t");
-  	System.out.println("insideList:");
-  	System.out.print(comparePaintObjects(
+  	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+  	returnString += ("insideList:\n");
+  	returnString += (comparePaintObjects(
   			
   			//expected
   			new PaintObjectWriting[]{
@@ -1314,9 +1337,9 @@ public class CheckPOW {
   			//result
   			result[1]));
   	
-  	System.out.println("outsidelist:");
+  	returnString += ("outsidelist:\n");
   	
-  	System.out.print(comparePaintObjects(
+  	returnString += (comparePaintObjects(
   			
   			//expected
   			new PaintObjectWriting[]{
@@ -1347,7 +1370,7 @@ public class CheckPOW {
   	
   	
 
-  	System.out.println("\n \n"
+  	returnString += ("\n \n"
   	+ "			          1	\n"
   	+ "			          *	\n"
   	+ "			          *	\n"
@@ -1356,12 +1379,12 @@ public class CheckPOW {
   	+ "			|         |\n"
   	+ "			|_________|\n"
   	+ "			          *	\n"
-  	+ "			          2 \n");
+  	+ "			          2 \n\n");
   	r = new Rectangle(50, 56, 5, 2);
   	result = cv_bothOutside.p_top2Bottom.separate(r);
-  	System.out.println("EXPECTED\t\tRESULT\t\t");
-  	System.out.println("insideList:");
-  	System.out.print(comparePaintObjects(
+  	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+  	returnString += ("insideList:\n");
+  	returnString += (comparePaintObjects(
   			
   			//expected
   			new PaintObjectWriting[]{
@@ -1377,9 +1400,9 @@ public class CheckPOW {
   			//result
   			result[1]));
   	
-  	System.out.println("outsidelist:");
+  	returnString += ("outsidelist:\n");
   	
-  	System.out.print(comparePaintObjects(
+  	returnString += (comparePaintObjects(
   			
   			//expected
   			new PaintObjectWriting[]{
@@ -1412,7 +1435,7 @@ public class CheckPOW {
 
 
   	
-  	System.out.println("\n \n"
+  	returnString += ("\n \n"
   	+ "			     2	\n"
   	+ "	             *	\n"
   	+ "			     *	\n"
@@ -1421,12 +1444,12 @@ public class CheckPOW {
   	+ "			|         |\n"
   	+ "			|_________|\n"
   	+ "			     *	\n"
-  	+ "			     1 \n");
+  	+ "			     1 \n\n");
   	r = new Rectangle(52, 56, 5, 2);
   	result = cv_bothOutside.p_bottom2Top.separate(r);
-  	System.out.println("EXPECTED\t\tRESULT\t\t");
-  	System.out.println("insideList:");
-  	System.out.print(comparePaintObjects(
+  	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+  	returnString += ("insideList:\n");
+  	returnString += (comparePaintObjects(
   			
   			//expected
   			new PaintObjectWriting[]{
@@ -1442,9 +1465,9 @@ public class CheckPOW {
   			//result
   			result[1]));
   	
-  	System.out.println("outsidelist:");
+  	returnString += ("outsidelist:\n");
   	
-  	System.out.print(comparePaintObjects(
+  	returnString += (comparePaintObjects(
   			
   			//expected
   			new PaintObjectWriting[]{
@@ -1475,7 +1498,7 @@ public class CheckPOW {
   	
   	
 
-  	System.out.println("\n \n"
+  	returnString += ("\n \n"
   	+ "			    1	\n"
   	+ "			    *	\n"
   	+ "			    *	\n"
@@ -1484,12 +1507,12 @@ public class CheckPOW {
   	+ "			|         |\n"
   	+ "			|_________|\n"
   	+ "			    *	\n"
-  	+ "			    2 \n");
+  	+ "			    2 \n\n");
   	r = new Rectangle(52, 56, 5, 2);
   	result = cv_bothOutside.p_top2Bottom.separate(r);
-  	System.out.println("EXPECTED\t\tRESULT\t\t");
-  	System.out.println("insideList:");
-  	System.out.print(comparePaintObjects(
+  	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+  	returnString += ("insideList:\n");
+  	returnString += (comparePaintObjects(
   			
   			//expected
   			new PaintObjectWriting[]{
@@ -1505,9 +1528,9 @@ public class CheckPOW {
   			//result
   			result[1]));
   	
-  	System.out.println("outsidelist:");
+  	returnString += ("outsidelist:\n");
   	
-  	System.out.print(comparePaintObjects(
+  	returnString += (comparePaintObjects(
   			
   			//expected
   			new PaintObjectWriting[]{
@@ -1538,32 +1561,38 @@ public class CheckPOW {
   			result[0]));
   	
   	
-  	
-  	System.out.println("error occurred: \t\t\t" + errorOccurred);
+	
+		if (errorOccurred) {
+	    	returnString += (returnString);
+		}
+		System.out.println("checkBothOutside2_1 error occured: \t" 
+		+ errorOccurred);
   }
 
   
 
-	 /**
+/**
  * Check for top bottom and vice versa.
  */
 private static synchronized void checkBothOutside2_2() {
 	CheckEnvironment 
 	cv_bothOutside = new CheckEnvironment();
 	Rectangle r;
+
+	String returnString = "";
 	
 
-	System.out.println("\n \n"
+	returnString += ("\n \n"
 	+ "2 * * * *__________* * * 1\n" 
 	+ "         |         |\n"
 	+ "         |         |\n"
 	+ "         |_________|\n"
-	+ "         *	\n");
+	+ "         *	\n\n");
 	r = new Rectangle(57, 55, 2, 5);
 	PaintObjectWriting[][] result = cv_bothOutside.p_right2Left.separate(r);
-	System.out.println("EXPECTED\t\tRESULT\t\t");
-	System.out.println("insideList:");
-	System.out.print(comparePaintObjects(
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -1577,9 +1606,9 @@ private static synchronized void checkBothOutside2_2() {
 			//result
 			result[1]));
 	
-	System.out.println("outsidelist:");
+	returnString += ("outsidelist:\n");
 	
-	System.out.print(comparePaintObjects(
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -1606,17 +1635,17 @@ private static synchronized void checkBothOutside2_2() {
 			result[0]));
 	
 
-	System.out.println("\n \n"
+	returnString += ("\n \n"
 	+ "1 * * * *__________* * * 2\n" 
 	+ "         |         |\n"
 	+ "         |         |\n"
 	+ "         |_________|\n"
-	+ "         *	\n");
+	+ "         *	\n\n");
 	r = new Rectangle(57, 55, 2, 5);
 	result = cv_bothOutside.p_left2Right.separate(r);
-	System.out.println("EXPECTED\t\tRESULT\t\t");
-	System.out.println("insideList:");
-	System.out.print(comparePaintObjects(
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -1630,9 +1659,9 @@ private static synchronized void checkBothOutside2_2() {
 			//result
 			result[1]));
 	
-	System.out.println("outsidelist:");
+	returnString += ("outsidelist:\n");
 	
-	System.out.print(comparePaintObjects(
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -1675,17 +1704,17 @@ private static synchronized void checkBothOutside2_2() {
 	
 
 
-	System.out.println("\n \n"
+	returnString += ("\n \n"
 	+ "         __________      \n" 
 	+ "         |         |\n"
 	+ "         |         |\n"
 	+ "2 * * * *|_________|* * * 1\n" 
-	+ "         *	\n");
+	+ "         *	\n\n");
 	r = new Rectangle(57, 50, 2, 5);
 	result = cv_bothOutside.p_right2Left.separate(r);
-	System.out.println("EXPECTED\t\tRESULT\t\t");
-	System.out.println("insideList:");
-	System.out.print(comparePaintObjects(
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -1699,9 +1728,9 @@ private static synchronized void checkBothOutside2_2() {
 			//result
 			result[1]));
 	
-	System.out.println("outsidelist:");
+	returnString += ("outsidelist:\n");
 	
-	System.out.print(comparePaintObjects(
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -1728,17 +1757,17 @@ private static synchronized void checkBothOutside2_2() {
 			result[0]));
 	
 
-	System.out.println("\n \n"
+	returnString += ("\n \n"
 	+ "         __________      \n" 
 	+ "         |         |\n"
 	+ "         |         |\n"
 	+ "1 * * * *|_________|* * * 2\n" 
-	+ "         *	\n");
+	+ "         *	\n\n");
 	r = new Rectangle(57, 50, 2, 5);
 	result = cv_bothOutside.p_left2Right.separate(r);
-	System.out.println("EXPECTED\t\tRESULT\t\t");
-	System.out.println("insideList:");
-	System.out.print(comparePaintObjects(
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -1752,9 +1781,9 @@ private static synchronized void checkBothOutside2_2() {
 			//result
 			result[1]));
 	
-	System.out.println("outsidelist:");
+	returnString += ("outsidelist:\n");
 	
-	System.out.print(comparePaintObjects(
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -1795,17 +1824,17 @@ private static synchronized void checkBothOutside2_2() {
 	
 
 
-	System.out.println("\n \n"
+	returnString += ("\n \n"
 	+ "         __________      \n" 
 	+ "         |         |\n"
 	+ "2 * * * *|         |* * * 1\n"
 	+ "         |_________|\n" 
-	+ "         *	\n");
+	+ "         *	\n\n");
 	r = new Rectangle(57, 52, 2, 5);
 	result = cv_bothOutside.p_right2Left.separate(r);
-	System.out.println("EXPECTED\t\tRESULT\t\t");
-	System.out.println("insideList:");
-	System.out.print(comparePaintObjects(
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -1819,9 +1848,9 @@ private static synchronized void checkBothOutside2_2() {
 			//result
 			result[1]));
 	
-	System.out.println("outsidelist:");
+	returnString += ("outsidelist:\n");
 	
-	System.out.print(comparePaintObjects(
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -1848,17 +1877,17 @@ private static synchronized void checkBothOutside2_2() {
 			result[0]));
 	
 
-	System.out.println("\n \n"
+	returnString += ("\n \n"
 	+ "         __________      \n" 
 	+ "         |         |\n"
 	+ "1 * * * *|         |* * * 2\n"
 	+ "         |_________|\n" 
-	+ "         *	\n");
+	+ "         *	\n\n");
 	r = new Rectangle(57, 52, 2, 5);
 	result = cv_bothOutside.p_left2Right.separate(r);
-	System.out.println("EXPECTED\t\tRESULT\t\t");
-	System.out.println("insideList:");
-	System.out.print(comparePaintObjects(
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -1872,9 +1901,9 @@ private static synchronized void checkBothOutside2_2() {
 			//result
 			result[1]));
 	
-	System.out.println("outsidelist:");
+	returnString += ("outsidelist:\n");
 	
-	System.out.print(comparePaintObjects(
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -1900,6 +1929,806 @@ private static synchronized void checkBothOutside2_2() {
 			//result
 			result[0]));
 	
+	
+	
+	
+
+	if (errorOccurred) {
+    	returnString += (returnString);
+	}
+	System.out.println("checkBothOutside2_2 error occured: \t" 
+	+ errorOccurred);
+	}
+
+
+
+/**
+ */
+private static synchronized void checkBothOutside2_3() {
+	CheckEnvironment 
+	cv_bothOutside = new CheckEnvironment();
+	Rectangle r;
+	
+
+	String returnString = "";
+	
+
+	returnString += ("\n \n"
+	    	+ "                                    1    \n"
+	    	+ "                                 *  \n"
+	    	+ "             _____________  *\n"
+	    	+ "             |            |\n"
+	    	+ "             |            |\n"
+	    	+ "             |____________|\n"
+	    	+ "           *\n"
+	    	+ "        *\n"
+	    	+ "      2\n\n");
+	r = new Rectangle(56, 56, 2, 2);
+	PaintObjectWriting[][] result = cv_bothOutside.p_mixedRT2LB.separate(r);
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							new DPoint(58, 57), 
+							
+							new DPoint(57, 58))
+			}, 
+			
+			//result
+			result[1]));
+	
+	returnString += ("outsidelist:\n");
+	
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(60,55), 
+							
+		   					//intersection 
+							new DPoint(58, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(57, 58),
+		   							
+		   					//point 2
+		   					new DPoint(55, 60))
+			}, 
+			//result
+			result[0]));
+
+	returnString += ("\n \n"
+	    	+ "                                    2    \n"
+	    	+ "                                 *  \n"
+	    	+ "             _____________  *\n"
+	    	+ "             |            |\n"
+	    	+ "             |            |\n"
+	    	+ "             |____________|\n"
+	    	+ "           *\n"
+	    	+ "        *\n"
+	    	+ "      1\n\n");
+	r = new Rectangle(56, 56, 2, 2);
+	result = cv_bothOutside.p_mixedLB2RT.separate(r);
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							new DPoint(57, 58), 
+							
+							new DPoint(58, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	returnString += ("outsidelist:\n");
+	
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(55, 60), 
+							
+		   					//intersection 
+							new DPoint(57, 58)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(58, 57),
+		   							
+		   					//point 2
+		   					new DPoint(60, 55))
+			}, 
+			//result
+			result[0]));
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+
+	returnString += ("\n \n"
+	    	+ "                    1    \n"
+	    	+ "                 *  \n"
+	    	+ "             *____________\n"
+	    	+ "          *  |            |\n"
+	    	+ "        2    |            |\n"
+	    	+ "             |____________|\n\n");
+	
+	r = new Rectangle(58, 57, 10, 10);
+	result = cv_bothOutside.p_mixedRT2LB.separate(r);
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							//here we've got the point of intersection twice
+							new DPoint(58, 57), 
+							new DPoint(58, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	returnString += ("outsidelist:\n");
+	
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(60,55), 
+							
+		   					//intersection 
+							new DPoint(58, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(58, 57),
+		   							
+		   					//point 2
+		   					new DPoint(55, 60))
+			}, 
+			//result
+			result[0]));
+	
+	
+
+	
+	
+
+	returnString += ("\n \n"
+	    	+ "                    2    \n"
+	    	+ "                 *  \n"
+	    	+ "             *____________\n"
+	    	+ "          *  |            |\n"
+	    	+ "        1    |            |\n"
+	    	+ "             |____________|\n\n");
+	
+	r = new Rectangle(58, 57, 10, 10);
+	result = cv_bothOutside.p_mixedLB2RT.separate(r);
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							//here we've got the point of intersection twice
+							new DPoint(58, 57), 
+							new DPoint(58, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	returnString += ("outsidelist:\n");
+	
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(55, 60), 
+							
+		   					//intersection 
+							new DPoint(58, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(58, 57),
+		   							
+		   					//point 2
+		   					new DPoint(60, 55))
+			}, 
+			//result
+			result[0]));
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+
+	returnString += ("\n \n"
+	    	+ "                        \n"
+	    	+ "                   \n"
+	    	+ "              ____________\n"
+	    	+ "             |            |    1\n"
+	    	+ "             |            |  *\n"
+	    	+ "             |____________* \n"
+	    	+ "                       *\n"
+	    	+ "                    2\n"
+	    	+ "\n");
+	
+	r = new Rectangle(55, 55, 3, 2);
+	result = cv_bothOutside.p_mixedRT2LB.separate(r);
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							//here we've got the point of intersection twice
+							new DPoint(58, 57), 
+							new DPoint(58, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	returnString += ("outsidelist:\n");
+	
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(60,55), 
+							
+		   					//intersection 
+							new DPoint(58, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(58, 57),
+		   							
+		   					//point 2
+		   					new DPoint(55, 60))
+			}, 
+			//result
+			result[0]));
+	
+	
+
+	
+	
+
+	returnString += ("\n \n"
+	    	+ "                        \n"
+	    	+ "                   \n"
+	    	+ "              ____________\n"
+	    	+ "             |            |    2\n"
+	    	+ "             |            |  *\n"
+	    	+ "             |____________* \n"
+	    	+ "                       *\n"
+	    	+ "                    1\n"
+	    	+ "\n");
+
+	r = new Rectangle(55, 55, 3, 2);
+	result = cv_bothOutside.p_mixedRT2LB.separate(r);
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							//here we've got the point of intersection twice
+							new DPoint(58, 57), 
+							new DPoint(58, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	returnString += ("outsidelist:\n");
+	
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(60, 55), 
+							
+		   					//intersection 
+							new DPoint(58, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(58, 57),
+		   							
+		   					//point 2
+		   					new DPoint(55, 60))
+			}, 
+			//result
+			result[0]));
+	
+	
+	
+	
+
+	if (errorOccurred) {
+    	returnString += (returnString);
+	}
+	System.out.println("checkBothOutside2_3 error occured: \t" 
+	+ errorOccurred);
+	}
+
+
+
+
+
+
+
+/**
+ */
+private static synchronized void checkBothOutside2_4() {
+	CheckEnvironment 
+	cv_bothOutside = new CheckEnvironment();
+	Rectangle r;
+	
+
+
+	System.out.println("\n \n"
+	    	+ "     1                     \n"
+	    	+ "         *                 \n"
+	    	+ "            *_____________ \n"
+	    	+ "             |            |\n"
+	    	+ "             |            |\n"
+	    	+ "             |____________|\n"
+	    	+ "                           *\n"
+	    	+ "                                *\n"
+	    	+ "                                   2\n");
+	r = new Rectangle(56, 56, 2, 2);
+	PaintObjectWriting[][] result = cv_bothOutside.p_mixedLT2BR.separate(r);
+	System.out.println("EXPECTED\t\tRESULT\t\t");
+	System.out.println("insideList:");
+	System.out.print(comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							new DPoint(56, 56), 
+							
+							
+							//found first bug!
+							new DPoint(58, 58))
+			}, 
+			
+			//result
+			result[1]));
+	
+	System.out.println("outsidelist:");
+	
+	System.out.print(comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(60,55), 
+							
+		   					//intersection 
+							new DPoint(58, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(57, 58),
+		   							
+		   					//point 2
+		   					new DPoint(55, 60))
+			}, 
+			//result
+			result[0]));
+	
+	if (0 == 0)
+		return;
+
+	System.out.println("\n \n"
+	    	+ "                                    2    \n"
+	    	+ "                                 *  \n"
+	    	+ "             _____________  *\n"
+	    	+ "             |            |\n"
+	    	+ "             |            |\n"
+	    	+ "             |____________|\n"
+	    	+ "           *\n"
+	    	+ "        *\n"
+	    	+ "      1\n");
+	r = new Rectangle(56, 56, 2, 2);
+	result = cv_bothOutside.p_mixedLB2RT.separate(r);
+	System.out.println("EXPECTED\t\tRESULT\t\t");
+	System.out.println("insideList:");
+	System.out.print(comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							new DPoint(57, 58), 
+							
+							new DPoint(58, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	System.out.println("outsidelist:");
+	
+	System.out.print(comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(55, 60), 
+							
+		   					//intersection 
+							new DPoint(57, 58)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(58, 57),
+		   							
+		   					//point 2
+		   					new DPoint(60, 55))
+			}, 
+			//result
+			result[0]));
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+
+	System.out.println("\n \n"
+	    	+ "                    1    \n"
+	    	+ "                 *  \n"
+	    	+ "             *____________\n"
+	    	+ "          *  |            |\n"
+	    	+ "        2    |            |\n"
+	    	+ "             |____________|\n");
+	
+	r = new Rectangle(58, 57, 10, 10);
+	result = cv_bothOutside.p_mixedRT2LB.separate(r);
+	System.out.println("EXPECTED\t\tRESULT\t\t");
+	System.out.println("insideList:");
+	System.out.print(comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							//here we've got the point of intersection twice
+							new DPoint(58, 57), 
+							new DPoint(58, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	System.out.println("outsidelist:");
+	
+	System.out.print(comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(60,55), 
+							
+		   					//intersection 
+							new DPoint(58, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(58, 57),
+		   							
+		   					//point 2
+		   					new DPoint(55, 60))
+			}, 
+			//result
+			result[0]));
+	
+	
+
+	
+	
+
+	System.out.println("\n \n"
+	    	+ "                    2    \n"
+	    	+ "                 *  \n"
+	    	+ "             *____________\n"
+	    	+ "          *  |            |\n"
+	    	+ "        1    |            |\n"
+	    	+ "             |____________|\n");
+	
+	r = new Rectangle(58, 57, 10, 10);
+	result = cv_bothOutside.p_mixedLB2RT.separate(r);
+	System.out.println("EXPECTED\t\tRESULT\t\t");
+	System.out.println("insideList:");
+	System.out.print(comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							//here we've got the point of intersection twice
+							new DPoint(58, 57), 
+							new DPoint(58, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	System.out.println("outsidelist:");
+	
+	System.out.print(comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(55, 60), 
+							
+		   					//intersection 
+							new DPoint(58, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(58, 57),
+		   							
+		   					//point 2
+		   					new DPoint(60, 55))
+			}, 
+			//result
+			result[0]));
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+
+	System.out.println("\n \n"
+	    	+ "                        \n"
+	    	+ "                   \n"
+	    	+ "              ____________\n"
+	    	+ "             |            |    1\n"
+	    	+ "             |            |  *\n"
+	    	+ "             |____________* \n"
+	    	+ "                       *\n"
+	    	+ "                    2\n"
+	    	+ "");
+	
+	r = new Rectangle(55, 55, 3, 2);
+	result = cv_bothOutside.p_mixedRT2LB.separate(r);
+	System.out.println("EXPECTED\t\tRESULT\t\t");
+	System.out.println("insideList:");
+	System.out.print(comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							//here we've got the point of intersection twice
+							new DPoint(58, 57), 
+							new DPoint(58, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	System.out.println("outsidelist:");
+	
+	System.out.print(comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(60,55), 
+							
+		   					//intersection 
+							new DPoint(58, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(58, 57),
+		   							
+		   					//point 2
+		   					new DPoint(55, 60))
+			}, 
+			//result
+			result[0]));
+	
+	
+
+	
+	
+
+	System.out.println("\n \n"
+	    	+ "                        \n"
+	    	+ "                   \n"
+	    	+ "              ____________\n"
+	    	+ "             |            |    2\n"
+	    	+ "             |            |  *\n"
+	    	+ "             |____________* \n"
+	    	+ "                       *\n"
+	    	+ "                    1\n"
+	    	+ "");
+
+	r = new Rectangle(55, 55, 3, 2);
+	result = cv_bothOutside.p_mixedRT2LB.separate(r);
+	System.out.println("EXPECTED\t\tRESULT\t\t");
+	System.out.println("insideList:");
+	System.out.print(comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							//here we've got the point of intersection twice
+							new DPoint(58, 57), 
+							new DPoint(58, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	System.out.println("outsidelist:");
+	
+	System.out.print(comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(60, 55), 
+							
+		   					//intersection 
+							new DPoint(58, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(58, 57),
+		   							
+		   					//point 2
+		   					new DPoint(55, 60))
+			}, 
+			//result
+			result[0]));
 	
 	
 	
@@ -1908,6 +2737,7 @@ private static synchronized void checkBothOutside2_2() {
 	System.out.println("error occurred: \t\t\t" + errorOccurred);
 	}
 }
+
 
 
 
@@ -1928,7 +2758,7 @@ class CheckEnvironment {
 	
 	//mixed directions
 	p_mixedLT2BR, p_mixedBR2LT, 
-	p_mixed_LB2RT, p_mixed_RT2LB;
+	p_mixedLB2RT, p_mixedRT2LB;
 	
 	public CheckEnvironment() {
 
@@ -1960,13 +2790,13 @@ class CheckEnvironment {
     	p_mixedBR2LT.addPoint(new DPoint (55 , 55));
     	p_mixedBR2LT.addPoint(new DPoint (60 , 60));
 
-    	p_mixed_LB2RT = new PaintObjectWriting(1, new Pencil(1, 1, Color.black));
-    	p_mixed_LB2RT.addPoint(new DPoint (55 , 60));
-    	p_mixed_LB2RT.addPoint(new DPoint (60 , 55));
+    	p_mixedLB2RT = new PaintObjectWriting(1, new Pencil(1, 1, Color.black));
+    	p_mixedLB2RT.addPoint(new DPoint (55 , 60));
+    	p_mixedLB2RT.addPoint(new DPoint (60 , 55));
     	
-    	p_mixed_RT2LB = new PaintObjectWriting(1, new Pencil(1, 1, Color.black));
-    	p_mixed_RT2LB.addPoint(new DPoint (60 , 55));
-    	p_mixed_RT2LB.addPoint(new DPoint (55 , 60));
+    	p_mixedRT2LB = new PaintObjectWriting(1, new Pencil(1, 1, Color.black));
+    	p_mixedRT2LB.addPoint(new DPoint (60 , 55));
+    	p_mixedRT2LB.addPoint(new DPoint (55 , 60));
 	}
 	
 }

@@ -154,38 +154,59 @@ public class CheckPOW {
 	public static void main(String[]args){
     	errorOccurred = false;
     	
-    	boolean check1_1 = true, check1_2 = true, check1_3 = true, 
-    			check1_4 = true,
-    			check2_1 = true, check2_2 = true, check2_3 = true, 
-    			check2_4 = true;
+    	//both outside
+    	boolean checkBo1_1 = true, checkBo1_2 = true, checkBo1_3 = true, 
+    			checkBo1_4 = true,
+    			checkBo2_1 = true, checkBo2_2 = true, checkBo2_3 = true, 
+    			checkBo2_4 = true;
+
+    	//both inside
+    	boolean checkBi = true;
     	
     	
-    	if (check1_1) {
+    	/*
+    	 * both outside
+    	 */
+    	if (checkBo1_1) {
     		checkBothOutside1_1();
     	}
-    	if (check1_2) {
+    	if (checkBo1_2) {
     		checkBothOutside1_2();
     	}
-    	if (check1_3) {
+    	if (checkBo1_3) {
     		checkBothOutside1_3();
     	}
-    	if (check1_4) {
+    	if (checkBo1_4) {
     		checkBothOutside1_4();
     	}
-    	
-
-    	if (check2_1) {
+    	//second path
+    	if (checkBo2_1) {
     		checkBothOutside2_1();
     	}
-    	if (check2_2) {
+    	if (checkBo2_2) {
     		checkBothOutside2_2();
     	}
-    	if (check2_3) {
+    	if (checkBo2_3) {
     		checkBothOutside2_3();
     	}
-    	if (check2_4) {
+    	if (checkBo2_4) {
     		checkBothOutside2_4();
     	}
+    	
+    	
+    	
+    	/*
+    	 * both inside
+    	 */
+
+    	if (checkBi) {
+    		checkBothInside();
+    	}
+    	
+    	
+    	/*
+    	 * one inside
+    	 */
     	
 	}    
 	
@@ -2703,6 +2724,250 @@ private static synchronized void checkBothOutside2_4() {
 		System.out.println("checkBothOutside2_4 error occured: \t" 
 				+ errorOccurred);
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Check for top bottom and vice versa.
+	 */
+	private static synchronized void checkBothInside() {
+		CheckEnvironment 
+		cv_bothOutside = new CheckEnvironment();
+		Rectangle r = new Rectangle(55, 55, 10, 5);
+
+		String returnString = "";
+
+		returnString += ("\n \n"
+		+ "		_______1_____\n"
+		+ "		|      *     |\n"
+		+ "		|      *     |\n"
+		+ "		|______2_____|\n"
+		+ "	 \n");
+		PaintObjectWriting[][] result = cv_bothOutside.p_top2Bottom.separate(r);
+		returnString += ("EXPECTED\t\tRESULT\t\t\n");
+		returnString += ("insideList:\n");
+		returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{cv_bothOutside.p_top2Bottom},
+			
+			//result
+			result[1]) + "\n");
+	
+		returnString +=("outsidelist:" + "\n");
+		
+		returnString +=(comparePaintObjects(
+				
+				//expected
+				new PaintObjectWriting[0], 
+				
+				//result
+				result[0]) + "\n");
+		
+		
+		
+		returnString += ("\n \n"
+		+ "		_______2_____\n"
+		+ "		|      *     |\n"
+		+ "		|      *     |\n"
+		+ "		|______1_____|\n"
+		+ "	 \n");
+		result = cv_bothOutside.p_bottom2Top.separate(r);
+		returnString += ("EXPECTED\t\tRESULT\t\t\n");
+		returnString += ("insideList:\n");
+	
+		returnString +=(comparePaintObjects(
+				
+				//expected
+				new PaintObjectWriting[]{cv_bothOutside.p_bottom2Top},
+				
+				//result
+				result[1]) + "\n");
+
+		returnString +=("outsidelist:" + "\n");
+		returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[0], 
+			
+			//result
+			result[0]) + "\n");
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+		returnString += ("\n \n"
+		+ "		1____________\n"
+		+ "		|   *       |\n"
+		+ "		|       *   |\n"
+		+ "		|___________2\n"
+		+ "	 \n");
+		r = new Rectangle(55, 55, 5, 5);
+		result = cv_bothOutside.p_mixedLT2BR.separate(r);
+		returnString += ("EXPECTED\t\tRESULT\t\t\n");
+		returnString += ("insideList:\n");
+		returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{cv_bothOutside.p_mixedLT2BR},
+			
+			//result
+			result[1]) + "\n");
+	
+		returnString +=("outsidelist:" + "\n");
+		
+		returnString +=(comparePaintObjects(
+				
+				//expected
+				new PaintObjectWriting[0], 
+				
+				//result
+				result[0]) + "\n");
+		
+		
+
+		returnString += ("\n \n"
+		+ "		2____________\n"
+		+ "		|   *       |\n"
+		+ "		|       *   |\n"
+		+ "		|___________1\n"
+		+ "	 \n");
+		result = cv_bothOutside.p_mixedBR2LT.separate(r);
+		returnString += ("EXPECTED\t\tRESULT\t\t\n");
+		returnString += ("insideList:\n");
+	
+		returnString +=(comparePaintObjects(
+				
+				//expected
+				new PaintObjectWriting[]{cv_bothOutside.p_mixedBR2LT},
+				
+				//result
+				result[1]) + "\n");
+
+		returnString +=("outsidelist:" + "\n");
+		returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[0], 
+			
+			//result
+			result[0]) + "\n");
+		
+		
+		
+		
+
+		
+		
+		
+
+		returnString += ("\n \n"
+				+ "		____________1\n"
+				+ "		|        *  |\n"
+				+ "		|   *       |\n"
+				+ "		2___________1\n"
+				+ "	 \n");
+		r = new Rectangle(55, 55, 5, 5);
+		result = cv_bothOutside.p_mixedRT2LB.separate(r);
+		returnString += ("EXPECTED\t\tRESULT\t\t\n");
+		returnString += ("insideList:\n");
+		returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{cv_bothOutside.p_mixedRT2LB},
+			
+			//result
+			result[1]) + "\n");
+	
+		returnString +=("outsidelist:" + "\n");
+		
+		returnString +=(comparePaintObjects(
+				
+				//expected
+				new PaintObjectWriting[0], 
+				
+				//result
+				result[0]) + "\n");
+		
+		
+
+		returnString += ("\n \n"
+		+ "		____________2\n"
+		+ "		|        *  |\n"
+		+ "		|   *       |\n"
+		+ "		1___________1\n"
+		+ "	 \n");
+		result = cv_bothOutside.p_mixedLB2RT.separate(r);
+		returnString += ("EXPECTED\t\tRESULT\t\t\n");
+		returnString += ("insideList:\n");
+	
+		returnString +=(comparePaintObjects(
+				
+				//expected
+				new PaintObjectWriting[]{cv_bothOutside.p_mixedLB2RT},
+				
+				//result
+				result[1]) + "\n");
+
+		returnString +=("outsidelist:" + "\n");
+		returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[0], 
+			
+			//result
+			result[0]) + "\n");
+		
+		
+		
+		
+		
+		
+
+		if (errorOccurred) {
+				System.out.println(returnString);
+		}
+		System.out.println("checkBothInside1 error occured: \t" 
+				+ errorOccurred);
+	}
+
+
+
+
+
+
 }
 
 

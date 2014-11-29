@@ -1117,9 +1117,9 @@ public class PaintObjectWriting extends PaintObjectPen {
                 ls.next();
                 System.out.println("noext.");
             }
-            System.out.println("soriterungsindex" 
-                    + ((int) (ls.getItem().getX() - _p.getX())) + "und y " 
-                    + (int) (ls.getItem().getY() - _p.getY()) + "\n");
+//            System.out.println("soriterungsindex" 
+//                    + ((int) (ls.getItem().getX() - _p.getX())) + "und y " 
+//                    + (int) (ls.getItem().getY() - _p.getY()) + "\n");
             
             //if the point is at the border of the rectangle the nearest 
             //intersection is the point itself. Then We do not have to find
@@ -1132,10 +1132,10 @@ public class PaintObjectWriting extends PaintObjectPen {
             } else if (dX == 1 && dY == 1) {
                 ls.next();
             }
-            System.out.println(ls.getItemSortionIndex() + "|" + "\n" 
-            + dX + ".." + dY + "ueberpruefung"
-                    + "exakt" + ls.getItemSortionIndex() * _v.getX() + ".." 
-                    + ls.getItemSortionIndex() * _v.getY());
+//            System.out.println(ls.getItemSortionIndex() + "|" + "\n" 
+//            + dX + ".." + dY + "ueberpruefung"
+//                    + "exakt" + ls.getItemSortionIndex() * _v.getX() + ".." 
+//                    + ls.getItemSortionIndex() * _v.getY());
 //            verifyPnt(new DPoint(_p.getX() 
 //                    + ls.getItemSortionIndex() * _v.getX(), _p.getY() 
 //                    + ls.getItemSortionIndex() * _v.getY()), Color.red);

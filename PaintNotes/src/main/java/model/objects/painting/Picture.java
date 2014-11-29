@@ -111,7 +111,16 @@ public final class Picture {
         
         //save current id
         this.currentId = 0;
-        
+	}
+	
+	
+	/**
+	 * increase id and return the next id.
+	 * @return the next id.
+	 */
+	public synchronized int getIncreaseCID(){
+		currentId ++;
+		return currentId -1;
 	}
 
 	/**
@@ -1326,14 +1335,20 @@ public final class Picture {
     public boolean paintSelectedInline() {
 
         //it occurred that the start point equal to 0. Why?
-        
-        int px = (int) (CSelection.getInstance().getPnt_start()
-                .getX()
-                - Page.getInstance().getJlbl_painting().getLocation().getX());
-        int py = (int) (CSelection.getInstance().getPnt_start()
-                .getY()
-                - Page.getInstance().getJlbl_painting().getLocation().getY());
-        
+        int px, py;
+    	if (CSelection.getInstance().getPnt_start() == null) {
+    		px = 0;
+    		py = 0;
+    	} else {
+    		 px = (int) (CSelection.getInstance().getPnt_start()
+    	                .getX()
+    	                - Page.getInstance().getJlbl_painting().getLocation().getX());
+    		 py = (int) (CSelection.getInstance().getPnt_start()
+    				 .getY()
+    				 - Page.getInstance().getJlbl_painting().getLocation().getY());
+
+    	}
+               
         BufferedImage verbufft = Page.getInstance().getEmptyBISelection();
         BufferedImage verbufft2 = Page.getInstance().getEmptyBISelection();
         ls_poSelected.toFirst();

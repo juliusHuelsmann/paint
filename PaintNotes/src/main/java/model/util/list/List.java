@@ -5,6 +5,7 @@ package model.util.list;
 import java.io.Serializable;
 
 import model.settings.Status;
+import model.util.DPoint;
 
 /**
  * Double linked list (not a ring - list).
@@ -413,6 +414,32 @@ public class List<Type> implements Serializable {
             next();
         }
         System.out.println("\n\n");
+    }
+    
+    
+    public final synchronized DPoint[] toArray() {
+    	int length = 0;
+    	toFirst();
+    	while(!isBehind()){
+    		if (getItem() instanceof DPoint) {
+
+        		length ++;
+    		}
+    		next();
+    	}
+
+    	DPoint[] ret = new DPoint[length];
+    	toFirst();
+    	int i = 0;
+    	while(!isBehind()){
+
+    		if (getItem() instanceof DPoint) {
+    			ret [i] = (DPoint) getItem();
+    			i++;
+    		}
+    		next();
+    	}
+    	return ret;
     }
     
     

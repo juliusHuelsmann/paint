@@ -252,7 +252,9 @@ public class PaintLabel extends MLabel {
     
 
     /**
-     * in here, the location is not set as usual, but just the values
+     * This method saves the location in x and y coordinate for being able
+     * to display the correct painting sub image.
+     * 
      * for x and y location are saved. Thus, the painting methods
      * are able to calculate for themselves what to paint at what position.
      * @param _x the new x coordinate which is saved
@@ -310,126 +312,124 @@ public class PaintLabel extends MLabel {
             	 * shift the maintained stuff
             	 */
             	
-            	//fetch the the RGB array of the subImage which is to be 
-            	//maintained but moved somewhere.
-            	//TODO: zoom error occurs.
-            	int[] rgbArray = new int[maintainWidth * maintainHeight];
-            	rgbArray = bi.getRGB(
-            			maintainStartX, 
-            			maintainStartY, 
-            			maintainWidth, 
-            			maintainHeight, 
-            			rgbArray, 0, maintainWidth);
-            	
-            	
-            	//write the maintained RGB array to shifted coordinates.
-            	bi.setRGB(shiftedStartX, 
-            			shiftedStartY, 
-            			maintainWidth,
-            			maintainHeight, 
-            			rgbArray,  0, maintainWidth);
-            	
-            	/*
-            	 * paint the new stuff. 
-            	 * The rectangle location is the complement of the maintained
-            	 * in size of bufferedImage.
-            	 */
-            	
-            	//Refresh both in direction of width and of height.
-            	//In the simplest way of doing this, there may be an area which 
-            	//is painted twice (depicted with '!'). 
-            	//For further optimization of displaying speed this should be
-            	//eliminated by the way of refreshing done beneath the picture. 
-            	
-            	//Picture:
-            	//							shiftedStartY == 0
-            	//		____________		____________
-            	//		| ! W W W W	|		| H	x      	|
-            	// 		| H	x x x x |		| H	x       |
-            	// 		| H	x      	|		| H	x     	|
-            	// 		| H	x      	|		| H	x     	|
-            	// 		| H	x       |		| H	x x x x	|
-            	//		|_H_x_______|		|_!_W_W_W_W_|
-            	//		____________		____________
-            	//		| W	W W W! !|		|     x	H H	|
-            	// 		| x x x x H	|		|     x	H H	|
-            	// 		|  	   	x H	|		|     x	H H	|
-            	// 		|      	x H	|		|     x	H H	|
-            	// 		|       x H	|		| x x x	H H	|
-            	//		|_______x_H_|		|_W_W_W_!_!_|
-            	
-            	
-            	/*
-            	 * Width
-            	 */
-            	//here the (!) are painted!
-            	int refreshWidthWidth = bi.getWidth();
-            	int refreshWidthHeight = bi.getHeight() - maintainHeight;
-            	int refreshWidthY = 0;
-            	int refreshWidthX = 0;
-            	
-            	if (shiftedStartY == 0) {
-            		refreshWidthY = maintainHeight;
-            	}
+            	if (maintainWidth > 0 && maintainHeight > 0) {
+            		//fetch the the RGB array of the subImage which is to be 
+                	//maintained but moved somewhere.
+                	//TODO: zoom error occurs.
+                	int[] rgbArray = new int[maintainWidth * maintainHeight];
+                	rgbArray = bi.getRGB(
+                			maintainStartX, 
+                			maintainStartY, 
+                			maintainWidth, 
+                			maintainHeight, 
+                			rgbArray, 0, maintainWidth);
+                	
+                	
+                	//write the maintained RGB array to shifted coordinates.
+                	bi.setRGB(shiftedStartX, 
+                			shiftedStartY, 
+                			maintainWidth,
+                			maintainHeight, 
+                			rgbArray,  0, maintainWidth);
+                	
+                	/*
+                	 * paint the new stuff. 
+                	 * The rectangle location is the complement of the 
+                	 * maintained in size of bufferedImage.
+                	 */
+                	
+                	//Refresh both in direction of width and of height.
+                	//In the simplest way of doing this, there may be an area 
+                	//which is painted twice (depicted with '!'). 
+                	//For further optimization of displaying speed this should 
+                	//be eliminated by the way of refreshing done beneath the 
+                	//picture. Picture:
+                	//							shiftedStartY == 0
+                	//		____________		____________
+                	//		| ! W W W W	|		| H	x      	|
+                	// 		| H	x x x x |		| H	x       |
+                	// 		| H	x      	|		| H	x     	|
+                	// 		| H	x      	|		| H	x     	|
+                	// 		| H	x       |		| H	x x x x	|
+                	//		|_H_x_______|		|_!_W_W_W_W_|
+                	//		____________		____________
+                	//		| W	W W W! !|		|     x	H H	|
+                	// 		| x x x x H	|		|     x	H H	|
+                	// 		|  	   	x H	|		|     x	H H	|
+                	// 		|      	x H	|		|     x	H H	|
+                	// 		|       x H	|		| x x x	H H	|
+                	//		|_______x_H_|		|_W_W_W_!_!_|
+                	
+                	
+                	/*
+                	 * Width
+                	 */
+                	//here the (!) are painted!
+                	int refreshWidthWidth = bi.getWidth();
+                	int refreshWidthHeight = bi.getHeight() - maintainHeight;
+                	int refreshWidthY = 0;
+                	int refreshWidthX = 0;
+                	
+                	if (shiftedStartY == 0) {
+                		refreshWidthY = maintainHeight;
+                	}
 
-            	
-            	/*
-            	 * height
-            	 */
-            	int refreshHeightWidth = bi.getWidth() - maintainWidth;
-            	int refreshHeightHeight = bi.getHeight() - refreshWidthHeight;
-            	int refreshHeightY = 0;
-            	int refreshHeightX = 0;
-            	
-            	if (shiftedStartX == 0) {
-            		refreshHeightX = maintainWidth;
-            	}
+                	
+                	/*
+                	 * height
+                	 */
+                	int refreshHeightWidth = bi.getWidth() - maintainWidth;
+                	int refreshHeightHeight = bi.getHeight()
+                			- refreshWidthHeight;
+                	int refreshHeightY = 0;
+                	int refreshHeightX = 0;
+                	
+                	if (shiftedStartX == 0) {
+                		refreshHeightX = maintainWidth;
+                	}
 
+                    //save values
+                    this.x = _x;
+                    this.y = _y;
+
+//                    for (int xw = 0; xw < refreshWidthWidth; xw ++) {
+//                    	for (int yw = 0; yw < refreshWidthHeight; yw ++) {
+//                        	getBi().setRGB(xw + refreshWidthX, 
+//                        			yw + refreshWidthY, 
+//                        			Color.red.getRGB());
+//                        }
+//                    }
+//                    for (int xw = 0; xw < refreshHeightWidth; xw ++) {
+//                    	for (int yw = 0; yw < refreshHeightHeight; yw ++) {
+//                        	getBi().setRGB(xw + refreshHeightX, 
+//                        			yw + refreshHeightY, 
+//                        			Color.green.getRGB());
+//                        }
+//                    }
+                    
+                    
+                    //BufferedImage
+                    refreshPaintBackground();
+                	refreshRectangle(refreshWidthX, refreshWidthY, 
+                			refreshWidthWidth, refreshWidthHeight);
+                	refreshRectangle(refreshHeightX, refreshHeightY, 
+                			refreshHeightWidth, refreshHeightHeight);
+
+//                	System.out.println("maintain:\tnew"
+//                			+ "\nx:\t" 	+ maintainStartX
+//                			+ "\t" 		+ shiftedStartX
+//                			+ "\ny: \t"	+ maintainStartY
+//                			+ "\t" 		+ shiftedStartY
+//                			+ "\n\nw:\t" + maintainWidth 
+//                			+ "\nh:\t" + maintainHeight
+//                			);
+            	}
+            } else {
+
+                
                 //save values
                 this.x = _x;
                 this.y = _y;
-
-//                for (int xw = 0; xw < refreshWidthWidth; xw ++) {
-//                	for (int yw = 0; yw < refreshWidthHeight; yw ++) {
-//                    	getBi().setRGB(xw + refreshWidthX, 
-//                    			yw + refreshWidthY, 
-//                    			Color.red.getRGB());
-//                    }
-//                }
-//                for (int xw = 0; xw < refreshHeightWidth; xw ++) {
-//                	for (int yw = 0; yw < refreshHeightHeight; yw ++) {
-//                    	getBi().setRGB(xw + refreshHeightX, 
-//                    			yw + refreshHeightY, 
-//                    			Color.green.getRGB());
-//                    }
-//                }
-                
-                
-                //BufferedImage
-                refreshPaintBackground();
-            	refreshRectangle(refreshWidthX, refreshWidthY, 
-            			refreshWidthWidth, refreshWidthHeight);
-            	refreshRectangle(refreshHeightX, refreshHeightY, 
-            			refreshHeightWidth, refreshHeightHeight);
-
-//            	System.out.println("maintain:\tnew"
-//            			+ "\nx:\t" 	+ maintainStartX
-//            			+ "\t" 		+ shiftedStartX
-//            			+ "\ny: \t"	+ maintainStartY
-//            			+ "\t" 		+ shiftedStartY
-//            			+ "\n\nw:\t" + maintainWidth 
-//            			+ "\nh:\t" + maintainHeight
-//            			);
-
-                
-            }
-            
-            //save values
-            this.x = _x;
-            this.y = _y;
-            
-            if (isVisible()) {
-//            	refreshPaint();
             }
         }
     }

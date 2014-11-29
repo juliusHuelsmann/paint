@@ -89,7 +89,7 @@ public final class Constants {
 	/**
 	 * The size of the mouseIcon.
 	 */
-	public static final int MOUSE_ICON_SIZE = 20;
+	public static final int MOUSE_ICON_SIZE = 5;
 	
 	//variable containing boolean for debug outputs
 	

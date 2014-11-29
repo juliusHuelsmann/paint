@@ -35,7 +35,8 @@ public abstract class PaintObject implements Serializable {
 	 * identified (e.g. if it is deleted, changed or something).
 	 */
 	private int elementId;
-
+	
+	
     
     /**
      * This method checks whether this paintObject is inside the given 

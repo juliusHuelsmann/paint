@@ -829,6 +829,25 @@ public class PaintObjectWriting extends PaintObjectPen {
                 double lambda2 = ls.getItemSortionIndex();
 //                System.out.println("lambda2" + lambda2);
                 DPoint p2 = ls.getItem();
+                
+                //if both are equal (maybe there is some intersection at 
+                //edges, thus there may be four possible intersects.
+                //thus delete the doubled values if the successor does not
+                //equal null.
+                //	 1	
+                //		*_________
+                //      | *  	|
+                //      |	 *	|
+                //		|_______*
+                //					2
+                if (p1.getX() == p2.getX() && p1.getY() == p2.getY()){
+                	ls.next();
+                	DPoint p3 = ls.getItem();
+                	if (p3 != null)
+                		p2 = p3;
+                }
+//                System.out.println(p2.getX() + "\t"+ p2.getY());
+//                System.out.println(p1.getX() + "\t"+ p1.getY());
                 if (lambda2 <= 1 && lambda2 >= 0) {
                     return new Rectangle((int) p1.getX(), (int) p1.getY(), 
                             (int) p2.getX(), (int) p2.getY());
@@ -1046,6 +1065,7 @@ public class PaintObjectWriting extends PaintObjectPen {
         //each step of its solution.
         String s = s1 + s2 + s3 + s4;
         s = s + "\n";
+//        System.out.println(s);
 //        ls.printIndex();
         ls.toFirst();
         return ls;

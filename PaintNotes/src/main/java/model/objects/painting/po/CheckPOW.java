@@ -847,7 +847,7 @@ public class CheckPOW {
     	
 
     	if (errorOccurred) {
-        	System.out.println(returnString);
+	    	System.out.println (returnString);
     	}
     	System.out.println("checkBothOutside1_2 error occured: \t"
     	+ errorOccurred);
@@ -999,7 +999,7 @@ public class CheckPOW {
     			result[0]));
 
     	if (errorOccurred) {
-        	returnString += (returnString);
+	    	System.out.println (returnString);
     	}
     	System.out.println("checkBothOutside1_3 error occured: \t" 
     	+ errorOccurred);
@@ -1138,7 +1138,7 @@ public class CheckPOW {
     			result[0]));
 
     	if (errorOccurred) {
-        	returnString += (returnString);
+	    	System.out.println (returnString);
     	}
     	System.out.println("checkBothOutside1_4 error occured: \t" 
     	+ errorOccurred);
@@ -1563,7 +1563,7 @@ public class CheckPOW {
   	
 	
 		if (errorOccurred) {
-	    	returnString += (returnString);
+	    	System.out.println (returnString);
 		}
 		System.out.println("checkBothOutside2_1 error occured: \t" 
 		+ errorOccurred);
@@ -1934,7 +1934,7 @@ private static synchronized void checkBothOutside2_2() {
 	
 
 	if (errorOccurred) {
-    	returnString += (returnString);
+    	System.out.println (returnString);
 	}
 	System.out.println("checkBothOutside2_2 error occured: \t" 
 	+ errorOccurred);
@@ -2331,7 +2331,7 @@ private static synchronized void checkBothOutside2_3() {
 	
 
 	if (errorOccurred) {
-    	returnString += (returnString);
+    	System.out.println (returnString);
 	}
 	System.out.println("checkBothOutside2_3 error occured: \t" 
 	+ errorOccurred);
@@ -2350,9 +2350,11 @@ private static synchronized void checkBothOutside2_4() {
 	cv_bothOutside = new CheckEnvironment();
 	Rectangle r;
 	
+	
+	String returnString = "";
 
 
-	System.out.println("\n \n"
+	returnString += ("\n \n"
 	    	+ "     1                     \n"
 	    	+ "         *                 \n"
 	    	+ "            *_____________ \n"
@@ -2361,12 +2363,12 @@ private static synchronized void checkBothOutside2_4() {
 	    	+ "             |____________|\n"
 	    	+ "                           *\n"
 	    	+ "                                *\n"
-	    	+ "                                   2\n");
+	    	+ "                                   2\n\n");
 	r = new Rectangle(56, 56, 2, 2);
 	PaintObjectWriting[][] result = cv_bothOutside.p_mixedLT2BR.separate(r);
-	System.out.println("EXPECTED\t\tRESULT\t\t");
-	System.out.println("insideList:");
-	System.out.print(comparePaintObjects(
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -2382,9 +2384,9 @@ private static synchronized void checkBothOutside2_4() {
 			//result
 			result[1]));
 	
-	System.out.println("outsidelist:");
+	returnString += ("outsidelist:\n");
 	
-	System.out.print(comparePaintObjects(
+	returnString += (comparePaintObjects(
 			
 			//expected
 			new PaintObjectWriting[]{
@@ -2393,348 +2395,31 @@ private static synchronized void checkBothOutside2_4() {
 					createPOW(
 
 		   					//point 1.
-							new DPoint(60,55), 
+							new DPoint(55, 55), 
 							
 		   					//intersection 
-							new DPoint(58, 57)),
+							new DPoint(56, 56)),
 
 		   			//second line: from second intersection to the second point
 					createPOW(
 		   							
 		   					//intersection
-		   					new DPoint(57, 58),
+		   					new DPoint(58, 58),
 		   							
 		   					//point 2
-		   					new DPoint(55, 60))
-			}, 
-			//result
-			result[0]));
-	
-	if (0 == 0)
-		return;
-
-	System.out.println("\n \n"
-	    	+ "                                    2    \n"
-	    	+ "                                 *  \n"
-	    	+ "             _____________  *\n"
-	    	+ "             |            |\n"
-	    	+ "             |            |\n"
-	    	+ "             |____________|\n"
-	    	+ "           *\n"
-	    	+ "        *\n"
-	    	+ "      1\n");
-	r = new Rectangle(56, 56, 2, 2);
-	result = cv_bothOutside.p_mixedLB2RT.separate(r);
-	System.out.println("EXPECTED\t\tRESULT\t\t");
-	System.out.println("insideList:");
-	System.out.print(comparePaintObjects(
-			
-			//expected
-			new PaintObjectWriting[]{
-					createPOW(
-
-							new DPoint(57, 58), 
-							
-							new DPoint(58, 57))
-			}, 
-			
-			//result
-			result[1]));
-	
-	System.out.println("outsidelist:");
-	
-	System.out.print(comparePaintObjects(
-			
-			//expected
-			new PaintObjectWriting[]{
-					
-					//first line: from first point to first intersection
-					createPOW(
-
-		   					//point 1.
-							new DPoint(55, 60), 
-							
-		   					//intersection 
-							new DPoint(57, 58)),
-
-		   			//second line: from second intersection to the second point
-					createPOW(
-		   							
-		   					//intersection
-		   					new DPoint(58, 57),
-		   							
-		   					//point 2
-		   					new DPoint(60, 55))
+		   					new DPoint(60, 60))
 			}, 
 			//result
 			result[0]));
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
-	
-	
-
-	System.out.println("\n \n"
-	    	+ "                    1    \n"
-	    	+ "                 *  \n"
-	    	+ "             *____________\n"
-	    	+ "          *  |            |\n"
-	    	+ "        2    |            |\n"
-	    	+ "             |____________|\n");
-	
-	r = new Rectangle(58, 57, 10, 10);
-	result = cv_bothOutside.p_mixedRT2LB.separate(r);
-	System.out.println("EXPECTED\t\tRESULT\t\t");
-	System.out.println("insideList:");
-	System.out.print(comparePaintObjects(
-			
-			//expected
-			new PaintObjectWriting[]{
-					createPOW(
-
-							//here we've got the point of intersection twice
-							new DPoint(58, 57), 
-							new DPoint(58, 57))
-			}, 
-			
-			//result
-			result[1]));
-	
-	System.out.println("outsidelist:");
-	
-	System.out.print(comparePaintObjects(
-			
-			//expected
-			new PaintObjectWriting[]{
-					
-					//first line: from first point to first intersection
-					createPOW(
-
-		   					//point 1.
-							new DPoint(60,55), 
-							
-		   					//intersection 
-							new DPoint(58, 57)),
-
-		   			//second line: from second intersection to the second point
-					createPOW(
-		   							
-		   					//intersection
-		   					new DPoint(58, 57),
-		   							
-		   					//point 2
-		   					new DPoint(55, 60))
-			}, 
-			//result
-			result[0]));
-	
-	
-
-	
-	
-
-	System.out.println("\n \n"
-	    	+ "                    2    \n"
-	    	+ "                 *  \n"
-	    	+ "             *____________\n"
-	    	+ "          *  |            |\n"
-	    	+ "        1    |            |\n"
-	    	+ "             |____________|\n");
-	
-	r = new Rectangle(58, 57, 10, 10);
-	result = cv_bothOutside.p_mixedLB2RT.separate(r);
-	System.out.println("EXPECTED\t\tRESULT\t\t");
-	System.out.println("insideList:");
-	System.out.print(comparePaintObjects(
-			
-			//expected
-			new PaintObjectWriting[]{
-					createPOW(
-
-							//here we've got the point of intersection twice
-							new DPoint(58, 57), 
-							new DPoint(58, 57))
-			}, 
-			
-			//result
-			result[1]));
-	
-	System.out.println("outsidelist:");
-	
-	System.out.print(comparePaintObjects(
-			
-			//expected
-			new PaintObjectWriting[]{
-					
-					//first line: from first point to first intersection
-					createPOW(
-
-		   					//point 1.
-							new DPoint(55, 60), 
-							
-		   					//intersection 
-							new DPoint(58, 57)),
-
-		   			//second line: from second intersection to the second point
-					createPOW(
-		   							
-		   					//intersection
-		   					new DPoint(58, 57),
-		   							
-		   					//point 2
-		   					new DPoint(60, 55))
-			}, 
-			//result
-			result[0]));
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
-
-	System.out.println("\n \n"
-	    	+ "                        \n"
-	    	+ "                   \n"
-	    	+ "              ____________\n"
-	    	+ "             |            |    1\n"
-	    	+ "             |            |  *\n"
-	    	+ "             |____________* \n"
-	    	+ "                       *\n"
-	    	+ "                    2\n"
-	    	+ "");
-	
-	r = new Rectangle(55, 55, 3, 2);
-	result = cv_bothOutside.p_mixedRT2LB.separate(r);
-	System.out.println("EXPECTED\t\tRESULT\t\t");
-	System.out.println("insideList:");
-	System.out.print(comparePaintObjects(
-			
-			//expected
-			new PaintObjectWriting[]{
-					createPOW(
-
-							//here we've got the point of intersection twice
-							new DPoint(58, 57), 
-							new DPoint(58, 57))
-			}, 
-			
-			//result
-			result[1]));
-	
-	System.out.println("outsidelist:");
-	
-	System.out.print(comparePaintObjects(
-			
-			//expected
-			new PaintObjectWriting[]{
-					
-					//first line: from first point to first intersection
-					createPOW(
-
-		   					//point 1.
-							new DPoint(60,55), 
-							
-		   					//intersection 
-							new DPoint(58, 57)),
-
-		   			//second line: from second intersection to the second point
-					createPOW(
-		   							
-		   					//intersection
-		   					new DPoint(58, 57),
-		   							
-		   					//point 2
-		   					new DPoint(55, 60))
-			}, 
-			//result
-			result[0]));
-	
-	
-
-	
-	
-
-	System.out.println("\n \n"
-	    	+ "                        \n"
-	    	+ "                   \n"
-	    	+ "              ____________\n"
-	    	+ "             |            |    2\n"
-	    	+ "             |            |  *\n"
-	    	+ "             |____________* \n"
-	    	+ "                       *\n"
-	    	+ "                    1\n"
-	    	+ "");
-
-	r = new Rectangle(55, 55, 3, 2);
-	result = cv_bothOutside.p_mixedRT2LB.separate(r);
-	System.out.println("EXPECTED\t\tRESULT\t\t");
-	System.out.println("insideList:");
-	System.out.print(comparePaintObjects(
-			
-			//expected
-			new PaintObjectWriting[]{
-					createPOW(
-
-							//here we've got the point of intersection twice
-							new DPoint(58, 57), 
-							new DPoint(58, 57))
-			}, 
-			
-			//result
-			result[1]));
-	
-	System.out.println("outsidelist:");
-	
-	System.out.print(comparePaintObjects(
-			
-			//expected
-			new PaintObjectWriting[]{
-					
-					//first line: from first point to first intersection
-					createPOW(
-
-		   					//point 1.
-							new DPoint(60, 55), 
-							
-		   					//intersection 
-							new DPoint(58, 57)),
-
-		   			//second line: from second intersection to the second point
-					createPOW(
-		   							
-		   					//intersection
-		   					new DPoint(58, 57),
-		   							
-		   					//point 2
-		   					new DPoint(55, 60))
-			}, 
-			//result
-			result[0]));
-	
-	
-	
-	
-	
-	System.out.println("error occurred: \t\t\t" + errorOccurred);
+		if (errorOccurred) {
+	    	System.out.println (returnString);
+		}
+		System.out.println("checkBothOutside2_4 error occured: \t" 
+				+ errorOccurred);
 	}
 }
 

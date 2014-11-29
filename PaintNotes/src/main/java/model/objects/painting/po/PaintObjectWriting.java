@@ -548,8 +548,8 @@ public class PaintObjectWriting extends PaintObjectPen {
 
                 //calculate borderDPoint
                 DPoint pnt_border = findIntersection(_r, pc, new DPoint(
-                        pcNew.getX() - pc.getX(), 
-                        pcNew.getY() - pc.getY()));
+                		pcNew.getX() - pc.getX(), 
+                		pcNew.getY() - pc.getY()));
                
                 //add the borderDPoint to the last PaintObject and insert 
                 //paintObject to list
@@ -840,7 +840,7 @@ public class PaintObjectWriting extends PaintObjectPen {
                 //      |	 *	|
                 //		|_______*
                 //					2
-                if (p1.getX() == p2.getX() && p1.getY() == p2.getY()){
+                if (p2 != null && p1.getX() == p2.getX() && p1.getY() == p2.getY()){
                 	ls.next();
                 	DPoint p3 = ls.getItem();
                 	if (p3 != null)
@@ -1088,7 +1088,7 @@ public class PaintObjectWriting extends PaintObjectPen {
             final DPoint _p, 
             final DPoint _v) {
     
-        List<DPoint> ls = findIntersections(_r, _p, _v, true);
+        List<DPoint> ls = findIntersections(_r, _p, _v, false);
         ls.toFirst();
         if (ls.isEmpty() || ls.getItem() == null) {
             
@@ -1110,12 +1110,13 @@ public class PaintObjectWriting extends PaintObjectPen {
             
         } else {
             
-            if (ls.getItemSortionIndex() <= 0 
-                    || ls.getItemSortionIndex() > 1
+//        	int signum = -1;
+        	
+            if ( ls.getItemSortionIndex() <= 0 
+                    ||  ls.getItemSortionIndex() > 1
                     || ((int) Math.abs(ls.getItem().getX() - _p.getX()) <= 1 
                     && (int) Math.abs(ls.getItem().getY() - _p.getY()) <= 1)) {
                 ls.next();
-                System.out.println("noext.");
             }
 //            System.out.println("soriterungsindex" 
 //                    + ((int) (ls.getItem().getX() - _p.getX())) + "und y " 

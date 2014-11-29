@@ -2980,10 +2980,10 @@ private static synchronized void checkBothOutside2_4() {
 
 		returnString += ("\n \n"
 				+ "            1\n"
-				+ "		_______*_____\n"
-				+ "		|      *     |\n"
-				+ "		|      2     |\n"
-				+ "		|____________|\n"
+				+ "     _______*_____\n"
+				+ "     |      *     |\n"
+				+ "     |      2     |\n"
+				+ "     |____________|\n"
 				+ "	 \n");
 		PaintObjectWriting[][] result = cv_bothOutside.p_top2Bottom.separate(r);
 		returnString += ("EXPECTED\t\tRESULT\t\t\n");
@@ -3021,14 +3021,13 @@ private static synchronized void checkBothOutside2_4() {
 				
 				//result
 				result[0]) + "\n");
-		
 
 		returnString += ("\n \n"
 				+ "            2\n"
-				+ "		_______*_____\n"
-				+ "		|      *     |\n"
-				+ "		|      1     |\n"
-				+ "		|____________|\n"
+				+ "     _______*_____\n"
+				+ "     |      *     |\n"
+				+ "     |      1     |\n"
+				+ "     |____________|\n"
 				+ "	 \n");
 		result = cv_bothOutside.p_bottom2Top.separate(r);
 		returnString += ("EXPECTED\t\tRESULT\t\t\n");
@@ -3060,7 +3059,7 @@ private static synchronized void checkBothOutside2_4() {
 						createPOW(
 
 								//2nd point
-								new DPoint(55, 60),
+								new DPoint(55, 57),
 								
 								//2nd point
 								new DPoint(55, 55))

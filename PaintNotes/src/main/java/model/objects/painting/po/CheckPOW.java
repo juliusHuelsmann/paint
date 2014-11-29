@@ -2375,9 +2375,7 @@ private static synchronized void checkBothOutside2_4() {
 					createPOW(
 
 							new DPoint(56, 56), 
-							
-							
-							//found first bug!
+							//found first bug, solved by now
 							new DPoint(58, 58))
 			}, 
 			
@@ -2413,7 +2411,291 @@ private static synchronized void checkBothOutside2_4() {
 			result[0]));
 	
 	
+
+
+	returnString += ("\n \n"
+	    	+ "     2                     \n"
+	    	+ "         *                 \n"
+	    	+ "            *_____________ \n"
+	    	+ "             |            |\n"
+	    	+ "             |            |\n"
+	    	+ "             |____________|\n"
+	    	+ "                           *\n"
+	    	+ "                                *\n"
+	    	+ "                                   1\n\n");
+	r = new Rectangle(56, 56, 2, 2);
+	result = cv_bothOutside.p_mixedBR2LT.separate(r);
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							new DPoint(58, 58), 
+							new DPoint(56, 56))
+			}, 
+			
+			//result
+			result[1]));
 	
+	returnString += ("outsidelist:\n");
+	
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(60, 60), 
+							
+		   					//intersection 
+							new DPoint(58, 58)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(56, 56),
+		   							
+		   					//point 2
+		   					new DPoint(55, 55))
+			}, 
+			//result
+			result[0]));
+	
+
+	returnString += ("\n \n"
+	    	+ "             _____________ \n"
+	    	+ "     1       |            |\n"
+	    	+ "         *   |            |\n"
+	    	+ "             *____________|\n"
+	    	+ "                 *         \n"
+	    	+ "                     2     \n");
+	r = new Rectangle(57, 55, 2, 2);
+	result = cv_bothOutside.p_mixedLT2BR.separate(r);
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							new DPoint(57, 57), 
+							//found first bug, solved by now
+							new DPoint(57, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	returnString += ("outsidelist:\n");
+	
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(55, 55), 
+							
+		   					//intersection 
+							new DPoint(57, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(57, 57),
+		   							
+		   					//point 2
+		   					new DPoint(60, 60))
+			}, 
+			//result
+			result[0]));
+	
+
+	returnString += ("\n \n"
+	    	+ "             _____________ \n"
+	    	+ "     2       |            |\n"
+	    	+ "         *   |            |\n"
+	    	+ "             *____________|\n"
+	    	+ "                 *         \n"
+	    	+ "                     1     \n");
+	r = new Rectangle(57, 55, 2, 2);
+	result = cv_bothOutside.p_mixedBR2LT.separate(r);
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							new DPoint(57, 57), 
+							//found first bug, solved by now
+							new DPoint(57, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	returnString += ("outsidelist:\n");
+	
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(60, 60), 
+							
+		   					//intersection 
+							new DPoint(57, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(57, 57),
+		   							
+		   					//point 2
+		   					new DPoint(55, 55))
+			}, 
+			//result
+			result[0]));
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	returnString += ("\n \n"
+	    	+ "                               \n"
+	    	+ "                      1          \n"
+	    	+ "             _____________*     \n"
+	    	+ "             |            |  2\n"
+	    	+ "             |            |     \n"
+	    	+ "             |____________|  \n"
+	    	+ "                                \n"
+	    	+ "                           \n");
+	r = new Rectangle(55, 57, 2, 2);
+	result = cv_bothOutside.p_mixedLT2BR.separate(r);
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							new DPoint(57, 57), 
+							//found first bug, solved by now
+							new DPoint(57, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	returnString += ("outsidelist:\n");
+	
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(55, 55), 
+							
+		   					//intersection 
+							new DPoint(57, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(57, 57),
+		   							
+		   					//point 2
+		   					new DPoint(60, 60))
+			}, 
+			//result
+			result[0]));
+	
+	
+
+	returnString += ("\n \n"
+	    	+ "                               \n"
+	    	+ "                      2          \n"
+	    	+ "             _____________*     \n"
+	    	+ "             |            |  1\n"
+	    	+ "             |            |     \n"
+	    	+ "             |____________|  \n"
+	    	+ "                                \n"
+	    	+ "                           \n");
+	r = new Rectangle(55, 57, 2, 2);
+	result = cv_bothOutside.p_mixedBR2LT.separate(r);
+	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+	returnString += ("insideList:\n");
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					createPOW(
+
+							new DPoint(57, 57), 
+							//found first bug, solved by now
+							new DPoint(57, 57))
+			}, 
+			
+			//result
+			result[1]));
+	
+	returnString += ("outsidelist:\n");
+	
+	returnString += (comparePaintObjects(
+			
+			//expected
+			new PaintObjectWriting[]{
+					
+					//first line: from first point to first intersection
+					createPOW(
+
+		   					//point 1.
+							new DPoint(60, 60), 
+							
+		   					//intersection 
+							new DPoint(57, 57)),
+
+		   			//second line: from second intersection to the second point
+					createPOW(
+		   							
+		   					//intersection
+		   					new DPoint(57, 57),
+		   							
+		   					//point 2
+		   					new DPoint(55, 55))
+			}, 
+			//result
+			result[0]));
 
 		if (errorOccurred) {
 	    	System.out.println (returnString);
@@ -2472,8 +2754,8 @@ class CheckEnvironment {
     	p_mixedLT2BR.addPoint(new DPoint (60 , 60));
     	
     	p_mixedBR2LT = new PaintObjectWriting(0, new Pencil(1, 1, Color.black));
-    	p_mixedBR2LT.addPoint(new DPoint (55 , 55));
     	p_mixedBR2LT.addPoint(new DPoint (60 , 60));
+    	p_mixedBR2LT.addPoint(new DPoint (55 , 55));
 
     	p_mixedLB2RT = new PaintObjectWriting(1, new Pencil(1, 1, Color.black));
     	p_mixedLB2RT.addPoint(new DPoint (55 , 60));

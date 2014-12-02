@@ -69,8 +69,11 @@ public final class ControlPainting implements MouseListener,
     private boolean startPerform;
 
     /**
-     * start point mouseDragged.
+     * start point mouseDragged and the speed of movement for continuous 
+     * movement.
      */
+    //TODO: quadratic? movement function which interpolates a time interval
+    //of x milliseconds. Computation possible. Speed? Maybe other solutions?
     private Point pnt_start, pnt_last, pnt_movementSpeed;
 
     /**

@@ -67,42 +67,66 @@ public final class Picture {
 	private static Picture instance = null;
 
 	/**
-	 * list of PaintObjects.
+	 * list of PaintObjects. The first list is the one into which all 
+	 * non-selected paintObjects are added sorted by their x coordinate. 
+	 * 
+	 * The second list contains all currently selected items. These items 
+	 * have to be saved somewhere outside the first list because they 
+	 * can be transformed or removed.
 	 */
 	private List<PaintObject> ls_po_sortedByX, ls_poSelected;
 
 	/**
-	 * current PaintObject which can be altered.
+	 * Current PaintObjectPen which can be altered and afterwards inserted into
+	 * the list of PaintObjects sorted by X. 
+	 * 
+	 * If an image is inserted from clipboard or an existing PaintObjectPen
+	 * is transformed into an image, that can be done directly e.g. by using
+	 * the addPaintObjectImage method. This can not be done with the 
+	 * PaintObjectPens because their creation is a continued process (the
+	 * user draws a line; first the PaintObjectPen has to be created, 
+	 * afterwards points are added to the PaintObjectPen. When the user 
+	 * released the mouse, the paintObject is added to list of paintObjects
+	 * and the PaintObjectPen po_current is reset to null.
 	 */
 	private PaintObjectPen po_current;
 	
 	/**
-	 * the pen which is given to new PaintObject if created.
+	 * The currently selected pen with which the current PaintObjectPen is 
+	 * painted to the screen. Because of this, pen_current is copied and 
+	 * afterwards given to new created PaintObject.
 	 */
 	private Pen pen_current;
 	
 	/**
-	 * current id which is given to new PaintObject and then increased.
+	 * Current id of following PaintObject. Is given to the PaintObjectPen
+	 * and increased afterwards. If the user removes PaintObjects the 
+	 * id is not decreased; there may occur gaps in id.
 	 */
 	private int currentId;
 	
-	
 	/**
-	 * Empty utility class constructor.
+	 * Empty utility class constructor because the Picture instance has to exist
+	 * in process of initialization of Picture attributes.
 	 */
 	private Picture() { }
 	
 	/**
-	 * creates new instance of list.
+	 * Initialization method of class Picture.
+	 * Calls the reload() method which creates a new instance of sorted 
+	 * PaintObject list and sets up the currentID.
 	 */
 	private void initialize() {
-
 	    reload();
 	}
 	
 	
 	/**
-	 * reload the image.
+	 * The reload method creates a new instance of sorted PaintObject list 
+	 * and sets up the currentID. 
+	 * This method is called in initialization process and if the user
+	 * creates a new page or loads a file that does only consist of images
+	 * (e.g. in png of pdf format). 
 	 */
 	public void reload() {
 
@@ -115,10 +139,13 @@ public final class Picture {
 	
 	
 	/**
-	 * increase id and return the next id.
+	 * Increases id and returns the next id for being able to create 
+	 * PaintObjects. From outside the Picture class without using the create..
+	 * method. Is mainly used for testing purpose.
+	 * 
 	 * @return the next id.
 	 */
-	public synchronized int getIncreaseCID(){
+	public synchronized int getIncreaseCID() {
 		currentId ++;
 		return currentId -1;
 	}
@@ -182,7 +209,6 @@ public final class Picture {
             //set uncommitted changes.
             Status.setUncommittedChanges(true);
         }
-        
     }
     
     /**
@@ -216,7 +242,6 @@ public final class Picture {
             //set uncommitted changes.
             Status.setUncommittedChanges(true);
         }
-        
     }
 
     /**

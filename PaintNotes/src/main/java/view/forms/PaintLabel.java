@@ -260,7 +260,7 @@ public class PaintLabel extends MLabel {
      * @param _x the new x coordinate which is saved
      * @param _y the new y coordinate which is saved
      */
-    @Override public final void setLocation(final int _x, final int _y) {
+    @Override public final synchronized void setLocation(final int _x, final int _y) {
         
         //update the JPanel location because the ScrollPane fetches information
         //out of that panel

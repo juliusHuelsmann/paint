@@ -3454,6 +3454,10 @@ class CheckEnvironment {
 	p_mixedLT2BR, p_mixedBR2LT, 
 	p_mixedLB2RT, p_mixedRT2LB;
 	
+	
+	/**
+	 * The constructor.
+	 */
 	public CheckEnvironment() {
 
 

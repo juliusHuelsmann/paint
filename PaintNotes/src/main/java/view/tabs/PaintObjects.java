@@ -335,8 +335,15 @@ public final class PaintObjects extends Tab implements Observer {
 	        break;
 	    case ID_REMOVE_ITEM_SELECTED:
 
-	    	System.out.println(getClass() + "update remove selected " 
-	    			+  ((PictureOverview) _obs).getCurrentPO().getElementId());
+	    	if (((PictureOverview) _obs).getCurrentPO() == null) {
+
+		    	System.out.println(getClass() 
+		    			+ "update remove selected id null, group selected?");
+	    	} else {
+		    	System.out.println(getClass() + "update remove selected " 
+		    			+  ((PictureOverview) _obs)
+		    			.getCurrentPO().getElementId());
+	    	}
             CPaintObjects.getInstance().updateRemoveSelected(
                     (PictureOverview) _obs);
 	        break;

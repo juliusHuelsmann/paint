@@ -1447,7 +1447,7 @@ public final class ControlPainting implements MouseListener,
      * @param _event
      *            the mouseEvent.
      */
-    private void mr_sel_line_complete(final MouseEvent _event,
+    private synchronized void mr_sel_line_complete(final MouseEvent _event,
             final Rectangle _r_size) {
 
         /*
@@ -1501,13 +1501,14 @@ public final class ControlPainting implements MouseListener,
             //predecessors in sorted list do.
             if (po_current.isInSelectionImage(_r_size)) {
 
-                //move current item from normal list into selected list 
-                Picture.getInstance().insertIntoSelected(po_current);
-                Picture.getInstance().getLs_po_sortedByX().remove();
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
                 PictureOverview.getInstance().remove(po_current);
-                Picture.getInstance().getLs_po_sortedByX().toFirst();
+                
+                //move current item from normal list into selected list 
+                Picture.getInstance().insertIntoSelected(po_current);
+                Picture.getInstance().getLs_po_sortedByX().remove();
+                Picture.getInstance().getLs_po_sortedByX().next();
             } else {
                 // next; in if clause the next is realized by remove()
                 Picture.getInstance().getLs_po_sortedByX().next();

@@ -1485,6 +1485,7 @@ public final class Picture {
 	    while (!ls_poSelected.isEmpty()) {
 	        
 	        PaintObject po = ls_poSelected.getItem();
+	        PictureOverview.getInstance().removeSelected(po);
 	        
 	        if (po instanceof PaintObjectWriting) {
 	            PaintObjectWriting pow = (PaintObjectWriting) po;
@@ -1492,7 +1493,7 @@ public final class Picture {
 	            ls_po_sortedByX.insertSorted(pow, pow.getSnapshotBounds().x);
 	        } else if (po instanceof PaintObjectImage) {
 	            PaintObjectImage poi = (PaintObjectImage) po;
-                PictureOverview.getInstance().add(po);
+                PictureOverview.getInstance().add(poi);
 
                 ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x);
 	        } else if (ls_poSelected.getItem() instanceof POLine) {
@@ -1506,7 +1507,6 @@ public final class Picture {
 	            Status.getLogger().warning("unknown kind of PaintObject"
 	                    + po);
 	        }
-	        PictureOverview.getInstance().removeSelected(po);
 	        ls_poSelected.remove();
 	    }
 	    ls_poSelected = null;

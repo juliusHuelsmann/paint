@@ -140,6 +140,9 @@ public class CSelection implements MouseMotionListener, MouseListener {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void mouseMoved(final MouseEvent _event) {
         
     }
@@ -158,12 +161,24 @@ public class CSelection implements MouseMotionListener, MouseListener {
         return instance;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void mouseClicked(final MouseEvent _event) { }
 
+    /**
+     * {@inheritDoc}
+     */
     public void mouseEntered(final MouseEvent _event) { }
 
+    /**
+     * {@inheritDoc}
+     */
     public void mouseExited(final MouseEvent _event) { }
 
+    /**
+     * {@inheritDoc}
+     */
     public final void mousePressed(final MouseEvent _event) {
         pnt_start = new DPoint(_event.getLocationOnScreen());
         

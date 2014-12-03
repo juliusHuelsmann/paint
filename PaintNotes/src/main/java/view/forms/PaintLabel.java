@@ -1,7 +1,6 @@
 package view.forms;
 
 //import declarations
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -93,6 +92,11 @@ public class PaintLabel extends MLabel {
     }
 
     
+    
+    /**
+     * Refresh the background of painting.
+     *  //TODO: quicker! like in repainting of painted content.
+     */
     private void refreshPaintBackground() {
 
         //paint the painting background (e.g. raster / lines) at the graphical
@@ -260,7 +264,8 @@ public class PaintLabel extends MLabel {
      * @param _x the new x coordinate which is saved
      * @param _y the new y coordinate which is saved
      */
-    @Override public final synchronized void setLocation(final int _x, final int _y) {
+    @Override public final synchronized void setLocation(
+    		final int _x, final int _y) {
         
         //update the JPanel location because the ScrollPane fetches information
         //out of that panel

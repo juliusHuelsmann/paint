@@ -170,6 +170,8 @@ public abstract class PaintObject implements Serializable {
      * Separates the PaintObject; thus there are parts that are inside the
      * given rectangle and ones that are outside.
      * @param _r the rectangle
+     * @param _xShift the shift coordinate
+     * @param _yShift the shift coordinate
      * @return the PaintObject array [0][x] outside, [1] [x] inside.s
      */
     public abstract PaintObject[][] separate(byte[][] _r, int _xShift, 

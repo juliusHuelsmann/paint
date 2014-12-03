@@ -477,8 +477,23 @@ public final class CPaintStatus implements MouseListener {
 	}
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void mouseClicked(final MouseEvent _event) { }
+
+    /**
+     * {@inheritDoc}
+     */
     public void mouseEntered(final MouseEvent _event) { }
+
+    /**
+     * {@inheritDoc}
+     */
     public void mouseExited(final MouseEvent _event) { }
+
+    /**
+     * {@inheritDoc}
+     */
     public void mousePressed(final MouseEvent _event) { }
 }

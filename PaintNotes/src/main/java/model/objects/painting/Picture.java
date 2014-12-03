@@ -146,7 +146,7 @@ public final class Picture {
 	 * @return the next id.
 	 */
 	public synchronized int getIncreaseCID() {
-		currentId ++;
+		currentId++;
 		return currentId -1;
 	}
 
@@ -1367,10 +1367,12 @@ public final class Picture {
     	} else {
     		 px = (int) (CSelection.getInstance().getPnt_start()
     	                .getX()
-    	                - Page.getInstance().getJlbl_painting().getLocation().getX());
+    	                - Page.getInstance().getJlbl_painting()
+    	                .getLocation().getX());
     		 py = (int) (CSelection.getInstance().getPnt_start()
     				 .getY()
-    				 - Page.getInstance().getJlbl_painting().getLocation().getY());
+    				 - Page.getInstance().getJlbl_painting()
+    				 .getLocation().getY());
 
     	}
                

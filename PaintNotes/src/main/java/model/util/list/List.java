@@ -417,13 +417,18 @@ public class List<Type> implements Serializable {
     }
     
     
+    
+    /**
+     * List to array method.
+     * @return the array from list.
+     */
     public final synchronized DPoint[] toArray() {
     	int length = 0;
     	toFirst();
-    	while(!isBehind()){
+    	while (!isBehind()) {
     		if (getItem() instanceof DPoint) {
 
-        		length ++;
+        		length++;
     		}
     		next();
     	}
@@ -431,7 +436,7 @@ public class List<Type> implements Serializable {
     	DPoint[] ret = new DPoint[length];
     	toFirst();
     	int i = 0;
-    	while(!isBehind()){
+    	while (!isBehind()) {
 
     		if (getItem() instanceof DPoint) {
     			ret [i] = (DPoint) getItem();

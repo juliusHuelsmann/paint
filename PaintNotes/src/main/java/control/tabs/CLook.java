@@ -29,7 +29,10 @@ public final class CLook implements ActionListener {
      */
     private static CLook instance;
     
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public void actionPerformed(final ActionEvent _event) {
 
         int backgroundID;

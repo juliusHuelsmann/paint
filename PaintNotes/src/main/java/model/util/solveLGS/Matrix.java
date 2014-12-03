@@ -301,7 +301,7 @@ public class Matrix {
 	 * @return the best function
 	 */
 	@SuppressWarnings("null")
-    public final double[] calculateBestFunction(final List <Point> _ls, 
+    public final double[] calculateBestFunction(final List<Point> _ls, 
 	        final Rectangle _rect) {
 		Matrix[] matrizen = null;
 
@@ -328,7 +328,7 @@ public class Matrix {
 	 * @return the value for the abweichung
 	 */
 	private static double abweichungswertBestimmen(
-	        final double[] _funct, final List <Point> _lsPointsOnFunct) {
+	        final double[] _funct, final List<Point> _lsPointsOnFunct) {
 		return 0;
 		
 	}

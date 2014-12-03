@@ -1289,6 +1289,7 @@ public final class ControlPainting implements MouseListener,
      * The event which is performed after performed a mouseReleased with id
      * selection line.
      * 
+     * @param _ldp the paintObjectWriting of the selection.
      * @param _event
      *            the mouseEvent.
      */

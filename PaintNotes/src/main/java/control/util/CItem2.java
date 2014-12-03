@@ -34,6 +34,9 @@ public final class CItem2 implements MouseListener {
     private CItem2() { }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void mouseClicked(final MouseEvent _event) {
         if (_event.getSource() instanceof Item2) {
             Item2 i2 = (Item2) _event.getSource();
@@ -42,19 +45,31 @@ public final class CItem2 implements MouseListener {
             Insert.getInstance().getTb_selected().setText(i2.getTitle());
         }
     }
+    /**
+     * {@inheritDoc}
+     */
     public void mousePressed(final MouseEvent _event) {
         if (_event.getSource() instanceof Item2) {
             Item2 i2 = (Item2) _event.getSource();
             i2.setBorder(BorderFactory.createLineBorder(clr_pressed));
         }
     }
+    /**
+     * {@inheritDoc}
+     */
     public void mouseReleased(final MouseEvent _event) { }
+    /**
+     * {@inheritDoc}
+     */
     public void mouseEntered(final MouseEvent _event) {
         if (_event.getSource() instanceof Item2) {
             Item2 i2 = (Item2) _event.getSource();
             i2.setBorder(BorderFactory.createLineBorder(clr_mouseOver));
         }
     }
+    /**
+     * {@inheritDoc}
+     */
     public void mouseExited(final MouseEvent _event) { 
         if (_event.getSource() instanceof Item2) {
             Item2 i2 = (Item2) _event.getSource();

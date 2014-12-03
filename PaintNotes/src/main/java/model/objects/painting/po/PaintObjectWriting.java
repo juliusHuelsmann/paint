@@ -474,7 +474,7 @@ public class PaintObjectWriting extends PaintObjectPen {
             final Rectangle _r) {
 
         //initialize lists and go to the beginning of the point list.
-        List <PaintObjectWriting> 
+        List<PaintObjectWriting> 
         	ls_pow_outside = new List<PaintObjectWriting>(),
         	ls_pow_inside = new List<PaintObjectWriting>();
         
@@ -630,10 +630,11 @@ public class PaintObjectWriting extends PaintObjectPen {
      * {@inheritDoc}
      */
     @Override
-    public PaintObject[][] separate(byte[][] _r, int _xShift, int _yShift) {
+    public PaintObject[][] separate(
+    		final byte[][] _r, final int _xShift, final int _yShift) {
 
         //initialize lists and go to the beginning of the point list.
-        List <PaintObjectWriting> 
+        List<PaintObjectWriting> 
         ls_pow_outside = new List<PaintObjectWriting>(),
         ls_pow_inside = new List<PaintObjectWriting>();
         ls_point.toFirst();
@@ -838,11 +839,13 @@ public class PaintObjectWriting extends PaintObjectPen {
                 //      |	 *	|
                 //		|_______*
                 //					2
-                if (p2 != null && p1.getX() == p2.getX() && p1.getY() == p2.getY()){
+                if (p2 != null && p1.getX() == p2.getX() 
+                		&& p1.getY() == p2.getY()) {
                 	ls.next();
                 	DPoint p3 = ls.getItem();
-                	if (p3 != null)
+                	if (p3 != null) {
                 		p2 = p3;
+                	}
                 }
 //                System.out.println(p2.getX() + "\t"+ p2.getY());
 //                System.out.println(p1.getX() + "\t"+ p1.getY());
@@ -852,7 +855,10 @@ public class PaintObjectWriting extends PaintObjectPen {
                 }
             }
         } else {
-//            System.out.println("elz" + ls.isEmpty() + ".." + ls.getItem());
+        	if (Status.isDebug()) {
+              System.out.println("elz" + getClass()
+            		  + ls.isEmpty() + ".." + ls.getItem());
+        	}
         }
         return null;
     }
@@ -1110,7 +1116,7 @@ public class PaintObjectWriting extends PaintObjectPen {
             
 //        	int signum = -1;
         	
-            if ( ls.getItemSortionIndex() <= 0 
+            if (ls.getItemSortionIndex() <= 0 
                     ||  ls.getItemSortionIndex() > 1
                     || ((int) Math.abs(ls.getItem().getX() - _p.getX()) <= 1 
                     && (int) Math.abs(ls.getItem().getY() - _p.getY()) <= 1)) {

@@ -185,7 +185,7 @@ public final class CPaintObjects implements ActionListener {
                 	//selected items should be removed too shouldn't they?
                     PaintObject po = 
                             (PaintObject) i1b.getAdditionalInformation();
-                    if (po.equals(_pov.getCurrentPO())){
+                    if (po.equals(_pov.getCurrentPO())) {
                     
                     	//TODO: check whether this is okay / necessary
                     	if (!i1b.isActivated()) {

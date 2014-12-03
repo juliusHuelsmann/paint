@@ -197,7 +197,10 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
     }
 
 
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public void mouseClicked(final MouseEvent _event) {
 
         
@@ -209,7 +212,10 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
     }
 
 
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public void mouseEntered(final MouseEvent _event) {
 
         // source: exit button at the top of the window
@@ -223,7 +229,10 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
     }
 
 
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public void mouseExited(final MouseEvent _event) {
 
         // source: exit button at the top of the window
@@ -237,7 +246,10 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
     }
 
 
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public void mousePressed(final MouseEvent _event) {
 
 
@@ -252,6 +264,9 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void mouseReleased(final MouseEvent _event) {
     }
 
@@ -263,6 +278,9 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
      */
     private String oldWidth, oldHeight;
 
+    /**
+     * {@inheritDoc}
+     */
     public void keyPressed(final KeyEvent _event) {
         int checkWidth = checkText(
                 New.getInstance().getJtf_customWidth().getText());
@@ -280,6 +298,9 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
 
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void keyReleased(final KeyEvent _event) {
 
         int checkWidth = checkText(
@@ -305,6 +326,9 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
 
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void keyTyped(final KeyEvent _event) {
 
     }

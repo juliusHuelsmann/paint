@@ -32,6 +32,9 @@ public final class CItem implements MouseListener {
      */
 	private CItem() { }
 
+    /**
+     * {@inheritDoc}
+     */
 	public void mouseClicked(final MouseEvent _event) {
 
         //fetch current source of action
@@ -109,11 +112,23 @@ public final class CItem implements MouseListener {
 		return instance;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
      public void mouseEntered(final MouseEvent _event) { }
 
+     /**
+      * {@inheritDoc}
+      */
     public void mouseExited(final MouseEvent _event) { }
 
+    /**
+     * {@inheritDoc}
+     */
     public void mousePressed(final MouseEvent _event) { }
 
+    /**
+     * {@inheritDoc}
+     */
     public void mouseReleased(final MouseEvent _event) { }
 }

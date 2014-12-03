@@ -105,7 +105,10 @@ public final class CPaintSelection implements MouseListener, ActionListener {
 
 
 
-	
+
+    /**
+     * {@inheritDoc}
+     */
 	public void mouseClicked(final MouseEvent _event) {
 
 		if (_event.getSource().equals(jcb_whole)) {
@@ -151,15 +154,30 @@ public final class CPaintSelection implements MouseListener, ActionListener {
 	}
 
 
+    /**
+     * {@inheritDoc}
+     */
 	public void mouseEntered(final MouseEvent _event) { }
 
 
+    /**
+     * {@inheritDoc}
+     */
 	public void mouseExited(final MouseEvent _event) { }
 
+    /**
+     * {@inheritDoc}
+     */
 	public void mousePressed(final MouseEvent _event) { }
 
+    /**
+     * {@inheritDoc}
+     */
 	public void mouseReleased(final MouseEvent _event) { }
 
+    /**
+     * {@inheritDoc}
+     */
     public void actionPerformed(final ActionEvent _event) {
         if (_event.getSource().equals(tb_curve.getActionCause())) {
 

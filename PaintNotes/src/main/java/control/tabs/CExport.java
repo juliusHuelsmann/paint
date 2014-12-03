@@ -28,7 +28,10 @@ public final class CExport implements ActionListener {
      */
     private static CExport instance;
     
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public void actionPerformed(final ActionEvent _event) {
 
         int backgroundID;

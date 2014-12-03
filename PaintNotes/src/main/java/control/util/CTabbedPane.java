@@ -58,6 +58,10 @@ public class CTabbedPane implements ActionListener, MouseListener {
         }
     }
 
+    
+    /**
+     * {@inheritDoc}
+     */
     public final void mouseEntered(final MouseEvent _event) {
 
         try {
@@ -85,6 +89,9 @@ public class CTabbedPane implements ActionListener, MouseListener {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public final void mouseExited(final MouseEvent _event) {
 
         try {

@@ -420,6 +420,9 @@ implements MouseMotionListener, MouseListener, KeyListener {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public final void keyPressed(final KeyEvent _event) {
 
         keyPressed = true;

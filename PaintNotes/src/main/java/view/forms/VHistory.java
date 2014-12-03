@@ -62,6 +62,12 @@ public final class VHistory extends JFrame implements Observer {
         
     }
 
+    
+    /**
+     * Update The history.
+     * @param _arg0 the observable
+     * @param _arg1 the argument passed by observable.
+     */
     public void update(final Observable _arg0, final Object _arg1) {
         
         String c = (String) _arg1;

@@ -87,7 +87,7 @@ public final class ReadSettings {
 			//read line
 			line = br.readLine();
 		}
-		while(!line.equals("workspace location") && line != null);
+		while (!line.equals("workspace location") && line != null);
 		
 		//read line
 		line = br.readLine();

@@ -184,7 +184,7 @@ public abstract class Pen implements Serializable {
 			tempId_operation = Constants.PEN_ID_LINES;
 		}
 		
-		switch(tempId_operation) {
+		switch (tempId_operation) {
 		case Constants.PEN_ID_POINT:
 		    operationPoint(ls_point, _bi, _final, _p_start, _g);
 			
@@ -253,7 +253,7 @@ public abstract class Pen implements Serializable {
         DPoint pnt_previous = new DPoint(ls_point.getItem());
         ls_point.next();
         
-        switch(id_operation) {
+        switch (id_operation) {
         case Constants.PEN_ID_POINT:
             
             paintPoint(new DPoint(ls_point.getItem()), 

@@ -140,14 +140,14 @@ public final class Picture {
 	
 	/**
 	 * Increases id and returns the next id for being able to create 
-	 * PaintObjects. From outside the Picture class without using the create..
+	 * PaintObjects. From outside the Picture class without using the create.
 	 * method. Is mainly used for testing purpose.
 	 * 
 	 * @return the next id.
 	 */
 	public synchronized int getIncreaseCID() {
 		currentId++;
-		return currentId -1;
+		return currentId - 1;
 	}
 
 	/**

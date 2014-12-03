@@ -225,7 +225,7 @@ public class VTabbedPane extends MPanel {
                     Calendar cal = Calendar.getInstance();
                     
                     String wochentag = "";
-                    switch(cal.get(Calendar.DAY_OF_WEEK)) {
+                    switch (cal.get(Calendar.DAY_OF_WEEK)) {
                     case 0:
                         wochentag = "Samstag";
                         break;

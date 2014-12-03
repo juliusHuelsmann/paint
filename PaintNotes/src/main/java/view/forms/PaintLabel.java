@@ -344,25 +344,25 @@ public class PaintLabel extends MLabel {
                 	 */
                 	
                 	//Refresh both in direction of width and of height.
-                	//In the simplest way of doing this, there may be an area 
+                    //In the simplest way of doing this, there may be an area 
                 	//which is painted twice (depicted with '!'). 
-                	//For further optimization of displaying speed this should 
-                	//be eliminated by the way of refreshing done beneath the 
+                    //For further optimization of displaying speed this should 
+                    //be eliminated by the way of refreshing done beneath the 
                 	//picture. Picture:
-                	//							shiftedStartY == 0
+                	//shiftedStartY == 0
                 	//		____________		____________
-                	//		| ! W W W W	|		| H	x      	|
-                	// 		| H	x x x x |		| H	x       |
-                	// 		| H	x      	|		| H	x     	|
-                	// 		| H	x      	|		| H	x     	|
-                	// 		| H	x       |		| H	x x x x	|
+                    //		| ! W W W W	|       | H	x      	|
+                    // 		| H	x x x x |       | H	x       |
+                    // 		| H	x      	|       | H	x     	|
+                    // 		| H	x      	|       | H	x     	|
+                    // 		| H	x       |       | H	x x x x	|
                 	//		|_H_x_______|		|_!_W_W_W_W_|
                 	//		____________		____________
-                	//		| W	W W W! !|		|     x	H H	|
-                	// 		| x x x x H	|		|     x	H H	|
-                	// 		|  	   	x H	|		|     x	H H	|
-                	// 		|      	x H	|		|     x	H H	|
-                	// 		|       x H	|		| x x x	H H	|
+                    //	    | W	W W W! !|		|     x	H H	|
+                    // 	    | x x x x H	|		|     x	H H	|
+                    // 	    |  	   	x H	|       |     x	H H	|
+                    // 	    |      	x H	|       |     x	H H	|
+                    // 	    |       x H	|		| x x x	H H	|
                 	//		|_______x_H_|		|_W_W_W_!_!_|
                 	
                 	
@@ -594,6 +594,4 @@ public class PaintLabel extends MLabel {
     public final void setBi(final BufferedImage _bi) {
         this.bi = _bi;
     }
-
-    
 }

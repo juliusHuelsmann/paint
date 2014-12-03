@@ -1,8 +1,9 @@
-package model.objects.painting.po;
+package start;
 
 import java.awt.Color;
 import java.awt.Rectangle;
 
+import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.normal.Pencil;
 import model.util.DPoint;
 

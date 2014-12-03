@@ -21,7 +21,8 @@ import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
 /**
- * JPanel which shows the list of PaintObjects and details about them.
+ * JPanel which shows the list of existing non-selected PaintObjects and 
+ * details about them. Is created mainly for testing purpose.
  * 
  * @author Julius Huelsmann
  * @version %I%, %U%
@@ -57,7 +58,7 @@ public final class PaintObjects extends Tab implements Observer {
     /**
      * ID for adding one item to selected list after it has been removed from
      * normal list. Thus is is re included to the PaintObjects view (this)
-     * until it loses focus and may be readded to the normal list of items.
+     * until it loses focus and may be re-added to the normal list of items.
      */
     public static final int ID_ADD_ITEM_SELECTED = 3;
     
@@ -221,7 +222,7 @@ public final class PaintObjects extends Tab implements Observer {
 	 */
 	@Override public void setSize(final int _width, final int _height) {
 
-        final int htf = 200;
+        final int htf = 150;
 	    
 		final int heightJLabel2 = 20;
 		final int heightJLabel = 10;
@@ -242,7 +243,7 @@ public final class PaintObjects extends Tab implements Observer {
         jlbl_title.setBounds(
                 distance, 
                 distance, 
-                _width / amountOfItems, 
+                _width, 
                 heightJLabel2);
 
         jpnl_owner.setLocation(

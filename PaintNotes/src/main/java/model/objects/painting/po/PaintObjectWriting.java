@@ -254,7 +254,7 @@ public class PaintObjectWriting extends PaintObjectPen {
                         Status.getImageSize().width, 
                         Status.getImageSize().height, 
                         BufferedImage.TYPE_INT_ARGB), 
-                        false, null, 
+                        true, null, 
                         Page.getInstance().getJlbl_painting().getLocation().x,
                         Page.getInstance().getJlbl_painting().getLocation().y)
                         .getSubimage(
@@ -270,7 +270,7 @@ public class PaintObjectWriting extends PaintObjectPen {
                     Status.getImageSize().width, 
                     Status.getImageSize().height, 
                     BufferedImage.TYPE_INT_ARGB), 
-                    false, null, 
+                    true, null, 
                     Page.getInstance().getJlbl_painting().getLocation().x,
                     Page.getInstance().getJlbl_painting().getLocation().y)
                     .getSubimage(

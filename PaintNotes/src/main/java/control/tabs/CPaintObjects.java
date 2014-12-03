@@ -53,17 +53,14 @@ public final class CPaintObjects implements ActionListener {
     
     
     /**
-     * 
      * ActionListener deals with the action performed by the buttons containing
      * a PaintObject of the PaintObjects' view.
      * @param _event the event that is thrown.
      */
     public void actionPerformed(final ActionEvent _event) {
-
         
         Component[] c 
         = PaintObjects.getInstance().getJpnl_items().getComponents();
-
         
         
         for (int i = 0; i < c.length; i++) {
@@ -115,7 +112,7 @@ public final class CPaintObjects implements ActionListener {
     
     
     /**
-     * add a new PaintObject to the graphical user interface.
+     * Add a new PaintObject to the graphical user interface.
      * @param _pov the PictureOverview
      * @return the inserted Item1Button for being able to edit it afterwards.
      */
@@ -133,6 +130,7 @@ public final class CPaintObjects implements ActionListener {
         jbtn_new.setAdditionalInformation(_pov.getCurrentPO());
         jbtn_new.setImageWidth(itemSize);
         jbtn_new.setImageHeight(itemSize);
+        jbtn_new.setBackground(Color.pink);
         jbtn_new.setBorder(true);
         jbtn_new.addActionListener(new CPaintObjects());
         jbtn_new.setText("ID " + _pov.getCurrentPO().getElementId());
@@ -175,7 +173,6 @@ public final class CPaintObjects implements ActionListener {
 
                         rec_old.y -= rec_old.getHeight();
                     }
-                    
                 }
             }
         }

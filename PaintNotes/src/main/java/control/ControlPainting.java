@@ -49,7 +49,7 @@ import view.forms.Tabs;
 import view.tabs.Paint;
 
 /**
- * Controller class.
+ * Controller class dealing with main paint stuff.
  * 
  * @author Julius Huelsmann
  * @version %I%, %U%
@@ -63,13 +63,13 @@ public final class ControlPainting implements MouseListener,
     private static ControlPainting instance = null;
 
     /**
-     * boolean which indicates, whether the necessary instances of View and
+     * Boolean which indicates, whether the necessary instances of View and
      * Picture have been set by now.
      */
     private boolean startPerform;
 
     /**
-     * start point mouseDragged and the speed of movement for continuous 
+     * Start point mouseDragged and the speed of movement for continuous 
      * movement.
      */
     //TODO: quadratic? movement function which interpolates a time interval
@@ -92,7 +92,7 @@ public final class ControlPainting implements MouseListener,
     private ControlPainting() { }
 
     /**
-     * pseudo-constructor method. Used because of getInstance
+     * pseudo-constructor method. Used because of getInstance.
      */
     private void start() {
 
@@ -144,7 +144,6 @@ public final class ControlPainting implements MouseListener,
 
             Status.getLogger().info("initialization process completed.\n\n"
                     + "-------------------------------------------------\n");
-
         } else {
 
             // if not installed and no installation done
@@ -153,7 +152,7 @@ public final class ControlPainting implements MouseListener,
     }
 
     /**
-     * enable or disable listeners.
+     * Enable or disable listeners.
      * 
      * @param _what
      *            whether enabled or disabled.
@@ -162,6 +161,9 @@ public final class ControlPainting implements MouseListener,
         startPerform = _what;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void actionPerformed(final ActionEvent _event) {
 
         // if the ActionListener is not ready to listen to events because

@@ -6,12 +6,15 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
+
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
+import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
 import control.util.VisualTextButton;
@@ -181,7 +184,7 @@ public class Item1Button extends MPanel {
 
 	        jlbl_color.setIcon(new ImageIcon(Utils.resizeImage(
 	                jlbl_color.getWidth(), jlbl_color.getHeight(), _i)));
-		}
+		} 
 	}
 
 	/**
@@ -346,6 +349,13 @@ public class Item1Button extends MPanel {
      * @param _imageWidth the imageWidth to set
      */
     public final void setImageWidth(final int _imageWidth) {
+    	if (jlbl_color != null) {
+
+        	jlbl_color.setSize(_imageWidth, jlbl_color.getHeight());	
+    	} else {
+    		Status.getLogger().warning("element does not exist which is "
+    				+ "supposed to exist.");
+    	}
         this.imageWidth = _imageWidth;
     }
 
@@ -360,6 +370,13 @@ public class Item1Button extends MPanel {
      * @param _imageHeight the imageHeight to set
      */
     public final void setImageHeight(final int _imageHeight) {
+
+    if (jlbl_color != null) {
+    	jlbl_color.setSize(jlbl_color.getWidth(), _imageHeight);	
+	} else {
+		Status.getLogger().warning("element does not exist which is "
+				+ "supposed to exist.");
+	}
         this.imageHeight = _imageHeight;
     }
 

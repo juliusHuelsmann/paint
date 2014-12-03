@@ -316,16 +316,27 @@ public final class PaintObjects extends Tab implements Observer {
 	    switch (Integer.parseInt(_obj + "")) {
 	    
 	    case ID_ADD_ITEM:
+	    	System.out.println(getClass() + "update add " 
+	    			+  ((PictureOverview) _obs).getCurrentPO().getElementId());
             CPaintObjects.getInstance().updateAdd((PictureOverview) _obs);
 	        break;
 	    case ID_REMOVE_ITEM:
+	    	System.out.println(getClass() + "update remove " 
+	    			+  ((PictureOverview) _obs).getCurrentPO().getElementId());
             CPaintObjects.getInstance().updateRemove((PictureOverview) _obs);
 	        break;
 	    case ID_ADD_ITEM_SELECTED:
+
+	    	//TODO:
+	    	System.out.println(getClass() + "update add selected " 
+	    			+  ((PictureOverview) _obs).getCurrentPO().getElementId());
             CPaintObjects.getInstance().updateAddSelected(
                     (PictureOverview) _obs);
 	        break;
 	    case ID_REMOVE_ITEM_SELECTED:
+
+	    	System.out.println(getClass() + "update remove selected " 
+	    			+  ((PictureOverview) _obs).getCurrentPO().getElementId());
             CPaintObjects.getInstance().updateRemoveSelected(
                     (PictureOverview) _obs);
 	        break;

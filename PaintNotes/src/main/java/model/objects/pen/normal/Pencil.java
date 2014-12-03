@@ -113,7 +113,6 @@ public class Pencil extends Pen {
                                 && y + j >= 0 && y + j < _bi.getHeight()) {
 
                             _bi.setRGB(x + i, y + j, rbg);
-                            System.out.println("ja das male ich.");
                         }
                     }
                 }

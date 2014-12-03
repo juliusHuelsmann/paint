@@ -116,7 +116,7 @@ public final class CPaintObjects implements ActionListener {
      * @param _pov the PictureOverview
      * @return the inserted Item1Button for being able to edit it afterwards.
      */
-    public Item1Button updateAdd(final PictureOverview _pov) {
+    public synchronized Item1Button updateAdd(final PictureOverview _pov) {
 
         //the size of each item
         final int itemSize = 40;
@@ -146,32 +146,76 @@ public final class CPaintObjects implements ActionListener {
     }
     
 
+    //TODO: does not really work because one item is overridden and
+    //there is one gap after selecting one item by selection tool.
     /**
-     * remove a PaintObject from the graphical user interface.
-     * @param _pov the PictureOverview
+     * Remove a PaintObject from the graphical user interface and eliminate
+     * gaps between items that may occur because of removal.
+     * 
+     *
+     * 
+     * @param _pov  the PictureOverview that contains the item which is going
+     *				to be deleted in current item.
      */
-    public void updateRemove(final PictureOverview _pov) {
+    public synchronized void updateRemove(final PictureOverview _pov) {
 
         Component [] comp = PaintObjects.getInstance().getJpnl_items()
                 .getComponents();
+        int removalY = -1;
+        
         for (int i = 0; i < comp.length; i++) {
+        	
+        	//if the current component is instance of the correct class.
             if (comp[i] instanceof Item1Button) {
                 
+
+            	//fetch the button as instance of Item1Button for better 
+            	//readability and then check whether there are additional
+            	//information stored in it (in updateAdd (also called by 
+            	//update add selected) the current 
+            	//paintObject is stored there).
                 Item1Button i1b = (Item1Button) comp[i];
                 if (i1b.getAdditionalInformation() != null
                         && i1b.getAdditionalInformation() 
                         instanceof PaintObject) {
                     
-                    
+                    //fetch the paintObject and check whether it is the
+                	//one to be removed.
+                	//TODO: why not delete if it's activated? 
+                	//selected items should be removed too shouldn't they?
                     PaintObject po = 
                             (PaintObject) i1b.getAdditionalInformation();
+                    if (po.equals(_pov.getCurrentPO())){
                     
-                    if (po.equals(_pov.getCurrentPO())
-                            && !i1b.isActivated()) {
-                        PaintObjects.getInstance().getJpnl_items()
-                        .remove(comp[i]);
+                    	//TODO: check whether this is okay / necessary
+                    	if (!i1b.isActivated()) {
 
-                        rec_old.y -= rec_old.getHeight();
+
+                        	//save the removal y coordinate. if it equals -1 set
+                        	//it to be zero (i don't think that may occur but 
+                        	//who knows ;) )
+                            removalY = i1b.getY();
+                            if (removalY == -1) {
+                            	removalY = 0;
+                            }
+                            
+                            //decrease the rectangle y location for further
+                            //adding
+                            //TODO: does not work (maybe not used)
+                            rec_old.y = rec_old.y - i1b.getHeight();
+
+                            //remove and reset rectangle height.
+                            PaintObjects.getInstance().getJpnl_items()
+                            .remove(comp[i]);
+
+                    	} 
+                    	
+                    	
+                    } else if (removalY != -1) {
+                    	
+                    	//reset location and then update removalY.
+                    	i1b.setLocation(i1b.getX(), removalY);
+                    	removalY = i1b.getY() + i1b.getHeight();
                     }
                 }
             }
@@ -184,7 +228,7 @@ public final class CPaintObjects implements ActionListener {
      * @param _pov the PictureOverview serving (temporarily) as container
      * of information on the current instance of PaintObject
      */
-    public void updateAddSelected(final PictureOverview _pov) {
+    public synchronized void updateAddSelected(final PictureOverview _pov) {
         Item1Button i1b = updateAdd(_pov);
         i1b.setActivated(true);
         showPaintObjectInformation(_pov.getCurrentPO());

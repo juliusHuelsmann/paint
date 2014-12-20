@@ -6,6 +6,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import model.settings.Status;
+
 
 /**
  * Shows BufferedImage for testing purpose.
@@ -66,7 +68,7 @@ public final class BufferedViewer extends JFrame {
      */
     public static void show(final BufferedImage _bi) {
 
-    	System.out.println("TEST" + "BufferdViewer.show");
+    	Status.getLogger().warning("TEST" + "BufferdViewer.show");
         getInstance().setSize(_bi.getWidth(), _bi.getHeight());
         getInstance().jlbl_painting.setSize(_bi.getWidth(), _bi.getHeight());
         getInstance().jlbl_painting.setIcon(new ImageIcon(_bi));

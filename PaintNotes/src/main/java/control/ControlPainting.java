@@ -16,10 +16,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
@@ -38,6 +40,7 @@ import model.settings.Settings;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.DPoint;
+import model.util.Util;
 import model.util.list.List;
 import model.util.paint.MyClipboard;
 import model.util.paint.Utils;
@@ -175,18 +178,41 @@ public final class ControlPainting implements MouseListener,
         if (_event.getSource().equals(
                 Paint.getInstance().getTb_turnMirror().getActionCause())) {
 
-            if (Status.isNormalRotation()) {
 
-                View.getInstance().turn();
-                Status.setNormalRotation(false);
+        	String commandNormal = "xrandr -o normal";
+        	String result = Util.executeCommandLinux(commandNormal);
+        	if (result.startsWith(Util.EXECUTION_SUCCESS)){
+        		
+        		Status.getLogger().info("Rotation normal success");
+        	} else if (result.startsWith(Util.EXECUTION_FAILED)) {
+        		
+        		if (Status.isNormalRotation()) {
+
+            		
+            		Status.getLogger().warning("beta rotation");
+                    View.getInstance().turn();
+                    Status.setNormalRotation(false);
+            	}
             }
         } else if (_event.getSource().equals(
                 Paint.getInstance().getTb_turnNormal().getActionCause())) {
 
-            if (!Status.isNormalRotation()) {
 
-                View.getInstance().turn();
-                Status.setNormalRotation(true);
+        	String commandInverted = "xrandr -o inverted";
+        	String result = Util.executeCommandLinux(commandInverted);
+        	if (result.startsWith(Util.EXECUTION_SUCCESS)){
+        		
+        		Status.getLogger().info("Rotation normal success");
+        	} else if (result.startsWith(Util.EXECUTION_FAILED)) {
+        		
+        		if (Status.isNormalRotation()) {
+
+            		
+            		Status.getLogger().warning("beta rotation");
+                	
+                    View.getInstance().turn();
+                    Status.setNormalRotation(true);
+            	}
             }
         }
     }

@@ -1,6 +1,8 @@
 package model.util;
 
 import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
@@ -14,6 +16,9 @@ import model.util.list.List;
  */
 public final class Util {
 
+	public static String EXECUTION_SUCCESS = "Success",
+			EXECUTION_FAILED = "Failure";
+	
     
     /**
      * Empty utility class constructor.
@@ -21,6 +26,52 @@ public final class Util {
     private Util() { }
     
 
+    
+    
+    /**
+     * Execute linux command in terminal and return the result.
+     * 
+     * @param _command the command that will be executed.
+     * @return the answer of the linux command
+     */
+    public static String executeCommandLinux(final String _command) {
+    	
+    	
+        Process p;
+        try {
+        	
+        	//execute command
+            p = Runtime.getRuntime().exec(_command);
+            BufferedReader br = new BufferedReader(
+                new InputStreamReader(p.getInputStream()));
+            
+            //fetch answer
+            String answer = "", s;
+            while ((s = br.readLine()) != null) {
+            	answer += s;
+            }
+            p.waitFor();
+            
+            //if normal termination
+            if (p.exitValue() == 0) {
+            	answer = EXECUTION_SUCCESS  + ": " + answer;
+            } else {
+            	answer = EXECUTION_FAILED + ": " + answer;
+            }
+            
+            //destroy execution process and return the result
+            p.destroy();
+        	return answer;
+        	
+        } catch (Exception e) {
+        	
+        	//print stack trace and return the failure message.
+        	e.printStackTrace();
+        	return EXECUTION_FAILED;
+        }
+    }
+    
+    
     
     /**
      * convert list of points into array.

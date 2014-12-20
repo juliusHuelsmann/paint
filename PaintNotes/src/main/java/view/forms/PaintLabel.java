@@ -137,8 +137,6 @@ public class PaintLabel extends MLabel {
     public final void paintZoom(final int _x, final int _y, 
             final int _width, final int _height) {
         
-        BufferedViewer.show(getBi());
-        
         Page.getInstance().getJlbl_border().setBounds(_x, _y, _width, _height);
     }
     

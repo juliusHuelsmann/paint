@@ -421,29 +421,24 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
-
-
                 // add paintObject and point to Picture
                 changePO(_event);
                 break;
 
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
-
                 if (_event.getModifiersEx() == leftMouse) {
-
                     Picture.getInstance().changePaintObject(
                             new DPoint(_event.getX(), _event.getY()));
                     break;
                 }
 
             case Constants.CONTROL_PAINTING_INDEX_ERASE:
-
                 if (_event.getModifiersEx() == leftMouse) {
-
                     System.out.println("not implemented yet" + getClass());
                     //TODO: 
                 }
                 break;
+                
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
 
                 if (_event.getModifiersEx() == leftMouse) {
@@ -509,9 +504,7 @@ public final class ControlPainting implements MouseListener,
                             pnt_movementSpeed = new Point(
                                     -pnt_last.x + _event.getX(), 
                                     -pnt_last.y + _event.getY());
-
                         }
-                        
                     }
                     //Scroll
                     int x = pnt_startLocation.x + _event.getX() - pnt_start.x;
@@ -1267,7 +1260,7 @@ public final class ControlPainting implements MouseListener,
                 Picture.getInstance().getLs_po_sortedByX().remove();
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
-                PictureOverview.getInstance().remove(po_current);
+                 new PictureOverview().remove(po_current);
                 Picture.getInstance().getLs_po_sortedByX().toFirst();
             } else {
                 // next; in if clause the next is realized by remove()
@@ -1367,7 +1360,7 @@ public final class ControlPainting implements MouseListener,
 //                    
 //                    PaintObject [][] separatedPO = 
 //                    Util.mergeDoubleArray(p, p2);
-                    PictureOverview.getInstance().remove(Picture.getInstance()
+                     new PictureOverview().remove(Picture.getInstance()
                             .getLs_po_sortedByX().getItem());
                     Picture.getInstance().getLs_po_sortedByX().remove();
                     
@@ -1397,7 +1390,7 @@ public final class ControlPainting implements MouseListener,
                             separatedPO[0][current].recalculateSnapshotBounds();
                             ls_toInsert.insertBehind(separatedPO[0][current]);
     
-                            PictureOverview.getInstance().add(
+                             new PictureOverview().add(
                                     separatedPO[0][current]);
                         } else {
 
@@ -1504,7 +1497,7 @@ public final class ControlPainting implements MouseListener,
 
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
-                PictureOverview.getInstance().remove(po_current);
+                 new PictureOverview().remove(po_current);
                 
                 //move current item from normal list into selected list 
                 Picture.getInstance().insertIntoSelected(po_current);
@@ -1624,7 +1617,7 @@ public final class ControlPainting implements MouseListener,
 //                    
 //                    PaintObject [][] separatedPO = 
 //                    Util.mergeDoubleArray(p, p2);
-                    PictureOverview.getInstance().remove(Picture.getInstance()
+                     new PictureOverview().remove(Picture.getInstance()
                             .getLs_po_sortedByX().getItem());
                     Picture.getInstance().getLs_po_sortedByX().remove();
                     
@@ -1654,7 +1647,7 @@ public final class ControlPainting implements MouseListener,
                             separatedPO[0][current].recalculateSnapshotBounds();
                             ls_toInsert.insertBehind(separatedPO[0][current]);
     
-                            PictureOverview.getInstance().add(
+                             new PictureOverview().add(
                                     separatedPO[0][current]);
                         } else {
 

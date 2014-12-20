@@ -12,18 +12,13 @@ import view.tabs.PaintObjects;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class PictureOverview extends Observable {
+public class PictureOverview extends Observable {
 
-
-	/**
-	 * the only instance of this class.
-	 */
-	private static PictureOverview instance = null;
 
 	/**
 	 * the current index.
 	 */
-	private int number;
+	private static int number;
 	
 	/**
 	 * the current PaintObject.
@@ -35,7 +30,7 @@ public final class PictureOverview extends Observable {
      * add paintObject.
      * @param _po the paintObject to be added.
      */
-    public synchronized void add(final PaintObject _po) { 
+    public final synchronized void add(final PaintObject _po) { 
         
         //increase number and save current PaintObject
         number++;
@@ -50,7 +45,7 @@ public final class PictureOverview extends Observable {
      * add paintObject.
      * @param _po the paintObject to be added.
      */
-    public synchronized void remove(final PaintObject _po) { 
+    public final synchronized void remove(final PaintObject _po) { 
         
         //increase number and save current PaintObject
         number--;
@@ -65,7 +60,7 @@ public final class PictureOverview extends Observable {
      * add paintObject.
      * @param _po the paintObject to be added.
      */
-    public synchronized void addSelected(final PaintObject _po) { 
+    public final synchronized void addSelected(final PaintObject _po) { 
         
         //increase number and save current PaintObject
         number++;
@@ -80,7 +75,7 @@ public final class PictureOverview extends Observable {
      * add paintObject.
      * @param _po the paintObject to be added.
      */
-    public synchronized void removeSelected(final PaintObject _po) { 
+    public final synchronized void removeSelected(final PaintObject _po) { 
         
         //increase number and save current PaintObject
         number--;
@@ -95,32 +90,15 @@ public final class PictureOverview extends Observable {
 	/**
 	 * Constructor: adds observer.
 	 */
-	private PictureOverview() {
+	public PictureOverview() {
 		super.addObserver(PaintObjects.getInstance());
-	}
-	
-	/**
-	 * this method guarantees that only one instance of this
-	 * class can be created ad runtime.
-	 * 
-	 * @return the only instance of this class.
-	 */
-	public static PictureOverview getInstance() {
-		
-		//if class is not instanced yet instantiate
-		if (instance == null) {
-			instance = new PictureOverview();
-		}
-		
-		//return the only instance of this class.
-		return instance;
 	}
 
 
     /**
      * @return the number
      */
-    public int getNumber() {
+    public final int getNumber() {
         return number;
     }
 
@@ -128,15 +106,15 @@ public final class PictureOverview extends Observable {
     /**
      * @param _number the number to set
      */
-    public void setNumber(final int _number) {
-        this.number = _number;
+    public final void setNumber(final int _number) {
+        PictureOverview.number = _number;
     }
 
 
     /**
      * @return the currentPO
      */
-    public PaintObject getCurrentPO() {
+    public final PaintObject getCurrentPO() {
         return currentPO;
     }
 
@@ -144,7 +122,7 @@ public final class PictureOverview extends Observable {
     /**
      * @param _currentPO the currentPO to set
      */
-    public void setCurrentPO(final PaintObject _currentPO) {
+    public final void setCurrentPO(final PaintObject _currentPO) {
         this.currentPO = _currentPO;
     }
 }

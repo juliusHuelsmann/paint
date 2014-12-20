@@ -302,7 +302,7 @@ public final class PaintObjects extends Tab implements Observer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void update(final Observable _obs, final Object _obj) {
+	public synchronized void update(final Observable _obs, final Object _obj) {
 		
 	    
 	    if (!(_obs instanceof PictureOverview)) {
@@ -352,7 +352,7 @@ public final class PaintObjects extends Tab implements Observer {
             break;
 	        
 	    }
-	    
+	    repaint();
 	}
 	
 	

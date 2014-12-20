@@ -735,7 +735,7 @@ public final class Picture {
 		} else {
 
 	        ls_po_sortedByX.insertSorted(po_current, b.x);
-	        PictureOverview.getInstance().add(po_current);
+	        new PictureOverview().add(po_current);
 	        
 	        //reset current instance of PaintObject
 	        po_current = null;
@@ -1183,7 +1183,8 @@ public final class Picture {
 	        
 	        ls_poSelected.toFirst();
 	        ls_poSelected.insertBehind(_po);   
-	        PictureOverview.getInstance().addSelected(_po);
+	        new PictureOverview().addSelected(_po);
+	        
 	    }
 	}
 	
@@ -1487,22 +1488,28 @@ public final class Picture {
 	    while (!ls_poSelected.isEmpty()) {
 	        
 	        PaintObject po = ls_poSelected.getItem();
-	        PictureOverview.getInstance().removeSelected(po);
+
+        	if (po == null) {
+        		Status.getLogger().warning("error: empty list item");
+        	}
+        	
+	        new PictureOverview().removeSelected(po);
+	        
 	        
 	        if (po instanceof PaintObjectWriting) {
 	            PaintObjectWriting pow = (PaintObjectWriting) po;
-                PictureOverview.getInstance().add(pow);
+                new PictureOverview().add(pow);
 	            ls_po_sortedByX.insertSorted(pow, pow.getSnapshotBounds().x);
 	        } else if (po instanceof PaintObjectImage) {
 	            PaintObjectImage poi = (PaintObjectImage) po;
-                PictureOverview.getInstance().add(poi);
+                new PictureOverview().add(poi);
 
                 ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x);
 	        } else if (ls_poSelected.getItem() instanceof POLine) {
                 
 	            POLine p = (POLine) ls_poSelected.getItem();
                 p.recalculateSnapshotBounds();
-	            PictureOverview.getInstance().add(p);
+	            new PictureOverview().add(p);
 
                 ls_po_sortedByX.insertSorted(p, p.getSnapshotBounds().x);
             } else if (po != null) {
@@ -1510,6 +1517,7 @@ public final class Picture {
 	                    + po);
 	        }
 	        ls_poSelected.remove();
+	        ls_poSelected.toFirst();
 	    }
 	    ls_poSelected = null;
 	}
@@ -1525,9 +1533,15 @@ public final class Picture {
         ls_poSelected.toFirst();
         while (!ls_poSelected.isEmpty()) {
             
-            PictureOverview.getInstance().removeSelected(
+        	if (ls_poSelected.getItem() == null) {
+        		Status.getLogger().warning("error: empty list item");
+        	}
+        	
+            new PictureOverview().removeSelected(
                     ls_poSelected.getItem());
             ls_poSelected.remove();
+            
+            ls_poSelected.toFirst();
         }
         //deactivates to change operations of selected items
         CTabSelection.deactivateOp();

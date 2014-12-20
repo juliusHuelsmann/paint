@@ -16,14 +16,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
-import org.w3c.dom.events.Event;
-
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
@@ -50,7 +46,6 @@ import view.View;
 import view.forms.Message;
 import view.forms.New;
 import view.forms.Page;
-import view.forms.PaintLabel;
 import view.forms.Tabs;
 import view.tabs.Paint;
 
@@ -1138,32 +1133,46 @@ public final class ControlPainting implements MouseListener,
                 / Status.getImageShowSize().width 
                 < Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
                         ViewSettings.MAX_ZOOM_OUT)) {
+        	
             int newWidth = Status.getImageShowSize().width
                     / ViewSettings.ZOOM_MULITPLICATOR, newHeight = Status
                     .getImageShowSize().height
                     / ViewSettings.ZOOM_MULITPLICATOR;
 
-            int displayedWidth= 
-            		Page.getInstance().getJlbl_painting().getWidth()
-            		* Status.getImageSize().width
-            		/ Status.getImageShowSize().width * 0;
+            int displayedWidth = 
+            		Page.getInstance().getJlbl_painting().getWidth();
             int displayedHeight = 
-            		Page.getInstance().getJlbl_painting().getHeight()
-            		* Status.getImageSize().height
-            		/ Status.getImageShowSize().height * 0;
+            		Page.getInstance().getJlbl_painting().getHeight();
+            
             
             Point oldLocation = new Point(Page.getInstance()
                     .getJlbl_painting().getLocation().x + displayedWidth / 2, 
                     Page.getInstance() 
                     .getJlbl_painting().getLocation().y + displayedHeight / 2);
             
+
+            // not smaller than the
+            oldLocation.x = Math.max(oldLocation.x,
+            		-(Status.getImageShowSize().width 
+                    - Page.getInstance().getJlbl_painting()
+                    .getWidth()));
+            oldLocation.y = Math.max(oldLocation.y,
+                    -(Status.getImageShowSize().height - Page
+                            .getInstance().getJlbl_painting()
+                            .getHeight()));
+            
+            
+            // not greater than 0
+            oldLocation.x = Math.min(oldLocation.x, 0);
+            oldLocation.y = Math.min(oldLocation.y, 0); 
+     
             Status.setImageShowSize(new Dimension(newWidth, newHeight));
             Page.getInstance().flip();
 
             Page.getInstance().getJlbl_painting()
                     .setLoc((oldLocation.x) / 2, (oldLocation.y) / 2);
             Page.getInstance().getJlbl_painting().refreshPaint();
-//            Page.getInstance().refrehsSps();
+            Page.getInstance().refrehsSps();
 
             Page.getInstance().releaseSelected();
             Picture.getInstance().releaseSelected();

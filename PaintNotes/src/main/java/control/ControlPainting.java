@@ -22,6 +22,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.w3c.dom.events.Event;
+
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
@@ -1130,6 +1132,7 @@ public final class ControlPainting implements MouseListener,
      */
     private void mr_zoomOut() {
 
+    	//TODO: adjust this one.
         //if able to zoom out
         if (Status.getImageSize().width
                 / Status.getImageShowSize().width 
@@ -1140,19 +1143,29 @@ public final class ControlPainting implements MouseListener,
                     .getImageShowSize().height
                     / ViewSettings.ZOOM_MULITPLICATOR;
 
+            int displayedWidth= 
+            		Page.getInstance().getJlbl_painting().getWidth()
+            		* Status.getImageSize().width
+            		/ Status.getImageShowSize().width * 0;
+            int displayedHeight = 
+            		Page.getInstance().getJlbl_painting().getHeight()
+            		* Status.getImageSize().height
+            		/ Status.getImageShowSize().height * 0;
+            
             Point oldLocation = new Point(Page.getInstance()
-                    .getJlbl_painting().getLocation().x, 
-                    Page.getInstance()
-                    .getJlbl_painting().getLocation().y);
-            Page.getInstance().getJlbl_painting()
-                    .setLocation((oldLocation.x) / 2, (oldLocation.y) / 2);
-
+                    .getJlbl_painting().getLocation().x + displayedWidth / 2, 
+                    Page.getInstance() 
+                    .getJlbl_painting().getLocation().y + displayedHeight / 2);
+            
             Status.setImageShowSize(new Dimension(newWidth, newHeight));
+            Page.getInstance().flip();
+
+            Page.getInstance().getJlbl_painting()
+                    .setLoc((oldLocation.x) / 2, (oldLocation.y) / 2);
+            Page.getInstance().getJlbl_painting().refreshPaint();
+//            Page.getInstance().refrehsSps();
 
             Page.getInstance().releaseSelected();
-            Page.getInstance().flip();
-            Page.getInstance().refrehsSps();
-            
             Picture.getInstance().releaseSelected();
             updateResizeLocation();
         } else {
@@ -1199,9 +1212,6 @@ public final class ControlPainting implements MouseListener,
             int newY = (oldLocation.y - Zoom.getInstance().getY())
                     * ViewSettings.ZOOM_MULITPLICATOR;
 
-            System.out.println(newX + "new " + newY);
-            System.out.println(ViewSettings.ZOOM_MULITPLICATOR);
-            System.out.println(oldLocation);
             
             // check if the bounds are valid
 
@@ -1219,10 +1229,10 @@ public final class ControlPainting implements MouseListener,
             newX = Math.min(newX, 0);
             newY = Math.min(newY, 0);
             
-            System.out.println(newX  +".." + newY);
-            System.out.println(Status.getImageShowSize());
 
-            // apply the location at JLabel
+            // apply the location at JLabel (with setLocation method that 
+            //is not used for scrolling purpose [IMPORTANT]) and repaint the 
+            //image afterwards.
             Page.getInstance().getJlbl_painting().setLoc(newX, newY);
             Page.getInstance().getJlbl_painting().refreshPaint();
 
@@ -1847,9 +1857,12 @@ public final class ControlPainting implements MouseListener,
             break;
         case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
 
-            if (_event.getButton() == 1) {
+            if (_event.getButton() == MouseEvent.BUTTON1) {
                 mr_zoom(_event);
                 updateResizeLocation();
+            } else if (_event.getButton() == MouseEvent.BUTTON3) {
+            	mr_zoomOut();
+            	updateResizeLocation();
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_PIPETTE:

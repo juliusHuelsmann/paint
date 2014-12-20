@@ -265,6 +265,8 @@ public class PaintLabel extends MLabel {
     @Override public final synchronized void setLocation(
     		final int _x, final int _y) {
         
+    	//TODO: error-checking (formally used for zooming in, did not work
+    	//because method is not designed for that.)
         //update the JPanel location because the ScrollPane fetches information
         //out of that panel
         jpnl_toMove.setBounds(_x, _y, jpnl_toMove.getWidth(), 
@@ -440,6 +442,9 @@ public class PaintLabel extends MLabel {
 
     /**
      * Really set the location.
+     * 
+     * E.g. called by controlling class in case of zooming in.
+     * 
      * @param _x the new x coordinate which is saved
      * @param _y the new y coordinate which is saved
      */

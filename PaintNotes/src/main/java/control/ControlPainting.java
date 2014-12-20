@@ -48,6 +48,7 @@ import view.View;
 import view.forms.Message;
 import view.forms.New;
 import view.forms.Page;
+import view.forms.PaintLabel;
 import view.forms.Tabs;
 import view.tabs.Paint;
 
@@ -330,11 +331,8 @@ public final class ControlPainting implements MouseListener,
                             Picture.getInstance().changePen(Pen.clonePen(
                                     Status.getPenSelected1()));
 
-
                         }
                     }
-                
-                    
                 }
                     
                 // add paintObject and point to Picture
@@ -1201,6 +1199,10 @@ public final class ControlPainting implements MouseListener,
             int newY = (oldLocation.y - Zoom.getInstance().getY())
                     * ViewSettings.ZOOM_MULITPLICATOR;
 
+            System.out.println(newX + "new " + newY);
+            System.out.println(ViewSettings.ZOOM_MULITPLICATOR);
+            System.out.println(oldLocation);
+            
             // check if the bounds are valid
 
             // not smaller than the
@@ -1211,12 +1213,18 @@ public final class ControlPainting implements MouseListener,
                     -(Status.getImageShowSize().height - Page
                             .getInstance().getJlbl_painting()
                             .getHeight()));
+            
+            
             // not greater than 0
             newX = Math.min(newX, 0);
             newY = Math.min(newY, 0);
+            
+            System.out.println(newX  +".." + newY);
+            System.out.println(Status.getImageShowSize());
 
             // apply the location at JLabel
-            Page.getInstance().getJlbl_painting().setLocation(newX, newY);
+            Page.getInstance().getJlbl_painting().setLoc(newX, newY);
+            Page.getInstance().getJlbl_painting().refreshPaint();
 
             // apply the new location at ScrollPane
             Page.getInstance().refrehsSps();

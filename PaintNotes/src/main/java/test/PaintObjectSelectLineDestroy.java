@@ -11,25 +11,20 @@ import model.util.DPoint;
 import junit.framework.TestCase;
 
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-
 /**
  * Class for checking errors in POW destroy selection.
  * @author Julius Huelsmann
  * @version %I%, %U%
  *
  */
-public class TestFailure extends TestCase {
+public class PaintObjectSelectLineDestroy extends TestCase {
 
 	/**
 	 * Constants.
 	 */
 	private static final int C50 = 50, C61 = 61, C52 = 52, C5 = 5, C59 = 59,
 			C54 = 54, C60 = 60, C55 = 55, C57 = 57, C56 = 56, C58 = 58, 
-			C10 = 10, C4 = 4, C65 = 65, C2 = 2, C3 = 3, C7 = 7;
+			C10 = 10, C4 = 4, C65 = 65, C2 = 2, C3 = 3, C7 = 7, C49 = 49;
 	
 
 	/**
@@ -41,7 +36,7 @@ public class TestFailure extends TestCase {
 	/**
 	 * Empty utility class constructor.
 	 */
-	public TestFailure() {
+	public PaintObjectSelectLineDestroy() {
 		
 	}
 	
@@ -1698,6 +1693,180 @@ public class TestFailure extends TestCase {
   			}, 
   			//result
   			result[0]));
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+
+  	returnString += ("\n \n"
+  	+ "			     	\n"
+  	+ "	             	\n"
+  	+ "			     2	\n"
+  	+ "			__________\n"
+  	+ "			|         |\n"
+  	+ "			|         |\n"
+  	+ "			|_________|\n"
+  	+ "			     *	\n"
+  	+ "			     1 \n\n");
+  	r = new Rectangle(C50, C50, C10, C10);
+  	PaintObjectWriting pow = new PaintObjectWriting(0, new Pencil(1, 1, Color.black));
+  	pow.addPoint(new DPoint(C55, C65));
+  	pow.addPoint(new DPoint(C55, C49));
+  	result = pow.separate(r);
+  	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+  	returnString += ("insideList:\n");
+  	returnString += (comparePaintObjects(
+  			
+  			//expected
+  			new PaintObjectWriting[]{
+  					createPOW(
+
+  		   					//intersection at the bottom of the rectangle.
+  							new DPoint(C55, C60), 
+  							
+  							//intersection at top of rectangle.
+  							new DPoint(C55, C50))
+  			}, 
+  			
+  			//result
+  			result[1]));
+  	
+  	returnString += ("outsidelist:\n");
+  	
+  	returnString += (comparePaintObjects(
+  			
+  			//expected
+  			new PaintObjectWriting[]{
+  					
+  					//first line: from first point to first intersection (
+  					//the one at the bottom of the rectangle)
+  					createPOW(
+
+  		   					//point 1.
+  							new DPoint(C55, C65), 
+  							
+  		   					//intersection at the bottom of the rectangle.
+  							new DPoint(C55, C60)),
+
+  		   			//second line: from second intersection (the one at the 
+  					//top of the rectangle) to the second point
+  					createPOW(
+  		   							
+  		   					//intersection at top of rectangle.
+  		   					new DPoint(C55, C50),
+  		   							
+  		   					//point 2
+  		   					new DPoint(C55, C49))
+  			}, 
+  			//result
+  			result[0]));
+  	
+  	
+
+  	returnString += ("\n \n"
+  	+ "			     	\n"
+  	+ "	             	\n"
+  	+ "			     2	\n"
+  	+ "			__________\n"
+  	+ "			|         |\n"
+  	+ "			|         |\n"
+  	+ "			|_________|\n"
+  	+ "			     *	\n"
+  	+ "			     1 \n\n");
+  	r = new Rectangle(C50, C50, C10, C10);
+  	pow = new PaintObjectWriting(0, new Pencil(1, 1, Color.black));
+  	pow.addPoint(new DPoint(C55, C49));
+  	pow.addPoint(new DPoint(C55, C65));
+  	result = pow.separate(r);
+  	returnString += ("EXPECTED\t\tRESULT\t\t\n");
+  	returnString += ("insideList:\n");
+  	returnString += (comparePaintObjects(
+  			
+  			//expected
+  			new PaintObjectWriting[]{
+  					createPOW(
+
+  							//intersection at top of rectangle.
+  							new DPoint(C55, C50),
+  							
+  		   					//intersection at the bottom of the rectangle.
+  							new DPoint(C55, C60))
+  							
+  			}, 
+  			
+  			//result
+  			result[1]));
+  	
+  	returnString += ("outsidelist:\n");
+  	
+  	returnString += (comparePaintObjects(
+  			
+  			//expected
+  			new PaintObjectWriting[]{
+  					
+  					
+
+  		   			//second line: from second intersection (the one at the 
+  					//top of the rectangle) to the second point
+  					createPOW(
+  		   							
+  		   					//intersection at top of rectangle.
+  		   					new DPoint(C55, C49),
+  		   							
+  		   					//point 2
+  		   					new DPoint(C55, C50)),
+  					
+  					//first line: from first point to first intersection (
+  					//the one at the bottom of the rectangle)
+  					createPOW(
+
+  		   					//point 1.
+  							new DPoint(C55, C60), 
+  							
+  		   					//intersection at the bottom of the rectangle.
+  							new DPoint(C55, C65))
+
+  			}, 
+  			//result
+  			result[0]));  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	
   	
   	
 	

@@ -1705,12 +1705,9 @@ public final class ControlPainting implements MouseListener,
                                     + "is null");
                         }
                     }
-                    Picture.getInstance().getLs_po_sortedByX().toFirst();
-                } else {
-                    
-                    // next
-                    Picture.getInstance().getLs_po_sortedByX().next();
-                }
+                } 
+                // next
+                Picture.getInstance().getLs_po_sortedByX().next();
 
 
                 // update current values

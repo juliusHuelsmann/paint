@@ -314,8 +314,6 @@ public final class PaintObjects extends Tab implements Observer {
 	        return;
 	    }
 	    
-	    //print list for testing purpose.
-	    Picture.getInstance().getLs_po_sortedByX().printAddcounter();
 	    
 	    
 	    switch (Integer.parseInt(_obj + "")) {
@@ -357,6 +355,8 @@ public final class PaintObjects extends Tab implements Observer {
             break;
 	        
 	    }
+	    //print list for testing purpose.
+	    Picture.getInstance().getLs_po_sortedByX().printAddcounter();
 	    repaint();
 	}
 	

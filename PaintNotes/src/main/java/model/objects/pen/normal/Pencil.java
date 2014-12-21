@@ -105,7 +105,8 @@ public class Pencil extends Pen {
                         && y + i < _bi.getHeight() && y + i >= 0) {
 
                     //set the given pixel in buffered image
-                    if (_final) {
+                    if (_final && x >= 0 && x < _bi.getWidth() 
+                    		&& y >= 0 && y < _bi.getHeight()) {
 
                         final int rbg = printPixelArea(x, y, i, j, x, y, _bi);
                         

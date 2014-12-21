@@ -424,13 +424,14 @@ public class List<Type> implements Serializable {
      */
     public final void printAddcounter() {
         
-        System.out.println("\n\nprint counter. Caution; only valid if list"
+        Status.getLogger().info("\n\nprint counter. Caution; only valid if list"
         		+ "is holding PaintObjects.\n");
         toFirst();
         while (!isBehind()) {
             
         	if (getItem() instanceof PaintObject) {
-        		System.out.println(((PaintObject)getItem()).getElementId());
+        		System.out.println(">" 
+        				+ ((PaintObject)getItem()).getElementId());
         	}
             next();
         }

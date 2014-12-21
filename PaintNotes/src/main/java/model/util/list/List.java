@@ -4,6 +4,8 @@ package model.util.list;
 //import declaration
 import java.io.Serializable;
 
+import model.objects.painting.po.PaintObject;
+import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Status;
 import model.util.DPoint;
 
@@ -414,6 +416,26 @@ public class List<Type> implements Serializable {
             next();
         }
         System.out.println("\n\n");
+    }
+
+    
+    /**
+     * print items with search index.
+     */
+    public final void printAddcounter() {
+        
+        System.out.println("\n\nprint counter. Caution; only valid if list"
+        		+ "is holding PaintObjects.\n");
+        toFirst();
+        while (!isBehind()) {
+            
+        	if (getItem() instanceof PaintObject) {
+        		System.out.println(((PaintObject)getItem()).getElementId());
+        	}
+            next();
+        }
+        System.out.println("\n\n");
+        toFirst();
     }
     
     

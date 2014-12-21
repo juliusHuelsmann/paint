@@ -8,10 +8,13 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.util.Observable;
 import java.util.Observer;
+
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
 import model.objects.PictureOverview;
+import model.objects.painting.Picture;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import control.tabs.CPaintObjects;
@@ -311,6 +314,8 @@ public final class PaintObjects extends Tab implements Observer {
 	        return;
 	    }
 	    
+	    //print list for testing purpose.
+	    Picture.getInstance().getLs_po_sortedByX().printAddcounter();
 	    
 	    
 	    switch (Integer.parseInt(_obj + "")) {

@@ -283,8 +283,6 @@ public class List<Type> implements Serializable {
     	
         if (!isEmpty() && !isBehind() && !isInFrontOf()) {
         	
-        	if (elemCurrent.getContent() instanceof PaintObject)
-        		System.out.println("removing " + ((PaintObject)elemCurrent.getContent()).getElementId());
            
         	Element<Type> succ = elemCurrent.getElemSuccessor();
             succ.setElemPredecessor(elemCurrent.getElemPredecessor());

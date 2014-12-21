@@ -599,7 +599,7 @@ public class PaintObjectWriting extends PaintObjectPen {
                     pow_current.addPoint(new DPoint(pcNew));
                 }
             } else {
-            	Status.getLogger().warning("Fatal");
+            	Status.getLogger().severe("Fatal");
             	System.exit(1);
             }
 
@@ -624,6 +624,39 @@ public class PaintObjectWriting extends PaintObjectPen {
         
         return pow;
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     /**

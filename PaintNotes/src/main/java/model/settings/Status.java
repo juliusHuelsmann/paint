@@ -81,6 +81,11 @@ public final class Status {
      */
     private static final int START_IMAGE_HEIGHT = 2800; //3535;
     
+    
+    /**
+     * Erase radius.
+     */
+    private static int eraseRadius = 10;
 
     /**
      * The border show percentages.
@@ -750,5 +755,21 @@ public final class Status {
     public static void setSaveFormat(final String _saveFormat) {
         Status.saveFormat = _saveFormat;
     }
+
+
+	/**
+	 * @return the eraseRadius
+	 */
+	public static int getEraseRadius() {
+		return eraseRadius;
+	}
+
+
+	/**
+	 * @param eraseRadius the eraseRadius to set
+	 */
+	public static void setEraseRadius(int eraseRadius) {
+		Status.eraseRadius = eraseRadius;
+	}
 
 }

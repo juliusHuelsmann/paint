@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
@@ -91,6 +92,23 @@ public final class CPaintStatus implements MouseListener {
                         _path)).getImage(), 
                         new Point(Constants.MOUSE_ICON_SIZE / 2, 
                                 Constants.MOUSE_ICON_SIZE / 2), 
+                                _name));	    
+	}
+	
+
+	
+	/**
+	 * set the cursor.
+	 * 
+	 * @param _path the path of the cursor image.
+	 * @param _name the name of the cursor
+	 */
+	private void setCursor(final BufferedImage _path, final String _name) {
+
+	    View.getInstance().setCursor(Toolkit.getDefaultToolkit()
+	            .createCustomCursor(_path, 
+                        new Point(Status.getEraseRadius(), 
+                        		Status.getEraseRadius()), 
                                 _name));	    
 	}
 	
@@ -445,7 +463,30 @@ public final class CPaintStatus implements MouseListener {
                 case Constants.CONTROL_PAINTING_INDEX_ERASE:
                     Tabs.getInstance().closeMenues();
                     Paint.getInstance().getTb_erase().setActivated(true);
+
+                    BufferedImage bi_erase = new BufferedImage(
+                    		Status.getEraseRadius() * 2, 
+                    		Status.getEraseRadius() * 2, 
+                    		BufferedImage.TYPE_INT_RGB);
+                    for (int y = 0; y < bi_erase.getHeight(); y ++) {
+                    	for (int x = 0; x < bi_erase.getWidth(); x ++) {
+                        
+                    		if (y == 0 || y == bi_erase.getHeight() - 1
+                    				|| x == 0 || x == bi_erase.getWidth() - 1) {
+                        		bi_erase.setRGB(x, y, Color.black.getRGB());
+                    		} else {
+
+                        		bi_erase.setRGB(x, y, Color.white.getRGB());
+                    		}
+                        
+                    	
+                    	}
+                    	
+                    }
+                    
+                    setCursor(bi_erase, "p1");
                     break;
+
                 default:
                     Status.getLogger().warning("falsche id");
                     break;

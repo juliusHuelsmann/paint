@@ -212,10 +212,39 @@ public class PaintLabel extends MLabel {
         
         PaintObjects.getInstance().repaint();
         return getBi();
-        
-        
     }
+
     
+    /**
+     * clear a special rectangle.
+     * @param _x the x coordinate in view
+     * @param _y the y coordinate in view
+     * @param _width the width
+     * @param _height the height
+     * @return the graphics
+     */
+    public final BufferedImage clrRectangle(final int _x, final int _y, 
+            final int _width, final int _height) {
+
+        Status.getLogger().finest("clr PaintLabel. \nValues: "
+                + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
+                + "\n\tgetLocation:\t" + getLocation() 
+                + " vs. " + super.getLocation()
+                + "\n\t" + "_x:\t\t" + _x
+                + "\n\t" + "_y\t\t" + _y
+                + "\n\t" + "_width\t\t" + _width
+                + "\n\t" + "_height\t\t" + _height + "\n");
+
+        //paint the painted stuff at graphics
+        setBi(Picture.getInstance().emptyRectangle(
+                -getLocation().x + _x, 
+                -getLocation().y + _y, _width, _height, _x, _y, getBi()));
+
+        setIcon(new ImageIcon(getBi()));
+        
+        PaintObjects.getInstance().repaint();
+        return getBi();
+    }
 
     
     /**

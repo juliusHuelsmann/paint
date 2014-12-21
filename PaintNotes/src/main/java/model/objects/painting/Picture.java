@@ -410,7 +410,7 @@ public final class Picture {
             final int _graphicX, final int _graphiY,
             final BufferedImage _bi) {
 
-        BufferedImage ret = emptyRectangle(_x, _y, _width, _height, 
+        BufferedImage ret =  emptyRectangle(_x, _y, _width, _height, 
                 _graphicX, _graphiY, _bi);
         
         //if the graphical user interface is not set up yet.
@@ -419,9 +419,7 @@ public final class Picture {
             return new BufferedImage(2, 2, BufferedImage.TYPE_INT_ARGB);
         }
         Page.getInstance().getJlbl_painting().setBi(ret);
-        
         Page.getInstance().getJlbl_painting().setIcon(new ImageIcon(ret));
-
         Page.getInstance().getJlbl_painting().repaint();
 
       
@@ -495,6 +493,8 @@ public final class Picture {
             final BufferedImage _bi,
             final boolean _final) {
 
+    	ls_po_sortedByX.startTransaction("repaintRectangle");
+    	
         //alle die in Frage kommen neu laden.
         if (ls_po_sortedByX == null
                 || _bi == null) {
@@ -560,7 +560,8 @@ public final class Picture {
         Status.getLogger().info("Painted " 
                     + Status.getCounter_paintedPoints() 
                     + "pixel points for this operation.");
-        
+
+    	ls_po_sortedByX.finishTransaction();
 //      g_imageWork.translate(0, 0);
       
       

@@ -5,7 +5,6 @@ package model.util.list;
 import java.io.Serializable;
 
 import model.objects.painting.po.PaintObject;
-import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Status;
 import model.util.DPoint;
 
@@ -40,6 +39,19 @@ public class List<Type> implements Serializable {
     private final Element<Type> elemLast;
     
     /**
+     * Element for transactions. If the current element of the list
+     * is to be maintained after a performed action which passes the list 
+     * start transaction before the action and call endTransaction afterwards.
+     */
+    private  Element<Type> elem_transaction;
+    
+    /**
+     * String containing the title of current transaction.
+     * @see elem_transaction
+     */
+    private String strg_transactionTitle;
+    
+    /**
      * whether to sort ascending or descending.
      */
     private boolean sortAsc = true;
@@ -50,6 +62,7 @@ public class List<Type> implements Serializable {
     public List() {
         this.elemFirst = new Element<Type>(null, null, null);
         this.elemLast = new Element<Type>(null, null, elemFirst);
+        this.strg_transactionTitle = "";
 
         this.elemFirst.setElemSuccessor(elemLast);
         this.elemCurrent = elemFirst;
@@ -263,14 +276,34 @@ public class List<Type> implements Serializable {
 
     /**
      * Removes current element.
+     * Afterwards in front of the removed element.
      */
     public final void remove() {
+    	
+    	
         if (!isEmpty() && !isBehind() && !isInFrontOf()) {
-            Element<Type> succ = elemCurrent.getElemSuccessor();
+        	
+        	if (elemCurrent.getContent() instanceof PaintObject)
+        		System.out.println("removing " + ((PaintObject)elemCurrent.getContent()).getElementId());
+           
+        	Element<Type> succ = elemCurrent.getElemSuccessor();
             succ.setElemPredecessor(elemCurrent.getElemPredecessor());
-            elemCurrent.getElemPredecessor().setElemSuccessor(succ);
-            elemCurrent = succ.getElemPredecessor();
+            
+            Element <Type> pred = elemCurrent.getElemPredecessor();
+            pred.setElemSuccessor(succ);
+            
+//            if (pred == null) {
+//            	elemCurrent =  elemFirst;
+//            	elemCurrent.setElemSuccessor(succ);
+//            } else {
+
+                elemCurrent = pred;
+                
+//            }
+            
+            
         } else {
+        	System.err.println("ELZ RM");
             if (isInFrontOf()) {
                 next();
             }
@@ -406,7 +439,8 @@ public class List<Type> implements Serializable {
      * print items with search index.
      */
     public final void printIndex() {
-        
+
+    	Element<Type> oldCurrent = elemCurrent;
         System.out.println("\n\nprint\n");
         toFirst();
         while (!isBehind()) {
@@ -415,6 +449,7 @@ public class List<Type> implements Serializable {
                     + ":   "  + getItem());
             next();
         }
+        elemCurrent = oldCurrent;
         System.out.println("\n\n");
     }
 
@@ -424,6 +459,8 @@ public class List<Type> implements Serializable {
      */
     public final void printAddcounter() {
         
+    	Element<Type> oldCurrent = elemCurrent;
+    	
         Status.getLogger().info("\n\nprint counter. Caution; only valid if list"
         		+ "is holding PaintObjects.\n");
         toFirst();
@@ -435,8 +472,9 @@ public class List<Type> implements Serializable {
         	}
             next();
         }
+        
+        elemCurrent = oldCurrent;
         System.out.println("\n\n");
-        toFirst();
     }
     
     
@@ -468,6 +506,49 @@ public class List<Type> implements Serializable {
     		next();
     	}
     	return ret;
+    }
+    
+    
+    /**
+     * Start a transaction with specified operation name (for identifying the
+     * not terminated transaction in case an error occurred).
+     * 
+     * 
+     * If the current element of the list is to be maintained after a 
+     * performed action which passes the list, this method is called 
+     * before the action.
+     * 
+     * After the action has been done endTransaction has to be called.
+     * Otherwise there will occur an error if a new Transaction is started
+     * without terminating the old one.
+     * 
+     * @param _operationName the name of specified transaction
+     */
+    public final void startTransaction(String _operationName) {
+    	
+    	if (elem_transaction != null) {
+    		Status.getLogger().severe("Transaction " + strg_transactionTitle 
+    				+ " not terminated!");
+    	} 
+
+    	elem_transaction = elemCurrent;
+    	strg_transactionTitle = _operationName + System.currentTimeMillis();
+    }
+
+    
+    /**
+     * Finish transaction; reset the state of the List and afterwards the
+     * transaction values.
+     */
+    public final void finishTransaction() {
+    	if (elem_transaction != null || strg_transactionTitle != "") {
+
+        	elemCurrent = elem_transaction;
+        	elem_transaction = null;
+        	strg_transactionTitle = "";
+    	} else {
+    		Status.getLogger().severe("transaction error.");
+    	}
     }
     
     

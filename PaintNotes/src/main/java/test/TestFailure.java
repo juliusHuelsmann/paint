@@ -1,12 +1,19 @@
-package start;
+package test;
 
 import java.awt.Color;
 import java.awt.Rectangle;
 
+import org.junit.Test;
+
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.normal.Pencil;
 import model.util.DPoint;
+import junit.framework.TestCase;
 
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 
 /**
@@ -15,7 +22,7 @@ import model.util.DPoint;
  * @version %I%, %U%
  *
  */
-public final class CheckPOW {
+public class TestFailure extends TestCase {
 
 	/**
 	 * Constants.
@@ -24,20 +31,96 @@ public final class CheckPOW {
 			C54 = 54, C60 = 60, C55 = 55, C57 = 57, C56 = 56, C58 = 58, 
 			C10 = 10, C4 = 4, C65 = 65, C2 = 2, C3 = 3, C7 = 7;
 	
-	
-	/**
-	 * Empty utility class constructor.
-	 */
-	private CheckPOW() {
-		
-	}
-	
+
 	/**
 	 * Whether an error occurred or not.
 	 */
 	private static boolean errorOccurred = false;
     
     
+	/**
+	 * Empty utility class constructor.
+	 */
+	public TestFailure() {
+		
+	}
+	
+	
+
+    
+    /**
+     * Main method for testing purpose.
+     * @param _args the main arguments from console
+     */
+    @Test
+	public static void testSelectionDistroy() {
+    	errorOccurred = false;
+    	
+    	//both outside
+    	boolean checkBo1_1 = true, checkBo1_2 = true, checkBo1_3 = true, 
+    			checkBo1_4 = true,
+    			checkBo2_1 = true, checkBo2_2 = true, checkBo2_3 = true, 
+    			checkBo2_4 = true;
+
+    	//both inside
+    	boolean checkBi = true;
+    	
+    	//one inside and the other outside
+    	boolean checkOIOO = true;
+    	
+    	
+    	/*
+    	 * both outside
+    	 */
+    	if (checkBo1_1) {
+    		checkBothOutside1_1();
+    	}
+    	if (checkBo1_2) {
+    		checkBothOutside1_2();
+    	}
+    	if (checkBo1_3) {
+    		checkBothOutside1_3();
+    	}
+    	if (checkBo1_4) {
+    		checkBothOutside1_4();
+    	}
+    	//second path
+    	if (checkBo2_1) {
+    		checkBothOutside2_1();
+    	}
+    	if (checkBo2_2) {
+    		checkBothOutside2_2();
+    	}
+    	if (checkBo2_3) {
+    		checkBothOutside2_3();
+    	}
+    	if (checkBo2_4) {
+    		checkBothOutside2_4();
+    	}
+    	
+    	
+    	
+    	/*
+    	 * both inside
+    	 */
+
+    	if (checkBi) {
+    		checkBothInside();
+    	}
+    	
+    	
+    	/*
+    	 * one inside
+    	 */
+    	if (checkOIOO) {
+        	checkOneInside1();
+    	}
+    	
+    	checkSpecial();
+    	assertTrue(!errorOccurred);
+    	
+	}    
+	
     
     
     /**
@@ -185,77 +268,6 @@ public final class CheckPOW {
     }
     
 
-    
-    /**
-     * Main method for testing purpose.
-     * @param _args the main arguments from console
-     */
-	public static void main(final String[] _args) {
-    	errorOccurred = false;
-    	
-    	//both outside
-    	boolean checkBo1_1 = true, checkBo1_2 = true, checkBo1_3 = true, 
-    			checkBo1_4 = true,
-    			checkBo2_1 = true, checkBo2_2 = true, checkBo2_3 = true, 
-    			checkBo2_4 = true;
-
-    	//both inside
-    	boolean checkBi = true;
-    	
-    	//one inside and the other outside
-    	boolean checkOIOO = true;
-    	
-    	
-    	/*
-    	 * both outside
-    	 */
-    	if (checkBo1_1) {
-    		checkBothOutside1_1();
-    	}
-    	if (checkBo1_2) {
-    		checkBothOutside1_2();
-    	}
-    	if (checkBo1_3) {
-    		checkBothOutside1_3();
-    	}
-    	if (checkBo1_4) {
-    		checkBothOutside1_4();
-    	}
-    	//second path
-    	if (checkBo2_1) {
-    		checkBothOutside2_1();
-    	}
-    	if (checkBo2_2) {
-    		checkBothOutside2_2();
-    	}
-    	if (checkBo2_3) {
-    		checkBothOutside2_3();
-    	}
-    	if (checkBo2_4) {
-    		checkBothOutside2_4();
-    	}
-    	
-    	
-    	
-    	/*
-    	 * both inside
-    	 */
-
-    	if (checkBi) {
-    		checkBothInside();
-    	}
-    	
-    	
-    	/*
-    	 * one inside
-    	 */
-    	if (checkOIOO) {
-        	checkOneInside1();
-    	}
-    	
-    	checkSpecial();
-    	
-	}    
 	
 	
 	

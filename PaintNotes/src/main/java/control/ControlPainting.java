@@ -1542,11 +1542,13 @@ public final class ControlPainting implements MouseListener,
                 && currentX 
                 <= (_r_size.x + _r_size.width)) {
 
+
             //The y condition has to be in here because the items are just 
             //sorted by x coordinate; thus it is possible that one PaintObject 
             //is not suitable for the specified rectangle but some of its 
             //predecessors in sorted list do.
             if (po_current.isInSelectionImage(_r_size)) {
+
 
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
@@ -1554,15 +1556,16 @@ public final class ControlPainting implements MouseListener,
                 
                 //move current item from normal list into selected list 
                 Picture.getInstance().insertIntoSelected(po_current);
+                             
                 Picture.getInstance().getLs_po_sortedByX().remove();
-                Picture.getInstance().getLs_po_sortedByX().next();
-            } else {
-                // next; in if clause the next is realized by remove()
-                Picture.getInstance().getLs_po_sortedByX().next();
-            }
+            }            
+
+            Picture.getInstance().getLs_po_sortedByX().next();
+
             // update current values
             currentX = po_current.getSnapshotBounds().x;
             po_current = Picture.getInstance().getLs_po_sortedByX().getItem();
+
         }
 
         Page.getInstance().getJlbl_painting().refreshPaint();
@@ -1607,9 +1610,6 @@ public final class ControlPainting implements MouseListener,
         /*
          * whole item selection.
          */
-        // find paintObjects and move them from image to Selection
-        Picture.getInstance().getLs_po_sortedByX().toFirst();
-
         // initialize selection list
         Picture.getInstance().createSelected();
 
@@ -1617,9 +1617,6 @@ public final class ControlPainting implements MouseListener,
         Picture.getInstance().getLs_po_sortedByX().toFirst();
         if (!Picture.getInstance().getLs_po_sortedByX().isEmpty()) {
 
-            // go to the beginning of the list
-            Picture.getInstance().getLs_po_sortedByX().toFirst();
-            
             // create and initialize current values
             PaintObject po_current = Picture.getInstance().getLs_po_sortedByX()
                     .getItem();

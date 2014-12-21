@@ -181,7 +181,7 @@ public final class CTabSelection implements ActionListener {
             //save values
             this.selectionPenID = _penId;
             this.selectionColor = _color;
-            
+//            
             //show pen and color at graphical user interface.
             showPenOp(_penId);
             Selection.getInstance().getTb_color().setBackground(

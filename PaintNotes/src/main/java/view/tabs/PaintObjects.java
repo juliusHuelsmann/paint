@@ -356,7 +356,10 @@ public final class PaintObjects extends Tab implements Observer {
 	        
 	    }
 	    //print list for testing purpose.
-	    Picture.getInstance().getLs_po_sortedByX().printAddcounter();
+//	    Picture.getInstance().getLs_po_sortedByX().printAddcounter();
+//	    System.out.println(getClass() + "sel");
+//	    if (Picture.getInstance().getLs_poSelected() != null)
+//	    Picture.getInstance().getLs_poSelected().printAddcounter();
 	    repaint();
 	}
 	

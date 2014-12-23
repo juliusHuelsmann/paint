@@ -461,7 +461,13 @@ public final class ControlPainting implements MouseListener,
 //
 //
 //                }
-            	mr_erase(_event.getPoint());
+
+            	Point p = new Point(
+            			(int) (_event.getPoint().x - Page.getInstance()
+            					.getJlbl_painting().getLocation().getX()),
+                    	(int) (_event.getPoint().y - Page.getInstance()
+                    			.getJlbl_painting().getLocation().getY()));
+            	mr_erase(p);
                 break;
                 
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
@@ -1651,6 +1657,9 @@ public final class ControlPainting implements MouseListener,
             _r_sizeField.y *= cZoomFactorHeight;
             _r_sizeField.height *= cZoomFactorHeight;
             
+            
+
+            
             // go through list. until either list is empty or it is
             // impossible for the paintSelection to paint inside the
             // selected area
@@ -1875,8 +1884,12 @@ public final class ControlPainting implements MouseListener,
         }
         
 
+
         Page.getInstance().getJlbl_painting().clrRectangle(
-                _r_sizeField.x, _r_sizeField.y, 
+                _r_sizeField.x + (int) Page.getInstance()
+				.getJlbl_painting().getLocation().getX(),
+				_r_sizeField.y + (int) Page.getInstance()
+				.getJlbl_painting().getLocation().getY(),
                 _r_sizeField.width, _r_sizeField.height);
 
     
@@ -1957,10 +1970,10 @@ public final class ControlPainting implements MouseListener,
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
 
-                  r.x += Page.getInstance().getJlbl_painting()
-                          .getLocation().x;
-                  r.y += Page.getInstance().getJlbl_painting()
-                          .getLocation().y;
+//                  r.x += Page.getInstance().getJlbl_painting()
+//                          .getLocation().x;
+//                  r.y += Page.getInstance().getJlbl_painting()
+//                          .getLocation().y;
                     mr_sel_line_destroy(r);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:

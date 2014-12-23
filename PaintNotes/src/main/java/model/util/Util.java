@@ -245,6 +245,8 @@ public final class Util {
      */
 	public static void getStroke(JLabel jlbl_stroke, int _addX, int _addY) {
 		
+		
+		final int strokeDistance = 10;
 		if (jlbl_stroke.getWidth() > 0 
 				&& jlbl_stroke.getHeight() > 0
 //				&& jlbl_stroke.isShowing()
@@ -261,7 +263,7 @@ public final class Util {
 	            	if ( (x + jlbl_stroke.getLocationOnScreen().x
 	            			+ y + jlbl_stroke.getLocationOnScreen().y) % 20 == 0) {
 
-	                	bi_stroke.setRGB(x, y, new Color(195, 196, 197, 70).getRGB());
+	                	bi_stroke.setRGB(x, y, new Color(10,10,10, 10).getRGB());
 	            	} else {
 
 	                	bi_stroke.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());

@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.settings.Constants;
 import model.settings.Error;
 import model.settings.ViewSettings;
 import model.util.Util;
@@ -169,7 +170,7 @@ public class VTabbedPane extends MPanel {
         
         jlbl_close = new MLabel();
         jlbl_close.setFocusable(false);
-        jlbl_close.setOpaque(false);
+        jlbl_close.setOpaque(true);
         jlbl_close.addMouseMotionListener(new MouseMotionListener() {
             
             public void mouseMoved(final MouseEvent _event) { }
@@ -177,6 +178,7 @@ public class VTabbedPane extends MPanel {
                 moveTab(_event);
             }
         });
+        jlbl_close.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
         jlbl_close.addMouseListener(new MouseListener() {
             
             public void mouseReleased(final MouseEvent _event) {
@@ -724,8 +726,10 @@ public class VTabbedPane extends MPanel {
                     }
                     setSize(getWidth(), oldHeight);
                     jpnl_stuff[openTab].repaint();
-                    
+
+                    stroke();
                 }
+
             } .start();
 
 	    } else {
@@ -798,10 +802,11 @@ public class VTabbedPane extends MPanel {
     	jbtn_stuffHeadline[getOpenTab()].stroke();
         Util.getStroke(jlbl_stroke, jlbl_stroke.getX() + super.getX(), 
         		jlbl_stroke.getY() + super.getY());
+
+       // Util.getStroke(jlbl_close, 0, 0);
     
         for (MPanel stuff : jpnl_stuff) {
         	for (Component i : stuff.getComponents()) {
-            	System.out.println(i);
             	if (i instanceof Tab) {
 
             		for (Component j : ((Tab)i).getComponents()) {

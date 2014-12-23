@@ -228,7 +228,7 @@ public final class ViewSettings {
      * the bounds of the Page.
      */
     private static Rectangle view_bounds_page_open = new Rectangle(
-            1, 1 + view_heightTB_visible 
+            1,  view_heightTB_visible 
             + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
             size_jframe.width - TWENTY_FIFE - TEN - 2, 
             size_jframe.height - size_jframe.height / FIFE 

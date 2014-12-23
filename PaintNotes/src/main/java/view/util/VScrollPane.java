@@ -12,6 +12,7 @@ import view.util.mega.MButton;
 import view.util.mega.MPanel;
 import model.settings.Constants;
 import model.settings.Status;
+import model.util.Util;
 import model.util.paint.Utils;
 import control.util.CScrollPane;
 
@@ -172,6 +173,10 @@ public class VScrollPane extends MPanel {
 			jbtn_toBottom.setLocation(getWidth() - icon_size * 2,
 			        getHeight() - icon_size);
 		}
+
+//		Util.getScrollStroke(jbtn_toTop);
+//		Util.getScrollStroke(jbtn_toBottom);
+//		Util.getScrollStroke(jbtn_center);
 		recalculateCenterBounds();
 	}
 

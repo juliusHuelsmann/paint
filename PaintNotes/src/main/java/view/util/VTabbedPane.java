@@ -799,11 +799,12 @@ public class VTabbedPane extends MPanel {
     public final void stroke() {
 
     	
+    	
     	jbtn_stuffHeadline[getOpenTab()].stroke();
         Util.getStroke(jlbl_stroke, jlbl_stroke.getX() + super.getX(), 
         		jlbl_stroke.getY() + super.getY());
 
-       // Util.getStroke(jlbl_close, 0, 0);
+        Util.getStrokeRec(jlbl_close, 0, 0);
     
         for (MPanel stuff : jpnl_stuff) {
         	for (Component i : stuff.getComponents()) {

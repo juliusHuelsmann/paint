@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -322,6 +323,99 @@ public final class Util {
 		            	} else {
 
 		                	bi_stroke.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+		            	}
+	            	} catch (IllegalComponentStateException e) {
+	            		x = bi_stroke.getWidth();
+	            		y = bi_stroke.getHeight();
+	            	}
+	            
+	            }	
+	        }
+	        jlbl_stroke.setIcon(new ImageIcon(bi_stroke));
+		}
+		
+	}   /**
+     * Apply stroke on background.
+     * @param jlbl_stroke the background carrying item.
+     */
+	public static void getStrokeRec(JLabel jlbl_stroke, int _addX, int _addY) {
+		
+		
+		final int strokeDistance = 10;
+		if (jlbl_stroke.getWidth() > 0 
+				&& jlbl_stroke.getHeight() > 0
+//				&& jlbl_stroke.isShowing()
+				) {
+			BufferedImage bi_stroke = new BufferedImage(jlbl_stroke.getWidth(), 
+	        		jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
+	        
+	        for (int x = 0; x < bi_stroke.getWidth(); x ++) {
+
+	            for (int y = 0; y < bi_stroke.getHeight(); y ++) {
+	            	
+
+//	            	if ( (_addX + x + y +  _addY) % 20 == 0) {
+	            	
+	            	try{
+	            		if ( (x + jlbl_stroke.getLocationOnScreen().x
+		            			- y - jlbl_stroke.getLocationOnScreen().y) 
+		            			% strokeDistance == 0
+		            			||  (x + jlbl_stroke.getLocationOnScreen().x
+				            			+ y + jlbl_stroke.getLocationOnScreen().y) 
+				            			% strokeDistance == 0) {
+
+		                	bi_stroke.setRGB(x, y, new Color(10,10,10, 10).getRGB());
+		            	} else {
+
+		                	bi_stroke.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+		            	}
+	            	} catch (IllegalComponentStateException e) {
+	            		x = bi_stroke.getWidth();
+	            		y = bi_stroke.getHeight();
+	            	}
+	            
+	            }	
+	        }
+	        jlbl_stroke.setIcon(new ImageIcon(bi_stroke));
+		}
+		
+	}
+
+	
+	/**
+     * Apply stroke on background.
+     * @param jlbl_stroke the background carrying item.
+     */
+	public static void getScrollStroke(JButton jlbl_stroke) {
+		
+		
+		final int strokeDistance = 10;
+		if (jlbl_stroke.getWidth() > 0 
+				&& jlbl_stroke.getHeight() > 0
+				) {
+			BufferedImage bi_stroke = new BufferedImage(jlbl_stroke.getWidth(), 
+	        		jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
+	        
+	        for (int x = 0; x < bi_stroke.getWidth(); x ++) {
+
+	            for (int y = 0; y < bi_stroke.getHeight(); y ++) {
+	            	
+
+	            	
+	            	try{
+	            		if ( 
+	            				(x + jlbl_stroke.getLocationOnScreen().x
+		            			- y - jlbl_stroke.getLocationOnScreen().y) 
+		            			% strokeDistance == 0
+//		            			||  (x + jlbl_stroke.getLocationOnScreen().x
+//				            			+ y + jlbl_stroke.getLocationOnScreen().y) 
+//				            			% strokeDistance == 0
+				            			) {
+
+		                	bi_stroke.setRGB(x, y, Color.lightGray.getRGB());
+		            	} else {
+
+		                	bi_stroke.setRGB(x, y, new Color(255, 250, 255).getRGB());
 		            	}
 	            	} catch (IllegalComponentStateException e) {
 	            		x = bi_stroke.getWidth();

@@ -412,9 +412,8 @@ public class Item1Button extends MPanel {
         this.additionalInformation = _additionalInformation;
     }
 
-	public void stroke() {
+	public synchronized void stroke() {
 
-		System.out.println("stroking");
         Util.getStroke(jlbl_stroke, jlbl_stroke.getX() + super.getX(),
         		jlbl_stroke.getY() + super.getY()); 
 	}

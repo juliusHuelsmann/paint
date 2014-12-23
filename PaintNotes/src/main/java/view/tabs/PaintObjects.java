@@ -364,7 +364,7 @@ public final class PaintObjects extends Tab implements Observer {
 	}
 	
 	
-	
+
 	
 	/**
 	 * this method guarantees that only one instance of this
@@ -382,7 +382,6 @@ public final class PaintObjects extends Tab implements Observer {
 		//return the only instance of this class.
 		return instance;
 	}
-
 
     /**
      * @return the jta_infoSelectedPanel

@@ -6,11 +6,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
+import model.util.Util;
 import model.util.paint.Utils;
 import view.forms.Message;
 import view.forms.Page;
@@ -43,7 +47,7 @@ import control.util.MousePositionTracker;
     /**
      * The maximum counter for design. Is used for fade in and out
      */
-    private final int dsgn_maxFadeIn = 200, dsgn_max_moveTitle = 200;
+    private final int dsgn_maxFadeIn = 150, dsgn_max_moveTitle = 100;
 	
 	/**
 	 * JLabel which contains the program title (for start fade in) and JLabel
@@ -68,18 +72,37 @@ import control.util.MousePositionTracker;
         super.setLayout(null);
         super.setUndecorated(true);
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        JLabel jlbl_backgroundStroke = new JLabel();
+        jlbl_backgroundStroke.setSize(getSize());
+        jlbl_backgroundStroke.setVisible(true);
+        super.add(jlbl_backgroundStroke);
+
+        Thread mainThread = Thread.currentThread();
         
+//        mainThread.setPriority(Thread.MIN_PRIORITY);
+       
+
+        Thread t = null;
         if (ViewSettings.isFullscreen()) {
 
             this.setFullscreen();
+
+            jlbl_backgroundStroke.setSize(getSize());
+            
+
+            System.out.println(jlbl_backgroundStroke.getSize());
+            Util.getRoughStroke(jlbl_backgroundStroke);
+            
             //fade in and show text.
-            fadeIn();
+            t =  fadeIn();
 
         } else {
             MousePositionTracker mpt = new MousePositionTracker(this);
             super.addMouseListener(mpt);
             super.addMouseMotionListener(mpt);
         }
+
         
         jlbl_border = new MLabel();
         jlbl_border.setOpaque(false);
@@ -105,10 +128,11 @@ import control.util.MousePositionTracker;
         jbtn_fullscreen.setFocusable(false);
         super.add(jbtn_fullscreen);
 
+        super.remove(jlbl_backgroundStroke);
         if (ViewSettings.isFullscreen()) {
 
             //fade out
-            fadeOut();
+            fadeOut(t);
         }
 
         //set some things visible and repaint the whole window.
@@ -127,11 +151,13 @@ import control.util.MousePositionTracker;
         super.add(Page.getInstance());
 
         
+//        mainThread.setPriority(Thread.MAX_PRIORITY);
+        
         //display tabs and page.
         Tabs.getInstance().setVisible(true);
         Page.getInstance().setVisible(true);
         
-        Tabs.getInstance().stroke();
+//        Tabs.getInstance().stroke();
 
 	}
 	
@@ -148,7 +174,7 @@ import control.util.MousePositionTracker;
 	/**
 	 * fade in graphical user interface elements.
 	 */
-	private void fadeIn() {
+	private Thread fadeIn() {
 
 	    //initialize final values
 	    
@@ -190,11 +216,37 @@ import control.util.MousePositionTracker;
         super.add(jlbl_title);
         super.setVisible(true);
         
-        /*
-         * move title
-         */
-        new Thread() {
-            public void run() {
+        Thread t_waitFor = new Thread() {
+        	public void run() {
+
+        		  //fade in
+                for (int i = 0; i < dsgn_maxFadeIn; i++) {
+
+                    getContentPane().setBackground(
+                            new Color(Color.white.getRed() - (Color.white.getRed() 
+                                    - clr_bg.getRed()) * i / dsgn_maxFadeIn,
+                                    Color.white.getGreen() - (Color.white.getGreen() 
+                                            - clr_bg.getGreen()) * i / dsgn_maxFadeIn, 
+                                    Color.white.getBlue() - (Color.white.getBlue()
+                                            - clr_bg.getBlue()) * i / dsgn_maxFadeIn));
+                    try {
+                        Thread.sleep(2 * (2 + 2 + 1));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //set background color.
+                getContentPane().setBackground(clr_bg);
+        	}
+        };
+        t_waitFor.start();
+        
+//        /*
+//         * move title
+//         */
+//        new Thread() {
+//            public void run() {
+//            	setPriority(MAX_PRIORITY);
 
                 //move JLabel into the graphical user interface.
                 for (int i = 0; i < dsgn_max_moveTitle; i++) {
@@ -244,7 +296,7 @@ import control.util.MousePositionTracker;
                                                         title_start_height);
                         
                         try {
-                            Thread.sleep(2 + 2 + 1);
+                            Thread.sleep(2 + 2 );
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -268,29 +320,12 @@ import control.util.MousePositionTracker;
                     }
                 }
 
-            }
-        } .start();
-                
-        
-        //fade in
-        for (int i = 0; i < dsgn_maxFadeIn; i++) {
+//            }
+//        } .start();
+           
+        return t_waitFor;
+      
 
-            super.getContentPane().setBackground(
-                    new Color(Color.white.getRed() - (Color.white.getRed() 
-                            - clr_bg.getRed()) * i / dsgn_maxFadeIn,
-                            Color.white.getGreen() - (Color.white.getGreen() 
-                                    - clr_bg.getGreen()) * i / dsgn_maxFadeIn, 
-                            Color.white.getBlue() - (Color.white.getBlue()
-                                    - clr_bg.getBlue()) * i / dsgn_maxFadeIn));
-            try {
-                Thread.sleep(2 * (2 + 2 + 1));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //set background color.
-        super.getContentPane().setBackground(clr_bg);
 	}
 	
 	
@@ -298,16 +333,19 @@ import control.util.MousePositionTracker;
 	/**
 	 * fade the gui elements out.
 	 */
-	private void fadeOut() {
+	private void fadeOut(Thread _t_waintFor) {
         
-	    final int time = 2000;
+	    final int time = 200;
 	    
-        //sleep for a while
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+	    
+	    while(_t_waintFor.isAlive()) {
+	        //sleep for a while
+	        try {
+	            Thread.sleep(time);
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	    }
         
         //fade out
         for (int i = 0; i < dsgn_maxFadeIn; i++) {
@@ -328,6 +366,7 @@ import control.util.MousePositionTracker;
 
         jlbl_title.setVisible(false);
         super.getContentPane().setBackground(Color.white);
+        
 	}
 	
 	

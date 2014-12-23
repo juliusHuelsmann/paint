@@ -144,7 +144,7 @@ public class VTabbedPane extends MPanel {
         jpnl_background.setLayout(null);
         jpnl_background.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
         jpnl_background.setBorder(BorderFactory.createMatteBorder(
-                1, 0, 1, 1, ViewSettings.GENERAL_CLR_BORDER));
+                1, 0, 0, 1, ViewSettings.GENERAL_CLR_BORDER));
         jpnl_contains.add(jpnl_background);
 
         jlbl_stroke = new JLabel();
@@ -199,7 +199,7 @@ public class VTabbedPane extends MPanel {
             public void mouseClicked(final MouseEvent _event) { }
         });
         jlbl_close.setBorder(BorderFactory.createMatteBorder(
-                0, 0, 1, 0, Color.black));
+                0, 0, 1, 0, ViewSettings.GENERAL_CLR_BORDER));
         jlbl_close.setFocusable(false);
         jpnl_close.add(jlbl_close);
 

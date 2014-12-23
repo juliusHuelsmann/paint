@@ -1,7 +1,15 @@
 package model.util;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.IllegalComponentStateException;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.PrintJob;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,8 +17,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import view.View;
+import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
 import model.util.list.List;
@@ -33,7 +44,48 @@ public final class Util {
     private Util() { }
     
 
-    
+    public static void print(){
+
+    	BufferedImage bi_pic = Picture.getInstance().calculateImage();
+  		JFrame jf = new JFrame();
+    	jf.setSize(
+    			(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()
+    			* bi_pic.getWidth()  / bi_pic.getHeight(),
+    			(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+    	jf.setVisible(false);
+    	PrintJob pjob = Toolkit.getDefaultToolkit().getPrintJob(jf,"paintPrint",null);
+    	if (pjob != null) {
+    	      Graphics pg = pjob.getGraphics();
+    	      if (pg != null) {
+    	    	  bi_pic = resize(bi_pic, jf.getWidth(), jf.getHeight());
+    	    	  pg.drawImage(bi_pic, 0, 0, null);
+    	    	  pg.dispose();
+    	      }
+    	      pjob.end();
+    	    }
+    	jf.dispose();
+    }
+    public static BufferedImage resize(
+    		BufferedImage _bi, int _width, int _height) { 
+	   
+    	
+    	Image img_scaled = _bi.getScaledInstance(
+    			_width, 
+    			_height, 
+    			Image.SCALE_SMOOTH);
+    	
+	    BufferedImage bi = new BufferedImage(
+	    		_width, 
+	    		_height, 
+	    		BufferedImage.TYPE_INT_ARGB);
+
+	    Graphics2D
+	    g2d = bi.createGraphics();
+	    g2d.drawImage(img_scaled, 0, 0, null);
+	    g2d.dispose();
+
+	    return bi;
+	}  
     
     
     /**
@@ -260,10 +312,54 @@ public final class Util {
 	            	
 
 //	            	if ( (_addX + x + y +  _addY) % 20 == 0) {
-	            	if ( (x + jlbl_stroke.getLocationOnScreen().x
-	            			+ y + jlbl_stroke.getLocationOnScreen().y) % 20 == 0) {
+	            	
+	            	try{
+	            		if ( (x + jlbl_stroke.getLocationOnScreen().x
+		            			+ y + jlbl_stroke.getLocationOnScreen().y) 
+		            			% strokeDistance == 0) {
 
-	                	bi_stroke.setRGB(x, y, new Color(10,10,10, 10).getRGB());
+		                	bi_stroke.setRGB(x, y, new Color(10,10,10, 10).getRGB());
+		            	} else {
+
+		                	bi_stroke.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+		            	}
+	            	} catch (IllegalComponentStateException e) {
+	            		x = bi_stroke.getWidth();
+	            		y = bi_stroke.getHeight();
+	            	}
+	            
+	            }	
+	        }
+	        jlbl_stroke.setIcon(new ImageIcon(bi_stroke));
+		}
+		
+	}
+
+    /**
+     * Apply stroke on background.
+     * @param jlbl_stroke the background carrying item.
+     */
+	public static void getRoughStroke(JLabel jlbl_stroke) {
+		
+		
+		final int strokeDistance = 20;
+		if (jlbl_stroke.getWidth() > 0 
+				&& jlbl_stroke.getHeight() > 0
+//				&& jlbl_stroke.isShowing()
+				) {
+			BufferedImage bi_stroke = new BufferedImage(jlbl_stroke.getWidth(), 
+	        		jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
+	        
+	        for (int x = 0; x < bi_stroke.getWidth(); x ++) {
+
+	            for (int y = 0; y < bi_stroke.getHeight(); y ++) {
+	            	
+
+//	            	if ( (_addX + x + y +  _addY) % 20 == 0) {
+	            	if ( (x + y) 
+	            			% strokeDistance == 0) {
+
+	                	bi_stroke.setRGB(x, y, new Color(40,50,50, 90).getRGB());
 	            	} else {
 
 	                	bi_stroke.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());

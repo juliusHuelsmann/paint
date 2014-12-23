@@ -902,7 +902,38 @@ public final class Picture {
             e.printStackTrace();
         }
     }
-    
+    /**
+     * save the picture.
+     * @param _wsLoc the path of the location.
+     */
+    public BufferedImage calculateImage() {
+        
+        
+        BufferedImage bi;
+        if (Status.isExportAlpha()) {
+
+            bi = Page.getInstance().getEmptyBITransparent();
+        } else {
+            bi = Page.getInstance().getEmptyBIWhite();
+        }
+        
+
+        bi = Utils.getBackgroundExport(bi, 0, 0, Status.getImageSize().width, 
+                Status.getImageSize().height, 0, 0);
+        
+        
+        
+        
+        bi = repaintRectangle(
+                -Page.getInstance().getJlbl_painting().getLocation().x + 0, 
+                -Page.getInstance().getJlbl_painting().getLocation().y + 0, 
+                Status.getImageSize().width, Status.getImageSize().height, 
+                bi, true);
+                
+                return bi;
+        
+        
+    }
     
 
     /**

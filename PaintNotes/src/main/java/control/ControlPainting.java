@@ -16,10 +16,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
@@ -48,6 +50,7 @@ import view.forms.New;
 import view.forms.Page;
 import view.forms.Tabs;
 import view.tabs.Paint;
+import view.tabs.Print;
 
 /**
  * Controller class dealing with main paint stuff.
@@ -611,9 +614,13 @@ public final class ControlPainting implements MouseListener,
                 Paint.getInstance().getTb_cut().getActionCause())) {
             mr_cut();
         } else if (_event.getSource().equals(
+        		Print.getInstance(-1).getTb_print().getActionCause())) {
+        	Util.print();
+        	
+        } else if (_event.getSource().equals(
                         Page.getInstance().getJlbl_painting())) {
             mr_painting(_event);
-        }
+        } 
     }
     
 

@@ -11,6 +11,7 @@ import view.tabs.Insert;
 import view.tabs.Look;
 import view.tabs.Paint;
 import view.tabs.PaintObjects;
+import view.tabs.Print;
 import view.tabs.Selection;
 import view.tabs.Write;
 import view.util.VTabbedPane;
@@ -107,8 +108,18 @@ public class Tabs extends VTabbedPane {
          * tab print
          */
         super.addTab("Drucken");
+        super.addToTab(tabNumber, Print.getInstance(tabNumber));
         tabNumber++;
 
+
+        super.addTab("paintObejcts");
+        PaintObjects tab_pos = PaintObjects.getInstance();
+        PaintObjects.getInstance().setSize(
+                (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
+                ViewSettings.getView_heightTB());
+        super.addToTab(tabNumber, tab_pos);
+        tabNumber++;
+        
         /*
          * tab print
          */
@@ -129,14 +140,10 @@ public class Tabs extends VTabbedPane {
 
 
 
-        super.addTab("paintObejcts");
-        PaintObjects tab_pos = PaintObjects.getInstance();
-        PaintObjects.getInstance().setSize(
-                (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
-                ViewSettings.getView_heightTB());
-        super.addToTab(tabNumber, tab_pos);
-        tabNumber++;
         
+        super.addTab("");
+        super.addTab("");
+        super.addTab("");
         super.addTab("");
         super.addTab("");
         super.addTab("");

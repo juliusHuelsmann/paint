@@ -1,17 +1,20 @@
 package view.forms;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import model.settings.Constants;
 import model.settings.ViewSettings;
+import model.util.Util;
 import model.util.paint.Utils;
 import control.forms.CNew;
 import control.util.MousePositionTracker;
@@ -103,6 +106,10 @@ public final class New extends MPanel {
     private MLabel jlbl_customWidth, jlbl_customHeight;
     
     /**
+     * Stroke jlabel.
+     */
+    private JLabel jlbl_stroke;
+    /**
      * JTextFields which will be filled manually by user with the custom
      * size of the new Page.
      */
@@ -153,6 +160,12 @@ public final class New extends MPanel {
         super.addMouseMotionListener(mpt);
         super.addMouseListener(mpt);
 
+        jlbl_stroke = new JLabel();
+        jlbl_stroke.setFocusable(false);
+        jlbl_stroke.setBorder(null);
+        super.add(jlbl_stroke);
+
+        
         //The container JPanel
         jpnl_stuff = new MPanel();
         jpnl_stuff.setSize(width, height);
@@ -160,7 +173,7 @@ public final class New extends MPanel {
         jpnl_stuff.setLayout(null);
         jpnl_stuff.setBorder(BorderFactory.createLineBorder(Color.black));
         super.add(jpnl_stuff);
-
+        
         //The exit button which makes the JPanel invisible
         jbtn_exit = new MButton();
         jbtn_exit.setContentAreaFilled(false);
@@ -454,6 +467,8 @@ public final class New extends MPanel {
         super.requestFocus();
     }
     
+    
+    
     /**
      * Initialize one page - item.
      * @param _i1b the page item
@@ -481,6 +496,8 @@ public final class New extends MPanel {
         _i1b.setIconLabelY((_i1b.getHeight() 
                 - _i1b.getImageHeight()) / 2);
         _i1b.setBorder(true);
+        
+        jlbl_stroke.setSize(getSize());
         jpnl_stuff.add(_i1b);
     }
     
@@ -533,6 +550,18 @@ public final class New extends MPanel {
         return instance;
     }
 
+    
+    @Override
+    public void setLocation(int _x, int _y) {
+    	
+    	super.setLocation(_x, _y);
+    	if (jlbl_stroke != null) {
+
+    		Util.getStroke(jlbl_stroke, 0, 0);
+    		
+    	}
+    	
+    }
 
     /**
      * @return the i1b_a4

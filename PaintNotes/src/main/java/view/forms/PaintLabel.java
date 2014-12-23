@@ -88,7 +88,8 @@ public class PaintLabel extends MLabel {
         refreshPaintBackground();
         
         setIcon(new ImageIcon(getBi()));
-        PaintObjects.getInstance().repaint();
+        if (PaintObjects.getInstance() != null)
+        	PaintObjects.getInstance().repaint();
     }
 
     
@@ -122,7 +123,10 @@ public class PaintLabel extends MLabel {
     
     @Override public final void repaint() {
         super.repaint();
-        PaintObjects.getInstance().repaint(); 
+        if (PaintObjects.getInstance() != null) {
+
+            PaintObjects.getInstance().repaint(); 	
+        }
         New.getInstance().setVisible(false);
     }
     

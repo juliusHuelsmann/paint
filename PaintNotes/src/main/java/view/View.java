@@ -18,6 +18,7 @@ import model.util.Util;
 import model.util.paint.Utils;
 import view.forms.Message;
 import view.forms.Page;
+import view.forms.QuickAccess;
 import view.forms.Tabs;
 import view.util.mega.MButton;
 import view.util.mega.MFrame;

@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
@@ -124,7 +125,8 @@ import view.util.mega.MButton;
 
         //form for creating new page.
         super.add(New.getInstance());
-        
+
+        super.add(QuickAccess.getInstance());
         //initialize JPanel jpnl_toMove
         jpnl_toMove = new MPanel() {
             

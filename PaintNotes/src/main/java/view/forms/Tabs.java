@@ -176,6 +176,7 @@ public class Tabs extends VTabbedPane {
     
     
     
+    
 
     /**
      * this method guarantees that only one instance of this

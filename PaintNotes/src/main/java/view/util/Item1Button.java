@@ -9,13 +9,16 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import view.forms.Tabs;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 import model.settings.Status;
 import model.settings.ViewSettings;
+import model.util.Util;
 import model.util.paint.Utils;
 import control.util.VisualTextButton;
 
@@ -61,6 +64,12 @@ public class Item1Button extends MPanel {
      */
     private Object additionalInformation;
 	
+    
+    /**
+     * JLabel containing stroke.
+     */
+    private JLabel jlbl_stroke;
+    
 	/**
 	 * Constructor: save Object.
 	 * 
@@ -71,7 +80,7 @@ public class Item1Button extends MPanel {
 		//initialize JPanel and alter settings
 		super();
 		super.setLayout(null);
-		super.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
+		super.setBackground(ViewSettings.GENERAL_CLR_ITEM1BUTTON_BACKGROUND_NORMAL);
 		super.setOpaque(true);
 		
 		//set values
@@ -110,6 +119,11 @@ public class Item1Button extends MPanel {
 		jlbl_color.setOpaque(true);
 		jlbl_color.setFocusable(false);
 		super.add(jlbl_color);
+		
+		jlbl_stroke = new JLabel();
+		jlbl_stroke.setBorder(null);
+		jlbl_stroke.setFocusable(false);
+		super.add(jlbl_stroke);
 	}
 	
 	/**
@@ -126,7 +140,7 @@ public class Item1Button extends MPanel {
 			
 			//if not activated
 			if (!_activate) {
-                super.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
+                super.setBackground(ViewSettings.GENERAL_CLR_ITEM1BUTTON_BACKGROUND_NORMAL);
 				setOwnBorder(null);
 			} else {
 
@@ -134,7 +148,9 @@ public class Item1Button extends MPanel {
 				setOwnBackground(
 				        ViewSettings.GENERAL_CLR_ITEM1BUTTON_BACKGROUND);
 				setOwnBorder(ViewSettings.BRD_ITEM1BUTTON);
+				super.repaint();
 			}
+
 		}
 	}
 	
@@ -258,6 +274,7 @@ public class Item1Button extends MPanel {
 		//set super size and the size of the JButton for ActionEvent
 		super.setSize(_width, _height);
 		jbtn_touch.setSize(getSize());
+		jlbl_stroke.setSize(getSize());
 		
 		flip();
 	}
@@ -289,7 +306,7 @@ public class Item1Button extends MPanel {
 	            jlbl_title.setBounds(0, jlbl_color.getHeight() 
 	                    + jlbl_color.getY(), getWidth(), getHeight() 
 	                    - jlbl_color.getHeight() - jlbl_color.getY());
-	    } 
+	    }  
 	}
 	
 	/**
@@ -394,4 +411,11 @@ public class Item1Button extends MPanel {
             final Object _additionalInformation) {
         this.additionalInformation = _additionalInformation;
     }
+
+	public void stroke() {
+
+		System.out.println("stroking");
+        Util.getStroke(jlbl_stroke, jlbl_stroke.getX() + super.getX(),
+        		jlbl_stroke.getY() + super.getY()); 
+	}
 }

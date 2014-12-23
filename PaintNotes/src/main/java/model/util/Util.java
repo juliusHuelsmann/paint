@@ -1,10 +1,15 @@
 package model.util;
 
+import java.awt.Color;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
@@ -229,4 +234,42 @@ public final class Util {
         }
         return p_return;
     }
+
+
+
+
+
+    /**
+     * Apply stroke on background.
+     * @param jlbl_stroke the background carrying item.
+     */
+	public static void getStroke(JLabel jlbl_stroke, int _addX, int _addY) {
+		
+		if (jlbl_stroke.getWidth() > 0 
+				&& jlbl_stroke.getHeight() > 0
+//				&& jlbl_stroke.isShowing()
+				) {
+			BufferedImage bi_stroke = new BufferedImage(jlbl_stroke.getWidth(), 
+	        		jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
+	        
+	        for (int x = 0; x < bi_stroke.getWidth(); x ++) {
+
+	            for (int y = 0; y < bi_stroke.getHeight(); y ++) {
+	            	
+
+//	            	if ( (_addX + x + y +  _addY) % 20 == 0) {
+	            	if ( (x + jlbl_stroke.getLocationOnScreen().x
+	            			+ y + jlbl_stroke.getLocationOnScreen().y) % 20 == 0) {
+
+	                	bi_stroke.setRGB(x, y, new Color(195, 196, 197, 70).getRGB());
+	            	} else {
+
+	                	bi_stroke.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+	            	}
+	            }	
+	        }
+	        jlbl_stroke.setIcon(new ImageIcon(bi_stroke));
+		}
+		
+	}
 }

@@ -130,6 +130,8 @@ import control.util.MousePositionTracker;
         //display tabs and page.
         Tabs.getInstance().setVisible(true);
         Page.getInstance().setVisible(true);
+        
+        Tabs.getInstance().stroke();
 
 	}
 	

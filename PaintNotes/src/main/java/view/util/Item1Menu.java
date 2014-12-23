@@ -577,4 +577,9 @@ public class Item1Menu extends MPanel {
     public final void setSizeHeight(final int _sizeHeight) {
         this.sizeHeight = _sizeHeight;
     }
+
+
+	public void stroke() {
+tb_select.stroke();		
+	}
 }

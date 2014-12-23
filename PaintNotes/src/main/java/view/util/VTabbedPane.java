@@ -8,14 +8,23 @@ import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import model.settings.Error;
 import model.settings.ViewSettings;
+import model.util.Util;
 import control.util.CTabbedPane;
+import view.View;
 import view.forms.Page;
+import view.tabs.Tab;
 import view.util.mega.MButton;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
@@ -33,7 +42,7 @@ public class VTabbedPane extends MPanel {
 	/**
 	 * array of headline MButtons.
 	 */
-	private MButton [] jbtn_stuffHeadline;
+	private VTabButton [] jbtn_stuffHeadline;
 	
 	/**
 	 * MButton for closing the tabbedPane.
@@ -103,6 +112,11 @@ public class VTabbedPane extends MPanel {
 	private MLabel jlbl_closeTime;
 	
 	/**
+	 * JLabel for stroke.
+	 */
+	private JLabel jlbl_stroke;
+	
+	/**
 	 * Constructor initialize view and corresponding controller class..
 	 */
 	public VTabbedPane() {
@@ -121,6 +135,7 @@ public class VTabbedPane extends MPanel {
 		jpnl_contains.setLayout(null);
 		super.add(jpnl_contains);
 
+        
         //initialize the Background MLabel
         jpnl_background = new MLabel();
         jpnl_background.setFocusable(false);
@@ -131,6 +146,11 @@ public class VTabbedPane extends MPanel {
                 1, 0, 1, 1, ViewSettings.GENERAL_CLR_BORDER));
         jpnl_contains.add(jpnl_background);
 
+        jlbl_stroke = new JLabel();
+        jlbl_stroke.setBorder(null);
+        jlbl_stroke.setOpaque(false);
+        jpnl_contains.add (jlbl_stroke);
+        
         jpnl_close = new MPanel();
         jpnl_close.setFocusable(false);
         jpnl_close.setOpaque(true);
@@ -476,7 +496,7 @@ public class VTabbedPane extends MPanel {
 			
 		    //create arrays for content MPanel and headline MButton
 			jpnl_stuff = new MPanel[1];
-			jbtn_stuffHeadline = new MButton[1];
+			jbtn_stuffHeadline = new VTabButton[1];
 
 			//initialize title button and content MPanel
 			jbtn_stuffHeadline[0] = initJbtn_title(0, _title);
@@ -486,7 +506,8 @@ public class VTabbedPane extends MPanel {
 			
 		    //create new arrays
 			MPanel [] jpnl_stuff2 = new MPanel [jpnl_stuff.length + 1];
-			MButton[] jbtn_stuff2 = new MButton[jpnl_stuff.length + 1];
+			VTabButton[] jbtn_stuff2 
+			= new VTabButton[jpnl_stuff.length + 1];
 
 			//save old MPanels
 			for (int i = 0; i < jpnl_stuff.length; i++) {
@@ -582,9 +603,9 @@ public class VTabbedPane extends MPanel {
 	 * @param _text the headline
 	 * @return the MButton.
 	 */
-	private MButton initJbtn_title(final int _index, final String _text) {
+	private VTabButton initJbtn_title(final int _index, final String _text) {
 	
-		VButtonWrapper jbtn = new VButtonWrapper(_index);
+		VTabButton jbtn = new VTabButton(_index);
 		jbtn.setVisible(true);
 		jbtn.setBackground(Color.white);
 		jbtn.setBorder(null);
@@ -622,6 +643,8 @@ public class VTabbedPane extends MPanel {
 	 */
 	public final void openTab(final int _index) {
 	    
+		//if new opening method is selected or not (new opening consists in 
+		//sliding open).
 	    final boolean newOpening = true;
 	    
 	    if (newOpening) {
@@ -641,6 +664,7 @@ public class VTabbedPane extends MPanel {
                 jbtn_stuffHeadline[i].setBackground(Color.white);
                 jbtn_stuffHeadline[i].setBorder(BorderFactory.createMatteBorder(
                         0, 0, 1, 0, ViewSettings.GENERAL_CLR_BORDER));
+                jbtn_stuffHeadline[i].unstroke();
 
                 //make the tab MPanel visible
                 jpnl_stuff[i].setLocation(getWidth() * (i - lastTab), 
@@ -652,10 +676,14 @@ public class VTabbedPane extends MPanel {
             //and create a border everywhere except at the bottom
             jbtn_stuffHeadline[_index].setBackground(
                     ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
+            if (isVisible())
+            	jbtn_stuffHeadline[_index].stroke();
+
             jbtn_stuffHeadline[_index].setBorder(
                     BorderFactory.createMatteBorder(
                     1, 1, 0, 1, ViewSettings.GENERAL_CLR_BORDER));
             jpnl_contains.setComponentZOrder(jbtn_stuffHeadline[_index], 1);
+            jpnl_contains.setComponentZOrder(jlbl_stroke, 2);
 
             super.setSize(getWidth(), visibleHeight);
             new Thread() {
@@ -677,6 +705,7 @@ public class VTabbedPane extends MPanel {
                                     * percent / max,
                                     jpnl_stuff[i].getY());
                             jpnl_stuff[i].repaint();
+                            
                         }
                         try {
                             Thread.sleep(1);
@@ -758,6 +787,37 @@ public class VTabbedPane extends MPanel {
     	flip();
     }
 
+    
+    
+    /**
+     * Apply stroke.
+     */
+    public final void stroke() {
+
+    	
+    	jbtn_stuffHeadline[getOpenTab()].stroke();
+        Util.getStroke(jlbl_stroke, jlbl_stroke.getX() + super.getX(), 
+        		jlbl_stroke.getY() + super.getY());
+    
+        for (MPanel stuff : jpnl_stuff) {
+        	for (Component i : stuff.getComponents()) {
+            	System.out.println(i);
+            	if (i instanceof Tab) {
+
+            		for (Component j : ((Tab)i).getComponents()) {
+
+                    	if (j instanceof Item1Button) {
+
+                    		((Item1Button)j).stroke();
+                    	} else if (j instanceof Item1Menu) {
+
+                    		((Item1Menu)j).stroke();
+                    	}
+            		}
+            	}
+        	}
+        }
+    }
 
     /**
      * set size and location of contents depending on the current
@@ -782,6 +842,11 @@ public class VTabbedPane extends MPanel {
 
         jlbl_whiteBackground.setSize(getWidth(), visibleHeight);
         
+        jlbl_stroke.setLocation(jpnl_background.getLocation());
+        jlbl_stroke.setSize(jpnl_background.getSize());
+        
+//        Util.getStroke(jlbl_stroke, jlbl_stroke.getX() + super.getX(), 
+//        		jlbl_stroke.getY() + super.getY());
 	        
 	        //because the border should be visible 
             jpnl_background.setLocation(0, titleHeight + titleY - 1);

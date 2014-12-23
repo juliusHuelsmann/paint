@@ -27,6 +27,7 @@ public class MButton extends JButton implements Mega {
     public MButton() {
         super();
     }
+    
 
     /**
      * Constructor. Call super - constructor.

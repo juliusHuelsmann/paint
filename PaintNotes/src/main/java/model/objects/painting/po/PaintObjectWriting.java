@@ -420,7 +420,7 @@ public class PaintObjectWriting extends PaintObjectPen {
             int plusY = a * dY /  Math.max(Math.abs(dX), Math.abs(dY));
             
             DPoint dumbledore = new DPoint(
-                    _p1.getX() - plusX, _p1.getY() - plusY);
+                    (int) (_p1.getX() - plusX), (int) (_p1.getY() - plusY));
             if (isInSelectionPoint(_r, _shiftX, _shiftY, dumbledore)) {
                 return dumbledore;
             }

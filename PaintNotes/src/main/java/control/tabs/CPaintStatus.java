@@ -465,7 +465,7 @@ public final class CPaintStatus implements MouseListener {
                     Paint.getInstance().getTb_erase().setActivated(true);
 
                     BufferedImage bi_erase = new BufferedImage(
-                    		Status.getEraseRadius() * 2, 
+                    		Status.getEraseRadius() * 2,
                     		Status.getEraseRadius() * 2, 
                     		BufferedImage.TYPE_INT_RGB);
                     for (int y = 0; y < bi_erase.getHeight(); y ++) {

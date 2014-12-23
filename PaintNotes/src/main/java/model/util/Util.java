@@ -2,6 +2,8 @@ package model.util;
 
 import java.awt.Point;
 import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 import model.objects.painting.po.PaintObject;
@@ -26,6 +28,7 @@ public final class Util {
     private Util() { }
     
 
+    
     
     
     /**
@@ -73,6 +76,30 @@ public final class Util {
     
     
     
+    /**
+     * return list of strings from a text file.
+     * 
+     * @param _path the path of the text file
+     * @return list of lines in text file
+     */
+    public static List<String> loadTextFile(String _path) {
+
+    	List<String> ls_strings = new List<String>();
+        try {
+	        BufferedReader br = new BufferedReader(new FileReader(_path));
+	        String line = br.readLine();
+	
+	            while (line != null) {
+	            	ls_strings.insertBehind(line);
+	                line = br.readLine();
+	            }
+				br.close();
+				return ls_strings;
+		} catch (IOException e) {
+			e.printStackTrace();
+	        return null;
+		}
+    }
     
     
     

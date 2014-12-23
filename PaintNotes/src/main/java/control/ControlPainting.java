@@ -1607,7 +1607,7 @@ public final class ControlPainting implements MouseListener,
      * @param _event the mouseEvent.
      * @param _r_sizeField the rectangle
      */
-    private void mr_sel_line_destroy(final MouseEvent _event, 
+    public void mr_sel_line_destroy( 
             final Rectangle _r_sizeField) {
 
         /*
@@ -1760,8 +1760,8 @@ public final class ControlPainting implements MouseListener,
     	final Rectangle _r_sizeField = new Rectangle(
     			_p.x - Status.getEraseRadius(), 
     			_p.y - Status.getEraseRadius(), 
-    			Status.getEraseRadius(), 
-    			Status.getEraseRadius());
+    			Status.getEraseRadius() * 2, 
+    			Status.getEraseRadius() * 2);
         /*
          * whole item selection.
          */
@@ -1954,7 +1954,7 @@ public final class ControlPainting implements MouseListener,
                           .getLocation().x;
                   r.y += Page.getInstance().getJlbl_painting()
                           .getLocation().y;
-                    mr_sel_line_destroy(_event, r);
+                    mr_sel_line_destroy(r);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
                     break;
@@ -2006,8 +2006,8 @@ public final class ControlPainting implements MouseListener,
                     if (thrd_move != null) {
                         thrd_move.interrupt();
                     }
-                    mr_paint_initializeMovementThread(mmSP);
-                    thrd_move.start();
+//                    mr_paint_initializeMovementThread(mmSP);
+//                    thrd_move.start();
                 }
                 
                 //set points to null

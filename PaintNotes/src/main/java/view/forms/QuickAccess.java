@@ -62,12 +62,30 @@ public class QuickAccess extends MPanel {
 					
 
 					if ((x * x - rad2 * rad2) >= - (y * y)) {
+						final int strokeDistance = 10;
+	            		
+						if (w == h || w == bi.getWidth()-h) {
 
-	                	bi.setRGB(w, h, ViewSettings.GENERAL_CLR_BACKGROUND.getRGB());
+		                	bi.setRGB(w, h, Color.gray.getRGB());
+						} else if ( (w + h) 
+		            			% strokeDistance == 0
+		            			||  (w - h) % strokeDistance == 0) {
+
+		                	bi.setRGB(w, h, new Color(220,230,250).getRGB());
+		            	} else {
+
+		                	bi.setRGB(w, h, ViewSettings.GENERAL_CLR_BACKGROUND.getRGB());
+		            	}
+						
+//	                	bi.setRGB(w, h, ViewSettings.GENERAL_CLR_BACKGROUND.getRGB());
 					} else if ((x * x - rad3 * rad3) <= - (y * y)) {
 
 					final int strokeDistance = 10;
-	            		if ( (w + h) 
+
+					if (w == h || w == bi.getWidth()-h) {
+
+	                	bi.setRGB(w, h, Color.gray.getRGB());
+					} else if ( (w + h) 
 		            			% strokeDistance == 0
 		            			||  (w - h) % strokeDistance == 0) {
 
@@ -183,8 +201,10 @@ public class QuickAccess extends MPanel {
 
 				if (myY < 30 || myY > bi.getHeight() - 30){
 					
-				} else
-				bi.setRGB((int) myX1, (int) myY, ViewSettings.GENERAL_CLR_BORDER.getRGB());
+				} else {
+
+	    				bi.setRGB((int) myX1, (int) myY, ViewSettings.GENERAL_CLR_BORDER.getRGB());
+					}
 			}
 			
 			myX1 +=1;

@@ -8,14 +8,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import model.settings.ViewSettings;
+import model.util.Util;
 import control.util.MousePositionTracker;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
 public class QuickAccess extends MPanel {
 
-	private MLabel jlbl_background;
-	
+	private MLabel jlbl_background, jlbl_move, jlbl_pen, jlbl_erase, jlbl_select;
+	private final int sizeItem = 40;
 	private static QuickAccess instance;
 	public QuickAccess() {
 		super();
@@ -25,6 +26,43 @@ public class QuickAccess extends MPanel {
 		super.addMouseListener(mpt);
 		super.addMouseMotionListener(mpt);
 		super.setSize(200, 200);
+
+		jlbl_move = new MLabel();
+		jlbl_move.setSize(sizeItem, sizeItem);
+		jlbl_move.setOpaque(false);
+		jlbl_move.setIcon(
+				new ImageIcon(
+						Util.resize("centerResize.png", sizeItem, sizeItem)));
+		jlbl_move.setLocation(getWidth() / 2- sizeItem / 2, getHeight() / 5);
+		super.add(jlbl_move);
+
+		jlbl_pen = new MLabel();
+		jlbl_pen.setSize(sizeItem, sizeItem);
+		jlbl_pen.setOpaque(false);
+		jlbl_pen.setIcon(
+				new ImageIcon(
+						Util.resize("centerResize.png", sizeItem, sizeItem)));
+		jlbl_pen.setLocation(getWidth() / 2- sizeItem / 2, 
+				 getHeight() - getHeight() / 5 - sizeItem);
+		super.add(jlbl_pen);
+
+		jlbl_erase = new MLabel();
+		jlbl_erase.setSize(sizeItem, sizeItem);
+		jlbl_erase.setOpaque(false);
+		jlbl_erase.setIcon(
+				new ImageIcon(
+						Util.resize("icon/save.png", sizeItem, sizeItem)));
+		jlbl_erase.setLocation(getWidth() / 5 , getHeight() / 2 - sizeItem / 2);
+		super.add(jlbl_erase);
+
+		jlbl_select = new MLabel();
+		jlbl_select.setSize(sizeItem, sizeItem);
+		jlbl_select.setOpaque(false);
+		jlbl_select.setIcon(
+				new ImageIcon(
+						Util.resize("centerResize.png", sizeItem, sizeItem)));
+		jlbl_select.setLocation(getWidth() - getWidth() / 5 - sizeItem, getHeight() / 2 - sizeItem / 2);
+		super.add(jlbl_select);
 		
 		jlbl_background = new MLabel();
 		jlbl_background.setSize(getSize());
@@ -66,7 +104,7 @@ public class QuickAccess extends MPanel {
 	            		
 						if (w == h || w == bi.getWidth()-h) {
 
-		                	bi.setRGB(w, h, Color.gray.getRGB());
+		                	bi.setRGB(w, h, Color.lightGray.getRGB());
 						} else if ( (w + h) 
 		            			% strokeDistance == 0
 		            			||  (w - h) % strokeDistance == 0) {
@@ -80,21 +118,56 @@ public class QuickAccess extends MPanel {
 //	                	bi.setRGB(w, h, ViewSettings.GENERAL_CLR_BACKGROUND.getRGB());
 					} else if ((x * x - rad3 * rad3) <= - (y * y)) {
 
+						
+						
 					final int strokeDistance = 10;
 
 					if (w == h || w == bi.getWidth()-h) {
 
-	                	bi.setRGB(w, h, Color.gray.getRGB());
+	                	bi.setRGB(w, h, Color.lightGray.getRGB());
 					} else if ( (w + h) 
 		            			% strokeDistance == 0
 		            			||  (w - h) % strokeDistance == 0) {
 
 		                	bi.setRGB(w, h, new Color(220,230,250).getRGB());
 		            	} else {
+		            		final Color clr_hightlighted = new Color(
+		            				ViewSettings.GENERAL_CLR_BACKGROUND_DARK
+		            				.getRed() - 11, 
+		            				ViewSettings.GENERAL_CLR_BACKGROUND_DARK
+		            				.getGreen() - 11, 
+		            				ViewSettings.GENERAL_CLR_BACKGROUND_DARK
+		            				.getBlue() - 12);
+		            		
+							if (w > h && w < bi.getWidth() - h) {
 
-		                	bi.setRGB(w, h, ViewSettings.GENERAL_CLR_BACKGROUND_DARK.getRGB());
+			            		//top quadrant
+			                	bi.setRGB(w, h,clr_hightlighted.getRGB());	
+							} else  if (w < h) {
+								
+								if ( h < bi.getWidth() - w) {
+
+									//left
+				                	bi.setRGB(w, h,ViewSettings
+				                			.GENERAL_CLR_BACKGROUND_DARK
+				                			.getRGB());	
+								} else {
+
+									//bottom
+				                	bi.setRGB(w, h,ViewSettings
+				                			.GENERAL_CLR_BACKGROUND_DARK
+				                			.getRGB());	
+								}
+							} else  if (w > bi.getWidth() - h) {
+								
+								//rigth
+			                	bi.setRGB(w, h,ViewSettings
+			                			.GENERAL_CLR_BACKGROUND_DARK
+			                			.getRGB());	
+							} 
 		            	}
 					}
+
 //			}
 	            		
 	            		

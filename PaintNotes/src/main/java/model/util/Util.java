@@ -12,10 +12,12 @@ import java.awt.PrintJob;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -86,6 +88,22 @@ public final class Util {
 	    g2d.dispose();
 
 	    return bi;
+	}  
+
+    public static BufferedImage resize(
+    		String _bi, int _width, int _height) { 
+	   
+    	BufferedImage img_scaled;
+		try {
+			img_scaled = ImageIO.read(new File(_bi));
+		    return resize(img_scaled, _width, _height);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+    	
+
 	}  
     
     

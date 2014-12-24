@@ -49,49 +49,24 @@ public class QuickAccess extends MPanel {
 				_jlbl.getHeight(), 
 				BufferedImage.TYPE_INT_ARGB);
 	
-		int topLastVal = 0;
 		for (int h = 0; h < bi.getWidth(); h ++) {
-
 			double y = 1.0 *  (bi.getHeight() / 2 - h);
 			for (int w = 0; w < bi.getWidth(); w ++) {
-
 				double x = 1.0 *  (bi.getWidth() / 2 - w);
 
+				double rad2 = bi.getWidth() / 2 - 20;
+				double rad3 = bi.getWidth() / 2 - 30;
 				
-				//x² + y² <= r²
-		if ((x * x - bi.getWidth()  *  bi.getWidth() / 4) <= - (y * y)){
+				if ((x * x - bi.getWidth()  *  bi.getWidth() / 4) 
+						<= - (y * y)) {
+					
 
+					if ((x * x - rad2 * rad2) >= - (y * y)) {
 
-//			double val = 10;
-//
-//			double divisor = (int)(_jlbl.getWidth() * 2);
-//			int v1 = (int) ((1.0 * x * x - bi.getWidth()  *  bi.getWidth() / 4.0) / divisor);
-//			int v2 =  - (int)  (1.0 * y * y / divisor);
-//			if (v1 == v2){
-//
-//				if (w % 10 == 0 && h <= bi.getHeight() / 2) {
-//					
-//					//draw line from previous topLastVal to current one
-//					int dy = h -topLastVal;
-//					for (int cX = 1; cX <= 10; cX ++) {
-//
-//						double cY = 1.0 * dy * cX / 10.0;
-//
-//						int newX = -cX + w + 10;
-//						int newY =  (int) cY + topLastVal;
-//						if (newX >= 0 && newY >= 0 && newX < bi.getWidth() && newY < bi.getHeight()) {
-//
-//							bi.setRGB(newX, newY, Color.black.getRGB());
-//						}
-//						
-//					}
-//					
-//					topLastVal = h;
-//					bi.setRGB(w, h, Color.red.getRGB());
-//				}
-//			} else {
+	                	bi.setRGB(w, h, ViewSettings.GENERAL_CLR_BACKGROUND.getRGB());
+					} else if ((x * x - rad3 * rad3) <= - (y * y)) {
 
-				final int strokeDistance = 10;
+					final int strokeDistance = 10;
 	            		if ( (w + h) 
 		            			% strokeDistance == 0
 		            			||  (w - h) % strokeDistance == 0) {
@@ -101,6 +76,7 @@ public class QuickAccess extends MPanel {
 
 		                	bi.setRGB(w, h, ViewSettings.GENERAL_CLR_BACKGROUND_DARK.getRGB());
 		            	}
+					}
 //			}
 	            		
 	            		
@@ -130,28 +106,100 @@ public class QuickAccess extends MPanel {
 //			double myXold = 1.0 *  (bi.getWidth() / 2 - w);
 //			(bi.getWidth() / 2 - w) = sqrt(y² - (bi.getwi / 2)²)
 //			w =  sqrt(y² - (bi.getwi / 2)²) - bi.getwi / 2
-			double myX = Math.sqrt(Math.abs(myY * myY - Math.pow(bi.getWidth() / 2, 2) - bi.getWidth() / 2));
+			double myX1 = Math.sqrt(Math.abs(myY * myY - Math.pow(bi.getWidth() / 2, 2) - bi.getWidth() / 2));
 
-			myX += bi.getHeight() / 2;
+			myX1 += bi.getHeight() / 2;
 			myY += bi.getHeight() / 2;
 				//x² + y² <= r²
 
-			myX -= 1;
+			myX1 -= 1;
 			while (myY >= bi.getHeight()){
 				myY --;
 			}
 			while (myY < 0){
 				myY ++;
 			}
-			if (myX >= 0 && myY >= 0 && myX < bi.getWidth() && myY < bi.getHeight())
-          	bi.setRGB((int) myX, (int) myY, ViewSettings.GENERAL_CLR_BORDER.getRGB());
+			if (myX1 >= 0 && myY >= 0 && myX1 < bi.getWidth() && myY < bi.getHeight())
+          	bi.setRGB((int) myX1, (int) myY, ViewSettings.GENERAL_CLR_BORDER.getRGB());
 			
-			myX +=1;
-			int myX2 = -(int) (myX -bi.getHeight());
+			myX1 +=1;
+			int myX2 = -(int) (myX1 -bi.getHeight());
 
 			if (myX2 >= 0 && myY >= 0 && myX2 < bi.getWidth() && myY < bi.getHeight())
           	bi.setRGB((int) myX2, (int) myY, ViewSettings.GENERAL_CLR_BORDER.getRGB());
 		}
+		
+		
+		
+		
+		
+		
+
+		for (double Xh = 0; Xh < bi.getWidth(); Xh += 0.1) {
+
+			double rad2 = bi.getWidth() / 2 - 20;
+			double myY = 1.0 *  (bi.getHeight() / 2 - Xh);
+			double myX1 = Math.sqrt(Math.abs(myY * myY - Math.pow(rad2, 2) - bi.getWidth() / 2));
+
+			myX1 += bi.getHeight() / 2;
+			myY += bi.getHeight() / 2;
+				//x² + y² <= r²
+
+			myX1 -= 1;
+			if (myX1 >= 0 && myY >= 0 && myX1 < bi.getWidth() && myY < bi.getHeight()) {
+
+				if (myY > 20 && myY < bi.getHeight() - 20){
+
+		          	bi.setRGB((int) myX1, (int) myY, ViewSettings.GENERAL_CLR_BORDER.getRGB());
+				}
+			}
+			
+			myX1 +=1;
+			int myX2 = -(int) (myX1 -bi.getHeight());
+
+			if (myX2 >= 0 && myY >= 0 && myX2 < bi.getWidth() && myY < bi.getHeight()) {
+
+				if (myY > 20 && myY < bi.getHeight() - 20){
+
+		          	bi.setRGB((int) myX2, (int) myY, ViewSettings.GENERAL_CLR_BORDER.getRGB());
+				}
+			}
+		}
+		
+		
+
+		for (double Xh = 0; Xh < bi.getWidth(); Xh += 0.1) {
+
+			double rad3 = bi.getWidth() / 2 - 30;
+			double myY = 1.0 *  (bi.getHeight() / 2 - Xh);
+			double myX1 = Math.sqrt(Math.abs(myY * myY - Math.pow(rad3, 2) - bi.getWidth() / 2));
+
+			myX1 += bi.getHeight() / 2;
+			myY += bi.getHeight() / 2;
+				//x² + y² <= r²
+
+			myX1 -= 1;
+			if (myX1 >= 0 && myY >= 0 && myX1 < bi.getWidth() && myY < bi.getHeight()) {
+
+				if (myY < 30 || myY > bi.getHeight() - 30){
+					
+				} else
+				bi.setRGB((int) myX1, (int) myY, ViewSettings.GENERAL_CLR_BORDER.getRGB());
+			}
+			
+			myX1 +=1;
+			int myX2 = -(int) (myX1 -bi.getHeight());
+
+			if (myX2 >= 0 && myY >= 0 && myX2 < bi.getWidth() && myY < bi.getHeight())
+			{
+				if (myY < 30 || myY > bi.getHeight() - 30){
+					
+				} else
+
+	          	bi.setRGB((int) myX2, (int) myY, ViewSettings.GENERAL_CLR_BORDER.getRGB());
+			}
+		}
+		
 		
 		
 		_jlbl.setIcon(new ImageIcon(bi));

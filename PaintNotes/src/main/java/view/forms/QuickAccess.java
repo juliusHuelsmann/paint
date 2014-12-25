@@ -3,21 +3,47 @@ package view.forms;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-import javax.management.MXBean;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import model.settings.ViewSettings;
 import model.util.Util;
+import control.tabs.CQuickAccess;
 import control.util.MousePositionTracker;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
+
+/**
+ * 
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
+@SuppressWarnings("serial")
 public class QuickAccess extends MPanel {
 
-	private MLabel jlbl_background, jlbl_move, jlbl_pen, jlbl_erase, jlbl_select;
+	
+	/**
+	 * MLabel.
+	 */
+	private MLabel jlbl_background, jlbl_move, jlbl_pen, jlbl_erase, 
+	jlbl_select, jlbl_outsideTop, jlbl_outsideRight,  jlbl_outsideLeft, 
+	jlbl_outsideBottom;
+	
+	
+	/**
+	 * 
+	 */
 	private final int sizeItem = 40;
+	
+	/**
+	 * 
+	 */
 	private static QuickAccess instance;
+	
+	/**
+	 * 
+	 */
 	public QuickAccess() {
 		super();
 		super.setLayout(null);
@@ -35,6 +61,7 @@ public class QuickAccess extends MPanel {
 						Util.resize("centerResize.png", sizeItem, sizeItem)));
 		jlbl_move.setLocation(getWidth() / 2- sizeItem / 2, getHeight() / 5);
 		super.add(jlbl_move);
+		
 
 		jlbl_pen = new MLabel();
 		jlbl_pen.setSize(sizeItem, sizeItem);
@@ -64,9 +91,31 @@ public class QuickAccess extends MPanel {
 		jlbl_select.setLocation(getWidth() - getWidth() / 5 - sizeItem, getHeight() / 2 - sizeItem / 2);
 		super.add(jlbl_select);
 		
+
+		jlbl_outsideTop = new MLabel();
+		jlbl_outsideTop.setSize(getSize());
+		jlbl_outsideTop.setOpaque(false);
+		super.add(jlbl_outsideTop);
+
+		jlbl_outsideLeft= new MLabel();
+		jlbl_outsideLeft.setSize(getSize());
+		jlbl_outsideLeft.setOpaque(false);
+		jlbl_outsideLeft.addMouseListener(CQuickAccess.getInstance());
+		super.add(jlbl_outsideLeft);
+
+		jlbl_outsideRight = new MLabel();
+		jlbl_outsideRight.setSize(getSize());
+		jlbl_outsideRight.setOpaque(false);
+		super.add(jlbl_outsideRight);
+
+		jlbl_outsideBottom = new MLabel();
+		jlbl_outsideBottom.setSize(getSize());
+		jlbl_outsideBottom.setOpaque(false);
+		super.add(jlbl_outsideBottom);
+		
 		jlbl_background = new MLabel();
 		jlbl_background.setSize(getSize());
-		jlbl_background.setOpaque(false);;
+		jlbl_background.setOpaque(false);
 		super.add(jlbl_background);
 		
 		drawCircle(jlbl_background);
@@ -81,58 +130,150 @@ public class QuickAccess extends MPanel {
 		}
 		return instance;
 	}
-	private static final void drawCircle(JLabel _jlbl) {
+	
+	
+	/**
+	 * 
+	 * @param _jlbl
+	 */
+	private final void drawCircle(JLabel _jlbl) {
+		
+		//the bufferedImage for the center circle.
 		BufferedImage bi = new BufferedImage(
 				_jlbl.getWidth(), 
 				_jlbl.getHeight(), 
 				BufferedImage.TYPE_INT_ARGB);
+
+		//the bufferedImages for the outside stuff.
+		BufferedImage bi_outsideTop = new BufferedImage(
+				_jlbl.getWidth(), 
+				_jlbl.getHeight(), 
+				BufferedImage.TYPE_INT_ARGB);
+		
+		BufferedImage bi_outsideBottom= new BufferedImage(
+				_jlbl.getWidth(), 
+				_jlbl.getHeight(), 
+				BufferedImage.TYPE_INT_ARGB);
+		
+		BufferedImage bi_outsideLeft = new BufferedImage(
+				_jlbl.getWidth(), 
+				_jlbl.getHeight(), 
+				BufferedImage.TYPE_INT_ARGB);
+		
+		BufferedImage bi_outsideRight = new BufferedImage(
+				_jlbl.getWidth(), 
+				_jlbl.getHeight(), 
+				BufferedImage.TYPE_INT_ARGB);
 	
+		final int strokeDistance = 10;
+		
+		
+		//go through the width and the height values and calculate the 
+		//coordinates with origin at center.
 		for (int h = 0; h < bi.getWidth(); h ++) {
 			double y = 1.0 *  (bi.getHeight() / 2 - h);
 			for (int w = 0; w < bi.getWidth(); w ++) {
 				double x = 1.0 *  (bi.getWidth() / 2 - w);
 
-				double rad2 = bi.getWidth() / 2 - 20;
-				double rad3 = bi.getWidth() / 2 - 30;
+				// the radius of the circles
+				double r1 = bi.getWidth() / 2;
+				double r2 = bi.getWidth() / 2 - 20;
+				double r3 = bi.getWidth() / 2 - 30;
 				
-				if ((x * x - bi.getWidth()  *  bi.getWidth() / 4) 
-						<= - (y * y)) {
-					
+				
+				//if inside the outer circle (thus there is the possibility
+				//to be inside the other circles)
+				if (Math.pow(x, 2) - Math.pow(r1, 2) <= -Math.pow(y, 2)) {
 
-					if ((x * x - rad2 * rad2) >= - (y * y)) {
-						final int strokeDistance = 10;
-	            		
-						if (w == h || w == bi.getWidth()-h) {
+					//if in the ring outside
+					if (Math.pow(x, 2) - Math.pow(r2, 2) >= -Math.pow(y, 2)) {
+						
+						
+						
+						//division into four pieces
+						if (w == h || w == bi.getWidth() - h) {
 
-		                	bi.setRGB(w, h, Color.lightGray.getRGB());
-						} else if ( (w + h) 
-		            			% strokeDistance == 0
-		            			||  (w - h) % strokeDistance == 0) {
+							bi.setRGB(w, h, Color.lightGray.getRGB());
+						} else {
+						
 
-		                	bi.setRGB(w, h, new Color(220,230,250).getRGB());
-		            	} else {
+							if (w > h && w < bi.getWidth() - h) {
 
-		                	bi.setRGB(w, h, ViewSettings.GENERAL_CLR_BACKGROUND.getRGB());
-		            	}
+								if ( (w + h) % strokeDistance == 0
+				            			||  (w - h) % strokeDistance == 0) {
+
+									// lines
+									
+									bi_outsideTop.setRGB(w, h, new Color(220,230,250).getRGB());
+				            	} else 
+			            		//top quadrant
+			                	bi_outsideTop.setRGB(w, h,ViewSettings
+			                			.GENERAL_CLR_BACKGROUND
+			                			.getRGB());	
+							} else  if (w < h) {
+								
+								if ( h < bi.getWidth() - w) {
+
+									if ( (w + h) % strokeDistance == 0
+					            			||  (w - h) % strokeDistance == 0) {
+
+										// lines
+										
+										bi_outsideLeft.setRGB(w, h, new Color(220,230,250).getRGB());
+					            	} else 
+									//left
+									bi_outsideLeft.setRGB(w, h,ViewSettings
+				                			.GENERAL_CLR_BACKGROUND
+				                			.getRGB());	
+								} else {
+
+									if ( (w + h) % strokeDistance == 0
+					            			||  (w - h) % strokeDistance == 0) {
+
+										// lines
+										
+										bi_outsideBottom.setRGB(w, h, new Color(220,230,250).getRGB());
+					            	} else 
+									//bottom
+									bi_outsideBottom.setRGB(w, h,ViewSettings
+				                			.GENERAL_CLR_BACKGROUND
+				                			.getRGB());	
+								}
+							} else  if (w > bi.getWidth() - h) {
+								
+
+								if ( (w + h) % strokeDistance == 0
+				            			||  (w - h) % strokeDistance == 0) {
+
+									// lines
+									
+									bi_outsideRight.setRGB(w, h, new Color(220,230,250).getRGB());
+				            	} else 
+								//right
+								bi_outsideRight.setRGB(w, h,ViewSettings
+			                			.GENERAL_CLR_BACKGROUND
+			                			.getRGB());	
+							} 
+						
+						}
+		            			
 						
 //	                	bi.setRGB(w, h, ViewSettings.GENERAL_CLR_BACKGROUND.getRGB());
-					} else if ((x * x - rad3 * rad3) <= - (y * y)) {
-
+					} else if (Math.pow(x, 2) - Math.pow(r3, 2) 
+							<= -Math.pow(y, 2)) {
 						
-						
-					final int strokeDistance = 10;
 
-					if (w == h || w == bi.getWidth()-h) {
+						if (w == h || w == bi.getWidth()-h) {
 
-	                	bi.setRGB(w, h, Color.lightGray.getRGB());
-					} else if ( (w + h) 
-		            			% strokeDistance == 0
-		            			||  (w - h) % strokeDistance == 0) {
+							bi.setRGB(w, h, Color.lightGray.getRGB());
+						} else if ( (w + h) 
+								% strokeDistance == 0
+								||  (w - h) % strokeDistance == 0) {
 
-		                	bi.setRGB(w, h, new Color(220,230,250).getRGB());
-		            	} else {
-		            		final Color clr_hightlighted = new Color(
-		            				ViewSettings.GENERAL_CLR_BACKGROUND_DARK
+							bi.setRGB(w, h, new Color(220,230,250).getRGB());
+						} else {
+							final Color clr_hightlighted = new Color(
+									ViewSettings.GENERAL_CLR_BACKGROUND_DARK
 		            				.getRed() - 11, 
 		            				ViewSettings.GENERAL_CLR_BACKGROUND_DARK
 		            				.getGreen() - 11, 
@@ -294,7 +435,97 @@ public class QuickAccess extends MPanel {
 		}
 		
 		
-		
+
 		_jlbl.setIcon(new ImageIcon(bi));
+		jlbl_outsideBottom.setIcon(new ImageIcon(bi_outsideBottom));
+		jlbl_outsideTop.setIcon(new ImageIcon(bi_outsideTop));
+		jlbl_outsideRight.setIcon(new ImageIcon(bi_outsideRight));
+		jlbl_outsideLeft.setIcon(new ImageIcon(bi_outsideLeft));
+	}
+
+	
+	public void openLeft() {
+		for (int i = 0; i < 25; i++) {
+
+			jlbl_outsideLeft.setLocation(-i, 0);
+			try {
+				Thread.sleep(25);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+
+	/**
+	 * @return the jlbl_outsideBottom
+	 */
+	public MLabel getJlbl_outsideBottom() {
+		return jlbl_outsideBottom;
+	}
+
+
+
+	/**
+	 * @param jlbl_outsideBottom the jlbl_outsideBottom to set
+	 */
+	public void setJlbl_outsideBottom(MLabel jlbl_outsideBottom) {
+		this.jlbl_outsideBottom = jlbl_outsideBottom;
+	}
+
+
+
+	/**
+	 * @return the jlbl_outsideRight
+	 */
+	public MLabel getJlbl_outsideRight() {
+		return jlbl_outsideRight;
+	}
+
+
+
+	/**
+	 * @param jlbl_outsideRight the jlbl_outsideRight to set
+	 */
+	public void setJlbl_outsideRight(MLabel jlbl_outsideRight) {
+		this.jlbl_outsideRight = jlbl_outsideRight;
+	}
+
+
+
+	/**
+	 * @return the jlbl_outsideLeft
+	 */
+	public MLabel getJlbl_outsideLeft() {
+		return jlbl_outsideLeft;
+	}
+
+
+
+	/**
+	 * @param jlbl_outsideLeft the jlbl_outsideLeft to set
+	 */
+	public void setJlbl_outsideLeft(MLabel jlbl_outsideLeft) {
+		this.jlbl_outsideLeft = jlbl_outsideLeft;
+	}
+
+
+
+	/**
+	 * @return the jlbl_outsideTop
+	 */
+	public MLabel getJlbl_outsideTop() {
+		return jlbl_outsideTop;
+	}
+
+
+
+	/**
+	 * @param jlbl_outsideTop the jlbl_outsideTop to set
+	 */
+	public void setJlbl_outsideTop(MLabel jlbl_outsideTop) {
+		this.jlbl_outsideTop = jlbl_outsideTop;
 	}
 }

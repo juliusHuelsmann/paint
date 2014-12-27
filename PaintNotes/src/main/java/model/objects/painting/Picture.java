@@ -500,6 +500,14 @@ public final class Picture {
                 || _bi == null) {
             return _bi;
         }
+
+        //initialize new list into which the Items are inserted that are inside
+        //the specified rectangle. List is sorted by id for painting the 
+        //items chronologically.
+        
+        
+        
+        //reset value for debugging and speed testing.
         Status.setCounter_paintedPoints(0);
         boolean behindRectangle = false;
         ls_po_sortedByX.toFirst();

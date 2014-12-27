@@ -504,7 +504,7 @@ public final class Picture {
         //initialize new list into which the Items are inserted that are inside
         //the specified rectangle. List is sorted by id for painting the 
         //items chronologically.
-        
+        List<PaintObject> ls_poChronologic = new List<PaintObject>();
         
         
         //reset value for debugging and speed testing.
@@ -535,27 +535,9 @@ public final class Picture {
                             <= factorH * (-Page.getInstance().getJlbl_painting()
                                     .getLocation().getY() + Page.getInstance()
                                     .getJlbl_painting().getHeight())) {
-
-                        //paint the object.
-                        if (_final) {
-
-                            ls_po_sortedByX.getItem().paint(
-                                    _bi, _final, 
-                                    Page.getInstance().getJlbl_painting()
-                                    .getBi(),
-                                    Page.getInstance().getJlbl_painting()
-                                    .getLocation().x,
-                                    Page.getInstance().getJlbl_painting()
-                                    .getLocation().y);
-                        } else {
-
-                            ls_po_sortedByX.getItem().paint(
-                                    _bi, _final, _bi,
-                                    Page.getInstance().getJlbl_painting()
-                                    .getLocation().x,
-                                    Page.getInstance().getJlbl_painting()
-                                    .getLocation().y);
-                        }
+                    	 
+                    	ls_poChronologic.insertSorted(ls_po_sortedByX.getItem(), 
+                    			ls_po_sortedByX.getItem().getElementId());
                     }
                 } else {
                     behindRectangle = true; 
@@ -563,7 +545,34 @@ public final class Picture {
             }
             ls_po_sortedByX.next();
         }
-        ls_po_sortedByX.toFirst();
+        
+        
+        ls_poChronologic.toFirst();
+        while (!ls_poChronologic.isBehind() && !ls_poChronologic.isEmpty()) {
+
+            //paint the object.
+            if (_final) {
+
+            	ls_poChronologic.getItem().paint(
+                        _bi, _final, 
+                        Page.getInstance().getJlbl_painting()
+                        .getBi(),
+                        Page.getInstance().getJlbl_painting()
+                        .getLocation().x,
+                        Page.getInstance().getJlbl_painting()
+                        .getLocation().y);
+            } else {
+
+            	ls_poChronologic.getItem().paint(
+                        _bi, _final, _bi,
+                        Page.getInstance().getJlbl_painting()
+                        .getLocation().x,
+                        Page.getInstance().getJlbl_painting()
+                        .getLocation().y);
+            }
+        	
+        	ls_poChronologic.next();
+        }
 
         Status.getLogger().info("Painted " 
                     + Status.getCounter_paintedPoints() 

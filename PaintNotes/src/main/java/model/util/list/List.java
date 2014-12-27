@@ -427,10 +427,44 @@ public class List<Type> implements Serializable {
      */
     public final synchronized void findSorted(final double _searchCriteria) {
         
-        toFirst();
-        while (!isBehind() && elemCurrent.getSortedIndex() < _searchCriteria) {
-            next();
-        }
+    	//if list is empty there is nothing to do. Thus only perform action 
+    	//if list is not empty.
+    	if (!isEmpty()) {
+    		
+    		//if the list is neither behind nor in front of perform action
+    		//otherwise go to the last respectively the first item.
+	    	if (!isBehind() && !isInFrontOf()) {
+	    		
+	    		//if the current element has got an inferior index proceed
+	    		//in list while the current item has got 
+	    		if (elemCurrent.getSortedIndex() < _searchCriteria) {
+		    		while (!isBehind()
+		    				&& elemCurrent.getSortedIndex() < _searchCriteria) {
+		    			next();
+		    		}
+	    		} else {
+		    		while (!isInFrontOf()
+		    				& elemCurrent.getSortedIndex() > _searchCriteria) {
+		    			previous();
+		    		}
+		    		
+		    		//if the current element is not in front of the list
+		    		//perform one next operation for being behind the last item
+		    		//that has got an inferior index. (and for maintaining
+		    		//integrity of the result independent of the starting 
+		    		//position in the list)
+		    		if (!isInFrontOf()) {
+			    		next();	
+		    		}
+	    		}
+	    	} else if (isBehind()) {
+	            toLast();
+	            findSorted(_searchCriteria);
+	    	} else {
+	            toFirst();
+	            findSorted(_searchCriteria);
+	    	}
+    	}
     }
     
     /**

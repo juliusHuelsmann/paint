@@ -479,84 +479,122 @@ public final class Picture {
     /**
      * Repaint a rectangle without clearing the screen.
      * 
-     * @param _x the x coordinate
-     * @param _y the y coordinate
-     * @param _width the width 
-     * @param _height the height
+     * The state of the list of paintObjects is not changed by this process.
      * 
-     * @param _bi the BufferedImage
-     * @param _final whether to paint finally to BufferedImage or not.
-     * @return the graphics
+     * @param _x 		the x coordinate
+     * @param _y 		the y coordinate
+     * @param _width 	the width 
+     * @param _height 	the height
+     * 
+     * @param _bi 		the BufferedImage
+     * @param _final 	whether to paint finally to BufferedImage or not.
+     * 
+     * @return the BufferedImage with painted PaintObjects on it.
      */
     public synchronized BufferedImage repaintRectangle(final int _x,
             final int _y, final int _width, final int _height,
             final BufferedImage _bi,
             final boolean _final) {
 
-    	ls_po_sortedByX.startTransaction("repaintRectangle");
-    	
-        //alle die in Frage kommen neu laden.
+    	//If the sorted list of PaintObjects has not been initialized yet,
+    	//the list is empty or the given bufferedImage is equal to NULL
+    	//return the given BufferedImage because there is nothing to do
         if (ls_po_sortedByX == null
+        		|| ls_po_sortedByX.isEmpty() 
                 || _bi == null) {
             return _bi;
         }
 
-        //initialize new list into which the Items are inserted that are inside
+    	//Start a transaction. That means that after the transaction has 
+    	//been terminated, the current item of the list is reset.
+    	ls_po_sortedByX.startTransaction("repaintRectangle");
+
+        //Initialize new list into which the Items are inserted that are inside
         //the specified rectangle. List is sorted by id for painting the 
         //items chronologically.
         List<PaintObject> ls_poChronologic = new List<PaintObject>();
         
-        
         //reset value for debugging and speed testing.
         Status.setCounter_paintedPoints(0);
+        
+        //initialize start value go to the list's beginning and calculate
+        //the stretch factors (which occur because of zooming in and out).
         boolean behindRectangle = false;
         ls_po_sortedByX.toFirst();
-
-        while (!ls_po_sortedByX.isEmpty() && !ls_po_sortedByX.isBehind() 
+        final double factorW = 1.0
+        		* Status.getImageSize().width
+                / Status.getImageShowSize().width;
+        final double factorH = 1.0 
+        		* Status.getImageSize().width
+                / Status.getImageShowSize().width;
+        
+        /*
+         * Find out which items are inside the given repaint rectangle and
+         * insert them into the list of paintObjects.
+         * 
+		 * 
+         */
+        
+        while(!ls_po_sortedByX.isEmpty() 
+        		&& !ls_po_sortedByX.isBehind() 
                 && !behindRectangle) {
             
+        	// if the current item is not initialized only perform the 
+        	//next operation.
             if (ls_po_sortedByX.getItem() != null) {
 
-                final double factorW = 1.0 * Status.getImageSize().width
-                        / Status.getImageShowSize().width;
                 
                 //check whether the current PaintObject is in the given 
-                //rectangle
+                //rectangle by the coordinate by which the list is sorted.
+            	//if that is not the case the element is behind the specified
+            	//rectangle.
                 if (ls_po_sortedByX.getItem().getSnapshotBounds().x 
                         <= factorW * (-Page.getInstance().getJlbl_painting()
                         .getLocation().getX()
                         + Page.getInstance().getJlbl_painting().getWidth())) {
-                    
 
-                    final double factorH = 1.0 * Status.getImageSize().width
-                            / Status.getImageShowSize().width;
-
+                	//check whether toe current PaintObject is in given
+                	//rectangle by the other coordinate. If that is not 
+                	//the case it there may occur items that are inside
+                	//the rectangle behind the current item (because
+                	//the list can only be sorted by one parameter).
                     if (ls_po_sortedByX.getItem().getSnapshotBounds().y
                             <= factorH * (-Page.getInstance().getJlbl_painting()
                                     .getLocation().getY() + Page.getInstance()
                                     .getJlbl_painting().getHeight())) {
                     	 
+                    	//insert the item into the list of sorted items
+                    	//by id (thus by the time they have been painted)
+                    	//TODO: serious check for not having to paint
+                    	//some items that are not actually on screen.
+                    	//TODO: this has to be in here because it is not
+                    	//right to interrupt the loop because of it.
                     	ls_poChronologic.insertSorted(ls_po_sortedByX.getItem(), 
                     			ls_po_sortedByX.getItem().getElementId());
                     }
                 } else {
                     behindRectangle = true; 
                 }
+            } else {
+            	Status.getLogger().severe("fatal error.");
             }
             ls_po_sortedByX.next();
         }
         
         
+        /*
+         * Go through the sorted list of items and paint it depending on whether
+         */
         ls_poChronologic.toFirst();
         while (!ls_poChronologic.isBehind() && !ls_poChronologic.isEmpty()) {
 
             //paint the object.
             if (_final) {
 
+            	//TODO: does it matter in here?
             	ls_poChronologic.getItem().paint(
                         _bi, _final, 
-                        Page.getInstance().getJlbl_painting()
-                        .getBi(),
+                        Page.getInstance().getJlbl_painting().getBi(),
                         Page.getInstance().getJlbl_painting()
                         .getLocation().x,
                         Page.getInstance().getJlbl_painting()
@@ -574,19 +612,15 @@ public final class Picture {
         	ls_poChronologic.next();
         }
 
+        
+        //print logging method 
         Status.getLogger().info("Painted " 
                     + Status.getCounter_paintedPoints() 
                     + "pixel points for this operation.");
 
+        //finish transaction; adjust the current element to its state
+        //before the list transaction.
     	ls_po_sortedByX.finishTransaction();
-//      g_imageWork.translate(0, 0);
-      
-      
-
-      //notify preview-observer
-//      setChanged();
-//      notifyObservers(bi_normalSize);
-      
       
       return _bi;
     }

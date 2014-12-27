@@ -518,21 +518,42 @@ public final class Picture {
         Status.setCounter_paintedPoints(0);
         
         //initialize start value go to the list's beginning and calculate
-        //the stretch factors (which occur because of zooming in and out).
+        //values such as the stretch factors (which occur because of 
+        //zooming in and out).
         boolean behindRectangle = false;
         ls_po_sortedByX.toFirst();
+        
+        /**
+         * Stretch factor by width and height.
+         */
         final double factorW = 1.0
         		* Status.getImageSize().width
+                / Status.getImageShowSize().width, 
+                factorH = 1.0 
+                * Status.getImageSize().width
                 / Status.getImageShowSize().width;
-        final double factorH = 1.0 
-        		* Status.getImageSize().width
-                / Status.getImageShowSize().width;
+        
+        /**
+         * The location of the page end needed for checking roughly whether
+         * a paintObject may be inside the repaint rectangle.
+         */
+        final int 
+        xLocationPageEnd = (int) (factorW 
+        		* (-Page.getInstance().getJlbl_painting().getLocation().getX()
+        				+ Page.getInstance().getJlbl_painting().getWidth())), 
+        yLocationPageEnd = (int) (factorH 
+        		* (-Page.getInstance().getJlbl_painting().getLocation().getY() 
+        				+ Page.getInstance().getJlbl_painting().getHeight()));
+        
+        /**
+         * The repaint rectangle.
+         */
+        final Rectangle r_selection = new Rectangle(_x, _y, _width, _height);
+        
         
         /*
          * Find out which items are inside the given repaint rectangle and
          * insert them into the list of paintObjects.
-         * 
-		 * 
          */
         
         while(!ls_po_sortedByX.isEmpty() 
@@ -549,65 +570,77 @@ public final class Picture {
             	//if that is not the case the element is behind the specified
             	//rectangle.
                 if (ls_po_sortedByX.getItem().getSnapshotBounds().x 
-                        <= factorW * (-Page.getInstance().getJlbl_painting()
-                        .getLocation().getX()
-                        + Page.getInstance().getJlbl_painting().getWidth())) {
+                        <= xLocationPageEnd) {
 
-                	//check whether toe current PaintObject is in given
-                	//rectangle by the other coordinate. If that is not 
-                	//the case it there may occur items that are inside
-                	//the rectangle behind the current item (because
-                	//the list can only be sorted by one parameter).
+                	//Firstly 	check whether the current PaintObject may be 
+                	//			inside the given rectangle by the other 
+                	//			coordinate (by which the list is not sorted).
+                	//Secondly,	if (1) is the case, perform a second
+                	//			check which is exact; that means it 
+                	//			only succeeds if there really are pixels
+                	//			printed inside selected rectangle.
+                	//			
+                	//If one of the two above mentioned tests return false
+                	//there may occur PaintObjects that are inside the rectangle 
+                	//but are found behind the current item inside the list
+                	//(because the list can only be sorted by one parameter)
+                	//Thus it is necessary to use this second if clause.
                     if (ls_po_sortedByX.getItem().getSnapshotBounds().y
-                            <= factorH * (-Page.getInstance().getJlbl_painting()
-                                    .getLocation().getY() + Page.getInstance()
-                                    .getJlbl_painting().getHeight())) {
+                    		<= yLocationPageEnd
+//                    		&& ls_po_sortedByX.getItem()
+//                    		.isInSelectionImage(r_selection)
+                    		) {
                     	 
-                    	//insert the item into the list of sorted items
-                    	//by id (thus by the time they have been painted)
-                    	//TODO: serious check for not having to paint
-                    	//some items that are not actually on screen.
-                    	//TODO: this has to be in here because it is not
-                    	//right to interrupt the loop because of it.
-                    	ls_poChronologic.insertSorted(ls_po_sortedByX.getItem(), 
-                    			ls_po_sortedByX.getItem().getElementId());
+
+                        	ls_poChronologic.insertSorted(
+                        			ls_po_sortedByX.getItem(), 
+                        			ls_po_sortedByX.getItem().getElementId());
                     }
                 } else {
+                	
+                	//if the current element starts behind the rectangle
+                	//in coordinate by which the list is sorted, 
+                	//no PaintObject inserted after this element inside the 
+                	//can be printed.
                     behindRectangle = true; 
                 }
             } else {
-            	Status.getLogger().severe("fatal error.");
+            	
+            	//log severe error because of unnecessary PaintObject inside
+            	//list.
+            	Status.getLogger().severe("Error. Null PaintObject inside"
+            			+ " the list of sorted paintObjects.");
             }
             ls_po_sortedByX.next();
         }
         
         
         /*
-         * Go through the sorted list of items and paint it depending on whether
+         * Go through the sorted list of items and paint them
          */
         ls_poChronologic.toFirst();
         while (!ls_poChronologic.isBehind() && !ls_poChronologic.isEmpty()) {
 
-            //paint the object.
-            if (_final) {
-
-            	//TODO: does it matter in here?
-            	ls_poChronologic.getItem().paint(
-                        _bi, _final, 
-                        Page.getInstance().getJlbl_painting().getBi(),
-                        Page.getInstance().getJlbl_painting()
-                        .getLocation().x,
-                        Page.getInstance().getJlbl_painting()
-                        .getLocation().y);
-            } else {
-
-            	ls_poChronologic.getItem().paint(
-                        _bi, _final, _bi,
-                        Page.getInstance().getJlbl_painting()
-                        .getLocation().x,
-                        Page.getInstance().getJlbl_painting()
-                        .getLocation().y);
-            }
+        	ls_poChronologic.getItem().paint(
+                    _bi, _final, 
+                    Page.getInstance().getJlbl_painting().getBi(),
+                    Page.getInstance().getJlbl_painting()
+                    .getLocation().x,
+                    Page.getInstance().getJlbl_painting()
+                    .getLocation().y);
+//            //paint the object.
+//            if (_final) {
+//
+//            	//TODO: does it matter in here?
+//            } else {
+//
+//            	ls_poChronologic.getItem().paint(
+//                        _bi, _final, _bi,
+//                        Page.getInstance().getJlbl_painting()
+//                        .getLocation().x,
+//                        Page.getInstance().getJlbl_painting()
+//                        .getLocation().y);
+//            }
         	
         	ls_poChronologic.next();
         }

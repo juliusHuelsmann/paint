@@ -469,8 +469,9 @@ public final class Picture {
 			return _bi;
 		}
 
-		PaintBI.fillRectangleQuick(_bi, new Color(0, 0, 0, 0), new Rectangle(
-				_graphicX, _graphiY, rectWidth, rectHeight));
+		final int maxRGB = 255;
+		PaintBI.fillRectangleQuick(_bi, new Color(maxRGB, maxRGB, maxRGB, 0), 
+				new Rectangle(_graphicX, _graphiY, rectWidth, rectHeight));
 
 		return _bi;
 

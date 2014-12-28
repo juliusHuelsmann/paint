@@ -341,8 +341,8 @@ import view.util.mega.MButton;
     public  BufferedImage getEmptyBISelection() {
         BufferedImage bi = new BufferedImage(jlbl_selectionBG.getWidth(), 
                 jlbl_selectionBG.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        
-        int rgba = new Color(0, 0, 0, 0).getRGB();
+        final int maxRGB = 255;
+        int rgba = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
         for (int x = 0; x < bi.getWidth(); x++) {
             for (int y = 0; y < bi.getHeight(); y++) {
                 bi.setRGB(x, y, rgba);
@@ -360,8 +360,9 @@ import view.util.mega.MButton;
         BufferedImage bi = new BufferedImage(
                 Status.getImageSize().width, 
                 Status.getImageSize().height, BufferedImage.TYPE_INT_ARGB);
+        final int maxRGB = 255;
         
-        int rgba = new Color(0, 0, 0, 0).getRGB();
+        int rgba = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
         for (int x = 0; x < bi.getWidth(); x++) {
             for (int y = 0; y < bi.getHeight(); y++) {
                 bi.setRGB(x, y, rgba);

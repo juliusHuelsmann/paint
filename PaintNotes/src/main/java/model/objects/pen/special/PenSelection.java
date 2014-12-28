@@ -3,6 +3,7 @@ package model.objects.pen.special;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import model.objects.pen.Pen;
@@ -44,7 +45,10 @@ public class PenSelection extends Pen {
 	 */
 	@Override protected final void paintPoint(final DPoint _p, 
 	        final BufferedImage _bi, final boolean _final, 
-	        final DPoint _pnt_shift, final BufferedImage _g) {
+	        final DPoint _pnt_shift, final BufferedImage _g,
+	        final Rectangle _r_visibleScope) {
+		
+		//TODO: apply the final Rectangle _r_visibleScope update!
 
 	    //first printed point
 	    if (pnt_lastPrinted == null) {
@@ -115,7 +119,7 @@ public class PenSelection extends Pen {
 	            pnt_lastPrinted.setY(pnt_lastPrinted.getY() + vector.getY());
 	            
 	            
-	            paintPoint(_p, _bi, _final, _pnt_shift, _g);
+	            paintPoint(_p, _bi, _final, _pnt_shift, _g, _r_visibleScope);
 	        }
 	    }
 

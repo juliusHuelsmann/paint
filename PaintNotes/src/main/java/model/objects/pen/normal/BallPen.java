@@ -3,6 +3,7 @@ package model.objects.pen.normal;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import view.forms.Page;
@@ -64,7 +65,8 @@ public class BallPen extends Pen {
 	 */
 	@Override protected final void paintPoint(final DPoint _p, 
 	        final BufferedImage _bi, final boolean _final, 
-	        final DPoint _pnt_shift, final BufferedImage _g) {
+	        final DPoint _pnt_shift, final BufferedImage _g, 
+	        final Rectangle _r_visibleScope) {
 
 	    for (int i = -getThickness() / 2;
                 i < (getThickness() / 2) + (getThickness() % 2); i++) {
@@ -89,8 +91,9 @@ public class BallPen extends Pen {
 				    //set the given pixel in buffered image
 				    if (_final) {
 				        try {
-				        _bi.setRGB(x, y, 
-				                getClr_foreground().getRGB());
+				        	
+				        	_bi.setRGB(x, y, 
+				        			getClr_foreground().getRGB());
 				        } catch (ArrayIndexOutOfBoundsException e) {
 				            Error.printError(getClass().getSimpleName(), 
 				                    "paintPoint", "point is out of range", 

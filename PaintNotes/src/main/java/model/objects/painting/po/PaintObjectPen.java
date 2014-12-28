@@ -116,15 +116,6 @@ public abstract class PaintObjectPen extends PaintObject {
 	 */
 	public abstract void addPoint(final DPoint _pnt);
 
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override 
-    public abstract BufferedImage paint(final BufferedImage _bi, 
-            final boolean _final, final BufferedImage _g, final int _x, 
-            final int _y);
-
     
     
     /*

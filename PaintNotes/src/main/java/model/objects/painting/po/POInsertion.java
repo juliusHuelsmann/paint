@@ -103,14 +103,6 @@ public abstract class POInsertion extends PaintObjectPen {
 	}
 
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override 
-    public abstract BufferedImage paint(final BufferedImage _bi, 
-            final boolean _final, final BufferedImage _g, final int _x, 
-            final int _y);
-    
     
     /*
      * snapshot things, e.g. for selection.
@@ -140,7 +132,7 @@ public abstract class POInsertion extends PaintObjectPen {
 				BufferedImage.TYPE_INT_ARGB), 
 				true, null, 
                 Page.getInstance().getJlbl_painting().getLocation().x,
-                Page.getInstance().getJlbl_painting().getLocation().y)
+                Page.getInstance().getJlbl_painting().getLocation().y, null)
                 .getSubimage(
 						rect.x, 
 						rect.y,

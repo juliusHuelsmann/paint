@@ -3,6 +3,7 @@ package model.objects.pen.special;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import model.objects.pen.Pen;
@@ -43,8 +44,10 @@ public class FunnyPen extends Pen {
 	 */
 	@Override protected final void paintPoint(final DPoint _p, 
 	        final BufferedImage _bi, final boolean _final, 
-	        final DPoint _pnt_shift, final BufferedImage _g) {
+	        final DPoint _pnt_shift, final BufferedImage _g, 
+	        final Rectangle _r_visibleScope) {
 
+		//TODO: update (apply) the r_visible scope update
 	    //first printed point
 	    if (pnt_lastPrinted == null) {
 

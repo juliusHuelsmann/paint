@@ -3,6 +3,7 @@ package model.objects.pen;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -15,6 +16,8 @@ import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
+import org.w3c.dom.css.Rect;
 
 import view.View;
 import view.forms.Page;
@@ -165,7 +168,8 @@ public abstract class Pen implements Serializable {
 	 */
 	public final BufferedImage paintToImage(final BufferedImage _bi,
 			final PaintObjectWriting _o, final boolean _final, 
-			final DPoint _p_start, final BufferedImage _g) {
+			final DPoint _p_start, final BufferedImage _g, 
+			final Rectangle _rVisibleScope) {
 
 		//fetch list of points and go to the beginning of the list
 		List<DPoint> ls_point = _o.getPoints();
@@ -186,12 +190,12 @@ public abstract class Pen implements Serializable {
 		
 		switch (tempId_operation) {
 		case Constants.PEN_ID_POINT:
-		    operationPoint(ls_point, _bi, _final, _p_start, _g);
+		    operationPoint(ls_point, _bi, _final, _p_start, _g, _rVisibleScope);
 			
 			break;
 		case Constants.PEN_ID_LINES:
 
-			operationLine(ls_point, _bi, _final, _p_start, _g);
+			operationLine(ls_point, _bi, _final, _p_start, _g, _rVisibleScope);
 			
 			break;
         case Constants.PEN_ID_MATHS:
@@ -257,7 +261,7 @@ public abstract class Pen implements Serializable {
         case Constants.PEN_ID_POINT:
             
             paintPoint(new DPoint(ls_point.getItem()), 
-                    _bi, false, _p_start, _bi);
+                    _bi, false, _p_start, _bi, null);
             break;
         case Constants.PEN_ID_LINES:
 
@@ -306,14 +310,16 @@ public abstract class Pen implements Serializable {
 	 */
 	private void operationPoint(final List<DPoint> _ls_point, 
 	        final BufferedImage _bi, final boolean _final, 
-	        final DPoint _p_start, final BufferedImage _g) {
+	        final DPoint _p_start, final BufferedImage _g, 
+	        final Rectangle _rVisibleScope) {
     
 	    
         //go through the list of points and print point
         while (!_ls_point.isBehind()) {
     
             //print point
-            paintPoint(_ls_point.getItem(), _bi, _final, _p_start, _g);
+            paintPoint(_ls_point.getItem(), _bi, _final, _p_start, _g, 
+            		_rVisibleScope);
             _ls_point.next();
             
         }
@@ -341,7 +347,8 @@ public abstract class Pen implements Serializable {
 	 */
     private void operationLine(final List<DPoint> _ls_point, 
             final BufferedImage _bi, final boolean _final,
-            final DPoint _p_shift, final BufferedImage _g) {
+            final DPoint _p_shift, final BufferedImage _g, 
+            final Rectangle _rVisibleScope) {
     
         
         
@@ -361,7 +368,7 @@ public abstract class Pen implements Serializable {
                     _ls_point.getItem().getY());
 
             
-            paintPoint(pnt_previous, _bi, _final, _p_shift, _g);
+            paintPoint(pnt_previous, _bi, _final, _p_shift, _g, _rVisibleScope);
             _ls_point.next();
             
             //go through the list of points and print point
@@ -398,30 +405,124 @@ public abstract class Pen implements Serializable {
                 _ls_point.getItem().getX(),
                 _ls_point.getItem().getY());
         
-        paintPoint(pnt_previous, _bi, _final, _p_shift, _g);
+        paintPoint(pnt_previous, _bi, _final, _p_shift, _g, _rVisibleScope);
         _ls_point.next();
+        
+        /**
+         * the byte value indicates the location of the point towards the 
+         * rectangle.
+         * 		1: 		top
+         * 		2:		top - left
+         * 		3:		left
+         * 		4:		bottom - left
+         * 		
+         * 		-1:		bottom
+         * 		-2:		bottom - right
+         * 		-3: 	right
+         * 		-4:		top - right
+         * 
+         * 		0:		inside rectangle
+         */
+        Point pnt_relativePositionLast;
+        if (_rVisibleScope == null){
+        	pnt_relativePositionLast = new Point(0, 0);
+        } else {
+        	pnt_relativePositionLast = isInRectanlge(pnt_previous, 
+        			_rVisibleScope);
+        }
                 
         //go through the list of points and print point
         while (!_ls_point.isBehind()) {
             
             //if the current point is not equal to the last point
             //print the line and update the last element.
-            if (!(_ls_point.getItem().getX() 
-                    == pnt_previous.getX() 
-                    && _ls_point.getItem().getY()  
-                    == pnt_previous.getY())) {
+            if (!(_ls_point.getItem().getX() == pnt_previous.getX() 
+            		&& _ls_point.getItem().getY()  == pnt_previous.getY())) {
+
+
+                Point pnt_relativePositionCurrent;
+                if (_rVisibleScope == null){
+                	pnt_relativePositionCurrent = new Point(0, 0);
+                } else {
+                	pnt_relativePositionCurrent = isInRectanlge(
+                			_ls_point.getItem(),
+                			_rVisibleScope);
+                }
+                    
+            	
+            	//if at least one of the items is inside the rectangle, paint 
+            	//the line between them. Otherwise there is nothing to do
+            	//but to update the previous point and the boolean indicating
+            	//its position relative to the rectangle.
+            	if (
+            			//if the two points are not at the same side of the
+            			//rectangle
+            			(pnt_relativePositionLast.x 
+            					!= pnt_relativePositionCurrent.x 
+            			|| pnt_relativePositionLast.y 
+            					!= pnt_relativePositionCurrent.y)
+            			
+            			//or if the last point is inside the rectangle
+            			|| (pnt_relativePositionLast.x == 0
+            					&& pnt_relativePositionLast.y == 0)
+            					
+            			//or if the current point is inside the rectangle
+            			|| (pnt_relativePositionCurrent.x == 0 
+            					&& pnt_relativePositionCurrent.y == 0)) {
+
+                    paintLine(new DPoint(
+                            _ls_point.getItem().getX(),
+                            _ls_point.getItem().getY()),
+                            pnt_previous, _bi, _final, _g, _p_shift);
+            	}
                 
-                
-                paintLine(new DPoint(
-                        _ls_point.getItem().getX(),
-                        _ls_point.getItem().getY()),
-                        pnt_previous, _bi, _final, _g, _p_shift);
+            	//save current values for next loop iteration
                 pnt_previous = new DPoint(
                         _ls_point.getItem().getX(),
                         _ls_point.getItem().getY());
+                pnt_relativePositionLast = pnt_relativePositionCurrent;
             }
             _ls_point.next();
         }
+    }
+    
+    
+    private Point isInRectanlge(DPoint _p, Rectangle _r) {
+    	//			horizontal
+    	//			 -1 0 1
+    	//			 _______
+    	//VER-	-1	 |_|_|_|
+    	//TIC-	 0	 |_|_|_|
+    	//AL	 1	 |_|_|_|
+    	
+    	/**
+    	 * Point.x ^ vertical position
+    	 * Point.y ^ horizontal positoin.
+    	 */
+    	Point pnt_position = new Point();
+    	
+    	//left vs. right
+    	if (_p.getX() < _r.x) {
+    		pnt_position.x = -1;
+    	} else if (_p.getX() > _r.x + _r.width) {
+
+    		pnt_position.x = 1;
+    	} else {
+
+    		pnt_position.x = 0;
+    	}
+
+    	if (_p.getY() < _r.y) {
+    		pnt_position.y = -1;
+    	} else if (_p.getY() > _r.y + _r.height) {
+
+    		pnt_position.y = 1;
+    	} else {
+
+    		pnt_position.y = 0;
+    	}
+    	return pnt_position;
+    	
     }
     
 
@@ -464,7 +565,7 @@ public abstract class Pen implements Serializable {
         ls_point.next();
         
         if (ls_point.isBehind()) {
-            paintPoint(new DPoint(p1), _bi, _final, _p_shift, _g);
+            paintPoint(new DPoint(p1), _bi, _final, _p_shift, _g, null);
         } else {
 
             DPoint p2 = ls_point.getItem();
@@ -513,7 +614,7 @@ public abstract class Pen implements Serializable {
         int x = (int) ls_point.getItem().getX();
         int y = (int) ls_point.getItem().getY();
 
-        paintPoint(new DPoint(x, y), _bi, _final, _p_shift, _g);
+        paintPoint(new DPoint(x, y), _bi, _final, _p_shift, _g, null);
 
         int xOld = x;
         int yOld = y;
@@ -597,7 +698,7 @@ public abstract class Pen implements Serializable {
             
             //1 item
             if (ls_newPoints.isBehind()) {
-                paintPoint(pnt_1, _bi, _final, _p_shift, _g);
+                paintPoint(pnt_1, _bi, _final, _p_shift, _g, null);
                 return;
             }
             pnt_2 = ls_newPoints.getItem();
@@ -683,7 +784,7 @@ public abstract class Pen implements Serializable {
 
         }
 
-        operationLine(ls_allPoints, _bi, _final, _p_shift, _g);   
+        operationLine(ls_allPoints, _bi, _final, _p_shift, _g, null);   
 //      thickness =  1;
 //      operationLine(ls_allPoints, _bi, _p_start);
         //add old points to the total list 
@@ -862,7 +963,7 @@ public abstract class Pen implements Serializable {
             int plusX = a * dX /  Math.max(Math.abs(dX), Math.abs(dY));
             int plusY = a * dY /  Math.max(Math.abs(dX), Math.abs(dY));
             paintPoint(new DPoint(_p1.getX() - plusX, _p1.getY() - plusY), 
-                    _bi, _final, _pnt_shift, _g);
+                    _bi, _final, _pnt_shift, _g, null);
         }
 	}
 	
@@ -881,7 +982,8 @@ public abstract class Pen implements Serializable {
 	 * @param _shift the point in which the painting to graphics is shifted.
 	 */
 	protected abstract void paintPoint(DPoint _p, BufferedImage _bi, 
-	        boolean _final, DPoint _shift, BufferedImage _g);
+	        boolean _final, DPoint _shift, BufferedImage _g, 
+	        Rectangle _rVisibleScope);
 		
 	
 	/*
@@ -1050,7 +1152,7 @@ public abstract class Pen implements Serializable {
         BufferedImage bi = Page.getInstance().getEmptyBISelection();
         paintPoint(new DPoint(_x * factorW, _y * factorH), bi, false, 
                 new DPoint(0, 0),
-                bi);
+                bi, null);
         
         Page.getInstance().getJlbl_selectionBG().setIcon(new ImageIcon(bi));
     }

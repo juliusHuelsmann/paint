@@ -174,10 +174,10 @@ public class PaintObjectWriting extends PaintObjectPen {
     @Override 
     public final BufferedImage paint(final BufferedImage _bi, 
             final boolean _final, final BufferedImage _g, final int _x, 
-            final int _y) {
+            final int _y, final Rectangle _rVisibleScope) {
         
         return getPen().paintToImage(
-                _bi, this, _final, new DPoint(_x, _y), _g);
+                _bi, this, _final, new DPoint(_x, _y), _g, _rVisibleScope);
     }
 
     /**
@@ -256,7 +256,8 @@ public class PaintObjectWriting extends PaintObjectPen {
                         BufferedImage.TYPE_INT_ARGB), 
                         true, null, 
                         Page.getInstance().getJlbl_painting().getLocation().x,
-                        Page.getInstance().getJlbl_painting().getLocation().y)
+                        Page.getInstance().getJlbl_painting().getLocation().y,
+                        null)
                         .getSubimage(
                                 0, 0, 1, 1);
             } else {
@@ -272,7 +273,8 @@ public class PaintObjectWriting extends PaintObjectPen {
                     BufferedImage.TYPE_INT_ARGB), 
                     true, null, 
                     Page.getInstance().getJlbl_painting().getLocation().x,
-                    Page.getInstance().getJlbl_painting().getLocation().y)
+                    Page.getInstance().getJlbl_painting().getLocation().y,
+                    null)
                     .getSubimage(
                             x, y, width, height);
         }

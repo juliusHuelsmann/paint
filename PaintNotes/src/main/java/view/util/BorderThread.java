@@ -201,7 +201,7 @@ public class BorderThread extends Thread {
             bi_transformed = po_curr.paint(bi_transformed, false, 
                     bi_transformed, 
                     Page.getInstance().getJlbl_painting().getLocation().x, 
-                    Page.getInstance().getJlbl_painting().getLocation().y);
+                    Page.getInstance().getJlbl_painting().getLocation().y, null);
 
 
             Page.getInstance().getJlbl_selectionBG().setIcon(

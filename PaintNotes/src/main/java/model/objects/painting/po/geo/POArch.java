@@ -76,7 +76,7 @@ public class POArch extends POInsertion {
     @Override 
     public final BufferedImage paint(final BufferedImage _bi, 
             final boolean _final, final BufferedImage _g, final int _x, 
-            final int _y) {
+            final int _y, final Rectangle _r) {
         
 
         if (getPnt_first() == null || getPnt_last() == null) {

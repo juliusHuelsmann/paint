@@ -3,6 +3,7 @@ package model.objects.pen.normal;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import view.forms.Page;
@@ -55,7 +56,8 @@ public class Marker extends Pen {
 	 */
 	@Override protected final void paintPoint(final DPoint _p, 
 	        final BufferedImage _bi, final boolean _final, 
-	        final DPoint _pnt_shift, final BufferedImage _g) {
+	        final DPoint _pnt_shift, final BufferedImage _g,
+	        final Rectangle _r_visibleScope) {
 
 	    final int plus = 3;
 	    

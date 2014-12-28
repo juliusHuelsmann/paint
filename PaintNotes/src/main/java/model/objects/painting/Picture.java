@@ -507,7 +507,6 @@ public final class Picture {
 			return _bi;
 		}
 		
-
 		// Start a transaction. That means that after the transaction has
 		// been terminated, the current item of the list is reset.
 		ls_po_sortedByX.startTransaction("repaintRectangle");
@@ -620,7 +619,8 @@ public final class Picture {
 			ls_poChronologic.getItem().paint(_bi, _final,
 					Page.getInstance().getJlbl_painting().getBi(),
 					Page.getInstance().getJlbl_painting().getLocation().x,
-					Page.getInstance().getJlbl_painting().getLocation().y);
+					Page.getInstance().getJlbl_painting().getLocation().y,
+					r_selection);
 			counter ++;
 			ls_poChronologic.next();
 		}
@@ -708,7 +708,7 @@ public final class Picture {
 			bi_transformed = po_current.paint(bi_transformed, false,
 					bi_transformed, Page.getInstance().getJlbl_painting()
 							.getLocation().x, Page.getInstance()
-							.getJlbl_painting().getLocation().y);
+							.getJlbl_painting().getLocation().y, null);
 
 			Page.getInstance().getJlbl_selectionBG()
 					.setIcon(new javax.swing.ImageIcon(bi_transformed));
@@ -720,7 +720,7 @@ public final class Picture {
 						.getInstance().getJlbl_painting().getBi(), false, Page
 						.getInstance().getJlbl_painting().getBi(), Page
 						.getInstance().getJlbl_painting().getLocation().x, Page
-						.getInstance().getJlbl_painting().getLocation().y);
+						.getInstance().getJlbl_painting().getLocation().y, null);
 			} else if (po_current instanceof PaintObjectWriting
 					&& !(po_current instanceof POCurve)) {
 				bi_transformed = ((PaintObjectWriting) po_current).paintLast(
@@ -739,7 +739,7 @@ public final class Picture {
 						.getJlbl_painting().getBi(), false, Page.getInstance()
 						.getJlbl_painting().getBi(), Page.getInstance()
 						.getJlbl_painting().getLocation().x, Page.getInstance()
-						.getJlbl_painting().getLocation().y);
+						.getJlbl_painting().getLocation().y, null);
 			}
 			Page.getInstance().getJlbl_painting().setBi(bi_transformed);
 			Page.getInstance().getJlbl_painting()
@@ -899,13 +899,13 @@ public final class Picture {
 				// TODO: zoom, scroll adjust?
 				pow.paint(bi, false, bi, -CSelection.getInstance()
 						.getR_selection().x, -CSelection.getInstance()
-						.getR_selection().y);
+						.getR_selection().y, null);
 
 			} else if (po instanceof PaintObjectImage) {
 				PaintObjectImage poi = (PaintObjectImage) po;
 				poi.paint(bi, false, bi, -CSelection.getInstance()
 						.getR_selection().x, -CSelection.getInstance()
-						.getR_selection().y);
+						.getR_selection().y, null);
 
 			} else {
 				Status.getLogger().warning("unknown kind of PaintObject" + po);
@@ -995,7 +995,7 @@ public final class Picture {
 			}
 		}
 
-		bi = ls_po_sortedByX.getItem().paint(bi, true, bi, 0, 0);
+		bi = ls_po_sortedByX.getItem().paint(bi, true, bi, 0, 0, null);
 
 		try {
 			ImageIO.write(bi, "png", new File(_wsLoc));
@@ -1390,7 +1390,8 @@ public final class Picture {
 				// paint the object.
 				ls_poSelected.getItem().paint(verbufft2, false, verbufft,
 						Page.getInstance().getJlbl_painting().getLocation().x,
-						Page.getInstance().getJlbl_painting().getLocation().y);
+						Page.getInstance().getJlbl_painting().getLocation().y, 
+						null);
 
 				if (ls_poSelected.getItem() instanceof PaintObjectWriting) {
 					PaintObjectWriting pow = (PaintObjectWriting) ls_poSelected
@@ -1492,7 +1493,7 @@ public final class Picture {
 						Page.getInstance().getJlbl_painting().getLocation().x
 								- px,
 						Page.getInstance().getJlbl_painting().getLocation().y
-								- py);
+								- py, null);
 
 				if (ls_poSelected.getItem() instanceof PaintObjectWriting) {
 					PaintObjectWriting pow = (PaintObjectWriting) ls_poSelected

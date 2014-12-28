@@ -115,12 +115,16 @@ public abstract class PaintObject implements Serializable {
 	 *         the JLabel starts
 	 *         painting at the graphics is shifted by (-_x, -_y)
 	 * 
+	 * @param _rectRepaint the rectangle which is to be repainted at graphical 
+	 * 			user interface. The pixel of PaintObjects outside this 
+	 *			rectangle do not have to be printed. If rectangle is null, each
+	 *			point is printed.
 	 *         
 	 * @return the new BufferedImage.
 	 */
     public abstract BufferedImage paint(final BufferedImage _bi, 
             final boolean _final, final BufferedImage _g, final int _x, 
-            final int _y);
+            final int _y, final Rectangle _rectRepaint);
     
     
     /*

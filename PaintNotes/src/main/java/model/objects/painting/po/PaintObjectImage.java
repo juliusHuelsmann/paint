@@ -114,7 +114,7 @@ public class PaintObjectImage extends PaintObject {
      */
     @Override public final BufferedImage paint(final BufferedImage _bi, 
             final boolean _final, final BufferedImage _g, final int _x,
-            final int _y) {
+            final int _y, final Rectangle _r) {
 
         //if final only paint at BufferedImage
         //if not final only paint at graphics

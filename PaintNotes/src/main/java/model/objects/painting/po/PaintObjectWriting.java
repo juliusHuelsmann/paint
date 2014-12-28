@@ -884,7 +884,126 @@ public class PaintObjectWriting extends PaintObjectPen {
     
     
     
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public final synchronized List<PaintObjectWriting> deleteRectangle(
+            final Rectangle _r, List<PaintObjectWriting> ls_pow_outside) {
+
+        //initialize lists and go to the beginning of the point list.
+    	if (ls_pow_outside == null) {
+
+        	ls_pow_outside = new List<PaintObjectWriting>();
+    	} 
+        ls_point.toFirst();
+        
+        //Initialize current Point and verify whether it is outside or inside.
+        //Insert it into the new created PaintObject.
+        DPoint pc = ls_point.getItem();
+        boolean lInside = 
+        		   (pc.getX() >= _r.x && pc.getX() <= _r.x + _r.width) 
+                && (pc.getY() >= _r.y && pc.getY() <= _r.y + _r.height);
+        
+        //create new PaintObjectWriting where to insert the following points.
+        PaintObjectWriting pow_current = new PaintObjectWriting(
+        		Picture.getInstance().getIncreaseCID(), getPen());
+        pow_current.addPoint(new DPoint(pc));
+        
+        
+        ls_point.next();
+        while (!ls_point.isBehind()) {
+            
+            //Initialize current Point and verify whether it is outside or 
+            //inside the rectangle
+            DPoint pcNew = ls_point.getItem();
+            boolean cInside = 
+            		(pcNew.getX() >= _r.x && pcNew.getX() <= _r.x + _r.width)
+            		&& 
+            		(pcNew.getY() >= _r.y && pcNew.getY() <= _r.y + _r.height);
+            
+            
+                
+            if (cInside && !lInside) {
+
+            	
+            	//calculate border point and insert into the outside list
+                DPoint pnt_border = checkIntersection(pc, pcNew, _r);
+                if (pnt_border != null) {
+                    pow_current.addPoint(new DPoint(pnt_border));
+                    ls_pow_outside.insertBehind((pow_current));
+                } else {
+                	Status.getLogger().warning("error calc border");
+                }
+                
+                pow_current = new PaintObjectWriting(
+                		Picture.getInstance().getIncreaseCID(), 
+                		getPen());
+            
+            } else if (!cInside && lInside) {
+
+
+                DPoint pnt_border = checkIntersection(pcNew, pc, _r);
+                
+                if (pnt_border != null) {
+                    pow_current.addPoint(new DPoint(pnt_border));
+                }
+                
+                //add new DPoint to the PaintObject
+                pow_current.addPoint(new DPoint(pcNew));
+            
+            } else if (!cInside && !lInside) {
+
+            	
+                DPoint pnt_border1 = checkIntersection(pc, pcNew, _r);
+                if (pnt_border1 != null) {
+                	
+                	
+                	//if the previous point is outside and the current point
+                	//is inside
+                	
+                	//calculate border point
+                    DPoint pnt_border2 = checkIntersection(pcNew, pnt_border1, _r);
+                    
+                    //outside
+                    pow_current.addPoint(new DPoint(pc));
+                    pow_current.addPoint(new DPoint(pnt_border1));
+                    ls_pow_outside.insertBehind((pow_current));
+                    
+                    
+
+                    pow_current = new PaintObjectWriting(
+                    		Picture.getInstance().getIncreaseCID(), 
+                    		getPen());
+
+                    if (pnt_border2 != null) {
+                        pow_current.addPoint(new DPoint(pnt_border2));
+                    } else {
+                    	pow_current.addPoint(new DPoint(pnt_border1));
+                    }
+                    //add new DPoint to the PaintObject
+                    pow_current.addPoint(new DPoint(pcNew));
+                    
+                	
+                } else {
+
+                  pow_current.addPoint(new DPoint(pcNew));
+                }
+                
+            }
+
+            pc = pcNew;
+            lInside = cInside;
+            ls_point.next();
+        }
+        if (!lInside) {
+
+            ls_pow_outside.insertBehind(pow_current); 
+        }
+
+        
+        return ls_pow_outside;
+    }
     
     
     

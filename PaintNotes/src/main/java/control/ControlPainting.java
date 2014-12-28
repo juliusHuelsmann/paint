@@ -1748,10 +1748,17 @@ public final class ControlPainting implements MouseListener,
                 Page.getInstance().getJlbl_painting().refreshPaint();
             }
 
+
             _r_sizeField.x /= cZoomFactorWidth;
             _r_sizeField.width /= cZoomFactorWidth;
             _r_sizeField.y /= cZoomFactorHeight;
             _r_sizeField.height /= cZoomFactorHeight;
+
+            _r_sizeField.x += Page.getInstance().getJlbl_painting()
+            		.getLocation().getX();
+            _r_sizeField.y += Page.getInstance().getJlbl_painting()
+            		.getLocation().getY();
+            
         }
         
 
@@ -1770,7 +1777,10 @@ public final class ControlPainting implements MouseListener,
     
     private synchronized void mr_erase(Point _p) {
 
-
+    	/**
+    	 * Value for showing the new paintObjects in PaintObjectsView.
+    	 */
+    	final boolean debug_update_paintObjects_view = false;
     	
     	final Rectangle _r_sizeField = new Rectangle(
     			_p.x - Status.getEraseRadius(), 
@@ -1793,13 +1803,6 @@ public final class ControlPainting implements MouseListener,
             int currentX = po_current.getSnapshotBounds().x;
 
             
-            /**
-             * Because it is impossible to insert the new created items directly
-             * to list (otherwise there would be an infinite loop because of 
-             * sort order they reappear inside the while
-             * loop and are destroyed once again and thus reappear etc.
-             */
-            List<PaintObject> ls_toInsert = new List<PaintObject>();
 
             //adapt the rectangle to the currently used zoom factor.
             final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
@@ -1810,6 +1813,7 @@ public final class ControlPainting implements MouseListener,
             _r_sizeField.width *= cZoomFactorWidth;
             _r_sizeField.y *= cZoomFactorHeight;
             _r_sizeField.height *= cZoomFactorHeight;
+            List<PaintObjectWriting> ls_separatedPO = null;
             
             // go through list. until either list is empty or it is
             // impossible for the paintSelection to paint inside the
@@ -1827,30 +1831,17 @@ public final class ControlPainting implements MouseListener,
                     // get item; remove it out of lists and add it to
                     // selection list
 
-                    PaintObject [][] separatedPO = po_current.separate(
-                            _r_sizeField);
-                     new PictureOverview().remove(Picture.getInstance()
-                            .getLs_po_sortedByX().getItem());
+                	ls_separatedPO 
+                	= po_current.deleteRectangle(_r_sizeField, ls_separatedPO);
+                	ls_separatedPO.toFirst();
+                	
+                	if (debug_update_paintObjects_view) {
+
+                        new PictureOverview().remove(Picture.getInstance()
+                                .getLs_po_sortedByX().getItem());
+                	}
                     Picture.getInstance().getLs_po_sortedByX().remove();
-                    
-                    //go through the list of elements.
-                    for (int current = 0; current < separatedPO[0].length;
-                            current++) {
 
-                        if (separatedPO[0][current] != null) {
-                            //recalculate snapshot bounds for being able to
-                            //insert the item into the sorted list.
-                            separatedPO[0][current].recalculateSnapshotBounds();
-                            ls_toInsert.insertBehind(separatedPO[0][current]);
-    
-                             new PictureOverview().add(
-                                    separatedPO[0][current]);
-                        } else {
-
-                            Status.getLogger().warning("separated paintObject "
-                                    + "is null");
-                        }
-                    }
                 } 
                 // next
                 Picture.getInstance().getLs_po_sortedByX().next();
@@ -1863,15 +1854,33 @@ public final class ControlPainting implements MouseListener,
             }
 
             
-            //insert the to insert items to graphical user interface.
-            ls_toInsert.toFirst();
-            while (!ls_toInsert.isBehind() && !ls_toInsert.isEmpty()) {
 
-                Picture.getInstance().getLs_po_sortedByX().insertSorted(
-                        ls_toInsert.getItem(), 
-                        ls_toInsert.getItem().getSnapshotBounds().x);
-                ls_toInsert.next();
+            while(ls_separatedPO != null
+            		&& !ls_separatedPO.isEmpty()
+            		&& !ls_separatedPO.isBehind()) {
+
+                if (ls_separatedPO.getItem() != null) {
+                    //recalculate snapshot bounds for being able to
+                    //insert the item into the sorted list.
+                	ls_separatedPO.getItem().recalculateSnapshotBounds();
+
+                    Picture.getInstance().getLs_po_sortedByX().insertSorted(
+                    		ls_separatedPO.getItem(), 
+                    		ls_separatedPO.getItem().getSnapshotBounds().x);
+
+                	if (debug_update_paintObjects_view) {
+
+                        new PictureOverview().add(
+                       		 ls_separatedPO.getItem());
+                	}
+                } else {
+
+                    Status.getLogger().warning("separated paintObject "
+                            + "is null");
+                }
+                ls_separatedPO.next();
             }
+            
             if (Picture.getInstance().paintSelected()) {
                 Page.getInstance().getJlbl_painting().refreshPaint();
             }

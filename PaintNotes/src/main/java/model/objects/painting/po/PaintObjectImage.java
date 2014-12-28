@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import model.settings.Error;
 import model.settings.Status;
 import model.util.DPoint;
+import model.util.list.List;
 import model.util.paint.Utils;
 
 
@@ -278,4 +279,13 @@ public class PaintObjectImage extends PaintObject {
         new Exception("not implemented yet").printStackTrace();
         return false;
     }
+
+
+	@Override
+	public List<PaintObjectWriting> deleteRectangle(Rectangle _r, 
+			List<PaintObjectWriting> _ls_pow_outside) {
+
+        new Exception("not implemented yet").printStackTrace();
+		return null;
+	}
 }

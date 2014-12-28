@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 import model.util.DPoint;
+import model.util.list.List;
 
 
 /**
@@ -169,7 +170,16 @@ public abstract class PaintObject implements Serializable {
      * @return the PaintObject array [0][x] outside, [1] [x] inside.s
      */
     public abstract PaintObject[][] separate(Rectangle _r);
-    
+
+
+    /**
+     * Separates the PaintObject; thus there are parts that are inside the
+     * given rectangle and ones that are outside. The parts inside are removed.
+     * @param _r the rectangle
+     * @return the PaintObject array of elements inside.
+     */
+    public abstract List<PaintObjectWriting> deleteRectangle(
+            final Rectangle _r, List<PaintObjectWriting> _l);
     /**
      * Separates the PaintObject; thus there are parts that are inside the
      * given rectangle and ones that are outside.

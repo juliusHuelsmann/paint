@@ -9,6 +9,7 @@ import view.forms.Page;
 import model.objects.pen.Pen;
 import model.settings.Status;
 import model.util.DPoint;
+import model.util.list.List;
 
 /**
  * The paintObject corresponds to one item that has been painted. It consists
@@ -295,6 +296,15 @@ public abstract class POInsertion extends PaintObjectPen {
     }
 
 
+
+
+	@Override
+	public List<PaintObjectWriting> deleteRectangle(Rectangle _r, 
+			List<PaintObjectWriting> _ls_pow_outside) {
+
+        new Exception("not implemented yet").printStackTrace();
+		return null;
+	}
 
     /**
      * {@inheritDoc}

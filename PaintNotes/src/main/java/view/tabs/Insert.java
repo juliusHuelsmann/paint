@@ -95,7 +95,7 @@ public final class Insert extends Tab {
 				new LineBorder(Color.black),
 				new LineBorder(Color.white)));
 		tb_selected.setActivable(false);
-		tb_selected.setIcon("paint/test.png");
+		tb_selected.setIcon("icon/tabs/write/write.png");
 		super.add(tb_selected);
 		
 		insertSectionStuff("ausgewaehlt", tb_selected.getX(), 

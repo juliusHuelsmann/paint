@@ -298,7 +298,7 @@ public final class Selection extends Tab {
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb.setActivable(false);
-        tb.setIcon("paint/test.png");
+        tb.setIcon("icon/tabs/write/write.png");
         super.add(tb);
 
         Item1Button tb_changePen = new Item1Button(null);
@@ -311,7 +311,7 @@ public final class Selection extends Tab {
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb_changePen.setActivable(false);
-        tb_changePen.setIcon("paint/test.png");
+        tb_changePen.setIcon("icon/tabs/write/write.png");
         super.add(tb_changePen);
 
         //pen 1

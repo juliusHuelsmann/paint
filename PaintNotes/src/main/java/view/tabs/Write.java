@@ -68,7 +68,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.white)));
         tb_pen_theorem.setActivable(true);
         tb_pen_theorem.addActionListener(CWrite.getInstance());
-        tb_pen_theorem.setIcon("paint/test.png");
+        tb_pen_theorem.setIcon("icon/tabs/write/write.png");
         super.add(tb_pen_theorem);
 
         tb_pen_proof = new Item1Button(null);
@@ -85,7 +85,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.white)));
         tb_pen_proof.setActivable(true);
         tb_pen_proof.addActionListener(CWrite.getInstance());
-        tb_pen_proof.setIcon("paint/test.png");
+        tb_pen_proof.setIcon("icon/tabs/write/write.png");
         super.add(tb_pen_proof);
 
         tb_pen_example = new Item1Button(null);
@@ -102,7 +102,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.white)));
         tb_pen_example.setActivable(true);
         tb_pen_example.addActionListener(CWrite.getInstance());
-        tb_pen_example.setIcon("paint/test.png");
+        tb_pen_example.setIcon("icon/tabs/write/write.png");
         super.add(tb_pen_example);
 
 
@@ -119,7 +119,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb_pen_comment.setActivable(true);
-        tb_pen_comment.setIcon("paint/test.png");
+        tb_pen_comment.setIcon("icon/tabs/write/write.png");
         tb_pen_comment.addActionListener(CWrite.getInstance());
         super.add(tb_pen_comment);
 
@@ -142,7 +142,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb_pen_headline1.setActivable(true);
-        tb_pen_headline1.setIcon("paint/test.png");
+        tb_pen_headline1.setIcon("icon/tabs/write/write.png");
         tb_pen_headline1.addActionListener(CWrite.getInstance());
         super.add(tb_pen_headline1);
 
@@ -159,7 +159,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb_pen_headline2.setActivable(true);
-        tb_pen_headline2.setIcon("paint/test.png");
+        tb_pen_headline2.setIcon("icon/tabs/write/write.png");
         tb_pen_headline2.addActionListener(CWrite.getInstance());
         super.add(tb_pen_headline2);
         
@@ -176,7 +176,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb_pen_headline3.setActivable(true);
-        tb_pen_headline3.setIcon("paint/test.png");
+        tb_pen_headline3.setIcon("icon/tabs/write/write.png");
         tb_pen_headline3.addActionListener(CWrite.getInstance());
         super.add(tb_pen_headline3);
 

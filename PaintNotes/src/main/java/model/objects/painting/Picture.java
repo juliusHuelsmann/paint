@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import control.CSelection;
 import control.tabs.CTabSelection;
 import view.View;
+import view.forms.Console;
 import view.forms.Message;
 import view.forms.Page;
 import view.tabs.Insert;
@@ -480,7 +481,7 @@ public final class Picture {
 	 * paintObjects is not changed by this process.
 	 * 
 	 * @param _x
-	 *            the x coordinate of the repainted rectanlge
+	 *            the x coordinate of the repainted rectangle
 	 * @param _y
 	 *            the y coordinate
 	 * @param _width
@@ -505,6 +506,7 @@ public final class Picture {
 		if (ls_po_sortedByX == null || ls_po_sortedByX.isEmpty() || _bi == null) {
 			return _bi;
 		}
+		
 
 		// Start a transaction. That means that after the transaction has
 		// been terminated, the current item of the list is reset.
@@ -535,16 +537,17 @@ public final class Picture {
 		 * The location of the page end needed for checking roughly whether a
 		 * paintObject may be inside the repaint rectangle.
 		 */
-		final int xLocationPageEnd = (int) (factorW * (-Page.getInstance()
-				.getJlbl_painting().getLocation().getX() + Page.getInstance()
-				.getJlbl_painting().getWidth())), yLocationPageEnd = (int) (factorH * (-Page
-				.getInstance().getJlbl_painting().getLocation().getY() + Page
-				.getInstance().getJlbl_painting().getHeight()));
+		final int xLocationRepaintEnd = (int) (factorW * (_x + _width)), 
+				yLocationRepaintEnd = (int) (factorH * (_y + _height));
 
 		/**
 		 * The repaint rectangle.
 		 */
-		final Rectangle r_selection = new Rectangle(_x, _y, _width, _height);
+		final Rectangle r_selection = new Rectangle(
+				(int) (factorW * _x),
+				(int) (factorH * _y), 
+				(int) (factorW * _width),
+				(int) (factorH * _height));
 
 		/*
 		 * Find out which items are inside the given repaint rectangle and
@@ -563,7 +566,7 @@ public final class Picture {
 				// if that is not the case the element is behind the specified
 				// rectangle.
 				if (ls_po_sortedByX.getItem().getSnapshotBounds().x 
-						<= xLocationPageEnd) {
+						<= xLocationRepaintEnd) {
 
 					// Firstly check whether the current PaintObject may be
 					// inside the given rectangle by the other
@@ -580,7 +583,7 @@ public final class Picture {
 					// (because the list can only be sorted by one parameter)
 					// Thus it is necessary to use this second if clause.
 					if (ls_po_sortedByX.getItem().getSnapshotBounds().y 
-							<= yLocationPageEnd
+							<= yLocationRepaintEnd
 							&& ls_po_sortedByX.getItem().isInSelectionImage(
 									r_selection)) {
 
@@ -611,29 +614,27 @@ public final class Picture {
 		 * Go through the sorted list of items and paint them
 		 */
 		ls_poChronologic.toFirst();
+		int counter = 0;
 		while (!ls_poChronologic.isBehind() && !ls_poChronologic.isEmpty()) {
 
 			ls_poChronologic.getItem().paint(_bi, _final,
 					Page.getInstance().getJlbl_painting().getBi(),
 					Page.getInstance().getJlbl_painting().getLocation().x,
 					Page.getInstance().getJlbl_painting().getLocation().y);
-			// //paint the object.
-			// if (_final) {
-			//
-			// //TODO: does it matter in here?
-			// } else {
-			//
-			// ls_poChronologic.getItem().paint(
-			// _bi, _final, _bi,
-			// Page.getInstance().getJlbl_painting()
-			// .getLocation().x,
-			// Page.getInstance().getJlbl_painting()
-			// .getLocation().y);
-			// }
-
+			counter ++;
 			ls_poChronologic.next();
 		}
 
+
+		//log repainting action in console.
+		if (counter > 0) {
+			Console.log( counter
+					+ " Item painted in rectanlge (" + _x + ", " + _y + ", "
+					+ _width + ", " + _height + "). Final: " + _final, 
+					Console.ID_INFO_UNIMPORTANT, 
+					getClass(), "repaintRectangle");
+		}
+		
 		// print logging method
 		Status.getLogger().info(
 				"Painted " + Status.getCounter_paintedPoints()
@@ -1763,6 +1764,20 @@ public final class Picture {
 		} else {
 			Status.getLogger().severe("wrong identifier.");
 		}
+	}
+
+
+	/**
+	 * Return whether some PaintObjects are selected or not.
+	 * @return
+	 */
+	public boolean isSelected() {
+	
+		if (ls_poSelected == null || ls_poSelected.isEmpty()) {
+
+			return false;
+		}
+		return true;
 	}
 
 }

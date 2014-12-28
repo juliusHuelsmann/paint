@@ -1,15 +1,20 @@
 package view.forms;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import model.settings.ViewSettings;
 import model.util.Util;
 import control.tabs.CQuickAccess;
 import control.util.MousePositionTracker;
+import view.util.VScrollPane;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
@@ -53,6 +58,8 @@ public class QuickAccess extends MPanel {
 		super.addMouseMotionListener(mpt);
 		super.setSize(200, 200);
 
+		
+		
 		jlbl_move = new MLabel();
 		jlbl_move.setSize(sizeItem, sizeItem);
 		jlbl_move.setOpaque(false);
@@ -119,6 +126,17 @@ public class QuickAccess extends MPanel {
 		super.add(jlbl_background);
 		
 		drawCircle(jlbl_background);
+
+		jlbl_background.addMouseListener(mpt);
+		jlbl_background.addMouseMotionListener(mpt);
+		jlbl_move.addMouseListener(mpt);
+		jlbl_move.addMouseMotionListener(mpt);
+		jlbl_pen.addMouseListener(mpt);
+		jlbl_pen.addMouseMotionListener(mpt);
+		jlbl_erase.addMouseListener(mpt);
+		jlbl_erase.addMouseMotionListener(mpt);
+		jlbl_select.addMouseListener(mpt);
+		jlbl_select.addMouseMotionListener(mpt);
 		
 	}
 	

@@ -365,7 +365,6 @@ public final class ControlPainting implements MouseListener,
                 pnt_start = _event.getPoint();
                 pnt_startLocation = Page.getInstance().getJlbl_painting()
                         .getLocation();
-                Page.getInstance().getJlbl_painting().refreshPaint();
                 break;
             default:
                 break;
@@ -2037,11 +2036,14 @@ public final class ControlPainting implements MouseListener,
                 pnt_movementSpeed = null;
                 
                 //release everything
-                Picture.getInstance().releaseSelected();
-                Page.getInstance().releaseSelected();
-                Page.getInstance().removeButtons();
-                Page.getInstance().getJlbl_painting().refreshPaint();
-                Page.getInstance().getJlbl_painting().repaint();
+                if (Picture.getInstance().isSelected()) {
+
+                    Picture.getInstance().releaseSelected();
+                    Page.getInstance().releaseSelected();
+                    Page.getInstance().removeButtons();
+                }
+      //          Page.getInstance().getJlbl_painting().refreshPaint();
+       //         Page.getInstance().getJlbl_painting().repaint();
             }
             break;
            

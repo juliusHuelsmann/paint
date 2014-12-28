@@ -369,6 +369,15 @@ public final class CPaintStatus implements MouseListener {
 		
 		if (!mouseReleasedPenChange(_event)) {
 
+			
+			//if previously zoomed remove zoom field.
+			if (Status.getIndexOperation()
+					== Constants.CONTROL_PAINTING_INDEX_ZOOM_IN) {
+
+				Page.getInstance().getJlbl_painting().removeZoomBox();
+			}
+			
+			
 		    int operationID = getOperation(_event);
 		    
 		    //if operation id is valid; thus operation has been found
@@ -378,11 +387,13 @@ public final class CPaintStatus implements MouseListener {
                 Status.setIndexOperation(operationID);
                 deactivate();
                 
-                //if there was selection before, release it to Picture
-                Picture.getInstance().releaseSelected();
-                Page.getInstance().releaseSelected();
-                Page.getInstance().removeButtons();
-                Page.getInstance().getJlbl_painting().refreshPaint();
+                if (Picture.getInstance().isSelected()) {
+
+                    //if there was selection before, release it to Picture
+                    Picture.getInstance().releaseSelected();
+                    Page.getInstance().releaseSelected();
+                    Page.getInstance().removeButtons();
+                }
                 
                 
 

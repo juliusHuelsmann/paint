@@ -125,7 +125,7 @@ import view.util.mega.MButton;
 
         //form for creating new page.
         super.add(New.getInstance());
-
+        super.add(Console.getInstance());
         super.add(QuickAccess.getInstance());
         //initialize JPanel jpnl_toMove
         jpnl_toMove = new MPanel() {

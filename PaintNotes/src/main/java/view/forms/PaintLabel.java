@@ -145,6 +145,11 @@ public class PaintLabel extends MLabel {
     }
     
     
+    public final void removeZoomBox() {
+    	paintZoom(0, 0, 0, 0);
+    }
+    
+    
     /**
      * Paint the entire selection stuff.
      * @param _r the rectangle which is selected.

@@ -138,14 +138,14 @@ import control.util.MousePositionTracker;
          */
         Message.addMyself();
         super.add(Tabs.getInstance());
+        Tabs.getInstance().setVisible(true);
         super.add(Page.getInstance());
+        Page.getInstance().setVisible(true);
 
         
 //        mainThread.setPriority(Thread.MAX_PRIORITY);
         
         //display tabs and page.
-        Tabs.getInstance().setVisible(true);
-        Page.getInstance().setVisible(true);
         
 //        Tabs.getInstance().stroke();
 

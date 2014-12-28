@@ -5,15 +5,18 @@ package view.util;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+
 import view.forms.Page;
 import view.forms.Tabs;
 import view.util.mega.MButton;
 import view.util.mega.MPanel;
 import control.tabs.CPaintStatus;
 import control.util.CItem;
+import model.objects.painting.Picture;
 import model.settings.ViewSettings;
 import model.util.list.List;
 import model.util.paint.Utils;
@@ -187,23 +190,32 @@ public class Item1Menu extends MPanel {
      */
     public final void setOpen(final boolean _open) {
 
-        open = _open;
-        if (_open) {
-            setSize(openedWidth, openedHeight);
+    	
+    	if (open != _open) {
 
-            jpnl_container.setBorder(BorderFactory.createLineBorder(
-                    ViewSettings.GENERAL_CLR_BORDER));
+        	//release selected because of display bug otherwise.
+        	Picture.getInstance().releaseSelected();
+        	Page.getInstance().releaseSelected();
+        	
+        	//open or close
+            open = _open;
+            if (_open) {
+                setSize(openedWidth, openedHeight);
 
-            jpnl_container.requestFocus();
-            
-        } else {
-            setSize(closedWidth, closedHeight);
-            jpnl_container.setBorder(null);
-            
-            //when closed repaint.
-            Page.getInstance().getJlbl_painting().repaint();
-            Tabs.getInstance().repaint();
-        }
+                jpnl_container.setBorder(BorderFactory.createLineBorder(
+                        ViewSettings.GENERAL_CLR_BORDER));
+
+                jpnl_container.requestFocus();
+                
+            } else {
+                setSize(closedWidth, closedHeight);
+                jpnl_container.setBorder(null);
+                
+                //when closed repaint.
+                Page.getInstance().getJlbl_painting().repaint();
+                Tabs.getInstance().repaint();
+            }
+    	}
     }
     
     /**

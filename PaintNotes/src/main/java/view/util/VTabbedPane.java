@@ -888,6 +888,15 @@ public class VTabbedPane extends MPanel {
 	}
     
     
+    
+    /**
+     * Add special item to gui.
+     * @param _c the component.
+     */
+    public final void addSpecialItem(final Component _c) {
+//    	jpnl_contains.add(_c);
+    }
+    
 
     /**
      * @return the openTab

@@ -551,6 +551,7 @@ public class PaintLabel extends MLabel {
         //close old border thread.
         if (thrd_moveBorder != null) {
             thrd_moveBorder.interrupt();
+            Tabs.getInstance().repaint();
         }
     }
     

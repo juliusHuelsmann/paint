@@ -13,6 +13,7 @@ import view.forms.Page;
 import view.forms.Tabs;
 import view.util.mega.MButton;
 import view.util.mega.MPanel;
+import model.objects.painting.Picture;
 import model.settings.ViewSettings;
 import control.util.CItemAufklappen;
 
@@ -151,8 +152,17 @@ public class Item2Menu extends MPanel {
 	 */
 	public final void setOpen(final boolean _open) {
 	    
-	    if (_open == !opened) {
 
+    	//open or close the menu
+	    if (_open != opened) {
+
+
+	    	//release selected because of display bug otherwise.
+	    	Picture.getInstance().releaseSelected();
+	    	Page.getInstance().releaseSelected();
+	    	
+	    	//open or close
+	    	
 	        this.opened = _open;
 	        final int heightMButton = 15;
 
@@ -206,6 +216,7 @@ public class Item2Menu extends MPanel {
 	        }
 	        
 	    } //otherwise nothing to do
+	    repaint();
 	}
 	
 	

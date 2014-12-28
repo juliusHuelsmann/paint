@@ -23,7 +23,7 @@ import view.util.VTabbedPane;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class Tabs extends VTabbedPane {
+public final class Tabs extends VTabbedPane {
 
     /**
      * The instance.
@@ -42,12 +42,21 @@ public class Tabs extends VTabbedPane {
     private Insert tab_insert;
     
     /**
-     * Constructor: adds instances of tabs to tabbedpane.
+     * Empty utility class constructor.
      */
-    public Tabs() {
+    private Tabs() {
+    	
+    }
+    
+    
+    /**
+     * 
+     * pseudo- constructor: adds instances of tabs to tabbedPane.
+     */
+    public void initialize() {
+
         
         //TabbedPane for different pages
-        super();
         super.setSize(
                 ViewSettings.getView_widthTb(), 
                 ViewSettings.getView_heightTB(),
@@ -60,7 +69,7 @@ public class Tabs extends VTabbedPane {
         /*
          * tab paint
          */
-        super.addTab("zeichnen");
+        super.addTab("Painting");
         tab_paint = Paint.getInstance();
         super.addToTab(tabNumber, tab_paint);
         tabNumber++;
@@ -68,29 +77,31 @@ public class Tabs extends VTabbedPane {
         /*
          * 
          */
-        super.addTab("Schreiben");
+        super.addTab("Writing");
         super.addToTab(tabNumber, Write.getInstance());
         tabNumber++;
-        
+
+
         /*
          * tab insert
          */
-        super.addTab("einfuegen");
+        super.addTab("Insertion");
         tab_insert = Insert.getInstance();
         super.addToTab(tabNumber, tab_insert);
         tabNumber++;
 
+        
         /*
          * 
          */
-        super.addTab("auswahl");
+        super.addTab("Selection");
         Selection tab_selection = Selection.getInstance();
         super.addToTab(tabNumber, tab_selection);
         tabNumber++;
         /*
          * tab view
          */
-        super.addTab("Ansicht");   //view
+        super.addTab("View");   //view
         super.addToTab(tabNumber, Look.getInstance());
         tabNumber++;
 
@@ -107,12 +118,12 @@ public class Tabs extends VTabbedPane {
         /*
          * tab print
          */
-        super.addTab("Drucken");
+        super.addTab("Printing");
         super.addToTab(tabNumber, Print.getInstance());
         tabNumber++;
 
 
-        super.addTab("paintObejcts");
+        super.addTab("Debug");
         PaintObjects tab_pos = PaintObjects.getInstance();
         PaintObjects.getInstance().setSize(
                 (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
@@ -123,24 +134,22 @@ public class Tabs extends VTabbedPane {
         /*
          * tab print
          */
-        super.addTab("Projekte");
+        super.addTab("Projects");
         tabNumber++;
 
         /*
          * tab print
          */
-        super.addTab("Ziele");
+        super.addTab("Goals");
         tabNumber++;
 
         /*
          * tab print
          */
-        super.addTab("Uebersicht");
+        super.addTab("Overview");
         tabNumber++;
 
 
-
-        
         super.addTab("");
         super.addTab("");
         super.addTab("");
@@ -157,6 +166,7 @@ public class Tabs extends VTabbedPane {
         super.addTab("");
         super.addTab("");
 
+    
     }
     
     
@@ -164,7 +174,7 @@ public class Tabs extends VTabbedPane {
     /**
      * Closes all menus in tabs.
      */
-    public final void closeMenues() {
+    public void closeMenues() {
         
         //menus in paint tab
         tab_paint.getIt_stift1().setOpen(false);
@@ -191,10 +201,11 @@ public class Tabs extends VTabbedPane {
      * 
      * @return the only instance of this class.
      */
-    public static final Tabs getInstance() {
+    public static Tabs getInstance() {
         
         if (instance == null) {
             instance = new Tabs();
+            instance.initialize();
         }
         return instance;
     }

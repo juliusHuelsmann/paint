@@ -201,6 +201,7 @@ import view.util.mega.MButton;
         jlbl_selectionPainting.setFocusable(false);
         super.add(jlbl_selectionPainting);
 
+        //Border MLabel added to 
         jlbl_border = new MLabel();
         jlbl_border.setOpaque(true);
         jlbl_border.setBackground(new Color(0, 0, 0, 2 * 2 * 2 * 2 * 2));

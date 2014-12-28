@@ -10,6 +10,7 @@ import model.objects.painting.po.PaintObject;
 import model.objects.pen.special.PenSelection;
 import model.settings.ViewSettings;
 import view.forms.Page;
+import view.forms.Tabs;
 
 /**
  * BorderThread contains the necessary methods for painting moving rectangle
@@ -97,7 +98,7 @@ public class BorderThread extends Thread {
 
         final int sizeBB = ViewSettings.SELECTION_BORDER_BLOCK_SIZE;
         int indexStep = 0;
-        final int sleepTimeRectangle = 40;
+        final int sleepTimeRectangle = 100;
         final int sleepTimeLine = 400;
         int sleepTime;
         BufferedImage bi_neutral = Page.getInstance().getEmptyBISelection();
@@ -176,9 +177,12 @@ public class BorderThread extends Thread {
         //loop and increase step index.
         indexColor = indexBackup;
         indexStep += ViewSettings.SELECTION_BORDER_MOVE_SPEED_PX;
-        
-        Page.getInstance().getJlbl_selectionBG().setIcon(new ImageIcon(
+
+        Tabs.getInstance().repaint();
+        Page.getInstance().getJlbl_selectionBG().setIcon(
+        		new ImageIcon(
                 _bi_neutral));
+        Tabs.getInstance().revalidate();
         
         return indexStep;
         

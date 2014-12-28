@@ -153,21 +153,18 @@ public class QuickAccess extends MPanel {
 		// the bufferedImages for the outside stuff.
 		BufferedImage bi_outsideTop = new BufferedImage(
 				jlbl_background.getWidth(), jlbl_background.getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
-
-		BufferedImage bi_outsideBottom = new BufferedImage(
+				BufferedImage.TYPE_INT_ARGB),
+				bi_outsideBottom = new BufferedImage(
+				jlbl_background.getWidth(), jlbl_background.getHeight(),
+				BufferedImage.TYPE_INT_ARGB),
+				bi_outsideLeft = new BufferedImage(
+				jlbl_background.getWidth(), jlbl_background.getHeight(),
+				BufferedImage.TYPE_INT_ARGB),
+				bi_outsideRight = new BufferedImage(
 				jlbl_background.getWidth(), jlbl_background.getHeight(),
 				BufferedImage.TYPE_INT_ARGB);
 
-		BufferedImage bi_outsideLeft = new BufferedImage(
-				jlbl_background.getWidth(), jlbl_background.getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
-
-		BufferedImage bi_outsideRight = new BufferedImage(
-				jlbl_background.getWidth(), jlbl_background.getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
-
-		final int strokeDistance = 10;
+		final int strokeDistance = 10, r2Min = 20, r3Min = 30;
 
 		// go through the width and the height values and calculate the
 		// coordinates with origin at center.
@@ -178,8 +175,9 @@ public class QuickAccess extends MPanel {
 
 				// the radius of the circles
 				double r1 = bi.getWidth() / 2;
-				double r2 = bi.getWidth() / 2 - 20;
-				double r3 = bi.getWidth() / 2 - 30;
+				double r2 = bi.getWidth() / 2 - r2Min;
+				double r3 = bi.getWidth() / 2 - r3Min;
+				final int i_background = new Color(220, 230, 250).getRGB();
 
 				// if inside the outer circle (thus there is the possibility
 				// to be inside the other circles)
@@ -196,8 +194,7 @@ public class QuickAccess extends MPanel {
 							if (w > h && w < bi.getWidth() - h) {
 								if ((w + h) % strokeDistance == 0
 										|| (w - h) % strokeDistance == 0) {
-									bi_outsideTop.setRGB(w, h, new Color(220,
-											230, 250).getRGB());
+									bi_outsideTop.setRGB(w, h, i_background);
 								} else {
 									// top quadrant
 									bi_outsideTop.setRGB(w, h, ViewSettings
@@ -209,8 +206,8 @@ public class QuickAccess extends MPanel {
 									if ((w + h) % strokeDistance == 0
 											|| (w - h) % strokeDistance == 0) {
 										// lines
-										bi_outsideLeft.setRGB(w, h, new Color(
-												220, 230, 250).getRGB());
+										bi_outsideLeft.setRGB(w, h,
+												i_background);
 									} else {
 
 										// left
@@ -227,33 +224,30 @@ public class QuickAccess extends MPanel {
 												w, h, ViewSettings
 												.GENERAL_CLR_BACKGROUND
 												.getRGB());
-									} else
+									} else {
 										// bottom
 										bi_outsideBottom.setRGB(w, h, 
 												ViewSettings
 												.GENERAL_CLR_BACKGROUND
 												.getRGB());
+									}
 								}
 							} else if (w > bi.getWidth() - h) {
 
 								if ((w + h) % strokeDistance == 0
 										|| (w - h) % strokeDistance == 0) {
 
-									// lines
+									// lines	
 
-									bi_outsideRight.setRGB(w, h, new Color(220,
-											230, 250).getRGB());
-								} else
+									bi_outsideRight.setRGB(w, h, i_background);
+								} else {
+									
 									// right
-									bi_outsideRight.setRGB(w, h,
-											ViewSettings.GENERAL_CLR_BACKGROUND
-													.getRGB());
+									bi_outsideRight.setRGB(w, h, ViewSettings
+											.GENERAL_CLR_BACKGROUND.getRGB());
+								}
 							}
-
 						}
-
-						// bi.setRGB(w, h,
-						// ViewSettings.GENERAL_CLR_BACKGROUND.getRGB());
 					} else if (Math.pow(x, 2) - Math.pow(r3, 2) <= -Math.pow(y,
 							2)) {
 
@@ -263,7 +257,7 @@ public class QuickAccess extends MPanel {
 						} else if ((w + h) % strokeDistance == 0
 								|| (w - h) % strokeDistance == 0) {
 
-							bi.setRGB(w, h, new Color(220, 230, 250).getRGB());
+							bi.setRGB(w, h, i_background);
 						} else {
 							final Color clr_hightlighted = new Color(
 									ViewSettings.GENERAL_CLR_BACKGROUND_DARK
@@ -385,10 +379,11 @@ public class QuickAccess extends MPanel {
 			}
 		}
 
-		for (double Xh = 0; Xh < bi.getWidth(); Xh += 0.1) {
+		final double movespeed = 0.1;
+		for (double x_h = 0; x_h < bi.getWidth(); x_h += movespeed) {
 
-			double rad3 = bi.getWidth() / 2 - 30;
-			double myY = 1.0 * (bi.getHeight() / 2 - Xh);
+			double rad3 = bi.getWidth() / 2 - r3Min;
+			double myY = 1.0 * (bi.getHeight() / 2 - x_h);
 			double myX1 = Math.sqrt(Math.abs(myY * myY - Math.pow(rad3, 2)
 					- bi.getWidth() / 2));
 
@@ -400,7 +395,7 @@ public class QuickAccess extends MPanel {
 			if (myX1 >= 0 && myY >= 0 && myX1 < bi.getWidth()
 					&& myY < bi.getHeight()) {
 
-				if (myY < 30 || myY > bi.getHeight() - 30) {
+				if (myY < r3Min || myY > bi.getHeight() - r3Min) {
 
 				} else {
 
@@ -414,12 +409,12 @@ public class QuickAccess extends MPanel {
 
 			if (myX2 >= 0 && myY >= 0 && myX2 < bi.getWidth()
 					&& myY < bi.getHeight()) {
-				if (myY < 30 || myY > bi.getHeight() - 30) {
+				if (myY < r3Min || myY > bi.getHeight() - r3Min) {
 
-				} else
-
+				} else {
 					bi.setRGB((int) myX2, (int) myY,
 							ViewSettings.GENERAL_CLR_BORDER.getRGB());
+				}
 			}
 		}
 

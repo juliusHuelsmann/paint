@@ -6,6 +6,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 
+import model.objects.painting.Picture;
+import view.forms.Page;
 import view.tabs.Insert;
 import view.util.Item2;
 
@@ -39,6 +41,7 @@ public final class CItem2 implements MouseListener {
      */
     public void mouseClicked(final MouseEvent _event) {
         if (_event.getSource() instanceof Item2) {
+
             Item2 i2 = (Item2) _event.getSource();
             i2.setBorder(BorderFactory.createLineBorder(clr_mouseOver));
             Insert.getInstance().getTb_selected().setIcon(i2.getIconPath());

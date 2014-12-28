@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
-import start.test.BufferedViewer;
 import view.tabs.PaintObjects;
 import view.util.BorderThread;
 import view.util.mega.MLabel;

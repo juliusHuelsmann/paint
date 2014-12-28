@@ -142,27 +142,23 @@ public class Item1Menu extends MPanel {
 		
 		jpnl_container.setLayout(null);
 		jpnl_container.setOpaque(false);
-		jpnl_container.setForeground(Color.green);
 		jpnl_container.setBorder(null);
-		jpnl_container.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
 		jpnl_container.setFocusable(false);
 		super.add(jpnl_container);
 
         
         jpnl_subContainer.setLayout(null);
         jpnl_subContainer.setOpaque(true);
-        jpnl_subContainer.setForeground(Color.green);
         jpnl_subContainer.setBorder(null);
         jpnl_subContainer.setBackground(
-                ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
+                ViewSettings.CLR_BACKGROUND_MENU_1_OPEN);
         jpnl_subContainer.setFocusable(false);
         jpnl_container.add(jpnl_subContainer);
         
 		jpnl_stuff.setLayout(null);
 		jpnl_stuff.setOpaque(true);
-		jpnl_stuff.setForeground(Color.green);
 		jpnl_stuff.setBorder(null);
-		jpnl_stuff.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
+		jpnl_stuff.setBackground(ViewSettings.CLR_BACKGROUND_MENU_1_OPEN);
 		jpnl_stuff.setFocusable(false);
 		jpnl_subContainer.add(jpnl_stuff);
         
@@ -193,10 +189,12 @@ public class Item1Menu extends MPanel {
     	
     	if (open != _open) {
 
-        	//release selected because of display bug otherwise.
-        	Picture.getInstance().releaseSelected();
-        	Page.getInstance().releaseSelected();
-        	
+	    	//release selected because of display bug otherwise.
+	    	if (Picture.getInstance().isSelected()) {
+		    	Picture.getInstance().releaseSelected();
+		    	Page.getInstance().releaseSelected();
+	    	}
+	    	
         	//open or close
             open = _open;
             if (_open) {

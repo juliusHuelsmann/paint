@@ -144,7 +144,7 @@ import control.util.CColorPanel;
 		jlbl_b.setLocation(jtf_g.getX() + jtf_g.getWidth() 
 		        + distanceItems, jlbl_g.getY());
 		jtf_b.setLocation(jlbl_b.getX() + jlbl_b.getWidth(), jlbl_b.getY());
-	        
+
 		super.setSize(ViewSettings.getSIZE_PNL_CLR());
 		super.setVisible(true);
 	}

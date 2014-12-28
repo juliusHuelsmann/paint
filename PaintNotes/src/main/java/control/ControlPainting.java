@@ -798,18 +798,23 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
                 
-                if (Status.isNormalRotation()) {
+            	if (!Tabs.getInstance().isMenuOpen()) {
 
-                    Picture.getInstance().getPen_current().preprint(
-                            _event.getX(), _event.getY());
-                } else {
+                    if (Status.isNormalRotation()) {
 
-                    Picture.getInstance().getPen_current().preprint(
-                            Page.getInstance().getJlbl_painting().getWidth() 
-                            - _event.getX(), 
-                            Page.getInstance().getJlbl_painting().getHeight() 
-                            - _event.getY());
-                }
+                        Picture.getInstance().getPen_current().preprint(
+                                _event.getX(), _event.getY());
+                    } else {
+
+                        Picture.getInstance().getPen_current().preprint(
+                        		Page.getInstance().getJlbl_painting()
+                        		.getWidth() 
+                                - _event.getX(), 
+                                Page.getInstance().getJlbl_painting()
+                                .getHeight() 
+                                - _event.getY());
+                    }
+            	}
                 break;
             default:
                 

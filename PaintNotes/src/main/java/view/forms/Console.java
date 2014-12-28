@@ -41,16 +41,16 @@ public final class Console extends MPanel {
 	 */
 	public static final int ID_ERROR = 0, 
 			ID_WARNING = 1, 
-			ID_INFO_UNIMPORTANT = 2, 
+			ID_INFO_IMPORTANT = 2,
 			ID_INFO_MEDIUM = 3,
-			ID_INFO_IMPORTANT = 4;
-	
+			ID_INFO_UNIMPORTANT = 4; 
+			
 	
 	/**
 	 * The id up to which the messages are printed (for not having an overfull
 	 * output but only the necessary informations on screen).
 	 */
-	private final int id_lastPrinted = ID_INFO_IMPORTANT;
+	private final int id_lastPrinted = ID_INFO_UNIMPORTANT;
 	
 	/**
 	 * Unique identifier of message.
@@ -71,7 +71,7 @@ public final class Console extends MPanel {
 		super.addMouseMotionListener(mpt);
 		super.setSize(width , height);
 		super.setLocation(0, 0);
-		super.setVisible(false);
+		super.setVisible(true);
 
 		/*
 		 * The text output.

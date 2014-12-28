@@ -158,8 +158,11 @@ public class Item2Menu extends MPanel {
 
 
 	    	//release selected because of display bug otherwise.
-	    	Picture.getInstance().releaseSelected();
-	    	Page.getInstance().releaseSelected();
+	    	if (Picture.getInstance().isSelected()) {
+
+		    	Picture.getInstance().releaseSelected();
+		    	Page.getInstance().releaseSelected();
+	    	}
 	    	
 	    	//open or close
 	    	
@@ -311,5 +314,14 @@ public class Item2Menu extends MPanel {
     public final void setItemsInRow(final int _itemsInRow) {
         this.itemsInRow = _itemsInRow;
     }
+
+    
+    /**
+     * Return whether is open or not.
+     * @return whether is open
+     */
+	public final  boolean isOpen() {
+		return opened;
+	}
 	
 }

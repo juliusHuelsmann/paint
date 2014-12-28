@@ -176,6 +176,22 @@ public final class Tabs extends VTabbedPane {
         CItem.getInstance().reset();
     }
     
+
+    /**
+     * Checks whether a menu is open.
+     * @return whether a menu is open.
+     */
+    public boolean isMenuOpen() {
+        
+    	return (tab_paint.getIt_stift1().isOpen() 
+    			|| tab_paint.getIt_stift1().isOpen() 
+    			|| tab_paint.getIt_stift2().isOpen() 
+    			|| tab_paint.getIt_selection().isOpen() 
+    			|| tab_paint.getIt_color().isOpen() 
+    			|| tab_insert.getIa_diagram().isOpen() 
+    			|| tab_insert.getIa_geo().isOpen() 
+    			|| tab_insert.getIa_maths().isOpen());
+    }
     
     
     

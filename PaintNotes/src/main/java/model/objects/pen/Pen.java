@@ -243,29 +243,30 @@ public abstract class Pen implements Serializable {
         //fetch list of points and go to the beginning of the list
         List<DPoint> ls_point = _o.getPoints();
 
-        ls_point.toFirst();
         //if list is empty return the bufferedImage which is not changed.
         if (ls_point.isEmpty()) {
             return _bi;
         }   
 
         ls_point.toLast();
+        DPoint pnt_current = new DPoint(ls_point.getItem());
         ls_point.previous();
         if (ls_point.getItem() == null) {
+        	//if there is only one point print it.
+        	paintPoint(pnt_current, _bi, false, _p_start, _bi, null);
             return _bi;
         }
         DPoint pnt_previous = new DPoint(ls_point.getItem());
-        ls_point.next();
         
         switch (id_operation) {
         case Constants.PEN_ID_POINT:
             
-            paintPoint(new DPoint(ls_point.getItem()), 
+            paintPoint(pnt_current, 
                     _bi, false, _p_start, _bi, null);
             break;
         case Constants.PEN_ID_LINES:
 
-            paintLine(new DPoint(ls_point.getItem()),
+            paintLine(pnt_current,
                     pnt_previous, _bi, false, _bi, _p_start);
             
             break;

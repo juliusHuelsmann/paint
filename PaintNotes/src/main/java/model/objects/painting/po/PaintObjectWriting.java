@@ -3,8 +3,10 @@ package model.objects.painting.po;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import view.forms.Page;
 import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
@@ -955,41 +957,62 @@ public class PaintObjectWriting extends PaintObjectPen {
             } else if (!cInside && !lInside) {
 
             	
-                DPoint pnt_border1 = checkIntersection(pc, pcNew, _r);
-                if (pnt_border1 != null) {
-                	
-                	
-                	//if the previous point is outside and the current point
-                	//is inside
-                	
-                	//calculate border point
-                    DPoint pnt_border2 = checkIntersection(pcNew, pnt_border1, _r);
-                    
-                    //outside
-                    pow_current.addPoint(new DPoint(pc));
-                    pow_current.addPoint(new DPoint(pnt_border1));
-                    ls_pow_outside.insertBehind((pow_current));
-                    
-                    
+            	//TODO: erase speed improvement
 
-                    pow_current = new PaintObjectWriting(
-                    		Picture.getInstance().getIncreaseCID(), 
-                    		getPen());
+                Point pnt_relativeLast, pnt_relativeNew;
+                pnt_relativeLast = Pen.isInRectanlge(
+                			pc,
+                			_r);
+                pnt_relativeNew = Pen.isInRectanlge(
+                			pcNew,
+                			_r);
+            	if (
+            			//if the two points are not at the same side of the
+            			//rectangle
+            			(pnt_relativeLast.x 
+            					!= pnt_relativeNew.x 
+            			&& pnt_relativeLast.y 
+            					!= pnt_relativeNew.y)) {
 
-                    if (pnt_border2 != null) {
-                        pow_current.addPoint(new DPoint(pnt_border2));
+                    DPoint pnt_border1 = checkIntersection(pc, pcNew, _r);
+                    if (pnt_border1 != null) {
+                    	
+                    	
+                    	//if the previous point is outside and the current point
+                    	//is inside
+                    	
+                    	//calculate border point
+                        DPoint pnt_border2 = checkIntersection(pcNew, 
+                        		pnt_border1, _r);
+                        
+                        //outside
+                        pow_current.addPoint(new DPoint(pc));
+                        pow_current.addPoint(new DPoint(pnt_border1));
+                        ls_pow_outside.insertBehind((pow_current));
+                        
+                        
+
+                        pow_current = new PaintObjectWriting(
+                        		Picture.getInstance().getIncreaseCID(), 
+                        		getPen());
+
+                        if (pnt_border2 != null) {
+                            pow_current.addPoint(new DPoint(pnt_border2));
+                        } else {
+                        	pow_current.addPoint(new DPoint(pnt_border1));
+                        }
+                        //add new DPoint to the PaintObject
+                        pow_current.addPoint(new DPoint(pcNew));
+                        
+                    	
                     } else {
-                    	pow_current.addPoint(new DPoint(pnt_border1));
-                    }
-                    //add new DPoint to the PaintObject
-                    pow_current.addPoint(new DPoint(pcNew));
-                    
-                	
-                } else {
 
-                  pow_current.addPoint(new DPoint(pcNew));
-                }
-                
+                      pow_current.addPoint(new DPoint(pcNew));
+                    }
+            	} else {
+
+                    pow_current.addPoint(new DPoint(pcNew));
+                  }
             }
 
             pc = pcNew;

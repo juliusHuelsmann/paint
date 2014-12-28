@@ -487,7 +487,7 @@ public abstract class Pen implements Serializable {
     }
     
     
-    private Point isInRectanlge(DPoint _p, Rectangle _r) {
+    public static Point isInRectanlge(DPoint _p, Rectangle _r) {
     	//			horizontal
     	//			 -1 0 1
     	//			 _______

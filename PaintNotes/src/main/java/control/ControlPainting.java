@@ -689,6 +689,34 @@ public final class ControlPainting implements MouseListener,
                             View.getInstance().getJbtn_exit().getHeight(),
                                     Constants
                                     .VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
+        } else if (_event.getSource().equals(
+        		Page.getInstance().getJlbl_painting())) { 
+        	
+        	
+        	//remove old pen - position - indication - point
+        	if (!Picture.getInstance().isSelected()) {
+        		switch (Status.getIndexOperation()) {
+
+	        	case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
+	        	case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
+	            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+	            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
+	            case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
+	            case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+	            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
+	            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
+	            case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
+	            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
+	            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
+	            case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
+
+	            	BufferedImage bi = Page.getInstance().getEmptyBISelection();
+	            	Page.getInstance().getJlbl_selectionBG().setIcon(new ImageIcon(bi));
+	            	break;
+                default:
+                	break;
+        		}
+        	}
         }
     }
 
@@ -794,7 +822,6 @@ public final class ControlPainting implements MouseListener,
                 
                 break;
             }
-                 
         }
     }
 

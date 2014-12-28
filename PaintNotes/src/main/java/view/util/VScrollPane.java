@@ -4,15 +4,12 @@ package view.util;
 //import declarations
 import java.awt.Color;
 import java.awt.Component;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-
 import view.util.mega.MButton;
 import view.util.mega.MPanel;
 import model.settings.Constants;
 import model.settings.Status;
-import model.util.Util;
 import model.util.paint.Utils;
 import control.util.CScrollPane;
 

@@ -108,7 +108,7 @@ public class Tabs extends VTabbedPane {
          * tab print
          */
         super.addTab("Drucken");
-        super.addToTab(tabNumber, Print.getInstance(tabNumber));
+        super.addToTab(tabNumber, Print.getInstance());
         tabNumber++;
 
 

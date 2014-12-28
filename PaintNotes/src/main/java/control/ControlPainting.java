@@ -182,7 +182,7 @@ public final class ControlPainting implements MouseListener,
 
         	String commandNormal = "xrandr -o normal";
         	String result = Util.executeCommandLinux(commandNormal);
-        	if (result.startsWith(Util.EXECUTION_SUCCESS)){
+        	if (result.startsWith(Util.EXECUTION_SUCCESS)) {
         		
         		Status.getLogger().info("Rotation normal success");
         	} else if (result.startsWith(Util.EXECUTION_FAILED)) {
@@ -201,7 +201,7 @@ public final class ControlPainting implements MouseListener,
 
         	String commandInverted = "xrandr -o inverted";
         	String result = Util.executeCommandLinux(commandInverted);
-        	if (result.startsWith(Util.EXECUTION_SUCCESS)){
+        	if (result.startsWith(Util.EXECUTION_SUCCESS)) {
         		
         		Status.getLogger().info("Rotation normal success");
         	} else if (result.startsWith(Util.EXECUTION_FAILED)) {
@@ -428,9 +428,7 @@ public final class ControlPainting implements MouseListener,
 
         // left mouse pressed
         final int leftMouse = 1024;
-        if ((_event.getSource().equals(Page.getInstance()
-                .getJlbl_painting()))) {
-
+        if (_event.getSource().equals(Page.getInstance().getJlbl_painting())) {
             switch (Status.getIndexOperation()) {
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
@@ -456,11 +454,6 @@ public final class ControlPainting implements MouseListener,
                 }
 
             case Constants.CONTROL_PAINTING_INDEX_ERASE:
-//                if (_event.getModifiersEx() == leftMouse) {
-//
-//
-//                }
-
             	Point p = new Point(
             			(int) (_event.getPoint().x - Page.getInstance()
             					.getJlbl_painting().getLocation().getX()),
@@ -544,7 +537,6 @@ public final class ControlPainting implements MouseListener,
 
                         x = pnt_startLocation.x - _event.getX() + pnt_start.x;
                         y = pnt_startLocation.y -  _event.getY() + pnt_start.y;
-
                     }
                     
                     if (x < -Status.getImageShowSize().width + Page
@@ -619,7 +611,7 @@ public final class ControlPainting implements MouseListener,
                 Paint.getInstance().getTb_cut().getActionCause())) {
             mr_cut();
         } else if (_event.getSource().equals(
-        		Print.getInstance(-1).getTb_print().getActionCause())) {
+        		Print.getInstance().getTb_print().getActionCause())) {
         	Util.print();
         	
         } else if (_event.getSource().equals(
@@ -711,7 +703,8 @@ public final class ControlPainting implements MouseListener,
 	            case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
 
 	            	BufferedImage bi = Page.getInstance().getEmptyBISelection();
-	            	Page.getInstance().getJlbl_selectionBG().setIcon(new ImageIcon(bi));
+	            	Page.getInstance().getJlbl_selectionBG().setIcon(
+	            			new ImageIcon(bi));
 	            	break;
                 default:
                 	break;
@@ -1643,11 +1636,9 @@ public final class ControlPainting implements MouseListener,
      * The event which is performed after performed a mouseReleased with id
      * selection line.
      * 
-     * @param _event the mouseEvent.
      * @param _r_sizeField the rectangle
      */
-    public void mr_sel_line_destroy( 
-            final Rectangle _r_sizeField) {
+    public void mr_sel_line_destroy(final Rectangle _r_sizeField) {
 
         /*
          * whole item selection.
@@ -1800,15 +1791,18 @@ public final class ControlPainting implements MouseListener,
     
     
     
-    
-    private synchronized void mr_erase(Point _p) {
+    /**
+     * Erase functionality at mouseReleased.
+     * @param _p the Point.
+     */
+    private synchronized void mr_erase(final Point _p) {
 
     	/**
     	 * Value for showing the new paintObjects in PaintObjectsView.
     	 */
     	final boolean debug_update_paintObjects_view = false;
     	
-    	final Rectangle _r_sizeField = new Rectangle(
+    	final Rectangle r_sizeField = new Rectangle(
     			_p.x - Status.getEraseRadius(), 
     			_p.y - Status.getEraseRadius(), 
     			Status.getEraseRadius() * 2, 
@@ -1835,10 +1829,10 @@ public final class ControlPainting implements MouseListener,
                     / Status.getImageShowSize().width;
             final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
                     / Status.getImageShowSize().height;
-            _r_sizeField.x *= cZoomFactorWidth;
-            _r_sizeField.width *= cZoomFactorWidth;
-            _r_sizeField.y *= cZoomFactorHeight;
-            _r_sizeField.height *= cZoomFactorHeight;
+            r_sizeField.x *= cZoomFactorWidth;
+            r_sizeField.width *= cZoomFactorWidth;
+            r_sizeField.y *= cZoomFactorHeight;
+            r_sizeField.height *= cZoomFactorHeight;
             List<PaintObjectWriting> ls_separatedPO = null;
             
             // go through list. until either list is empty or it is
@@ -1846,19 +1840,19 @@ public final class ControlPainting implements MouseListener,
             // selected area
             while (po_current != null
                     && currentX 
-                    <= (_r_sizeField.x + _r_sizeField.width)) {
+                    <= (r_sizeField.x + r_sizeField.width)) {
 
                 //The y condition has to be in here because the items are just 
                 //sorted by x coordinate; thus it is possible that one 
                 //PaintObject is not suitable for the specified rectangle but 
                 //some of its predecessors in sorted list do.
-                if (po_current.isInSelectionImage(_r_sizeField)) {
+                if (po_current.isInSelectionImage(r_sizeField)) {
 
                     // get item; remove it out of lists and add it to
                     // selection list
 
                 	ls_separatedPO 
-                	= po_current.deleteRectangle(_r_sizeField, ls_separatedPO);
+                	= po_current.deleteRectangle(r_sizeField, ls_separatedPO);
                 	ls_separatedPO.toFirst();
                 	
                 	if (debug_update_paintObjects_view) {
@@ -1881,7 +1875,7 @@ public final class ControlPainting implements MouseListener,
 
             
 
-            while(ls_separatedPO != null
+            while (ls_separatedPO != null
             		&& !ls_separatedPO.isEmpty()
             		&& !ls_separatedPO.isBehind()) {
 
@@ -1911,20 +1905,20 @@ public final class ControlPainting implements MouseListener,
                 Page.getInstance().getJlbl_painting().refreshPaint();
             }
 
-            _r_sizeField.x /= cZoomFactorWidth;
-            _r_sizeField.width /= cZoomFactorWidth;
-            _r_sizeField.y /= cZoomFactorHeight;
-            _r_sizeField.height /= cZoomFactorHeight;
+            r_sizeField.x /= cZoomFactorWidth;
+            r_sizeField.width /= cZoomFactorWidth;
+            r_sizeField.y /= cZoomFactorHeight;
+            r_sizeField.height /= cZoomFactorHeight;
         }
         
 
 
         Page.getInstance().getJlbl_painting().clrRectangle(
-                _r_sizeField.x + (int) Page.getInstance()
+                r_sizeField.x + (int) Page.getInstance()
 				.getJlbl_painting().getLocation().getX(),
-				_r_sizeField.y + (int) Page.getInstance()
+				r_sizeField.y + (int) Page.getInstance()
 				.getJlbl_painting().getLocation().getY(),
-                _r_sizeField.width, _r_sizeField.height);
+                r_sizeField.width, r_sizeField.height);
 
     
     }
@@ -1937,8 +1931,6 @@ public final class ControlPainting implements MouseListener,
 
         // switch index of operation
         switch (Status.getIndexOperation()) {
-        
-
         case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
         case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
         case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
@@ -1959,14 +1951,11 @@ public final class ControlPainting implements MouseListener,
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
             if (_event.getButton() == 1) {
 
-//                PaintObjectWriting ldp 
-//                = Picture.getInstance().abortPaintObject();
                 //remove old rectangle.
                 Page.getInstance().getJlbl_border().setBounds(-1, -1, 0, 0);
                 switch (Status.getIndexSelection()) {
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
                     
-
                         PaintObjectWriting pow 
                         = Picture.getInstance().abortPaintObject();
                         mr_sel_curve_complete(_event, pow);
@@ -1999,15 +1988,9 @@ public final class ControlPainting implements MouseListener,
                 //remove old rectangle.
                 switch (Status.getIndexSelection()) {
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
-
                     mr_sel_line_complete(_event, r);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
-
-//                  r.x += Page.getInstance().getJlbl_painting()
-//                          .getLocation().x;
-//                  r.y += Page.getInstance().getJlbl_painting()
-//                          .getLocation().y;
                     mr_sel_line_destroy(r);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
@@ -2027,10 +2010,7 @@ public final class ControlPainting implements MouseListener,
             break;
         case Constants.CONTROL_PAINTING_INDEX_ERASE:
 
-//        	mr_erase(_event.getPoint());
-//            mr_selection_line_destroy(_event);
-//            Picture.getInstance().deleteSelected();
-            break;
+        	break;
 
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
 
@@ -2077,13 +2057,9 @@ public final class ControlPainting implements MouseListener,
                     Page.getInstance().releaseSelected();
                     Page.getInstance().removeButtons();
                 }
-      //          Page.getInstance().getJlbl_painting().refreshPaint();
-       //         Page.getInstance().getJlbl_painting().repaint();
             }
             break;
            
-        	
-            
         default:
             Status.getLogger().warning("Switch in mouseReleased default");
             break;
@@ -2111,15 +2087,11 @@ public final class ControlPainting implements MouseListener,
     
     
     
-    
-    
-    
-    
     /**
      * Initializes the movement thread.
      * @param _mmSP the movement speed
      */
-    private void mr_paint_initializeMovementThread(final Point _mmSP) {
+    public void mr_paint_initializeMovementThread(final Point _mmSP) {
         thrd_move = new Thread() {
             @Override public void run() {
                 final int max = 25;

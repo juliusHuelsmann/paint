@@ -579,7 +579,10 @@ public class Item1Menu extends MPanel {
     }
 
 
-	public void stroke() {
-tb_select.stroke();		
+    /**
+     * Apply stroke.
+     */
+	public final void stroke() {
+		tb_select.stroke();		
 	}
 }

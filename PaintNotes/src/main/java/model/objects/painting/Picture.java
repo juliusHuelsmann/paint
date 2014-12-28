@@ -190,10 +190,10 @@ public final class Picture {
 			if (!(po_current instanceof POCurve)) {
 
 				// throw error message and kill program.
-				Status.getLogger()
-						.severe("Es soll ein neues pen objekt geadded werden, obwohl "
-								+ "das Alte nicht null ist also nicht gefinished "
-								+ "wurde.\n" + "Programm wird beendet.");
+				Status.getLogger().severe("Es soll ein neues pen objekt"
+						+ " geadded werden, obwohl das Alte nicht null ist "
+						+ "also nicht gefinished wurde.\n" 
+						+ "Programm wird beendet.");
 				ls_po_sortedByX.insertBehind(po_current);
 			}
 
@@ -222,10 +222,10 @@ public final class Picture {
 		if (po_current != null) {
 
 			// throw error message and kill program.
-			Status.getLogger()
-					.severe("Es soll ein neues image objekt geadded werden, obwohl das "
-							+ "Alte nicht null ist also nicht gefinished wurde.\n"
-							+ "Programm wird beendet.");
+			Status.getLogger().severe("Es soll ein neues pen objekt"
+					+ " geadded werden, obwohl das Alte nicht null ist "
+					+ "also nicht gefinished wurde.\n" 
+					+ "Programm wird beendet.");
 			ls_po_sortedByX.insertBehind(po_current);
 
 		}
@@ -349,10 +349,10 @@ public final class Picture {
 			if (!(po_current instanceof POCurve)) {
 
 				// throw error message and kill program.
-				Status.getLogger()
-						.severe("Es soll ein neues objekt geadded werden, obwohl das "
-								+ "alte nicht null ist also nicht gefinished wurde.\n"
-								+ "Programm wird beendet.");
+				Status.getLogger().severe("Es soll ein neues pen objekt"
+						+ " geadded werden, obwohl das Alte nicht null ist "
+						+ "also nicht gefinished wurde.\n" 
+						+ "Programm wird beendet.");
 				ls_po_sortedByX.insertBehind(po_current);
 
 			}
@@ -503,7 +503,9 @@ public final class Picture {
 		// If the sorted list of PaintObjects has not been initialized yet,
 		// the list is empty or the given bufferedImage is equal to NULL
 		// return the given BufferedImage because there is nothing to do
-		if (ls_po_sortedByX == null || ls_po_sortedByX.isEmpty() || _bi == null) {
+		if (ls_po_sortedByX == null 
+				|| ls_po_sortedByX.isEmpty() 
+				|| _bi == null) {
 			return _bi;
 		}
 		
@@ -621,14 +623,14 @@ public final class Picture {
 					Page.getInstance().getJlbl_painting().getLocation().x,
 					Page.getInstance().getJlbl_painting().getLocation().y,
 					r_selection);
-			counter ++;
+			counter++;
 			ls_poChronologic.next();
 		}
 
 
 		//log repainting action in console.
 		if (counter > 0) {
-			Console.log( counter
+			Console.log(counter
 					+ " Item painted in rectanlge (" + _x + ", " + _y + ", "
 					+ _width + ", " + _height + "). Final: " + _final, 
 					Console.ID_INFO_UNIMPORTANT, 
@@ -720,7 +722,8 @@ public final class Picture {
 						.getInstance().getJlbl_painting().getBi(), false, Page
 						.getInstance().getJlbl_painting().getBi(), Page
 						.getInstance().getJlbl_painting().getLocation().x, Page
-						.getInstance().getJlbl_painting().getLocation().y, null);
+						.getInstance().getJlbl_painting().getLocation().y,
+						null);
 			} else if (po_current instanceof PaintObjectWriting
 					&& !(po_current instanceof POCurve)) {
 				bi_transformed = ((PaintObjectWriting) po_current).paintLast(
@@ -950,9 +953,7 @@ public final class Picture {
 
 	/**
 	 * save the picture.
-	 * 
-	 * @param _wsLoc
-	 *            the path of the location.
+	 * @return the BufferedImage.
 	 */
 	public BufferedImage calculateImage() {
 
@@ -1646,7 +1647,8 @@ public final class Picture {
 		try {
 			BufferedImage bi_unnormalSchaizz = ImageIO.read(new File(_wsLoc));
 			bi_normalSize = new BufferedImage(bi_unnormalSchaizz.getWidth(),
-					bi_unnormalSchaizz.getHeight(), BufferedImage.TYPE_INT_ARGB);
+					bi_unnormalSchaizz.getHeight(), 
+					BufferedImage.TYPE_INT_ARGB);
 
 			for (int x = 0; x < bi_unnormalSchaizz.getWidth(); x++) {
 
@@ -1770,7 +1772,7 @@ public final class Picture {
 
 	/**
 	 * Return whether some PaintObjects are selected or not.
-	 * @return
+	 * @return whether there is something selected or not.
 	 */
 	public boolean isSelected() {
 	

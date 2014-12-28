@@ -6,14 +6,11 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-
-import view.forms.Tabs;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 import model.settings.Status;
@@ -80,7 +77,8 @@ public class Item1Button extends MPanel {
 		//initialize JPanel and alter settings
 		super();
 		super.setLayout(null);
-		super.setBackground(ViewSettings.GENERAL_CLR_ITEM1BUTTON_BACKGROUND_NORMAL);
+		super.setBackground(
+				ViewSettings.GENERAL_CLR_ITEM1BUTTON_BACKGROUND_NORMAL);
 		super.setOpaque(true);
 		
 		//set values
@@ -140,7 +138,8 @@ public class Item1Button extends MPanel {
 			
 			//if not activated
 			if (!_activate) {
-                super.setBackground(ViewSettings.GENERAL_CLR_ITEM1BUTTON_BACKGROUND_NORMAL);
+                super.setBackground(
+                		ViewSettings.GENERAL_CLR_ITEM1BUTTON_BACKGROUND_NORMAL);
 				setOwnBorder(null);
 			} else {
 
@@ -412,8 +411,11 @@ public class Item1Button extends MPanel {
         this.additionalInformation = _additionalInformation;
     }
 
-	public synchronized void stroke() {
-
+    
+    /**
+     * Apply stroke.
+     */
+	public final synchronized void stroke() {
         Util.getStroke(jlbl_stroke, jlbl_stroke.getX() + super.getX(),
         		jlbl_stroke.getY() + super.getY()); 
 	}

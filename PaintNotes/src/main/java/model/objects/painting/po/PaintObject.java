@@ -177,6 +177,7 @@ public abstract class PaintObject implements Serializable {
      * given rectangle and ones that are outside. The parts inside are removed.
      * @param _r the rectangle
      * @return the PaintObject array of elements inside.
+     * @param _l the list where to insert the new created items.
      */
     public abstract List<PaintObjectWriting> deleteRectangle(
             final Rectangle _r, List<PaintObjectWriting> _l);

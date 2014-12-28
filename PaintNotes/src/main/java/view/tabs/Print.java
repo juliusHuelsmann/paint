@@ -2,31 +2,10 @@
 package view.tabs;
 
 //import declarations
-import java.awt.Color;
-import java.awt.Dimension;
-
-import javax.swing.BorderFactory;
-import javax.swing.JCheckBox;
-import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
-
-import model.objects.pen.Pen;
-import model.objects.pen.normal.BallPen;
-import model.objects.pen.normal.Marker;
-import model.objects.pen.normal.Pencil;
 import model.settings.Constants;
-import model.settings.Status;
-import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import control.ControlPainting;
-import control.tabs.CPaintStatus;
-import control.tabs.CPaintVisualEffects;
-import control.tabs.CPaintSelection;
-import view.util.Item1Menu;
-import view.util.Item1PenSelection;
-import view.util.VColorPanel;
 import view.util.Item1Button;
-import view.util.mega.MButton;
 
 
 /**
@@ -38,15 +17,23 @@ import view.util.mega.MButton;
 public final class Print extends Tab {
 
 	
+	
+	/**
+	 * The only instance of this class.
+	 */
 	private static Print instance;
 	
 	/**
 	 * 
 	 */
-	 private Item1Button tb_print ;
+	 private Item1Button tb_print;
 	
-	private Print(int _amount) {
-		super(_amount);
+	 
+	 /**
+	  * Constructor: initializes view.
+	  */
+	private Print() {
+		super(0);
 		super.setOpaque(false);
 		super.setLayout(null);
 		
@@ -70,15 +57,15 @@ public final class Print extends Tab {
 	
 	
 	
-	public static Print getInstance(int _amount) {
+	
+	/**
+	 * Return the only instance of this class.
+	 * @return the only instance of this class
+	 */
+	public static Print getInstance() {
 		if (instance == null) {
 			
-			if (_amount != -1) {
-
-				instance = new Print(_amount);
-			} else {
-				Status.getLogger().severe("Error initializing");
-			}
+			instance = new Print();
 		}
 		return instance;
 	}
@@ -91,11 +78,9 @@ public final class Print extends Tab {
 	}
 
 	/**
-	 * @param tb_new the tb_new to set
+	 * @param _tb_new the tb_new to set
 	 */
-	public void setTb_print(Item1Button tb_new) {
-		this.tb_print = tb_new;
+	public void setTb_print(final Item1Button _tb_new) {
+		this.tb_print = _tb_new;
 	}
-
-	
 }

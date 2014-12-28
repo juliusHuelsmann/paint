@@ -183,7 +183,7 @@ public class PaintObjectImage extends PaintObject {
      * {@inheritDoc}
      */
     @Override
-    public PaintObject[][] separate(
+    public final PaintObject[][] separate(
     		final byte[][] _r, final int _xShift, final int _yShift) {
 
         new Exception(getClass() + " not implemenented yet")
@@ -281,9 +281,13 @@ public class PaintObjectImage extends PaintObject {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
-	public List<PaintObjectWriting> deleteRectangle(Rectangle _r, 
-			List<PaintObjectWriting> _ls_pow_outside) {
+	public final List<PaintObjectWriting> deleteRectangle(
+			final Rectangle _r, 
+			final List<PaintObjectWriting> _ls_pow_outside) {
 
         new Exception("not implemented yet").printStackTrace();
 		return null;

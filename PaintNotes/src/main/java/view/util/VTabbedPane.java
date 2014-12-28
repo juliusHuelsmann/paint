@@ -8,25 +8,17 @@ import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import model.settings.Constants;
 import model.settings.Error;
 import model.settings.ViewSettings;
 import model.util.Util;
 import control.util.CTabbedPane;
-import view.View;
 import view.forms.Page;
 import view.tabs.Tab;
-import view.util.mega.MButton;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
@@ -150,7 +142,7 @@ public class VTabbedPane extends MPanel {
         jlbl_stroke = new JLabel();
         jlbl_stroke.setBorder(null);
         jlbl_stroke.setOpaque(false);
-        jpnl_contains.add (jlbl_stroke);
+        jpnl_contains.add(jlbl_stroke);
         
         jpnl_close = new MPanel();
         jpnl_close.setFocusable(false);
@@ -678,9 +670,9 @@ public class VTabbedPane extends MPanel {
             //and create a border everywhere except at the bottom
             jbtn_stuffHeadline[_index].setBackground(
                     ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
-            if (isVisible())
+            if (isVisible()) {
             	jbtn_stuffHeadline[_index].stroke();
-
+            }
             jbtn_stuffHeadline[_index].setBorder(
                     BorderFactory.createMatteBorder(
                     1, 1, 0, 1, ViewSettings.GENERAL_CLR_BORDER));
@@ -798,8 +790,6 @@ public class VTabbedPane extends MPanel {
      */
     public final void stroke() {
 
-    	
-    	
     	jbtn_stuffHeadline[getOpenTab()].stroke();
         Util.getStroke(jlbl_stroke, jlbl_stroke.getX() + super.getX(), 
         		jlbl_stroke.getY() + super.getY());
@@ -810,14 +800,14 @@ public class VTabbedPane extends MPanel {
         	for (Component i : stuff.getComponents()) {
             	if (i instanceof Tab) {
 
-            		for (Component j : ((Tab)i).getComponents()) {
+            		for (Component j : ((Tab) i).getComponents()) {
 
                     	if (j instanceof Item1Button) {
 
-                    		((Item1Button)j).stroke();
+                    		((Item1Button) j).stroke();
                     	} else if (j instanceof Item1Menu) {
 
-                    		((Item1Menu)j).stroke();
+                    		((Item1Menu) j).stroke();
                     	}
             		}
             	}

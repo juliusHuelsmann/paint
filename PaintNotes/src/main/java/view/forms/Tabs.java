@@ -62,8 +62,8 @@ public final class Tabs extends VTabbedPane {
                 ViewSettings.getView_heightTB(),
                 ViewSettings.getView_heightTB_visible());
         super.setOpaque(true);
-        super.setFocusable(false);
         super.setVisible(false);
+        super.setFocusable(false);
 
         int tabNumber = 0;
         /*
@@ -150,22 +150,7 @@ public final class Tabs extends VTabbedPane {
         tabNumber++;
 
 
-        super.addTab("");
-        super.addTab("");
-        super.addTab("");
-        super.addTab("");
-        super.addTab("");
-        super.addTab("");
-        super.addTab("");
-        super.addTab("");
-        super.addTab("");
-        super.addTab("");
-        super.addTab("");
-        super.addTab("");
-        super.addTab("");
-        super.addTab("");
-        super.addTab("");
-
+        super.setVisible(true);
     
     }
     
@@ -213,7 +198,7 @@ public final class Tabs extends VTabbedPane {
     /**
      * @return the tab_paint
      */
-    public final Paint getTab_paint() {
+    public  Paint getTab_paint() {
         return tab_paint;
     }
 }

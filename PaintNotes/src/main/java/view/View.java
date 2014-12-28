@@ -6,14 +6,17 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
+import start.Start;
 import view.forms.Message;
 import view.forms.Page;
 import view.forms.Tabs;
@@ -317,37 +320,50 @@ import control.util.MousePositionTracker;
 	 */
 	private void fadeOut(final Thread _t_waintFor) {
         
-	    final int time = 200;
-	    
-	    
-	    while (_t_waintFor.isAlive()) {
-	        //sleep for a while
-	        try {
-	            Thread.sleep(time);
-	        } catch (InterruptedException e) {
-	            e.printStackTrace();
-	        }
-	    }
-        
-        //fade out
-        for (int i = 0; i < dsgn_maxFadeIn; i++) {
+		new Thread() {
+			public void run() {
+				final int time = 200;
+			    
+			    
+			    while (_t_waintFor.isAlive()) {
+			        //sleep for a while
+			        try {
+			            Thread.sleep(time);
+			        } catch (InterruptedException e) {
+			            e.printStackTrace();
+			        }
+			    }
+		        
+		        //fade out
+		        for (int i = 0; i < dsgn_maxFadeIn; i++) {
 
-            super.getContentPane().setBackground(
-                    new Color(clr_bg.getRed() + (Color.white.getRed() 
-                            - clr_bg.getRed()) * i / dsgn_maxFadeIn,
-                            clr_bg.getGreen() + (Color.white.getGreen() 
-                                    - clr_bg.getGreen()) * i / dsgn_maxFadeIn, 
-                            clr_bg.getBlue() + (Color.white.getBlue() 
-                                    - clr_bg.getBlue()) * i / dsgn_maxFadeIn));
-            try {
-                Thread.sleep(2 * (2 + 2 + 1));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+		            getContentPane().setBackground(
+		                    new Color(clr_bg.getRed() + (Color.white.getRed() 
+		                            - clr_bg.getRed()) * i / dsgn_maxFadeIn,
+		                            clr_bg.getGreen() + (Color.white.getGreen() 
+		                                    - clr_bg.getGreen()) * i / dsgn_maxFadeIn, 
+		                            clr_bg.getBlue() + (Color.white.getBlue() 
+		                                    - clr_bg.getBlue()) * i / dsgn_maxFadeIn));
+		            try {
+		                Thread.sleep(2 * (2 + 2 + 1));
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+		        }
 
-        jlbl_title.setVisible(false);
-        super.getContentPane().setBackground(Color.white);
+			    while (!Start.isInitializationFinished()) {
+			        //sleep for a while
+			        try {
+			            Thread.sleep(time * 2);
+			        } catch (InterruptedException e) {
+			            e.printStackTrace();
+			        }
+			    }
+		        jlbl_title.setVisible(false);
+		        getContentPane().setBackground(Color.white);
+			}
+		} .start();
+	    
         
 	}
 	

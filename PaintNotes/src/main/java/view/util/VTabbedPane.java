@@ -11,12 +11,15 @@ import java.awt.event.MouseMotionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+
 import model.settings.Error;
 import model.settings.ViewSettings;
 import model.util.Util;
 import control.util.CTabbedPane;
+import start.Start;
 import view.forms.Page;
 import view.tabs.Tab;
 import view.util.mega.MLabel;
@@ -529,10 +532,16 @@ public class VTabbedPane extends MPanel {
 		//set position of background to last painted
         jpnl_contains.setComponentZOrder(
                 jpnl_background, jpnl_stuff.length - 1);
-		//open the first tab by default and repaint the TabbedPane
-		openTab(openTab);
-		flip();
+	
+//        if (jpnl_stuff.length == 1) {
+//
+//            //open the first tab by default and repaint the TabbedPane
+//    		openTab(openTab);
+//    		flip();
+//        }
+        
 	}
+	
 	
 	
 	/**
@@ -670,9 +679,6 @@ public class VTabbedPane extends MPanel {
             //and create a border everywhere except at the bottom
             jbtn_stuffHeadline[_index].setBackground(
                     ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
-            if (isVisible()) {
-            	jbtn_stuffHeadline[_index].stroke();
-            }
             jbtn_stuffHeadline[_index].setBorder(
                     BorderFactory.createMatteBorder(
                     1, 1, 0, 1, ViewSettings.GENERAL_CLR_BORDER));
@@ -687,6 +693,7 @@ public class VTabbedPane extends MPanel {
                     
                     //go through the list of headline MButtons and tab 
                     //MPanels
+                    jpnl_contains.setComponentZOrder(jpnl_stuff[openTab], 1);
                     for (int percent = 0; percent <= max; percent++) {
                         for (int i = 0; i < jbtn_stuffHeadline.length; i++) {
 
@@ -717,9 +724,10 @@ public class VTabbedPane extends MPanel {
                                 jpnl_stuff[i].getY());
                     }
                     setSize(getWidth(), oldHeight);
+                    stroke();
                     jpnl_stuff[openTab].repaint();
 
-                    stroke();
+                    jpnl_contains.setComponentZOrder(jpnl_stuff[openTab], 1);
                 }
 
             } .start();
@@ -796,23 +804,26 @@ public class VTabbedPane extends MPanel {
 
         Util.getStrokeRec(jlbl_close, 0, 0);
     
-        for (MPanel stuff : jpnl_stuff) {
-        	for (Component i : stuff.getComponents()) {
-            	if (i instanceof Tab) {
-
-            		for (Component j : ((Tab) i).getComponents()) {
-
-                    	if (j instanceof Item1Button) {
-
-                    		((Item1Button) j).stroke();
-                    	} else if (j instanceof Item1Menu) {
-
-                    		((Item1Menu) j).stroke();
-                    	}
-            		}
-            	}
+        MPanel stuff = jpnl_stuff[getOpenTab()];
+        for (Component i : stuff.getComponents()) {
+        	if (i instanceof Tab) {
+        		
+        		for (Component j : ((Tab) i).getComponents()) {
+        			
+        			if (j instanceof Item1Button) {
+        				
+        				((Item1Button) j).stroke();
+        			} else if (j instanceof Item1Menu) {
+        				
+        				((Item1Menu) j).stroke();
+        			}
+        		}
         	}
         }
+
+        //tell e.g. the initialization thread that the initialization
+        //process has proceeded one step.
+        Start.increaseInitializationFinished();
     }
 
     /**
@@ -886,16 +897,6 @@ public class VTabbedPane extends MPanel {
 	        }
 
 	}
-    
-    
-    
-    /**
-     * Add special item to gui.
-     * @param _c the component.
-     */
-    public final void addSpecialItem(final Component _c) {
-//    	jpnl_contains.add(_c);
-    }
     
 
     /**

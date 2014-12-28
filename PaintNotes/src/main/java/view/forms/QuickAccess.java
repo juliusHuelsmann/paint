@@ -43,7 +43,8 @@ public class QuickAccess extends MPanel {
 		super();
 		super.setLayout(null);
 		super.setOpaque(false);
-
+		super.setVisible(false);
+		
 		final MousePositionTracker mpt = new MousePositionTracker(this);
 		final int size = 200;
 		final int five = 5;

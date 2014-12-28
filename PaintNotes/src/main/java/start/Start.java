@@ -17,7 +17,12 @@ import control.ControlPainting;
  * @version %I%, %U%
  */
 public final class Start {
-	
+
+	/**
+	 * Whether the initialization process has finished or not. If it has,
+	 * the fadeOut can disappear.
+	 */
+	private static int initializationFinished = 0;
 	
 	/**
 	 * Utility class constructor.
@@ -99,6 +104,10 @@ public final class Start {
 	        
 	        //call controller
 	        ControlPainting.getInstance();
+	        
+	        //set the initialization process terminated
+            increaseInitializationFinished();
+	        
 	        break;
 	        
 	    //one or more inputs: change folder
@@ -111,7 +120,27 @@ public final class Start {
             for (int currPath = 0; currPath < _args.length; currPath++) {
                 changeFolder(_args[currPath]);
             }
+
+	        //set the initialization process terminated
+            increaseInitializationFinished();
+            
             break;
 	    }
 	}
+
+	/**
+	 * @return the initializationFinished
+	 */
+	public static boolean isInitializationFinished() {
+		return (initializationFinished >= 2);
+	}
+
+	
+	/**
+	 * Set the current operation finished.
+	 */
+	public static synchronized void increaseInitializationFinished() {
+		initializationFinished++;
+	}
+
 }

@@ -1,9 +1,7 @@
 package view.forms;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.Toolkit;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -11,7 +9,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
-
 import model.settings.Constants;
 import model.settings.ViewSettings;
 import model.util.Util;
@@ -551,8 +548,11 @@ public final class New extends MPanel {
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void setLocation(int _x, int _y) {
+    public void setLocation(final int _x, final int _y) {
     	
     	super.setLocation(_x, _y);
     	if (jlbl_stroke != null) {

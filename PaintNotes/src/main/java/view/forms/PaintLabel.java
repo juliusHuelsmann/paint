@@ -87,8 +87,9 @@ public class PaintLabel extends MLabel {
         refreshPaintBackground();
         
         setIcon(new ImageIcon(getBi()));
-        if (PaintObjects.getInstance() != null)
+        if (PaintObjects.getInstance() != null) {
         	PaintObjects.getInstance().repaint();
+        }
     }
 
     
@@ -144,6 +145,9 @@ public class PaintLabel extends MLabel {
     }
     
     
+    /**
+     * Remove the zoom box because operation zoom has changed.
+     */
     public final void removeZoomBox() {
     	paintZoom(0, 0, 0, 0);
     }
@@ -314,7 +318,6 @@ public class PaintLabel extends MLabel {
 
             if (isVisible()) {
             	
-            	
             	int maintainStartX = 0, 
 	            	maintainStartY = 0, 
 	            	maintainWidth = bi.getWidth(), 
@@ -379,7 +382,6 @@ public class PaintLabel extends MLabel {
                 	 * The rectangle location is the complement of the 
                 	 * maintained in size of bufferedImage.
                 	 */
-                	
                 	//Refresh both in direction of width and of height.
                     //In the simplest way of doing this, there may be an area 
                 	//which is painted twice (depicted with '!'). 
@@ -401,8 +403,6 @@ public class PaintLabel extends MLabel {
                     // 	    |      	x H	|       |     x	H H	|
                     // 	    |       x H	|		| x x x	H H	|
                 	//		|_______x_H_|		|_W_W_W_!_!_|
-                	
-                	
                 	/*
                 	 * Width
                 	 */
@@ -415,8 +415,6 @@ public class PaintLabel extends MLabel {
                 	if (shiftedStartY == 0) {
                 		refreshWidthY = maintainHeight;
                 	}
-
-                	
                 	/*
                 	 * height
                 	 */
@@ -433,22 +431,6 @@ public class PaintLabel extends MLabel {
                     //save values
                     this.x = _x;
                     this.y = _y;
-
-//                    for (int xw = 0; xw < refreshWidthWidth; xw ++) {
-//                    	for (int yw = 0; yw < refreshWidthHeight; yw ++) {
-//                        	getBi().setRGB(xw + refreshWidthX, 
-//                        			yw + refreshWidthY, 
-//                        			Color.red.getRGB());
-//                        }
-//                    }
-//                    for (int xw = 0; xw < refreshHeightWidth; xw ++) {
-//                    	for (int yw = 0; yw < refreshHeightHeight; yw ++) {
-//                        	getBi().setRGB(xw + refreshHeightX, 
-//                        			yw + refreshHeightY, 
-//                        			Color.green.getRGB());
-//                        }
-//                    }
-                    
                     
                     //BufferedImage
                     refreshPaintBackground();
@@ -456,15 +438,6 @@ public class PaintLabel extends MLabel {
                 			refreshWidthWidth, refreshWidthHeight);
                 	refreshRectangle(refreshHeightX, refreshHeightY, 
                 			refreshHeightWidth, refreshHeightHeight);
-
-//                	System.out.println("maintain:\tnew"
-//                			+ "\nx:\t" 	+ maintainStartX
-//                			+ "\t" 		+ shiftedStartX
-//                			+ "\ny: \t"	+ maintainStartY
-//                			+ "\t" 		+ shiftedStartY
-//                			+ "\n\nw:\t" + maintainWidth 
-//                			+ "\nh:\t" + maintainHeight
-//                			);
             	}
             } else {
 

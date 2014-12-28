@@ -19,7 +19,7 @@ import view.util.mega.MPanel;
  *
  */
 @SuppressWarnings("serial")
-public class Console extends MPanel {
+public final class Console extends MPanel {
 
 	/**
 	 * JTextArea which contains the logged stuff.
@@ -34,15 +34,22 @@ public class Console extends MPanel {
 	/**
 	 * The only instance of this singleton class.
 	 */
-	public static Console instance;
-	
+	private static Console instance;
 	
 	/**
 	 * Different IDs for different console outputs.
 	 */
-	public static final int ID_ERROR = 0, ID_WARNING = 1, ID_INFO_UNIMPORTANT = 2, 
-			ID_INFO_MEDIUM = 3, ID_INFO_IMPORTANT = 4;
+	public static final int ID_ERROR = 0, 
+			ID_WARNING = 1, 
+			ID_INFO_UNIMPORTANT = 2, 
+			ID_INFO_MEDIUM = 3,
+			ID_INFO_IMPORTANT = 4;
 	
+	
+	/**
+	 * The id up to which the messages are printed (for not having an overfull
+	 * output but only the necessary informations on screen).
+	 */
 	private final int id_lastPrinted = ID_INFO_IMPORTANT;
 	
 	/**
@@ -53,16 +60,17 @@ public class Console extends MPanel {
 	/**
 	 * Console constructor.
 	 */
-	private Console () {
+	private Console() {
 		
 		//initialize MPanel and add a MousePosition tracker.
 		super();
-		super.setSize(250, 300);
-		super.setLocation(0, 0);
 		super.setLayout(null);
-		MousePositionTracker mpt = new MousePositionTracker(this);
+		final int width = 250, height = 300, fontSize = 12;
+		final MousePositionTracker mpt = new MousePositionTracker(this);
 		super.addMouseListener(mpt);
 		super.addMouseMotionListener(mpt);
+		super.setSize(width , height);
+		super.setLocation(0, 0);
 
 		/*
 		 * The text output.
@@ -81,7 +89,7 @@ public class Console extends MPanel {
 		jta_console.addMouseMotionListener(mpt);
 		jta_console.setForeground(Color.white);
 		jta_console.setBackground(Color.black);
-		jta_console.setFont(new Font("Droid Sans Mono", Font.ITALIC, 12));
+		jta_console.setFont(new Font("Droid Sans Mono", Font.ITALIC, fontSize));
 		jta_console.setTabSize(2 + 2);
 		jta_console.setLineWrap(true);
 		jta_console.setFont(ViewSettings.GENERAL_FONT_ITEM_SMALL);
@@ -110,7 +118,8 @@ public class Console extends MPanel {
 	 */
 	public static synchronized void log(
 			final String _message, final int _messageType, 
-			final Class _callClass, final String _methodName) {
+			@SuppressWarnings("rawtypes") final Class _callClass, 
+			final String _methodName) {
 		
 		//if the message is important enough for the current configuration
 		//to be printed to screen
@@ -151,20 +160,28 @@ public class Console extends MPanel {
 						+ "." + _methodName + "\n");
 				break;
 			default:
-				log("Warning: wrong identifier", ID_ERROR, Console.class, "log");
+				log("Warning: wrong identifier", 
+						ID_ERROR, Console.class, "log");
 				break;
 			}
 
 			//increase message ID
-			getInstance().messageID ++;
+			getInstance().messageID++;
 			
 			//update location of scrollBar
-			JScrollBar vertical = getInstance().scrollPane.getVerticalScrollBar();
-			vertical.setValue(vertical.getMaximum() + getInstance().getHeight());
+			JScrollBar vertical = 
+					getInstance().scrollPane.getVerticalScrollBar();
+			vertical.setValue(
+					vertical.getMaximum() + getInstance().getHeight());
 		}
 	}
 	
 	
+	
+	/**
+	 * Return the only instance of this class.
+	 * @return the only instance of this class
+	 */
 	public static Console getInstance() {
 		if (instance == null) {
 			instance = new Console();

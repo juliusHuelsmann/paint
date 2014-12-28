@@ -566,7 +566,9 @@ public final class Paint extends Tab {
     
     	//
     	it_color = new Item1Menu(true);
-        it_color.setSize(ViewSettings.getSIZE_PNL_CLR());
+        it_color.setSize(new Dimension(ViewSettings.getSIZE_PNL_CLR().width 
+        		+ 20,
+        		ViewSettings.getSIZE_PNL_CLR().height));
     	it_color.setBorder(false);
     	it_color.setText("+ Farben");
     	it_color.setLocation(jbtn_colors[jbtn_colors.length - 1].getX() 

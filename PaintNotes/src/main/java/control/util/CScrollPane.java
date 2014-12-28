@@ -415,9 +415,9 @@ implements MouseMotionListener, MouseListener, KeyListener {
      */
     public final void mouseMoved(final MouseEvent _event) {
 
-        if (_event.getSource().equals(view.getJpnl_toLocate())) {
-            view.requestFocus();
-        }
+//        if (_event.getSource().equals(view.getJpnl_toLocate())) {
+//            view.requestFocus();
+//        }
     }
 
     /**

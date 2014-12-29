@@ -27,8 +27,8 @@ import control.ControlPainting;
 import control.util.MousePositionTracker;
 
 /**
- * singleton view class.
- * Contains all sub graphical user interface items.
+ * Singleton view class.
+ * Contains all sub graphical user interface items; consists of MFrame.
  * 
  * @author Julius Huelsmann
  * @version %I%, %U%

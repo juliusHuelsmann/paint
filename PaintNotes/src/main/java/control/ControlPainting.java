@@ -1385,18 +1385,15 @@ public final class ControlPainting implements MouseListener,
         int xShift = _ldp.getSnapshotBounds().x,
                 yShift = _ldp.getSnapshotBounds().y;
         
-        
         //necessary because the points are painted directly to the buffered
-        //image which starts at the _ldp snaphsot x.
+        //image which starts at the _ldp snapshot x.
         Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
                 -_ldp.getSnapshotBounds().y);
         BufferedImage transform = _ldp.getSnapshot();
         
-        
         byte[][] field = PaintBI.printFillPolygonN(transform,
                 Color.green, model.util.Util.dpntToPntArray(
                         model.util.Util.pntLsToArray(_ldp.getPoints())));
-        
         
         /*
          * whole item selection.
@@ -1444,16 +1441,8 @@ public final class ControlPainting implements MouseListener,
                     // selection list
 
                     PaintObject [][] separatedPO = po_current.separate(
-                            field, xShift, yShift);
-//                    PaintObject [][] p2 = po_current.separate(
-//                            new Rectangle(r_sizeField.x - 2,
-//                    r_sizeField.y - 2,
-//                            r_sizeField.width + 2 * 2, 
-//                            r_sizeField.height + 2 * 2));
-//                    
-//                    PaintObject [][] separatedPO = 
-//                    Util.mergeDoubleArray(p, p2);
-                     new PictureOverview().remove(Picture.getInstance()
+                    		field, xShift, yShift);
+                    new PictureOverview().remove(Picture.getInstance()
                             .getLs_po_sortedByX().getItem());
                     Picture.getInstance().getLs_po_sortedByX().remove();
                     

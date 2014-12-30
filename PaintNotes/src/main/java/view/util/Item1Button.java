@@ -46,7 +46,7 @@ public class Item1Button extends MPanel {
 	/**
 	 * boolean which indicate whether activated or it is possible to activate.
 	 */
-	private boolean activated, activable, border;
+	private boolean activated, activable, border, disabled;
 
     /**
      * image width and height.
@@ -85,6 +85,7 @@ public class Item1Button extends MPanel {
 		this.activated = false;
 		this.activable = true;
 		this.border = true;
+		this.disabled = false;
 		
 		//initialize title JLabel
 		jlbl_title = new MLabel();
@@ -166,6 +167,28 @@ public class Item1Button extends MPanel {
 		if (!activable) {
 			activated = false;
 		}
+	}
+	
+	
+	
+	/**
+	 * Highlight the button in special color for informing the user that this
+	 * item has not been enabled.
+	 */
+	public final void disable() {
+		this.disabled = true;
+		setOwnBackground(
+		        ViewSettings.GENERAL_CLR_BACKGROUND_DISABLED);
+
+	}
+	
+	
+	/**
+	 * Return whether this instance is disabled.
+	 * @return whether this instance is disabled.
+	 */
+	public final boolean isDisabled() {
+		return disabled;
 	}
 	
 	

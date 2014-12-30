@@ -49,8 +49,10 @@ public final class VisualTextButton implements MouseListener {
 		//get the current button and handle exceptions
 		Item1Button currentButton = checkInput(_event);
 		
-		//if the button selection is enabled (isActivabe) activate the button
-		if (!currentButton.isActivated()) {
+
+		//if the button selection is activated and not disabled activate the 
+		//button
+		if (!currentButton.isDisabled() && !currentButton.isActivated()) {
 			currentButton.setOwnBackground(
 			        ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
 			currentButton.setOwnBorder(null);
@@ -64,9 +66,10 @@ public final class VisualTextButton implements MouseListener {
 
 		//get the current button and handle exceptions
 		Item1Button currentButton = checkInput(_event);
-		
-		//if the button selection is enabled (isActivabe) activate the button
-		if (!currentButton.isActivated()) {
+
+		//if the button selection is activated and not disabled activate the 
+		//button
+		if (!currentButton.isDisabled() && !currentButton.isActivated()) {
 			currentButton.setOwnBackground(
 			        ViewSettings.GENERAL_CLR_BACKGROUND_DARK_X);
 			currentButton.setOwnBorder(ViewSettings.BRD_ITEM1BUTTON);
@@ -81,8 +84,9 @@ public final class VisualTextButton implements MouseListener {
 		//get the current button and handle exceptions
 		Item1Button currentButton = checkInput(_event);
 		
-		//if the button selection is enabled (isActivabe) activate the button
-		if (currentButton.isActivable()) {
+		//if the button selection is isActivable and not disabled activate the 
+		//button
+		if (!currentButton.isDisabled() && currentButton.isActivable()) {
 			
 			currentButton.setActivated(true);
 			currentButton.setOwnBackground(

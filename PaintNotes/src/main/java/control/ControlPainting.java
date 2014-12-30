@@ -1313,14 +1313,36 @@ public final class ControlPainting implements MouseListener,
     private void mr_sel_curve_complete(final MouseEvent _event, 
             final PaintObjectWriting _ldp) {
         
-        int xShift = _ldp.getSnapshotBounds().x,
-                yShift = _ldp.getSnapshotBounds().y;
+    	Rectangle snapBounds = _ldp.getSnapshotBounds();
+        int xShift = snapBounds.x, yShift = snapBounds.y;
+
+        xShift -= Page.getInstance().getJlbl_painting().getLocation().getX();
+        yShift -= Page.getInstance().getJlbl_painting().getLocation().getY();
+
+        xShift =  (int) (1.0 * xShift * Status.getImageSize().width
+        		/ Status.getImageShowSize().width);
+        yShift =  (int) (1.0 * yShift * Status.getImageSize().height
+        		/ Status.getImageShowSize().height);
         
-        
+        //stretch ldp!
+
         //necessary because the points are painted directly to the buffered
         //image which starts at the _ldp snapshot x.
         Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
                 -_ldp.getSnapshotBounds().y);
+
+//        _ldp.stretch(
+//        		new DPoint(_ldp.getSnapshotBounds().x, 
+//        				_ldp.getSnapshotBounds().y), 
+//        		
+//        		//
+//        		new DPoint((snapBounds.width), 
+//        				(snapBounds.height)),
+//        		
+//        		//new size		
+//        		new DPoint((snapBounds.width) * 2, 
+//        				(snapBounds.height) * 2));
+        
         BufferedImage transform = _ldp.getSnapshot();
         
         
@@ -1385,10 +1407,27 @@ public final class ControlPainting implements MouseListener,
 
         int xShift = _ldp.getSnapshotBounds().x,
                 yShift = _ldp.getSnapshotBounds().y;
+//        xShift -= Page.getInstance().getJlbl_painting().getLocation().getX()
+//        		* 1.0 * Status.getImageSize().width 
+//        		/ Status.getImageShowSize().width;
+//        yShift -= Page.getInstance().getJlbl_painting().getLocation().getY()
+//        		* 1.0 * Status.getImageSize().height
+//        		/ Status.getImageShowSize().height;
+
+        xShift -= Page.getInstance().getJlbl_painting().getLocation().getX();
+        yShift -= Page.getInstance().getJlbl_painting().getLocation().getY();
+
+        xShift =  (int) (1.0 * xShift * Status.getImageSize().width
+        		/ Status.getImageShowSize().width);
+        yShift =  (int) (1.0 * yShift * Status.getImageSize().height
+        		/ Status.getImageShowSize().height);
+        
         
         //necessary because the points are painted directly to the buffered
         //image which starts at the _ldp snapshot x.
-        Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
+        Picture.movePaintObjectWriting(_ldp, 
+//        		-xShift, -yShift);
+        		-_ldp.getSnapshotBounds().x, 
                 -_ldp.getSnapshotBounds().y);
         BufferedImage transform = _ldp.getSnapshot();
         

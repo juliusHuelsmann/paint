@@ -43,6 +43,7 @@ public final class ViewSettings {
      */
     public static final Color 
     GENERAL_CLR_BACKGROUND_DARK = new Color(245, 246, 253), 
+    GENERAL_CLR_BACKGROUND_DISABLED = new Color(245, 220, 240),
     GENERAL_CLR_BACKGROUND_DARK_X = new Color(236, 237, 238),
     GENERAL_CLR_BACKGROUND_DARK_XX = new Color(226, 227, 228),
     GENERAL_CLR_BORDER = new Color(218, 219, 220),

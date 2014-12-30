@@ -107,7 +107,13 @@ public final class Paint extends Tab {
         x = initializePageColors(x, true);
 		x = initializeZoom(x, true);
         x = initializeFileOperations(x, true);
-		
+
+        //disable icons which functionality is not implemented yet.
+        tb_prev.disable();
+        tb_next.disable();
+        tb_fill.disable();
+        tb_new.disable();
+        tb_selectionMagic.disable();
 
         //activate first color and set colors.
         tb_color1.setActivated(true);

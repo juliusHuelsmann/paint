@@ -165,15 +165,4 @@ public class POTriangleFilled extends POInsertion {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final PaintObject[][] separate(final byte[][] _r, final int _xShift, 
-            final int _yShift) {
-
-        new Exception(getClass() + " not implemenented yet")
-        .printStackTrace();
-        return null;
-    }
 }

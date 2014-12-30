@@ -2,6 +2,7 @@
 package model.objects.painting.po;
 
 //import declarations
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -297,10 +298,24 @@ public abstract class POInsertion extends PaintObjectPen {
 
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final PaintObject[][] separate(final byte[][] _r,
+    		final Point _pnt_selectionShift) {
 
+        new Exception(getClass() + " not implemenented yet")
+        .printStackTrace();
+        return null;
+    }
+    /**
+     * {@inheritDoc}
+     */
 	@Override
-	public List<PaintObjectWriting> deleteRectangle(Rectangle _r, 
-			List<PaintObjectWriting> _ls_pow_outside) {
+	public List<PaintObjectWriting> deleteRectangle(
+			final Rectangle _r, 
+			final List<PaintObjectWriting> _ls_pow_outside) {
 
         new Exception("not implemented yet").printStackTrace();
 		return null;
@@ -311,7 +326,7 @@ public abstract class POInsertion extends PaintObjectPen {
      */
     @Override
     public final boolean isInSelectionImage(
-            final byte[][] _field, final int _xShift, final int _yShift) {
+            final byte[][] _field, final Point _pnt_selectionShift) {
 
         new Exception("not implemented yet").printStackTrace();
         return false;

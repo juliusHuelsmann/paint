@@ -98,8 +98,9 @@ public class PaintObjectWriting extends PaintObjectPen {
     /**
      * {@inheritDoc}
      */
-    @Override public final boolean isInSelectionImage(final byte[][] _r,
-            final int _dx, final int _dy) {
+    @Override public final boolean isInSelectionImage(
+    		final byte[][] _r,
+            final Point _pnt_shiftRectangle) {
 
         /*
          * check whether firstDPoint is in rectangle.
@@ -107,7 +108,7 @@ public class PaintObjectWriting extends PaintObjectPen {
 
         ls_point.toFirst();
         DPoint pnt_previous = new DPoint(ls_point.getItem());
-        if (isInSelectionPoint(_r, _dx, _dy, pnt_previous)) {
+        if (isInSelectionPoint(_r, _pnt_shiftRectangle, pnt_previous)) {
             return true;
         }
         
@@ -120,7 +121,8 @@ public class PaintObjectWriting extends PaintObjectPen {
         while (!ls_point.isBehind()) {
 
             //if one part of the line is in rectangle return true
-            if (pruefeLine(ls_point.getItem(), pnt_previous, _r, _dx, _dy)) {
+            if (pruefeLine(ls_point.getItem(), 
+            		pnt_previous, _r, _pnt_shiftRectangle)) {
                 return true;
             }
             
@@ -434,12 +436,13 @@ public class PaintObjectWriting extends PaintObjectPen {
      * @param _p1 point 1
      * @param _p2 point 2
      * @param _r the byte array of booleans
-     * @param _shiftX the shiftX
-     * @param _shiftY the shiftY
+     * @param _pnt_shiftRectangle
+     * 				the shifting of the rectangle in x and y direction (or in 
+     * 				other words the location of the element _r [0][0] on screen)
      * @return whether between the line is selected.
      */
     public static boolean pruefeLine(final DPoint _p1, final DPoint _p2, 
-            final byte[][] _r, final int _shiftX, final int _shiftY) {
+            final byte[][] _r, final Point _pnt_shiftRectangle) {
 
         //compute delta values
         int dX = (int) (_p1.getX() - _p2.getX());
@@ -451,7 +454,7 @@ public class PaintObjectWriting extends PaintObjectPen {
             int plusY = a * dY /  Math.max(Math.abs(dX), Math.abs(dY));
             
 
-            if (isInSelectionPoint(_r, _shiftX, _shiftY, new DPoint(
+            if (isInSelectionPoint(_r, _pnt_shiftRectangle, new DPoint(
                     _p1.getX() - plusX, _p1.getY() - plusY))) {
                 return true;
             }
@@ -466,32 +469,77 @@ public class PaintObjectWriting extends PaintObjectPen {
     
 
     /**
-     * Check whether the linking line between to points is inside the selection.
+     * Check the space between two points.
+     * 
+     * The connected points inside the selection are combined inside a 
+     * new PaintObjectWriting and thus inserted into the list of PaintObjects
+     * that are outside the selection.
+     * 
+     * The first point is not added to one of the PaintObjectWritings whereas 
+     * the last point is. The last PaintObjectWriting is not added to one
+     * of the lists.
+     * 
      * This function has to work just like the corresponding paintLine method
      * which prints the linking line to graphical user interface.
      * 
-     * If there is one point that is inside and one point that is outside
-     * the given selection the order of function arguments is important.
      * 
-     * The second point has to be the one which is outside the rectangle 
-     * whereas the first point is inside.
+     * The given coordinates in each given variable have to be model values
+     * meaning that they are already stretched if the user has enabled 
+     * zooming and shifted by the display's location.
      * 
      * 
-     * @param _pnt_first point 1
-     * @param _pnt_second point 2
-     * @param _r the byte array of booleans
-     * @param _shiftX the shiftX
-     * @param _shiftY the shiftY
-     * @return whether between the line is selected.
+     * @param _pnt_first 
+     * 				The first of the two points between which the space
+     * 				is separated into those POWs that are inside and those
+     * 				that are outside the selection
+     * 
+     * @param _pnt_second 
+     * 				The second point.
+     * 
+     * @param _r_selection 
+     * 				The byte array containing different states of a picture's
+     * 				section that are necessary for the detection of the
+     * 				selected Points
+     * 
+     * @param _pnt_shiftRectangle 	
+     * 				the shifting of the rectangle in x and y direction (or in 
+     * 				other words the location of the element _r [0][0] on screen
+     * 
+     * @param _ls_inside 
+     * 				the list of PaintObjectWritings that contains all those
+     * 				that are completely inside the selection. This list
+     * 				(and the one which contains all the elements outside
+     * 				the selection) is edited by this method 
+     * 
+     * @param _ls_outside
+     * 				the list of PaintObjectWritings that contains all those
+     * 				that are completely inside the selection.
+     * 
+     * @param _pow
+     * 				the current paintObjectWriting (which may contain previous
+     * 				points (e.g. from previous method calls))
+     * 
+     * @return 		The PaintObjectWriting which has not been added to a list
+     * 				inside this method (for not double - adding something).
+	 * 
      */
     public static PaintObjectWriting checkPointLink(
+    		
+    		//the first and the second point between which the selection is
+    		//checked
     		final DPoint _pnt_first, 
     		final DPoint _pnt_second, 
-            final byte[][] _r, 
-            final int _shiftX, 
-            final int _shiftY,
+    		
+    		//values concerning the selection rectangle
+            final byte[][] _r_selection, 
+            final Point _pnt_shiftRectangle,
+            
+            //lists into which the method inserts the (new) PaintObjectWritings
             final List<PaintObjectWriting> _ls_inside,
             final List<PaintObjectWriting> _ls_outside,
+            
+            //the current PaintObjectWriting which is altered and maybe inserted
+            //into one of the above mentioned lists.
             final PaintObjectWriting _pow) {
 
         //compute delta values and their maximum value
@@ -504,7 +552,7 @@ public class PaintObjectWriting extends PaintObjectPen {
         
         //check whether the first point is inside the selection list
         boolean insidePrevious = isInSelectionPoint(
-        		_r, _shiftX, _shiftY, _pnt_first);
+        		_r_selection, _pnt_shiftRectangle, _pnt_first);
         
         
         //if the maximal delta value is smaller than 1 meaning that the
@@ -537,7 +585,7 @@ public class PaintObjectWriting extends PaintObjectPen {
 
                 //check whether the current point is inside the selection
                 boolean insideCurr = isInSelectionPoint(
-                		_r, _shiftX, _shiftY, pnt_current);
+                		_r_selection, _pnt_shiftRectangle, pnt_current);
                     	
                 
                 //if the last point is inside a different section from the
@@ -1101,7 +1149,7 @@ public class PaintObjectWriting extends PaintObjectPen {
      */
     @Override
 	public final PaintObject[][] separate(
-    		final byte[][] _r, final int _xShift, final int _yShift) {
+    		final byte[][] _r, final Point _pnt_shiftRectangle) {
     	
     	//initialize for those paintObjects that are inside and outside 
     	//the selection.
@@ -1123,7 +1171,7 @@ public class PaintObjectWriting extends PaintObjectPen {
     		
     		pow_current = checkPointLink(
     				pnt_predecessor, ls_point.getItem(), 
-    				_r, _xShift, _yShift, 
+    				_r, _pnt_shiftRectangle, 
     				ls_pow_inside, ls_pow_outside, pow_current);
     		
     		pnt_predecessor = ls_point.getItem();
@@ -1131,7 +1179,7 @@ public class PaintObjectWriting extends PaintObjectPen {
     	}
 		
 		
-		if (isInSelectionPoint(_r, _xShift, _yShift, pnt_predecessor)) {
+		if (isInSelectionPoint(_r, _pnt_shiftRectangle, pnt_predecessor)) {
 
 			ls_pow_inside.insertBehind(pow_current);
 		} else {

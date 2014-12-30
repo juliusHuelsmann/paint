@@ -184,7 +184,7 @@ public class PaintObjectImage extends PaintObject {
      */
     @Override
     public final PaintObject[][] separate(
-    		final byte[][] _r, final int _xShift, final int _yShift) {
+    		final byte[][] _r, final Point _pnt_selectionShift) {
 
         new Exception(getClass() + " not implemenented yet")
         .printStackTrace();
@@ -274,7 +274,7 @@ public class PaintObjectImage extends PaintObject {
      */
     @Override
     public final boolean isInSelectionImage(
-            final byte[][] _field, final int _xShift, final int _yShift) {
+            final byte[][] _field, final Point _pnt_shiftRectangle) {
 
         new Exception("not implemented yet").printStackTrace();
         return false;

@@ -1318,7 +1318,7 @@ public final class ControlPainting implements MouseListener,
         
         
         //necessary because the points are painted directly to the buffered
-        //image which starts at the _ldp snaphsot x.
+        //image which starts at the _ldp snapshot x.
         Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
                 -_ldp.getSnapshotBounds().y);
         BufferedImage transform = _ldp.getSnapshot();
@@ -1858,14 +1858,16 @@ public final class ControlPainting implements MouseListener,
 
                 	ls_separatedPO 
                 	= po_current.deleteRectangle(r_sizeField, ls_separatedPO);
-                	ls_separatedPO.toFirst();
-                	
-                	if (debug_update_paintObjects_view) {
+                	if (ls_separatedPO != null) {
 
-                        new PictureOverview().remove(Picture.getInstance()
-                                .getLs_po_sortedByX().getItem());
+                    	if (debug_update_paintObjects_view) {
+
+                            new PictureOverview().remove(Picture.getInstance()
+                                    .getLs_po_sortedByX().getItem());
+                    	}
+                        Picture.getInstance().getLs_po_sortedByX().remove();
                 	}
-                    Picture.getInstance().getLs_po_sortedByX().remove();
+                	
 
                 } 
                 // next
@@ -1880,30 +1882,34 @@ public final class ControlPainting implements MouseListener,
 
             
 
-            while (ls_separatedPO != null
-            		&& !ls_separatedPO.isEmpty()
-            		&& !ls_separatedPO.isBehind()) {
+            if (ls_separatedPO != null) {
 
-                if (ls_separatedPO.getItem() != null) {
-                    //recalculate snapshot bounds for being able to
-                    //insert the item into the sorted list.
-                	ls_separatedPO.getItem().recalculateSnapshotBounds();
+            	ls_separatedPO.toFirst();
+                while (ls_separatedPO != null
+                		&& !ls_separatedPO.isEmpty()
+                		&& !ls_separatedPO.isBehind()) {
 
-                    Picture.getInstance().getLs_po_sortedByX().insertSorted(
-                    		ls_separatedPO.getItem(), 
-                    		ls_separatedPO.getItem().getSnapshotBounds().x);
+                    if (ls_separatedPO.getItem() != null) {
+                        //recalculate snapshot bounds for being able to
+                        //insert the item into the sorted list.
+                    	ls_separatedPO.getItem().recalculateSnapshotBounds();
 
-                	if (debug_update_paintObjects_view) {
+                        Picture.getInstance().getLs_po_sortedByX().insertSorted(
+                        		ls_separatedPO.getItem(), 
+                        		ls_separatedPO.getItem().getSnapshotBounds().x);
 
-                        new PictureOverview().add(
-                       		 ls_separatedPO.getItem());
-                	}
-                } else {
+                    	if (debug_update_paintObjects_view) {
 
-                    Status.getLogger().warning("separated paintObject "
-                            + "is null");
+                            new PictureOverview().add(
+                           		 ls_separatedPO.getItem());
+                    	}
+                    } else {
+
+                        Status.getLogger().warning("separated paintObject "
+                                + "is null");
+                    }
+                    ls_separatedPO.next();
                 }
-                ls_separatedPO.next();
             }
             
             if (Picture.getInstance().paintSelected()) {

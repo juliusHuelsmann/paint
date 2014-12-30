@@ -341,9 +341,11 @@ import control.util.MousePositionTracker;
 		                    new Color(clr_bg.getRed() + (Color.white.getRed() 
 		                            - clr_bg.getRed()) * i / dsgn_maxFadeIn,
 		                            clr_bg.getGreen() + (Color.white.getGreen() 
-		                                    - clr_bg.getGreen()) * i / dsgn_maxFadeIn, 
+		                                    - clr_bg.getGreen()) 
+		                                    * i / dsgn_maxFadeIn, 
 		                            clr_bg.getBlue() + (Color.white.getBlue() 
-		                                    - clr_bg.getBlue()) * i / dsgn_maxFadeIn));
+		                                    - clr_bg.getBlue()) 
+		                                    * i / dsgn_maxFadeIn));
 		            try {
 		                Thread.sleep(2 * (2 + 2 + 1));
 		            } catch (InterruptedException e) {

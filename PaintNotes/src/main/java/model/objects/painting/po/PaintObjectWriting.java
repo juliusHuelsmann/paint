@@ -1758,11 +1758,13 @@ public class PaintObjectWriting extends PaintObjectPen {
             final DPoint _pnt_size) {
 
 
+    	//reset minimum and maximum values because they need to be recomputed.
         minX = Integer.MAX_VALUE; 
         minY = Integer.MAX_VALUE; 
         maxX = Integer.MIN_VALUE; 
         maxY = Integer.MIN_VALUE;
         
+        //pass the list.
         ls_point.toFirst();
         while (!ls_point.isBehind()) {
             
@@ -1771,10 +1773,10 @@ public class PaintObjectWriting extends PaintObjectPen {
                     ls_point.getItem().getY() - _pnt_from.getY());
 
             double dX = _pnt_from.getX() 
-                    + pnt_vector.getX() * _pnt_size.getX() 
+                    + pnt_vector.getX() * 1.0 * _pnt_size.getX() 
                             / (_pnt_size.getX() + _pnt_totalStretch.getX());
             double dY = _pnt_from.getY()               
-                    +    pnt_vector.getY() * _pnt_size.getY() 
+                    +    pnt_vector.getY() * 1.0 * _pnt_size.getY() 
                     / (_pnt_size.getY() + _pnt_totalStretch.getY());
                 
             pnt_vector.setX(dX);

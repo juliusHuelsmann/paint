@@ -160,8 +160,8 @@ public final class Picture {
 	 * 
 	 * @return the new created PaintObjectImage.
 	 */
-	public PaintObjectImage createPOI(final BufferedImage _bi) {
-		return new PaintObjectImage(currentId, _bi);
+	public static PaintObjectImage createPOI(final BufferedImage _bi) {
+		return new PaintObjectImage(getInstance().getIncreaseCID(), _bi);
 
 	}
 
@@ -175,9 +175,8 @@ public final class Picture {
 	 *
 	 * @return the new created PaintObjectWriting
 	 */
-	public PaintObjectWriting createPOW(final Pen _pen) {
-		return new PaintObjectWriting(currentId, _pen);
-
+	public static PaintObjectWriting createPOW(final Pen _pen) {
+		return new PaintObjectWriting(getInstance().getIncreaseCID(), _pen);
 	}
 
 	/**

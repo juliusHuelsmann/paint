@@ -75,12 +75,9 @@ public abstract class PaintObjectPen extends PaintObject {
      */
     protected static boolean isInSelectionPoint(
             final byte[][] _r, final int _shiftX, final int _shiftY,
-
             final DPoint _p) {
         
-        
-        //TODO: spaeter angleichen an zoom und an page scroll. 
-
+        //TODO: adapt to zoom and page scroll. 
         int newX = (int) _p.getX() - _shiftX,
                 newY = (int) _p.getY() - _shiftY;
         
@@ -88,7 +85,6 @@ public abstract class PaintObjectPen extends PaintObject {
                 || newX >= _r.length || newY >= _r[newX].length) {
             return false;
         }
-//        PaintBI.drawPaintBI(_r);
         return (_r[newX][newY]  == PaintBI.FREE);
     }
 

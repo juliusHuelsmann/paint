@@ -2,6 +2,7 @@
 package model.objects.painting.po;
 
 //import declarations
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
@@ -54,12 +55,14 @@ public abstract class PaintObject implements Serializable {
      * selection rectangle _r. It checks every point in list of points
      * 
      * @param _field the field .
-     * @param _xShift the shift of the field in x direction.
-     * @param _yShift the shift of the field in y direction.
+     * @param _pnt_shiftRectangle
+     * 				the shifting of the rectangle in x and y direction (or in 
+     * 				other words the location of the element _r [0][0] on screen)
+     * 
      * @return whether is in rectangle.
      */
     public abstract boolean isInSelectionImage(final byte[][] _field, 
-            final int _xShift, final int _yShift);
+            final Point _pnt_shiftRectangle);
     
 	
 	/**
@@ -185,12 +188,14 @@ public abstract class PaintObject implements Serializable {
      * Separates the PaintObject; thus there are parts that are inside the
      * given rectangle and ones that are outside.
      * @param _r the rectangle
-     * @param _xShift the shift coordinate
-     * @param _yShift the shift coordinate
+     * @param _pnt_shiftRectangle 	
+     * 				the shifting of the rectangle in x and y direction (or in 
+     * 				other words the location of the element _r [0][0] on screen
+     * 
      * @return the PaintObject array [0][x] outside, [1] [x] inside.s
      */
-    public abstract PaintObject[][] separate(byte[][] _r, int _xShift, 
-            int _yShift);
+    public abstract PaintObject[][] separate(
+    		byte[][] _r, Point _pnt_shiftRectangle);
   
     /*
      * getter methods.

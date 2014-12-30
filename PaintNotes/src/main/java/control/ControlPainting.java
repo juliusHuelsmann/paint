@@ -1346,7 +1346,8 @@ public final class ControlPainting implements MouseListener,
             //sorted by x coordinate; thus it is possible that one PaintObject 
             //is not suitable for the specified rectangle but some of its 
             //predecessors in sorted list do.
-            if (po_current.isInSelectionImage(field, xShift, yShift)) {
+            if (po_current.isInSelectionImage(
+            		field, new Point(xShift, yShift))) {
 
                 //move current item from normal list into selected list 
                 Picture.getInstance().insertIntoSelected(po_current);
@@ -1435,13 +1436,14 @@ public final class ControlPainting implements MouseListener,
                 //PaintObject 
                 //is not suitable for the specified rectangle but some of its 
                 //predecessors in sorted list do.
-                if (po_current.isInSelectionImage(field, xShift, yShift)) {
+                if (po_current.isInSelectionImage(field, 
+                		new Point(xShift, yShift))) {
 
                     // get item; remove it out of lists and add it to
                     // selection list
 
                     PaintObject [][] separatedPO = po_current.separate(
-                    		field, xShift, yShift);
+                    		field, new Point(xShift, yShift));
                     new PictureOverview().remove(Picture.getInstance()
                             .getLs_po_sortedByX().getItem());
                     Picture.getInstance().getLs_po_sortedByX().remove();

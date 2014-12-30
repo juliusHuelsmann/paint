@@ -3,11 +3,13 @@ package model.objects.painting.po;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import model.objects.painting.PaintBI;
 import model.objects.pen.Pen;
+import model.settings.Status;
 import model.util.DPoint;
 
 /**
@@ -46,7 +48,14 @@ public abstract class PaintObjectPen extends PaintObject {
 
 
     /**
-     * checks whether a certainDPoint is inside a given rectangle.
+     * Checks whether a certain DPoint is inside a given selection.
+     * If the given parameters are not valid, return that the point is not 
+     * inside the selection and log an error.
+     * 
+     * The given coordinates in each given variable have to be model values
+     * meaning that they are already stretched if the user has enabled 
+     * zooming and shifted by the display's location.
+     * 
      * 
      * @param _r the rectangle of which is checked whether theDPoint is inside
      * @param _p theDPoint which is maybe inside the rectangle _r
@@ -56,36 +65,80 @@ public abstract class PaintObjectPen extends PaintObject {
     protected static boolean isInSelectionPoint(
             final Rectangle _r, final DPoint _p) {
         
-        //return whether theDPoint is inside given rectangle.
+    	//if the values given to the function are not valid return false
+    	//and print an error message
+    	if (_p == null || _r == null) {
+    		Status.getLogger().severe("Checking invalid point or rectanlge:"
+    				+ " Point: " + _p + "\tRectangle: " + _r);
+    		return false;
+    	}
+    	
+    	
+    	//The parameters are valid (meaning not equal to null)
+    	
+    	
+    	//return whether theDPoint is inside given rectangle.
         return (_p.getX() >= _r.x && _p.getY() >= _r.y 
                 && _p.getX() <= _r.x + _r.width 
                 && _p.getY() <= _r.y + _r.height);
     }
 
     /**
-     * checks whether a certainDPoint is inside a given rectangle.
+     * Checks whether a certain DPoint is inside a given selection.
+     * If the given parameters are not valid, return that the point is not 
+     * inside the selection and log an error.
      * 
-     * @param _r the rectangle of which is checked whether theDPoint is inside
-     * @param _p theDPoint which is maybe inside the rectangle _r
+     * The given coordinates in each given variable have to be model values
+     * meaning that they are already stretched if the user has enabled 
+     * zooming and shifted by the display's location.
      * 
-     * @param _shiftX the x shift
-     * @param _shiftY the y shift
+     * 
+     * @param _r 	the rectangle consisting of booleans which indicate 
+     * 				whether the (shifted) pixel _r [x][y] is selected
+     * 				or not
+     * 
+     * @param _pnt_shiftRectangle 	
+     * 				the shifting of the rectangle in x and y direction (or in 
+     * 				other words the location of the element _r [0][0] on screen
+     * 
+     * @param _p 	
+     * 				theDPoint which is maybe inside the rectangle _r
      * 
      * @return whether theDPoint is inside the given rectangle.
      */
     protected static boolean isInSelectionPoint(
-            final byte[][] _r, final int _shiftX, final int _shiftY,
+            final byte[][] _r, 
+    		final Point _pnt_shiftRectangle,
             final DPoint _p) {
-        
-        //TODO: adapt to zoom and page scroll. 
-        int newX = (int) _p.getX() - _shiftX,
-                newY = (int) _p.getY() - _shiftY;
-        
-        if (newX < 0 || newY < 0 
-                || newX >= _r.length || newY >= _r[newX].length) {
+
+    	//if the values given to the function are not valid return false
+    	//and print an error message
+    	if (_p == null || _r == null) {
+    		Status.getLogger().severe("Checking invalid point or area:"
+    				+ " Point: " + _p + "\tArea: " + _r);
+    		return false;
+    	}
+
+    	
+    	//Here the parameters are valid (meaning not equal to null)
+
+    	//shift the points because the boolean - rectangle is shifted, too
+    	int shiftedPointX = (int) _p.getX() - _pnt_shiftRectangle.x;
+    	int shiftedPointY = (int) _p.getY() - _pnt_shiftRectangle.y;
+    	
+    	//return whether theDPoint is inside given rectangle.
+    	//if the selection is outside the scope of the rectangle
+        if (shiftedPointX < 0 || shiftedPointY < 0 
+        		|| shiftedPointX >= _r.length 
+        		|| shiftedPointY >= _r[(int) shiftedPointX].length) {
             return false;
         }
-        return (_r[newX][newY]  == PaintBI.FREE);
+        
+        
+        //Here the coordinates are valid (inside the given array)
+        
+        //return whether the d point is inside given rectangle
+        return (_r[(int) shiftedPointX][(int) shiftedPointY]  == PaintBI.FREE);
     }
 
 	/**

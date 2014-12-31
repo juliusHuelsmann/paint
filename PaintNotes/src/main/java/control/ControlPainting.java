@@ -44,6 +44,7 @@ import model.util.Util;
 import model.util.list.List;
 import model.util.paint.MyClipboard;
 import model.util.paint.Utils;
+import start.test.BufferedViewer;
 import view.View;
 import view.forms.Message;
 import view.forms.New;
@@ -448,10 +449,14 @@ public final class ControlPainting implements MouseListener,
 
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
                 if (_event.getModifiersEx() == leftMouse) {
+                	
+
+//                    changePO(_event);
                     Picture.getInstance().changePaintObject(
                             new DPoint(_event.getX(), _event.getY()));
-                    break;
-                }
+                   
+                } 
+                break;
 
             case Constants.CONTROL_PAINTING_INDEX_ERASE:
             	Point p = new Point(
@@ -1405,8 +1410,60 @@ public final class ControlPainting implements MouseListener,
     private void mr_sel_curve_destroy(final MouseEvent _event, 
             final PaintObjectWriting _ldp) {
 
-        int xShift = _ldp.getSnapshotBounds().x,
-                yShift = _ldp.getSnapshotBounds().y;
+    	Rectangle snapBounds = _ldp.getSnapshotBounds();
+    	double factorW = 1.0 * Status.getImageSize().width
+    			/ Status.getImageShowSize().width;
+    	double factorH = 1.0 * Status.getImageSize().height 
+    			/ Status.getImageShowSize().height ;
+    	System.out.println(factorW + " " + factorH);
+    	
+    	int xShift = (int) ((_ldp.getSnapshotBounds().x
+    			- Page.getInstance().getJlbl_painting().getLocation().getX())
+    			* factorW);
+    	int yShift = (int) ((_ldp.getSnapshotBounds().y
+    			- Page.getInstance().getJlbl_painting().getLocation().getY())
+    			* factorH);
+    	
+    	
+    	
+        //move the paintObject to the upper left corner for not wasting
+        //unnecessary space in byte array. 
+        Picture.movePaintObjectWriting(_ldp, 
+        		-_ldp.getSnapshotBounds().x, 
+                -_ldp.getSnapshotBounds().y);
+        
+        
+        
+      _ldp.stretch(
+      		new DPoint(_ldp.getSnapshotBounds().x, 
+      				_ldp.getSnapshotBounds().y), 
+      		
+      		//
+      		new DPoint((snapBounds.width), 
+      				(snapBounds.height)),
+      		
+      		//new size		
+      		new DPoint((snapBounds.width) * factorW, 
+      				(snapBounds.height) * factorH));
+      
+        BufferedImage transform = _ldp.getSnapshot();
+//        transform = Util.resize(transform, 
+//        		(int) (transform.getWidth() / factorW), 
+//        		(int) (transform.getHeight() / factorH));
+        
+
+        //Extract points out of PaintObjectWriting and create a byte array
+        //containing all the necessary information for deciding whether
+        //a point is inside the selected area or not.
+        //Because of this the step above to move the paintObject is necessary.
+        byte[][] field = PaintBI.printFillPolygonN(transform,
+                Color.green, model.util.Util.dpntToPntArray(
+                        model.util.Util.pntLsToArray(_ldp.getPoints())));
+        
+        
+        
+//        int xShift = _ldp.getSnapshotBounds().x,
+//                yShift = _ldp.getSnapshotBounds().y;
 //        xShift -= Page.getInstance().getJlbl_painting().getLocation().getX()
 //        		* 1.0 * Status.getImageSize().width 
 //        		/ Status.getImageShowSize().width;
@@ -1414,38 +1471,23 @@ public final class ControlPainting implements MouseListener,
 //        		* 1.0 * Status.getImageSize().height
 //        		/ Status.getImageShowSize().height;
 
-        xShift -= Page.getInstance().getJlbl_painting().getLocation().getX();
-        yShift -= Page.getInstance().getJlbl_painting().getLocation().getY();
-
-        xShift =  (int) (1.0 * xShift * Status.getImageSize().width
-        		/ Status.getImageShowSize().width);
-        yShift =  (int) (1.0 * yShift * Status.getImageSize().height
-        		/ Status.getImageShowSize().height);
+//       int  xShift = (int)-Page.getInstance().getJlbl_painting().getLocation().getX();
+//       int  yShift = (int)-Page.getInstance().getJlbl_painting().getLocation().getY();
+//
+//
+//        xShift +=  (int) (1.0 * _ldp.getSnapshotBounds().x * Status.getImageSize().width
+//        		/ Status.getImageShowSize().width);
+//        yShift +=  (int) (1.0 * _ldp.getSnapshotBounds().y * Status.getImageSize().height
+//        		/ Status.getImageShowSize().height);
         
-        
-        //necessary because the points are painted directly to the buffered
-        //image which starts at the _ldp snapshot x.
-        Picture.movePaintObjectWriting(_ldp, 
-//        		-xShift, -yShift);
-        		-_ldp.getSnapshotBounds().x, 
-                -_ldp.getSnapshotBounds().y);
-        BufferedImage transform = _ldp.getSnapshot();
-        
-        byte[][] field = PaintBI.printFillPolygonN(transform,
-                Color.green, model.util.Util.dpntToPntArray(
-                        model.util.Util.pntLsToArray(_ldp.getPoints())));
         
         /*
          * whole item selection.
          */
-        // find paintObjects and move them from image to Selection
-        Picture.getInstance().getLs_po_sortedByX().toFirst();
-
         // initialize selection list
         Picture.getInstance().createSelected();
 
         // go to the beginning of the list
-        Picture.getInstance().getLs_po_sortedByX().toFirst();
         if (!Picture.getInstance().getLs_po_sortedByX().isEmpty()) {
 
             // go to the beginning of the list

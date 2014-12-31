@@ -132,7 +132,7 @@ public final class PaintBI {
      *                  
      *                   p2
      *           p3
-     *           
+     *        x   
      *       p4
      * 
      * @return  a new PolygonReturn instance which contains both length of the

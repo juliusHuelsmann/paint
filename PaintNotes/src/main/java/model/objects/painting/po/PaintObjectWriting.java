@@ -1779,8 +1779,8 @@ public class PaintObjectWriting extends PaintObjectPen {
                     +    pnt_vector.getY() * 1.0 * _pnt_size.getY() 
                     / (_pnt_size.getY() + _pnt_totalStretch.getY());
                 
-            pnt_vector.setX(dX);
-            pnt_vector.setY(dY);
+            pnt_vector.setX((int) dX);
+            pnt_vector.setY((int) dY);
             
             ls_point.replace(pnt_vector);
             

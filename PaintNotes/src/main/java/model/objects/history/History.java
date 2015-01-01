@@ -1,5 +1,5 @@
 //package declaration
-package model.objects;
+package model.objects.history;
 
 import java.util.Observable;
 

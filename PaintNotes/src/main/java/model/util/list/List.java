@@ -11,39 +11,62 @@ import model.util.DPoint;
 /**
  * Double linked list (not a ring - list).
  *
- *
  * @author Julius Huelsmann
- * @version Milestone 2
+ * @version %I%, %U%
  * @param <Type>
  */
 public class List<Type> implements Serializable {
 
+	/*
+	 * variable for saving list:
+	 */
+	
     /**
-     * Default serial version UID.
+     * Default serial version UID for being able to identify the list's 
+     * version if saved to the disk and check whether it is possible to 
+     * load it or whether important features have been added so that the
+     * saved file is out-dated.
      */
     private static final long serialVersionUID = 1L;
 
+    
+    /*
+     * Variables defining the fundamental list structure:
+     */
+    
     /**
-     * First element.
+     * The first element in list, saved for being able to jump to the beginning
+     * of the list very quickly and for a simple is-in-front-of check.
      */
     private final Element<Type> elemFirst;
 
+    
     /**
-     * Current element.
+     * The current element in list.
      */
     private Element<Type> elemCurrent;
 
+    
     /**
-     * Last element.
+     * The last element in list, saved for being able to jump to the end
+     * of the list very quickly and for a simple is-behind check.
      */
     private final Element<Type> elemLast;
     
+    
+    /*
+     * Variables for transactions
+     */
+    
     /**
-     * Element for transactions. If the current element of the list
+     * Element used for transactions. 
+     * 
+     * If the current element of the list
      * is to be maintained after a performed action which passes the list 
      * start transaction before the action and call endTransaction afterwards.
      */
     private  Element<Type> elem_transaction;
+    
     
     /**
      * String containing the title of current transaction.
@@ -51,11 +74,24 @@ public class List<Type> implements Serializable {
      */
     private String strg_transactionTitle;
     
+    
+    /*
+     * Variables for list sorting.
+     */
+    
     /**
      * whether to sort ascending or descending.
      */
     private boolean sortAsc = true;
 
+    
+    /**
+     * Boolean which contains whether the list is sorted or not. If the list
+     * is sorted, each element has been inserted by using the method
+     * insertSorted() and none by the other insertion methods.
+     */
+    private boolean isSorted = true;
+    
     /**
      * Initialize instance of List - initialize first and last element.
      */
@@ -207,6 +243,13 @@ public class List<Type> implements Serializable {
      * @param _newContent contains the content which is to be inserted.
      */
     public final void replace(final Type _newContent) {
+    	
+
+    	//set insert sorted to be false because this method performs a non-
+    	//sorted insertion.
+    	isSorted = false;
+    	
+    	
         if (!isEmpty() && !isBehind() && !isInFrontOf()) {
             elemCurrent.setContent(_newContent);
         }
@@ -219,6 +262,11 @@ public class List<Type> implements Serializable {
      */
     public final void insertBehind(final Type _newContent) {
 
+
+    	//set insert sorted to be false because this method performs a non-
+    	//sorted insertion.
+    	isSorted = false;
+    	
         Element<Type> elemNew;
         if (isEmpty()) {
             elemNew = new Element<Type>(_newContent, elemLast, elemFirst);
@@ -250,6 +298,13 @@ public class List<Type> implements Serializable {
      * @param _newContent contains the content which is to be inserted.
      */
     public final void insertInFrontOf(final Type _newContent) {
+    	
+
+    	//set insert sorted to be false because this method performs a non-
+    	//sorted insertion.
+    	isSorted = false;
+    	
+    	
         Element<Type> elemNew;
         if (isEmpty()) {
             elemNew = new Element<Type>(_newContent, elemLast, elemFirst);
@@ -290,14 +345,7 @@ public class List<Type> implements Serializable {
             Element <Type> pred = elemCurrent.getElemPredecessor();
             pred.setElemSuccessor(succ);
             
-//            if (pred == null) {
-//            	elemCurrent =  elemFirst;
-//            	elemCurrent.setElemSuccessor(succ);
-//            } else {
-
-                elemCurrent = pred;
-                
-//            }
+            elemCurrent = pred;
             
             
         } else {
@@ -319,6 +367,13 @@ public class List<Type> implements Serializable {
      * @param _newContent contains the content which is to be inserted.
      */
     public final void insertAfterHead(final Type _newContent) {
+    	
+    	//set insert sorted to be false because this method performs a non-
+    	//sorted insertion.
+    	isSorted = false;
+    	
+    	//go to the first item of the list and insert in front of it the new
+    	//content
         toFirst();
         insertInFrontOf(_newContent);
     }
@@ -329,23 +384,16 @@ public class List<Type> implements Serializable {
      * @param _newContent contains the content which is to be inserted.
      */
     public final void insertAtTheEnd(final Type _newContent) {
+
+    	//set insert sorted to be false because this method performs a non-
+    	//sorted insertion.
+    	isSorted = false;
+    	
+    	//go to the last item of the list and insert behind it the new content
         toLast();
         insertBehind(_newContent);
     }
 
-    /**
-     * insert one item if it does not already exist in list.
-     * @param _type the item to be inserted.
-     */
-    public final void insertOnce(final Type _type) {
-    	
-        //if item does not already exist in list
-        if (!find(_type)) {
-            
-            //insert
-            insertAfterHead(_type);
-    	}
-    }
     
     
     /**
@@ -500,7 +548,7 @@ public class List<Type> implements Serializable {
             
         	if (getItem() instanceof PaintObject) {
         		System.out.println(">" 
-        				+ ((PaintObject)getItem()).getElementId());
+        				+ ((PaintObject) getItem()).getElementId());
         	}
             next();
         }
@@ -556,7 +604,7 @@ public class List<Type> implements Serializable {
      * 
      * @param _operationName the name of specified transaction
      */
-    public final void startTransaction(String _operationName) {
+    public final void startTransaction(final String _operationName) {
     	
     	if (elem_transaction != null) {
     		Status.getLogger().severe("Transaction " + strg_transactionTitle 
@@ -582,26 +630,4 @@ public class List<Type> implements Serializable {
     		Status.getLogger().severe("transaction error.");
     	}
     }
-    
-    
-//    public static void main(String[]args){
-//        List<String> ls = new List<String>();
-//        ls.printIndex();
-//        ls.insertSorted("hi", 1);
-//        ls.printIndex();
-//        ls.insertSorted("du", 2);
-//        ls.printIndex();
-//        ls.insertSorted("da", 3);
-//        ls.printIndex();
-//        ls.insertSorted("er sagte", 0);
-//        ls.printIndex();
-//        ls.insertSorted("w", -1);
-//        ls.printIndex();
-//        ls.insertSorted("__", -1);
-//        ls.printIndex();
-//        ls.insertSorted("asdf", -2);
-//        ls.printIndex();
-//        ls.insertSorted("d", 1);
-//        ls.printIndex();
-//    }
 }

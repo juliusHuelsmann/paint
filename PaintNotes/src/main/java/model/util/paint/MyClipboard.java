@@ -21,6 +21,7 @@ import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.list.List;
+import model.util.list.SecureList;
 
 
 /**
@@ -105,7 +106,7 @@ public final class MyClipboard implements ClipboardOwner {
      * @param _lsPoSelected the poWriting
      * @param _i its image.
      */
-    public void copyPaintObjects(final List<PaintObject> _lsPoSelected, 
+    public void copyPaintObjects(final SecureList<PaintObject> _lsPoSelected, 
             final Image _i) {
 
         //copy image

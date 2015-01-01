@@ -218,7 +218,7 @@ public abstract class Pen implements Serializable {
         default:
             break;
 		}
-		_o.getPoints().setCurrentElement(d);
+		_o.getPoints().goToElement(d);
 		return _bi;
 	}
 

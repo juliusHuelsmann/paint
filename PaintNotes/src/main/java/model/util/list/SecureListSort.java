@@ -348,7 +348,8 @@ public class SecureListSort<Type> {
 		    		}
 	    		} else {
 		    		while (!ls.isInFrontOf()
-		    				& ls.getElement().getSortedIndex() 
+		    				
+		    				&& ls.getElement().getSortedIndex() 
 		    				> _searchCriteria) {
 		    			ls.previous();
 		    		}

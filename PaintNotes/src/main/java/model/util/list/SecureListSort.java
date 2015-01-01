@@ -1,11 +1,12 @@
 package model.util.list;
 
+//import declarations
 import model.settings.Status;
 import model.util.DPoint;
 
 
 /**
- * 
+ * Sorted Secure list.
  * 
  * @author Julius Huelsmann
  * @version %I%, %U%
@@ -13,21 +14,21 @@ import model.util.DPoint;
  */
 public class SecureListSort<Type> {
 
+	
     /**
-     * whether to sort ascending or descending.
+     * Whether to sort ascending or descending.
      */
     private boolean sortAsc = true;
 
 
 	/**
-	 * 
+	 * The list out of which the sorted secure list consists.
 	 */
 	private SecureList <Type> ls;
 	
 
-    
     /**
-     * 
+     * Constructor.
      */
     public SecureListSort() {
         
@@ -73,9 +74,8 @@ public class SecureListSort<Type> {
         return ls.isBehind();
     }
 
-    
-    
 
+    
     /*
      * Methods for navigating through the list
      */
@@ -156,7 +156,6 @@ public class SecureListSort<Type> {
      * @return list after current item.
      */
     public final List<Type> subList() {
-        
     	return ls.subList();
     }
 
@@ -166,7 +165,6 @@ public class SecureListSort<Type> {
      * @return sorted index of current Element.
      */
     public final double getItemSortionIndex() {
-        
     	return ls.getItemSortionIndex();
     }
 
@@ -268,11 +266,6 @@ public class SecureListSort<Type> {
     }
     
     
-    
-    
-    
-    
-    
     /**
      * insert sorted ASC.
      * @param _content the content to be inserted.
@@ -309,8 +302,8 @@ public class SecureListSort<Type> {
                     + "success: The list is not empty and thus may have"
                     + "been sorted in a different order. " + sortAsc + "true");
         }
-        
     }
+    
     
     /**
      * Set sort criteria to descending.
@@ -324,6 +317,23 @@ public class SecureListSort<Type> {
                     + "been sorted in a different order. " + sortAsc + "false");
         }
     }
+    
+    
+    /**
+     * Change the sort index of the current element.
+     * @param _sortedIndex the new sorted index of the current element.
+     */
+    public final void changeSortIndex(final int _sortedIndex) {
+    	
+    	//if the current element is not null change sort index.
+    	if (getElement() != null) {
+    		getElement().setSortedIndex(_sortedIndex);
+    	} else {
+    		Status.getLogger().warning("The current element is null. Thus it "
+    				+ "is impossible to change the sort index.");
+    	}
+    }
+    
     
     /**
      * goes behind the searched position.

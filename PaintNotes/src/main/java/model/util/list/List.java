@@ -9,7 +9,8 @@ import model.settings.Status;
 import model.util.DPoint;
 
 /**
- * Double linked list (not a ring - list).
+ * Double linked list which is not a ring list. Contains methods for checking
+ * and changing the current position in list, for 
  *
  * @author Julius Huelsmann
  * @version %I%, %U%
@@ -55,54 +56,29 @@ public class List<Type> implements Serializable {
     
     
     /*
-     * Variables for transactions
-     */
-    
-    /**
-     * Element used for transactions. 
-     * 
-     * If the current element of the list
-     * is to be maintained after a performed action which passes the list 
-     * start transaction before the action and call endTransaction afterwards.
-     */
-    private  Element<Type> elem_transaction;
-    
-    
-    /**
-     * String containing the title of current transaction.
-     * @see elem_transaction
-     */
-    private String strg_transactionTitle;
-    
-    
-    /*
      * Variables for list sorting.
      */
     
-    /**
-     * whether to sort ascending or descending.
-     */
-    private boolean sortAsc = true;
-
-    
-    /**
-     * Boolean which contains whether the list is sorted or not. If the list
-     * is sorted, each element has been inserted by using the method
-     * insertSorted() and none by the other insertion methods.
-     */
-    private boolean isSorted = true;
     
     /**
      * Initialize instance of List - initialize first and last element.
      */
     public List() {
+    	
+    	//initialize first and last element
         this.elemFirst = new Element<Type>(null, null, null);
         this.elemLast = new Element<Type>(null, null, elemFirst);
-        this.strg_transactionTitle = "";
-
         this.elemFirst.setElemSuccessor(elemLast);
+
+        //set the current element to the first
         this.elemCurrent = elemFirst;
+        
     }
+    
+    
+    /*
+     * Functions returning the state of the list
+     */
 
     /**
      * Returns weather is empty.
@@ -113,6 +89,7 @@ public class List<Type> implements Serializable {
         return (elemFirst.getElemSuccessor() == elemLast);
     }
 
+    
     /**
      * Return weather it is in front of.
      *
@@ -122,6 +99,7 @@ public class List<Type> implements Serializable {
         return (elemCurrent == elemFirst);
     }
 
+    
     /**
      * Return weather list is behind.
      *
@@ -131,6 +109,11 @@ public class List<Type> implements Serializable {
         return (elemCurrent == elemLast);
     }
 
+    
+    /*
+     * Methods for navigating through the list
+     */
+    
     /**
      * Proceed one step in the list.
      */
@@ -140,6 +123,7 @@ public class List<Type> implements Serializable {
         }
     }
 
+    
     /**
      * Step back in the list.
      */
@@ -149,6 +133,7 @@ public class List<Type> implements Serializable {
         }
     }
 
+    
     /**
      * Go to the beginning of the list.
      */
@@ -159,7 +144,66 @@ public class List<Type> implements Serializable {
             elemCurrent = elemFirst.getElemSuccessor();
         }
     }
+
     
+    /**
+     * Go to the end of the list.
+     */
+    public final void toLast() {
+        if (isEmpty()) {
+            elemCurrent = elemLast;
+        } else {
+            elemCurrent = elemLast.getElemPredecessor();
+        }
+    }
+    
+
+    /**
+     * Go to a special element (has to be inside the list).
+     * 
+     * @param _elemCurrent the current element in the future.
+     */
+    public final void goToElement(final Element<Type> _elemCurrent) {
+        elemCurrent = _elemCurrent;
+    }
+    
+    
+    /*
+     * Methods for getting content of the list's current element.
+     */
+    
+    /**
+     * Return current Element.
+     *
+     * @return current Element.
+     */
+    public final Type getItem() {
+        if (isEmpty() || isInFrontOf() || isBehind()) {
+            return null;
+        } else {
+            return elemCurrent.getContent();
+        }
+    }
+    
+    
+    /**
+     * Return current Element.
+     *
+     * @return current Element.
+     */
+    public final Element<Type> getElement() {
+        if (isEmpty() || isInFrontOf() || isBehind()) {
+            return null;
+        } else {
+            return elemCurrent;
+        }
+    }
+    
+    
+    /*
+     * Special Methods
+     */
+
     /**
      * create subList.
      * @return list after current item.
@@ -178,50 +222,6 @@ public class List<Type> implements Serializable {
     	
     	//return list
     	return ls;
-    }
-
-    /**
-     * Go to the end of the list.
-     */
-    public final void toLast() {
-        if (isEmpty()) {
-            elemCurrent = elemLast;
-        } else {
-            elemCurrent = elemLast.getElemPredecessor();
-        }
-    }
-
-    /**
-     * Return current Element.
-     *
-     * @return current Element.
-     */
-    public final Type getItem() {
-        if (isEmpty() || isInFrontOf() || isBehind()) {
-            return null;
-        } else {
-            return elemCurrent.getContent();
-        }
-    }
-    /**
-     * Return current Element.
-     *
-     * @return current Element.
-     */
-    public final Element<Type> getElement() {
-        if (isEmpty() || isInFrontOf() || isBehind()) {
-            return null;
-        } else {
-            return elemCurrent;
-        }
-    }
-    
-    /**
-     * Set the current element.
-     * @param _elemCurrent the current elmenet.
-     */
-    public final void setCurrentElement(final Element<Type> _elemCurrent) {
-        elemCurrent = _elemCurrent;
     }
 
     /**
@@ -244,13 +244,13 @@ public class List<Type> implements Serializable {
      */
     public final void replace(final Type _newContent) {
     	
-
-    	//set insert sorted to be false because this method performs a non-
-    	//sorted insertion.
-    	isSorted = false;
-    	
-    	
         if (!isEmpty() && !isBehind() && !isInFrontOf()) {
+
+        	//set insert sorted to be false because this method performs a non-
+        	//sorted insertion.
+//        	isSorted = false;
+        	
+        	//set the new content
             elemCurrent.setContent(_newContent);
         }
     }
@@ -262,10 +262,9 @@ public class List<Type> implements Serializable {
      */
     public final void insertBehind(final Type _newContent) {
 
-
     	//set insert sorted to be false because this method performs a non-
     	//sorted insertion.
-    	isSorted = false;
+//    	isSorted = false;
     	
         Element<Type> elemNew;
         if (isEmpty()) {
@@ -300,10 +299,6 @@ public class List<Type> implements Serializable {
     public final void insertInFrontOf(final Type _newContent) {
     	
 
-    	//set insert sorted to be false because this method performs a non-
-    	//sorted insertion.
-    	isSorted = false;
-    	
     	
         Element<Type> elemNew;
         if (isEmpty()) {
@@ -330,34 +325,40 @@ public class List<Type> implements Serializable {
     }
 
     /**
-     * Removes current element.
-     * Afterwards in front of the removed element.
+     * Removes current element. Afterwards the current element points
+     * to the predecessor of the removed item.
      */
     public final void remove() {
     	
     	
+    	//if the current element can be removed
         if (!isEmpty() && !isBehind() && !isInFrontOf()) {
         	
-           
+        	//remove the current element. 
         	Element<Type> succ = elemCurrent.getElemSuccessor();
             succ.setElemPredecessor(elemCurrent.getElemPredecessor());
             
             Element <Type> pred = elemCurrent.getElemPredecessor();
             pred.setElemSuccessor(succ);
             
+            //The new current element is the predecessor of the removed element
             elemCurrent = pred;
             
-            
         } else {
-        	System.err.println("ELZ RM");
+        	
+        	
+        	//print warning message
+        	Status.getLogger().warning("remove null item out of list: Perform"
+        			+ " previous or next for being able to pass the list"
+        			+ " and for not creating an infinite loop");
+        	
+        	//go to one element that is removable
             if (isInFrontOf()) {
                 next();
             }
             if (isBehind()) {
                 previous();
-                
             }
-            
         }
     }
 
@@ -367,10 +368,6 @@ public class List<Type> implements Serializable {
      * @param _newContent contains the content which is to be inserted.
      */
     public final void insertAfterHead(final Type _newContent) {
-    	
-    	//set insert sorted to be false because this method performs a non-
-    	//sorted insertion.
-    	isSorted = false;
     	
     	//go to the first item of the list and insert in front of it the new
     	//content
@@ -385,10 +382,6 @@ public class List<Type> implements Serializable {
      */
     public final void insertAtTheEnd(final Type _newContent) {
 
-    	//set insert sorted to be false because this method performs a non-
-    	//sorted insertion.
-    	isSorted = false;
-    	
     	//go to the last item of the list and insert behind it the new content
         toLast();
         insertBehind(_newContent);
@@ -397,10 +390,11 @@ public class List<Type> implements Serializable {
     
     
     /**
-     * check whether item does already exist in list.
+     * Check whether item does already exist in list and if that is the case
+     * point at it with elemCurrent.
      * 
      * @param _type which is checked
-     * @return whether already exist
+     * @return whether the element exists or not
      */
     public final boolean find(final Type _type) {
     	
@@ -421,98 +415,6 @@ public class List<Type> implements Serializable {
     	
     	//not found and reached end of list.
     	return false;
-    }
-    
-    
-    /**
-     * insert sorted ASC.
-     * @param _content the content to be inserted.
-     * @param _searchCriteria the index of sorting.
-     */
-    public final synchronized void insertSorted(final Type _content, 
-            final double _searchCriteria) {
-        
-        findSorted(_searchCriteria);
-        if (sortAsc) {
-            insertInFrontOf(_content);
-        } else {
-            insertBehind(_content);
-        }
-        elemCurrent.setSortedIndex(_searchCriteria);
-    }
-
-    
-    /**
-     * Set sort criteria to ascending.
-     */
-    public final synchronized void setSortASC() {
-        if (isEmpty()) {
-            sortAsc = true;
-        } else {
-            Status.getLogger().warning("tried to change sorting order without"
-                    + "success: The list is not empty and thus may have"
-                    + "been sorted in a different order. " + sortAsc + "true");
-        }
-        
-    }
-    
-    /**
-     * Set sort criteria to descending.
-     */
-    public final synchronized void setSortDESC() {
-        if (isEmpty()) {
-            sortAsc = false;
-        } else {
-            Status.getLogger().warning("tried to change sorting order without"
-                    + "success: The list is not empty and thus may have"
-                    + "been sorted in a different order. " + sortAsc + "false");
-        }
-    }
-    
-    /**
-     * goes behind the searched position.
-     * @param _searchCriteria the search index.
-     */
-    public final synchronized void findSorted(final double _searchCriteria) {
-        
-    	//if list is empty there is nothing to do. Thus only perform action 
-    	//if list is not empty.
-    	if (!isEmpty()) {
-    		
-    		//if the list is neither behind nor in front of perform action
-    		//otherwise go to the last respectively the first item.
-	    	if (!isBehind() && !isInFrontOf()) {
-	    		
-	    		//if the current element has got an inferior index proceed
-	    		//in list while the current item has got 
-	    		if (elemCurrent.getSortedIndex() < _searchCriteria) {
-		    		while (!isBehind()
-		    				&& elemCurrent.getSortedIndex() < _searchCriteria) {
-		    			next();
-		    		}
-	    		} else {
-		    		while (!isInFrontOf()
-		    				& elemCurrent.getSortedIndex() > _searchCriteria) {
-		    			previous();
-		    		}
-		    		
-		    		//if the current element is not in front of the list
-		    		//perform one next operation for being behind the last item
-		    		//that has got an inferior index. (and for maintaining
-		    		//integrity of the result independent of the starting 
-		    		//position in the list)
-		    		if (!isInFrontOf()) {
-			    		next();	
-		    		}
-	    		}
-	    	} else if (isBehind()) {
-	            toLast();
-	            findSorted(_searchCriteria);
-	    	} else {
-	            toFirst();
-	            findSorted(_searchCriteria);
-	    	}
-    	}
     }
     
     /**
@@ -589,45 +491,4 @@ public class List<Type> implements Serializable {
     }
     
     
-    /**
-     * Start a transaction with specified operation name (for identifying the
-     * not terminated transaction in case an error occurred).
-     * 
-     * 
-     * If the current element of the list is to be maintained after a 
-     * performed action which passes the list, this method is called 
-     * before the action.
-     * 
-     * After the action has been done endTransaction has to be called.
-     * Otherwise there will occur an error if a new Transaction is started
-     * without terminating the old one.
-     * 
-     * @param _operationName the name of specified transaction
-     */
-    public final void startTransaction(final String _operationName) {
-    	
-    	if (elem_transaction != null) {
-    		Status.getLogger().severe("Transaction " + strg_transactionTitle 
-    				+ " not terminated!");
-    	} 
-
-    	elem_transaction = elemCurrent;
-    	strg_transactionTitle = _operationName + System.currentTimeMillis();
-    }
-
-    
-    /**
-     * Finish transaction; reset the state of the List and afterwards the
-     * transaction values.
-     */
-    public final void finishTransaction() {
-    	if (elem_transaction != null || strg_transactionTitle != "") {
-
-        	elemCurrent = elem_transaction;
-        	elem_transaction = null;
-        	strg_transactionTitle = "";
-    	} else {
-    		Status.getLogger().severe("transaction error.");
-    	}
-    }
 }

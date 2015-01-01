@@ -48,6 +48,8 @@ import model.settings.Constants;
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.list.List;
+import model.util.list.SecureList;
+import model.util.list.SecureListSort;
 import model.util.paint.Utils;
 
 /**
@@ -68,14 +70,18 @@ public final class Picture {
 	private static Picture instance = null;
 
 	/**
-	 * list of PaintObjects. The first list is the one into which all
-	 * non-selected paintObjects are added sorted by their x coordinate.
-	 * 
-	 * The second list contains all currently selected items. These items have
-	 * to be saved somewhere outside the first list because they can be
-	 * transformed or removed.
+	 * List of PaintObjects into which all non-selected paintObjects are added 
+	 * sorted by their x coordinate.
 	 */
-	private List<PaintObject> ls_po_sortedByX, ls_poSelected;
+	private SecureListSort<PaintObject> ls_po_sortedByX;
+	
+	
+	/**
+	 * List of PaintObjects which contains all currently selected items.
+	 * These items have to be saved somewhere outside the first list because 
+	 * they can be transformed or removed.
+	 */
+	private SecureList<PaintObject> ls_poSelected;
 
 	/**
 	 * Current PaintObjectPen which can be altered and afterwards inserted into
@@ -132,7 +138,7 @@ public final class Picture {
 	public void reload() {
 
 		// initialize both lists ordered by
-		this.ls_po_sortedByX = new List<PaintObject>();
+		this.ls_po_sortedByX = new SecureListSort<PaintObject>();
 
 		// save current id
 		this.currentId = 0;
@@ -193,7 +199,8 @@ public final class Picture {
 						+ " geadded werden, obwohl das Alte nicht null ist "
 						+ "also nicht gefinished wurde.\n" 
 						+ "Programm wird beendet.");
-				ls_po_sortedByX.insertBehind(po_current);
+				ls_po_sortedByX.insertSorted(po_current,
+						po_current.getSnapshotBounds().x);
 			}
 
 		}
@@ -225,7 +232,8 @@ public final class Picture {
 					+ " geadded werden, obwohl das Alte nicht null ist "
 					+ "also nicht gefinished wurde.\n" 
 					+ "Programm wird beendet.");
-			ls_po_sortedByX.insertBehind(po_current);
+			ls_po_sortedByX.insertSorted(po_current,
+					po_current.getSnapshotBounds().x);
 
 		}
 
@@ -234,8 +242,8 @@ public final class Picture {
 		} else {
 
 			// create new PaintObject and insert it into list of
-			ls_po_sortedByX
-					.insertAfterHead(new PaintObjectImage(currentId, _bi));
+			PaintObjectImage poi = new PaintObjectImage(currentId, _bi);
+			ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x);
 
 			// increase current id
 			currentId++;
@@ -352,7 +360,8 @@ public final class Picture {
 						+ " geadded werden, obwohl das Alte nicht null ist "
 						+ "also nicht gefinished wurde.\n" 
 						+ "Programm wird beendet.");
-				ls_po_sortedByX.insertBehind(po_current);
+				ls_po_sortedByX.insertSorted(po_current,
+						po_current.getSnapshotBounds().x);
 
 			}
 		}
@@ -516,7 +525,8 @@ public final class Picture {
 		// Initialize new list into which the Items are inserted that are inside
 		// the specified rectangle. List is sorted by id for painting the
 		// items chronologically.
-		List<PaintObject> ls_poChronologic = new List<PaintObject>();
+		SecureListSort<PaintObject> ls_poChronologic 
+		= new SecureListSort<PaintObject>();
 
 		// reset value for debugging and speed testing.
 		Status.setCounter_paintedPoints(0);
@@ -1035,7 +1045,8 @@ public final class Picture {
 			FileInputStream fos = new FileInputStream(new File(_wsLoc));
 			ObjectInputStream oos = new ObjectInputStream(fos);
 			@SuppressWarnings("unchecked")
-			List<PaintObject> p = (List<PaintObject>) oos.readObject();
+			SecureListSort<PaintObject> p = 
+			(SecureListSort<PaintObject>) oos.readObject();
 			instance.ls_po_sortedByX = p;
 
 			oos.close();
@@ -1051,8 +1062,8 @@ public final class Picture {
 	 * Empty each paintObject.
 	 */
 	public void emptyImage() {
-		ls_po_sortedByX = new List<PaintObject>();
-		ls_poSelected = new List<PaintObject>();
+		ls_po_sortedByX = new SecureListSort<PaintObject>();
+		ls_poSelected = new SecureList<PaintObject>();
 	}
 
 	/**
@@ -1227,7 +1238,7 @@ public final class Picture {
 	 */
 	public void createSelected() {
 		if (ls_poSelected == null) {
-			ls_poSelected = new List<PaintObject>();
+			ls_poSelected = new SecureList<PaintObject>();
 		} else {
 			if (!ls_poSelected.isEmpty()) {
 				Status.getLogger().warning(
@@ -1667,7 +1678,9 @@ public final class Picture {
 			}
 
 			ls_po_sortedByX.toFirst();
-			ls_po_sortedByX.insertBehind(createPOI(bi_normalSize));
+			PaintObjectImage poi_current = createPOI(bi_normalSize);
+			ls_po_sortedByX.insertSorted(poi_current,
+					poi_current.getSnapshotBounds().x);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -1709,7 +1722,7 @@ public final class Picture {
 	/**
 	 * @return the ls_po_sortedByX
 	 */
-	public List<PaintObject> getLs_po_sortedByX() {
+	public SecureListSort<PaintObject> getLs_po_sortedByX() {
 		return ls_po_sortedByX;
 	}
 
@@ -1717,14 +1730,15 @@ public final class Picture {
 	 * @param _ls_po_sortedByX
 	 *            the ls_po_sortedByX to set
 	 */
-	public void setLs_po_sortedByX(final List<PaintObject> _ls_po_sortedByX) {
+	public void setLs_po_sortedByX(
+			final SecureListSort<PaintObject> _ls_po_sortedByX) {
 		this.ls_po_sortedByX = _ls_po_sortedByX;
 	}
 
 	/**
 	 * @return the ls_poSelected
 	 */
-	public List<PaintObject> getLs_poSelected() {
+	public SecureList<PaintObject> getLs_poSelected() {
 		return ls_poSelected;
 	}
 

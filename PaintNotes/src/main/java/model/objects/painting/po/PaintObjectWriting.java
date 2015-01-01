@@ -16,6 +16,7 @@ import model.settings.Status;
 import model.util.DPoint;
 import model.util.Util;
 import model.util.list.List;
+import model.util.list.SecureListSort;
 import model.util.solveLGS.Matrix;
 
 /**
@@ -1368,7 +1369,7 @@ public class PaintObjectWriting extends PaintObjectPen {
     public final synchronized Rectangle findSilentIntersection(
             final Rectangle _r, final DPoint _p, final DPoint _v) {
 
-        List<DPoint> ls = findIntersections(_r, _p, _v, false);
+    	SecureListSort<DPoint> ls = findIntersections(_r, _p, _v, false);
 //        System.out.println("jetzt hier");
         ls.toFirst();
         while (!ls.isEmpty() 
@@ -1488,7 +1489,7 @@ public class PaintObjectWriting extends PaintObjectPen {
      * value
      * @return the intersectionDPoints between line and rectangle
      */
-    public static synchronized List<DPoint> findIntersections(
+    public static synchronized SecureListSort<DPoint> findIntersections(
             final Rectangle _r, 
             final DPoint _p, final DPoint _v, final boolean _sortAbs) {
         //Step 1
@@ -1545,7 +1546,7 @@ public class PaintObjectWriting extends PaintObjectPen {
         double [] factor4 = m.solve();
 
         //STEP 2
-        List<DPoint> ls = new List<DPoint>();
+        SecureListSort<DPoint> ls = new SecureListSort<DPoint>();
         ls.setSortASC();
         DPoint intersection1 = null, intersection2 = null, 
                 intersection3 = null, intersection4 = null;

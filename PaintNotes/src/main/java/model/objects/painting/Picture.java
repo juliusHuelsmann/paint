@@ -719,10 +719,12 @@ public final class Picture {
 
 			BufferedImage bi_transformed = Page.getInstance()
 					.getEmptyBISelection();
-			bi_transformed = po_current.paint(bi_transformed, false,
-					bi_transformed, Page.getInstance().getJlbl_painting()
-							.getLocation().x, Page.getInstance()
-							.getJlbl_painting().getLocation().y, null);
+			bi_transformed = po_current.paint(
+					bi_transformed, false,
+					bi_transformed, 
+					Page.getInstance().getJlbl_painting().getLocation().x,
+					Page.getInstance().getJlbl_painting().getLocation().y, 
+					null);
 
 			Page.getInstance().getJlbl_selectionBG()
 					.setIcon(new javax.swing.ImageIcon(bi_transformed));

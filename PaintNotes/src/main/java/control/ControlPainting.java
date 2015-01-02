@@ -16,12 +16,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
@@ -451,9 +449,9 @@ public final class ControlPainting implements MouseListener,
                 if (_event.getModifiersEx() == leftMouse) {
                 	
 
-//                    changePO(_event);
-                    Picture.getInstance().changePaintObject(
-                            new DPoint(_event.getX(), _event.getY()));
+                    changePO(_event);
+//                    Picture.getInstance().changePaintObject(
+//                            new DPoint(_event.getX(), _event.getY()));
                    
                 } 
                 break;
@@ -1345,13 +1343,6 @@ public final class ControlPainting implements MouseListener,
     	Rectangle snapBounds = _ldp.getSnapshotBounds();
         int xShift = snapBounds.x, yShift = snapBounds.y;
 
-        xShift -= Page.getInstance().getJlbl_painting().getLocation().getX();
-        yShift -= Page.getInstance().getJlbl_painting().getLocation().getY();
-
-        xShift =  (int) (1.0 * xShift * Status.getImageSize().width
-        		/ Status.getImageShowSize().width);
-        yShift =  (int) (1.0 * yShift * Status.getImageSize().height
-        		/ Status.getImageShowSize().height);
         
         //stretch ldp!
 
@@ -1408,6 +1399,10 @@ public final class ControlPainting implements MouseListener,
         }
 
 
+    	//finish transaction 
+    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    			transaction);
+    	
         //finish insertion into selected.
         Picture.getInstance().finishSelection();
         
@@ -1415,9 +1410,6 @@ public final class ControlPainting implements MouseListener,
         Picture.getInstance().paintSelected();
         Page.getInstance().getJlbl_painting().refreshPaint();
 
-    	//finish transaction 
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
-    			transaction);
 
         
     }
@@ -1441,45 +1433,17 @@ public final class ControlPainting implements MouseListener,
     	
     	//
     	Rectangle snapBounds = _ldp.getSnapshotBounds();
-    	double factorW = 1.0 * Status.getImageSize().width
-    			/ Status.getImageShowSize().width;
-    	double factorH = 1.0 * Status.getImageSize().height 
-    			/ Status.getImageShowSize().height;
-    	System.out.println(factorW + " " + factorH);
-    	
-    	int xShift = (int) ((_ldp.getSnapshotBounds().x
-    			- Page.getInstance().getJlbl_painting().getLocation().getX())
-    			* factorW);
-    	int yShift = (int) ((_ldp.getSnapshotBounds().y
-    			- Page.getInstance().getJlbl_painting().getLocation().getY())
-    			* factorH);
-    	
-    	
-    	
-        //move the paintObject to the upper left corner for not wasting
-        //unnecessary space in byte array. 
-        Picture.movePaintObjectWriting(_ldp, 
-        		-_ldp.getSnapshotBounds().x, 
+        int xShift = snapBounds.x, yShift = snapBounds.y;
+
+        
+        //stretch ldp!
+
+        //necessary because the points are painted directly to the buffered
+        //image which starts at the _ldp snapshot x.
+        Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
                 -_ldp.getSnapshotBounds().y);
-        
-        
-        
-      _ldp.stretch(
-      		new DPoint(_ldp.getSnapshotBounds().x, 
-      				_ldp.getSnapshotBounds().y), 
-      		
-      		//
-      		new DPoint((snapBounds.width), 
-      				(snapBounds.height)),
-      		
-      		//new size		
-      		new DPoint((snapBounds.width) * factorW, 
-      				(snapBounds.height) * factorH));
-      
+
         BufferedImage transform = _ldp.getSnapshot();
-//        transform = Util.resize(transform, 
-//        		(int) (transform.getWidth() / factorW), 
-//        		(int) (transform.getHeight() / factorH));
         
 
         //Extract points out of PaintObjectWriting and create a byte array
@@ -1611,14 +1575,14 @@ public final class ControlPainting implements MouseListener,
             }
 
         }
-        
-
-        Picture.getInstance().paintSelected();
-        Page.getInstance().getJlbl_painting().refreshPaint();
 
     	//finish transaction 
     	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
     			transaction);
+
+        Picture.getInstance().paintSelected();
+        Page.getInstance().getJlbl_painting().refreshPaint();
+
     }
     
     /**

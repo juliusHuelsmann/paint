@@ -47,7 +47,6 @@ import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
 import model.settings.Status;
 import model.util.DPoint;
-import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
 import model.util.adt.list.SecureListSort;
 import model.util.paint.Utils;
@@ -520,7 +519,8 @@ public final class Picture {
 		
 		// Start a transaction. That means that after the transaction has
 		// been terminated, the current item of the list is reset.
-		ls_po_sortedByX.startTransaction("repaintRectangle");
+		final int id_closedAction = 
+				ls_po_sortedByX.startClosedAction("repaintRectangle", -1);
 
 		// Initialize new list into which the Items are inserted that are inside
 		// the specified rectangle. List is sorted by id for painting the
@@ -637,7 +637,6 @@ public final class Picture {
 			ls_poChronologic.next();
 		}
 
-
 		//log repainting action in console.
 		if (counter > 0) {
 			Console.log(counter
@@ -648,13 +647,12 @@ public final class Picture {
 		}
 		
 		// print logging method
-		Status.getLogger().info(
-				"Painted " + Status.getCounter_paintedPoints()
+		Status.getLogger().info("Painted " + Status.getCounter_paintedPoints()
 						+ "pixel points for this operation.");
 
 		// finish transaction; adjust the current element to its state
 		// before the list transaction.
-		ls_po_sortedByX.finishTransaction();
+		ls_po_sortedByX.finishClosedAction(id_closedAction);
 
 		return _bi;
 	}

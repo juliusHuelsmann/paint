@@ -910,7 +910,7 @@ public final class Picture {
     			.startTransaction("paint selected bi", 
     					SecureList.ID_NO_PREDECESSOR);
     	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
-    			.startTransaction("paint selected bi", 
+    			.startClosedAction("paint selected bi", 
     					SecureList.ID_NO_PREDECESSOR);
         
 		ls_poSelected.toFirst(transaction, closedAction);
@@ -1182,7 +1182,7 @@ public final class Picture {
 	    			.startTransaction("transformWhiteToAlpha", 
 	    					SecureList.ID_NO_PREDECESSOR);
 	    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
-	    			.startTransaction("transformWhiteToAlpha", 
+	    			.startClosedAction("transformWhiteToAlpha", 
 	    					SecureList.ID_NO_PREDECESSOR);
 	        
 			
@@ -1594,7 +1594,7 @@ public final class Picture {
     			.startTransaction("paintSelectedInline", 
     					SecureList.ID_NO_PREDECESSOR);
     	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
-    			.startTransaction("paintSelectedInline", 
+    			.startClosedAction("paintSelectedInline", 
     					SecureList.ID_NO_PREDECESSOR);
         
 		ls_poSelected.toFirst(transaction, closedAction);

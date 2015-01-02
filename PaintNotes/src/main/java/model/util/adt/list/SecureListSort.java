@@ -534,12 +534,13 @@ public class SecureListSort<SecureListType> {
 	    		
 	    		//if the current element has got an inferior index proceed
 	    		//in list while the current item has got 
-	    		if (ls.getElement().getSortedIndex() < _searchCriteria) {
+	    		if (ls.getElement() != null 
+	    				&& ls.getElement().getSortedIndex() < _searchCriteria) {
 		    		while (!ls.isBehind() && ls.getElement().getSortedIndex() 
 		    				< _searchCriteria) {
 		    			ls.next(_transactionID, _closedActionID);
 		    		}
-	    		} else {
+	    		} else if (ls.getElement() != null) {
 		    		while (!ls.isInFrontOf()
 		    				
 		    				&& ls.getElement().getSortedIndex() 
@@ -555,6 +556,17 @@ public class SecureListSort<SecureListType> {
 		    		if (!ls.isInFrontOf()) {
 		    			ls.next(_transactionID, _closedActionID);	
 		    		}
+	    		} else {
+	    			ls.toFirst(_transactionID, _closedActionID);
+	    			
+	    			while (ls.getItem() == null) {
+	    				ls.next(_transactionID, _closedActionID);
+	    			}
+	    			if (!ls.isBehind()) {
+
+		    			findSorted(_searchCriteria, _transactionID, 
+		    					_closedActionID);
+	    			}
 	    		}
 	    	} else if (ls.isBehind()) {
 	    		ls.toLast(_transactionID, _closedActionID);

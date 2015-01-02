@@ -13,11 +13,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 import control.CSelection;
 import control.tabs.CTabSelection;
 import view.View;
@@ -1787,12 +1785,7 @@ public final class Picture {
 	 * @return whether there is something selected or not.
 	 */
 	public boolean isSelected() {
-	
-		if (ls_poSelected == null || ls_poSelected.isEmpty()) {
-
-			return false;
-		}
-		return true;
+		return !(ls_poSelected == null || ls_poSelected.isEmpty());
 	}
 
 }

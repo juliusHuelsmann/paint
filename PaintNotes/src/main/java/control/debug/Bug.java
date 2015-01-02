@@ -1,10 +1,7 @@
 package control.debug;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
-
 import control.ControlPainting;
 import start.Start;
 import model.objects.painting.Picture;
@@ -45,14 +42,14 @@ public final class Bug {
 	 * Load Bug from hard drive.
 	 * @param _loadingPath the path of the bug file that is loaded.
 	 */
-	private void loadBug(String _loadingPath) {
+	private void loadBug(final String _loadingPath) {
 		List <String> ls_strg = Util.loadTextFile(_loadingPath);
 		
 		ls_strg.toFirst();
 		while (!ls_strg.isBehind() && !ls_strg.isEmpty()) {
 			
 			String cString = ls_strg.getItem();
-			if (cString.equals("Line")){
+			if (cString.equals("Line")) {
 
 				Picture.getInstance().changePen(new Pencil(
 						Constants.PEN_ID_LINES, 1, Color.blue));
@@ -83,7 +80,7 @@ public final class Bug {
 				}
 				
 				Picture.getInstance().finish();
-			} else if (cString.contains("Rectangle")){
+			} else if (cString.contains("Rectangle")) {
 
 
 
@@ -107,7 +104,8 @@ public final class Bug {
 						System.out.println(p);
 						if (p != null) {
 
-							ControlPainting.getInstance().mr_sel_line_destroy(p);
+							ControlPainting.getInstance()
+							.mr_sel_line_destroy(p);
 						}
 					}
 				}
@@ -128,17 +126,26 @@ public final class Bug {
 		
 	}
 
-	private DPoint isPoint(String _line) {
+	/**
+	 * Check whether string is a point and if that is the case, return the 
+	 * point. Otherwise return null.
+	 * 
+	 * @param _line
+	 * 				the text which is parsed
+	 * 
+	 * @return the point parsed out of the text.
+	 */
+	private DPoint isPoint(final String _line) {
 		
 		DPoint r = new DPoint();
 		for (int i = 0; i < _line.length(); i++) {
 			
 			if (_line.charAt(i) == ' ') {
-				try{
+				try {
 					r.setX(Double.parseDouble(_line.substring(0, i)));
 					r.setY(Double.parseDouble(_line.substring(i)));
 					return r;
-				} catch(Exception e) {
+				} catch (Exception e) {
 					return null;
 				}
 			} 
@@ -146,7 +153,16 @@ public final class Bug {
 		return null;
 	}
 
-	private Rectangle isRect(String _line) {
+	
+	/**
+	 * Check whether parsed line of text is a rectangle.
+	 * 
+	 * @param _line
+	 * 				the text which is parsed
+	 * 
+	 * @return the point parsed out of the text.
+	 */
+	private Rectangle isRect(final String _line) {
 		
 		int i1 = -1;
 		int i2 = -1;
@@ -169,13 +185,13 @@ public final class Bug {
 		
 		if (i1 != -1 && i2 != -1 && i3 != -1) {
 
-			try{
+			try {
 				r.x = (int) (Double.parseDouble(_line.substring(0, i1)));
 				r.y = (int) (Double.parseDouble(_line.substring(i1, i2)));
 				r.width = (int) (Double.parseDouble(_line.substring(i2, i3)));
 				r.height = (int) (Double.parseDouble(_line.substring(i3)));
 				return r;
-			} catch(Exception e) {
+			} catch (Exception e) {
 				return null;
 			}
 		}
@@ -194,7 +210,7 @@ public final class Bug {
 	 * Alternative main method.
 	 * @param _args the main arguments
 	 */
-	public static void main(String [] _args) {
+	public static void main(final String [] _args) {
 		final String bugFile = "2014_12_23.bug";
 		new Bug(bugFile);
 	}

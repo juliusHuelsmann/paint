@@ -10,21 +10,29 @@ import model.util.DPoint;
  * 
  * @author Julius Huelsmann
  * @version %I%, %U%
- * @param <Type>
+ * @param <SecureListType>
  */
-public class SecureListSort<Type> {
+public class SecureListSort<SecureListType> {
 
 	
     /**
      * Whether to sort ascending or descending.
      */
     private boolean sortAsc = true;
+    
+    
+    /**
+     * The string which is added to the internal operations title for 
+     * transaction or closed actions for knowing where the action has been 
+     * started.
+     */
+    private final String internalAction = "Internal: ";
 
 
 	/**
 	 * The list out of which the sorted secure list consists.
 	 */
-	private SecureList <Type> ls;
+	private SecureList <SecureListType> ls;
 	
 
     /**
@@ -36,7 +44,7 @@ public class SecureListSort<Type> {
         this.sortAsc = true;
         
         //initialize the list
-        ls = new SecureList<Type>();
+        ls = new SecureList<SecureListType>();
     }
     
 
@@ -79,36 +87,79 @@ public class SecureListSort<Type> {
     /*
      * Methods for navigating through the list
      */
+
+    
+
+    /*
+     * Methods for navigating through the list
+     */
     
     /**
      * Proceed one step in the list.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
+     * 
      */
-    public final void next() {
-    	ls.next();
+    public final void next(
+    		final int _transactionID, final int _closedActionID) {
+    	ls.next(_transactionID, _closedActionID);
     }
 
     
     /**
      * Step back in the list.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void previous() {
-    	ls.previous();
+    public final void previous(
+    		final int _transactionID, final int _closedActionID) {
+    	ls.previous(_transactionID, _closedActionID);
     }
 
     
     /**
      * Go to the beginning of the list.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void toFirst() {
-    	ls.toFirst();
+    public final void toFirst(
+    		final int _transactionID, final int _closedActionID) {
+    	ls.toFirst(_transactionID, _closedActionID);
     }
 
     
     /**
      * Go to the end of the list.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void toLast() {
-    	ls.toLast();
+    public final void toLast(
+    		final int _transactionID, final int _closedActionID) {
+    	ls.toLast(_transactionID, _closedActionID);
     }
     
 
@@ -116,10 +167,21 @@ public class SecureListSort<Type> {
      * Go to a special element (has to be inside the list).
      * 
      * @param _elemCurrent the current element in the future.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void goToElement(final Element<Type> _elemCurrent) {
-    	ls.goToElement(_elemCurrent);
+    public final void goToElement(final Element<SecureListType> _elemCurrent,
+    		final int _transactionID, final int _closedActionID) {
+    	ls.goToElement(_elemCurrent, _transactionID, _closedActionID);
     }
+	
+
 	
 	
 
@@ -132,7 +194,7 @@ public class SecureListSort<Type> {
      *
      * @return current Element.
      */
-    public final Type getItem() {
+    public final SecureListType getItem() {
     	return ls.getItem();
     }
     
@@ -142,7 +204,7 @@ public class SecureListSort<Type> {
      *
      * @return current Element.
      */
-    public final Element<Type> getElement() {
+    public final Element<SecureListType> getElement() {
     	return ls.getElement();
     }
     
@@ -155,7 +217,7 @@ public class SecureListSort<Type> {
      * create subList.
      * @return list after current item.
      */
-    public final List<Type> subList() {
+    public final List<SecureListType> subList() {
     	return ls.subList();
     }
 
@@ -172,24 +234,43 @@ public class SecureListSort<Type> {
     /**
      * Removes current element. Afterwards the current element points
      * to the predecessor of the removed item.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void remove() {
-    	ls.remove();
+    public final void remove(
+    		final int _transactionID, final int _closedActionID) {
+    	ls.remove(_transactionID, _closedActionID);
     }
-
-
     
     
+
     /**
      * Check whether item does already exist in list and if that is the case
      * point at it with elemCurrent.
      * 
      * @param _type which is checked
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
+     * 
      * @return whether the element exists or not
      */
-    public final boolean find(final Type _type) {
-    	return ls.find(_type);
+    public final boolean find(final SecureListType _type,
+    		final int _transactionID, final int _closedActionID) {
+    	return ls.find(_type, _transactionID, _closedActionID);
     }
+    
     
     
     
@@ -270,29 +351,122 @@ public class SecureListSort<Type> {
     	return ls.finishClosedAction(_oldOperationID);
     }
     
+
+    /**
+     * Start a transaction with specified operation name (for identifying the
+     * not terminated transaction in case an error occurred).
+     * 
+     * If no other operation except of children of the current transaction
+     * shell be able to change the state of the list, this method is called
+     * before the action.
+     * 
+     * After the action has been done endTransaction has to be called.
+     * Otherwise there will occur an error if a new Transaction is started
+     * without terminating the old one.
+     * 
+     * @param _transactionName
+     * 					the name of specified transaction
+     * 
+     * @param _oldTransactionID 
+     * 					the unique id of the old transaction
+     * 
+     * @return the unique id of the current transaction
+     */
+    public final int startTransaction(final String _transactionName,
+    		final int _oldTransactionID) {
+    	return ls.startTransaction(_transactionName, _oldTransactionID);
+    }
+    
+
+    
+    /**
+     * Finish transaction; delete the current transaction.
+     * 
+     * @param _oldTransactionID the id of the transaction which is to be closed
+     * 
+     * @return the unique id of the current transaction
+     */
+    public final int finishTransaction(final int _oldTransactionID) {
+    	return ls.finishTransaction(_oldTransactionID);
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     /**
      * insert sorted ASC.
-     * @param _content the content to be inserted.
-     * @param _searchCriteria the index of sorting.
+     * 
+     * @param _content 
+     * 				the content to be inserted.
+     * 
+     * @param _searchCriteria 
+     * 				the index of sorting.
+     * 
+     * @param _oldTransactionID
+     * 				the id of the current operation for being able to start a 
+     * 				new transaction.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final synchronized void insertSorted(final Type _content, 
-            final double _searchCriteria) {
+    public final synchronized void insertSorted(final SecureListType _content, 
+            final double _searchCriteria, final int _oldTransactionID,
+            final int _closedActionID) {
     	
+    	final int transactionID = ls.startTransaction(
+    			internalAction + "insert Sorted", _oldTransactionID);
     	
     	//find the position of the first element which has got a greater index
     	//than the one which is inserted.
-        findSorted(_searchCriteria);
+        findSorted(_searchCriteria, transactionID, _closedActionID);
         
         //insert the new item depending on sorting order
         if (sortAsc) {
-            ls.insertInFrontOf(_content);
+            ls.insertInFrontOf(_content, transactionID, -1);
         } else {
-        	ls.insertBehind(_content);
+        	ls.insertBehind(_content, transactionID, -1);
         }
         
         //apply the sorting index to the new item
         ls.getElement().setSortedIndex(_searchCriteria);
+        
+        ls.finishTransaction(transactionID);
     }
 
     
@@ -342,9 +516,21 @@ public class SecureListSort<Type> {
     
     /**
      * goes behind the searched position.
-     * @param _searchCriteria the search index.
+     * 
+     * 
+     * @param _searchCriteria 
+     * 				the index of sorting.
+     * 
+     * @param _transactionID
+     * 				the id of the current operation for being able to start a 
+     * 				new transaction.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final synchronized void findSorted(final double _searchCriteria) {
+    public final synchronized void findSorted(final double _searchCriteria,
+    		final int _transactionID, final int _closedActionID) {
         
     	//if list is empty there is nothing to do. Thus only perform action 
     	//if list is not empty.
@@ -359,14 +545,14 @@ public class SecureListSort<Type> {
 	    		if (ls.getElement().getSortedIndex() < _searchCriteria) {
 		    		while (!ls.isBehind() && ls.getElement().getSortedIndex() 
 		    				< _searchCriteria) {
-		    			ls.next();
+		    			ls.next(_transactionID, _closedActionID);
 		    		}
 	    		} else {
 		    		while (!ls.isInFrontOf()
 		    				
 		    				&& ls.getElement().getSortedIndex() 
 		    				> _searchCriteria) {
-		    			ls.previous();
+		    			ls.previous(_transactionID, _closedActionID);
 		    		}
 		    		
 		    		//if the current element is not in front of the list
@@ -375,15 +561,15 @@ public class SecureListSort<Type> {
 		    		//integrity of the result independent of the starting 
 		    		//position in the list)
 		    		if (!ls.isInFrontOf()) {
-		    			ls.next();	
+		    			ls.next(_transactionID, _closedActionID);	
 		    		}
 	    		}
 	    	} else if (ls.isBehind()) {
-	    		ls.toLast();
-	            findSorted(_searchCriteria);
+	    		ls.toLast(_transactionID, _closedActionID);
+	            findSorted(_searchCriteria, _transactionID, _closedActionID);
 	    	} else {
-	    		ls.toFirst();
-	            findSorted(_searchCriteria);
+	    		ls.toFirst(_transactionID, _closedActionID);
+	            findSorted(_searchCriteria, _transactionID, _closedActionID);
 	    	}
     	}
     }

@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import model.settings.Error;
 import model.settings.Status;
 import model.util.DPoint;
-import model.util.list.List;
+import model.util.adt.list.List;
 import model.util.paint.Utils;
 
 

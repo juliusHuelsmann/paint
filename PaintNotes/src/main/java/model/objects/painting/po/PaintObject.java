@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 import model.util.DPoint;
-import model.util.list.List;
+import model.util.adt.list.List;
 
 
 /**

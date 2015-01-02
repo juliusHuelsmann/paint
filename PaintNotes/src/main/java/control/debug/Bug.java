@@ -13,7 +13,7 @@ import model.settings.Constants;
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.Util;
-import model.util.list.List;
+import model.util.adt.list.List;
 
 /**
  * Class Bug contains methods for solving bugs that occur by being able to 

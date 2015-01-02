@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import model.settings.Status;
-import model.util.list.List;
+import model.util.adt.list.List;
 
 
 /**

@@ -1,7 +1,7 @@
 package model.objects.history;
 
 //import declaration
-import model.util.list.List;
+import model.util.adt.list.List;
 
 
 /**

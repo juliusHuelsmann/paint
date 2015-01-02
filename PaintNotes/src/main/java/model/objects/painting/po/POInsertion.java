@@ -10,7 +10,7 @@ import view.forms.Page;
 import model.objects.pen.Pen;
 import model.settings.Status;
 import model.util.DPoint;
-import model.util.list.List;
+import model.util.adt.list.List;
 
 /**
  * The paintObject corresponds to one item that has been painted. It consists

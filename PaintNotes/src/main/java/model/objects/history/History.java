@@ -4,7 +4,7 @@ package model.objects.history;
 import java.util.Observable;
 
 import model.settings.Status;
-import model.util.list.List;
+import model.util.adt.list.List;
 
 
 /**

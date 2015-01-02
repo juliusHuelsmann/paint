@@ -15,8 +15,8 @@ import model.objects.pen.Pen;
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.Util;
-import model.util.list.List;
-import model.util.list.SecureListSort;
+import model.util.adt.list.List;
+import model.util.adt.list.SecureListSort;
 import model.util.solveLGS.Matrix;
 
 /**

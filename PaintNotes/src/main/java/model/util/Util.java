@@ -27,7 +27,7 @@ import view.View;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
-import model.util.list.List;
+import model.util.adt.list.List;
 
 
 /**

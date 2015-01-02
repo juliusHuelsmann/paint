@@ -1,4 +1,4 @@
-package model.util.list;
+package model.util.adt.list;
 
 //import declarations
 import model.settings.Status;

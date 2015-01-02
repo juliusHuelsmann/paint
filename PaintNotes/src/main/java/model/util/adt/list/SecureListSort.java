@@ -251,18 +251,23 @@ public class SecureListSort<Type> {
      * without terminating the old one.
      * 
      * @param _operationName the name of specified transaction
+     * @param _oldOperationID the unique id of the old transaction
+     * @return the unique id of the current transaction
      */
-    public final void startTransaction(final String _operationName) {
-    	ls.startTransaction(_operationName);
+    public final int startClosedAction(final String _operationName,
+    		final int _oldOperationID) {
+    	return ls.startClosedAction(_operationName, _oldOperationID);
     }
 
     
     /**
      * Finish transaction; reset the state of the List and afterwards the
      * transaction values.
+     * @param _oldOperationID the id of the transaction which is to be closed
+     * @return the unique id of the current transaction
      */
-    public final void finishTransaction() {
-    	ls.finishTransaction();
+    public final int finishClosedAction(final int _oldOperationID) {
+    	return ls.finishClosedAction(_oldOperationID);
     }
     
     

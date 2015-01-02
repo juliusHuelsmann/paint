@@ -17,9 +17,9 @@ import java.io.Serializable;
  * 
  * @author Julius Huelsmann
  * @version %I%, %U%
- * @param <Type>
+ * @param <StackType>
  */
-public class Stack<Type> implements Serializable {
+public class Stack<StackType> implements Serializable {
 
 
 	/*
@@ -43,7 +43,7 @@ public class Stack<Type> implements Serializable {
      * The last element in list. By using this element, it is possible to 
      * reach all element in front of by removing action.
      */
-    private StackElement<Type> elem_last;
+    private StackElement<StackType> elem_last;
 	
     
 	/**
@@ -88,9 +88,17 @@ public class Stack<Type> implements Serializable {
 	 * @param _content 
 	 * 					the content of the new item.
 	 */
-	public final void insert(final Type _content) {
+	public final void insert(final StackType _content) {
 		
 		//set new last element.
-		elem_last = new StackElement<Type>(_content, elem_last);
+		elem_last = new StackElement<StackType>(_content, elem_last);
+	}
+
+
+	/**
+	 * @return the elem_last
+	 */
+	public final StackElement<StackType> getElem_last() {
+		return elem_last;
 	}
 }

@@ -570,7 +570,12 @@ public final class PaintBI {
 
                 str = "|  ";
             }
-            str = "|" + _pbi[y][x] + " ";
+            if (_pbi[y][x] == 0) {
+            	str = "|" + "  ";
+            } else {
+
+                str = "|" + _pbi[y][x] + " ";	
+            }
                 System.out.print(str);
         }
         System.out.print("|");

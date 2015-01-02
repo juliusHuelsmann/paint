@@ -131,9 +131,16 @@ public abstract class PaintObjectPen extends PaintObject {
         if (shiftedPointX < 0 || shiftedPointY < 0 
         		|| shiftedPointX >= _r.length 
         		|| shiftedPointY >= _r[(int) shiftedPointX].length) {
+
+        	System.out.println("elz");
             return false;
         }
-        
+    	System.out.println("out of bounds. NOT"
+    			+ shiftedPointX + ".."
+    			+ shiftedPointY);
+        System.out.println("inside bounds"
+        		+ (_r[(int) shiftedPointX][(int) shiftedPointY] 
+        				== PaintBI.FREE));
         
         //Here the coordinates are valid (inside the given array)
         

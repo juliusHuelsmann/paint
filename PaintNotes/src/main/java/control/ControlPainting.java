@@ -16,10 +16,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
+import org.omg.CORBA._PolicyStub;
+
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
@@ -83,6 +87,11 @@ public final class ControlPainting implements MouseListener,
      * The start location of movement of the JPaintLabel.
      */
     private Point pnt_startLocation;
+    
+    /**
+     * Erase field which contains the indices.
+     */
+    private byte [][] field_erase;
     
     /**
      * The thread for moving at the page.
@@ -349,6 +358,57 @@ public final class ControlPainting implements MouseListener,
                 Picture.getInstance().addPaintObjectWrinting();
                 break;
 
+            case Constants.CONTROL_PAINTING_INDEX_ERASE:
+            	
+            	mr_erase(_event.getPoint());
+            	if (0 == -1) {
+            		/*
+                	 * Initialize the field for erasing. Therefore calculate the 
+                	 * dimension of the array first.
+                	 */
+                	final int width = 
+                	Math.min(
+                			
+                			//The theoretically displayed width of the image
+                			//if the image would not terminate somewhere
+                			//on screen.
+                			Page.getInstance().getJlbl_painting().getWidth()
+                			* Status.getImageSize().width
+                			/ Status.getImageShowSize().width
+                			/ Status.getEraseRadius(),
+                			
+                			//the maximal displayed image size adapted to the
+                			//erase radius.
+                			Status.getImageSize().width / Status.getEraseRadius());
+                	
+                	final int height = 
+                	Math.min(
+                			
+                			//The theoretically displayed height of the image
+                			//if the image would not terminate somewhere
+                			//on screen.
+                			Page.getInstance().getJlbl_painting().getHeight()
+                			* Status.getImageSize().height
+                			/ Status.getImageShowSize().height
+                			/ Status.getEraseRadius(),
+
+                			//the maximal displayed image size adapted to the
+                			//erase radius.
+                			Status.getImageSize().height / Status.getEraseRadius());
+                	
+                	//initialize the field.
+                	field_erase = new byte[width][height];
+                	
+//                	//set default values
+//                	for (int x = 0; x < field_erase.length; x++) {
+//    					for (int y = 0; y < field_erase[x].length; y++) {
+//    	            		field_erase[x][y] = PaintBI.OCCUPIED;
+//    					}
+//    				}
+            	}
+            	
+            	
+            	break;
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
 
                 Picture.getInstance().abortPaintObject();
@@ -447,22 +507,73 @@ public final class ControlPainting implements MouseListener,
 
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
                 if (_event.getModifiersEx() == leftMouse) {
-                	
-
                     changePO(_event);
-//                    Picture.getInstance().changePaintObject(
-//                            new DPoint(_event.getX(), _event.getY()));
-                   
                 } 
                 break;
 
             case Constants.CONTROL_PAINTING_INDEX_ERASE:
-            	Point p = new Point(
-            			(int) (_event.getPoint().x - Page.getInstance()
-            					.getJlbl_painting().getLocation().getX()),
-                    	(int) (_event.getPoint().y - Page.getInstance()
-                    			.getJlbl_painting().getLocation().getY()));
-            	mr_erase(p);
+
+            	mr_erase(_event.getPoint());
+            	if (field_erase != null) {
+
+                		
+
+            		final double factorWidth = 
+            				1.0 * Math.min(
+            						
+            						//the value if the border of the picture
+            						//is not displayed (because not enough
+            						//zoom out)
+            						1.0 * Status.getImageSize().width
+            						/ Status.getImageShowSize().width
+            						/ Status.getEraseRadius(),
+
+            						//value if border is visible on screen; 
+            						//zoomed out
+            						1.0 * Status.getImageSize().width
+            						/ Page.getInstance().getJlbl_painting()
+            						.getWidth()
+            						/ Status.getEraseRadius());
+            		final double factorHeight = 
+            				1.0 * Math.min(
+            						
+            						//the value if the border of the picture
+            						//is not displayed (because not enough
+            						//zoom out)
+            						1.0 * Status.getImageSize().height
+            						/ Status.getImageShowSize().height
+            						/ Status.getEraseRadius(),
+
+            						//value if border is visible on screen; 
+            						//zoomed out
+            						1.0 * Status.getImageSize().height
+            						/ Page.getInstance().getJlbl_painting()
+            						.getHeight()
+            						/ Status.getEraseRadius());
+            		
+            		field_erase[ (int) (_event.getPoint().x * factorWidth)]
+            				[ (int) (_event.getPoint().y * factorHeight)]
+            						= PaintBI.FREE;
+
+            		final int displayHeight = Status.getEraseRadius()
+            				* Status.getImageShowSize().height
+            				/ Status.getImageSize().height;
+            		final int displayWidth = Status.getEraseRadius()
+            				* Status.getImageShowSize().width
+            				/ Status.getImageSize().width;
+            		
+            		Page.getInstance().getJlbl_painting().clrRectangle(
+                    		_event.getX() - displayWidth / 2, 
+                    		_event.getY() - displayHeight / 2, 
+                    		displayWidth,
+                    		displayHeight);
+            	}
+//            	Point p = new Point(
+//            			(int) (_event.getPoint().x - Page.getInstance()
+//            					.getJlbl_painting().getLocation().getX()),
+//                    	(int) (_event.getPoint().y - Page.getInstance()
+//                    			.getJlbl_painting().getLocation().getY()));
+//            	mr_erase(p);
                 break;
                 
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
@@ -1894,7 +2005,7 @@ public final class ControlPainting implements MouseListener,
      * Erase functionality at mouseReleased.
      * @param _p the Point.
      */
-    private synchronized void mr_erase(final Point _p) {
+    public synchronized void mr_erase(final Point _p) {
 
     	//start transaction 
     	final int transaction = Picture.getInstance().getLs_po_sortedByX()
@@ -2011,6 +2122,10 @@ public final class ControlPainting implements MouseListener,
                     ls_separatedPO.next();
                 }
             }
+        	//finish transaction
+        	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+        			transaction);
+        
             
             if (Picture.getInstance().paintSelected()) {
                 Page.getInstance().getJlbl_painting().refreshPaint();
@@ -2020,6 +2135,12 @@ public final class ControlPainting implements MouseListener,
             r_sizeField.width /= cZoomFactorWidth;
             r_sizeField.y /= cZoomFactorHeight;
             r_sizeField.height /= cZoomFactorHeight;
+        } else {
+
+        	//finish transaction
+        	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+        			transaction);
+        
         }
         
 
@@ -2031,9 +2152,171 @@ public final class ControlPainting implements MouseListener,
 				.getJlbl_painting().getLocation().getY(),
                 r_sizeField.width, r_sizeField.height);
 
-    	//finish transaction
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
-    			transaction);
+    }
+
+
+    /**
+     * Erase functionality at mouseReleased.
+     */
+    public synchronized void mr_eraseNew() {
+
+    	/**
+    	 * Value for showing the new paintObjects in PaintObjectsView.
+    	 */
+    	final boolean debug_update_paintObjects_view = false;
+    	
+    	//TODO: 
+
+		final double factorWidth = 
+				Math.min(
+						
+						//the value if the border of the picture
+						//is not displayed (because not enough
+						//zoom out)
+						1.0 * Status.getImageSize().width
+						/ Status.getImageShowSize().width
+						/ Status.getEraseRadius(),
+
+						//value if border is visible on screen; 
+						//zoomed out
+						1.0 * Status.getImageSize().width
+						/ Page.getInstance().getJlbl_painting()
+						.getWidth()
+						/ Status.getEraseRadius());
+		final double factorHeight = 
+				Math.min(
+						
+						//the value if the border of the picture
+						//is not displayed (because not enough
+						//zoom out)
+						1.0 * Status.getImageSize().height
+						/ Status.getImageShowSize().height
+						/ Status.getEraseRadius(),
+
+						//value if border is visible on screen; 
+						//zoomed out
+						1.0 * Status.getImageSize().height
+						/ Page.getInstance().getJlbl_painting()
+						.getHeight()
+						/ Status.getEraseRadius());
+    	final DPoint pnt_stretch = new DPoint(factorWidth, factorHeight);
+        
+    	/*
+         * whole item selection.
+         */
+        // initialize selection list
+        Picture.getInstance().createSelected();
+
+    	//start transaction 
+    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("erase", 
+    					SecureList.ID_NO_PREDECESSOR);
+        // go to the beginning of the list
+        Picture.getInstance().getLs_po_sortedByX().toFirst(transaction,
+        		SecureList.ID_NO_PREDECESSOR);
+        if (!Picture.getInstance().getLs_po_sortedByX().isEmpty()) {
+
+            // create and initialize current values
+            PaintObject po_current = Picture.getInstance().getLs_po_sortedByX()
+                    .getItem();
+            int currentX = po_current.getSnapshotBounds().x;
+
+            List<PaintObjectWriting> ls_separatedPO = new List<PaintObjectWriting>();
+            
+            // go through list. until either list is empty or it is
+            // impossible for the paintSelection to paint inside the
+            // selected area
+            while (po_current != null
+                    && currentX <=  (Page.getInstance().getJlbl_painting()
+                    		.getLocation().getX()
+                    		+ Page.getInstance().getJlbl_painting()
+                    		.getWidth())) {
+
+                //The y condition has to be in here because the items are just 
+                //sorted by x coordinate; thus it is possible that one 
+                //PaintObject is not suitable for the specified rectangle but 
+                //some of its predecessors in sorted list do.
+                if (po_current.isInSelectionImageStretched(
+                		field_erase, 
+                		Page.getInstance().getJlbl_painting().getLocation(),
+                		pnt_stretch)) {
+                	
+
+                    // get item; remove it out of lists and add it to
+                    // selection list
+
+                	ls_separatedPO 
+                	= po_current.deleteCurve(field_erase, 
+                    		Page.getInstance().getJlbl_painting().getLocation(),
+                			pnt_stretch,
+                			ls_separatedPO);
+                	if (ls_separatedPO != null) {
+
+                    	if (debug_update_paintObjects_view) {
+
+                            new PictureOverview().remove(Picture.getInstance()
+                                    .getLs_po_sortedByX().getItem());
+                    	}
+                        Picture.getInstance().getLs_po_sortedByX().remove(
+                        		transaction);
+                	}
+                } 
+                // next
+                Picture.getInstance().getLs_po_sortedByX().next(transaction,
+                		SecureList.ID_NO_PREDECESSOR);
+
+
+                // update current values
+                currentX = po_current.getSnapshotBounds().x;
+                po_current = Picture.getInstance().getLs_po_sortedByX()
+                        .getItem();
+            }
+
+            
+
+            if (ls_separatedPO != null) {
+
+            	ls_separatedPO.toFirst();
+                while (ls_separatedPO != null
+                		&& !ls_separatedPO.isEmpty()
+                		&& !ls_separatedPO.isBehind()) {
+
+                    if (ls_separatedPO.getItem() != null) {
+                        //recalculate snapshot bounds for being able to
+                        //insert the item into the sorted list.
+                    	ls_separatedPO.getItem().recalculateSnapshotBounds();
+
+                        Picture.getInstance().getLs_po_sortedByX().insertSorted(
+                        		ls_separatedPO.getItem(), 
+                        		ls_separatedPO.getItem().getSnapshotBounds().x,
+                        		transaction);
+
+                    	if (debug_update_paintObjects_view) {
+
+                            new PictureOverview().add(
+                           		 ls_separatedPO.getItem());
+                    	}
+                    } else {
+
+                        Status.getLogger().warning("separated paintObject "
+                                + "is null");
+                    }
+                    ls_separatedPO.next();
+                }
+            }
+        	//finish transaction
+        	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+        			transaction);
+            
+            if (Picture.getInstance().paintSelected()) {
+                Page.getInstance().getJlbl_painting().refreshPaint();
+            }
+        } else {
+
+        	//finish transaction
+        	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+        			transaction);
+        }
     
     }
 
@@ -2124,6 +2407,8 @@ public final class ControlPainting implements MouseListener,
             break;
         case Constants.CONTROL_PAINTING_INDEX_ERASE:
 
+//        	mr_erase();
+        	
         	break;
 
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:

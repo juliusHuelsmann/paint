@@ -45,7 +45,6 @@ public class PaintObjectSelectLineDestroy extends TestCase {
     
     /**
      * Main method for testing purpose.
-     * @param _args the main arguments from console
      */
     @Test
 	public static void testSelectionDistroy() {

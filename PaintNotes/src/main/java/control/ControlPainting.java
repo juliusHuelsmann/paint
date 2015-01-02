@@ -16,12 +16,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
@@ -44,7 +42,6 @@ import model.util.Util;
 import model.util.adt.list.List;
 import model.util.paint.MyClipboard;
 import model.util.paint.Utils;
-import start.test.BufferedViewer;
 import view.View;
 import view.forms.Message;
 import view.forms.New;
@@ -1318,6 +1315,8 @@ public final class ControlPainting implements MouseListener,
     private void mr_sel_curve_complete(final MouseEvent _event, 
             final PaintObjectWriting _ldp) {
         
+    	final int transaction = Picture.getInstance().getLs_po_sortedByX().startTransaction();
+    	
     	Rectangle snapBounds = _ldp.getSnapshotBounds();
         int xShift = snapBounds.x, yShift = snapBounds.y;
 

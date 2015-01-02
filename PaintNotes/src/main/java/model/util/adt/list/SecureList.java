@@ -65,7 +65,7 @@ public class SecureList<SecureListType> {
 	 * Thus it is impossible to perform an action outside the current 
 	 * transaction.
      */
-    private  Stack<ClosedAction<SecureListType> > stck_transaction;
+    private  Stack<Transaction<SecureListType> > stck_transaction;
     
 	
 	/**
@@ -470,6 +470,7 @@ public class SecureList<SecureListType> {
     	if (stck_closedAction == null) {
     		Status.getLogger().severe("The stack is null! That should not "
     				+ "happen!");
+    		stck_closedAction = new Stack<ClosedAction<SecureListType>>();
     		return -1;
     	}
     	
@@ -516,6 +517,7 @@ public class SecureList<SecureListType> {
     	if (stck_closedAction == null) {
     		Status.getLogger().severe("The stack is null! That should not "
     				+ "happen!");
+    		stck_closedAction = new Stack<ClosedAction<SecureListType>>();
     		return -1;
     	}
     	
@@ -554,4 +556,125 @@ public class SecureList<SecureListType> {
     		}
     	}
     }
+    
+    
+    
+    
+
+    /**
+     * Start a transaction with specified operation name (for identifying the
+     * not terminated transaction in case an error occurred).
+     * 
+     * If no other operation except of children of the current transaction
+     * shell be able to change the state of the list, this method is called
+     * before the action.
+     * 
+     * After the action has been done endTransaction has to be called.
+     * Otherwise there will occur an error if a new Transaction is started
+     * without terminating the old one.
+     * 
+     * @param _transactionName
+     * 					the name of specified transaction
+     * 
+     * @param _oldTransactionID 
+     * 					the unique id of the old transaction
+     * 
+     * @return the unique id of the current transaction
+     */
+    public final int startTransaction(final String _transactionName,
+    		final int _oldTransactionID) {
+    	
+    	
+    	//threshold: the stack must not be null. catch this error.
+    	if (stck_transaction == null) {
+    		Status.getLogger().severe("The stack is null! That should not "
+    				+ "happen!");
+    		stck_transaction = new Stack<Transaction<SecureListType>>();
+    		return -1;
+    	}
+    	
+    	//check whether it is valid to start a new closed action
+    	if (!stck_transaction.isEmpty()) {
+
+        	//the old closedAciton
+    		Transaction<SecureListType> ca_old = 
+        			((Transaction<SecureListType>)  
+        					stck_transaction.getElem_last().getContent());
+        	
+        	
+        	//if the given id does not equal the one of the last transaction
+        	//and the current element is null and the stack is not empty
+        	if (ca_old != null 
+        			&& !stck_transaction.isEmpty()
+        			&& ca_old.getId_secureList() != _oldTransactionID) {
+        		
+        		Status.getLogger().severe("Transaction " + ca_old.getName() 
+        				+ " not terminated! and new transaction");
+        		return -1;
+        	} 
+    	}
+    	
+
+    	//create new closed action and insert it into the stack
+    	Transaction<SecureListType> ca_new 
+    	= new Transaction<SecureListType>(_transactionName);
+    	stck_transaction.insert(ca_new);
+    	return ca_new.getId_secureList();
+    }
+
+    
+    /**
+     * Finish transaction; delete the current transaction.
+     * 
+     * @param _oldTransactionID the id of the transaction which is to be closed
+     * 
+     * @return the unique id of the current transaction
+     */
+    public final int finishTransaction(final int _oldTransactionID) {
+
+    	//threshold: the stack must not be null. catch this error.
+    	if (stck_transaction == null) {
+    		Status.getLogger().severe("The stack is null! That should not "
+    				+ "happen!");
+    		stck_transaction = new Stack<Transaction<SecureListType>>();
+    		return -1;
+    	}
+    	
+    	
+
+    	//the old closedAciton
+    	Transaction<SecureListType> ca_old = 
+    			((Transaction<SecureListType>)  
+    					stck_transaction.getElem_last().getContent());
+    	
+    	
+    	//if the given id does not equal the one of the last transaction
+    	if (ca_old != null 
+    			&& ca_old.getId_secureList() != _oldTransactionID) {
+    		
+    		Status.getLogger().severe("Wrong closed action to be terminated."
+    				+ " Current one: " 
+    				+ ca_old.getName()
+    				+ " Old id: " + _oldTransactionID);
+    		return ca_old.getId_secureList();
+    	} else {
+
+    		//remove the current transaction.
+        	stck_transaction.remove();
+
+    		if (!stck_transaction.isEmpty()) {
+
+        		//return the new current id.
+    			Transaction<SecureListType> ca_current = 
+            			((Transaction<SecureListType>)  
+            					stck_transaction.getElem_last().getContent());
+        		return ca_current.getId_secureList();
+    		} else {
+    			return -1;
+    		}
+    	}
+    }
 }
+
+    
+    

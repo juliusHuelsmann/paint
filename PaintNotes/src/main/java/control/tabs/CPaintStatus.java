@@ -368,7 +368,6 @@ public final class CPaintStatus implements MouseListener {
 		}
 		
 		if (!mouseReleasedPenChange(_event)) {
-
 			
 			//if previously zoomed remove zoom field.
 			if (Status.getIndexOperation()
@@ -479,8 +478,8 @@ public final class CPaintStatus implements MouseListener {
                     		Status.getEraseRadius() * 2,
                     		Status.getEraseRadius() * 2, 
                     		BufferedImage.TYPE_INT_RGB);
-                    for (int y = 0; y < bi_erase.getHeight(); y ++) {
-                    	for (int x = 0; x < bi_erase.getWidth(); x ++) {
+                    for (int y = 0; y < bi_erase.getHeight(); y++) {
+                    	for (int x = 0; x < bi_erase.getWidth(); x++) {
                         
                     		if (y == 0 || y == bi_erase.getHeight() - 1
                     				|| x == 0 || x == bi_erase.getWidth() - 1) {

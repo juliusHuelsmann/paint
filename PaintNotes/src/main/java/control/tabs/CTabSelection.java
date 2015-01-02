@@ -10,6 +10,7 @@ import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectPen;
 import model.settings.Constants;
+import model.util.adt.list.SecureList;
 import view.tabs.Selection;
 
 /**
@@ -215,7 +216,19 @@ public final class CTabSelection implements ActionListener {
      * @param _id_operation the id
      */
     private static synchronized void setPen(final int _id_operation) {
-        Picture.getInstance().getLs_poSelected().toFirst();
+    	
+
+
+    	//start transaction and closed action.
+    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("set pen", 
+    					SecureList.ID_NO_PREDECESSOR);
+    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("set pen", 
+    					SecureList.ID_NO_PREDECESSOR);
+    	
+        Picture.getInstance().getLs_poSelected().toFirst(
+        		transaction, closedAction);
         while (!Picture.getInstance().getLs_poSelected().isBehind() 
                 && !Picture.getInstance().getLs_poSelected().isEmpty()) {
             PaintObject o = Picture.getInstance().getLs_poSelected().getItem();
@@ -223,8 +236,17 @@ public final class CTabSelection implements ActionListener {
                 PaintObjectPen pow = (PaintObjectPen) o;
                 pow.getPen().setId_operation(_id_operation);
             }
-            Picture.getInstance().getLs_poSelected().next();
+            Picture.getInstance().getLs_poSelected().next(
+            		transaction, closedAction);
         }
+        
+
+    	//close transaction and closed action.
+    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    			transaction);
+    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    			closedAction);
+        
     }
     
     /**
@@ -232,10 +254,20 @@ public final class CTabSelection implements ActionListener {
      * @param _clr the Color
      */
     private static synchronized void setColor(final Color _clr) {
-        
+
+
+    	//start transaction and closed action.
+    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("set color", 
+    					SecureList.ID_NO_PREDECESSOR);
+    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("set color", 
+    					SecureList.ID_NO_PREDECESSOR);
+    	
         if (Picture.getInstance().getLs_poSelected() != null) {
 
-            Picture.getInstance().getLs_poSelected().toFirst();
+            Picture.getInstance().getLs_poSelected().toFirst(
+            		transaction, closedAction);
             while (!Picture.getInstance().getLs_poSelected().isBehind() 
                     && !Picture.getInstance().getLs_poSelected().isEmpty()) {
                 PaintObject o = Picture.getInstance().getLs_poSelected()
@@ -244,9 +276,17 @@ public final class CTabSelection implements ActionListener {
                     PaintObjectPen pow = (PaintObjectPen) o;
                     pow.getPen().setClr_foreground(new Color(_clr.getRGB()));
                 }
-                Picture.getInstance().getLs_poSelected().next();
+                Picture.getInstance().getLs_poSelected().next(
+                		transaction, closedAction);
             }
         }
+
+    	//close transaction and closed action.
+    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    			transaction);
+    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    			closedAction);
+        
     }
 
     

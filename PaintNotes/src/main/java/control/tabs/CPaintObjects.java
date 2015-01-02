@@ -19,6 +19,7 @@ import model.settings.Constants;
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.adt.list.List;
+import model.util.adt.list.SecureList;
 import view.forms.Page;
 import view.tabs.PaintObjects;
 import view.util.Item1Button;
@@ -92,7 +93,8 @@ public final class CPaintObjects implements ActionListener {
                     PaintObjects.getInstance().deactivate();
                     Picture.getInstance().insertIntoSelected(po_cu);
                     new PictureOverview().remove(po_cu);
-                    Picture.getInstance().getLs_po_sortedByX().remove();
+                    Picture.getInstance().getLs_po_sortedByX().remove(
+                    		SecureList.ID_NO_PREDECESSOR);
                     
                 }
             } else {
@@ -101,6 +103,10 @@ public final class CPaintObjects implements ActionListener {
                         + "This error should never occure");
             }
         }
+        
+        //finish insertion into selected.
+        Picture.getInstance().finishSelection();
+        
         Picture.getInstance().paintSelected();
         Page.getInstance().getJlbl_painting().refreshPaint();
         PaintObjects.getInstance().repaint();

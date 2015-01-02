@@ -885,11 +885,17 @@ public final class ControlPainting implements MouseListener,
         Object o = MyClipboard.getInstance().paste();
         if (o instanceof BufferedImage) {
 
-            PaintObjectImage poi = Picture.getInstance().createPOI(
+            PaintObjectImage poi = Picture.createPOI(
                     (BufferedImage) o);
             Picture.getInstance().insertIntoSelected(poi);
+
+            //finish insertion into selected.
+            Picture.getInstance().finishSelection();
+            
             Picture.getInstance().paintSelected();
             Page.getInstance().getJlbl_background2().repaint();
+            
+
         } else if (o instanceof List) {
             @SuppressWarnings("unchecked")
             List<PaintObject> ls = (List<PaintObject>) o;
@@ -899,15 +905,17 @@ public final class ControlPainting implements MouseListener,
                 PaintObject po = ls.getItem();
                 if (po instanceof PaintObjectImage) {
                     PaintObjectImage poi = (PaintObjectImage) po;
-                    PaintObjectImage poi_new = Picture.getInstance()
-                            .createPOI(poi.getSnapshot());
+                    PaintObjectImage poi_new = Picture.createPOI(
+                    		poi.getSnapshot());
                     Picture.getInstance().insertIntoSelected(poi_new);
+
+                    //finish insertion into selected.
+                    Picture.getInstance().finishSelection();
                     
                 } else if (po instanceof PaintObjectWriting) {
                     PaintObjectWriting pow = (PaintObjectWriting) po;
                     PaintObjectWriting pow_new 
-                    = Picture.getInstance().createPOW(
-                            pow.getPen());
+                    = Picture.createPOW(pow.getPen());
                     
                     pow.getPoints().toFirst();
                     while (!pow.getPoints().isEmpty() 
@@ -917,6 +925,9 @@ public final class ControlPainting implements MouseListener,
                         pow.getPoints().next();
                     }
                     Picture.getInstance().insertIntoSelected(pow_new);
+
+                    //finish insertion into selected.
+                    Picture.getInstance().finishSelection();
                 
                 } else  if (po != null) {
                     Status.getLogger().warning("unknown kind of "
@@ -928,9 +939,15 @@ public final class ControlPainting implements MouseListener,
         } else if (o instanceof PaintObjectWriting) {
             Picture.getInstance().insertIntoSelected(
                     (PaintObjectWriting) o);
+
+            //finish insertion into selected.
+            Picture.getInstance().finishSelection();
         } else if (o instanceof PaintObjectImage) {
             Picture.getInstance().insertIntoSelected(
                     (PaintObjectImage) o);
+
+            //finish insertion into selected.
+            Picture.getInstance().finishSelection();
             new Exception("hier").printStackTrace();
         } else {
             Status.getLogger().warning("unknown return type of clipboard");
@@ -1319,7 +1336,7 @@ public final class ControlPainting implements MouseListener,
             final PaintObjectWriting _ldp) {
 
     	
-    	//start transaction and closed action
+    	//start transaction
     	final int transaction = Picture.getInstance().getLs_po_sortedByX()
     			.startTransaction("Selection curve Complete", 
     					SecureList.ID_NO_PREDECESSOR);
@@ -1375,7 +1392,7 @@ public final class ControlPainting implements MouseListener,
                 //move current item from normal list into selected list 
                 Picture.getInstance().insertIntoSelected(po_current);
                 Picture.getInstance().getLs_po_sortedByX().remove(
-                		transaction, SecureList.ID_NO_PREDECESSOR);
+                		transaction);
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
                  new PictureOverview().remove(po_current);
@@ -1391,15 +1408,16 @@ public final class ControlPainting implements MouseListener,
         }
 
 
+        //finish insertion into selected.
+        Picture.getInstance().finishSelection();
+        
         //paint the selected item and refresh entire painting.
         Picture.getInstance().paintSelected();
         Page.getInstance().getJlbl_painting().refreshPaint();
 
-    	//finish transaction and closed action
+    	//finish transaction 
     	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
     			transaction);
-    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
-    			closedAction);
 
         
     }
@@ -1416,13 +1434,9 @@ public final class ControlPainting implements MouseListener,
             final PaintObjectWriting _ldp) {
 
     	
-    	//start transaction and closed action
+    	//start transaction 
     	final int transaction = Picture.getInstance().getLs_po_sortedByX()
     			.startTransaction("Selection curve destroy", 
-    					SecureList.ID_NO_PREDECESSOR);
-
-    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
-    			.startClosedAction("Selection curve destroy", 
     					SecureList.ID_NO_PREDECESSOR);
     	
     	//
@@ -1489,7 +1503,7 @@ public final class ControlPainting implements MouseListener,
 
             // go to the beginning of the list
             Picture.getInstance().getLs_po_sortedByX().toFirst(
-            		transaction, closedAction);
+            		transaction, SecureList.ID_NO_PREDECESSOR);
             
             // create and initialize current values
             PaintObject po_current = Picture.getInstance().getLs_po_sortedByX()
@@ -1526,7 +1540,7 @@ public final class ControlPainting implements MouseListener,
                     new PictureOverview().remove(Picture.getInstance()
                             .getLs_po_sortedByX().getItem());
                     Picture.getInstance().getLs_po_sortedByX().remove(
-                    		transaction, closedAction);
+                    		transaction);
                     
                     //go through the list of elements.
                     for (int current = 0; current < separatedPO[1].length;
@@ -1545,6 +1559,10 @@ public final class ControlPainting implements MouseListener,
                                     + "is null");
                         }
                     }
+                    
+                    //finish insertion into selected.
+                    Picture.getInstance().finishSelection();
+                    
                     for (int current = 0; current < separatedPO[0].length;
                             current++) {
 
@@ -1562,11 +1580,13 @@ public final class ControlPainting implements MouseListener,
                                     + "is null");
                         }
                     }
-                    Picture.getInstance().getLs_po_sortedByX().toFirst();
+                    Picture.getInstance().getLs_po_sortedByX().toFirst(
+                    		transaction, SecureList.ID_NO_PREDECESSOR);
                 } else {
                     
                     // next
-                    Picture.getInstance().getLs_po_sortedByX().next();
+                    Picture.getInstance().getLs_po_sortedByX().next(
+                    		transaction, SecureList.ID_NO_PREDECESSOR);
                 }
 
 
@@ -1582,7 +1602,8 @@ public final class ControlPainting implements MouseListener,
 
                 Picture.getInstance().getLs_po_sortedByX().insertSorted(
                         ls_toInsert.getItem(), 
-                        ls_toInsert.getItem().getSnapshotBounds().x);
+                        ls_toInsert.getItem().getSnapshotBounds().x,
+                        transaction);
                 ls_toInsert.next();
             }
             if (Picture.getInstance().paintSelected()) {
@@ -1595,12 +1616,11 @@ public final class ControlPainting implements MouseListener,
         Picture.getInstance().paintSelected();
         Page.getInstance().getJlbl_painting().refreshPaint();
 
-    	//finish transaction and closed action
+    	//finish transaction 
     	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
     			transaction);
-    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
-    			closedAction);
     }
+    
     /**
      * The event which is performed after performed a mouseReleased with id
      * selection line.
@@ -1612,6 +1632,11 @@ public final class ControlPainting implements MouseListener,
     private synchronized void mr_sel_line_complete(final MouseEvent _event,
             final Rectangle _r_size) {
 
+    	
+    	//start transaction 
+    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("Selection line complete", 
+    					SecureList.ID_NO_PREDECESSOR);
         /*
          * SELECT ALL ITEMS INSIDE RECTANGLE    
          */
@@ -1632,7 +1657,8 @@ public final class ControlPainting implements MouseListener,
         
         // find paintObjects and move them from image to Selection and 
         // initialize selection list
-        Picture.getInstance().getLs_po_sortedByX().toFirst();
+        Picture.getInstance().getLs_po_sortedByX().toFirst(
+        		transaction, SecureList.ID_NO_PREDECESSOR);
         Picture.getInstance().createSelected();
         
         // create and initialize current values (current PO and its coordinates)
@@ -1672,10 +1698,12 @@ public final class ControlPainting implements MouseListener,
                 //move current item from normal list into selected list 
                 Picture.getInstance().insertIntoSelected(po_current);
                              
-                Picture.getInstance().getLs_po_sortedByX().remove();
+                Picture.getInstance().getLs_po_sortedByX().remove(
+                		transaction);
             }            
 
-            Picture.getInstance().getLs_po_sortedByX().next();
+            Picture.getInstance().getLs_po_sortedByX().next(
+            		transaction, SecureList.ID_NO_PREDECESSOR);
 
             // update current values
             currentX = po_current.getSnapshotBounds().x;
@@ -1683,6 +1711,13 @@ public final class ControlPainting implements MouseListener,
 
         }
 
+    	//finish transaction 
+    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    			transaction);
+
+        //finish insertion into selected.
+        Picture.getInstance().finishSelection();
+        
         Page.getInstance().getJlbl_painting().refreshPaint();
 
         if (!Picture.getInstance().paintSelected()) {
@@ -1708,6 +1743,7 @@ public final class ControlPainting implements MouseListener,
         }
         Page.getInstance().getJlbl_background2().repaint();
         
+
     }
     
     
@@ -1720,6 +1756,10 @@ public final class ControlPainting implements MouseListener,
      */
     public void mr_sel_line_destroy(final Rectangle _r_sizeField) {
 
+    	//start transaction 
+    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("Selection line destroy", 
+    					SecureList.ID_NO_PREDECESSOR);
         /*
          * whole item selection.
          */
@@ -1727,7 +1767,8 @@ public final class ControlPainting implements MouseListener,
         Picture.getInstance().createSelected();
 
         // go to the beginning of the list
-        Picture.getInstance().getLs_po_sortedByX().toFirst();
+        Picture.getInstance().getLs_po_sortedByX().toFirst(transaction, 
+        		SecureList.ID_NO_PREDECESSOR);
         if (!Picture.getInstance().getLs_po_sortedByX().isEmpty()) {
 
             // create and initialize current values
@@ -1785,7 +1826,8 @@ public final class ControlPainting implements MouseListener,
 //                    Util.mergeDoubleArray(p, p2);
                      new PictureOverview().remove(Picture.getInstance()
                             .getLs_po_sortedByX().getItem());
-                    Picture.getInstance().getLs_po_sortedByX().remove();
+                    Picture.getInstance().getLs_po_sortedByX().remove(
+                    		transaction);
                     
                     //go through the list of elements.
                     for (int current = 0; current < separatedPO[1].length;
@@ -1803,7 +1845,12 @@ public final class ControlPainting implements MouseListener,
                             Status.getLogger().warning("separated paintObject "
                                     + "is null");
                         }
+                        
                     }
+
+                    //finish insertion into selected.
+                    Picture.getInstance().finishSelection();
+                    
                     for (int current = 0; current < separatedPO[0].length;
                             current++) {
 
@@ -1823,7 +1870,8 @@ public final class ControlPainting implements MouseListener,
                     }
                 } 
                 // next
-                Picture.getInstance().getLs_po_sortedByX().next();
+                Picture.getInstance().getLs_po_sortedByX().next(transaction,
+                		SecureList.ID_NO_PREDECESSOR);
 
 
                 // update current values
@@ -1839,7 +1887,8 @@ public final class ControlPainting implements MouseListener,
 
                 Picture.getInstance().getLs_po_sortedByX().insertSorted(
                         ls_toInsert.getItem(), 
-                        ls_toInsert.getItem().getSnapshotBounds().x);
+                        ls_toInsert.getItem().getSnapshotBounds().x,
+                        transaction);
                 ls_toInsert.next();
             }
             if (Picture.getInstance().paintSelected()) {
@@ -1867,6 +1916,9 @@ public final class ControlPainting implements MouseListener,
 
         Page.getInstance().getJlbl_background2().repaint();
 
+    	//finish transaction
+    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    			transaction);
     }
     
     
@@ -1877,6 +1929,10 @@ public final class ControlPainting implements MouseListener,
      */
     private synchronized void mr_erase(final Point _p) {
 
+    	//start transaction 
+    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("erase", 
+    					SecureList.ID_NO_PREDECESSOR);
     	/**
     	 * Value for showing the new paintObjects in PaintObjectsView.
     	 */
@@ -1894,7 +1950,8 @@ public final class ControlPainting implements MouseListener,
         Picture.getInstance().createSelected();
 
         // go to the beginning of the list
-        Picture.getInstance().getLs_po_sortedByX().toFirst();
+        Picture.getInstance().getLs_po_sortedByX().toFirst(transaction,
+        		SecureList.ID_NO_PREDECESSOR);
         if (!Picture.getInstance().getLs_po_sortedByX().isEmpty()) {
 
             // create and initialize current values
@@ -1940,13 +1997,13 @@ public final class ControlPainting implements MouseListener,
                             new PictureOverview().remove(Picture.getInstance()
                                     .getLs_po_sortedByX().getItem());
                     	}
-                        Picture.getInstance().getLs_po_sortedByX().remove();
+                        Picture.getInstance().getLs_po_sortedByX().remove(
+                        		transaction);
                 	}
-                	
-
                 } 
                 // next
-                Picture.getInstance().getLs_po_sortedByX().next();
+                Picture.getInstance().getLs_po_sortedByX().next(transaction,
+                		SecureList.ID_NO_PREDECESSOR);
 
 
                 // update current values
@@ -1971,7 +2028,8 @@ public final class ControlPainting implements MouseListener,
 
                         Picture.getInstance().getLs_po_sortedByX().insertSorted(
                         		ls_separatedPO.getItem(), 
-                        		ls_separatedPO.getItem().getSnapshotBounds().x);
+                        		ls_separatedPO.getItem().getSnapshotBounds().x,
+                        		transaction);
 
                     	if (debug_update_paintObjects_view) {
 
@@ -2006,6 +2064,9 @@ public final class ControlPainting implements MouseListener,
 				.getJlbl_painting().getLocation().getY(),
                 r_sizeField.width, r_sizeField.height);
 
+    	//finish transaction
+    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    			transaction);
     
     }
 

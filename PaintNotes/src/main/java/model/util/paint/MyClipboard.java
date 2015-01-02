@@ -117,21 +117,25 @@ public final class MyClipboard implements ClipboardOwner {
 
         //save the paintObjectWriting
         List<PaintObject> ls_new = new List<PaintObject>();
-        _lsPoSelected.toFirst();
+
+        //start transaction
+        final int transaction = _lsPoSelected.startTransaction(
+        		"copyPaintObjects", 
+        		SecureList.ID_NO_PREDECESSOR);
+        _lsPoSelected.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
         while (!_lsPoSelected.isBehind() && !_lsPoSelected.isEmpty()) {
             
             PaintObject po = _lsPoSelected.getItem();
             if (po instanceof PaintObjectImage) {
                 PaintObjectImage poi = (PaintObjectImage) po;
-                PaintObjectImage poi_new = Picture.getInstance()
-                        .createPOI(poi.getSnapshot());
+                PaintObjectImage poi_new = Picture.createPOI(poi.getSnapshot());
 
                 ls_new.insertBehind(poi_new);
                 
             } else if (po instanceof PaintObjectWriting) {
                 
                 PaintObjectWriting pow = (PaintObjectWriting) po;
-                PaintObjectWriting pow_new = Picture.getInstance().createPOW(
+                PaintObjectWriting pow_new = Picture.createPOW(
                         pow.getPen());
                 
                 pow.getPoints().toFirst();
@@ -147,7 +151,7 @@ public final class MyClipboard implements ClipboardOwner {
                         + "PaintObject; element = " + po);
             }
             
-            _lsPoSelected.next();
+            _lsPoSelected.next(transaction, SecureList.ID_NO_PREDECESSOR);
         }
         
         this.ls_po_selected = ls_new;

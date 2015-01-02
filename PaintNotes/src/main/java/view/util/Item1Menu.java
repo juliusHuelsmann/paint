@@ -18,7 +18,7 @@ import control.tabs.CPaintStatus;
 import control.util.CItem;
 import model.objects.painting.Picture;
 import model.settings.ViewSettings;
-import model.util.list.List;
+import model.util.adt.list.List;
 import model.util.paint.Utils;
 
 /**

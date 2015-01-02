@@ -1,5 +1,5 @@
 //package declaration
-package model.util.list;
+package model.util.adt.list;
 
 //import declaration
 import java.io.Serializable;

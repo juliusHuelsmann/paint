@@ -1,5 +1,5 @@
 //package declaration
-package model.util.list;
+package model.util.adt.list;
 
 //import declarations
 import java.io.Serializable;
@@ -19,8 +19,15 @@ import java.io.Serializable;
  */
 public class Element<Type> implements Serializable {
 
+	/*
+	 * variable for saving list:
+	 */
+	
     /**
-     * Default serial version UID.
+     * Default serial version UID for being able to identify the list's 
+     * version if saved to the disk and check whether it is possible to 
+     * load it or whether important features have been added so that the
+     * saved file is out-dated.
      */
     private static final long serialVersionUID = 1L;
 

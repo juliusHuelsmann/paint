@@ -13,8 +13,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
 import view.View;
 import view.forms.Page;
 import model.objects.painting.po.PaintObjectWriting;
@@ -25,7 +27,7 @@ import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
 import model.settings.Status;
 import model.util.DPoint;
-import model.util.list.List;
+import model.util.adt.list.List;
 import model.util.solveLGS.Matrix;
 
 /**
@@ -169,7 +171,7 @@ public abstract class Pen implements Serializable {
 
 		//fetch list of points and go to the beginning of the list
 		List<DPoint> ls_point = _o.getPoints();
-		model.util.list.Element<DPoint> d = _o.getPoints().getElement();
+		model.util.adt.list.Element<DPoint> d = _o.getPoints().getElement();
 		ls_point.toFirst();
 
 		//if list is empty return the bufferedImage which is not changed.

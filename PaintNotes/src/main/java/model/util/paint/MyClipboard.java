@@ -20,8 +20,8 @@ import model.objects.painting.po.PaintObjectImage;
 import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Status;
 import model.util.DPoint;
-import model.util.list.List;
-import model.util.list.SecureList;
+import model.util.adt.list.List;
+import model.util.adt.list.SecureList;
 
 
 /**

@@ -41,7 +41,7 @@ import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.DPoint;
 import model.util.Util;
-import model.util.list.List;
+import model.util.adt.list.List;
 import model.util.paint.MyClipboard;
 import model.util.paint.Utils;
 import start.test.BufferedViewer;

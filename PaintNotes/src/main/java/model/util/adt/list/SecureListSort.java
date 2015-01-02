@@ -19,7 +19,12 @@ public class SecureListSort<SecureListType> {
      * Whether to sort ascending or descending.
      */
     private boolean sortAsc = true;
-    
+
+	/**
+	 * The id which is given to methods for transaction and closed actions if
+	 * there is no predecessor transaction / closed action.
+	 */
+	public static final int ID_NO_PREDECESSOR = SecureList.ID_NO_PREDECESSOR;
     
     /**
      * The string which is added to the internal operations title for 

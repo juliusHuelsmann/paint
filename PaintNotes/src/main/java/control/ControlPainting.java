@@ -1426,11 +1426,6 @@ public final class ControlPainting implements MouseListener,
             final PaintObjectWriting _ldp) {
 
     	
-    	//start transaction 
-    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
-    			.startTransaction("Selection curve destroy", 
-    					SecureList.ID_NO_PREDECESSOR);
-    	
     	//
     	Rectangle snapBounds = _ldp.getSnapshotBounds();
         int xShift = snapBounds.x, yShift = snapBounds.y;
@@ -1465,6 +1460,12 @@ public final class ControlPainting implements MouseListener,
         // go to the beginning of the list
         if (!Picture.getInstance().getLs_po_sortedByX().isEmpty()) {
 
+
+        	//start transaction 
+        	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+        			.startTransaction("Selection curve destroy", 
+        					SecureList.ID_NO_PREDECESSOR);
+        	
             // go to the beginning of the list
             Picture.getInstance().getLs_po_sortedByX().toFirst(
             		transaction, SecureList.ID_NO_PREDECESSOR);
@@ -1570,15 +1571,17 @@ public final class ControlPainting implements MouseListener,
                         transaction);
                 ls_toInsert.next();
             }
+
+        	//finish transaction 
+        	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+        			transaction);
+        	
             if (Picture.getInstance().paintSelected()) {
                 Page.getInstance().getJlbl_painting().refreshPaint();
             }
 
         }
 
-    	//finish transaction 
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
-    			transaction);
 
         Picture.getInstance().paintSelected();
         Page.getInstance().getJlbl_painting().refreshPaint();

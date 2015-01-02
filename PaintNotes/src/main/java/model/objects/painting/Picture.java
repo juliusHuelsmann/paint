@@ -13,9 +13,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
 import control.CSelection;
 import control.tabs.CTabSelection;
 import view.View;
@@ -197,7 +199,8 @@ public final class Picture {
 						+ "also nicht gefinished wurde.\n" 
 						+ "Programm wird beendet.");
 				ls_po_sortedByX.insertSorted(po_current,
-						po_current.getSnapshotBounds().x);
+						po_current.getSnapshotBounds().x,
+						SecureList.ID_NO_PREDECESSOR);
 			}
 
 		}
@@ -230,7 +233,8 @@ public final class Picture {
 					+ "also nicht gefinished wurde.\n" 
 					+ "Programm wird beendet.");
 			ls_po_sortedByX.insertSorted(po_current,
-					po_current.getSnapshotBounds().x);
+					po_current.getSnapshotBounds().x,
+					SecureList.ID_NO_PREDECESSOR);
 
 		}
 
@@ -240,7 +244,8 @@ public final class Picture {
 
 			// create new PaintObject and insert it into list of
 			PaintObjectImage poi = new PaintObjectImage(currentId, _bi);
-			ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x);
+			ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x,
+					SecureList.ID_NO_PREDECESSOR);
 
 			// increase current id
 			currentId++;
@@ -358,7 +363,8 @@ public final class Picture {
 						+ "also nicht gefinished wurde.\n" 
 						+ "Programm wird beendet.");
 				ls_po_sortedByX.insertSorted(po_current,
-						po_current.getSnapshotBounds().x);
+						po_current.getSnapshotBounds().x,
+						SecureList.ID_NO_PREDECESSOR);
 
 			}
 		}
@@ -518,7 +524,11 @@ public final class Picture {
 		// Start a transaction. That means that after the transaction has
 		// been terminated, the current item of the list is reset.
 		final int id_closedAction = 
-				ls_po_sortedByX.startClosedAction("repaintRectangle", -1);
+				ls_po_sortedByX.startClosedAction("repaintRectangle",
+						SecureList.ID_NO_PREDECESSOR);
+		final int id_transaction = 
+				ls_po_sortedByX.startTransaction("repaintRectangle",
+						SecureList.ID_NO_PREDECESSOR);
 
 		// Initialize new list into which the Items are inserted that are inside
 		// the specified rectangle. List is sorted by id for painting the
@@ -533,7 +543,7 @@ public final class Picture {
 		// values such as the stretch factors (which occur because of
 		// zooming in and out).
 		boolean behindRectangle = false;
-		ls_po_sortedByX.toFirst();
+		ls_po_sortedByX.toFirst(id_closedAction, id_transaction);
 
 		/**
 		 * Stretch factor by width and height.
@@ -541,28 +551,23 @@ public final class Picture {
 		final double factorW = 1.0 * Status.getImageSize().width
 				/ Status.getImageShowSize().width, factorH = 1.0
 				* Status.getImageSize().width / Status.getImageShowSize().width;
-
 		/**
 		 * The location of the page end needed for checking roughly whether a
 		 * paintObject may be inside the repaint rectangle.
 		 */
 		final int xLocationRepaintEnd = (int) (factorW * (_x + _width)), 
 				yLocationRepaintEnd = (int) (factorH * (_y + _height));
-
 		/**
 		 * The repaint rectangle.
 		 */
 		final Rectangle r_selection = new Rectangle(
-				(int) (factorW * _x),
-				(int) (factorH * _y), 
-				(int) (factorW * _width),
-				(int) (factorH * _height));
+				(int) (factorW * _x), (int) (factorH * _y), 
+				(int) (factorW * _width), (int) (factorH * _height));
 
 		/*
 		 * Find out which items are inside the given repaint rectangle and
 		 * insert them into the list of paintObjects.
 		 */
-
 		while (!ls_po_sortedByX.isEmpty() && !ls_po_sortedByX.isBehind()
 				&& !behindRectangle) {
 
@@ -596,9 +601,9 @@ public final class Picture {
 							&& ls_po_sortedByX.getItem().isInSelectionImage(
 									r_selection)) {
 
-						ls_poChronologic.insertSorted(
-								ls_po_sortedByX.getItem(), ls_po_sortedByX
-										.getItem().getElementId());
+						ls_poChronologic.insertSorted(ls_po_sortedByX.getItem(),
+								ls_po_sortedByX.getItem().getElementId(),
+								SecureList.ID_NO_PREDECESSOR);
 					}
 				} else {
 
@@ -616,13 +621,14 @@ public final class Picture {
 						"Error. Null PaintObject inside"
 								+ " the list of sorted paintObjects.");
 			}
-			ls_po_sortedByX.next();
+			ls_po_sortedByX.next(id_closedAction, id_transaction);
 		}
 
 		/*
 		 * Go through the sorted list of items and paint them
 		 */
-		ls_poChronologic.toFirst();
+		ls_poChronologic.toFirst(SecureList.ID_NO_PREDECESSOR, 
+				SecureList.ID_NO_PREDECESSOR);
 		int counter = 0;
 		while (!ls_poChronologic.isBehind() && !ls_poChronologic.isEmpty()) {
 
@@ -632,9 +638,9 @@ public final class Picture {
 					Page.getInstance().getJlbl_painting().getLocation().y,
 					r_selection);
 			counter++;
-			ls_poChronologic.next();
+			ls_poChronologic.next(SecureList.ID_NO_PREDECESSOR, 
+					SecureList.ID_NO_PREDECESSOR);
 		}
-
 		//log repainting action in console.
 		if (counter > 0) {
 			Console.log(counter
@@ -647,9 +653,9 @@ public final class Picture {
 		// print logging method
 		Status.getLogger().info("Painted " + Status.getCounter_paintedPoints()
 						+ "pixel points for this operation.");
-
-		// finish transaction; adjust the current element to its state
-		// before the list transaction.
+		//finish transaction and finish closed action; adjust the current
+		//element to its state before the list transaction.
+		ls_po_sortedByX.finishTransaction(id_transaction);
 		ls_po_sortedByX.finishClosedAction(id_closedAction);
 
 		return _bi;
@@ -805,7 +811,8 @@ public final class Picture {
 			pc.setReady();
 		} else {
 
-			ls_po_sortedByX.insertSorted(po_current, b.x);
+			ls_po_sortedByX.insertSorted(po_current, b.x, 
+					SecureList.ID_NO_PREDECESSOR);
 			new PictureOverview().add(po_current);
 
 			// reset current instance of PaintObject
@@ -897,7 +904,16 @@ public final class Picture {
 				.getR_selection().width + 1, CSelection.getInstance()
 				.getR_selection().height + 1, BufferedImage.TYPE_INT_ARGB);
 
-		ls_poSelected.toFirst();
+
+    	//start transaction and closed action.
+    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("paint selected bi", 
+    					SecureList.ID_NO_PREDECESSOR);
+    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("paint selected bi", 
+    					SecureList.ID_NO_PREDECESSOR);
+        
+		ls_poSelected.toFirst(transaction, closedAction);
 		while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
 
 			PaintObject po = ls_poSelected.getItem();
@@ -919,9 +935,16 @@ public final class Picture {
 			} else {
 				Status.getLogger().warning("unknown kind of PaintObject" + po);
 			}
-			ls_poSelected.next();
+			ls_poSelected.next(transaction, closedAction);
 
 		}
+
+    	//close transaction and closed action.
+    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    			transaction);
+    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    			closedAction);
+        
 		return bi;
 	}
 
@@ -984,14 +1007,16 @@ public final class Picture {
 	}
 
 	/**
-	 * save the picture.
+	 * save the picture. Method for different use of the software. Only used
+	 * for transforming image by using main method parameters in start class.
 	 * 
 	 * @param _wsLoc
 	 *            the path of the location.
 	 */
 	public void saveQuickPNG(final String _wsLoc) {
 
-		ls_po_sortedByX.toFirst();
+		ls_po_sortedByX.toFirst(SecureList.ID_NO_PREDECESSOR,
+				SecureList.ID_NO_PREDECESSOR);
 		Rectangle r = ls_po_sortedByX.getItem().getSnapshotBounds();
 		BufferedImage bi = new BufferedImage(r.width, r.height,
 				BufferedImage.TYPE_INT_ARGB);
@@ -1150,14 +1175,32 @@ public final class Picture {
 
 		if (ls_po_sortedByX != null) {
 
-			ls_po_sortedByX.toFirst();
+
+
+	    	//start transaction and closed action.
+	    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+	    			.startTransaction("transformWhiteToAlpha", 
+	    					SecureList.ID_NO_PREDECESSOR);
+	    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+	    			.startTransaction("transformWhiteToAlpha", 
+	    					SecureList.ID_NO_PREDECESSOR);
+	        
+			
+			ls_po_sortedByX.toFirst(transaction, closedAction);
 			while (!ls_po_sortedByX.isBehind() && !ls_po_sortedByX.isEmpty()) {
 				if (ls_po_sortedByX.getItem() instanceof PaintObjectImage) {
 
 					whiteToAlpha((PaintObjectImage) ls_po_sortedByX.getItem());
 				}
-				ls_po_sortedByX.next();
+				ls_po_sortedByX.next(transaction, closedAction);
 			}
+
+	    	//close transaction and closed action.
+	    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+	    			transaction);
+	    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+	    			closedAction);
+	        
 		}
 	}
 
@@ -1256,19 +1299,62 @@ public final class Picture {
 			Status.getLogger().warning("insert into null list");
 		} else if (_po != null) {
 
-			CTabSelection.activateOp();
-			if (_po instanceof PaintObjectWriting) {
+//			CTabSelection.activateOp();
+//			if (_po instanceof PaintObjectWriting) {
+//
+//				PaintObjectWriting pow = (PaintObjectWriting) _po;
+//				CTabSelection.getInstance().change(ls_poSelected.isEmpty(),
+//						pow.getPen().getId_operation(),
+//						pow.getPen().getClr_foreground().getRGB());
+//			}
 
-				PaintObjectWriting pow = (PaintObjectWriting) _po;
-				CTabSelection.getInstance().change(ls_poSelected.isEmpty(),
-						pow.getPen().getId_operation(),
-						pow.getPen().getClr_foreground().getRGB());
-			}
-
-			ls_poSelected.toFirst();
-			ls_poSelected.insertBehind(_po);
+			ls_poSelected.insertAfterHead(_po, SecureList.ID_NO_PREDECESSOR);
 			new PictureOverview().addSelected(_po);
 
+		}
+	}
+	/**
+	 * Finish paintObjectSelection: go through the list of selected paint
+	 * objects and tell the paintObjects selection interface controller
+	 * the color and the pen.
+	 */
+	public synchronized void finishSelection() {
+
+		// deactivates to change operations of selected items
+		if (ls_poSelected == null) {
+			Status.getLogger().warning("finish selection list which is"
+					+ " null.");
+		} else {
+
+			//start transaction and closedAction.
+			final int transaction = ls_poSelected.startTransaction(
+					"finishSelection", 
+					SecureList.ID_NO_PREDECESSOR);
+			final int closedAction = ls_poSelected.startClosedAction(
+					"finishSelection", 
+					SecureList.ID_NO_PREDECESSOR);
+			
+			ls_poSelected.toFirst(transaction, closedAction);
+			CTabSelection.activateOp();
+
+			while (!ls_poSelected.isBehind()) {
+				
+
+				if (ls_poSelected.getItem() instanceof PaintObjectWriting) {
+
+					PaintObjectWriting pow = 
+							(PaintObjectWriting) ls_poSelected.getItem();
+					CTabSelection.getInstance().change(ls_poSelected.isEmpty(),
+							pow.getPen().getId_operation(),
+							pow.getPen().getClr_foreground().getRGB());
+				}
+				
+				ls_poSelected.next(transaction, closedAction);
+			}
+
+			//finish actions.
+			ls_poSelected.finishClosedAction(closedAction);
+			ls_poSelected.finishTransaction(transaction);
 		}
 	}
 
@@ -1285,7 +1371,16 @@ public final class Picture {
 		if (ls_poSelected == null) {
 			return;
 		}
-		ls_poSelected.toFirst();
+
+    	//start transaction and closed action.
+    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("stretch image", 
+    					SecureList.ID_NO_PREDECESSOR);
+    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    			.startClosedAction("stretch image", 
+    					SecureList.ID_NO_PREDECESSOR);
+        
+		ls_poSelected.toFirst(transaction, closedAction);
 
 		while (!ls_poSelected.isBehind()) {
 
@@ -1306,8 +1401,15 @@ public final class Picture {
 			} else {
 				Status.getLogger().warning("unknown kind of PaintObject?");
 			}
-			ls_poSelected.next();
+			ls_poSelected.next(transaction, closedAction);
 		}
+
+    	//close transaction and closed action.
+    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    			transaction);
+    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    			closedAction);
+        
 	}
 
 	/**
@@ -1370,7 +1472,17 @@ public final class Picture {
 		Page.getInstance().getJlbl_selectionPainting().setLocation(0, 0);
 		BufferedImage verbufft = Page.getInstance().getEmptyBISelection();
 		BufferedImage verbufft2 = Page.getInstance().getEmptyBISelection();
-		ls_poSelected.toFirst();
+
+    	//start transaction and closed action.
+    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("paintSelected", 
+    					SecureList.ID_NO_PREDECESSOR);
+    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    			.startClosedAction("paintSelected", 
+    					SecureList.ID_NO_PREDECESSOR);
+        
+		
+		ls_poSelected.toFirst(transaction, closedAction);
 		Rectangle r_max = null;
 		while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
 
@@ -1408,9 +1520,16 @@ public final class Picture {
 				}
 
 			}
-			ls_poSelected.next();
+			ls_poSelected.next(transaction, closedAction);
 		}
-		ls_poSelected.toFirst();
+
+
+    	//close transaction and closed action.
+    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    			transaction);
+    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    			closedAction);
+    	
 		Page.getInstance().getJlbl_selectionPainting()
 				.setIcon(new ImageIcon(verbufft));
 
@@ -1468,7 +1587,17 @@ public final class Picture {
 
 		BufferedImage verbufft = Page.getInstance().getEmptyBISelection();
 		BufferedImage verbufft2 = Page.getInstance().getEmptyBISelection();
-		ls_poSelected.toFirst();
+		
+
+    	//start transaction and closed action.
+    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("paintSelectedInline", 
+    					SecureList.ID_NO_PREDECESSOR);
+    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("paintSelectedInline", 
+    					SecureList.ID_NO_PREDECESSOR);
+        
+		ls_poSelected.toFirst(transaction, closedAction);
 		Rectangle r_max = null;
 		while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
 
@@ -1510,9 +1639,15 @@ public final class Picture {
 				}
 
 			}
-			ls_poSelected.next();
+			ls_poSelected.next(transaction, closedAction);
 		}
-		ls_poSelected.toFirst();
+
+    	//close transaction and closed action.
+    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    			transaction);
+    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    			closedAction);
+		
 		Page.getInstance().getJlbl_selectionPainting()
 				.setIcon(new ImageIcon(verbufft));
 
@@ -1576,7 +1711,14 @@ public final class Picture {
 			Status.getLogger().info("o selected elements");
 			return;
 		}
-		ls_poSelected.toFirst();
+		
+		//create new transaction
+		int transaction = ls_poSelected.startTransaction(
+				"picture release selected", 
+				SecureList.ID_NO_PREDECESSOR);
+		
+		//pass the list.
+		ls_poSelected.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
 		while (!ls_poSelected.isEmpty()) {
 
 			PaintObject po = ls_poSelected.getItem();
@@ -1590,25 +1732,31 @@ public final class Picture {
 			if (po instanceof PaintObjectWriting) {
 				PaintObjectWriting pow = (PaintObjectWriting) po;
 				new PictureOverview().add(pow);
-				ls_po_sortedByX.insertSorted(pow, pow.getSnapshotBounds().x);
+				ls_po_sortedByX.insertSorted(pow, pow.getSnapshotBounds().x,
+						SecureList.ID_NO_PREDECESSOR);
 			} else if (po instanceof PaintObjectImage) {
 				PaintObjectImage poi = (PaintObjectImage) po;
 				new PictureOverview().add(poi);
 
-				ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x);
+				ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x,
+						SecureList.ID_NO_PREDECESSOR);
 			} else if (ls_poSelected.getItem() instanceof POLine) {
 
 				POLine p = (POLine) ls_poSelected.getItem();
 				p.recalculateSnapshotBounds();
 				new PictureOverview().add(p);
 
-				ls_po_sortedByX.insertSorted(p, p.getSnapshotBounds().x);
+				ls_po_sortedByX.insertSorted(p, p.getSnapshotBounds().x,
+						SecureList.ID_NO_PREDECESSOR);
 			} else if (po != null) {
 				Status.getLogger().warning("unknown kind of PaintObject" + po);
 			}
-			ls_poSelected.remove();
-			ls_poSelected.toFirst();
+			ls_poSelected.remove(transaction);
+			ls_poSelected.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
 		}
+		
+		//finish transaction and destroy list of selected items.
+		ls_poSelected.finishTransaction(transaction);
 		ls_poSelected = null;
 	}
 
@@ -1621,7 +1769,13 @@ public final class Picture {
 			Status.getLogger().info("o selected elements");
 			return;
 		}
-		ls_poSelected.toFirst();
+		//create new transaction
+		int transaction = ls_poSelected.startTransaction(
+				"picture delete selected", 
+				SecureList.ID_NO_PREDECESSOR);
+		
+		//pass the list.
+		ls_poSelected.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
 		while (!ls_poSelected.isEmpty()) {
 
 			if (ls_poSelected.getItem() == null) {
@@ -1629,12 +1783,14 @@ public final class Picture {
 			}
 
 			new PictureOverview().removeSelected(ls_poSelected.getItem());
-			ls_poSelected.remove();
-
-			ls_poSelected.toFirst();
+			ls_poSelected.remove(transaction);
+			ls_poSelected.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
 		}
 		// deactivates to change operations of selected items
 		CTabSelection.deactivateOp();
+
+		//finish transaction and destroy list of selected items.
+		ls_poSelected.finishTransaction(transaction);
 		ls_poSelected = null;
 	}
 
@@ -1673,13 +1829,22 @@ public final class Picture {
 				createSelected();
 			}
 
-			ls_po_sortedByX.toFirst();
+			//create new transaction
+			int transaction = ls_po_sortedByX.startTransaction(
+					"load", 
+					SecureList.ID_NO_PREDECESSOR);
+			
+			ls_po_sortedByX.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
 			PaintObjectImage poi_current = createPOI(bi_normalSize);
 			ls_po_sortedByX.insertSorted(poi_current,
-					poi_current.getSnapshotBounds().x);
+					poi_current.getSnapshotBounds().x, transaction);
+
+			//finish transaction and destroy list of selected items.
+			ls_poSelected.finishTransaction(transaction);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 
 		return new DPoint(Status.getImageSize().getWidth(), Status
 				.getImageSize().getHeight());

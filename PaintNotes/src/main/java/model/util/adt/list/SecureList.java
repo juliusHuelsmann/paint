@@ -46,6 +46,14 @@ public class SecureList<SecureListType> {
 	 */
 	public static final int ID_NO_PREDECESSOR = -1;
 
+	
+	/**
+	 * This boolean indicates, whether even though an error occurred that
+	 * destroyed the order of transactions / closed actions the action is 
+	 * completed for not throwing an exception and for keeping the program
+	 * running.
+	 */
+	private final boolean debug_stay_running = true;
     
     /*
      * Variables for transactions
@@ -163,6 +171,8 @@ public class SecureList<SecureListType> {
     		
     		//perform method call.
     		ls.next();
+    	} else if (debug_stay_running) {
+    		ls.next();
     	}
     }
 
@@ -195,6 +205,8 @@ public class SecureList<SecureListType> {
     		
     		//perform method call.
     		ls.previous();
+    	} else if (debug_stay_running) {
+    		ls.previous();
     	}
     }
 
@@ -224,6 +236,8 @@ public class SecureList<SecureListType> {
     		
     		//perform method call.
     		ls.toFirst();
+    	} else if (debug_stay_running) {
+    		ls.toFirst();
     	}
     }
 
@@ -252,6 +266,8 @@ public class SecureList<SecureListType> {
     			&& checkClosedAction(_closedActionID, methodName)) {
     		
     		//perform method call.
+    		ls.toLast();
+    	} else if (debug_stay_running) {
     		ls.toLast();
     	}
     }
@@ -283,6 +299,8 @@ public class SecureList<SecureListType> {
     			&& checkClosedAction(_closedActionID, methodName)) {
     		
     		//perform method call.
+    		ls.goToElement(_elemCurrent);
+    	} else if (debug_stay_running) {
     		ls.goToElement(_elemCurrent);
     	}
     }
@@ -396,6 +414,8 @@ public class SecureList<SecureListType> {
     		
     		//perform method call.
     		ls.replace(_newContent);
+    	} else if (debug_stay_running) {
+    		ls.replace(_newContent);
     	}
     }
 
@@ -422,6 +442,8 @@ public class SecureList<SecureListType> {
     			&& checkClosedAction(ID_NO_PREDECESSOR, methodName)) {
     		
     		//perform method call.
+    		ls.insertBehind(_newContent);
+    	} else if (debug_stay_running) {
     		ls.insertBehind(_newContent);
     	}
     }
@@ -451,6 +473,8 @@ public class SecureList<SecureListType> {
     		
     		//perform method call.
     		ls.insertInFrontOf(_newContent);
+    	} else if (debug_stay_running) {
+    		ls.insertInFrontOf(_newContent);
     	}
     }
 
@@ -476,6 +500,8 @@ public class SecureList<SecureListType> {
     			&& checkClosedAction(ID_NO_PREDECESSOR, methodName)) {
     		
     		//perform method call.
+    		ls.remove();
+    	} else if (debug_stay_running) {
     		ls.remove();
     	}
     }
@@ -504,6 +530,8 @@ public class SecureList<SecureListType> {
     		
     		//perform method call.
     		ls.insertAfterHead(_newContent);
+    	} else if (debug_stay_running) {
+    		ls.insertAfterHead(_newContent);
     	}
     }
 
@@ -530,6 +558,8 @@ public class SecureList<SecureListType> {
     			&& checkClosedAction(ID_NO_PREDECESSOR, methodName)) {
     		
     		//perform method call.
+    		ls.insertAtTheEnd(_newContent);
+    	} else if (debug_stay_running) {
     		ls.insertAtTheEnd(_newContent);
     	}
     }
@@ -562,7 +592,9 @@ public class SecureList<SecureListType> {
     		
     		//perform method call.
     		return ls.find(_type);
-    	} 
+    	} else if (debug_stay_running) {
+    		return ls.find(_type);
+    	}
     	
     	//return false if unable to perform action.
     	return false;
@@ -723,7 +755,8 @@ public class SecureList<SecureListType> {
     	//threshold: the stack must not be null. catch this error.
     	if (stck_transaction == null) {
     		Status.getLogger().severe("The stack is null! That should not "
-    				+ "happen!");
+    				+ "happen! New transaction name: "
+        				+ _transactionName);
     		stck_transaction = new Stack<Transaction<SecureListType>>();
     		return -1;
     	}
@@ -744,8 +777,9 @@ public class SecureList<SecureListType> {
         			&& ca_old.getId_secureList() != _oldTransactionID) {
         		
         		Status.getLogger().severe("Transaction " + ca_old.getName() 
-        				+ " not terminated! and new transaction");
-        		return -1;
+        				+ " not terminated! New transaction name: "
+        				+ _transactionName);
+        		return ID_NO_PREDECESSOR;
         	} 
     	}
     	
@@ -853,7 +887,7 @@ public class SecureList<SecureListType> {
 
     	//String containing the currently active closed action name. Used
     	//for detailed error message in case of no success.
-    	String currentCAName = "";
+    	String currentCAName = "Undefined (currentCAID == -2)";
     	
     	//String containing the error message which is appended to additional
     	//information on the action which is to be performed, the closed action
@@ -954,6 +988,9 @@ public class SecureList<SecureListType> {
         		//return true because if there is no closed action that
         		//is running, the action can be completed.
         		success =  true;
+    		} else {
+    			
+    			success = true;
     		}
     	}
     	
@@ -1116,6 +1153,9 @@ public class SecureList<SecureListType> {
         		//return true because if there is no transaction that
         		//is running, the action can be completed.
     			success = true;
+    		} else {
+    			
+    			success = true;
     		}
     	}
 
@@ -1142,6 +1182,4 @@ public class SecureList<SecureListType> {
     	
 	}
 }
-
-    
     

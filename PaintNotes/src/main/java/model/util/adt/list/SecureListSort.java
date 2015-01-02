@@ -243,14 +243,10 @@ public class SecureListSort<SecureListType> {
      * @param _transactionID 
      * 				the id of the transaction to which performs the
      * 				method call.
-     * 
-     * @param _closedActionID 
-     * 				the id of the closed action to which performs the
-     * 				method call.
      */
     public final void remove(
-    		final int _transactionID, final int _closedActionID) {
-    	ls.remove(_transactionID, _closedActionID);
+    		final int _transactionID) {
+    	ls.remove(_transactionID);
     }
     
     
@@ -265,15 +261,11 @@ public class SecureListSort<SecureListType> {
      * 				the id of the transaction to which performs the
      * 				method call.
      * 
-     * @param _closedActionID 
-     * 				the id of the closed action to which performs the
-     * 				method call.
-     * 
      * @return whether the element exists or not
      */
     public final boolean find(final SecureListType _type,
-    		final int _transactionID, final int _closedActionID) {
-    	return ls.find(_type, _transactionID, _closedActionID);
+    		final int _transactionID) {
+    	return ls.find(_type, _transactionID);
     }
     
     
@@ -445,27 +437,22 @@ public class SecureListSort<SecureListType> {
      * @param _oldTransactionID
      * 				the id of the current operation for being able to start a 
      * 				new transaction.
-     * 
-     * @param _closedActionID 
-     * 				the id of the closed action to which performs the
-     * 				method call.
      */
     public final synchronized void insertSorted(final SecureListType _content, 
-            final double _searchCriteria, final int _oldTransactionID,
-            final int _closedActionID) {
+            final double _searchCriteria, final int _oldTransactionID) {
     	
     	final int transactionID = ls.startTransaction(
     			internalAction + "insert Sorted", _oldTransactionID);
     	
     	//find the position of the first element which has got a greater index
     	//than the one which is inserted.
-        findSorted(_searchCriteria, transactionID, _closedActionID);
+        findSorted(_searchCriteria, transactionID, ID_NO_PREDECESSOR);
         
         //insert the new item depending on sorting order
         if (sortAsc) {
-            ls.insertInFrontOf(_content, transactionID, -1);
+            ls.insertInFrontOf(_content, transactionID);
         } else {
-        	ls.insertBehind(_content, transactionID, -1);
+        	ls.insertBehind(_content, transactionID);
         }
         
         //apply the sorting index to the new item

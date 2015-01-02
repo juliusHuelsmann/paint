@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionListener;
 import model.objects.painting.Picture;
 import model.settings.Status;
 import model.util.DPoint;
+import model.util.adt.list.SecureList;
 import view.forms.Page;
 import view.util.mega.MButton;
 
@@ -242,10 +243,10 @@ public class CSelection implements MouseMotionListener, MouseListener {
             
         } else {
 
-            if (!wholeImageSelected) {
-
-                Picture.getInstance().getLs_poSelected().toFirst();
-            }
+//            if (!wholeImageSelected) {
+//
+//                Picture.getInstance().getLs_poSelected().toFirst();
+//            }
             
             //fetch DPoints from which the vectory may start
 
@@ -610,14 +611,33 @@ public class CSelection implements MouseMotionListener, MouseListener {
             pnt_size.setY(minSize);
         }
         
-        Picture.getInstance().getLs_poSelected().toFirst();
+
+    	//start transaction and closed action.
+    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("stretch image", 
+    					SecureList.ID_NO_PREDECESSOR);
+    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    			.startTransaction("stretch image", 
+    					SecureList.ID_NO_PREDECESSOR);
+        
+        Picture.getInstance().getLs_poSelected().toFirst(
+        		transaction, closedAction);
         while (!Picture.getInstance().getLs_poSelected().isBehind()) {
 
 
             Picture.getInstance().getLs_poSelected().getItem().stretch(
                     pnt_stretchFrom, pnt_totalStretch, pnt_size);
-            Picture.getInstance().getLs_poSelected().next();
+            Picture.getInstance().getLs_poSelected().next(
+            		transaction, closedAction);
         }
+
+    	//close transaction and closed action.
+    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    			transaction);
+    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    			closedAction);
+        
+        //release selected and paint them
         Page.getInstance().releaseSelected();
         Picture.getInstance().paintSelected();
     }

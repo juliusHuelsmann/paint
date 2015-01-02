@@ -16,6 +16,7 @@ import model.settings.Status;
 import model.util.DPoint;
 import model.util.Util;
 import model.util.adt.list.List;
+import model.util.adt.list.SecureList;
 import model.util.adt.list.SecureListSort;
 import model.util.solveLGS.Matrix;
 
@@ -1371,7 +1372,8 @@ public class PaintObjectWriting extends PaintObjectPen {
 
     	SecureListSort<DPoint> ls = findIntersections(_r, _p, _v, false);
 //        System.out.println("jetzt hier");
-        ls.toFirst();
+
+        ls.toFirst(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
         while (!ls.isEmpty() 
                 && ls.getItem() != null 
                 && ls.getItemSortionIndex() < 0
@@ -1380,7 +1382,7 @@ public class PaintObjectWriting extends PaintObjectPen {
         	//"delete" item out of list by performing next()
 //            System.out.println("remove item" + ls.getItemSortionIndex());
 //            verifyPnt(ls.getItem(), Color.green);
-            ls.next();
+            ls.next(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
         }
         if (!ls.isEmpty() && ls.getItem() != null) {
             
@@ -1392,7 +1394,8 @@ public class PaintObjectWriting extends PaintObjectPen {
 //            System.out.println("lambda1" + lambda1);
             if (lambda1 <= 1 && lambda1 >= 0) {
                 
-                ls.next();
+                ls.next(SecureList.ID_NO_PREDECESSOR, 
+                		SecureList.ID_NO_PREDECESSOR);
                 double lambda2 = ls.getItemSortionIndex();
 //                System.out.println("lambda2" + lambda2);
                 DPoint p2 = ls.getItem();
@@ -1409,7 +1412,8 @@ public class PaintObjectWriting extends PaintObjectPen {
                 //					2
                 if (p2 != null && p1.getX() == p2.getX() 
                 		&& p1.getY() == p2.getY()) {
-                	ls.next();
+                	ls.next(SecureList.ID_NO_PREDECESSOR, 
+                			SecureList.ID_NO_PREDECESSOR);
                 	DPoint p3 = ls.getItem();
                 	if (p3 != null) {
                 		p2 = p3;
@@ -1562,9 +1566,11 @@ public class PaintObjectWriting extends PaintObjectPen {
                 intersection1 = null;
             } else {
                 if (_sortAbs) {
-                    ls.insertSorted(intersection1, Math.abs(factor1[0]));
+                    ls.insertSorted(intersection1, Math.abs(factor1[0]),
+                    		SecureList.ID_NO_PREDECESSOR);
                 } else {
-                    ls.insertSorted(intersection1, factor1[0]);
+                    ls.insertSorted(intersection1, factor1[0],
+                    		SecureList.ID_NO_PREDECESSOR);
                 }
             }
         }
@@ -1580,9 +1586,11 @@ public class PaintObjectWriting extends PaintObjectPen {
                 intersection2 = null;
             } else {
                 if (_sortAbs) {
-                    ls.insertSorted(intersection2, Math.abs(factor2[0]));
+                    ls.insertSorted(intersection2, Math.abs(factor2[0]),
+                    		SecureList.ID_NO_PREDECESSOR);
                 } else {
-                    ls.insertSorted(intersection2, (factor2[0]));
+                    ls.insertSorted(intersection2, (factor2[0]),
+                    		SecureList.ID_NO_PREDECESSOR);
                 }
             }
         }
@@ -1598,9 +1606,11 @@ public class PaintObjectWriting extends PaintObjectPen {
                 intersection3 = null;
             } else {
                 if (_sortAbs) {
-                    ls.insertSorted(intersection3, Math.abs(factor3[0]));
+                    ls.insertSorted(intersection3, Math.abs(factor3[0]),
+                    		SecureList.ID_NO_PREDECESSOR);
                 } else {
-                    ls.insertSorted(intersection3, (factor3[0]));
+                    ls.insertSorted(intersection3, (factor3[0]),
+                    		SecureList.ID_NO_PREDECESSOR);
                 }
             }
         }
@@ -1620,9 +1630,11 @@ public class PaintObjectWriting extends PaintObjectPen {
             } else {
 //                System.err.println("f4" + factor4[0]);
                 if (_sortAbs) {
-                    ls.insertSorted(intersection4, Math.abs(factor4[0]));
+                    ls.insertSorted(intersection4, Math.abs(factor4[0]),
+                    		SecureList.ID_NO_PREDECESSOR);
                 } else {
-                    ls.insertSorted(intersection4, (factor4[0]));
+                    ls.insertSorted(intersection4, (factor4[0]),
+                    		SecureList.ID_NO_PREDECESSOR);
                 }
             }
         }
@@ -1633,7 +1645,7 @@ public class PaintObjectWriting extends PaintObjectPen {
         s = s + "\n";
 //        System.out.println(s);
 //        ls.printIndex();
-        ls.toFirst();
+        ls.toFirst(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
         return ls;
     }
     

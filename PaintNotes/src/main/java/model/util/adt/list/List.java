@@ -212,6 +212,7 @@ public class List<Type> implements Serializable {
         
         //create list to be returned.
     	List<Type> ls = new List<Type>();
+    	Element<Type> elem_currSaved = elemCurrent;
     	
     	//go through the list beginning at current element
     	//and insert item
@@ -219,6 +220,9 @@ public class List<Type> implements Serializable {
     		ls.insertAtTheEnd(getItem());
     		next();
     	}
+    	
+    	//reset the previous current element.
+    	elemCurrent = elem_currSaved;
     	
     	//return list
     	return ls;
@@ -466,27 +470,42 @@ public class List<Type> implements Serializable {
      * @return the array from list.
      */
     public final synchronized DPoint[] toArray() {
+
+    	//save the current element of the beginning of passing the list
+    	Element<Type> oldCurrent = elemCurrent;
+    	
+    	//get the length of the array by passing the list once. If the element
+    	//is not a DPoint do not count it.
     	int length = 0;
     	toFirst();
     	while (!isBehind()) {
     		if (getItem() instanceof DPoint) {
-
         		length++;
     		}
     		next();
     	}
 
+    	//create array of DPoints
     	DPoint[] ret = new DPoint[length];
+    	
+    	
+    	//fill the array
     	toFirst();
     	int i = 0;
     	while (!isBehind()) {
 
+    		//if item is not a DPoint it is not
     		if (getItem() instanceof DPoint) {
     			ret [i] = (DPoint) getItem();
     			i++;
     		}
     		next();
     	}
+    	
+    	//reset current element
+        elemCurrent = oldCurrent;
+        
+        //return the array
     	return ret;
     }
     

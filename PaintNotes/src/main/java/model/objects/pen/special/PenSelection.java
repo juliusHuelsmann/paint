@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import model.objects.pen.Pen;
 import model.settings.Constants;
+import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.DPoint;
 
@@ -50,20 +51,34 @@ public class PenSelection extends Pen {
 		
 		//TODO: apply the final Rectangle _r_visibleScope update!
 
+		final double factorWidth = 1.0 * Status.getImageSize().width
+				/ Status.getImageShowSize().width;
+		final double factorHeight = 1.0 * Status.getImageSize().height
+				/ Status.getImageShowSize().height;
+
+		final int x = (int) (_pnt_shift.getX() + _p.getX() / factorWidth);
+		final int y = (int) (_pnt_shift.getY() + _p.getY() / factorHeight);
+		
 	    //first printed point
 	    if (pnt_lastPrinted == null) {
 
-	        
-	        _bi.setRGB((int) _p.getX(), (int) _p.getY(), 
-	                ViewSettings.SELECTION_BORDER_CLR_BORDER[0].getRGB()); 
-	        pnt_lastPrinted = _p;
+
+			if (x >= 0 && y >= 0 && x < _bi.getWidth() && y < _bi.getHeight()) {
+
+		        _bi.setRGB(x, y,
+		                ViewSettings.SELECTION_BORDER_CLR_BORDER[0].getRGB()); 
+			}
+	        pnt_lastPrinted = new DPoint(x, y);
 
 	    } else {
 	        
-	        int distanceX =  (int) Math.abs(_p.getX() - pnt_lastPrinted.getX());
-	        int distanceY = (int) Math.abs(_p.getY() - pnt_lastPrinted.getY());
+
+	    	
+	        int distanceX =  (int) Math.abs(x - pnt_lastPrinted.getX());
+	        int distanceY = (int) Math.abs(y - pnt_lastPrinted.getY());
 	        
-	        int distance = Math.max(distanceX, distanceY);
+	        
+	        int distance = (int) (Math.max(distanceX, distanceY));
 	        
 	        if (distance >= ViewSettings.SELECTION_BORDER_BLOCK_SIZE) {
 
@@ -71,8 +86,8 @@ public class PenSelection extends Pen {
 	            //generate vector from pnt_lastPrinted towards the new one
 	            //and norm it afterwards to the length of the maximal selection
 	            //border size
-	            DPoint vector = new DPoint(_p.getX() - pnt_lastPrinted.getX(), 
-	                    _p.getY() - pnt_lastPrinted.getY());
+	            DPoint vector = new DPoint(x - pnt_lastPrinted.getX(), 
+	                    y - pnt_lastPrinted.getY());
 	            double length = Math.sqrt(Math.pow(vector.getX(), 2)
 	                    + Math.pow(vector.getY(), 2));
 	            vector.setX((int) (vector.getX() 
@@ -90,27 +105,27 @@ public class PenSelection extends Pen {
 	                        % ViewSettings.SELECTION_BORDER_CLR_BORDER.length;
 	                
 	                //if in range paint BufferedImage
-	                int x = (int) (pnt_lastPrinted.getX() + vector.getX() 
+	                int x1 = (int) (pnt_lastPrinted.getX() + vector.getX() 
                             * i / ViewSettings.SELECTION_BORDER_BLOCK_SIZE);
-	                int y = (int) (pnt_lastPrinted.getY() + vector.getY() 
+	                int y1 = (int) (pnt_lastPrinted.getY() + vector.getY() 
                             * i / ViewSettings.SELECTION_BORDER_BLOCK_SIZE);
 	                
-	                if (x >= _bi.getWidth()) {
-	                    x = _bi.getWidth() - 1;
+	                if (x1 >= _bi.getWidth()) {
+	                    x1 = _bi.getWidth() - 1;
 	                }
-                    if (x < 0) {
-                        x = 0;
+                    if (x1 < 0) {
+                        x1 = 0;
                     } 
 	                
-	                if (y >= _bi.getHeight()) {
-                        y = _bi.getHeight() - 1;
+	                if (y1 >= _bi.getHeight()) {
+                        y1 = _bi.getHeight() - 1;
                     }
 	                
-	                if (y < 0) {
-	                    y = 0;
+	                if (y1 < 0) {
+	                    y1 = 0;
 	                }
 	                
-	                _bi.setRGB(x, y, ViewSettings.SELECTION_BORDER_CLR_BORDER[s]
+	                _bi.setRGB(x1, y1, ViewSettings.SELECTION_BORDER_CLR_BORDER[s]
 	                        .getRGB()); 
 	                currentBorderValue++;
 	            }
@@ -118,7 +133,7 @@ public class PenSelection extends Pen {
 	            pnt_lastPrinted.setX(pnt_lastPrinted.getX() + vector.getX());
 	            pnt_lastPrinted.setY(pnt_lastPrinted.getY() + vector.getY());
 	            
-	            
+	            //paint point for reaching the place of the current Point.
 	            paintPoint(_p, _bi, _final, _pnt_shift, _g, _r_visibleScope);
 	        }
 	    }

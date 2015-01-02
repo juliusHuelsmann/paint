@@ -1,11 +1,8 @@
 package model.util.adt.list;
 
-import org.omg.CORBA._IDLTypeStub;
-
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.adt.stack.Stack;
-import model.util.adt.stack.StackElement;
 
 
 /**
@@ -47,7 +44,7 @@ public class SecureList<SecureListType> {
      */
     
     /**
-     * Stack which contains elements used for transactions. 
+     * Stack which contains elements used for closed action. 
      * 
      * If the current element of the list is to be maintained after a performed 
      * action which passes the list start-closed-action before the action and 
@@ -59,6 +56,16 @@ public class SecureList<SecureListType> {
      */
     private  Stack<ClosedAction<SecureListType> > stck_closedAction;
     
+
+    /**
+     * Stack which contains elements used for transactions. 
+     * 
+	 * If an action is not to be interrupted by other actions, this gives the
+	 * possibility to start a transaction (which do also allow nested scopes).
+	 * Thus it is impossible to perform an action outside the current 
+	 * transaction.
+     */
+    private  Stack<ClosedAction<SecureListType> > stck_transaction;
     
 	
 	/**
@@ -115,32 +122,69 @@ public class SecureList<SecureListType> {
     
     /**
      * Proceed one step in the list.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
+     * 
      */
-    public final void next() {
+    public final void next(
+    		final int _transactionID, final int _closedActionID) {
     	ls.next();
     }
 
     
     /**
      * Step back in the list.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void previous() {
+    public final void previous(
+    		final int _transactionID, final int _closedActionID) {
     	ls.previous();
     }
 
     
     /**
      * Go to the beginning of the list.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void toFirst() {
+    public final void toFirst(
+    		final int _transactionID, final int _closedActionID) {
     	ls.toFirst();
     }
 
     
     /**
      * Go to the end of the list.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void toLast() {
+    public final void toLast(
+    		final int _transactionID, final int _closedActionID) {
     	ls.toLast();
     }
     
@@ -149,8 +193,17 @@ public class SecureList<SecureListType> {
      * Go to a special element (has to be inside the list).
      * 
      * @param _elemCurrent the current element in the future.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void goToElement(final Element<SecureListType> _elemCurrent) {
+    public final void goToElement(final Element<SecureListType> _elemCurrent,
+    		final int _transactionID, final int _closedActionID) {
     	ls.goToElement(_elemCurrent);
     }
 	
@@ -189,7 +242,6 @@ public class SecureList<SecureListType> {
      * @return list after current item.
      */
     public final List<SecureListType> subList() {
-        
     	return ls.subList();
     }
 
@@ -199,7 +251,6 @@ public class SecureList<SecureListType> {
      * @return sorted index of current Element.
      */
     public final double getItemSortionIndex() {
-        
     	return ls.getItemSortionIndex();
     }
 
@@ -207,8 +258,17 @@ public class SecureList<SecureListType> {
      * Replaces current element with newContent.
      *
      * @param _newContent contains the content which is to be inserted.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void replace(final SecureListType _newContent) {
+    public final void replace(final SecureListType _newContent,
+    		final int _transactionID, final int _closedActionID) {
 
     	ls.replace(_newContent);
     }
@@ -217,8 +277,17 @@ public class SecureList<SecureListType> {
      * Insert element after current position.
      *
      * @param _newContent contains the content which is to be inserted.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void insertBehind(final SecureListType _newContent) {
+    public final void insertBehind(final SecureListType _newContent,
+    		final int _transactionID, final int _closedActionID) {
 
     	ls.insertBehind(_newContent);
     }
@@ -227,8 +296,17 @@ public class SecureList<SecureListType> {
      * Insert element in front of current position.
      *
      * @param _newContent contains the content which is to be inserted.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void insertInFrontOf(final SecureListType _newContent) {
+    public final void insertInFrontOf(final SecureListType _newContent,
+    		final int _transactionID, final int _closedActionID) {
 
     	ls.insertInFrontOf(_newContent);
     }
@@ -236,8 +314,17 @@ public class SecureList<SecureListType> {
     /**
      * Removes current element. Afterwards the current element points
      * to the predecessor of the removed item.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void remove() {
+    public final void remove(
+    		final int _transactionID, final int _closedActionID) {
     	ls.remove();
     }
 
@@ -245,8 +332,17 @@ public class SecureList<SecureListType> {
      * Inserts s.th. at the beginning of the list.
      *
      * @param _newContent contains the content which is to be inserted.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void insertAfterHead(final SecureListType _newContent) {
+    public final void insertAfterHead(final SecureListType _newContent,
+    		final int _transactionID, final int _closedActionID) {
 
     	ls.insertAfterHead(_newContent);
     }
@@ -255,8 +351,17 @@ public class SecureList<SecureListType> {
      * Inserts thing at the end of the list.
      *
      * @param _newContent contains the content which is to be inserted.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
      */
-    public final void insertAtTheEnd(final SecureListType _newContent) {
+    public final void insertAtTheEnd(final SecureListType _newContent,
+    		final int _transactionID, final int _closedActionID) {
 
     	ls.insertAtTheEnd(_newContent);
     }
@@ -268,9 +373,19 @@ public class SecureList<SecureListType> {
      * point at it with elemCurrent.
      * 
      * @param _type which is checked
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @param _closedActionID 
+     * 				the id of the closed action to which performs the
+     * 				method call.
+     * 
      * @return whether the element exists or not
      */
-    public final boolean find(final SecureListType _type) {
+    public final boolean find(final SecureListType _type,
+    		final int _transactionID, final int _closedActionID) {
     	return ls.find(_type);
     }
     

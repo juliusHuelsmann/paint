@@ -292,4 +292,33 @@ public class PaintObjectImage extends PaintObject {
         new Exception("not implemented yet").printStackTrace();
 		return null;
 	}
+
+
+    /**
+     * {@inheritDoc}
+     */
+	@Override
+	public final List<PaintObjectWriting> deleteCurve(
+			final byte[][] _r,
+			final Point _pnt_shiftRectangle, 
+			final DPoint _pnt_stretch, 
+			final List<PaintObjectWriting> _l) {
+
+        new Exception("not implemented yet").printStackTrace();
+        return null;
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final boolean isInSelectionImageStretched(
+			final byte[][] _field,
+			final Point _pnt_shiftRectangle, 
+			final DPoint _pnt_stretch) {
+
+        new Exception("not implemented yet").printStackTrace();
+		return false;
+	}
 }

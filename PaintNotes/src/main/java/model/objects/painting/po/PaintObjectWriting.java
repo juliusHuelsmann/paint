@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.ObjectInputStream.GetField;
 
 import view.forms.Page;
 import model.objects.painting.PaintBI;
@@ -581,8 +580,8 @@ public class PaintObjectWriting extends PaintObjectPen {
 
                 //calculate the coordinates of the current point
                 DPoint pnt_current = new DPoint(
-                        (int) (_pnt_first.getX() - plusX), 
-                        (int) (_pnt_first.getY() - plusY));
+                        (_pnt_first.getX() - plusX), 
+                        (_pnt_first.getY() - plusY));
 
 
                 //check whether the current point is inside the selection
@@ -599,7 +598,9 @@ public class PaintObjectWriting extends PaintObjectPen {
                 	//insert the current point into the suitable list.
                 	//(depending on the configuration of the previous item)
                 	if (insidePrevious) {
-                		_ls_inside.insertBehind(pow_current);
+                		if (_ls_inside != null) {
+                    		_ls_inside.insertBehind(pow_current);
+                		}
                 	} else {
                 		_ls_outside.insertBehind(pow_current);
                 	}   
@@ -994,7 +995,127 @@ public class PaintObjectWriting extends PaintObjectPen {
     }
     
     
+
+
+    /**
+     * {@inheritDoc}
+     */
+	@Override
+	public final List<PaintObjectWriting> deleteCurve(
+			final byte[][] _r,
+			final Point _pnt_shiftRectangle, 
+			final DPoint _pnt_stretch, 
+			final List<PaintObjectWriting> _ls_pow_outside) {
+
+    	
+    	//go to the beginning of the list and fetch the first element
+    	//as first predecessor
+    	ls_point.toFirst();
+    	DPoint pnt_predecessor = ls_point.getItem();
+    	ls_point.next();
+    	
+    	//insert first point into new PaintObjectWriting
+		PaintObjectWriting pow_current = Picture.createPOW(getPen());
+    	pow_current.addPoint(pnt_predecessor);
+		while (!ls_point.isEmpty() && !ls_point.isBehind()) {
+    		
+    		
+    		pow_current = checkPointLink(
+    				new DPoint(
+    						1.00 * pnt_predecessor.getX() * _pnt_stretch.getX(),
+    						1.00 * pnt_predecessor.getY() * _pnt_stretch.getY()),
+    				new DPoint(
+    						1.00 * ls_point.getItem().getX() * _pnt_stretch.getX(),
+    						1.00 * ls_point.getItem().getY() * _pnt_stretch.getY()),
+    				_r, 
+    				_pnt_shiftRectangle, 
+    				null, _ls_pow_outside, pow_current);
+    		
+    		pnt_predecessor = ls_point.getItem();
+    		ls_point.next();
+    	}
+		
+		
+		if (!isInSelectionPoint(
+				_r, 
+				_pnt_shiftRectangle,
+				new DPoint(
+						pnt_predecessor.getX() * _pnt_stretch.getX(),
+						pnt_predecessor.getY() * _pnt_stretch.getY()))) {
+			_ls_pow_outside.insertBehind(pow_current);
+		}
+
+		_ls_pow_outside.toFirst();
+		while (!_ls_pow_outside.isBehind()) {
+			List<DPoint> ls = _ls_pow_outside.getItem().getPoints();
+			ls.toFirst();
+			while (!ls.isBehind()) {
+				ls.getItem().setX(1.0 * ls.getItem().getX() / _pnt_stretch.getX());
+				ls.getItem().setY(1.0 * ls.getItem().getY() / _pnt_stretch.getY());
+				ls.next();
+			}
+			_ls_pow_outside.next();
+		}
+		
+
+		
+		return _ls_pow_outside;
     
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final boolean isInSelectionImageStretched(
+			final byte[][] _field,
+			final Point _pnt_shiftRectangle, 
+			final DPoint _pnt_stretch) {
+
+
+        /*
+         * check whether firstDPoint is in rectangle.
+         */
+		//TODO: shift will be stretched too.
+
+        ls_point.toFirst();
+        DPoint pnt_previous = new DPoint(ls_point.getItem());
+        if (isInSelectionPoint(_field, _pnt_shiftRectangle, 
+        		new DPoint(
+        				1.0 * pnt_previous.getX() * _pnt_stretch.getX(),
+        				1.0 * pnt_previous.getY() * _pnt_stretch.getY()))) {
+            return true;
+        }
+        
+
+        /*
+         * go through the list ofDPoints and check the lines between
+         * the following items.
+         */
+        ls_point.next();
+        while (!ls_point.isBehind()) {
+
+            //if one part of the line is in rectangle return true
+            if (pruefeLine(new DPoint(
+    				ls_point.getItem().getX() * _pnt_stretch.getX(),
+    				ls_point.getItem().getY() * _pnt_stretch.getY()), 
+    				new DPoint(
+    	    				pnt_previous.getX() * _pnt_stretch.getX(),
+    	    				pnt_previous.getY() * _pnt_stretch.getY()),
+    	    		_field, _pnt_shiftRectangle)) {
+                return true;
+            }
+            
+            //otherwise save the currentDPoint as the previousDPoint
+            //for the next time the loop is passed.
+            pnt_previous = new DPoint(ls_point.getItem());
+            ls_point.next();
+        }
+        
+        //if the item has not been found return false
+        return false;
+	}
     
     
 

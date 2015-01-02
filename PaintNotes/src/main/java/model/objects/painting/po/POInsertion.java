@@ -313,8 +313,22 @@ public abstract class POInsertion extends PaintObjectPen {
      * {@inheritDoc}
      */
 	@Override
-	public List<PaintObjectWriting> deleteRectangle(
+	public final List<PaintObjectWriting> deleteRectangle(
 			final Rectangle _r, 
+			final List<PaintObjectWriting> _ls_pow_outside) {
+
+        new Exception("not implemented yet").printStackTrace();
+		return null;
+	}
+
+    /**
+     * {@inheritDoc}
+     */
+	@Override
+	public final List<PaintObjectWriting> deleteCurve(
+			final byte[][] _r, 
+			final Point _pnt_shift,
+			final DPoint _pnt_stretch, 
 			final List<PaintObjectWriting> _ls_pow_outside) {
 
         new Exception("not implemented yet").printStackTrace();
@@ -331,6 +345,20 @@ public abstract class POInsertion extends PaintObjectPen {
         new Exception("not implemented yet").printStackTrace();
         return false;
     }
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final boolean isInSelectionImageStretched(
+			final byte[][] _field,
+			final Point _pnt_shiftRectangle, 
+			final DPoint _pnt_stretch) {
+
+        new Exception("not implemented yet").printStackTrace();
+		return false;
+	}
 
     /**
      * @return the pnt_first

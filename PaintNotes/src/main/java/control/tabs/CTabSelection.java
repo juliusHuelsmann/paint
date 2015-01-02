@@ -224,7 +224,7 @@ public final class CTabSelection implements ActionListener {
     			.startTransaction("set pen", 
     					SecureList.ID_NO_PREDECESSOR);
     	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
-    			.startTransaction("set pen", 
+    			.startClosedAction("set pen", 
     					SecureList.ID_NO_PREDECESSOR);
     	
         Picture.getInstance().getLs_poSelected().toFirst(
@@ -261,7 +261,7 @@ public final class CTabSelection implements ActionListener {
     			.startTransaction("set color", 
     					SecureList.ID_NO_PREDECESSOR);
     	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
-    			.startTransaction("set color", 
+    			.startClosedAction("set color", 
     					SecureList.ID_NO_PREDECESSOR);
     	
         if (Picture.getInstance().getLs_poSelected() != null) {

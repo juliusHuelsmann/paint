@@ -617,7 +617,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
     			.startTransaction("stretch image", 
     					SecureList.ID_NO_PREDECESSOR);
     	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
-    			.startTransaction("stretch image", 
+    			.startClosedAction("stretch image", 
     					SecureList.ID_NO_PREDECESSOR);
         
         Picture.getInstance().getLs_poSelected().toFirst(

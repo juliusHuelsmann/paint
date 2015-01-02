@@ -22,7 +22,9 @@ import model.util.adt.stack.Stack;
  * by using next and previous methods and to check the current element.
  * 
  * 2) Transactions:
- * -
+ * If no other operation except of children of the current transaction
+ * shell be able to change the state of the list, the method start-transaction
+ * is called before the action and end-transaction afterwards.
  * 
  * @author Julius Huelsmann
  * @version %I%, %U%
@@ -37,6 +39,12 @@ public class SecureList<SecureListType> {
 	 */
 	private List <SecureListType> ls;
 	
+	
+	/**
+	 * The id which is given to methods for transaction and closed actions if
+	 * there is no predecessor transaction / closed action.
+	 */
+	public static final int ID_NO_PREDECESSOR = -1;
 
     
     /*
@@ -67,20 +75,29 @@ public class SecureList<SecureListType> {
      */
     private  Stack<Transaction<SecureListType> > stck_transaction;
     
+    /*
+     * Constructor
+     */
 	
 	/**
 	 * Constructor of SecureList initializes the list.
 	 */
 	public SecureList() {
-		ls = new List<SecureListType>();
-		stck_closedAction = new Stack<ClosedAction<SecureListType> >();
 		
+		//initialize the list of which the SecureList consists
+		ls = new List<SecureListType>();
+		
+		//initialize lists for closed actions and transactions
+		stck_closedAction = new Stack<ClosedAction<SecureListType>>();
+		stck_transaction = new Stack<Transaction<SecureListType>>();
 	}
 	
 	
 
     /*
-     * Functions returning the state of the list
+     * Functions returning the state of the list. They do not change the list;
+     * thus they are not interesting for the closed action and transaction
+     * extensions.
      */
 
     /**
@@ -113,11 +130,11 @@ public class SecureList<SecureListType> {
         return ls.isBehind();
     }
 
-    
-    
 
     /*
-     * Methods for navigating through the list
+     * Methods for navigating through the list. These Methods change the state
+     * of the current-element-pointer. Thus only those closed-actions and
+     * transactions are allowed to perform them that are current.
      */
     
     /**
@@ -132,13 +149,28 @@ public class SecureList<SecureListType> {
      * 				method call.
      * 
      */
-    public final void next(
+    public final synchronized void next(
     		final int _transactionID, final int _closedActionID) {
-    	ls.next();
+    	
+    	//the method name for being able to print additional information in 
+    	//check methods
+    	final String methodName = "next";
+    	
+    	//check whether the current transaction and the current closed action
+    	//are okay
+    	if (checkTransaction(_transactionID, methodName) 
+    			&& checkClosedAction(_closedActionID, methodName)) {
+    		
+    		//perform method call.
+    		ls.next();
+    	}
     }
 
     
-    /**
+
+
+
+	/**
      * Step back in the list.
      * 
      * @param _transactionID 
@@ -151,7 +183,19 @@ public class SecureList<SecureListType> {
      */
     public final void previous(
     		final int _transactionID, final int _closedActionID) {
-    	ls.previous();
+
+    	//the method name for being able to print additional information in 
+    	//check methods
+    	final String methodName = "previous";
+    	
+    	//check whether the current transaction and the current closed action
+    	//are okay
+    	if (checkTransaction(_transactionID, methodName) 
+    			&& checkClosedAction(_closedActionID, methodName)) {
+    		
+    		//perform method call.
+    		ls.previous();
+    	}
     }
 
     
@@ -168,7 +212,19 @@ public class SecureList<SecureListType> {
      */
     public final void toFirst(
     		final int _transactionID, final int _closedActionID) {
-    	ls.toFirst();
+
+    	//the method name for being able to print additional information in 
+    	//check methods
+    	final String methodName = "toFirst";
+    	
+    	//check whether the current transaction and the current closed action
+    	//are okay
+    	if (checkTransaction(_transactionID, methodName) 
+    			&& checkClosedAction(_closedActionID, methodName)) {
+    		
+    		//perform method call.
+    		ls.toFirst();
+    	}
     }
 
     
@@ -185,7 +241,19 @@ public class SecureList<SecureListType> {
      */
     public final void toLast(
     		final int _transactionID, final int _closedActionID) {
-    	ls.toLast();
+
+    	//the method name for being able to print additional information in 
+    	//check methods
+    	final String methodName = "toLast";
+    	
+    	//check whether the current transaction and the current closed action
+    	//are okay
+    	if (checkTransaction(_transactionID, methodName) 
+    			&& checkClosedAction(_closedActionID, methodName)) {
+    		
+    		//perform method call.
+    		ls.toLast();
+    	}
     }
     
 
@@ -204,13 +272,28 @@ public class SecureList<SecureListType> {
      */
     public final void goToElement(final Element<SecureListType> _elemCurrent,
     		final int _transactionID, final int _closedActionID) {
-    	ls.goToElement(_elemCurrent);
+
+    	//the method name for being able to print additional information in 
+    	//check methods
+    	final String methodName = "goToElement";
+    	
+    	//check whether the current transaction and the current closed action
+    	//are okay
+    	if (checkTransaction(_transactionID, methodName) 
+    			&& checkClosedAction(_closedActionID, methodName)) {
+    		
+    		//perform method call.
+    		ls.goToElement(_elemCurrent);
+    	}
     }
 	
 	
 
     /*
-     * Methods for getting content of the list's current element.
+     * Methods for getting content of the list's current element or for printing
+     * the content of the list or transforming the list into an array. 
+     * They are not changing the current state of the list; thus it is not 
+     * necessary to check the state of transaction or closedAction.
      */
     
     /**
@@ -231,164 +314,6 @@ public class SecureList<SecureListType> {
     public final Element<SecureListType> getElement() {
     	return ls.getElement();
     }
-    
-    
-    /*
-     * Special Methods
-     */
-
-    /**
-     * create subList.
-     * @return list after current item.
-     */
-    public final List<SecureListType> subList() {
-    	return ls.subList();
-    }
-
-    /**
-     * Return sort index of the current Element.
-     *
-     * @return sorted index of current Element.
-     */
-    public final double getItemSortionIndex() {
-    	return ls.getItemSortionIndex();
-    }
-
-    /**
-     * Replaces current element with newContent.
-     *
-     * @param _newContent contains the content which is to be inserted.
-     * 
-     * @param _transactionID 
-     * 				the id of the transaction to which performs the
-     * 				method call.
-     * 
-     * @param _closedActionID 
-     * 				the id of the closed action to which performs the
-     * 				method call.
-     */
-    public final void replace(final SecureListType _newContent,
-    		final int _transactionID, final int _closedActionID) {
-
-    	ls.replace(_newContent);
-    }
-
-    /**
-     * Insert element after current position.
-     *
-     * @param _newContent contains the content which is to be inserted.
-     * 
-     * @param _transactionID 
-     * 				the id of the transaction to which performs the
-     * 				method call.
-     * 
-     * @param _closedActionID 
-     * 				the id of the closed action to which performs the
-     * 				method call.
-     */
-    public final void insertBehind(final SecureListType _newContent,
-    		final int _transactionID, final int _closedActionID) {
-
-    	ls.insertBehind(_newContent);
-    }
-
-    /**
-     * Insert element in front of current position.
-     *
-     * @param _newContent contains the content which is to be inserted.
-     * 
-     * @param _transactionID 
-     * 				the id of the transaction to which performs the
-     * 				method call.
-     * 
-     * @param _closedActionID 
-     * 				the id of the closed action to which performs the
-     * 				method call.
-     */
-    public final void insertInFrontOf(final SecureListType _newContent,
-    		final int _transactionID, final int _closedActionID) {
-
-    	ls.insertInFrontOf(_newContent);
-    }
-
-    /**
-     * Removes current element. Afterwards the current element points
-     * to the predecessor of the removed item.
-     * 
-     * @param _transactionID 
-     * 				the id of the transaction to which performs the
-     * 				method call.
-     * 
-     * @param _closedActionID 
-     * 				the id of the closed action to which performs the
-     * 				method call.
-     */
-    public final void remove(
-    		final int _transactionID, final int _closedActionID) {
-    	ls.remove();
-    }
-
-    /**
-     * Inserts s.th. at the beginning of the list.
-     *
-     * @param _newContent contains the content which is to be inserted.
-     * 
-     * @param _transactionID 
-     * 				the id of the transaction to which performs the
-     * 				method call.
-     * 
-     * @param _closedActionID 
-     * 				the id of the closed action to which performs the
-     * 				method call.
-     */
-    public final void insertAfterHead(final SecureListType _newContent,
-    		final int _transactionID, final int _closedActionID) {
-
-    	ls.insertAfterHead(_newContent);
-    }
-
-    /**
-     * Inserts thing at the end of the list.
-     *
-     * @param _newContent contains the content which is to be inserted.
-     * 
-     * @param _transactionID 
-     * 				the id of the transaction to which performs the
-     * 				method call.
-     * 
-     * @param _closedActionID 
-     * 				the id of the closed action to which performs the
-     * 				method call.
-     */
-    public final void insertAtTheEnd(final SecureListType _newContent,
-    		final int _transactionID, final int _closedActionID) {
-
-    	ls.insertAtTheEnd(_newContent);
-    }
-
-    
-    
-    /**
-     * Check whether item does already exist in list and if that is the case
-     * point at it with elemCurrent.
-     * 
-     * @param _type which is checked
-     * 
-     * @param _transactionID 
-     * 				the id of the transaction to which performs the
-     * 				method call.
-     * 
-     * @param _closedActionID 
-     * 				the id of the closed action to which performs the
-     * 				method call.
-     * 
-     * @return whether the element exists or not
-     */
-    public final boolean find(final SecureListType _type,
-    		final int _transactionID, final int _closedActionID) {
-    	return ls.find(_type);
-    }
-    
     
     
     /**
@@ -418,29 +343,239 @@ public class SecureList<SecureListType> {
     
     
     
+    /*
+     * Special Methods
+     */
+
+    /**
+     * create subList.
+     * @return list after current item.
+     */
+    public final List<SecureListType> subList() {
+    	return ls.subList();
+    }
+
+    /**
+     * Return sort index of the current Element.
+     *
+     * @return sorted index of current Element.
+     */
+    public final double getItemSortionIndex() {
+    	return ls.getItemSortionIndex();
+    }
+
+    
+    /*
+     * Method that change the list (not only by changing the current pointer 
+     * position). 
+     * 
+     * In Closed actions that is forbidden because the state of the list
+     * is not reproducible.
+     */
+    
+    /**
+     * Replaces current element with newContent.
+     *
+     * @param _newContent contains the content which is to be inserted.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     */
+    public final void replace(final SecureListType _newContent,
+    		final int _transactionID) {
+
+    	//the method name for being able to print additional information in 
+    	//check methods
+    	final String methodName = "replace";
+    	
+    	//check whether the current transaction and the current closed action
+    	//are okay
+    	if (checkTransaction(_transactionID, methodName) 
+    			&& checkClosedAction(ID_NO_PREDECESSOR, methodName)) {
+    		
+    		//perform method call.
+    		ls.replace(_newContent);
+    	}
+    }
+
+    
+    /**
+     * Insert element after current position.
+     *
+     * @param _newContent contains the content which is to be inserted.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     */
+    public final void insertBehind(final SecureListType _newContent,
+    		final int _transactionID) {
+
+    	//the method name for being able to print additional information in 
+    	//check methods
+    	final String methodName = "insertBehind";
+    	
+    	//check whether the current transaction and the current closed action
+    	//are okay
+    	if (checkTransaction(_transactionID, methodName) 
+    			&& checkClosedAction(ID_NO_PREDECESSOR, methodName)) {
+    		
+    		//perform method call.
+    		ls.insertBehind(_newContent);
+    	}
+    }
+
+    
+    /**
+     * Insert element in front of current position.
+     *
+     * @param _newContent contains the content which is to be inserted.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     */
+    public final void insertInFrontOf(final SecureListType _newContent,
+    		final int _transactionID) {
+
+    	//the method name for being able to print additional information in 
+    	//check methods
+    	final String methodName = "insertInFrontOf";
+    	
+    	//check whether the current transaction and the current closed action
+    	//are okay
+    	if (checkTransaction(_transactionID, methodName) 
+    			&& checkClosedAction(ID_NO_PREDECESSOR, methodName)) {
+    		
+    		//perform method call.
+    		ls.insertInFrontOf(_newContent);
+    	}
+    }
+
+    
+    /**
+     * Removes current element. Afterwards the current element points
+     * to the predecessor of the removed item.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     */
+    public final void remove(
+    		final int _transactionID) {
+
+    	//the method name for being able to print additional information in 
+    	//check methods
+    	final String methodName = "remove";
+    	
+    	//check whether the current transaction and the current closed action
+    	//are okay
+    	if (checkTransaction(_transactionID, methodName) 
+    			&& checkClosedAction(ID_NO_PREDECESSOR, methodName)) {
+    		
+    		//perform method call.
+    		ls.remove();
+    	}
+    }
+
+    
+    /**
+     * Inserts s.th. at the beginning of the list.
+     *
+     * @param _newContent contains the content which is to be inserted.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     */
+    public final void insertAfterHead(final SecureListType _newContent,
+    		final int _transactionID) {
+
+    	//the method name for being able to print additional information in 
+    	//check methods
+    	final String methodName = "insertAfterHead";
+    	
+    	//check whether the current transaction and the current closed action
+    	//are okay
+    	if (checkTransaction(_transactionID, methodName) 
+    			&& checkClosedAction(ID_NO_PREDECESSOR, methodName)) {
+    		
+    		//perform method call.
+    		ls.insertAfterHead(_newContent);
+    	}
+    }
+
+    
+    /**
+     * Inserts thing at the end of the list.
+     *
+     * @param _newContent contains the content which is to be inserted.
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     */
+    public final void insertAtTheEnd(final SecureListType _newContent,
+    		final int _transactionID) {
+
+    	//the method name for being able to print additional information in 
+    	//check methods
+    	final String methodName = "insertAtTheEnd";
+    	
+    	//check whether the current transaction and the current closed action
+    	//are okay
+    	if (checkTransaction(_transactionID, methodName) 
+    			&& checkClosedAction(ID_NO_PREDECESSOR, methodName)) {
+    		
+    		//perform method call.
+    		ls.insertAtTheEnd(_newContent);
+    	}
+    }
+
     
     
+    /**
+     * Check whether item does already exist in list and if that is the case
+     * point at it with elemCurrent.
+     * 
+     * @param _type which is checked
+     * 
+     * @param _transactionID 
+     * 				the id of the transaction to which performs the
+     * 				method call.
+     * 
+     * @return whether the element exists or not
+     */
+    public final boolean find(final SecureListType _type,
+    		final int _transactionID) {
+
+    	//the method name for being able to print additional information in 
+    	//check methods
+    	final String methodName = "find";
+    	
+    	//check whether the current transaction and the current closed action
+    	//are okay
+    	if (checkTransaction(_transactionID, methodName) 
+    			&& checkClosedAction(ID_NO_PREDECESSOR, methodName)) {
+    		
+    		//perform method call.
+    		return ls.find(_type);
+    	} 
+    	
+    	//return false if unable to perform action.
+    	return false;
+    }
+    
+    
+    
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	/*
+	 * Method for starting and finishing closed action and transactions and
+	 * for checking whether it is okay to perform an action in special 
+	 * action and transaction.
+	 */
 	
 	
 	
@@ -474,7 +609,7 @@ public class SecureList<SecureListType> {
     		return -1;
     	}
     	
-    	//check whether it is valid to start a new closed aciton
+    	//check whether it is valid to start a new closed action
     	if (!stck_closedAction.isEmpty()) {
 
         	//the old closedAciton
@@ -674,6 +809,338 @@ public class SecureList<SecureListType> {
     		}
     	}
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+
+    /**
+     * Check whether the closed action with given id is okay to start. Otherwise
+     * print different errors. The error messages depend on the current state
+     * of the stack and contain the name of the calling method.
+     * 
+     * @param _closedActionID
+     * 				the id of the closed action to which the action belong
+     * 
+     * @param _methodName
+     * 				the name of the method which calls the startClosedAction
+     * 				check method used for printing detailed error message.
+     *
+     * @return whether it is okay to start the action or not.
+     */
+    private boolean checkClosedAction(final int _closedActionID, 
+    		final String _methodName) {
+    	
+    	/*
+    	 * Initialize values. 
+    	 */
+    	
+    	//boolean containing the return value
+    	boolean success = false;
+    	
+    	//integer containing the currently active closed action id. Used
+    	//for detailed error message in case of no success.
+    	int currentCAID = -1 - 1;
+
+    	//String containing the currently active closed action name. Used
+    	//for detailed error message in case of no success.
+    	String currentCAName = "";
+    	
+    	//String containing the error message which is appended to additional
+    	//information on the action which is to be performed, the closed action
+    	//which is given to this method and the closed action which is currently
+    	//active and then logged in case an error occurred.
+    	String errorMessage = "";
+    	
+    	/*
+    	 * Check whether the action is okay to start
+    	 */
+    	
+    	//threshold: the stack must not be null. catch this error.
+    	if (stck_closedAction == null) {
+    		
+    		//print error
+    		errorMessage = ("The stack is null! That should never "
+    				+ "happen!");
+    		
+    		//re-initialize the stack for being able to proceed without 
+    		//throwing this error each time a function is called that
+    		//deals with closed actions.
+    		stck_closedAction = new Stack<ClosedAction<SecureListType>>();
+    		
+    		//return true because obviously no closed action is running; 
+    		//thus it is impossible that the current closed action is not 
+    		//suitable.
+    		success = true;
+    	} else if (
+    			//check whether it is valid to start a new closed action
+    			!stck_closedAction.isEmpty()) {
+
+        	//the current closed action
+        	ClosedAction<SecureListType> ca_old = 
+        			((ClosedAction<SecureListType>)  
+        			stck_closedAction.getElem_last().getContent());
+        	
+
+    		//if the closed action id is not equal to the id which is passed
+    		//if there is nor closed action running print an error. Otherwise
+    		//everything is okay and the next - method can be performed.
+    		if (ca_old == null) {
+
+        		//print error
+    			errorMessage = ("Trying to perform an action "
+        				+ "which is part of a not - existing closed action."
+        				+ " There is not closed action running."
+        				+ " The isEmpty method is not working or the "
+        				+ "method is called twice at a time.");
+
+    			//print error message because otherwise the error might 
+    			//disappear if the second approach is successful
+            	Status.getLogger().severe(errorMessage); 
+        		
+        		//remove the current (null) - closed action for being able to 
+        		//proceed without  throwing this error each time a function 
+        		//is called that deals with closed actions.
+        		stck_closedAction.remove();
+        		
+        		//re - all this method with the altered stack. 
+        		success = checkClosedAction(_closedActionID, _methodName);
+
+    		} else {
+    			
+    			//fetch the values for printing information in case an
+    			//error occurs.
+    			currentCAName = ca_old.getName();
+    			currentCAID = ca_old.getId_secureList();
+    			
+    			if (
+    					//if the given id does not equal the one of the current 
+    					//closed action
+    					ca_old.getId_secureList() != _closedActionID) {
+
+    				//print error message.
+    				errorMessage = ("Trying to perform an action "
+            				+ "which is part a different closed action.");
+            		
+            		//return false because obviously this is the wrong closed 
+    				//action
+    				success = false;
+            	} else {
+            		success = true;
+            	}
+    		}
+    				
+    	} else {
+    		
+    		//if the closed action id is not equal to the id which is passed
+    		//if there is nor closed action running print an error. Otherwise
+    		//everything is okay and the next - method can be performed.
+    		if (_closedActionID != ID_NO_PREDECESSOR) {
+
+        		//print error
+    			errorMessage = ("Trying to perform an action "
+        				+ "which is part of a not - existing closed action."
+        				+ " There is not closed action running.");
+            	
+        		//return true because if there is no closed action that
+        		//is running, the action can be completed.
+        		success =  true;
+    		}
+    	}
+    	
+    	
+    	//if an error occurred print error message.
+    	if (!success) {
+    		
+    		//the text which is appended to the error string generated during 
+        	//a pass of this method.
+        	final String errorInformationText = 
+        			"Error starting closed action."
+        					+ "\n\tDemanded for Action:  " + _methodName
+        					+ "\n\tDemanded action-id:   " + _closedActionID
+        					+ "\n\tCurrenct action-id:   " + currentCAID
+        					+ "\n\tCurrent  action-name: " + currentCAName;
+        	
+        	//print error message
+        	Status.getLogger().severe(errorInformationText 
+        			+ ":\n" + errorMessage); 
+        	
+    	}
+    	
+    	//return success
+		return success;
+    	
+	}
+    
+
+    
+    
+
+    /**
+     * Check whether the transaction with given id is okay to start. Otherwise
+     * print different errors. The error messages depend on the current state
+     * of the stack and contain the name of the calling method.
+     * 
+     * @param _transactionID
+     * 				the id of the transaction to which the action belong
+     * 
+     * @param _methodName
+     * 				the name of the method which calls the startTransaction
+     * 				check method used for printing detailed error message.
+     *
+     * @return whether it is okay to start the action or not.
+     */
+    private boolean checkTransaction(final int _transactionID, 
+    		final String _methodName) {
+
+    	/*
+    	 * Initialize values. 
+    	 */
+    	
+    	//boolean containing the return value
+    	boolean success = false;
+    	
+    	//integer containing the currently active transaction id. Used
+    	//for detailed error message in case of no success.
+    	int currentCAID = -1 - 1;
+
+    	//String containing the currently active transaction name. Used
+    	//for detailed error message in case of no success.
+    	String currentCAName = "";
+    	
+    	//String containing the error message which is appended to additional
+    	//information on the action which is to be performed, the transaction
+    	//which is given to this method and the transaction which is currently
+    	//active and then logged in case an error occurred.
+    	String errorMessage = "";
+    	
+    	/*
+    	 * Check whether the action is okay to start
+    	 */
+    	//threshold: the stack must not be null. catch this error.
+    	if (stck_transaction == null) {
+    		
+    		//print error
+    		errorMessage = ("The stack is null! That should never "
+    				+ "happen!");
+    		
+    		//re-initialize the stack for being able to proceed without 
+    		//throwing this error each time a function is called that
+    		//deals with transactions.
+    		stck_transaction = new Stack<Transaction<SecureListType>>();
+    		
+    		//return true because obviously no transaction is running; 
+    		//thus it is impossible that the current transaction is not 
+    		//suitable.
+    		success = true;
+    	}
+    	
+    	//check whether it is valid to start a new transaction
+    	if (!stck_transaction.isEmpty()) {
+
+        	//the current transaction
+    		Transaction<SecureListType> ca_old = 
+        			((Transaction<SecureListType>)  
+        					stck_transaction.getElem_last().getContent());
+        	
+
+    		//if the transaction id is not equal to the id which is passed
+    		//if there is nor transaction running print an error. Otherwise
+    		//everything is okay and the next - method can be performed.
+    		if (ca_old == null) {
+
+        		//print error
+    			errorMessage = ("Trying to perform an action "
+        				+ "which is part of a not - existing transaction."
+        				+ " There is not transaction running."
+        				+ " The isEmpty method is not working or the "
+        				+ "method is called twice at a time.");
+
+    			//print error message because otherwise the error might 
+    			//disappear if the second approach is successful
+            	Status.getLogger().severe(errorMessage); 
+        		
+        		//remove the current (null) - transaction for being able to 
+        		//proceed without  throwing this error each time a function 
+        		//is called that deals with transactions.
+        		stck_closedAction.remove();
+        		
+        		//re - all this method with the altered stack. 
+        		success = checkClosedAction(_transactionID, _methodName);
+        		
+    		} else {
+    			
+    			//fetch the values for printing information in case an
+    			//error occurs.
+    			currentCAName = ca_old.getName();
+    			currentCAID = ca_old.getId_secureList();
+    			
+    			if (
+    					//if the given id does not equal the one of the current 
+    					//transaction
+    					ca_old.getId_secureList() != _transactionID) {
+
+    				//print error message.
+    				errorMessage = ("Trying to perform an action "
+            				+ "which is part a different transaction.");
+            		
+            		//return false because obviously this is the wrong closed 
+    				//action
+    				success = false;
+            	} else {
+            		success = true;
+            	}
+    		}
+    				
+    	} else {
+    		
+    		//if the transaction id is not equal to the id which is passed
+    		//if there is nor transaction running print an error. Otherwise
+    		//everything is okay and the next - method can be performed.
+    		if (_transactionID != ID_NO_PREDECESSOR) {
+
+        		//print error
+    			errorMessage = ("Trying to perform an action "
+        				+ "which is part of a not - existing transaction."
+        				+ " There is not transaction running.");
+            	
+        		//return true because if there is no transaction that
+        		//is running, the action can be completed.
+    			success = true;
+    		}
+    	}
+
+    	//if an error occurred print error message.
+    	if (!success) {
+    		
+    		//the text which is appended to the error string generated during 
+        	//a pass of this method.
+        	final String errorInformationText = 
+        			"Error starting transaction."
+        					+ "\n\tDemanded for Action:  " + _methodName
+        					+ "\n\tDemanded action-id:   " + _transactionID
+        					+ "\n\tCurrenct action-id:   " + currentCAID
+        					+ "\n\tCurrent  action-name: " + currentCAName;
+        	
+        	//print error message
+        	Status.getLogger().severe(errorInformationText 
+        			+ ":\n" + errorMessage); 
+        	
+    	}
+    	
+    	//return success
+		return success;
+    	
+	}
 }
 
     

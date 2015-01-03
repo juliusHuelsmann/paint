@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 
 import model.settings.ViewSettings;
 import control.util.CItem;
+import view.View;
 import view.tabs.Export;
 import view.tabs.Insert;
 import view.tabs.Look;
@@ -26,11 +27,6 @@ import view.util.VTabbedPane;
 public final class Tabs extends VTabbedPane {
 
     /**
-     * The instance.
-     */
-    private static Tabs instance;
-
-    /**
      * Tab for general painting stuff like pen, colors etc.
      */
     private Paint tab_paint;
@@ -44,8 +40,9 @@ public final class Tabs extends VTabbedPane {
     /**
      * Empty utility class constructor.
      */
-    private Tabs() {
-    	
+    private Tabs(View _view) {
+    	super(_view);
+    	initialize();
     }
     
     
@@ -193,23 +190,6 @@ public final class Tabs extends VTabbedPane {
     			|| tab_insert.getIa_maths().isOpen());
     }
     
-    
-    
-
-    /**
-     * this method guarantees that only one instance of this
-     * class can be created ad runtime.
-     * 
-     * @return the only instance of this class.
-     */
-    public static Tabs getInstance() {
-        
-        if (instance == null) {
-            instance = new Tabs();
-            instance.initialize();
-        }
-        return instance;
-    }
 
     /**
      * @return the tab_paint

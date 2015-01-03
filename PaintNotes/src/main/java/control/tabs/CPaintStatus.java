@@ -35,11 +35,6 @@ import view.util.VButtonWrapper;
  */
 public final class CPaintStatus implements MouseListener {
 
-	/**
-	 * boolean which indicates, whether the necessary instances of View and
-	 * Picture have been set by now.
-	 */
-	private boolean startPerform;
 	
     /**
      * the only instance of this class.
@@ -50,31 +45,7 @@ public final class CPaintStatus implements MouseListener {
 	 * Constructor: initializes startPerfrom (which indicates the listeners 
 	 * to not perform an action until necessary variables have been set.
 	 */
-	private CPaintStatus() {
-		
-		//initialize start perform because the necessary variables have not
-		//been set yet.
-		this.startPerform = false;
-	}
-	
-	
-	/**
-	 * initialize the controller and start listening.
-	 */
-	public void initialize() {
-		
-		
-		//set startPerfrom to true if both values are acceptable
-		if (View.getInstance() != null && Picture.getInstance() != null) {
-			startPerform = true;
-		} else {
-
-            Status.getLogger().warning("initialize. Es liegt "
-					+ "moeglicherweise ein Fehler bei der initializsierung "
-					+ "vor. Deshalb kann es sein, dass User Interaktionen"
-					+ "nicht registriert werden.");
-		}
-	}
+	private CPaintStatus() { }
 	
 	
 	/**
@@ -360,12 +331,6 @@ public final class CPaintStatus implements MouseListener {
 	 */
 	public void mouseReleased(final MouseEvent _event) {
 
-		//if the ActionListener is not ready to listen to events because 
-		//of the lack of necessary links to instances of classes return
-		//each time an action is performed.
-		if (!startPerform) {
-			return;
-		}
 		
 		if (!mouseReleasedPenChange(_event)) {
 			

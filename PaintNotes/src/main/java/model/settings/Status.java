@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import control.tabs.CWrite;
 import view.forms.Page;
 import model.objects.painting.PaintBI;
+import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Pencil;
@@ -736,10 +737,22 @@ public final class Status {
                             Page.getInstance().getJlbl_background()
                             .getHeight()));
         }
-        
-        
     }
 
+    
+    
+
+
+    /**
+     * Apply the standard pen operation in picture and status.
+     * @param _picture the picture
+     */
+	public static void applyStandardPen(final Picture _picture) {
+
+        Picture.getInstance().initializePen(
+                new BallPen(Constants.PEN_ID_POINT, 1, Color.black));
+        setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);	
+	}
 
     /**
      * @return the saveFormat

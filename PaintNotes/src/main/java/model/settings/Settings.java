@@ -1,5 +1,6 @@
 package model.settings;
 
+
 /**
  * class contains the independant settings.
  * @author Julius Huelsmann
@@ -12,6 +13,7 @@ public final class Settings {
      * the location of the user Workspace if this mode is selected.
      */
     private static String wsLocation = "";
+    
     
     
     /**
@@ -36,4 +38,6 @@ public final class Settings {
     public static void setWsLocation(final String _wsLocation) {
         Settings.wsLocation = _wsLocation;
     }
+    
+
 }

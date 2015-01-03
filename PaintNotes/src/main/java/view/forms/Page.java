@@ -95,10 +95,19 @@ import view.util.mega.MButton;
      */
     private MLabel jlbl_background, jlbl_background2;
     
+    /**
+     * 
+     */
+    private CSelection controlSelection;
+    
 	/**
 	 * empty utility class constructor. 
 	 */
-	private Page() { }
+	public Page(final CSelection _cs) {
+		instance = this;
+		this.controlSelection = _cs;
+		initialize();
+	}
 
 	
 	/**
@@ -127,6 +136,7 @@ import view.util.mega.MButton;
         super.add(New.getInstance());
         super.add(Console.getInstance());
         super.add(QuickAccess.getInstance());
+        
         //initialize JPanel jpnl_toMove
         jpnl_toMove = new MPanel() {
             
@@ -173,10 +183,8 @@ import view.util.mega.MButton;
                         BorderFactory.createLineBorder(Color.gray));
                 jbtn_resize[x][y].setBackground(Color.white);
                 jbtn_resize[x][y].setOpaque(true);
-                jbtn_resize[x][y].addMouseMotionListener(
-                        CSelection.getInstance());
-                jbtn_resize[x][y].addMouseListener(
-                        CSelection.getInstance());
+                jbtn_resize[x][y].addMouseMotionListener(controlSelection);
+                jbtn_resize[x][y].addMouseListener(controlSelection);
                 super.add(jbtn_resize[x][y]);
             }
         }
@@ -323,8 +331,6 @@ import view.util.mega.MButton;
 	    if (instance == null) {
 
 	        //create instance and initialize
-	        instance = new Page();
-	        instance.initialize();
 	    }
 	    
 	    //return the only instance of this class

@@ -32,6 +32,7 @@ public final class Tabs extends VTabbedPane {
     private Paint tab_paint;
     
     
+    private static Tabs instance;
     /**
      * Tab for things which can be inserted.
      */
@@ -40,8 +41,9 @@ public final class Tabs extends VTabbedPane {
     /**
      * Empty utility class constructor.
      */
-    private Tabs(View _view) {
+    public Tabs(View _view) {
     	super(_view);
+    	instance = this;
     	initialize();
     }
     
@@ -190,6 +192,11 @@ public final class Tabs extends VTabbedPane {
     			|| tab_insert.getIa_maths().isOpen());
     }
     
+    
+    public static final Tabs getInstance() {
+
+    		return instance;
+    }
 
     /**
      * @return the tab_paint

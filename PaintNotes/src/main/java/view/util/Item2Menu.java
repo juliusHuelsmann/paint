@@ -216,6 +216,7 @@ public class Item2Menu extends MPanel {
                 //when closed repaint.
                 Page.getInstance().getJlbl_painting().repaint();
                 Tabs.getInstance().repaint();
+                //TODO: repaint
 	        }
 	        
 	    } //otherwise nothing to do

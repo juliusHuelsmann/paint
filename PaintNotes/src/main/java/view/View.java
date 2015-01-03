@@ -24,6 +24,7 @@ import view.util.mega.MButton;
 import view.util.mega.MFrame;
 import view.util.mega.MLabel;
 import control.ControlPainting;
+import control.ControlView;
 import control.util.MousePositionTracker;
 
 /**
@@ -60,12 +61,14 @@ import control.util.MousePositionTracker;
 	/**
 	 * Constructor: initialize JFrame, alter settings and initialize items.
 	 */
-	private View() { }
+	public View(ControlView _cv) {
+		this.initialize(_cv);
+	}
 	
 	/**
 	 * initialize MainJFrame (add content).
 	 */
-	private void initialize() {
+	private void initialize(final ControlView _cv) {
 	    
         //initialize JFrame and alter settings
         super.setAlwaysOnTop(false);
@@ -107,7 +110,7 @@ import control.util.MousePositionTracker;
         jbtn_exit = new MButton();
         jbtn_exit.setContentAreaFilled(false);
         jbtn_exit.setOpaque(false);
-        jbtn_exit.addMouseListener(ControlPainting.getInstance());
+        jbtn_exit.addMouseListener(_cv);
         jbtn_exit.setBorder(null);
         jbtn_exit.setFocusable(false);
         super.add(jbtn_exit);
@@ -116,7 +119,7 @@ import control.util.MousePositionTracker;
         jbtn_fullscreen = new MButton();
         jbtn_fullscreen.setContentAreaFilled(false);
         jbtn_fullscreen.setOpaque(false);
-        jbtn_fullscreen.addMouseListener(ControlPainting.getInstance());
+        jbtn_fullscreen.addMouseListener(_cv);
         jbtn_fullscreen.setBorder(null);
         jbtn_fullscreen.setFocusable(false);
         super.add(jbtn_fullscreen);
@@ -139,19 +142,11 @@ import control.util.MousePositionTracker;
         /*
          * add Message form, tab, overview about paintObjects and Page
          */
-        Message.addMyself();
+        super.add(new Message());
         super.add(Tabs.getInstance());
         Tabs.getInstance().setVisible(true);
         super.add(Page.getInstance());
         Page.getInstance().setVisible(true);
-
-        
-//        mainThread.setPriority(Thread.MAX_PRIORITY);
-        
-        //display tabs and page.
-        
-//        Tabs.getInstance().stroke();
-
 	}
 	
 
@@ -465,24 +460,6 @@ import control.util.MousePositionTracker;
 	}
 	
 	
-    /**
-     * this method guarantees that only one instance of this
-     * class can be created ad runtime.
-     * 
-     * @return the only instance of this class.
-     */
-    public static View getInstance() {
-        
-        //if class is not instanced yet instantiate
-        if (instance == null) {
-            instance = new View();
-            instance.initialize();
-        }
-        
-        //return the only instance of this class.
-        return instance;
-    }
-    
     
     /*
      * getter methods

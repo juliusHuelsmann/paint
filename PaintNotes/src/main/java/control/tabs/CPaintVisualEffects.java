@@ -3,13 +3,9 @@ package control.tabs;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.border.LineBorder;
-
-import model.settings.Status;
 import model.settings.ViewSettings;
-import view.View;
 import view.tabs.Paint;
 import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;
@@ -28,11 +24,6 @@ public final class CPaintVisualEffects implements MouseListener {
 	 */
 	private static CPaintVisualEffects instance = null;
 
-	/**
-	 * boolean which indicates, whether the necessary instances of View and
-	 * Picture have been set by now.
-	 */
-	private boolean startPerform;
 
 	/**
 	 * The StiftAuswahl which currently is selected for both groups.
@@ -46,9 +37,6 @@ public final class CPaintVisualEffects implements MouseListener {
 	 */
 	private CPaintVisualEffects() {
 		
-		//initialize start perform because the necessary variables have not
-		//been set yet.
-		this.startPerform = false;
 		
 		//initialize the last selected array
 		this.lastSelected = new Item1PenSelection[2];
@@ -71,24 +59,6 @@ public final class CPaintVisualEffects implements MouseListener {
 			return false;
 		}
 	}
-	
-	/**
-	 * initialize the controller and start listening.
-	 * @param _true whether to start to listen or not
-	 */
-	public void enable(final boolean _true) {
-		
-		
-		//set startPerfrom to true if both values are acceptable
-		if (View.getInstance() != null) {
-			startPerform = _true;
-		} else {
-		    Status.getLogger().warning("initialize. Es liegt "
-					+ "moeglicherweise ein Fehler bei der initializsierung "
-					+ "vor. Deshalb kann es sein, dass Desing User "
-					+ "Interaktionen nicht registriert werden.");
-		}
-	}
 
 	
 	/**
@@ -96,12 +66,6 @@ public final class CPaintVisualEffects implements MouseListener {
 	 */
 	public void mouseEntered(final MouseEvent _event) {
 
-		//if the ActionListener is not ready to listen to events because 
-		//of the lack of necessary links to instances of classes return
-		//each time an action is performed.
-		if (!startPerform) {
-			return;
-		}
 
 		//if mouse is over a pen
 		if (isAStiftAuswahl(_event.getSource())) {
@@ -141,12 +105,6 @@ public final class CPaintVisualEffects implements MouseListener {
 	 */
 	public void mouseExited(final MouseEvent _event) {
 
-		//if the ActionListener is not ready to listen to events because 
-		//of the lack of necessary links to instances of classes return
-		//each time an action is performed.
-		if (!startPerform) {
-			return;
-		}
 		
 		//outfit of StiftAuswahl
 		if (isAStiftAuswahl(_event.getSource())) {

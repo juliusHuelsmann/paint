@@ -111,17 +111,29 @@ public class VTabbedPane extends MPanel {
 	 * JLabel for stroke.
 	 */
 	private JLabel jlbl_stroke;
+
 	
 	/**
-	 * Constructor initialize view and corresponding controller class..
+	 * The owner of the VTabbedPane used for being able to open and to close
+	 * the VTabbedPane by dragging the mouse.
 	 */
-	public VTabbedPane() {
+	private Component c_owner;
+	/**
+	 * Constructor initialize view and corresponding controller class..
+	 * @param _c_owner 
+	 * 					The owner of the VTabbedPane used for being able to 
+	 * 					open and to close the VTabbedPane by dragging the mouse.
+	 */
+	public VTabbedPane(final Component _c_owner) {
 		
 		//initialize MPanel and alter settings
 		super();
 		super.setFocusable(false);
 		super.setLayout(null);
 		super.setOpaque(false);
+		
+		//save the owner
+		this.c_owner = _c_owner;
 		
 		//initialize the container for the title MButton and the tab  MPanels
 		jpnl_contains = new MPanel();
@@ -320,7 +332,7 @@ public class VTabbedPane extends MPanel {
         jpnl_contains.setVisible(true);
         if (press) {
             super.setSize(getWidth(), _e.getYOnScreen()
-                    - view.View.getInstance().getY()); 
+                    - c_owner.getY()); 
             jpnl_close.setLocation(0, getHeight() - jlbl_close.getHeight());
             jpnl_background.setSize(getWidth(), getHeight());
 

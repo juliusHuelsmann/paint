@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -15,17 +14,11 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
-import org.omg.CORBA._PolicyStub;
-
 import control.tabs.CPaintStatus;
-import control.tabs.CPaintVisualEffects;
 import model.objects.PictureOverview;
 import model.objects.Zoom;
 import model.objects.painting.PaintBI;
@@ -34,11 +27,8 @@ import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.Pen;
-import model.objects.pen.normal.BallPen;
 import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
-import model.settings.ReadSettings;
-import model.settings.Settings;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.DPoint;
@@ -46,7 +36,6 @@ import model.util.Util;
 import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
 import model.util.paint.MyClipboard;
-import model.util.paint.Utils;
 import view.View;
 import view.forms.Message;
 import view.forms.New;
@@ -69,11 +58,6 @@ public final class ControlPainting implements MouseListener,
      */
     private static ControlPainting instance = null;
 
-    /**
-     * Boolean which indicates, whether the necessary instances of View and
-     * Picture have been set by now.
-     */
-    private boolean startPerform;
 
     /**
      * Start point mouseDragged and the speed of movement for continuous 
@@ -106,83 +90,13 @@ public final class ControlPainting implements MouseListener,
     /**
      * pseudo-constructor method. Used because of getInstance.
      */
-    private void start() {
+    private void start() {}
 
-        // get location of current workspace
-        Settings.setWsLocation(ReadSettings.install());
-
-        // initialize startPerform
-        this.startPerform = false;
-        
-        //set logger level to finest; thus every log message is shown.
-        Status.getLogger().setLevel(Level.WARNING);
-
-        // if installed
-        if (!Settings.getWsLocation().equals("")) {
-            
-            Status.getLogger().info("installation found.\n");
-
-            /*
-             * initialize model
-             */
-
-            Status.getLogger().info(
-                    "initialize model class Pen and current pen.\n");
-            
-            Picture.getInstance().initializePen(
-                    new BallPen(Constants.PEN_ID_POINT, 1, Color.black));
-            Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);
-            Paint.getInstance().getTb_color1().setActivated(true);
-            Paint.getInstance().getIt_stift1().getTb_open().setActivated(true);
-            
-
-
-            /*
-             * initialize view.
-             */
-            Status.getLogger().info(
-                    "initialize view class and make visible.\n");
-            
-            View.getInstance().setVisible(true);
-
-
-            Status.getLogger().info(
-                    "Start handling actions and initialize listeners.\n");
-            
-            // tell all the controller classes to start to perform
-            this.startPerform = true;
-            CPaintStatus.getInstance().initialize();
-            CPaintVisualEffects.getInstance().enable(true);
-
-            Status.getLogger().info("initialization process completed.\n\n"
-                    + "-------------------------------------------------\n");
-        } else {
-
-            // if not installed and no installation done
-            System.exit(1);
-        }
-    }
-
-    /**
-     * Enable or disable listeners.
-     * 
-     * @param _what
-     *            whether enabled or disabled.
-     */
-    public void enable(final boolean _what) {
-        startPerform = _what;
-    }
 
     /**
      * {@inheritDoc}
      */
     public void actionPerformed(final ActionEvent _event) {
-
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
 
         if (_event.getSource().equals(
                 Paint.getInstance().getTb_turnMirror().getActionCause())) {
@@ -229,64 +143,15 @@ public final class ControlPainting implements MouseListener,
     /**
      * {@inheritDoc}
      */
-    public void mouseClicked(final MouseEvent _event) {
-
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
-
-        if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
-
-            if (Status.isUncommittedChanges()) {
-
-                int i = JOptionPane.showConfirmDialog(View.getInstance(),
-                        "Changes Uncommitted. Do you want to save them "
-                                + "before exiting? ", "Save changes",
-                        JOptionPane.YES_NO_CANCEL_OPTION);
-                if (i == 0) {
-                    // okay
-                    mr_save();
-                } else if (i == 1) {
-
-                    // no
-                    System.exit(1);
-                } 
-                //i == 2 ^ interrupt
-            } else {
-                System.exit(1);
-            }
-        }
-    }
+    public void mouseClicked(final MouseEvent _event) { }
 
     /**
      * {@inheritDoc}
      */
     public void mousePressed(final MouseEvent _event) {
 
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is
-        // performed.
-        if (!startPerform) {
-            return;
-        }
-
-        // source: exit button at the top of the window
-        if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
-            View.getInstance().getJbtn_exit().setIcon(
-                    new ImageIcon(Utils.resizeImage(View.getInstance()
-                            .getJbtn_exit().getWidth(), View
-                            .getInstance().getJbtn_exit().getHeight(),
-                            Constants.VIEW_JBTN_EXIT_PRESSED_PATH)));
-        } else if (_event.getSource().equals(
-                View.getInstance().getJbtn_fullscreen())) {
-            View.getInstance().getJbtn_fullscreen().setIcon(new ImageIcon(Utils
-                    .resizeImage(View.getInstance().getJbtn_exit().getWidth(), 
-                            View.getInstance().getJbtn_exit().getHeight(),
-                                    Constants
-                                    .VIEW_JBTN_FULLSCREEN_PRESSED_PATH)));
-        } else if (_event.getSource().equals(
+        
+        if (_event.getSource().equals(
                 Page.getInstance().getJlbl_painting())) {
 
             Tabs.getInstance().closeMenues();
@@ -479,11 +344,6 @@ public final class ControlPainting implements MouseListener,
      */
     public void mouseDragged(final MouseEvent _event) {
 
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
 
         // left mouse pressed
         final int leftMouse = 1024;
@@ -690,20 +550,7 @@ public final class ControlPainting implements MouseListener,
      * {@inheritDoc}
      */
     public void mouseReleased(final MouseEvent _event) {
-
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
-
-        // source: exit button at the top of the window
-        if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
-            mr_exit();
-        } else if (_event.getSource().equals(
-                View.getInstance().getJbtn_fullscreen())) {
-            mr_fullscreen();
-        } else if (_event.getSource().equals(
+        if (_event.getSource().equals(
                 Paint.getInstance().getTb_new().getActionCause())) {
             mr_new();
         } else if (_event.getSource().equals(
@@ -737,65 +584,14 @@ public final class ControlPainting implements MouseListener,
 
 
     
-    /**
-     * make fullscreen or normal size.
-     */
-    private void mr_fullscreen() {
-//        View.getInstance().setFullscreen();
-        ViewSettings.setFULLSCREEN(!ViewSettings.isFullscreen());
-        
-        if (ViewSettings.isFullscreen()) {
-
-            ViewSettings.setSize_jframe(
-                new Dimension(
-                (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()), 
-                (int) (Toolkit.getDefaultToolkit().getScreenSize()
-                        .getHeight())));
-        } else {
-
-            ViewSettings.setSize_jframe(
-                   new Dimension(
-                   (int) (Toolkit.getDefaultToolkit().getScreenSize()
-                           .getWidth() 
-                           * 2 / (2 + 1)), 
-                   (int) (Toolkit.getDefaultToolkit().getScreenSize()
-                           .getHeight() 
-                           * 2 / (2 + 1))));
-        }
-        
-        View.getInstance().setVisible(true);
-        View.getInstance().flip();
-        View.getInstance().repaint();
-        Tabs.getInstance().repaint();
-        Tabs.getInstance().openTab(0);
-        
-    }
 
     /**
      * {@inheritDoc}
      */
     public void mouseExited(final MouseEvent _event) {
 
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
 
-        // source: exit button at the top of the window
-        if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
-            View.getInstance().getJbtn_exit().setIcon(new ImageIcon(Utils
-                    .resizeImage(View.getInstance().getJbtn_exit().getWidth(), 
-                            View.getInstance().getJbtn_exit().getHeight(),
-                                    Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
-        } else if (_event.getSource().equals(
-                View.getInstance().getJbtn_fullscreen())) {
-            View.getInstance().getJbtn_fullscreen().setIcon(new ImageIcon(Utils
-                    .resizeImage(View.getInstance().getJbtn_exit().getWidth(), 
-                            View.getInstance().getJbtn_exit().getHeight(),
-                                    Constants
-                                    .VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
-        } else if (_event.getSource().equals(
+       if (_event.getSource().equals(
         		Page.getInstance().getJlbl_painting())) { 
         	
         	
@@ -832,28 +628,7 @@ public final class ControlPainting implements MouseListener,
      */
     public void mouseEntered(final MouseEvent _event) {
 
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
 
-        // source: exit button at the top of the window
-        if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
-
-            View.getInstance().getJbtn_exit().setIcon(
-                    new ImageIcon(Utils.resizeImage(View.getInstance()
-                            .getJbtn_exit().getWidth(), View
-                            .getInstance().getJbtn_exit().getHeight(),
-                            Constants.VIEW_JBTN_EXIT_MOUSEOVER_PATH)));
-        } else if (_event.getSource().equals(
-                View.getInstance().getJbtn_fullscreen())) {
-            View.getInstance().getJbtn_fullscreen().setIcon(new ImageIcon(Utils
-                    .resizeImage(View.getInstance().getJbtn_exit().getWidth(), 
-                            View.getInstance().getJbtn_exit().getHeight(),
-                                    Constants
-                                    .VIEW_JBTN_FULLSCREEN_MOUSEOVER_PATH)));
-        }
     }
 
     /*
@@ -865,11 +640,6 @@ public final class ControlPainting implements MouseListener,
      */
     public void mouseMoved(final MouseEvent _event) {
 
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
 
         if (_event.getSource().equals(Page.getInstance().getJlbl_painting())) {
 
@@ -937,24 +707,7 @@ public final class ControlPainting implements MouseListener,
         }
     }
 
-    /**
-     * method returns only one instance of this.
-     * 
-     * @return the instance
-     */
-    public static ControlPainting getInstance() {
-
-        // if instance is not yet created
-        if (instance == null) {
-
-            // initialize and start action
-            instance = new ControlPainting();
-            instance.start();
-        }
-
-        // return the only instance
-        return instance;
-    }
+    
 
     
     /*
@@ -1087,18 +840,6 @@ public final class ControlPainting implements MouseListener,
      * 
      */
 
-    /**
-     * MouseReleased method for button press at button exit.
-     */
-    private void mr_exit() {
-
-        View.getInstance().getJbtn_exit().setIcon(new ImageIcon(
-                Utils.resizeImage(View.getInstance().getJbtn_exit()
-                        .getWidth(), View.getInstance().getJbtn_exit()
-                        .getHeight(), 
-                        Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
-            
-    }
 
 
     /*
@@ -1114,7 +855,7 @@ public final class ControlPainting implements MouseListener,
     /**
      * the save action.
      */
-    private void mr_save() {
+    public void mr_save() {
 
         // if not saved yet. Otherwise use the saved save path.
         if (Status.getSavePath() == null) {
@@ -2577,7 +2318,7 @@ public final class ControlPainting implements MouseListener,
     }
     
     
-    /**
+	/**
      * Update the location of the JButtons for resizing. Thus the user is
      * able to resize the whole image.
      */
@@ -2597,4 +2338,24 @@ public final class ControlPainting implements MouseListener,
         Page.getInstance().getJbtn_resize()[2][2].setVisible(true);
         Page.getInstance().getJbtn_resize()[2][1].setVisible(true);
     }
+    
+
+    /**
+	 * method returns only one instance of this.
+	 * 
+	 * @return the instance
+	 */
+	public static ControlPainting getInstance() {
+	
+	    // if instance is not yet created
+	    if (instance == null) {
+	
+	        // initialize and start action
+	        instance = new ControlPainting();
+	        instance.start();
+	    }
+	
+	    // return the only instance
+	    return instance;
+	}
 }

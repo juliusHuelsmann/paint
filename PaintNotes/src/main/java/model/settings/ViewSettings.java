@@ -70,6 +70,8 @@ public final class ViewSettings {
     GENERAL_FONT_ITEM_SMALL = new Font("Courier New", Font.PLAIN, 10),
     GENERAL_FONT_ITEM = new Font("Courier New", Font.ITALIC, 11);
     
+    
+    
     /*
      * 
      *
@@ -373,6 +375,35 @@ public final class ViewSettings {
 
         
         
+    }
+
+    
+    /**
+	 * Return the bounds of a fullscreen window.
+     * @return the bounds of a fullscreen window.
+     */
+    public static Dimension getSizeViewFullscreen() {
+
+    	//return the size of the screen in pixel.
+    	return new Dimension(
+    			(int) (Toolkit.getDefaultToolkit().getScreenSize()
+    					.getWidth()), 
+    			(int) (Toolkit.getDefaultToolkit().getScreenSize()
+    					.getHeight()));
+    }
+    
+    /**
+	 * Return the bounds of a not-fullscreen window.
+     * @return the bounds of a not-fullscreen window.
+     */
+    public static Dimension getSizeViewWindow() {
+
+    	//return the size of the screen in pixel.
+    	return new Dimension(
+    			(int) (Toolkit.getDefaultToolkit().getScreenSize()
+    					.getWidth() * 2 / (2 + 1)), 
+    			(int) (Toolkit.getDefaultToolkit().getScreenSize()
+    					.getHeight() * 2 / (2 + 1)));
     }
     
     

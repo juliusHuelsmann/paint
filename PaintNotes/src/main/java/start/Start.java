@@ -7,6 +7,7 @@ import java.io.File;
 import model.objects.painting.Picture;
 import model.settings.Status;
 import control.ControlPainting;
+import control.ControlView;
 
 
 
@@ -103,7 +104,7 @@ public final class Start {
 	        Status.getLogger().info("normal start: launch programm!\n\n");
 	        
 	        //call controller
-	        ControlPainting.getInstance();
+	        new ControlView();
 	        
 	        //set the initialization process terminated
             increaseInitializationFinished();

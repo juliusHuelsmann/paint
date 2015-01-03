@@ -64,7 +64,7 @@ import model.util.paint.Utils;
 public final class Picture {
 
 	/**
-	 * the only instance of this class.
+	 * The only instance of this class.
 	 */
 	private static Picture instance = null;
 

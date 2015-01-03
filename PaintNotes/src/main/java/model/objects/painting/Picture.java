@@ -13,11 +13,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 import control.CSelection;
 import control.tabs.CTabSelection;
 import view.View;
@@ -141,6 +139,10 @@ public final class Picture {
 
 		// save current id
 		this.currentId = 0;
+		
+		//initialize the standard pen and the standard operation id in 
+		//controller class for pen1 selected.
+		Status.applyStandardPen(this);
 	}
 
 	/**

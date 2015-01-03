@@ -23,12 +23,13 @@ import view.forms.Tabs;
 import view.util.mega.MButton;
 import view.util.mega.MFrame;
 import view.util.mega.MLabel;
-import control.ControlPainting;
+import control.CSelection;
 import control.ControlView;
 import control.util.MousePositionTracker;
 
+
 /**
- * Singleton view class.
+ * View class.
  * Contains all sub graphical user interface items; consists of MFrame.
  * 
  * @author Julius Huelsmann
@@ -59,16 +60,29 @@ import control.util.MousePositionTracker;
 	private MLabel jlbl_title, jlbl_border;
 	
 	/**
-	 * Constructor: initialize JFrame, alter settings and initialize items.
+	 * The tab.
 	 */
-	public View(ControlView _cv) {
-		this.initialize(_cv);
+	private Tabs tab;
+	
+	/**
+	 * The Page.
+	 */
+	private Page page;
+	
+	/**
+	 * Constructor: initialize JFrame, alter settings and initialize items.
+	 * @param _cv instance of ControlView.
+	 */
+	public View(final ControlView _cv, final CSelection _c) {
+		instance = this;
+		this.initialize(_cv, _c);
 	}
 	
 	/**
 	 * initialize MainJFrame (add content).
+	 * @param _cv the ControlView.
 	 */
-	private void initialize(final ControlView _cv) {
+	private void initialize(final ControlView _cv, final CSelection _c) {
 	    
         //initialize JFrame and alter settings
         super.setAlwaysOnTop(false);
@@ -111,6 +125,7 @@ import control.util.MousePositionTracker;
         jbtn_exit.setContentAreaFilled(false);
         jbtn_exit.setOpaque(false);
         jbtn_exit.addMouseListener(_cv);
+        jbtn_exit.addActionListener(_cv);
         jbtn_exit.setBorder(null);
         jbtn_exit.setFocusable(false);
         super.add(jbtn_exit);
@@ -120,10 +135,14 @@ import control.util.MousePositionTracker;
         jbtn_fullscreen.setContentAreaFilled(false);
         jbtn_fullscreen.setOpaque(false);
         jbtn_fullscreen.addMouseListener(_cv);
+        jbtn_fullscreen.addActionListener(_cv);
         jbtn_fullscreen.setBorder(null);
         jbtn_fullscreen.setFocusable(false);
         super.add(jbtn_fullscreen);
 
+        tab = new Tabs(this);
+        page = new Page(_c);
+        
         super.remove(jlbl_backgroundStroke);
         if (ViewSettings.isFullscreen()) {
 
@@ -143,10 +162,12 @@ import control.util.MousePositionTracker;
          * add Message form, tab, overview about paintObjects and Page
          */
         super.add(new Message());
-        super.add(Tabs.getInstance());
-        Tabs.getInstance().setVisible(true);
-        super.add(Page.getInstance());
-        Page.getInstance().setVisible(true);
+        
+        super.add(tab);
+        super.add(page);
+
+        tab.setVisible(true);
+        page.setVisible(true);
 	}
 	
 
@@ -421,7 +442,7 @@ import control.util.MousePositionTracker;
         
         //initialize tabs
         Status.getLogger().info("   initialize Tabs\n");
-        Tabs.getInstance().setSize(
+        tab.setSize(
                 ViewSettings.getView_widthTb(), 
                 ViewSettings.getView_heightTB(),
                 ViewSettings.getView_heightTB_visible());
@@ -452,13 +473,16 @@ import control.util.MousePositionTracker;
                     jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
                     Constants.VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
 	        
-	        Tabs.getInstance().setLocation(ViewSettings.VIEW_LOCATION_TB);
+	        tab.setLocation(ViewSettings.VIEW_LOCATION_TB);
 	        
         Page.getInstance().flip();
-        Tabs.getInstance().flip();
+        tab.flip();
         jlbl_border.setBounds(0, 0, getWidth(), getHeight());
 	}
 	
+	public static View getInstance() {
+		return instance;
+	}
 	
     
     /*
@@ -478,4 +502,11 @@ import control.util.MousePositionTracker;
     public MButton getJbtn_fullscreen() {
         return jbtn_fullscreen;
     }
+
+	/**
+	 * @return the page
+	 */
+	public Page getPage() {
+		return page;
+	}
 }

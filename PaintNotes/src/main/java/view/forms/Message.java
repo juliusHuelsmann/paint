@@ -4,9 +4,7 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
-
 import control.forms.CMessage;
-import view.View;
 import view.util.RoundedBorder;
 import view.util.mega.MButton;
 import view.util.mega.MPanel;

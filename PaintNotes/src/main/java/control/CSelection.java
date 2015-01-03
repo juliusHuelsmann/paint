@@ -80,12 +80,24 @@ public class CSelection implements MouseMotionListener, MouseListener {
     
     
     /**
-     * Constructor: initialize DPoint array.
+     * The page.
      */
-    public CSelection() {
+    private Page page;
+    
+    
+    private Picture picture;
+    
+    /**
+     * Constructor: initialize DPoint array.
+     * @param _page the page.
+     */
+    public CSelection(final Page _page, final Picture _picture) {
+    	
+    	instance = this;
+    	this.page = _page;
+    	this.picture = _picture;
         pnt_startLocationButton = new DPoint
-                [Page.getInstance().getJbtn_resize().length]
-                        [Page.getInstance().getJbtn_resize()[0].length];
+                [2 + 1][2 + 1];
     }
     
     /**
@@ -96,14 +108,14 @@ public class CSelection implements MouseMotionListener, MouseListener {
     public final void mouseDragged(final MouseEvent _event) {
         
         if (_event.getSource().equals(
-                Page.getInstance().getJbtn_resize()[1][1])) {
+                page.getJbtn_resize()[1][1])) {
             
             int dX = (int) (_event.getXOnScreen() - pnt_start.getX()), 
                     dY = (int) (_event.getYOnScreen() - pnt_start.getY());
-            Page.getInstance().getJlbl_selectionBG().setLocation(
+            page.getJlbl_selectionBG().setLocation(
                     (int) pnt_startLocationLabel.getX() + dX,
                     (int) pnt_startLocationLabel.getY() + dY);
-            Page.getInstance().getJlbl_selectionPainting().setLocation(
+            page.getJlbl_selectionPainting().setLocation(
                     (int) pnt_startLocationLabel.getX() + dX,
                     (int) pnt_startLocationLabel.getY() + dY);
 
@@ -117,7 +129,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
                             || (x == 0 && y == 2)
                             || !wholeImageSelected) {
 
-                        Page.getInstance().getJbtn_resize()[x][y].setLocation(
+                        page.getJbtn_resize()[x][y].setLocation(
                                 (int) pnt_startLocationButton[x][y].getX() 
                                 + dX,
                                 (int) pnt_startLocationButton[x][y].getY() 
@@ -130,7 +142,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
             r_selection.x = (int) pnt_rSelectionStart.getX() + dX;
             r_selection.y =  (int) pnt_rSelectionStart.getY() + dY;
             
-            Page.getInstance().getJlbl_border().setBounds(r_selection);
+            page.getJlbl_border().setBounds(r_selection);
         } else {
             if (wholeImageSelected) {
                 md_buttonLocationWholeImage(_event);
@@ -157,7 +169,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
         //if not yet instanced call the constructor of FetchColor.
         if (instance == null) {
-            instance = new CSelection();
+//            instance = new CSelection();
         }
         return instance;
     }
@@ -197,19 +209,19 @@ public class CSelection implements MouseMotionListener, MouseListener {
             pnt_rSelectionStart = new DPoint(r_selection.getLocation());
         }
         pnt_startLocationLabel = new DPoint(
-                Page.getInstance().getJlbl_selectionBG().getLocation());
+                page.getJlbl_selectionBG().getLocation());
 
         for (int x = 0; x < pnt_startLocationButton.length; x++) {
 
             for (int y = 0; y < pnt_startLocationButton.length; y++) {
-                pnt_startLocationButton[x][y] = new DPoint(Page.getInstance()
+                pnt_startLocationButton[x][y] = new DPoint(page
                         .getJbtn_resize()[x][y].getLocation());
             }
         }
         
         if (!_event.getSource().equals(
-                Page.getInstance().getJbtn_resize()[1][1])) {
-            Page.getInstance().getJlbl_painting().stopBorderThread();
+                page.getJbtn_resize()[1][1])) {
+            page.getJlbl_painting().stopBorderThread();
         }
     }
 
@@ -221,7 +233,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
         
 
         if (_event.getSource().equals(
-                Page.getInstance().getJbtn_resize()[1][1])) {
+                page.getJbtn_resize()[1][1])) {
             
             int dX = (int) (_event.getXOnScreen() - pnt_start.getX()), 
                     dY = (int) (_event.getYOnScreen() - pnt_start.getY());
@@ -235,9 +247,9 @@ public class CSelection implements MouseMotionListener, MouseListener {
                     (int) (1.0 * dX * cZoomFactorWidth), 
                     (int) (1.0 * dY * cZoomFactorHeight));
             
-            Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
+            page.getJlbl_painting().paintEntireSelectionRect(
                     r_selection);
-            Page.getInstance().getJlbl_selectionPainting().repaint();
+            page.getJlbl_selectionPainting().repaint();
             
 //            Picture.getInstance().paintSelected();
             
@@ -253,11 +265,11 @@ public class CSelection implements MouseMotionListener, MouseListener {
             if (_event.getSource() instanceof MButton) {
                 
 
-                final int jrssW = Page.getInstance()
+                final int jrssW = page
                         .getJlbl_resizeSelectionSize().getWidth();
-                final int jrssH = Page.getInstance()
+                final int jrssH = page
                         .getJlbl_resizeSelectionSize().getWidth();
-                Page.getInstance().getJlbl_resizeSelectionSize().setLocation(
+                page.getJlbl_resizeSelectionSize().setLocation(
                         (-jrssW), 
                         (-jrssH));
                 if (wholeImageSelected) {
@@ -286,7 +298,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
-        MButton[][] j = Page.getInstance().getJbtn_resize();
+        MButton[][] j = page.getJbtn_resize();
         DPoint[][] p = pnt_startLocationButton;
         double distanceXY;
         if ((distanceX) < (distanceY)) {
@@ -348,34 +360,34 @@ public class CSelection implements MouseMotionListener, MouseListener {
                 (int) (newDim.height / factorH)));
         
 
-        Page.getInstance().getJlbl_painting().refreshPaint();
+        page.getJlbl_painting().refreshPaint();
         
         
-        final int width = Page.getInstance().getJlbl_resizeSelectionSize()
+        final int width = page.getJlbl_resizeSelectionSize()
                 .getWidth();
-        final int height = Page.getInstance().getJlbl_resizeSelectionSize()
+        final int height = page.getJlbl_resizeSelectionSize()
                 .getHeight();
-        Page.getInstance().getJlbl_resizeSelectionSize().setLocation(
+        page.getJlbl_resizeSelectionSize().setLocation(
                 (j[2][2].getX() - width) / 2, 
                 (j[2][2].getY() - height) / 2);
 
-        if (Page.getInstance().getJlbl_resizeSelectionSize().getX() 
+        if (page.getJlbl_resizeSelectionSize().getX() 
                 < 0) {
-            Page.getInstance().getJlbl_resizeSelectionSize().setLocation(
+            page.getJlbl_resizeSelectionSize().setLocation(
                     j[2][2].getX(),
-                    Page.getInstance().getJlbl_resizeSelectionSize().getY());
+                    page.getJlbl_resizeSelectionSize().getY());
         }
-        if (Page.getInstance().getJlbl_resizeSelectionSize().getY() 
+        if (page.getJlbl_resizeSelectionSize().getY() 
                 < 0) {
-            Page.getInstance().getJlbl_resizeSelectionSize().setLocation(
-                    Page.getInstance().getJlbl_resizeSelectionSize().getX(),
+            page.getJlbl_resizeSelectionSize().setLocation(
+                    page.getJlbl_resizeSelectionSize().getX(),
                     j[2][2].getY());
         }
         
-        Page.getInstance().getJlbl_resizeSelectionSize().setText(
+        page.getJlbl_resizeSelectionSize().setText(
                 newDim.width + "x" + newDim.height + "");
 
-        Page.getInstance().refrehsSps();
+        page.refrehsSps();
         
         
     }
@@ -389,7 +401,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
-        MButton[][] j = Page.getInstance().getJbtn_resize();
+        MButton[][] j = page.getJbtn_resize();
         DPoint[][] p = pnt_startLocationButton;
         double distanceXY, distanceXY2;
         if (Math.abs(distanceX) < Math.abs(distanceY)) {
@@ -526,7 +538,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
                     j[0][1].getY() + size - sizeButton);
         }
 
-        Page.getInstance().getJlbl_border().setBounds(j[0][0].getX() + size,
+        page.getJlbl_border().setBounds(j[0][0].getX() + size,
                 j[0][0].getY() + size, j[2][0].getX() - j[0][0].getX(),
                 j[0][2].getY() - j[0][0].getY());
         r_selection = new Rectangle(j[0][0].getX() + size,
@@ -553,7 +565,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
-        MButton[][] j = Page.getInstance().getJbtn_resize();
+        MButton[][] j = page.getJbtn_resize();
         double distanceXY, distanceXY2;
         if (Math.abs(distanceX) < Math.abs(distanceY)) {
             distanceXY = distanceX;
@@ -638,7 +650,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
     			closedAction);
         
         //release selected and paint them
-        Page.getInstance().releaseSelected();
+        page.releaseSelected();
         Picture.getInstance().paintSelected();
     }
 

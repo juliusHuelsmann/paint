@@ -1,20 +1,14 @@
 package control;
 
 //import declarations
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.logging.Level;
-
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
-import control.tabs.CPaintStatus;
-import control.tabs.CPaintVisualEffects;
 import model.objects.painting.Picture;
-import model.objects.pen.normal.BallPen;
 import model.settings.Constants;
 import model.settings.ReadSettings;
 import model.settings.Settings;
@@ -44,50 +38,59 @@ public class ControlView implements ActionListener, MouseListener {
 	
 	
 	/**
+	 * The instance of picture.
+	 */
+	private final Picture picture;
+	
+	
+	/**
+	 * Selection controller class.
+	 */
+	private CSelection cs;
+	
+	
+	/**
 	 * Constructor: initializes the view class and reads settings.
 	 */
 	public ControlView() {
 		
 
-        // get location of current workspace
+        //get location of current workspace and set logger level to finest; 
+		//thus every log message is shown.
         Settings.setWsLocation(ReadSettings.install());
-
-        //set logger level to finest; thus every log message is shown.
         Status.getLogger().setLevel(Level.WARNING);
 
-        // if installed
+        //if the installation has been found, initialize the whole program.
+        //Otherwise print an error and exit program
         if (!Settings.getWsLocation().equals("")) {
             
-            Status.getLogger().info("installation found.\n");
-
-            /*
-             * initialize model
-             */
-
-            Status.getLogger().info(
-                    "initialize model class Pen and current pen.\n");
+        	//Print logger status to console.
+            Status.getLogger().info("Installation found.");
+            Status.getLogger().info("Initialize model class Page.\n");
             
-            Picture.getInstance().initializePen(
-                    new BallPen(Constants.PEN_ID_POINT, 1, Color.black));
-            Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);
+            //initialize the model class picture.
+            picture = Picture.getInstance();
+             
+
+            //initialize view class and log information on current 
+            //initialization progress
+            Status.getLogger().info("initialize view class and set visible.");
+            view = new View(this, cs);
+            view.setVisible(true);
+            
+            
+            
+            //enable current operation
             Paint.getInstance().getTb_color1().setActivated(true);
             Paint.getInstance().getIt_stift1().getTb_open().setActivated(true);
-            
-
-
-            /*
-             * initialize view.
-             */
-            Status.getLogger().info("initialize view class and set visible.");
-            view = View.getInstance();
-            view.setVisible(true);
-
+           
             
             /*
              * Initialize control
              */
             Status.getLogger().info("initialize controller class.");
             ControlPainting.getInstance();
+            cs = new CSelection(view.getPage(), picture);
             
             Status.getLogger().info(
                     "Start handling actions and initialize listeners.\n");
@@ -96,8 +99,14 @@ public class ControlView implements ActionListener, MouseListener {
                     + "-------------------------------------------------\n");
         } else {
 
-            // if not installed and no installation done
-        	view = null;
+            //if not installed and no installation done print error and write
+        	//null values into final variables
+        	Status.getLogger().severe("Fatal error: no installation found");
+        	this.view = null;
+        	this.picture = null;
+        	this.cs = null;
+        	
+        	//exit program
             System.exit(1);
         }
 	}
@@ -112,6 +121,7 @@ public class ControlView implements ActionListener, MouseListener {
 		if (_event.getSource().equals(view.getJbtn_exit())) {
 
 
+			//if there are changes to be saved
 			if (Status.isUncommittedChanges()) {
 
 				final int answer = JOptionPane.showConfirmDialog(
@@ -133,27 +143,31 @@ public class ControlView implements ActionListener, MouseListener {
 				
 				switch (answer) {
 				case JOptionPane.YES_OPTION:
+
+					ControlPainting.getInstance().mr_save();
+					break;
 					
-					System.out.println("yes" + answer);
-					break;
+					
 				case JOptionPane.NO_OPTION:
-					System.out.println("no" + answer);
+
+					//exit
+					System.exit(1);
 					break;
+					
+					
 				case JOptionPane.CANCEL_OPTION:
-					System.out.println("cancel" + answer);
+				case JOptionPane.CLOSED_OPTION:
+					
+					//do nothing
 					break;
+					
+					
 				default:
+					
+					//default can not occur.
 					break;
 				}
-				if (answer == 0) {
-					// okay
-					ControlPainting.getInstance().mr_save();
-				} else if (answer == 1) {
-					
-					// no
-					System.exit(1);
-				} 
-				//i == 2 ^ interrupt
+
 			} else {
 				System.exit(1);
 			}

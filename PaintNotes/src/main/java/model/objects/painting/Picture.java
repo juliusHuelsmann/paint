@@ -16,7 +16,7 @@ import java.io.ObjectOutputStream;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import control.CSelection;
+import control.ControlPaintSelectin;
 import control.tabs.CTabSelection;
 import view.View;
 import view.forms.Console;
@@ -898,14 +898,14 @@ public final class Picture {
 	 */
 	public BufferedImage paintSelectedBI() {
 
-		if (CSelection.getInstance().getR_selection() == null) {
+		if (ControlPaintSelectin.getInstance().getR_selection() == null) {
 
 			Status.getLogger().warning("the selection square does not exist!");
 			return null;
 		}
 
-		BufferedImage bi = new BufferedImage(CSelection.getInstance()
-				.getR_selection().width + 1, CSelection.getInstance()
+		BufferedImage bi = new BufferedImage(ControlPaintSelectin.getInstance()
+				.getR_selection().width + 1, ControlPaintSelectin.getInstance()
 				.getR_selection().height + 1, BufferedImage.TYPE_INT_ARGB);
 
 
@@ -926,14 +926,14 @@ public final class Picture {
 				PaintObjectWriting pow = (PaintObjectWriting) po;
 
 				// TODO: zoom, scroll adjust?
-				pow.paint(bi, false, bi, -CSelection.getInstance()
-						.getR_selection().x, -CSelection.getInstance()
+				pow.paint(bi, false, bi, -ControlPaintSelectin.getInstance()
+						.getR_selection().x, -ControlPaintSelectin.getInstance()
 						.getR_selection().y, null);
 
 			} else if (po instanceof PaintObjectImage) {
 				PaintObjectImage poi = (PaintObjectImage) po;
-				poi.paint(bi, false, bi, -CSelection.getInstance()
-						.getR_selection().x, -CSelection.getInstance()
+				poi.paint(bi, false, bi, -ControlPaintSelectin.getInstance()
+						.getR_selection().x, -ControlPaintSelectin.getInstance()
 						.getR_selection().y, null);
 
 			} else {
@@ -1559,7 +1559,7 @@ public final class Picture {
 					.getJlbl_painting()
 					.refreshRectangle(realRect.x, realRect.y, realRect.width,
 							realRect.height);
-			CSelection.getInstance().setR_selection(realRect,
+			ControlPaintSelectin.getInstance().setR_selection(realRect,
 					Page.getInstance().getJlbl_painting().getLocation());
 			Page.getInstance().getJlbl_painting()
 					.paintEntireSelectionRect(realRect);
@@ -1578,13 +1578,13 @@ public final class Picture {
 
 		// it occurred that the start point equal to 0. Why?
 		int px, py;
-		if (CSelection.getInstance().getPnt_start() == null) {
+		if (ControlPaintSelectin.getInstance().getPnt_start() == null) {
 			px = 0;
 			py = 0;
 		} else {
-			px = (int) (CSelection.getInstance().getPnt_start().getX() - Page
+			px = (int) (ControlPaintSelectin.getInstance().getPnt_start().getX() - Page
 					.getInstance().getJlbl_painting().getLocation().getX());
-			py = (int) (CSelection.getInstance().getPnt_start().getY() - Page
+			py = (int) (ControlPaintSelectin.getInstance().getPnt_start().getY() - Page
 					.getInstance().getJlbl_painting().getLocation().getY());
 
 		}
@@ -1677,7 +1677,7 @@ public final class Picture {
 					.getJlbl_painting()
 					.refreshRectangle(realRect.x, realRect.y, realRect.width,
 							realRect.height);
-			CSelection.getInstance().setR_selection(realRect,
+			ControlPaintSelectin.getInstance().setR_selection(realRect,
 					Page.getInstance().getJlbl_painting().getLocation());
 			Page.getInstance().getJlbl_painting()
 					.paintEntireSelectionRect(realRect);
@@ -1693,11 +1693,11 @@ public final class Picture {
 
 		// adjust the bounds of the selected items to the performed
 		// scrolling
-		if (CSelection.getInstance().getOldPaintLabelLocation() != null) {
+		if (ControlPaintSelectin.getInstance().getOldPaintLabelLocation() != null) {
 
-			int oldX = (int) CSelection.getInstance()
+			int oldX = (int) ControlPaintSelectin.getInstance()
 					.getOldPaintLabelLocation().getX();
-			int oldY = (int) CSelection.getInstance()
+			int oldY = (int) ControlPaintSelectin.getInstance()
 					.getOldPaintLabelLocation().getY();
 
 			int newX = (int) Page.getInstance().getJlbl_painting()
@@ -1706,7 +1706,7 @@ public final class Picture {
 					.getLocation().getY();
 
 			Picture.getInstance().moveSelected(oldX - newX, oldY - newY);
-			CSelection.getInstance().setOldPaintLabelLocation(null);
+			ControlPaintSelectin.getInstance().setOldPaintLabelLocation(null);
 		}
 
 		// deactivates to change operations of selected items

@@ -127,7 +127,7 @@ public class PaintLabel extends MLabel {
 
             PaintObjects.getInstance().repaint(); 	
         }
-        New.getInstance().setVisible(false);
+//        New.getInstance().setVisible(false);
     }
     
     

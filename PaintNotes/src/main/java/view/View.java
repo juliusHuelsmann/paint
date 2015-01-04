@@ -6,11 +6,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
@@ -23,7 +21,7 @@ import view.forms.Tabs;
 import view.util.mega.MButton;
 import view.util.mega.MFrame;
 import view.util.mega.MLabel;
-import control.CSelection;
+import control.ControlPaint;
 import control.ControlView;
 import control.util.MousePositionTracker;
 
@@ -62,7 +60,7 @@ import control.util.MousePositionTracker;
 	/**
 	 * The tab.
 	 */
-	private Tabs tab;
+	private Tabs tabs;
 	
 	/**
 	 * The Page.
@@ -71,18 +69,11 @@ import control.util.MousePositionTracker;
 	
 	/**
 	 * Constructor: initialize JFrame, alter settings and initialize items.
-	 * @param _cv instance of ControlView.
+	 * @param _cp instance of ControlView.
 	 */
-	public View(final ControlView _cv, final CSelection _c) {
+	public View(final ControlPaint _cp) {
 		instance = this;
-		this.initialize(_cv, _c);
-	}
-	
-	/**
-	 * initialize MainJFrame (add content).
-	 * @param _cv the ControlView.
-	 */
-	private void initialize(final ControlView _cv, final CSelection _c) {
+
 	    
         //initialize JFrame and alter settings
         super.setAlwaysOnTop(false);
@@ -91,6 +82,8 @@ import control.util.MousePositionTracker;
         super.setUndecorated(true);
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        ControlView cv = new ControlView(this);
+        
         JLabel jlbl_backgroundStroke = new JLabel();
         jlbl_backgroundStroke.setSize(getSize());
         jlbl_backgroundStroke.setVisible(true);
@@ -124,8 +117,8 @@ import control.util.MousePositionTracker;
         jbtn_exit = new MButton();
         jbtn_exit.setContentAreaFilled(false);
         jbtn_exit.setOpaque(false);
-        jbtn_exit.addMouseListener(_cv);
-        jbtn_exit.addActionListener(_cv);
+        jbtn_exit.addMouseListener(cv);
+        jbtn_exit.addActionListener(cv);
         jbtn_exit.setBorder(null);
         jbtn_exit.setFocusable(false);
         super.add(jbtn_exit);
@@ -134,14 +127,18 @@ import control.util.MousePositionTracker;
         jbtn_fullscreen = new MButton();
         jbtn_fullscreen.setContentAreaFilled(false);
         jbtn_fullscreen.setOpaque(false);
-        jbtn_fullscreen.addMouseListener(_cv);
-        jbtn_fullscreen.addActionListener(_cv);
+        jbtn_fullscreen.addMouseListener(cv);
+        jbtn_fullscreen.addActionListener(cv);
         jbtn_fullscreen.setBorder(null);
         jbtn_fullscreen.setFocusable(false);
         super.add(jbtn_fullscreen);
 
-        tab = new Tabs(this);
-        page = new Page(_c);
+        
+        
+        page = new Page(_cp);
+        
+        
+        tabs = new Tabs(this, _cp);
         
         super.remove(jlbl_backgroundStroke);
         if (ViewSettings.isFullscreen()) {
@@ -163,12 +160,15 @@ import control.util.MousePositionTracker;
          */
         super.add(new Message());
         
-        super.add(tab);
+        super.add(tabs);
         super.add(page);
 
-        tab.setVisible(true);
+        tabs.setVisible(true);
         page.setVisible(true);
+	
+	
 	}
+	
 	
 
     /**
@@ -442,7 +442,7 @@ import control.util.MousePositionTracker;
         
         //initialize tabs
         Status.getLogger().info("   initialize Tabs\n");
-        tab.setSize(
+        tabs.setSize(
                 ViewSettings.getView_widthTb(), 
                 ViewSettings.getView_heightTB(),
                 ViewSettings.getView_heightTB_visible());
@@ -473,10 +473,10 @@ import control.util.MousePositionTracker;
                     jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
                     Constants.VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
 	        
-	        tab.setLocation(ViewSettings.VIEW_LOCATION_TB);
+	        tabs.setLocation(ViewSettings.VIEW_LOCATION_TB);
 	        
         Page.getInstance().flip();
-        tab.flip();
+        tabs.flip();
         jlbl_border.setBounds(0, 0, getWidth(), getHeight());
 	}
 	
@@ -509,4 +509,14 @@ import control.util.MousePositionTracker;
 	public Page getPage() {
 		return page;
 	}
+
+
+
+	/**
+	 * @return the tabs
+	 */
+	public Tabs getTabs() {
+		return tabs;
+	}
+
 }

@@ -2,7 +2,9 @@ package control.debug;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import control.ControlPainting;
+
+import control.ControlPaint;
+import control.tabs.ControlTabPainting;
 import start.Start;
 import model.objects.painting.Picture;
 import model.objects.pen.normal.Pencil;
@@ -23,6 +25,7 @@ import model.util.adt.list.List;
 public final class Bug {
 	
 	
+	private ControlPaint cp;
 	
 	/**
 	 * Bug constructor.
@@ -30,8 +33,16 @@ public final class Bug {
 	 */
 	private Bug(final String _loadingPath) {
 		
-		//open graphical user interface by calling the original main method.
-		Start.main(new String[0]);
+		
+
+        //print case message
+        Status.getLogger().info("normal start: launch programm!\n\n");
+        
+        //call controller
+        cp = new ControlPaint();
+        
+        //set the initialization process terminated
+        Start.increaseInitializationFinished();
 		
 		//load bug and display it at loaded interface.
 		loadBug(_loadingPath);
@@ -104,8 +115,7 @@ public final class Bug {
 						System.out.println(p);
 						if (p != null) {
 
-							ControlPainting.getInstance()
-							.mr_sel_line_destroy(p);
+							cp.mr_sel_line_destroy(p);
 						}
 					}
 				}

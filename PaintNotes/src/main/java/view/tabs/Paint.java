@@ -762,6 +762,7 @@ public final class Paint extends Tab {
 			i1.addMouseListener(_cp);
 			i1.addChangeListener(new CPen(_cp, i1, it_stift1, 
 					Pen.clonePen(pen_available)));
+			i1.addMouseListener(CPaintStatus.getInstance());
 
 			//add to first pen
 	        it_stift1.add(i1);
@@ -778,6 +779,7 @@ public final class Paint extends Tab {
 			i2.addMouseListener(_cp);
 			i2.addChangeListener(new CPen(_cp, i2, it_stift2,
 					Pen.clonePen(pen_available)));
+			i2.addMouseListener(CPaintStatus.getInstance());
 
 			//add to first pen
 	        it_stift2.add(i2);

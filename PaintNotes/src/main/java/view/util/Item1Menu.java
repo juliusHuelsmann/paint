@@ -181,7 +181,11 @@ public class Item1Menu extends MPanel {
 	}
 	
 	
-	public final void addMouseListener(MouseListener _ml) {
+	/**
+	 * Add mouseListener to select button.
+	 * @param _ml the mouseListener
+	 */
+	public final void addMouseListener(final MouseListener _ml) {
 
 		tb_select.addMouseListener(_ml);
 	}
@@ -247,9 +251,14 @@ public class Item1Menu extends MPanel {
     }
     
     /**
+     * Set the MenuListener which provides an interface for listening for 
+     * menu - closing and menu - opening events outside this utility class.
      * 
+     * It is only possible to set one MenuListener at a time.
+     * 
+     * @param _ml the MenuListener
      */
-    public void setMenuListener(MenuListener _ml) {
+    public final void setMenuListener(final MenuListener _ml) {
     	this.menuListener = _ml;
     }
     

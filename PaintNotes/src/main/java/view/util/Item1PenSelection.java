@@ -12,20 +12,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JSlider;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 //import rotatatble buttons and panels
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
-
-import model.objects.pen.Pen;
-
-
+//constants and viewSettings
 import model.settings.Constants;
 import model.util.paint.Utils;
-import control.tabs.CPaintStatus;
 
 /**
  * Class item pen selection, contains one pen which can be selected.
@@ -102,13 +97,6 @@ public class Item1PenSelection extends MPanel {
 		jsl_thickness.setOpaque(false);
 		jsl_thickness.setMinorTickSpacing(1);
 		jsl_thickness.setPaintTrack(true);
-		
-		//ChangeListener updating the current thickness information
-		jsl_thickness.addChangeListener(new ChangeListener() {
-
-			public void stateChanged(final ChangeEvent _e) {}
-		});
-		
 		jlbl_thickness = new MLabel("1px");
 		jlbl_thickness.setBorder(null);
 		jlbl_thickness.setOpaque(false);
@@ -120,7 +108,6 @@ public class Item1PenSelection extends MPanel {
 		jbtn_select.setContentAreaFilled(false);
 		jbtn_select.setOpaque(false);
 		jbtn_select.setBorder(null);
-		jbtn_select.addMouseListener(CPaintStatus.getInstance());
 		jbtn_select.setFocusable(false);
 		super.add(jbtn_select);
 	}
@@ -198,14 +185,6 @@ public class Item1PenSelection extends MPanel {
 		}
 	}
 
-
-	/**
-	 * Return the instance of Item1PenSelection.
-	 * @return it.
-	 */
-	private Item1PenSelection getInstance() {
-	    return this;
-	}
 	
 	/**
 	 * @return the selected
@@ -242,14 +221,7 @@ public class Item1PenSelection extends MPanel {
 	/**
 	 * @return the jlbl_thickness
 	 */
-	public MLabel getJlbl_thickness() {
+	public final MLabel getJlbl_thickness() {
 		return jlbl_thickness;
-	}
-
-	/**
-	 * @param jlbl_thickness the jlbl_thickness to set
-	 */
-	public void setJlbl_thickness(MLabel jlbl_thickness) {
-		this.jlbl_thickness = jlbl_thickness;
 	}
 }

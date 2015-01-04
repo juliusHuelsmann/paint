@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import model.objects.pen.Pen;
 import model.settings.Constants;
+import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import model.util.DPoint;
 
@@ -112,5 +113,14 @@ public class FunnyPen extends Pen {
 	    this.currentBorderValue = currentBorderStart;
 	}
 
+	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final String getName() {
+		return TextFactory.getInstance().getName_Funny();
+	}
 
 }

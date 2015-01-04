@@ -11,6 +11,7 @@ import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.Error;
 import model.settings.Status;
+import model.settings.TextFactory;
 import model.util.DPoint;
 
 
@@ -212,4 +213,14 @@ public class Marker extends Pen {
 	    
 	    return new Color(red, green, blue, newAlpha).getRGB();
 	}
+	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final String getName() {
+		return TextFactory.getInstance().getName_marker();
+	}
 }
+

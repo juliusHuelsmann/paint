@@ -16,8 +16,10 @@ import view.View;
 import view.util.VScrollPane;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
-import control.CSelection;
-import control.ControlPainting;
+import control.ControlPaintSelectin;
+import control.ControlPaint;
+import control.ControlView;
+import control.tabs.ControlTabPainting;
 import view.util.mega.MButton;
 
 /**
@@ -98,14 +100,19 @@ import view.util.mega.MButton;
     /**
      * 
      */
-    private CSelection controlSelection;
+    private New jpnl_new;
+    
+    /**
+     * 
+     */
+    private ControlPaint controlPaint;
     
 	/**
 	 * empty utility class constructor. 
 	 */
-	public Page(final CSelection _cs) {
+	public Page(final ControlPaint _cv) {
 		instance = this;
-		this.controlSelection = _cs;
+		this.controlPaint = _cv;
 		initialize();
 	}
 
@@ -133,7 +140,8 @@ import view.util.mega.MButton;
         super.setVisible(false);
 
         //form for creating new page.
-        super.add(New.getInstance());
+        jpnl_new = new New();
+        super.add(jpnl_new);
         super.add(Console.getInstance());
         super.add(QuickAccess.getInstance());
         
@@ -183,8 +191,9 @@ import view.util.mega.MButton;
                         BorderFactory.createLineBorder(Color.gray));
                 jbtn_resize[x][y].setBackground(Color.white);
                 jbtn_resize[x][y].setOpaque(true);
-                jbtn_resize[x][y].addMouseMotionListener(controlSelection);
-                jbtn_resize[x][y].addMouseListener(controlSelection);
+                jbtn_resize[x][y].addMouseMotionListener(
+                		controlPaint.getControlPaintSelection());
+                jbtn_resize[x][y].addMouseListener(controlPaint);
                 super.add(jbtn_resize[x][y]);
             }
         }
@@ -227,8 +236,8 @@ import view.util.mega.MButton;
         jlbl_painting = new PaintLabel(jpnl_toMove);
         jlbl_painting.setFocusable(false);
         jlbl_painting.setBorder(null);
-        jlbl_painting.addMouseMotionListener(ControlPainting.getInstance());
-        jlbl_painting.addMouseListener(ControlPainting.getInstance());
+        jlbl_painting.addMouseMotionListener(controlPaint);
+        jlbl_painting.addMouseListener(controlPaint);
         jlbl_painting.setOpaque(false);
         super.add(jlbl_painting);
 
@@ -413,7 +422,7 @@ import view.util.mega.MButton;
 	        }
 	    }
 	    //method for setting the MButtons to the size of the entire image.
-	    ControlPainting.getInstance().updateResizeLocation();
+	    ControlTabPainting.getInstance().updateResizeLocation();
 	    
 	    jlbl_painting.stopBorderThread();
 	    
@@ -500,5 +509,21 @@ import view.util.mega.MButton;
     public MLabel getJlbl_resizeSelectionSize() {
         return jlbl_resizeSelectionSize;
     }
+
+
+	/**
+	 * @return the jpnl_new
+	 */
+	public New getJpnl_new() {
+		return jpnl_new;
+	}
+
+
+	/**
+	 * @param jpnl_new the jpnl_new to set
+	 */
+	public void setJpnl_new(New jpnl_new) {
+		this.jpnl_new = jpnl_new;
+	}
 }
 

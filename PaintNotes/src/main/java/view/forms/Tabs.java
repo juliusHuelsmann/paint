@@ -5,6 +5,7 @@ package view.forms;
 import java.awt.Toolkit;
 
 import model.settings.ViewSettings;
+import control.ControlPaint;
 import control.util.CItem;
 import view.View;
 import view.tabs.Export;
@@ -31,6 +32,11 @@ public final class Tabs extends VTabbedPane {
      */
     private Paint tab_paint;
     
+    private Print tab_print;
+    
+    private Write tab_write;
+    
+    private Selection tab_selection;
     
     private static Tabs instance;
     /**
@@ -41,18 +47,10 @@ public final class Tabs extends VTabbedPane {
     /**
      * Empty utility class constructor.
      */
-    public Tabs(View _view) {
+    public Tabs(View _view, ControlPaint _cp) {
     	super(_view);
     	instance = this;
-    	initialize();
-    }
-    
-    
-    /**
-     * 
-     * pseudo- constructor: adds instances of tabs to tabbedPane.
-     */
-    public void initialize() {
+
 
         
         //TabbedPane for different pages
@@ -69,7 +67,7 @@ public final class Tabs extends VTabbedPane {
          * tab paint
          */
         super.addTab("Painting");
-        tab_paint = Paint.getInstance();
+        tab_paint =  new Paint(_cp.getcTabPaint());
         super.addToTab(tabNumber, tab_paint);
         tabNumber++;
 
@@ -77,7 +75,8 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Writing");
-        super.addToTab(tabNumber, Write.getInstance());
+        tab_write = new Write(_cp.getcTabWrite());
+        super.addToTab(tabNumber, tab_write);
         tabNumber++;
 
 
@@ -94,7 +93,7 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Selection");
-        Selection tab_selection = Selection.getInstance();
+        tab_selection = new Selection(_cp.getcTabPaint());
         super.addToTab(tabNumber, tab_selection);
         tabNumber++;
         /*
@@ -118,7 +117,8 @@ public final class Tabs extends VTabbedPane {
          * tab print
          */
         super.addTab("Printing");
-        super.addToTab(tabNumber, Print.getInstance());
+        tab_print = new Print(_cp.getcTabPrint());
+        super.addToTab(tabNumber, tab_print);
         tabNumber++;
 
 
@@ -151,7 +151,16 @@ public final class Tabs extends VTabbedPane {
 
         super.setVisible(true);
     
+    
+    
+    
     }
+    
+    
+    /**
+     * 
+     * pseudo- constructor: adds instances of tabs to tabbedPane.
+     */
     
     
     
@@ -204,4 +213,52 @@ public final class Tabs extends VTabbedPane {
     public  Paint getTab_paint() {
         return tab_paint;
     }
+
+
+	/**
+	 * @return the tab_print
+	 */
+	public Print getTab_print() {
+		return tab_print;
+	}
+
+
+	/**
+	 * @param tab_print the tab_print to set
+	 */
+	public void setTab_print(Print tab_print) {
+		this.tab_print = tab_print;
+	}
+
+
+	/**
+	 * @return the tab_write
+	 */
+	public Write getTab_write() {
+		return tab_write;
+	}
+
+
+	/**
+	 * @param tab_write the tab_write to set
+	 */
+	public void setTab_write(Write tab_write) {
+		this.tab_write = tab_write;
+	}
+
+
+	/**
+	 * @return the tab_selection
+	 */
+	public Selection getTab_selection() {
+		return tab_selection;
+	}
+
+
+	/**
+	 * @param tab_selection the tab_selection to set
+	 */
+	public void setTab_selection(Selection tab_selection) {
+		this.tab_selection = tab_selection;
+	}
 }

@@ -13,8 +13,6 @@ import javax.swing.JSlider;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import view.tabs.Paint;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 import model.objects.painting.Picture;
@@ -22,7 +20,7 @@ import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.util.paint.Utils;
 import control.tabs.CPaintStatus;
-import control.tabs.CPaintVisualEffects;
+import control.tabs.ControlTabPainting;
 
 /**
  * Class item pen selection, contains one pen which can be selected.
@@ -80,7 +78,7 @@ public class Item1PenSelection extends MPanel {
 	 * user clicked at this button
 	 */
 	public Item1PenSelection(final String _title, final String _imagePath, 
-	        final int _pen, final Pen _penModel) {
+	        final int _pen, final Pen _penModel, final Item1Menu _i1mToChange) {
 		
 		//initialize JFrame and alter settings
 		super();
@@ -124,16 +122,12 @@ public class Item1PenSelection extends MPanel {
 	            //set the image of the current pen, close the menu and
 	            //reset the last open menu; thus no menu has to be closed the 
 				//next time another menu is opened
-	            if (penSelection == 1) {
 	                
-	                Paint.getInstance().getIt_stift1().setIcon(getImagePath());
+	            	_i1mToChange.setIcon(getImagePath());
 	                
-	                
-	            } else if (penSelection == 2) {
-	                
-	                Paint.getInstance().getIt_stift2().setIcon(getImagePath());
-	            }
-	            CPaintVisualEffects.applyFocus(getInstance());
+	            	//TODO: Das ist bloed weil soll abgeschotttet sein von
+	            	//normalen klassen.
+	            ControlTabPainting.applyFocus(getInstance());
 			}
 		});
 		
@@ -150,7 +144,6 @@ public class Item1PenSelection extends MPanel {
 		jbtn_select.setBorder(null);
 		jbtn_select.addMouseListener(CPaintStatus.getInstance());
 		jbtn_select.setFocusable(false);
-		jbtn_select.addMouseListener(CPaintVisualEffects.getInstance());
 		super.add(jbtn_select);
 	}
 

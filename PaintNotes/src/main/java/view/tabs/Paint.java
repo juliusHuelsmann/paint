@@ -4,10 +4,12 @@ package view.tabs;
 //import declarations
 import java.awt.Color;
 import java.awt.Dimension;
+
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Marker;
@@ -16,10 +18,10 @@ import model.settings.Constants;
 import model.settings.Status;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
-import control.ControlPainting;
+import control.ControlPaint;
 import control.tabs.CPaintStatus;
-import control.tabs.CPaintVisualEffects;
 import control.tabs.CPaintSelection;
+import control.tabs.ControlTabPainting;
 import view.util.Item1Menu;
 import view.util.Item1PenSelection;
 import view.util.VColorPanel;
@@ -93,7 +95,7 @@ public final class Paint extends Tab {
 	/**
 	 * Constructor of Paint.
 	 */
-	private Paint() {
+	public Paint(ControlTabPainting _paint) {
 
 		//initialize JPanel and alter settings
 		super((2 + 1) * 2);
@@ -101,12 +103,12 @@ public final class Paint extends Tab {
 		super.setLayout(null);
 		
 		
-		int x = initializeClipboard(0, true);
+		int x = initializeClipboard(0, true, _paint);
         x = initializeHistory(x, true);
-		x = initializePagePens(x, true);
-        x = initializePageColors(x, true);
-		x = initializeZoom(x, true);
-        x = initializeFileOperations(x, true);
+		x = initializePagePens(x, true, _paint);
+        x = initializePageColors(x, true, _paint);
+		x = initializeZoom(x, true, _paint);
+        x = initializeFileOperations(x, true, _paint);
 
         //disable icons which functionality is not implemented yet.
         tb_prev.disable();
@@ -138,7 +140,8 @@ public final class Paint extends Tab {
 	 * @param _paint whether to paint or just to resize.
 	 * @return the x coordinate for following items.
 	 */
-	private int initializeClipboard(final int _x, final boolean _paint) {
+	private int initializeClipboard(final int _x, final boolean _paint,
+			final ControlTabPainting cp) {
 
         if (_paint) {
 
@@ -161,7 +164,7 @@ public final class Paint extends Tab {
 
 	        //paste
 	        tb_paste.setBorder(false);
-	        tb_paste.addMouseListener(ControlPainting.getInstance());
+	        tb_paste.addActionListener(cp);
 	        initializeTextButton(tb_paste,
 	                TextFactory.getInstance().getTextViewTb_paste(),
 	                Constants.VIEW_TB_PASTE_PATH, 0);
@@ -169,7 +172,7 @@ public final class Paint extends Tab {
 
 	        //copy
 	        tb_copy.setBorder(false);
-	        tb_copy.addMouseListener(ControlPainting.getInstance());
+	        tb_copy.addActionListener(cp);
 	        initializeTextButton(tb_copy,
 	                TextFactory.getInstance().getTextViewTb_copy(),
 	                Constants.VIEW_TB_COPY_PATH, 0);
@@ -177,7 +180,7 @@ public final class Paint extends Tab {
 
 	        //cut
 	        tb_cut.setBorder(false);
-	        tb_cut.addMouseListener(ControlPainting.getInstance());
+	        tb_cut.addActionListener(cp);
 	        initializeTextButton(tb_cut,
 	                TextFactory.getInstance().getTextViewTb_cut(),
 	                Constants.VIEW_TB_CUT_PATH, 0);
@@ -287,7 +290,8 @@ public final class Paint extends Tab {
      * 
      * @return the new x coordinate
 	 */
-	private int initializePagePens(final int _x, final boolean _paint) {
+	private int initializePagePens(final int _x, final boolean _paint,
+			final ControlTabPainting _cp) {
         final Dimension sizeIT = new Dimension(550, 550);
         final Dimension sizeIT_selection = new Dimension(350, 370);
 //        = new Dimension(350, 270);//for my laptop
@@ -337,7 +341,7 @@ public final class Paint extends Tab {
         	it_stift2.setItemsInRow((byte) 1);
         	it_stift2.setBorder(false);
         	super.add(it_stift2);
-        	addPens();
+        	addPens(_cp);
 
             it_selection.setText("Auswahl");
             it_selection.setBorder(false);
@@ -442,7 +446,8 @@ public final class Paint extends Tab {
 	 * @param _paint whether to paint
 	 * @return the new position.
 	 */
-    private int initializePageColors(final int _x, final boolean _paint) {
+    private int initializePageColors(final int _x, final boolean _paint, 
+    		final ControlTabPainting _cPaint) {
     	//the first color for the first pen
     	tb_color1 = new Item1Button(null);
     	tb_color1.setOpaque(true);
@@ -483,7 +488,7 @@ public final class Paint extends Tab {
     		jbtn_colors[i].setOpaque(true);
     		jbtn_colors[i].addMouseListener(
     		        CPaintStatus.getInstance());
-    		jbtn_colors[i].addMouseListener(CPaintVisualEffects.getInstance());
+    		jbtn_colors[i].addMouseListener(_cPaint);
     		jbtn_colors[i].setBorder(BorderFactory.createCompoundBorder(
     		        new LineBorder(Color.black), new LineBorder(Color.white)));
     		super.add(jbtn_colors[i]);
@@ -601,7 +606,8 @@ public final class Paint extends Tab {
      * 
      * @return the new x coordinate
 	 */
-	private int initializeZoom(final int _x, final boolean _paint) {
+	private int initializeZoom(final int _x, final boolean _paint, 
+			final ControlTabPainting _controlTabPaint) {
 
 		//zoom in
 		tb_zoomIn = new Item1Button(null);
@@ -621,7 +627,7 @@ public final class Paint extends Tab {
 		tb_zoomOut.setLocation(tb_zoomIn.getX(),
 				tb_zoomIn.getY() + ViewSettings.getDistanceBetweenItems() 
 				+ tb_zoomIn.getHeight());
-		tb_zoomOut.addMouseListener(ControlPainting.getInstance());
+		tb_zoomOut.addActionListener(ControlTabPainting.getInstance());
 		tb_zoomOut.setBorder(false);
 		initializeTextButton(tb_zoomOut,
 				TextFactory.getInstance().getTextViewTb_zoomOut(),
@@ -639,11 +645,12 @@ public final class Paint extends Tab {
 	/**
 	 * 
      * @param _x the x coordinate where to continue
-     * @param _paint whether to paint or not
+     * @param _controlTabPaint whether to paint or not
      * 
      * @return the new x coordinate
 	 */
-	private int initializeFileOperations(final int _x, final boolean _paint) {
+	private int initializeFileOperations(final int _x, final boolean _paint,
+			final ControlTabPainting _controlTabPaint) {
 
         //save
         tb_save = new Item1Button(tb_save);
@@ -651,7 +658,7 @@ public final class Paint extends Tab {
         tb_save.setLocation(_x + ViewSettings.getDistanceAfterLine(),
                 tb_zoomIn.getY());
         tb_save.setBorder(false);
-        tb_save.addMouseListener(ControlPainting.getInstance());
+        tb_save.addActionListener(_controlTabPaint);
         initializeTextButton(tb_save,
                 TextFactory.getInstance().getTextViewTb_save(),
                 Constants.VIEW_TB_SAVE_PATH, 0);
@@ -664,7 +671,7 @@ public final class Paint extends Tab {
                 tb_save.getY() + tb_save.getHeight() 
                 + ViewSettings.getDistanceBetweenItems());
         tb_saveAs.setBorder(false);
-        tb_saveAs.addMouseListener(ControlPainting.getInstance());
+        tb_saveAs.addActionListener(_controlTabPaint);
         initializeTextButton(tb_saveAs,
                 TextFactory.getInstance().getTextViewTb_save() + " as",
                 Constants.VIEW_TB_SAVE_PATH, 0);
@@ -676,7 +683,7 @@ public final class Paint extends Tab {
 		tb_load.setLocation(tb_save.getWidth() + tb_save.getX()
                 + ViewSettings.getDistanceBetweenItems(), tb_save.getY());
 		tb_load.setBorder(false);
-		tb_load.addMouseListener(ControlPainting.getInstance());
+		tb_load.addActionListener(_controlTabPaint);
 		initializeTextButton(tb_load,
 				"load",
 				Constants.VIEW_TB_LOAD_PATH, 0);
@@ -688,7 +695,7 @@ public final class Paint extends Tab {
         tb_new.setLocation(tb_saveAs.getWidth() + tb_saveAs.getX()
                 + ViewSettings.getDistanceBetweenItems(), tb_saveAs.getY());
         tb_new.setBorder(false);
-        tb_new.addMouseListener(ControlPainting.getInstance());
+        tb_new.addActionListener(_controlTabPaint);
         initializeTextButton(tb_new,
                 "new",
                 Constants.VIEW_TB_NEW_PATH, 0);
@@ -700,7 +707,7 @@ public final class Paint extends Tab {
         tb_turnMirror.setLocation(tb_load.getWidth() + tb_load.getX() 
                 + ViewSettings.getDistanceBetweenItems(), tb_load.getY());
         tb_turnMirror.setBorder(false);
-        tb_turnMirror.addActionListener(ControlPainting.getInstance());
+        tb_turnMirror.addActionListener(ControlTabPainting.getInstance());
         initializeTextButton(tb_turnMirror,
                 "Spiegelung",
                 Constants.VIEW_TB_DOWN_PATH, 0);
@@ -711,7 +718,7 @@ public final class Paint extends Tab {
                 tb_turnMirror.getHeight());
         tb_turnNormal.setLocation(tb_turnMirror.getX(), tb_zoomOut.getY());
         tb_turnNormal.setBorder(false);
-        tb_turnNormal.addActionListener(ControlPainting.getInstance());
+        tb_turnNormal.addActionListener(ControlTabPainting.getInstance());
         initializeTextButton(tb_turnNormal,
                 "Spiegelung normal",
                 Constants.VIEW_TB_UP_PATH, 0);
@@ -732,56 +739,86 @@ public final class Paint extends Tab {
 	/**
 	 * add pens .
 	 */
-	private void addPens() {
+	private void addPens(final ControlTabPainting _cp) {
 
 
         Pen pen_bp1 = new Pencil(Constants.PEN_ID_POINT, 2, Color.black);
         Pen pen_bn1 = new Pencil(Constants.PEN_ID_LINES, 2, Color.black);
         Pen pen_br1 = new Pencil(Constants.PEN_ID_MATHS, 2, Color.black);
         sa_bp1 = new Item1PenSelection(
-                "Bleistift Punkte", pen_bp1.getIconPath(), 1, pen_bp1);
+                "Bleistift Punkte", pen_bp1.getIconPath(), 1, pen_bp1,
+                it_stift1);
+        sa_bp1.addMouseListener(_cp);
+        
         sa_bn1 = new Item1PenSelection(
-                "Bleistift Normal", pen_bn1.getIconPath(), 1, pen_bn1);
+                "Bleistift Normal", pen_bn1.getIconPath(), 1, pen_bn1,
+                it_stift1);
+        sa_bn1.addMouseListener(_cp);
+                
         sa_br1 = new Item1PenSelection(
-                "Bleistift rund", pen_br1.getIconPath(), 1, pen_br1);
+                "Bleistift rund", pen_br1.getIconPath(), 1, pen_br1,
+                it_stift1);
+        sa_br1.addMouseListener(_cp);
 
         Pen pen_fr1 = new BallPen(Constants.PEN_ID_MATHS, 2, Color.black);
         Pen pen_fn1 = new BallPen(Constants.PEN_ID_LINES, 2, Color.black);
         Pen pen_fp1 = new BallPen(Constants.PEN_ID_POINT, 2, Color.black);
         sa_fr1 = new Item1PenSelection(
-                "Fueller rund", pen_fr1.getIconPath(), 1, pen_fr1);
+                "Fueller rund", pen_fr1.getIconPath(), 1, pen_fr1,
+                it_stift1);
+        sa_fr1.addMouseListener(_cp);
         sa_fn1 = new Item1PenSelection(
-                "Fueller Normal", pen_fn1.getIconPath(), 1, pen_fn1);
+                "Fueller Normal", pen_fn1.getIconPath(), 1, pen_fn1,
+                it_stift1);
+        sa_fn1.addMouseListener(_cp);
         sa_fp1 = new Item1PenSelection(
-                "Fueller Punkte", pen_fp1.getIconPath(), 1, pen_fp1);
+                "Fueller Punkte", pen_fp1.getIconPath(), 1, pen_fp1,
+                it_stift1);
+        sa_fp1.addMouseListener(_cp);
 
         Pen pen_mn1 = new Marker(Constants.PEN_ID_LINES, 2, Color.black);
         sa_mn1 = new Item1PenSelection(
-                "Marker Normal", pen_mn1.getIconPath(), 1, pen_mn1);
+                "Marker Normal", pen_mn1.getIconPath(), 1, pen_mn1,
+                it_stift1);
+        sa_mn1.addMouseListener(_cp);
 
         Pen pen_bp2 = new Pencil(Constants.PEN_ID_POINT, 2, Color.black);
         Pen pen_bn2 = new Pencil(Constants.PEN_ID_LINES, 2, Color.black);
         Pen pen_br2 = new Pencil(Constants.PEN_ID_MATHS, 2, Color.black);
         sa_bp2 = new Item1PenSelection(
-                "Bleistift Punkte", pen_bp2.getIconPath(), 2, pen_bp2);
+                "Bleistift Punkte", pen_bp2.getIconPath(), 2, pen_bp2,
+                it_stift2);
+        sa_bp2.addMouseListener(_cp);
         sa_bn2 = new Item1PenSelection(
-                "Bleistift Normal", pen_bn2.getIconPath(), 2, pen_bn2);
+                "Bleistift Normal", pen_bn2.getIconPath(), 2, pen_bn2,
+                it_stift2);
+        sa_bn2.addMouseListener(_cp);
         sa_br2 = new Item1PenSelection(
-                "Bleistift rund", pen_br2.getIconPath(), 2, pen_br2);
+                "Bleistift rund", pen_br2.getIconPath(), 2, pen_br2,
+                it_stift2);
+        sa_br2.addMouseListener(_cp);
 
         Pen pen_fr2 = new BallPen(Constants.PEN_ID_MATHS, 2, Color.black);
         Pen pen_fn2 = new BallPen(Constants.PEN_ID_LINES, 2, Color.black);
         Pen pen_fp2 = new BallPen(Constants.PEN_ID_POINT, 2, Color.black);
         sa_fr2 = new Item1PenSelection(
-                "Fueller rund", pen_fr2.getIconPath(), 2, pen_fr2);
+                "Fueller rund", pen_fr2.getIconPath(), 2, pen_fr2,
+                it_stift2);
+        sa_fr2.addMouseListener(_cp);
         sa_fn2 = new Item1PenSelection(
-                "Fueller Normal", pen_fn2.getIconPath(), 2, pen_fn2);
-        sa_fp2 = new Item1PenSelection(
-                "Fueller Punkte", pen_fp2.getIconPath(), 2, pen_fp2);
+                "Fueller Normal", pen_fn2.getIconPath(), 2, pen_fn2,
+                it_stift2);
+        sa_fn2.addMouseListener(_cp);
+        sa_fp2= new Item1PenSelection(
+                "Fueller Punkte", pen_fp2.getIconPath(), 2, pen_fp2,
+                it_stift2);
+        sa_fp2.addMouseListener(_cp);
 
         Pen pen_mn2 = new Marker(Constants.PEN_ID_LINES, 2, Color.black);
         sa_mn2 = new Item1PenSelection(
-                "Marker Normal", pen_mn2.getIconPath(), 2, pen_mn2);
+                "Marker Normal", pen_mn2.getIconPath(), 2, pen_mn2,
+                it_stift2);
+        sa_mn2.addMouseListener(_cp);
         
         
         //add bleistift to both panels
@@ -850,22 +887,6 @@ public final class Paint extends Tab {
     }
 	
 
-    
-    /**
-     * return the only instance of this class.
-     * @return the only instance of this class.
-     */
-    public static Paint getInstance() {
-      
-        //if has not been initialized yet
-        if (instance == null) {
-
-            instance = new Paint();
-        }
-        
-        //return the only instance
-        return instance;
-    }
 
 
 

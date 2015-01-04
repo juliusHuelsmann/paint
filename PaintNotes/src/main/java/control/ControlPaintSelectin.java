@@ -11,7 +11,6 @@ import model.objects.painting.Picture;
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.adt.list.SecureList;
-import view.forms.Page;
 import view.util.mega.MButton;
 
 
@@ -20,15 +19,16 @@ import view.util.mega.MButton;
  * @author Julius Huelsmann
  * @version %I%,%U%
  */
-public class CSelection implements MouseMotionListener, MouseListener {
+public class ControlPaintSelectin implements MouseMotionListener, MouseListener {
 
     /**
      * the only instance of this class.
      */
-    private static CSelection instance;
+    private static ControlPaintSelectin instance;
     
     /**
-     * the start location of the JLabels (page) for selection background and
+     * the start location of the JLabels (cv.getView().getPage()) for selection 
+     * background and
      * selection. For moving operation.
      */
     private DPoint pnt_startLocationLabel;
@@ -79,25 +79,20 @@ public class CSelection implements MouseMotionListener, MouseListener {
     private double factorW, factorH;
     
     
-    /**
-     * The page.
-     */
-    private Page page;
     
-    
-    private Picture picture;
+    private ControlPaint cv;
     
     /**
      * Constructor: initialize DPoint array.
-     * @param _page the page.
+     * @param _cv the cv
      */
-    public CSelection(final Page _page, final Picture _picture) {
+    public ControlPaintSelectin(final ControlPaint _cv) {
     	
     	instance = this;
-    	this.page = _page;
-    	this.picture = _picture;
+    	this.cv = _cv;
         pnt_startLocationButton = new DPoint
                 [2 + 1][2 + 1];
+        
     }
     
     /**
@@ -108,14 +103,14 @@ public class CSelection implements MouseMotionListener, MouseListener {
     public final void mouseDragged(final MouseEvent _event) {
         
         if (_event.getSource().equals(
-                page.getJbtn_resize()[1][1])) {
+                cv.getView().getPage().getJbtn_resize()[1][1])) {
             
             int dX = (int) (_event.getXOnScreen() - pnt_start.getX()), 
                     dY = (int) (_event.getYOnScreen() - pnt_start.getY());
-            page.getJlbl_selectionBG().setLocation(
+            cv.getView().getPage().getJlbl_selectionBG().setLocation(
                     (int) pnt_startLocationLabel.getX() + dX,
                     (int) pnt_startLocationLabel.getY() + dY);
-            page.getJlbl_selectionPainting().setLocation(
+            cv.getView().getPage().getJlbl_selectionPainting().setLocation(
                     (int) pnt_startLocationLabel.getX() + dX,
                     (int) pnt_startLocationLabel.getY() + dY);
 
@@ -129,7 +124,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
                             || (x == 0 && y == 2)
                             || !wholeImageSelected) {
 
-                        page.getJbtn_resize()[x][y].setLocation(
+                        cv.getView().getPage().getJbtn_resize()[x][y].setLocation(
                                 (int) pnt_startLocationButton[x][y].getX() 
                                 + dX,
                                 (int) pnt_startLocationButton[x][y].getY() 
@@ -142,7 +137,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
             r_selection.x = (int) pnt_rSelectionStart.getX() + dX;
             r_selection.y =  (int) pnt_rSelectionStart.getY() + dY;
             
-            page.getJlbl_border().setBounds(r_selection);
+            cv.getView().getPage().getJlbl_border().setBounds(r_selection);
         } else {
             if (wholeImageSelected) {
                 md_buttonLocationWholeImage(_event);
@@ -165,7 +160,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
      * simple getter method.
      * @return the instance
      */
-    public static CSelection getInstance() {
+    public static ControlPaintSelectin getInstance() {
 
         //if not yet instanced call the constructor of FetchColor.
         if (instance == null) {
@@ -209,19 +204,19 @@ public class CSelection implements MouseMotionListener, MouseListener {
             pnt_rSelectionStart = new DPoint(r_selection.getLocation());
         }
         pnt_startLocationLabel = new DPoint(
-                page.getJlbl_selectionBG().getLocation());
+                cv.getView().getPage().getJlbl_selectionBG().getLocation());
 
         for (int x = 0; x < pnt_startLocationButton.length; x++) {
 
             for (int y = 0; y < pnt_startLocationButton.length; y++) {
-                pnt_startLocationButton[x][y] = new DPoint(page
+                pnt_startLocationButton[x][y] = new DPoint(cv.getView().getPage()
                         .getJbtn_resize()[x][y].getLocation());
             }
         }
         
         if (!_event.getSource().equals(
-                page.getJbtn_resize()[1][1])) {
-            page.getJlbl_painting().stopBorderThread();
+                cv.getView().getPage().getJbtn_resize()[1][1])) {
+            cv.getView().getPage().getJlbl_painting().stopBorderThread();
         }
     }
 
@@ -233,7 +228,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
         
 
         if (_event.getSource().equals(
-                page.getJbtn_resize()[1][1])) {
+                cv.getView().getPage().getJbtn_resize()[1][1])) {
             
             int dX = (int) (_event.getXOnScreen() - pnt_start.getX()), 
                     dY = (int) (_event.getYOnScreen() - pnt_start.getY());
@@ -247,9 +242,9 @@ public class CSelection implements MouseMotionListener, MouseListener {
                     (int) (1.0 * dX * cZoomFactorWidth), 
                     (int) (1.0 * dY * cZoomFactorHeight));
             
-            page.getJlbl_painting().paintEntireSelectionRect(
+            cv.getView().getPage().getJlbl_painting().paintEntireSelectionRect(
                     r_selection);
-            page.getJlbl_selectionPainting().repaint();
+            cv.getView().getPage().getJlbl_selectionPainting().repaint();
             
 //            Picture.getInstance().paintSelected();
             
@@ -265,11 +260,11 @@ public class CSelection implements MouseMotionListener, MouseListener {
             if (_event.getSource() instanceof MButton) {
                 
 
-                final int jrssW = page
+                final int jrssW = cv.getView().getPage()
                         .getJlbl_resizeSelectionSize().getWidth();
-                final int jrssH = page
+                final int jrssH = cv.getView().getPage()
                         .getJlbl_resizeSelectionSize().getWidth();
-                page.getJlbl_resizeSelectionSize().setLocation(
+                cv.getView().getPage().getJlbl_resizeSelectionSize().setLocation(
                         (-jrssW), 
                         (-jrssH));
                 if (wholeImageSelected) {
@@ -298,7 +293,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
-        MButton[][] j = page.getJbtn_resize();
+        MButton[][] j = cv.getView().getPage().getJbtn_resize();
         DPoint[][] p = pnt_startLocationButton;
         double distanceXY;
         if ((distanceX) < (distanceY)) {
@@ -360,34 +355,34 @@ public class CSelection implements MouseMotionListener, MouseListener {
                 (int) (newDim.height / factorH)));
         
 
-        page.getJlbl_painting().refreshPaint();
+        cv.getView().getPage().getJlbl_painting().refreshPaint();
         
         
-        final int width = page.getJlbl_resizeSelectionSize()
+        final int width = cv.getView().getPage().getJlbl_resizeSelectionSize()
                 .getWidth();
-        final int height = page.getJlbl_resizeSelectionSize()
+        final int height = cv.getView().getPage().getJlbl_resizeSelectionSize()
                 .getHeight();
-        page.getJlbl_resizeSelectionSize().setLocation(
+        cv.getView().getPage().getJlbl_resizeSelectionSize().setLocation(
                 (j[2][2].getX() - width) / 2, 
                 (j[2][2].getY() - height) / 2);
 
-        if (page.getJlbl_resizeSelectionSize().getX() 
+        if (cv.getView().getPage().getJlbl_resizeSelectionSize().getX() 
                 < 0) {
-            page.getJlbl_resizeSelectionSize().setLocation(
+            cv.getView().getPage().getJlbl_resizeSelectionSize().setLocation(
                     j[2][2].getX(),
-                    page.getJlbl_resizeSelectionSize().getY());
+                    cv.getView().getPage().getJlbl_resizeSelectionSize().getY());
         }
-        if (page.getJlbl_resizeSelectionSize().getY() 
+        if (cv.getView().getPage().getJlbl_resizeSelectionSize().getY() 
                 < 0) {
-            page.getJlbl_resizeSelectionSize().setLocation(
-                    page.getJlbl_resizeSelectionSize().getX(),
+            cv.getView().getPage().getJlbl_resizeSelectionSize().setLocation(
+                    cv.getView().getPage().getJlbl_resizeSelectionSize().getX(),
                     j[2][2].getY());
         }
         
-        page.getJlbl_resizeSelectionSize().setText(
+        cv.getView().getPage().getJlbl_resizeSelectionSize().setText(
                 newDim.width + "x" + newDim.height + "");
 
-        page.refrehsSps();
+        cv.getView().getPage().refrehsSps();
         
         
     }
@@ -401,7 +396,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
-        MButton[][] j = page.getJbtn_resize();
+        MButton[][] j = cv.getView().getPage().getJbtn_resize();
         DPoint[][] p = pnt_startLocationButton;
         double distanceXY, distanceXY2;
         if (Math.abs(distanceX) < Math.abs(distanceY)) {
@@ -538,7 +533,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
                     j[0][1].getY() + size - sizeButton);
         }
 
-        page.getJlbl_border().setBounds(j[0][0].getX() + size,
+        cv.getView().getPage().getJlbl_border().setBounds(j[0][0].getX() + size,
                 j[0][0].getY() + size, j[2][0].getX() - j[0][0].getX(),
                 j[0][2].getY() - j[0][0].getY());
         r_selection = new Rectangle(j[0][0].getX() + size,
@@ -565,7 +560,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
-        MButton[][] j = page.getJbtn_resize();
+        MButton[][] j = cv.getView().getPage().getJbtn_resize();
         double distanceXY, distanceXY2;
         if (Math.abs(distanceX) < Math.abs(distanceY)) {
             distanceXY = distanceX;
@@ -650,7 +645,7 @@ public class CSelection implements MouseMotionListener, MouseListener {
     			closedAction);
         
         //release selected and paint them
-        page.releaseSelected();
+        cv.getView().getPage().releaseSelected();
         Picture.getInstance().paintSelected();
     }
 

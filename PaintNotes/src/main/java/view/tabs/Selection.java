@@ -3,6 +3,7 @@ package view.tabs;
 
 //import declarations
 import java.awt.Color;
+
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
@@ -10,7 +11,7 @@ import javax.swing.border.LineBorder;
 import model.settings.ViewSettings;
 import control.tabs.CPaintStatus;
 import control.tabs.CTabSelection;
-import control.tabs.CPaintVisualEffects;
+import control.tabs.ControlTabPainting;
 import view.util.Item1Menu;
 import view.util.Item1Button;
 import view.util.VColorPanel;
@@ -60,27 +61,20 @@ public final class Selection extends Tab {
     /**
      * Empty Utility class Constructor.
      */
-	private Selection() {
+	public Selection(final ControlTabPainting _cPaint) {
 	    super(2);
-	}
-	
-	
-	/**
-	 * real constructor.
-	 */
-	private void init() {
-        
         //initialize JPanel and alter settings
         super.setOpaque(false);
         super.setLayout(null);
 
 
 
-        int x = initCololrs(distance, true);
+        int x = initCololrs(distance, true, _cPaint);
         x = initPen(x, true);
         initOthers(x, true);
         
 	}
+	
 	
 	
 	/**
@@ -89,12 +83,13 @@ public final class Selection extends Tab {
 	 * @param _paint the boolean.
 	 * @return the new x coordinate
 	 */
-	private int initCololrs(final int _x, final boolean _paint) {
+	private int initCololrs(final int _x, final boolean _paint,
+			final ControlTabPainting _cPaint) {
 
         //the first color for the first pen
         tb_color = new Item1Button(null);
         tb_color.setOpaque(true);
-        tb_color.addMouseListener(CPaintStatus.getInstance());
+//        tb_color.addMouseListener(CPaintStatus.getInstance());
         tb_color.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black), new LineBorder(Color.white)));
         tb_color.setLocation(_x, ViewSettings.getDistanceBetweenItems());
@@ -121,7 +116,7 @@ public final class Selection extends Tab {
             jbtn_colors[i].addActionListener(CTabSelection.getInstance());
             jbtn_colors[i].addMouseListener(
                     CPaintStatus.getInstance());
-            jbtn_colors[i].addMouseListener(CPaintVisualEffects.getInstance());
+            jbtn_colors[i].addMouseListener(_cPaint);
             jbtn_colors[i].setBorder(BorderFactory.createCompoundBorder(
                     new LineBorder(Color.black), new LineBorder(Color.white)));
             super.add(jbtn_colors[i]);

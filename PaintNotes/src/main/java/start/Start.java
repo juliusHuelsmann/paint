@@ -3,12 +3,9 @@ package start;
 
 //import declarations
 import java.io.File;
-
 import model.objects.painting.Picture;
 import model.settings.Status;
 import control.ControlPaint;
-import control.ControlView;
-import control.tabs.ControlTabPainting;
 
 
 
@@ -20,12 +17,6 @@ import control.tabs.ControlTabPainting;
  */
 public final class Start {
 
-	/**
-	 * Whether the initialization process has finished or not. If it has,
-	 * the fadeOut can disappear.
-	 */
-	private static int initializationFinished = 0;
-	
 	/**
 	 * Utility class constructor.
 	 */
@@ -108,7 +99,7 @@ public final class Start {
 	        new ControlPaint();
 	        
 	        //set the initialization process terminated
-            increaseInitializationFinished();
+            Status.increaseInitializationFinished();
 	        
 	        break;
 	        
@@ -124,25 +115,10 @@ public final class Start {
             }
 
 	        //set the initialization process terminated
-            increaseInitializationFinished();
+            Status.increaseInitializationFinished();
             
             break;
 	    }
-	}
-
-	/**
-	 * @return the initializationFinished
-	 */
-	public static boolean isInitializationFinished() {
-		return (initializationFinished >= 2);
-	}
-
-	
-	/**
-	 * Set the current operation finished.
-	 */
-	public static synchronized void increaseInitializationFinished() {
-		initializationFinished++;
 	}
 
 }

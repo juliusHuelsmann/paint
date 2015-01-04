@@ -6,10 +6,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
 import model.settings.Constants;
+import model.settings.Settings;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.Util;
@@ -369,7 +372,7 @@ import control.util.MousePositionTracker;
 		            }
 		        }
 
-			    while (!Start.isInitializationFinished()) {
+			    while (!Status.isInitializationFinished()) {
 			        //sleep for a while
 			        try {
 			            Thread.sleep(time * 2);

@@ -14,6 +14,7 @@ import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
+import control.tabs.CPaintStatus;
 import control.util.CColorPanel;
 
 
@@ -287,12 +288,14 @@ import control.util.CColorPanel;
         
         //initialize them
         it_color1 = new Item1Menu(false);
+        it_color1.addMouseListener(CPaintStatus.getInstance());
         it_color1.setOrderHeight(true);
         it_color1.setSize(new Dimension(1, heightPanel));
         it_color1.setItemsInRow(itemsInRow);
         
         it_color2 = new Item1Menu(false);
         it_color2.setOrderHeight(true);
+        it_color2.addMouseListener(CPaintStatus.getInstance());
         it_color2.setSize(new Dimension(1, heightPanel));
         it_color2.setItemsInRow(itemsInRow);
 

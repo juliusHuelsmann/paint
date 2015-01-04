@@ -45,7 +45,15 @@ public class Pencil extends Pen {
         super(_index, _thickness, _background, getPath(_index));
     
     }
-
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String getName() {
+    	return "Pencil";
+    }
     /**
      * Return the path of the icon depending on kind of pen.
      * @param _kind the kind of pen

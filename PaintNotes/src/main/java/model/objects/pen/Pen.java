@@ -102,7 +102,14 @@ public abstract class Pen implements Serializable {
 		this.clr_foreground = _clr;
 		this.iconPath = _iconPath;
 	}
+
 	
+	/**
+	 * Return the displayed name of the pen depending on its specific 
+	 * implementation.
+	 * @return the name of the pen.
+	 */
+	public abstract String getName();
 	
 	
 	/**

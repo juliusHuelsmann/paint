@@ -12,6 +12,7 @@ import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
+import model.objects.pen.normal.Marker;
 import model.objects.pen.normal.Pencil;
 import model.util.paint.Utils;
 
@@ -84,6 +85,20 @@ public final class Status {
     
     
     /**
+     * The entire list of available pens.
+     */
+    private static final Pen[] pen_available = new Pen[]{
+    		new Pencil(Constants.PEN_ID_POINT, 2, Color.black),
+            new Pencil(Constants.PEN_ID_LINES, 2, Color.black),
+            new Pencil(Constants.PEN_ID_MATHS, 2, Color.black),
+
+            new BallPen(Constants.PEN_ID_MATHS, 2, Color.black),
+            new BallPen(Constants.PEN_ID_LINES, 2, Color.black),
+            new BallPen(Constants.PEN_ID_POINT, 2, Color.black),
+
+            new Marker(Constants.PEN_ID_LINES, 2, Color.black)};
+    
+    /**
      * Erase radius.
      */
     private static int eraseRadius = 10;
@@ -105,6 +120,7 @@ public final class Status {
     borderRightPercentExport = borderLeftPercentExport, 
     borderTopPercentExport = Constants.BORDER_PRERCENTAGES[1], 
     borderBottomPercentExport = Constants.BORDER_PRERCENTAGES[1];
+
     
 
 
@@ -783,6 +799,14 @@ public final class Status {
 	 */
 	public static void setEraseRadius(int eraseRadius) {
 		Status.eraseRadius = eraseRadius;
+	}
+
+
+	/**
+	 * @return the pen_available
+	 */
+	public static Pen[] getPen_available() {
+		return pen_available;
 	}
 
 }

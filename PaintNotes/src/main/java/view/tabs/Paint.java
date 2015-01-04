@@ -22,6 +22,7 @@ import control.ControlPaint;
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintSelection;
 import control.tabs.ControlTabPainting;
+import control.util.CPen;
 import view.util.Item1Menu;
 import view.util.Item1PenSelection;
 import view.util.VColorPanel;
@@ -298,6 +299,7 @@ public final class Paint extends Tab {
         final int sizeHeight = 110;
         if (_paint) {
             it_stift1 = new Item1Menu(false);
+            it_stift1.addMouseListener(CPaintStatus.getInstance());
             tb_erase = new Item1Button(null);
             tb_move = new Item1Button(null);
             tb_fill = new Item1Button(null);
@@ -305,8 +307,11 @@ public final class Paint extends Tab {
             tb_selectionMagic = new Item1Button(null);
             tb_selectionCurve = new Item1Button(null);
             tb_selectionLine = new Item1Button(null);
+            
             it_selection = new Item1Menu(false);
+            it_selection.addMouseListener(CPaintStatus.getInstance());
             it_stift2 = new Item1Menu(false);
+            it_stift2.addMouseListener(CPaintStatus.getInstance());
         }
         it_stift1.flip();
         it_stift2.flip();
@@ -577,6 +582,7 @@ public final class Paint extends Tab {
     
     	//
     	it_color = new Item1Menu(true);
+    	it_color.addMouseListener(CPaintStatus.getInstance());
         it_color.setSize(new Dimension(ViewSettings.getSIZE_PNL_CLR().width 
         		+ 20,
         		ViewSettings.getSIZE_PNL_CLR().height));
@@ -742,107 +748,40 @@ public final class Paint extends Tab {
 	private void addPens(final ControlTabPainting _cp) {
 
 
-        Pen pen_bp1 = new Pencil(Constants.PEN_ID_POINT, 2, Color.black);
-        Pen pen_bn1 = new Pencil(Constants.PEN_ID_LINES, 2, Color.black);
-        Pen pen_br1 = new Pencil(Constants.PEN_ID_MATHS, 2, Color.black);
-        sa_bp1 = new Item1PenSelection(
-                "Bleistift Punkte", pen_bp1.getIconPath(), 1, pen_bp1,
-                it_stift1);
-        sa_bp1.addMouseListener(_cp);
-        
-        sa_bn1 = new Item1PenSelection(
-                "Bleistift Normal", pen_bn1.getIconPath(), 1, pen_bn1,
-                it_stift1);
-        sa_bn1.addMouseListener(_cp);
-                
-        sa_br1 = new Item1PenSelection(
-                "Bleistift rund", pen_br1.getIconPath(), 1, pen_br1,
-                it_stift1);
-        sa_br1.addMouseListener(_cp);
+		
+		for (Pen pen_available : Status.getPen_available()){
+			
+			/*
+			 * The pen which is inserted into the first penMenu
+			 */
+			Item1PenSelection i1 = new Item1PenSelection(
+					pen_available.getName(),
+					pen_available.getIconPath());
+			
+			//mouse listener and changeListener
+			i1.addMouseListener(_cp);
+			i1.addChangeListener(new CPen(_cp, i1, it_stift1, 
+					Pen.clonePen(pen_available)));
 
-        Pen pen_fr1 = new BallPen(Constants.PEN_ID_MATHS, 2, Color.black);
-        Pen pen_fn1 = new BallPen(Constants.PEN_ID_LINES, 2, Color.black);
-        Pen pen_fp1 = new BallPen(Constants.PEN_ID_POINT, 2, Color.black);
-        sa_fr1 = new Item1PenSelection(
-                "Fueller rund", pen_fr1.getIconPath(), 1, pen_fr1,
-                it_stift1);
-        sa_fr1.addMouseListener(_cp);
-        sa_fn1 = new Item1PenSelection(
-                "Fueller Normal", pen_fn1.getIconPath(), 1, pen_fn1,
-                it_stift1);
-        sa_fn1.addMouseListener(_cp);
-        sa_fp1 = new Item1PenSelection(
-                "Fueller Punkte", pen_fp1.getIconPath(), 1, pen_fp1,
-                it_stift1);
-        sa_fp1.addMouseListener(_cp);
+			//add to first pen
+	        it_stift1.add(i1);
+	        
 
-        Pen pen_mn1 = new Marker(Constants.PEN_ID_LINES, 2, Color.black);
-        sa_mn1 = new Item1PenSelection(
-                "Marker Normal", pen_mn1.getIconPath(), 1, pen_mn1,
-                it_stift1);
-        sa_mn1.addMouseListener(_cp);
+			/*
+			 * The pen which is inserted into the second penMenu
+			 */
+			Item1PenSelection i2 = new Item1PenSelection(
+					pen_available.getName(),
+					pen_available.getIconPath());
+			
+			//mouse listener and changeListener
+			i2.addMouseListener(_cp);
+			i2.addChangeListener(new CPen(_cp, i2, it_stift2,
+					Pen.clonePen(pen_available)));
 
-        Pen pen_bp2 = new Pencil(Constants.PEN_ID_POINT, 2, Color.black);
-        Pen pen_bn2 = new Pencil(Constants.PEN_ID_LINES, 2, Color.black);
-        Pen pen_br2 = new Pencil(Constants.PEN_ID_MATHS, 2, Color.black);
-        sa_bp2 = new Item1PenSelection(
-                "Bleistift Punkte", pen_bp2.getIconPath(), 2, pen_bp2,
-                it_stift2);
-        sa_bp2.addMouseListener(_cp);
-        sa_bn2 = new Item1PenSelection(
-                "Bleistift Normal", pen_bn2.getIconPath(), 2, pen_bn2,
-                it_stift2);
-        sa_bn2.addMouseListener(_cp);
-        sa_br2 = new Item1PenSelection(
-                "Bleistift rund", pen_br2.getIconPath(), 2, pen_br2,
-                it_stift2);
-        sa_br2.addMouseListener(_cp);
-
-        Pen pen_fr2 = new BallPen(Constants.PEN_ID_MATHS, 2, Color.black);
-        Pen pen_fn2 = new BallPen(Constants.PEN_ID_LINES, 2, Color.black);
-        Pen pen_fp2 = new BallPen(Constants.PEN_ID_POINT, 2, Color.black);
-        sa_fr2 = new Item1PenSelection(
-                "Fueller rund", pen_fr2.getIconPath(), 2, pen_fr2,
-                it_stift2);
-        sa_fr2.addMouseListener(_cp);
-        sa_fn2 = new Item1PenSelection(
-                "Fueller Normal", pen_fn2.getIconPath(), 2, pen_fn2,
-                it_stift2);
-        sa_fn2.addMouseListener(_cp);
-        sa_fp2= new Item1PenSelection(
-                "Fueller Punkte", pen_fp2.getIconPath(), 2, pen_fp2,
-                it_stift2);
-        sa_fp2.addMouseListener(_cp);
-
-        Pen pen_mn2 = new Marker(Constants.PEN_ID_LINES, 2, Color.black);
-        sa_mn2 = new Item1PenSelection(
-                "Marker Normal", pen_mn2.getIconPath(), 2, pen_mn2,
-                it_stift2);
-        sa_mn2.addMouseListener(_cp);
-        
-        
-        //add bleistift to both panels
-        it_stift1.add(sa_br1);
-        it_stift1.add(sa_bn1);
-        it_stift1.add(sa_bp1);
-    
-        it_stift2.add(sa_br2);
-        it_stift2.add(sa_bn2);
-        it_stift2.add(sa_bp2);
-    
-        //add fueller to both panels
-        it_stift1.add(sa_fr1);
-        it_stift1.add(sa_fn1);
-        it_stift1.add(sa_fp1);
-    
-        it_stift2.add(sa_fr2);
-        it_stift2.add(sa_fn2);
-        it_stift2.add(sa_fp2);
-        
-        //marker
-        it_stift1.add(sa_mn1);
-        it_stift2.add(sa_mn2);
-    
+			//add to first pen
+	        it_stift2.add(i2);
+		}
     
 	}
 

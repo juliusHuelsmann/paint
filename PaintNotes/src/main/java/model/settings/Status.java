@@ -25,6 +25,12 @@ import model.util.paint.Utils;
  */
 public final class Status {
 
+	/**
+	 * Whether the initialization process has finished or not. If it has,
+	 * the fadeOut can disappear.
+	 */
+	private static int initializationFinished = 0;
+	
 
     /**
      * The format in which the image files are saved.
@@ -807,6 +813,23 @@ public final class Status {
 	 */
 	public static Pen[] getPen_available() {
 		return pen_available;
+	}
+	
+
+
+	/**
+	 * @return the initializationFinished
+	 */
+	public static boolean isInitializationFinished() {
+		return (initializationFinished >= 2);
+	}
+
+	
+	/**
+	 * Set the current operation finished.
+	 */
+	public static synchronized void increaseInitializationFinished() {
+		initializationFinished++;
 	}
 
 }

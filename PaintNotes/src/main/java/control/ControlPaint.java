@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 
 import control.tabs.CPaintStatus;
 import control.tabs.CPrint;
+import control.tabs.CTabs;
 import control.tabs.CWrite;
 import control.tabs.ControlTabPainting;
 import model.objects.PictureOverview;
@@ -57,6 +58,8 @@ MenuListener {
 	 * Central model class.
 	 */
 	private Picture picture;
+	
+	private CTabs cTabs;
 	
 	
 	
@@ -130,13 +133,13 @@ MenuListener {
             controlPaintSelection = new ControlPaintSelectin(this);
             cTabPaint = new ControlTabPainting(this);
             cTabPaintStatus = new CPaintStatus(this);
+            cTabs = new CTabs(this);
 
             //initialize view class and log information on current 
             //initialization progress
             Status.getLogger().info("initialize view class and set visible.");
             view = new View(this);
             view.setVisible(true);
-            
             
             
             //enable current operation
@@ -2110,6 +2113,26 @@ MenuListener {
         //when closed repaint.
         Page.getInstance().getJlbl_painting().repaint();
         Tabs.getInstance().repaint();		
+	}
+
+
+
+
+	/**
+	 * @return the cTabs
+	 */
+	public CTabs getcTabs() {
+		return cTabs;
+	}
+
+
+
+
+	/**
+	 * @param cTabs the cTabs to set
+	 */
+	public void setcTabs(CTabs cTabs) {
+		this.cTabs = cTabs;
 	}
     
 }

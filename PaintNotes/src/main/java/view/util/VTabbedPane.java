@@ -1,27 +1,35 @@
 //package declaration
 package view.util;
 
-//import declarations
+//import java.awt components
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
+//imports for printing the date to the tabbedPane 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+//import java.swing components
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
-import model.settings.Error;
+//import utility classes and settings
+import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.Util;
+import control.interfaces.MoveEvent;
+import control.interfaces.TabbedListener;
+//controller class which handles the tab - opening
 import control.util.CTabbedPane;
-import start.Start;
-import view.forms.Page;
+
 import view.tabs.Tab;
+//import rotatatble buttons and panels
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
@@ -336,9 +344,11 @@ public class VTabbedPane extends MPanel {
             jpnl_close.setLocation(0, getHeight() - jlbl_close.getHeight());
             jpnl_background.setSize(getWidth(), getHeight());
 
-            Page.getInstance().setLocation(
-                            ViewSettings.getView_bounds_page().x,
-                            getHeight() + 1);
+            if (tl != null)  {
+            	tl.moveListener(new MoveEvent(new Point(
+                        ViewSettings.getView_bounds_page().x,
+                        getHeight() + 1)));
+            }
             setComponentZOrder(jpnl_close, 0);
             jlbl_closeTime.setVisible(false);
             
@@ -377,9 +387,11 @@ public class VTabbedPane extends MPanel {
 	                jpnl_close.setLocation(0, getHeight());
 	                jpnl_background.setSize(getWidth(), getHeight()
 	                        - jpnl_background.getY());
-	                Page.getInstance().setLocation(ViewSettings
-	                        .getView_bounds_page().x, getHeight() + 1);
-	                
+
+	                if (tl != null)  {
+	                	tl.moveListener(new MoveEvent(new Point(ViewSettings
+		                        .getView_bounds_page().x, getHeight() + 1)));
+	                }
 	                try {
 	                    Thread.sleep(2);
 	                } catch (InterruptedException e) {
@@ -394,9 +406,13 @@ public class VTabbedPane extends MPanel {
 	            jpnl_close.setLocation(0, getHeight() - jlbl_close.getHeight());
 	            jpnl_background.setSize(getWidth(), getHeight()
                         - jpnl_background.getY());
-	            Page.getInstance().setLocation(Page.getInstance().getX(),
-	                    getHeight() + getY() + 1);
 
+                if (tl != null)  {
+                	tl.moveListener(new MoveEvent(new Point(
+                			ViewSettings
+	                        .getView_bounds_page().x,
+    	                    getHeight() + getY() + 1)));
+                }
 	            setComponentZOrder(jpnl_close, 1);
 	            jlbl_closeTime.setVisible(true);
 
@@ -405,18 +421,8 @@ public class VTabbedPane extends MPanel {
                 ViewSettings.getView_bounds_page().height
                 = ViewSettings.getView_bounds_page_closed().height;
 	            //adapt image size.
-                Page.getInstance().setSize(
-                        ViewSettings.getView_bounds_page_closed().getSize());
-                Page.getInstance().getJlbl_painting().setSize(
-                        ViewSettings.getView_bounds_page_closed().getSize()
-                        .width, ViewSettings.getView_bounds_page_closed()
-                        .getSize().height 
-                        - 1);
-                Page.getInstance().getJlbl_selectionBG().setSize(
-                        ViewSettings.getView_bounds_page_closed().getSize());
-                Page.getInstance().getJlbl_selectionPainting().setSize(
-                        ViewSettings.getView_bounds_page_closed().getSize());
-                Page.getInstance().getJlbl_painting().refreshPaint();
+                
+                tl.closeListener();
 	        }
 	    };
 	    t_closeTab.start();
@@ -450,9 +456,13 @@ public class VTabbedPane extends MPanel {
                             startHeight2 + (oldVisibleHeight - startHeight2) 
                             * i / max
                             - jpnl_background.getY());
-                    Page.getInstance().setLocation(
-                            ViewSettings.getView_bounds_page().x, startHeight2 
-                            + (oldVisibleHeight - startHeight2) * i / max);
+                    
+
+                    if (tl != null)  {
+                    	tl.moveListener(new MoveEvent(new Point(
+                                ViewSettings.getView_bounds_page().x, startHeight2 
+                                + (oldVisibleHeight - startHeight2) * i / max)));
+                    }
                     
                     try {
                         Thread.sleep(1);
@@ -467,9 +477,12 @@ public class VTabbedPane extends MPanel {
                 jpnl_background.setSize(getWidth(), oldVisibleHeight 
                         - jpnl_background.getY());
                 jpnl_background.repaint();
-                Page.getInstance().setLocation(Page.getInstance().getX(),
-                        oldVisibleHeight 
-                        + jpnl_close.getHeight() + getY() + 1);
+
+                if (tl != null)  {
+                	tl.moveListener(new MoveEvent(new Point(
+                            ViewSettings.getView_bounds_page().x,  oldVisibleHeight 
+                            + jpnl_close.getHeight() + getY() + 1)));
+                }
                 setComponentZOrder(jpnl_close, 1);
 
 
@@ -477,19 +490,11 @@ public class VTabbedPane extends MPanel {
                 = ViewSettings.getView_bounds_page_open().y;
                 ViewSettings.getView_bounds_page().height
                 = ViewSettings.getView_bounds_page_open().height;
-                //adapt image size.
-                Page.getInstance().setSize(
-                        ViewSettings.getView_bounds_page_open().getSize());
-                Page.getInstance().getJlbl_painting().setSize(
-                        ViewSettings.getView_bounds_page_closed().getSize()
-                        .width, ViewSettings.getView_bounds_page_closed()
-                        .getSize().height 
-                        - 1);
-                Page.getInstance().getJlbl_selectionBG().setSize(
-                        ViewSettings.getView_bounds_page_open().getSize());
-                Page.getInstance().getJlbl_selectionPainting().setSize(
-                        ViewSettings.getView_bounds_page_open().getSize());
-                Page.getInstance().getJlbl_painting().refreshPaint(); 
+                
+
+                if (tl != null)  {
+                	tl.openListener();
+                }
             }
         };
         t_closeTab.start();
@@ -573,10 +578,8 @@ public class VTabbedPane extends MPanel {
         if (jpnl_stuff == null) {
             
             //print error message
-            Error.printError(getClass().getSimpleName(), "add(...)", 
-                    "add an item to a not existing MPanel (no item added yet)", 
-                    new Exception("no item added yet."), 
-                    Error.ERROR_MESSAGE_INTERRUPT);
+            Status.getLogger().severe(
+                    "add an item to a not existing MPanel (no item added yet)");
     
             //return null
             return null;
@@ -584,11 +587,8 @@ public class VTabbedPane extends MPanel {
     	} else if (_index < 0 || _index >= jpnl_stuff.length) {
     
             //print error message
-            Error.printError(getClass().getSimpleName(), "add(...)", 
-                    "add an item to a not existing MPanel"
-                            + "(index out of range)",
-                            new Exception("index out of range."), 
-                            Error.ERROR_MESSAGE_INTERRUPT);
+            Status.getLogger().severe("add an item to a not existing MPanel "
+            		+ "(index out of range)");
     
             //return null
             return null;
@@ -596,11 +596,8 @@ public class VTabbedPane extends MPanel {
     	} else if (_c == null) {
     
             //print error message
-    	    Error.printError(getClass().getSimpleName(), "add(...)", 
-    	            "add an item to a not existing MPanel" 
-    	                    + "(Component to add is null)", 
-    	                    new Exception("Component to add is null"),
-    	                    Error.ERROR_MESSAGE_INTERRUPT);
+            Status.getLogger().severe("add an item to a not existing MPanel "
+            		+ "(Component to add is null)");
     
             //return null
             return null;
@@ -835,7 +832,7 @@ public class VTabbedPane extends MPanel {
 
         //tell e.g. the initialization thread that the initialization
         //process has proceeded one step.
-        Start.increaseInitializationFinished();
+        Status.increaseInitializationFinished();
     }
 
     /**
@@ -909,7 +906,11 @@ public class VTabbedPane extends MPanel {
 	        }
 
 	}
-    
+
+    private TabbedListener tl;
+    public void setTabbedListener(TabbedListener _tl) {
+    	this.tl = _tl;
+    }
 
     /**
      * @return the openTab

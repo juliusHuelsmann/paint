@@ -49,6 +49,7 @@ public final class Tabs extends VTabbedPane {
      */
     public Tabs(View _view, ControlPaint _cp) {
     	super(_view);
+    	addTabbedListener(_cp.getcTabs());
     	instance = this;
 
 

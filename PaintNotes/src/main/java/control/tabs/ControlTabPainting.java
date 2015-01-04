@@ -30,11 +30,12 @@ import model.util.DPoint;
 import model.util.Util;
 import model.util.adt.list.List;
 import model.util.paint.MyClipboard;
+
 import view.View;
 import view.forms.Message;
 import view.forms.Page;
 import view.tabs.Paint;
-import view.tabs.Print;
+
 import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;
 
@@ -740,7 +741,8 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
 							.createCompoundBorder(new LineBorder(Color.black),
 									new LineBorder(Color.white)));
 					
-					//return because only one item is performing action at one time
+					//return because only one item is performing action at one 
+					//time
 					return;
 				}
 			}
@@ -830,4 +832,5 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
 	    // return the only instance
 	    return instance;
 	}
+
 }

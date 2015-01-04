@@ -44,7 +44,8 @@ import view.tabs.Paint;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class ControlPaint implements MouseListener, MouseMotionListener {
+public class ControlPaint implements MouseListener, MouseMotionListener, 
+MenuListener {
 
 	/**
 	 * Central view class.
@@ -2068,6 +2069,47 @@ public class ControlPaint implements MouseListener, MouseMotionListener {
 	 */
 	public void setcTabPaintStatus(CPaintStatus cTabPaintStatus) {
 		this.cTabPaintStatus = cTabPaintStatus;
+	}
+
+
+
+
+	public void beforeOpen() {
+
+    	//release selected because of display bug otherwise.
+    	if (Picture.getInstance().isSelected()) {
+	    	Picture.getInstance().releaseSelected();
+	    	Page.getInstance().releaseSelected();
+    	}		
+	}
+
+
+
+
+	public void beforeClose() {
+
+    	//release selected because of display bug otherwise.
+    	if (Picture.getInstance().isSelected()) {
+	    	Picture.getInstance().releaseSelected();
+	    	Page.getInstance().releaseSelected();
+    	}		
+	}
+
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void afterOpen() { }
+
+
+
+
+	public void afterClose() {
+
+        //when closed repaint.
+        Page.getInstance().getJlbl_painting().repaint();
+        Tabs.getInstance().repaint();		
 	}
     
 }

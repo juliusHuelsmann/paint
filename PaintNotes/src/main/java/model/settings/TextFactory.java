@@ -36,7 +36,9 @@ public final class TextFactory {
 	view_tb_zoomIn, view_tb_zoomOut, view_tb_save, view_popup_saveChangesTitle,
 	view_popup_saveChangesText, 
 	
-	colorPanel_red, colorPanel_green, colorPanel_blue, colorPanel_submit;
+	colorPanel_red, colorPanel_green, colorPanel_blue, colorPanel_submit,
+	
+	name_pencil, name_ballPen, name_marker, name_funny, name_selection;
 
 	
 	
@@ -68,6 +70,7 @@ public final class TextFactory {
 
         colorPanel_submit = new String [] {"ok", "add"};
         
+        
         //view pop-up which is opened if the user tries to exit the program, to
         //load a file from hard drive or to open a blank page if there are 
         //unsaved changes
@@ -78,6 +81,29 @@ public final class TextFactory {
         		"Möchten Sie vor dem Schließen ungespeicherte Änderungen "
         		+ "speichern?", 
         		"Do you want to save the uncommitted changes before exiting? "};
+        
+        
+        //displayed name of pens
+        name_pencil = new String []{
+        		"Füller",
+        		"Pencil"
+        };
+        name_ballPen = new String [] {
+        		"Bleistift",
+        		"Ball-pen"
+        };
+        name_marker = new String []{
+        		"Textmarker",
+        		"Marker"
+        };
+        name_funny = new String []{
+        		"Funny",
+        		"Funny"
+        };
+        name_selection = new String[] {
+        		"Auswahl",
+        		"Selection"
+        };
 	}
 
 	/**
@@ -199,5 +225,42 @@ public final class TextFactory {
 	 */
 	public String getTextViewPopupSaveChangesTitle() {
 		return view_popup_saveChangesTitle[specifiedLanguage];
+	}
+
+
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getName_ballPen() {
+		return name_ballPen[specifiedLanguage];
+	}
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getName_Funny() {
+		return name_funny[specifiedLanguage];
+	}
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getName_marker() {
+		return name_marker[specifiedLanguage];
+	}
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getName_pencil() {
+		return name_pencil[specifiedLanguage];
+	}
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getName_selection() {
+		return name_selection[specifiedLanguage];
 	}
 }

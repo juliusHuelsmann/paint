@@ -207,6 +207,7 @@ public final class Selection extends Tab {
     
         //
         it_color = new Item1Menu(true);
+        it_color.addMouseListener(CPaintStatus.getInstance());
         it_color.setSize(ViewSettings.getSIZE_PNL_CLR());
         it_color.setBorder(false);
         it_color.setText("+ Farben");
@@ -311,6 +312,7 @@ public final class Selection extends Tab {
 
         //pen 1
         Item1Menu it_stift1 = new Item1Menu(false);
+        it_stift1.addMouseListener(CPaintStatus.getInstance());
         it_stift1.setBorder(null);
         it_stift1.setBorder(false);
         it_stift1.setText("Drehen/Spiegeln");

@@ -1,11 +1,12 @@
 //package declaration
 package view.util;
 
-//import declarations
+//import java.awt components
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
+//import java.swing components
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,14 +14,18 @@ import javax.swing.JSlider;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+//import rotatatble buttons and panels
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
-import model.objects.painting.Picture;
+
+
 import model.objects.pen.Pen;
+
+
 import model.settings.Constants;
 import model.util.paint.Utils;
 import control.tabs.CPaintStatus;
-import control.tabs.ControlTabPainting;
 
 /**
  * Class item pen selection, contains one pen which can be selected.
@@ -58,27 +63,16 @@ public class Item1PenSelection extends MPanel {
 	 */
 	private String imagePath;
 	
-	/**
-	 * The pen which is replaced by this. 2 or 1.
-	 */
-	private int penSelection = 0;
 	
-	/**
-	 * The pen.
-	 */
-	private Pen pen;
 	
 	/**
 	 * Constructor: creates graphical user interface.
 	 * @param _title the title of the item
 	 * @param _imagePath the path of the image which is given to the itemMenu 
 	 *         and painted.
-	 * @param _pen the pen.
-	 * @param _penModel one instance of the Pen that will be used after the
 	 * user clicked at this button
 	 */
-	public Item1PenSelection(final String _title, final String _imagePath, 
-	        final int _pen, final Pen _penModel, final Item1Menu _i1mToChange) {
+	public Item1PenSelection(final String _title, final String _imagePath) {
 		
 		//initialize JFrame and alter settings
 		super();
@@ -89,8 +83,6 @@ public class Item1PenSelection extends MPanel {
 
 		//save current values
 		this.imagePath = _imagePath;
-		this.penSelection = _pen;
-		this.pen = _penModel;
 		
 		//initialize components
 		jlbl_image = new MLabel();
@@ -114,21 +106,7 @@ public class Item1PenSelection extends MPanel {
 		//ChangeListener updating the current thickness information
 		jsl_thickness.addChangeListener(new ChangeListener() {
 
-			public void stateChanged(final ChangeEvent _e) {
-				jlbl_thickness.setText(((JSlider) _e.getSource()).getValue()
-						+ "px");
-				pen.setThickness(((JSlider) _e.getSource()).getValue());
-				Picture.getInstance().userSetPen(pen, penSelection);
-	            //set the image of the current pen, close the menu and
-	            //reset the last open menu; thus no menu has to be closed the 
-				//next time another menu is opened
-	                
-	            	_i1mToChange.setIcon(getImagePath());
-	                
-	            	//TODO: Das ist bloed weil soll abgeschotttet sein von
-	            	//normalen klassen.
-	            ControlTabPainting.applyFocus(getInstance());
-			}
+			public void stateChanged(final ChangeEvent _e) {}
 		});
 		
 		jlbl_thickness = new MLabel("1px");
@@ -147,6 +125,13 @@ public class Item1PenSelection extends MPanel {
 		super.add(jbtn_select);
 	}
 
+	/**
+	 * add ActionListener to JButton.
+	 * @param _l the ActionListener.
+	 */
+	public final void addChangeListener(final ChangeListener _l) {
+		jsl_thickness.addChangeListener(_l);
+	}
 	
 	/**
 	 * add ActionListener to JButton.
@@ -255,33 +240,16 @@ public class Item1PenSelection extends MPanel {
 
 
 	/**
-	 * @return the penSelection
+	 * @return the jlbl_thickness
 	 */
-	public final int getPenSelection() {
-		return penSelection;
+	public MLabel getJlbl_thickness() {
+		return jlbl_thickness;
 	}
-
 
 	/**
-	 * @param _penSelection the penSelection to set
+	 * @param jlbl_thickness the jlbl_thickness to set
 	 */
-	public final void setPenSelection(final int _penSelection) {
-		this.penSelection = _penSelection;
+	public void setJlbl_thickness(MLabel jlbl_thickness) {
+		this.jlbl_thickness = jlbl_thickness;
 	}
-
-
-    /**
-     * @return the pen
-     */
-    public final Pen getPen() {
-        return pen;
-    }
-
-
-    /**
-     * @param _pen the pen to set
-     */
-    public final void setPen(final Pen _pen) {
-        this.pen = _pen;
-    }
 }

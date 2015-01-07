@@ -12,12 +12,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import model.settings.Constants;
-import model.settings.Settings;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
-import start.Start;
 import view.forms.Message;
 import view.forms.Page;
 import view.forms.Tabs;

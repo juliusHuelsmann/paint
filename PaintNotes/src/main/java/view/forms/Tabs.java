@@ -3,6 +3,7 @@ package view.forms;
 
 //import declarations
 import java.awt.Toolkit;
+import java.rmi.server.ExportException;
 
 import model.settings.ViewSettings;
 import control.ControlPaint;
@@ -39,6 +40,10 @@ public final class Tabs extends VTabbedPane {
     private Selection tab_selection;
     
     private static Tabs instance;
+    private Export tab_export;
+    private Look tab_look;
+    private PaintObjects tab_pos;
+    
     /**
      * Tab for things which can be inserted.
      */
@@ -101,14 +106,16 @@ public final class Tabs extends VTabbedPane {
          * tab view
          */
         super.addTab("View");   //view
-        super.addToTab(tabNumber, Look.getInstance());
+        tab_look = new Look(_cp.getcl)
+        super.addToTab(tabNumber, tab_look);
         tabNumber++;
 
         /*
          * 
          */
         super.addTab("Export");
-        super.addToTab(tabNumber, Export.getInstance());
+        tab_export = new Export();
+        super.addToTab(tabNumber, tab_export);
         tabNumber++;
         
 
@@ -124,8 +131,8 @@ public final class Tabs extends VTabbedPane {
 
 
         super.addTab("Debug");
-        PaintObjects tab_pos = PaintObjects.getInstance();
-        PaintObjects.getInstance().setSize(
+        tab_pos = new PaintObjects();
+        tab_pos.setSize(
                 (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
                 ViewSettings.getView_heightTB());
         super.addToTab(tabNumber, tab_pos);
@@ -261,5 +268,53 @@ public final class Tabs extends VTabbedPane {
 	 */
 	public void setTab_selection(Selection tab_selection) {
 		this.tab_selection = tab_selection;
+	}
+
+
+	/**
+	 * @return the tab_export
+	 */
+	public Export getTab_export() {
+		return tab_export;
+	}
+
+
+	/**
+	 * @param tab_export the tab_export to set
+	 */
+	public void setTab_export(Export tab_export) {
+		this.tab_export = tab_export;
+	}
+
+
+	/**
+	 * @return the tab_look
+	 */
+	public Look getTab_look() {
+		return tab_look;
+	}
+
+
+	/**
+	 * @param tab_look the tab_look to set
+	 */
+	public void setTab_look(Look tab_look) {
+		this.tab_look = tab_look;
+	}
+
+
+	/**
+	 * @return the tab_pos
+	 */
+	public PaintObjects getTab_pos() {
+		return tab_pos;
+	}
+
+
+	/**
+	 * @param tab_pos the tab_pos to set
+	 */
+	public void setTab_pos(PaintObjects tab_pos) {
+		this.tab_pos = tab_pos;
 	}
 }

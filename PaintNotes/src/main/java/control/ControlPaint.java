@@ -12,8 +12,10 @@ import java.util.logging.Level;
 
 import javax.swing.ImageIcon;
 
+import control.tabs.CPaintSelection;
 import control.tabs.CPaintStatus;
 import control.tabs.CPrint;
+import control.tabs.CTabSelection;
 import control.tabs.CTabs;
 import control.tabs.CWrite;
 import control.tabs.ControlTabPainting;
@@ -80,6 +82,7 @@ MenuListener {
 	
 	
 	private CPaintStatus cTabPaintStatus;
+	private CPaintSelection cTabSelection;
 	
 	
 	
@@ -133,6 +136,7 @@ MenuListener {
             controlPaintSelection = new ControlPaintSelectin(this);
             cTabPaint = new ControlTabPainting(this);
             cTabPaintStatus = new CPaintStatus(this);
+            cTabSelection = new CTabSelection(this);
             cTabs = new CTabs(this);
 
             //initialize view class and log information on current 

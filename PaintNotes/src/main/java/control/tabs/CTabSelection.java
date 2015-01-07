@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import control.ControlPaint;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectPen;
@@ -21,9 +22,8 @@ import view.tabs.Selection;
 public final class CTabSelection implements ActionListener {
 
     /**
-     * The only instance of this class.
      */
-    private static CTabSelection instance;
+    private ControlPaint cp;
     
     /**
      * The penID and the color of the currently selected item.
@@ -33,37 +33,44 @@ public final class CTabSelection implements ActionListener {
     /**
      * Empty utility class constructor.
      */
-    private CTabSelection() { }
+    public CTabSelection(ControlPaint _selection) {
+    	this.cp = _selection;
+    	
+    }
+    
+    
+    private Selection getSelection() {
+    	return cp.getView().getTabs().getTab_selection();
+    }
     
     /**
      * {@inheritDoc}
      */
     public void actionPerformed(final ActionEvent _event) {
 
-        Selection s = Selection.getInstance();
-        if (_event.getSource().equals(s.getJcb_points())) {
+        if (_event.getSource().equals(getSelection().getJcb_points())) {
 
             this.selectionPenID = Constants.PEN_ID_POINT;
             selectPenOp(Constants.PEN_ID_POINT);
             
-        } else if (_event.getSource().equals(s.getJcb_line())) {
+        } else if (_event.getSource().equals(getSelection().getJcb_line())) {
 
             this.selectionPenID = Constants.PEN_ID_LINES;
             selectPenOp(Constants.PEN_ID_LINES);
             
-        } else if (_event.getSource().equals(s.getJcb_maths())) {
+        } else if (_event.getSource().equals(getSelection().getJcb_maths())) {
 
             this.selectionPenID = Constants.PEN_ID_MATHS;
             selectPenOp(Constants.PEN_ID_MATHS);
         } else {
-            for (int i = 0; i < s.getJbtn_colors().length; i++) {
+            for (int i = 0; i < getSelection().getJbtn_colors().length; i++) {
 
-                if (_event.getSource().equals(s.getJbtn_colors()[i])) {
+                if (_event.getSource().equals(getSelection().getJbtn_colors()[i])) {
                     
-                    this.selectionColor = s.getJbtn_colors()[i].getBackground()
+                    this.selectionColor = getSelection().getJbtn_colors()[i].getBackground()
                             .getRGB();
                     setColor(new Color(selectionColor));
-                    Selection.getInstance().getTb_color().setBackground(
+                    getSelection().getTb_color().setBackground(
                             new Color(selectionColor));
 //                    Picture.getInstance().paintSelected();
                     activateColor();
@@ -78,14 +85,14 @@ public final class CTabSelection implements ActionListener {
      * select penOperation.
      * @param _id_operation the pen operation to select.
      */
-    private static synchronized void selectPenOp(final int _id_operation) {
-        Selection s = Selection.getInstance();
-        switch (_id_operation) {
+    private synchronized void selectPenOp(final int _id_operation) {
+
+    	switch (_id_operation) {
         case Constants.PEN_ID_POINT:
 
-            s.getJcb_points().setSelected(true);
-            s.getJcb_maths().setSelected(false);
-            s.getJcb_line().setSelected(false);
+            getSelection().getJcb_points().setSelected(true);
+            getSelection().getJcb_maths().setSelected(false);
+            getSelection().getJcb_line().setSelected(false);
             setPen(Constants.PEN_ID_POINT);
             Picture.getInstance().paintSelectedInline();
             activatePen();
@@ -93,9 +100,9 @@ public final class CTabSelection implements ActionListener {
             break;
         case Constants.PEN_ID_LINES:
             
-            s.getJcb_line().setSelected(true);
-            s.getJcb_maths().setSelected(false);
-            s.getJcb_points().setSelected(false);
+            getSelection().getJcb_line().setSelected(true);
+            getSelection().getJcb_maths().setSelected(false);
+            getSelection().getJcb_points().setSelected(false);
             setPen(Constants.PEN_ID_LINES);
             Picture.getInstance().paintSelectedInline();
             activatePen();
@@ -103,9 +110,9 @@ public final class CTabSelection implements ActionListener {
             break;
         case Constants.PEN_ID_MATHS:
             
-            s.getJcb_maths().setSelected(true);
-            s.getJcb_line().setSelected(false);
-            s.getJcb_points().setSelected(false);
+            getSelection().getJcb_maths().setSelected(true);
+            getSelection().getJcb_line().setSelected(false);
+            getSelection().getJcb_points().setSelected(false);
             setPen(Constants.PEN_ID_MATHS);
             Picture.getInstance().paintSelectedInline();
             activatePen();
@@ -113,9 +120,9 @@ public final class CTabSelection implements ActionListener {
             break;
         default:
 
-            s.getJcb_maths().setSelected(false);
-            s.getJcb_line().setSelected(false);
-            s.getJcb_points().setSelected(false);
+            getSelection().getJcb_maths().setSelected(false);
+            getSelection().getJcb_line().setSelected(false);
+            getSelection().getJcb_points().setSelected(false);
             
             break;
         }
@@ -126,38 +133,37 @@ public final class CTabSelection implements ActionListener {
      * set the operation to each selected item.
      * @param _id_operation the pen operation to select.
      */
-    private static synchronized void showPenOp(final int _id_operation) {
-        Selection s = Selection.getInstance();
+    private synchronized void showPenOp(final int _id_operation) {
         switch (_id_operation) {
         case Constants.PEN_ID_POINT:
 
-            s.getJcb_points().setSelected(true);
-            s.getJcb_maths().setSelected(false);
-            s.getJcb_line().setSelected(false);
+            getSelection().getJcb_points().setSelected(true);
+            getSelection().getJcb_maths().setSelected(false);
+            getSelection().getJcb_line().setSelected(false);
             Picture.getInstance().paintSelected();
         
             break;
         case Constants.PEN_ID_LINES:
             
-            s.getJcb_line().setSelected(true);
-            s.getJcb_maths().setSelected(false);
-            s.getJcb_points().setSelected(false);
+            getSelection().getJcb_line().setSelected(true);
+            getSelection().getJcb_maths().setSelected(false);
+            getSelection().getJcb_points().setSelected(false);
             Picture.getInstance().paintSelected();
         
             break;
         case Constants.PEN_ID_MATHS:
             
-            s.getJcb_maths().setSelected(true);
-            s.getJcb_line().setSelected(false);
-            s.getJcb_points().setSelected(false);
+            getSelection().getJcb_maths().setSelected(true);
+            getSelection().getJcb_line().setSelected(false);
+            getSelection().getJcb_points().setSelected(false);
             Picture.getInstance().paintSelected();
         
             break;
         default:
 
-            s.getJcb_maths().setSelected(false);
-            s.getJcb_line().setSelected(false);
-            s.getJcb_points().setSelected(false);
+            getSelection().getJcb_maths().setSelected(false);
+            getSelection().getJcb_line().setSelected(false);
+            getSelection().getJcb_points().setSelected(false);
             
             break;
         }
@@ -185,7 +191,7 @@ public final class CTabSelection implements ActionListener {
 //            
             //show pen and color at graphical user interface.
             showPenOp(_penId);
-            Selection.getInstance().getTb_color().setBackground(
+            getSelection().getTb_color().setBackground(
                     new Color(_color));
         } else {
             
@@ -203,7 +209,7 @@ public final class CTabSelection implements ActionListener {
             } else {
 
                 activateColor();
-                Selection.getInstance().getTb_color().setBackground(
+                getSelection().getTb_color().setBackground(
                         new Color(selectionColor));
             }
         }
@@ -297,7 +303,7 @@ public final class CTabSelection implements ActionListener {
      */
     public synchronized void deactivateOp() {
 
-        Selection s = Selection.getInstance();
+        Selection s = getSelection();
         s.getJcb_maths().setEnabled(false);
         s.getJcb_line().setEnabled(false);
         s.getJcb_points().setEnabled(false);
@@ -309,9 +315,9 @@ public final class CTabSelection implements ActionListener {
     /**
      * Activate to perform operation on selected items.
      */
-    public static synchronized void activateOp() {
+    public synchronized void activateOp() {
 
-        Selection s = Selection.getInstance();
+        Selection s = getSelection();
         s.getJcb_maths().setEnabled(true);
         s.getJcb_line().setEnabled(true);
         s.getJcb_points().setEnabled(true);
@@ -321,9 +327,9 @@ public final class CTabSelection implements ActionListener {
     /**
      * Activate to perform operation on selected items.
      */
-    private static synchronized void activatePen() {
+    private synchronized void activatePen() {
 
-        Selection s = Selection.getInstance();
+        Selection s = getSelection();
         s.getJcb_maths().setEnabled(true);
         s.getJcb_line().setEnabled(true);
         s.getJcb_points().setEnabled(true);
@@ -334,9 +340,9 @@ public final class CTabSelection implements ActionListener {
      * is no item that exists or there are no suitable operations for special
      * kind of PaintItem)
      */
-    private static synchronized void deactivateColor() {
+    private synchronized void deactivateColor() {
 
-        Selection s = Selection.getInstance();
+        Selection s = getSelection();
         s.getTb_color().setVisible(false);
     }
     
@@ -344,38 +350,25 @@ public final class CTabSelection implements ActionListener {
     /**
      * Activate to perform operation on selected items.
      */
-    private static synchronized void activateColor() {
+    private synchronized void activateColor() {
 
-        Selection s = Selection.getInstance();
+        Selection s = getSelection();
         s.getTb_color().setVisible(true);
     }
     
-    /**
-     * getter method for only instance of this class.
-     * @return the only instance of CChangeSelection
-     */
-    public static CTabSelection getInstance() {
-        
-        if (instance == null) {
-            instance = new CTabSelection();
-        }
-        
-        return instance;
-        
-    }
 
     /**
      * @return the selectionPenID
      */
-    public static int getSelectionPenID() {
-        return getInstance().selectionPenID;
+    public int getSelectionPenID() {
+        return selectionPenID;
     }
 
     /**
      * @return the selectionColor
      */
-    public static int getSelectionColor() {
-        return getInstance().selectionColor;
+    public int getSelectionColor() {
+        return selectionColor;
     }
 
     

@@ -22,10 +22,6 @@ import control.tabs.CExport;
 @SuppressWarnings("serial")
 public final class Export extends Tab {
 
-    /**
-     * The only instance of this class.
-     */
-    private static Export instance;
 
     /**
      * The JCheckBox for background of new Image.
@@ -82,45 +78,37 @@ public final class Export extends Tab {
     /**
      * Empty utility class constructor.
      */
-    private Export() { 
+    public Export(CExport _cex) {
         super(2);
-    }
-    
-    
-    /**
-     * Initialize the view class.
-     */
-    private void initialize() {
-
         //initialize JPanel and alter settings
         super.setOpaque(false);
         super.setLayout(null);
         super.setVisible(true);
 
         //initialize the content for the background
-        initializeColumn1();
+        initializeColumn1(_cex);
     }
     
 
     /**
      * Initialize the first column.
      */
-    private void initializeColumn1() {
+    private void initializeColumn1(CExport _cex) {
         
         //initialize the first part of the first column containing the 
         //possibility to choose an image background for the export and
         //to set its border sizes.
-        initializeColumn1BG();
+        initializeColumn1BG(_cex);
         
         //initializes the second part of the first column which contains
         //the components for changing the displaying of alpha values.
         //Choices: Save pure alpha as alpha value or save it as white pixel.
-        initializeColumn1Alpha();
+        initializeColumn1Alpha(_cex);
 
 
         //initializes the second part of the first column which contains
         //the components for changing the export format of the image.
-        initializeColumn1SaveOptions();
+        initializeColumn1SaveOptions(_cex);
 
         //apply the settings set in the Status class to the view items 
         //initialized above; Thus the user settings can be saved and restored
@@ -139,7 +127,7 @@ public final class Export extends Tab {
      * possibility to choose an image background for the export and
      * to set its border sizes.
      */
-    private void initializeColumn1BG() {
+    private void initializeColumn1BG(CExport _cex) {
 
         jlbl_backgroundTitle = new MLabel("Background:");
         jlbl_backgroundTitle.setBounds(ViewSettings.getDistanceBetweenItems(),
@@ -152,7 +140,7 @@ public final class Export extends Tab {
         jcb_raster = new JCheckBox("Raster");
         jcb_raster.setFocusable(false);
         jcb_raster.setOpaque(false);
-        jcb_raster.addActionListener(CExport.getInstance());
+        jcb_raster.addActionListener(_cex);
         jcb_raster.setLocation(jlbl_backgroundTitle.getX(), 
                 ViewSettings.getDistanceBetweenItems()
                 + jlbl_backgroundTitle.getY()
@@ -165,7 +153,7 @@ public final class Export extends Tab {
         jcb_lines = new JCheckBox("Lines");
         jcb_lines.setFocusable(false);
         jcb_lines.setOpaque(false);
-        jcb_lines.addActionListener(CExport.getInstance());
+        jcb_lines.addActionListener(_cex);
         jcb_lines.setLocation(jcb_raster.getWidth() + jcb_raster.getX() 
                 + ViewSettings.getDistanceBetweenItems(), jcb_raster.getY());
         jcb_lines.setSize(jcb_raster.getSize());
@@ -175,7 +163,7 @@ public final class Export extends Tab {
         jcb_nothing = new JCheckBox("Nothing");
         jcb_nothing.setFocusable(false);
         jcb_nothing.setOpaque(false);
-        jcb_nothing.addActionListener(CExport.getInstance());
+        jcb_nothing.addActionListener(_cex);
         jcb_nothing.setLocation(jcb_lines.getWidth() + jcb_lines.getX() 
                 + ViewSettings.getDistanceBetweenItems(), jcb_raster.getY());
         jcb_nothing.setSize(jcb_raster.getSize());
@@ -207,7 +195,7 @@ public final class Export extends Tab {
                 + jlbl_subtitle_borderTop.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderTop.getY());
-        jcb_margeTop.addActionListener(CExport.getInstance());
+        jcb_margeTop.addActionListener(_cex);
         super.add(jcb_margeTop);
         
         //left
@@ -227,7 +215,7 @@ public final class Export extends Tab {
                 + jlbl_subtitle_borderLeft.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderLeft.getY());
-        jcb_margeLeft.addActionListener(CExport.getInstance());
+        jcb_margeLeft.addActionListener(_cex);
         super.add(jcb_margeLeft);
 
         //bottom
@@ -248,7 +236,7 @@ public final class Export extends Tab {
                 + jlbl_subtitle_borderBottom.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderBottom.getY());
-        jcb_margeBottom.addActionListener(CExport.getInstance());
+        jcb_margeBottom.addActionListener(_cex);
         super.add(jcb_margeBottom);
 
         //right
@@ -270,7 +258,7 @@ public final class Export extends Tab {
                 + jlbl_subtitle_borderRight.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderRight.getY());
-        jcb_margeRight.addActionListener(CExport.getInstance());
+        jcb_margeRight.addActionListener(_cex);
         super.add(jcb_margeRight);
     }
 
@@ -280,7 +268,7 @@ public final class Export extends Tab {
      * the components for changing the displaying of alpha values.
      * Choices: Save pure alpha as alpha value or save it as white pixel.
      */
-    private void initializeColumn1Alpha() {
+    private void initializeColumn1Alpha(CExport _cex) {
 
         /*
          * Alpha
@@ -314,7 +302,7 @@ public final class Export extends Tab {
                 + jlbl_subtitle_alpha.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(),
                 jlbl_subtitle_alpha.getY());
-        jcb_displayAlpha.addActionListener(CExport.getInstance());
+        jcb_displayAlpha.addActionListener(_cex);
         super.add(jcb_displayAlpha);
     }
     
@@ -324,7 +312,7 @@ public final class Export extends Tab {
      * Initializes the second part of the first column which contains
      * the components for changing the export format of the image.
      */
-    private void initializeColumn1SaveOptions() {
+    private void initializeColumn1SaveOptions(CExport _cex) {
 
         /*
          * Alpha
@@ -356,7 +344,7 @@ public final class Export extends Tab {
                 + jlbl_subtitle_saveOptions.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(),
                 jlbl_subtitle_saveOptions.getY());
-        jcb_saveFormats.addActionListener(CExport.getInstance());
+        jcb_saveFormats.addActionListener(_cex);
         super.add(jcb_saveFormats);
     }
     
@@ -429,17 +417,6 @@ public final class Export extends Tab {
      */
     public JCheckBox getJcb_nothing() {
         return jcb_nothing;
-    }
-    /**
-     * @return the instance
-     */
-    public static Export getInstance() {
-        
-        if (instance == null) {
-            instance = new Export();
-            instance.initialize();
-        }
-        return instance;
     }
 
 

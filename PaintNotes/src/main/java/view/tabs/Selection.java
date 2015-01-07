@@ -61,7 +61,7 @@ public final class Selection extends Tab {
     /**
      * Empty Utility class Constructor.
      */
-	public Selection(final ControlTabPainting _cPaint) {
+	public Selection(final ControlTabPainting _cPaint, final CTabSelection _cts) {
 	    super(2);
         //initialize JPanel and alter settings
         super.setOpaque(false);
@@ -335,22 +335,6 @@ public final class Selection extends Tab {
 	
 	
 
-    
-
-    /**
-     * getter method for only instance of this class.
-     * @return the only instance of CChangeSelection
-     */
-    public static Selection getInstance() {
-        
-        if (instance == null) {
-            instance = new Selection();
-            instance.init();
-        }
-        
-        return instance;
-        
-    }
 
     /**
      * @return the jcb_points

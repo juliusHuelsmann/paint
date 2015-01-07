@@ -23,8 +23,11 @@ import javax.swing.JLabel;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.Util;
+
+//controller class giving the interface for opening, closing and moving events.
 import control.interfaces.MoveEvent;
 import control.interfaces.TabbedListener;
+
 //controller class which handles the tab - opening
 import control.util.CTabbedPane;
 
@@ -43,6 +46,14 @@ import view.util.mega.MPanel;
 @SuppressWarnings("serial")
 public class VTabbedPane extends MPanel {
 
+    
+    /**
+     * The TabbedListener which can be added to the VTabbedPane for performing
+     * special actions if the VTabbedPane is opened or closed or moving because
+     * of close and open event.
+     */
+    private TabbedListener tl;
+    
 	/**
 	 * array of headline MButtons.
 	 */
@@ -232,6 +243,17 @@ public class VTabbedPane extends MPanel {
 		super.setVisible(false);
 	}
 	
+
+    /**
+     * Set the TabbedListener. Only one listener can be added. If this method
+     * is called twice, the argument passed the second time is enabled as
+     * listener.
+     * 
+     * @param _tl the tabbedListener
+     */
+    public final void setTabbedListener(final TabbedListener _tl) {
+    	this.tl = _tl;
+    }
 	
 	@Override public final void setVisible(final boolean _b) {
 	    
@@ -460,8 +482,10 @@ public class VTabbedPane extends MPanel {
 
                     if (tl != null)  {
                     	tl.moveListener(new MoveEvent(new Point(
-                                ViewSettings.getView_bounds_page().x, startHeight2 
-                                + (oldVisibleHeight - startHeight2) * i / max)));
+                                ViewSettings.getView_bounds_page().x, 
+                                startHeight2 
+                                + (oldVisibleHeight - startHeight2) 
+                                * i / max)));
                     }
                     
                     try {
@@ -480,7 +504,8 @@ public class VTabbedPane extends MPanel {
 
                 if (tl != null)  {
                 	tl.moveListener(new MoveEvent(new Point(
-                            ViewSettings.getView_bounds_page().x,  oldVisibleHeight 
+                            ViewSettings.getView_bounds_page().x, 
+                            oldVisibleHeight 
                             + jpnl_close.getHeight() + getY() + 1)));
                 }
                 setComponentZOrder(jpnl_close, 1);
@@ -907,10 +932,6 @@ public class VTabbedPane extends MPanel {
 
 	}
 
-    private TabbedListener tl;
-    public void setTabbedListener(TabbedListener _tl) {
-    	this.tl = _tl;
-    }
 
     /**
      * @return the openTab

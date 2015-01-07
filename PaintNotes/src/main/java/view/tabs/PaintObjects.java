@@ -8,9 +8,11 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.util.Observable;
 import java.util.Observer;
+
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
 import model.objects.PictureOverview;
 import model.settings.Status;
 import model.settings.ViewSettings;
@@ -29,11 +31,6 @@ import view.util.mega.MPanel;
  */
 @SuppressWarnings("serial")
 public final class PaintObjects extends Tab implements Observer {
-
-	/**
-	 * the only instance of this class.
-	 */
-	private static PaintObjects instance = null;
 
 	//identifier for 
 	/**
@@ -103,7 +100,7 @@ public final class PaintObjects extends Tab implements Observer {
 	 * Constructor: initialize instances of Components and add special 
 	 * MouseMotionListener.
 	 */
-	private PaintObjects() {
+	public PaintObjects(CPaintObjects _cps) {
 		
 		//initialize JPanel and alter settings
 		super(0);
@@ -362,23 +359,6 @@ public final class PaintObjects extends Tab implements Observer {
 	
 	
 
-	
-	/**
-	 * this method guarantees that only one instance of this
-	 * class can be created ad runtime.
-	 * 
-	 * @return the only instance of this class.
-	 */
-	public static PaintObjects getInstance() {
-		
-		//if class is not instanced yet instantiate
-		if (instance == null) {
-			instance = new PaintObjects();
-		}
-		
-		//return the only instance of this class.
-		return instance;
-	}
 
     /**
      * @return the jta_infoSelectedPanel

@@ -3,6 +3,7 @@ package control.tabs;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import control.ControlPaint;
 import view.forms.Page;
 import view.tabs.Look;
 import model.settings.Constants;
@@ -17,17 +18,19 @@ import model.settings.Status;
  */
 public final class CLook implements ActionListener {
 
+	private ControlPaint cp;
     /**
      * Empty utility class constructor.
      */
-    private CLook() { }
-
+    public CLook(ControlPaint _cp) { 
+    	this.cp = _cp;
+    }
 
     
-    /**
-     * The only instance of this class.
-     */
-    private static CLook instance;
+    
+    public Look getLook() {
+    	return cp.getView().getTabs().getTab_look();
+    }
     
 
     /**
@@ -36,33 +39,33 @@ public final class CLook implements ActionListener {
     public void actionPerformed(final ActionEvent _event) {
 
         int backgroundID;
-        if (_event.getSource().equals(Look.getInstance().getJcb_raster())) {
+        if (_event.getSource().equals(getLook().getJcb_raster())) {
             backgroundID = Constants.CONTROL_PAGE_BACKGROUND_RASTAR;
-            Look.getInstance().getJcb_raster().setSelected(true);
-            Look.getInstance().getJcb_nothing().setSelected(false);
-            Look.getInstance().getJcb_lines().setSelected(false);
+            getLook().getJcb_raster().setSelected(true);
+            getLook().getJcb_nothing().setSelected(false);
+            getLook().getJcb_lines().setSelected(false);
             Status.setIndexPageBackground(backgroundID);
         
         } else if (_event.getSource().equals(
-                Look.getInstance().getJcb_lines())) {
+                getLook().getJcb_lines())) {
             backgroundID = Constants.CONTROL_PAGE_BACKGROUND_LINES;
-            Look.getInstance().getJcb_lines().setSelected(true);
-            Look.getInstance().getJcb_nothing().setSelected(false);
-            Look.getInstance().getJcb_raster().setSelected(false);
+            getLook().getJcb_lines().setSelected(true);
+            getLook().getJcb_nothing().setSelected(false);
+            getLook().getJcb_raster().setSelected(false);
             Status.setIndexPageBackground(backgroundID);
         
         } else if (_event.getSource().equals(
-                Look.getInstance().getJcb_nothing())) {
+                getLook().getJcb_nothing())) {
             backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
-            Look.getInstance().getJcb_nothing().setSelected(true);
-            Look.getInstance().getJcb_lines().setSelected(false);
-            Look.getInstance().getJcb_raster().setSelected(false);
+            getLook().getJcb_nothing().setSelected(true);
+            getLook().getJcb_lines().setSelected(false);
+            getLook().getJcb_raster().setSelected(false);
             Status.setIndexPageBackground(backgroundID);
         
         } else if (_event.getSource().equals(
-                Look.getInstance().getJcb_margeBottom())) {
+                getLook().getJcb_margeBottom())) {
             
-            String str_selected = Look.getInstance().getJcb_margeBottom()
+            String str_selected = getLook().getJcb_margeBottom()
                     .getSelectedItem().toString().replace("%", "");
             
             try {
@@ -74,10 +77,10 @@ public final class CLook implements ActionListener {
                         "error: change border size: wrong input");
             }
         } else if (_event.getSource().equals(
-                Look.getInstance().getJcb_margeLeft())) {
+                getLook().getJcb_margeLeft())) {
             
 
-            String str_selected = Look.getInstance().getJcb_margeLeft()
+            String str_selected = getLook().getJcb_margeLeft()
                     .getSelectedItem().toString().replace("%", "");
             
             try {
@@ -89,9 +92,9 @@ public final class CLook implements ActionListener {
                         "error: change border size: wrong input");
             }
         } else if (_event.getSource().equals(
-                Look.getInstance().getJcb_margeTop())) {
+                getLook().getJcb_margeTop())) {
 
-            String str_selected = Look.getInstance().getJcb_margeTop()
+            String str_selected = getLook().getJcb_margeTop()
                     .getSelectedItem().toString().replace("%", "");
             
             try {
@@ -103,9 +106,9 @@ public final class CLook implements ActionListener {
                         "error: change border size: wrong input");
             }
         } else if (_event.getSource().equals(
-                Look.getInstance().getJcb_margeRight())) {
+                getLook().getJcb_margeRight())) {
 
-            String str_selected = Look.getInstance().getJcb_margeRight()
+            String str_selected = getLook().getJcb_margeRight()
                     .getSelectedItem().toString().replace("%", "");
             
             try {
@@ -116,10 +119,10 @@ public final class CLook implements ActionListener {
                 Status.getLogger().severe(
                         "error: change border size: wrong input");
             }
-        } else if (_event.getSource().equals(Look.getInstance()
+        } else if (_event.getSource().equals(getLook()
                 .getJcb_displayAlpha())) {
 
-            Status.setShowAlpha(Look.getInstance().getJcb_displayAlpha()
+            Status.setShowAlpha(getLook().getJcb_displayAlpha()
                     .getSelectedItem().equals(Constants.ID_DISPLAY_ALPHA));
             
             if (Page.getInstance().getWidth() > 0) {
@@ -132,17 +135,4 @@ public final class CLook implements ActionListener {
         Page.getInstance().getJlbl_painting().refreshPaint();
         
     }
-    
-    
-    /**
-     * Return the only instance of this class.
-     * @return the only instance of this class.
-     */
-    public static CLook getInstance() {
-        if (instance == null) {
-            instance = new CLook();
-        }
-        return instance;
-    }
-
 }

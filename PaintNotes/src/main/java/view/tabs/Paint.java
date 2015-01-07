@@ -83,10 +83,6 @@ public final class Paint extends Tab {
 	 */
 	private Item1Menu it_selection;
 	
-	/**
-	 * the only instance of this class.
-	 */
-	private static Paint instance;
 	
 	/**
 	 * constants.

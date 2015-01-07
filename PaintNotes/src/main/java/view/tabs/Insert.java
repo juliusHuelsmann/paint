@@ -64,15 +64,9 @@ public final class Insert extends Tab {
     /**
      * Empty utility class constructor.
      */
-	private Insert() { 
+	public Insert(CPaintStatus _cps) { 
 	    super(2 + 2);
-	}
-	
-	/**
-	 * initializes Panel.
-     * @param _height the height of the panel.
-	 */
-	private void initialize(final int _height) {
+
 
 		//initialize JPanel and alter settings
 		super.setOpaque(false);
@@ -107,7 +101,7 @@ public final class Insert extends Tab {
          * 
          * 
          */
-        initializeGeo(getJlbl_separation()[0].getX());
+        initializeGeo(getJlbl_separation()[0].getX(), _cps);
 
         insertSectionStuff("geometrische Formen", 
                 ia_geo.getX(), ia_geo.getX() + ia_geo.getWidth(), 1, true);
@@ -141,7 +135,7 @@ public final class Insert extends Tab {
 		super.add(ia_diagram);
 
         i2_d_diagramm = new Item2();
-        i2_d_diagramm.addMouseListener(CPaintStatus.getInstance());
+        i2_d_diagramm.addMouseListener(_cps);
         i2_d_diagramm.setTitle("line");
         ia_diagram.add(i2_d_diagramm);
         i2_d_diagramm.setIcon("icon/geoForm/line.png");
@@ -190,13 +184,14 @@ public final class Insert extends Tab {
         insertSectionStuff("Diagramme", ia_diagram.getX(), 
                 jtf_amountRows.getX() + jtf_amountRows.getWidth(), 2 + 1, true);
         
+	
 	}
 
 	/**
 	 * Initialize geometric objects.
 	 * @param _x the start x coordinate
 	 */
-	private void initializeGeo(final int _x) {
+	private void initializeGeo(final int _x, CPaintStatus _cps) {
 
         ia_geo = new Item2Menu();
         ia_geo.setLocation(_x , tb_selected.getY());
@@ -205,79 +200,79 @@ public final class Insert extends Tab {
         super.add(ia_geo);
 
         i2_g_line = new Item2();
-        i2_g_line.addMouseListener(CPaintStatus.getInstance());
+        i2_g_line.addMouseListener(_cps);
         i2_g_line.setTitle("line");
         ia_geo.add(i2_g_line);
         i2_g_line.setIcon("icon/geoForm/line.png");
 
         i2_g_curve = new Item2();
-        i2_g_curve.addMouseListener(CPaintStatus.getInstance());
+        i2_g_curve.addMouseListener(_cps);
         i2_g_curve.setTitle("curve");
         ia_geo.add(i2_g_curve);
         i2_g_curve.setIcon("icon/geoForm/curve.png");
 
         i2_g_curve2 = new Item2();
-        i2_g_curve2.addMouseListener(CPaintStatus.getInstance());
+        i2_g_curve2.addMouseListener(_cps);
         i2_g_curve2.setTitle("curve");
         ia_geo.add(i2_g_curve2);
         i2_g_curve2.setIcon("icon/geoForm/curve.png");
 
         i2_g_arch = new Item2();
-        i2_g_arch.addMouseListener(CPaintStatus.getInstance());
+        i2_g_arch.addMouseListener(_cps);
         i2_g_arch.setTitle("arch");
         ia_geo.add(i2_g_arch);
         i2_g_arch.setIcon("icon/geoForm/pfeilopen.png");
 
         i2_g_round = new Item2();
-        i2_g_round.addMouseListener(CPaintStatus.getInstance());
+        i2_g_round.addMouseListener(_cps);
         i2_g_round.setTitle("round");
         ia_geo.add(i2_g_round);
         i2_g_round.setIcon("icon/geoForm/circle.png");
 
         i2_g_rect = new Item2();
-        i2_g_rect.addMouseListener(CPaintStatus.getInstance());
+        i2_g_rect.addMouseListener(_cps);
         i2_g_rect.setTitle("rect");
         ia_geo.add(i2_g_rect);
         i2_g_rect.setIcon("icon/geoForm/rectangle.png");
 
         i2_g_rect_round = new Item2();
-        i2_g_rect_round.addMouseListener(CPaintStatus.getInstance());
+        i2_g_rect_round.addMouseListener(_cps);
         i2_g_rect.setTitle("rect round");
         ia_geo.add(i2_g_rect_round);
         i2_g_rect_round.setIcon("icon/geoForm/rectangleRound.png");
         
         i2_g_triangle = new Item2();
-        i2_g_triangle.addMouseListener(CPaintStatus.getInstance());
+        i2_g_triangle.addMouseListener(_cps);
         i2_g_triangle.setTitle("triangle");
         ia_geo.add(i2_g_triangle);
         i2_g_triangle.setIcon("icon/geoForm/triangle.png");
 
         i2_g_roundFilled = new Item2();
-        i2_g_roundFilled.addMouseListener(CPaintStatus.getInstance());
+        i2_g_roundFilled.addMouseListener(_cps);
         i2_g_roundFilled.setTitle("round filled");
         ia_geo.add(i2_g_roundFilled);
         i2_g_roundFilled.setIcon("icon/geoForm/circleFilled.png");
 
         i2_g_rectFilled = new Item2();
-        i2_g_rectFilled.addMouseListener(CPaintStatus.getInstance());
+        i2_g_rectFilled.addMouseListener(_cps);
         i2_g_rectFilled.setTitle("rectangle filled");
         ia_geo.add(i2_g_rectFilled);
         i2_g_rectFilled.setIcon("icon/geoForm/rectangleFilled.png");
 
         i2_g_rect_roundFilled = new Item2();
-        i2_g_rect_roundFilled.addMouseListener(CPaintStatus.getInstance());
+        i2_g_rect_roundFilled.addMouseListener(_cps);
         i2_g_rect_roundFilled.setTitle("rectangle round filled");
         ia_geo.add(i2_g_rect_roundFilled);
         i2_g_rect_roundFilled.setIcon("icon/geoForm/rectangleRoundFilled.png");
         
         i2_g_triangleFilled = new Item2();
-        i2_g_triangleFilled.addMouseListener(CPaintStatus.getInstance());
+        i2_g_triangleFilled.addMouseListener(_cps);
         i2_g_triangleFilled.setTitle("triangle filled");
         ia_geo.add(i2_g_triangleFilled);
         i2_g_triangleFilled.setIcon("icon/geoForm/triangleFilled.png");
 
         i2_g_archFilled = new Item2();
-        i2_g_archFilled.addMouseListener(CPaintStatus.getInstance());
+        i2_g_archFilled.addMouseListener(_cps);
         i2_g_archFilled.setTitle("arch filled");
         ia_geo.add(i2_g_archFilled);
         i2_g_archFilled.setIcon("icon/geoForm/arch.png");
@@ -287,20 +282,6 @@ public final class Insert extends Tab {
 	
 	
 	
-	
-	/**
-	 * Return the only instance of this class.
-	 * @return the only instance of this singleton class
-	 */
-	public static Insert getInstance() {
-	    
-	    if (instance == null) {
-	        instance = new Insert();
-	        instance.initialize(ViewSettings.getView_heightTB());
-	    }
-	    
-	    return instance;
-	}
 
     /**
      * @return the ia_maths

@@ -3,12 +3,16 @@ package view.tabs;
 
 //import declarations
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
 import model.settings.ViewSettings;
+import control.interfaces.MenuListener;
 import control.tabs.CPaintStatus;
 import control.tabs.CTabSelection;
 import control.tabs.ControlTabPainting;
@@ -53,25 +57,25 @@ public final class Selection extends Tab {
      */
     private JCheckBox jcb_points, jcb_line, jcb_maths;
 
-    /**
-     * The only instance of this class.
-     */
-    private static Selection instance;
     
     /**
      * Empty Utility class Constructor.
+     * @param _cPaint the ControlTabPainting instance
+     * @param _cts the CTabSelection instance
+     * @param _ml the MenuListener instance
      */
-	public Selection(final ControlTabPainting _cPaint, final CTabSelection _cts) {
+	public Selection(
+			final ControlTabPainting _cPaint, 
+			final CTabSelection _cts,
+			final MenuListener _ml) {
+		
 	    super(2);
-        //initialize JPanel and alter settings
         super.setOpaque(false);
         super.setLayout(null);
 
-
-
-        int x = initCololrs(distance, true, _cPaint);
-        x = initPen(x, true);
-        initOthers(x, true);
+        int x = initCololrs(distance, true, _cPaint, _cts, _ml);
+        x = initPen(x, true, _cts);
+        initOthers(x, true, _ml);
         
 	}
 	
@@ -81,10 +85,28 @@ public final class Selection extends Tab {
 	 * 
 	 * @param _x the x coordinate
 	 * @param _paint the boolean.
+	 * 
+	 * 
+	 * @param _controlTabPainting 
+	 * 					instance of ControlTabPainting handling the 
+	 * 					MouseEvents for the color selection in color
+	 * 					pane
+	 * 
+	 * @param _cTabSelection 
+	 * 					instance of ControlTabSelection handling the 
+	 * 					ActionEvents for the color button selection
+	 * 
+	 * @param _ml
+	 * 					implements MenuListener _ml which handles menu
+	 * 					opening and closing events for being able to repaint
+	 * 					or to do other necessary stuff.
+	 * 
 	 * @return the new x coordinate
 	 */
 	private int initCololrs(final int _x, final boolean _paint,
-			final ControlTabPainting _cPaint) {
+			final MouseListener _controlTabPainting,
+			final ActionListener _cTabSelection, 
+			final MenuListener _ml) {
 
         //the first color for the first pen
         tb_color = new Item1Button(null);
@@ -113,10 +135,10 @@ public final class Selection extends Tab {
                     distanceBetweenColors + (i / anzInR)
                     * (height + distanceBetweenColors), width, height);
             jbtn_colors[i].setOpaque(true);
-            jbtn_colors[i].addActionListener(CTabSelection.getInstance());
+            jbtn_colors[i].addActionListener(_cTabSelection);
             jbtn_colors[i].addMouseListener(
                     CPaintStatus.getInstance());
-            jbtn_colors[i].addMouseListener(_cPaint);
+            jbtn_colors[i].addMouseListener(_controlTabPainting);
             jbtn_colors[i].setBorder(BorderFactory.createCompoundBorder(
                     new LineBorder(Color.black), new LineBorder(Color.white)));
             super.add(jbtn_colors[i]);
@@ -207,6 +229,7 @@ public final class Selection extends Tab {
     
         //
         it_color = new Item1Menu(true);
+        it_color.setMenuListener(_ml);
         it_color.addMouseListener(CPaintStatus.getInstance());
         it_color.setSize(ViewSettings.getSIZE_PNL_CLR());
         it_color.setBorder(false);
@@ -215,7 +238,7 @@ public final class Selection extends Tab {
                 + ViewSettings.getDistanceBetweenItems() 
                 + jbtn_colors[jbtn_colors.length - 1].getWidth(), 
                 ViewSettings.getDistanceBetweenItems());
-        it_color.getMPanel().add(new VColorPanel(jbtn_colors));
+        it_color.getMPanel().add(new VColorPanel(jbtn_colors, _ml));
         it_color.setBorder(false);
         it_color.setIcon("icon/palette.png");
         super.add(it_color);
@@ -233,9 +256,15 @@ public final class Selection extends Tab {
 	 * initialize the pen.
 	 * @param _x the x coordinate
 	 * @param _paint whether to paint the items
+	 * 
+	 * @param _cTabSelection 
+	 * 					instance of ControlTabSelection handling the 
+	 * 					ActionEvents for all buttons inside this tab
+	 * 
 	 * @return the new x coordinate
 	 */
-	private int initPen(final int _x, final boolean _paint) {
+	private int initPen(final int _x, final boolean _paint,
+			final CTabSelection _cTabSelection) {
 	    
         jcb_points = new JCheckBox("points");
         jcb_points.setSelected(true);
@@ -243,7 +272,7 @@ public final class Selection extends Tab {
         jcb_points.setBounds(_x, distance, twoHundred, heightLabel);
         jcb_points.setVerticalAlignment(SwingConstants.TOP);
         jcb_points.setFocusable(false);
-        jcb_points.addActionListener(CTabSelection.getInstance());
+        jcb_points.addActionListener(_cTabSelection);
         super.add(jcb_points);
     
         jcb_line = new JCheckBox("line");
@@ -252,7 +281,7 @@ public final class Selection extends Tab {
         jcb_line.setOpaque(false);
         jcb_line.setBounds(_x, jcb_points.getHeight() + jcb_points.getY() 
                 + distance, twoHundred, heightLabel);
-        jcb_line.addActionListener(CTabSelection.getInstance());
+        jcb_line.addActionListener(_cTabSelection);
         super.add(jcb_line);
     
         jcb_maths = new JCheckBox("maths");
@@ -261,12 +290,12 @@ public final class Selection extends Tab {
         jcb_maths.setVerticalAlignment(SwingConstants.TOP);
         jcb_maths.setBounds(_x, jcb_line.getHeight() + jcb_line.getY() 
                 + distance, twoHundred, heightLabel);
-        jcb_maths.addActionListener(CTabSelection.getInstance());
+        jcb_maths.addActionListener(_cTabSelection);
         super.add(jcb_maths);
         
         //deactivate the items because at the beginning there is no item 
         //selected.
-        CTabSelection.deactivateOp();
+        _cTabSelection.deactivateOp();
     
 
         int xLocationSeparation = jcb_maths.getWidth() + jcb_maths.getX() 
@@ -282,8 +311,14 @@ public final class Selection extends Tab {
 	 * initialize other items.
 	 * @param _x the x coordinate
 	 * @param _paint whether to paint or not
+	 * @param _ml
+	 * 					implements MenuListener _ml which handles menu
+	 * 					opening and closing events for being able to repaint
+	 * 					or to do other necessary stuff.
+	 * 
 	 */
-	private void initOthers(final int _x, final boolean _paint) {
+	private void initOthers(final int _x, final boolean _paint,
+			final MenuListener _ml) {
 
         Item1Button tb = new Item1Button(null);
         tb.setOpaque(true);
@@ -312,6 +347,7 @@ public final class Selection extends Tab {
 
         //pen 1
         Item1Menu it_stift1 = new Item1Menu(false);
+        it_stift1.setMenuListener(_ml);
         it_stift1.addMouseListener(CPaintStatus.getInstance());
         it_stift1.setBorder(null);
         it_stift1.setBorder(false);

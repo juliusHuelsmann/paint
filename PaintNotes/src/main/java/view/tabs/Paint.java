@@ -11,14 +11,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import model.objects.pen.Pen;
-import model.objects.pen.normal.BallPen;
-import model.objects.pen.normal.Marker;
-import model.objects.pen.normal.Pencil;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
-import control.ControlPaint;
+import control.interfaces.MenuListener;
 import control.tabs.CPaintStatus;
 import control.tabs.CPaintSelection;
 import control.tabs.ControlTabPainting;
@@ -44,12 +41,6 @@ public final class Paint extends Tab {
      */
     private Item1Menu it_color;
     
-	/**
-	 * pens for selection in Items it_stift1 and it_stift2.
-	 */
-	private Item1PenSelection sa_br1, sa_br2, sa_bn1, sa_bn2, sa_bp1, sa_bp2,
-	sa_fr1, sa_fr2, sa_fn1, sa_fn2, sa_fp1, sa_fp2, sa_mn2, sa_mn1;
-
 	/**
 	 * array of colors to change the first or the second color.
 	 */
@@ -92,7 +83,7 @@ public final class Paint extends Tab {
 	/**
 	 * Constructor of Paint.
 	 */
-	public Paint(ControlTabPainting _paint) {
+	public Paint(final ControlTabPainting _paint, final MenuListener _ml) {
 
 		//initialize JPanel and alter settings
 		super((2 + 1) * 2);
@@ -102,8 +93,8 @@ public final class Paint extends Tab {
 		
 		int x = initializeClipboard(0, true, _paint);
         x = initializeHistory(x, true);
-		x = initializePagePens(x, true, _paint);
-        x = initializePageColors(x, true, _paint);
+		x = initializePagePens(x, true, _paint, _ml);
+        x = initializePageColors(x, true, _paint, _ml);
 		x = initializeZoom(x, true, _paint);
         x = initializeFileOperations(x, true, _paint);
 
@@ -288,13 +279,15 @@ public final class Paint extends Tab {
      * @return the new x coordinate
 	 */
 	private int initializePagePens(final int _x, final boolean _paint,
-			final ControlTabPainting _cp) {
+			final ControlTabPainting _cp,
+			final MenuListener _ml) {
         final Dimension sizeIT = new Dimension(550, 550);
         final Dimension sizeIT_selection = new Dimension(350, 370);
 //        = new Dimension(350, 270);//for my laptop
         final int sizeHeight = 110;
         if (_paint) {
             it_stift1 = new Item1Menu(false);
+            it_stift1.setMenuListener(_ml);
             it_stift1.addMouseListener(CPaintStatus.getInstance());
             tb_erase = new Item1Button(null);
             tb_move = new Item1Button(null);
@@ -306,7 +299,9 @@ public final class Paint extends Tab {
             
             it_selection = new Item1Menu(false);
             it_selection.addMouseListener(CPaintStatus.getInstance());
+            it_selection.setMenuListener(_ml);
             it_stift2 = new Item1Menu(false);
+            it_stift2.setMenuListener(_ml);;
             it_stift2.addMouseListener(CPaintStatus.getInstance());
         }
         it_stift1.flip();
@@ -448,7 +443,8 @@ public final class Paint extends Tab {
 	 * @return the new position.
 	 */
     private int initializePageColors(final int _x, final boolean _paint, 
-    		final ControlTabPainting _cPaint) {
+    		final ControlTabPainting _cPaint,
+    		final MenuListener _ml) {
     	//the first color for the first pen
     	tb_color1 = new Item1Button(null);
     	tb_color1.setOpaque(true);
@@ -578,6 +574,7 @@ public final class Paint extends Tab {
     
     	//
     	it_color = new Item1Menu(true);
+    	it_color.setMenuListener(_ml);
     	it_color.addMouseListener(CPaintStatus.getInstance());
         it_color.setSize(new Dimension(ViewSettings.getSIZE_PNL_CLR().width 
         		+ 20,
@@ -588,7 +585,7 @@ public final class Paint extends Tab {
     	        + ViewSettings.getDistanceBetweenItems() 
     	        + jbtn_colors[jbtn_colors.length - 1].getWidth(), 
     	        ViewSettings.getDistanceBetweenItems());
-        it_color.getMPanel().add(new VColorPanel(jbtn_colors));
+        it_color.getMPanel().add(new VColorPanel(jbtn_colors, _ml));
         it_color.setBorder(false);
         it_color.setIcon("icon/palette.png");
         super.add(it_color);

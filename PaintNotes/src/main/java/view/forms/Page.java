@@ -4,10 +4,8 @@ package view.forms;
 //import declarations
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
@@ -16,9 +14,7 @@ import view.View;
 import view.util.VScrollPane;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
-import control.ControlPaintSelectin;
 import control.ControlPaint;
-import control.ControlView;
 import control.tabs.ControlTabPainting;
 import view.util.mega.MButton;
 
@@ -516,14 +512,6 @@ import view.util.mega.MButton;
 	 */
 	public New getJpnl_new() {
 		return jpnl_new;
-	}
-
-
-	/**
-	 * @param jpnl_new the jpnl_new to set
-	 */
-	public void setJpnl_new(New jpnl_new) {
-		this.jpnl_new = jpnl_new;
 	}
 }
 

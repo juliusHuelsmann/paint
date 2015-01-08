@@ -7,10 +7,14 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseListener;
 
+
+
 //import java.swing components
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+
+
 
 //import rotatatble buttons and panels
 import view.util.mega.MButton;
@@ -18,11 +22,12 @@ import view.util.mega.MPanel;
 
 //import the MenuListener controller interface giving the possibility to listen 
 //for menu open and menu close events
-import control.MenuListener;
 
+import control.interfaces.MenuListener;
 //import the controller responsible for opening and closing the menu
 import control.util.CItem;
 
+import model.settings.Status;
 //import utility classes and settings
 import model.settings.ViewSettings;
 import model.util.adt.list.List;
@@ -223,7 +228,9 @@ public class Item1Menu extends MPanel {
 
         		if (menuListener != null) {
             		menuListener.beforeOpen();
-        		}
+        		} else {
+            		Status.getLogger().warning("no menu listener inserted!");
+            	}
             	
                 setSize(openedWidth, openedHeight);
 
@@ -231,12 +238,21 @@ public class Item1Menu extends MPanel {
                         ViewSettings.GENERAL_CLR_BORDER));
 
                 jpnl_container.requestFocus();
-                
+
+
+        		if (menuListener != null) {
+            		menuListener.afterOpen();
+        		} else {
+            		Status.getLogger().warning("no menu listener inserted!");
+            	}
+            	
             } else {
             	if (menuListener != null) {
 
             		menuListener.beforeClose();
-        		}
+        		} else {
+            		Status.getLogger().warning("no menu listener inserted!");
+            	}
             	
                 setSize(closedWidth, closedHeight);
                 jpnl_container.setBorder(null);
@@ -245,7 +261,9 @@ public class Item1Menu extends MPanel {
         		if (menuListener != null) {
 
             		menuListener.afterClose();
-        		}
+        		} else {
+            		Status.getLogger().warning("no menu listener inserted!");
+            	}
             }
     	}
     }

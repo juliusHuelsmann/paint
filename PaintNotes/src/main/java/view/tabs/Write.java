@@ -2,9 +2,11 @@ package view.tabs;
 
 //import declarations
 import java.awt.Color;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.border.LineBorder;
-import control.tabs.CWrite;
+
+//
 import model.settings.ViewSettings;
 import view.util.Item1Button;
 
@@ -26,8 +28,9 @@ public final class Write extends Tab {
     
     /**
      * Empty utility class constructor.
+     * @param _cw the CWrite ActionListener
      */
-	public Write(CWrite cw) { 
+	public Write(final ActionListener _cw) { 
 	    super(2);
 	    
 
@@ -55,7 +58,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb_pen_theorem.setActivable(true);
-        tb_pen_theorem.addActionListener(cw);
+        tb_pen_theorem.addActionListener(_cw);
         tb_pen_theorem.setIcon("icon/tabs/write/write.png");
         super.add(tb_pen_theorem);
 
@@ -72,7 +75,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb_pen_proof.setActivable(true);
-        tb_pen_proof.addActionListener(cw);
+        tb_pen_proof.addActionListener(_cw);
         tb_pen_proof.setIcon("icon/tabs/write/write.png");
         super.add(tb_pen_proof);
 
@@ -89,7 +92,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb_pen_example.setActivable(true);
-        tb_pen_example.addActionListener(cw);
+        tb_pen_example.addActionListener(_cw);
         tb_pen_example.setIcon("icon/tabs/write/write.png");
         super.add(tb_pen_example);
 
@@ -108,7 +111,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.white)));
         tb_pen_comment.setActivable(true);
         tb_pen_comment.setIcon("icon/tabs/write/write.png");
-        tb_pen_comment.addActionListener(cw);
+        tb_pen_comment.addActionListener(_cw);
         super.add(tb_pen_comment);
 
 		
@@ -131,7 +134,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.white)));
         tb_pen_headline1.setActivable(true);
         tb_pen_headline1.setIcon("icon/tabs/write/write.png");
-        tb_pen_headline1.addActionListener(cw);
+        tb_pen_headline1.addActionListener(_cw);
         super.add(tb_pen_headline1);
 
         tb_pen_headline2 = new Item1Button(null);
@@ -148,7 +151,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.white)));
         tb_pen_headline2.setActivable(true);
         tb_pen_headline2.setIcon("icon/tabs/write/write.png");
-        tb_pen_headline2.addActionListener(cw);
+        tb_pen_headline2.addActionListener(_cw);
         super.add(tb_pen_headline2);
         
         tb_pen_headline3 = new Item1Button(null);
@@ -165,7 +168,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.white)));
         tb_pen_headline3.setActivable(true);
         tb_pen_headline3.setIcon("icon/tabs/write/write.png");
-        tb_pen_headline3.addActionListener(cw);
+        tb_pen_headline3.addActionListener(_cw);
         super.add(tb_pen_headline3);
 
 

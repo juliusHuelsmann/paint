@@ -60,6 +60,11 @@ public class BorderThread extends Thread {
     private boolean operationRectangle;
     
     /**
+     * Instance of view- class tab.
+     */
+    private final Tabs tab;
+    
+    /**
      * Constructor: save instance of PaintLabel and Rectangle.
      * 
      * which operation to take
@@ -71,10 +76,12 @@ public class BorderThread extends Thread {
      * line operation values:
      * @param _po the current PaintObject used for line operation
      * @param _pen the current Pen used for line operation
+     * 
+     * @param _tab the Tab for refreshing
      */
     public BorderThread(final Rectangle _r, 
             final boolean _operationRectangle, final PaintObject _po,
-            final PenSelection _pen) {
+            final PenSelection _pen, final Tabs _tab) {
         
         /*
          * save values
@@ -88,6 +95,7 @@ public class BorderThread extends Thread {
         //save line values
         this.pen_curr = _pen;
         this.po_curr = _po;
+    	this.tab = _tab;
     }
 
     
@@ -178,11 +186,11 @@ public class BorderThread extends Thread {
         indexColor = indexBackup;
         indexStep += ViewSettings.SELECTION_BORDER_MOVE_SPEED_PX;
 
-        Tabs.getInstance().repaint();
+        tab.repaint();
         Page.getInstance().getJlbl_selectionBG().setIcon(
         		new ImageIcon(
                 _bi_neutral));
-        Tabs.getInstance().revalidate();
+        tab.revalidate();
         
         return indexStep;
         

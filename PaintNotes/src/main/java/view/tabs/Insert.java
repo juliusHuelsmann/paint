@@ -2,9 +2,12 @@ package view.tabs;
 
 //import declarations
 import java.awt.Color;
+
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
+import control.ControlPaint;
 import control.tabs.CPaintStatus;
 import model.settings.ViewSettings;
 import view.util.Item2;
@@ -50,10 +53,6 @@ public final class Insert extends Tab {
      * Input fields for the amount of lines and rows of diagrams.
      */
     private JTextField jtf_amountLines, jtf_amountRows;
-    /**
-     * The only instance of this class.
-     */
-    private static Insert instance;
 
     /**
      * Constants.
@@ -64,7 +63,7 @@ public final class Insert extends Tab {
     /**
      * Empty utility class constructor.
      */
-	public Insert(CPaintStatus _cps) { 
+	public Insert(CPaintStatus _cps, ControlPaint _cp) { 
 	    super(2 + 2);
 
 
@@ -101,7 +100,7 @@ public final class Insert extends Tab {
          * 
          * 
          */
-        initializeGeo(getJlbl_separation()[0].getX(), _cps);
+        initializeGeo(getJlbl_separation()[0].getX(), _cp, _cps);
 
         insertSectionStuff("geometrische Formen", 
                 ia_geo.getX(), ia_geo.getX() + ia_geo.getWidth(), 1, true);
@@ -113,6 +112,7 @@ public final class Insert extends Tab {
          * 
          */
         ia_maths = new Item2Menu();
+        ia_maths.setMenuListener(_cp);
         ia_maths.setLocation(getJlbl_separation()[1].getX() 
                 + distance, distance);
         ia_maths.setSize(ia_geo.getWidth(), ViewSettings.getItemMenu1Height());
@@ -128,6 +128,7 @@ public final class Insert extends Tab {
          * 
          */
         ia_diagram = new Item2Menu();
+        ia_diagram.setMenuListener(_cp);
      	ia_diagram.setSize(ia_geo.getWidth(), 
      	        ViewSettings.getItemMenu1Height());
     	ia_diagram.setLocation(getJlbl_separation()[2].getX() 
@@ -191,9 +192,12 @@ public final class Insert extends Tab {
 	 * Initialize geometric objects.
 	 * @param _x the start x coordinate
 	 */
-	private void initializeGeo(final int _x, CPaintStatus _cps) {
+	private void initializeGeo(final int _x, 
+			ControlPaint _cp,
+			CPaintStatus _cps) {
 
         ia_geo = new Item2Menu();
+        ia_geo.setMenuListener(_cp);
         ia_geo.setLocation(_x , tb_selected.getY());
         ia_geo.setSize(locationX, ViewSettings.getItemMenu1Height());
         ia_geo.setItemsInRow(2 + 2);

@@ -12,6 +12,8 @@ import java.util.logging.Level;
 
 import javax.swing.ImageIcon;
 
+import control.interfaces.MenuListener;
+import control.tabs.CExport;
 import control.tabs.CPaintSelection;
 import control.tabs.CPaintStatus;
 import control.tabs.CPrint;
@@ -82,7 +84,11 @@ MenuListener {
 	
 	
 	private CPaintStatus cTabPaintStatus;
-	private CPaintSelection cTabSelection;
+	private CPaintSelection cTabPaintSelection;
+	
+	private CTabSelection cTabSelection;
+	private CExport cTabExport;
+	private 
 	
 	
 	
@@ -136,7 +142,8 @@ MenuListener {
             controlPaintSelection = new ControlPaintSelectin(this);
             cTabPaint = new ControlTabPainting(this);
             cTabPaintStatus = new CPaintStatus(this);
-            cTabSelection = new CTabSelection(this);
+            cTabPaintSelection = new CPaintSelection(this);
+            
             cTabs = new CTabs(this);
 
             //initialize view class and log information on current 
@@ -2137,6 +2144,26 @@ MenuListener {
 	 */
 	public void setcTabs(CTabs cTabs) {
 		this.cTabs = cTabs;
+	}
+
+
+
+
+	/**
+	 * @return the cTabSelection
+	 */
+	public CTabSelection getcTabSelection() {
+		return cTabSelection;
+	}
+
+
+
+
+	/**
+	 * @param cTabSelection the cTabSelection to set
+	 */
+	public void setcTabSelection(CTabSelection cTabSelection) {
+		this.cTabSelection = cTabSelection;
 	}
     
 }

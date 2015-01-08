@@ -37,6 +37,7 @@ public final class CPaintSelection implements MouseListener, ActionListener {
 	 */
 	private JCheckBox jcb_image, jcb_separated, jcb_whole;
 	
+	
 	/**
 	 * private constructor which can only be called out of
 	 * this class. Realized by getInstance.

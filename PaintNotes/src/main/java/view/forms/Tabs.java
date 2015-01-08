@@ -39,7 +39,6 @@ public final class Tabs extends VTabbedPane {
     
     private Selection tab_selection;
     
-    private static Tabs instance;
     private Export tab_export;
     private Look tab_look;
     private PaintObjects tab_pos;
@@ -54,8 +53,7 @@ public final class Tabs extends VTabbedPane {
      */
     public Tabs(View _view, ControlPaint _cp) {
     	super(_view);
-    	addTabbedListener(_cp.getcTabs());
-    	instance = this;
+    	super.setTabbedListener(_cp.getcTabs());
 
 
         
@@ -73,7 +71,7 @@ public final class Tabs extends VTabbedPane {
          * tab paint
          */
         super.addTab("Painting");
-        tab_paint =  new Paint(_cp.getcTabPaint());
+        tab_paint =  new Paint(_cp.getcTabPaint(), _cp);
         super.addToTab(tabNumber, tab_paint);
         tabNumber++;
 
@@ -90,7 +88,7 @@ public final class Tabs extends VTabbedPane {
          * tab insert
          */
         super.addTab("Insertion");
-        tab_insert = Insert.getInstance();
+        tab_insert = new Insert(_cp.getcTabPaintStatus(), _cp);
         super.addToTab(tabNumber, tab_insert);
         tabNumber++;
 
@@ -99,14 +97,14 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Selection");
-        tab_selection = new Selection(_cp.getcTabPaint());
+        tab_selection = new Selection(_cp.getcTabPaint(), _cp.getctab(), _cp);
         super.addToTab(tabNumber, tab_selection);
         tabNumber++;
         /*
          * tab view
          */
         super.addTab("View");   //view
-        tab_look = new Look(_cp.getcl)
+        tab_look = new Look(_cp.getctablook)
         super.addToTab(tabNumber, tab_look);
         tabNumber++;
 
@@ -114,7 +112,7 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Export");
-        tab_export = new Export();
+        tab_export = new Export(_cp.getctabexport);
         super.addToTab(tabNumber, tab_export);
         tabNumber++;
         
@@ -207,12 +205,6 @@ public final class Tabs extends VTabbedPane {
     			|| tab_insert.getIa_diagram().isOpen() 
     			|| tab_insert.getIa_geo().isOpen() 
     			|| tab_insert.getIa_maths().isOpen());
-    }
-    
-    
-    public static final Tabs getInstance() {
-
-    		return instance;
     }
 
     /**

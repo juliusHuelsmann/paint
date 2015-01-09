@@ -3,6 +3,7 @@ package control.tabs;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import control.ContorlPicture;
 import control.ControlPaint;
 import view.forms.Page;
 import view.tabs.Look;
@@ -27,9 +28,15 @@ public final class CLook implements ActionListener {
     }
 
     
-    
+    private Page getPage() {
+    	return cp.getView().getPage();
+    }
+
     public Look getLook() {
     	return cp.getView().getTabs().getTab_look();
+    }
+    public ContorlPicture getControlPicture() {
+    	return cp.getControlPic();
     }
     
 
@@ -125,14 +132,14 @@ public final class CLook implements ActionListener {
             Status.setShowAlpha(getLook().getJcb_displayAlpha()
                     .getSelectedItem().equals(Constants.ID_DISPLAY_ALPHA));
             
-            if (Page.getInstance().getWidth() > 0) {
+            if (getPage().getWidth() > 0) {
 
                 
-                Page.getInstance().flip();
+            	getPage().flip();
             }
             
         }
-        Page.getInstance().getJlbl_painting().refreshPaint();
+        getControlPicture().refreshPaint();
         
     }
 }

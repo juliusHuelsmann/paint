@@ -10,12 +10,10 @@ import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
-import view.View;
 import view.util.VScrollPane;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 import control.ControlPaint;
-import control.tabs.ControlTabPainting;
 import view.util.mega.MButton;
 
 /**
@@ -25,14 +23,6 @@ import view.util.mega.MButton;
  */
 @SuppressWarnings("serial") public final class Page extends MPanel {
 
-    /*
-     * Only instance of this class (singleton)
-     */
-    
-    /**
-     * The only instance of this page.
-     */
-    private static Page instance;
     
     /*
      * JLabel which is being painted
@@ -98,18 +88,12 @@ import view.util.mega.MButton;
      */
     private New jpnl_new;
     
-    /**
-     * 
-     */
-    private ControlPaint controlPaint;
     
 	/**
 	 * empty utility class constructor. 
 	 */
 	public Page(final ControlPaint _cv) {
-		instance = this;
-		this.controlPaint = _cv;
-		initialize();
+		initialize(_cv);
 	}
 
 	
@@ -117,7 +101,7 @@ import view.util.mega.MButton;
 	 * initializes graphical user interface components
      * and thus creates view. Called directly after creation.
 	 */
-	private void initialize() {
+	private void initialize(final ControlPaint controlPaint) {
 
         //alter settings
         super.setOpaque(true);
@@ -136,7 +120,7 @@ import view.util.mega.MButton;
         super.setVisible(false);
 
         //form for creating new page.
-        jpnl_new = new New();
+        jpnl_new = new New(controlPaint.getControlnew());
         super.add(jpnl_new);
         super.add(Console.getInstance());
         super.add(QuickAccess.getInstance());
@@ -154,10 +138,10 @@ import view.util.mega.MButton;
 
         //ScrollPanel for up and down
         sp_ub = new VScrollPane(jpnl_toMove, this, true);
-        View.getInstance().add(sp_ub);
+        controlPaint.getView().add(sp_ub);
 
         sp_lr = new VScrollPane(jpnl_toMove, this, false);
-        View.getInstance().add(sp_lr);
+        controlPaint.getView().add(sp_lr);
         
         jlbl_resizeSelectionSize = new MLabel();
         jlbl_resizeSelectionSize.setOpaque(true);
@@ -323,27 +307,6 @@ import view.util.mega.MButton;
 	}
 	
 	
-
-    /**
-     * this method guarantees that only one instance of this
-     * class can be created ad runtime.
-     * 
-     * @return the only instance of this class.
-     */
-	public static synchronized Page getInstance() {
-	    
-	    //if not initialized yet initialize
-	    if (instance == null) {
-
-	        //create instance and initialize
-	    }
-	    
-	    //return the only instance of this class
-	    return instance;
-	}
-	
-	
-
     /**
      * return fully transparent BufferedImage.
      * 
@@ -405,34 +368,6 @@ import view.util.mega.MButton;
     }
 	
 	
-	/**
-	 * Release selected items and add them to normal list.
-	 */
-	public void releaseSelected() {
-
-	    for (int i = 0; i < jbtn_resize.length; i++) {
-	        for (int j = 0; j < jbtn_resize[i].length; j++) {
-	            int width = jbtn_resize[i][j].getWidth();
-
-	            jbtn_resize[i][j].setLocation(-width - 1, -1);
-	        }
-	    }
-	    //method for setting the MButtons to the size of the entire image.
-	    ControlTabPainting.getInstance().updateResizeLocation();
-	    
-	    jlbl_painting.stopBorderThread();
-	    
-        BufferedImage emptyBI = getEmptyBISelection();
-        jlbl_selectionBG.setIcon(new ImageIcon(emptyBI));
-        jlbl_selectionPainting.setIcon(new ImageIcon(emptyBI));
-        jlbl_selectionPainting.repaint();
-
-        jlbl_border.setBounds(0, 0, 0, 0);
-        jlbl_selectionBG.setLocation(0, 0);
-        jlbl_selectionPainting.setLocation(0, 0);
-        
-        jlbl_painting.refreshPaint();
-	}
 
 
 
@@ -512,6 +447,14 @@ import view.util.mega.MButton;
 	 */
 	public New getJpnl_new() {
 		return jpnl_new;
+	}
+
+
+	/**
+	 * @param jpnl_new the jpnl_new to set
+	 */
+	public void setJpnl_new(New jpnl_new) {
+		this.jpnl_new = jpnl_new;
 	}
 }
 

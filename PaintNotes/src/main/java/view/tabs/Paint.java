@@ -83,7 +83,8 @@ public final class Paint extends Tab {
 	/**
 	 * Constructor of Paint.
 	 */
-	public Paint(final ControlTabPainting _paint, final MenuListener _ml) {
+	public Paint(final ControlTabPainting _paint, final MenuListener _ml,
+			final CPaintStatus _controlPaintStatus) {
 
 		//initialize JPanel and alter settings
 		super((2 + 1) * 2);
@@ -91,12 +92,12 @@ public final class Paint extends Tab {
 		super.setLayout(null);
 		
 		
-		int x = initializeClipboard(0, true, _paint);
-        x = initializeHistory(x, true);
-		x = initializePagePens(x, true, _paint, _ml);
-        x = initializePageColors(x, true, _paint, _ml);
-		x = initializeZoom(x, true, _paint);
-        x = initializeFileOperations(x, true, _paint);
+		int x = initializeClipboard(0, true, _paint, _controlPaintStatus);
+        x = initializeHistory(x, true, _controlPaintStatus);
+		x = initializePagePens(x, true, _paint, _ml, _controlPaintStatus);
+        x = initializePageColors(x, true, _paint, _ml, _controlPaintStatus);
+		x = initializeZoom(x, true, _paint, _controlPaintStatus);
+        x = initializeFileOperations(x, true, _paint, _controlPaintStatus);
 
         //disable icons which functionality is not implemented yet.
         tb_prev.disable();
@@ -129,7 +130,8 @@ public final class Paint extends Tab {
 	 * @return the x coordinate for following items.
 	 */
 	private int initializeClipboard(final int _x, final boolean _paint,
-			final ControlTabPainting cp) {
+			final ControlTabPainting cp, 
+			final CPaintStatus _controlPaintStatus) {
 
         if (_paint) {
 
@@ -155,7 +157,7 @@ public final class Paint extends Tab {
 	        tb_paste.addActionListener(cp);
 	        initializeTextButton(tb_paste,
 	                TextFactory.getInstance().getTextViewTb_paste(),
-	                Constants.VIEW_TB_PASTE_PATH, 0);
+	                Constants.VIEW_TB_PASTE_PATH, 0, _controlPaintStatus);
 	        tb_paste.setActivable(false);
 
 	        //copy
@@ -163,7 +165,7 @@ public final class Paint extends Tab {
 	        tb_copy.addActionListener(cp);
 	        initializeTextButton(tb_copy,
 	                TextFactory.getInstance().getTextViewTb_copy(),
-	                Constants.VIEW_TB_COPY_PATH, 0);
+	                Constants.VIEW_TB_COPY_PATH, 0, _controlPaintStatus);
 	        tb_copy.setActivable(false);
 
 	        //cut
@@ -171,7 +173,7 @@ public final class Paint extends Tab {
 	        tb_cut.addActionListener(cp);
 	        initializeTextButton(tb_cut,
 	                TextFactory.getInstance().getTextViewTb_cut(),
-	                Constants.VIEW_TB_CUT_PATH, 0);
+	                Constants.VIEW_TB_CUT_PATH, 0, _controlPaintStatus);
 	        tb_cut.setActivable(false);
 
 	    }
@@ -212,7 +214,8 @@ public final class Paint extends Tab {
 	 * 
 	 * @return the new x coordinate
 	 */
-	private int initializeHistory(final int _x, final boolean _paint) {
+	private int initializeHistory(final int _x, final boolean _paint,
+			final CPaintStatus _controlPaintStatus) {
 
 	    if (_paint) {
 
@@ -229,12 +232,12 @@ public final class Paint extends Tab {
 	        tb_prev.setBorder(false);
 	        initializeTextButton(tb_prev,
 	                "previous",
-	                Constants.VIEW_TB_PREV_PATH, 0);
+	                Constants.VIEW_TB_PREV_PATH, 0, _controlPaintStatus);
 
 	        tb_next.setBorder(false);
 	        initializeTextButton(tb_next,
 	                "next",
-	                Constants.VIEW_TB_NEXT_PATH, 0);
+	                Constants.VIEW_TB_NEXT_PATH, 0, _controlPaintStatus);
 
 	    
 	    }
@@ -280,7 +283,8 @@ public final class Paint extends Tab {
 	 */
 	private int initializePagePens(final int _x, final boolean _paint,
 			final ControlTabPainting _cp,
-			final MenuListener _ml) {
+			final MenuListener _ml,
+			final CPaintStatus _controlPaintStatus) {
         final Dimension sizeIT = new Dimension(550, 550);
         final Dimension sizeIT_selection = new Dimension(350, 370);
 //        = new Dimension(350, 270);//for my laptop
@@ -288,7 +292,7 @@ public final class Paint extends Tab {
         if (_paint) {
             it_stift1 = new Item1Menu(false);
             it_stift1.setMenuListener(_ml);
-            it_stift1.addMouseListener(CPaintStatus.getInstance());
+            it_stift1.addMouseListener(_controlPaintStatus);
             tb_erase = new Item1Button(null);
             tb_move = new Item1Button(null);
             tb_fill = new Item1Button(null);
@@ -298,11 +302,11 @@ public final class Paint extends Tab {
             tb_selectionLine = new Item1Button(null);
             
             it_selection = new Item1Menu(false);
-            it_selection.addMouseListener(CPaintStatus.getInstance());
+            it_selection.addMouseListener(_controlPaintStatus);
             it_selection.setMenuListener(_ml);
             it_stift2 = new Item1Menu(false);
             it_stift2.setMenuListener(_ml);;
-            it_stift2.addMouseListener(CPaintStatus.getInstance());
+            it_stift2.addMouseListener(_controlPaintStatus);
         }
         it_stift1.flip();
         it_stift2.flip();
@@ -337,7 +341,7 @@ public final class Paint extends Tab {
         	it_stift2.setItemsInRow((byte) 1);
         	it_stift2.setBorder(false);
         	super.add(it_stift2);
-        	addPens(_cp);
+        	addPens(_cp, _controlPaintStatus);
 
             it_selection.setText("Auswahl");
             it_selection.setBorder(false);
@@ -349,19 +353,19 @@ public final class Paint extends Tab {
             tb_selectionLine.setBorder(false);
             it_selection.add(tb_selectionLine);
             initializeTextButtonOhneAdd(tb_selectionLine,
-                    "line", Constants.VIEW_TB_SELECT_LINE_PATH);
+                    "line", Constants.VIEW_TB_SELECT_LINE_PATH, _controlPaintStatus);
             tb_selectionLine.setOpaque(false);
 
             tb_selectionCurve.setBorder(false);
             it_selection.add(tb_selectionCurve);
             initializeTextButtonOhneAdd(tb_selectionCurve, "curve",
-                    Constants.VIEW_TB_SELECT_CURVE_PATH);
+                    Constants.VIEW_TB_SELECT_CURVE_PATH, _controlPaintStatus);
             tb_selectionCurve.setOpaque(false);
 
             tb_selectionMagic.setBorder(false);
             it_selection.add(tb_selectionMagic);
             initializeTextButtonOhneAdd(tb_selectionMagic, "magic",
-                    Constants.VIEW_TB_SELECT_MAGIC_PATH);
+                    Constants.VIEW_TB_SELECT_MAGIC_PATH, _controlPaintStatus);
             tb_selectionMagic.setOpaque(false);
         
             JCheckBox jcb_whole = new JCheckBox("whole");
@@ -388,24 +392,24 @@ public final class Paint extends Tab {
 
             tb_pipette.setBorder(false);
             initializeTextButton(tb_pipette, "pipette",
-                    Constants.VIEW_TB_PIPETTE_PATH, 0);
+                    Constants.VIEW_TB_PIPETTE_PATH, 0, _controlPaintStatus);
             tb_pipette.setActivable(true);
 
             tb_fill.setActivable(true);
             tb_fill.setBorder(false);
             initializeTextButton(tb_fill, "fuellen",
-                    Constants.VIEW_TB_FILL_PATH, 0);
+                    Constants.VIEW_TB_FILL_PATH, 0, _controlPaintStatus);
             tb_fill.setActivable(true);
 
             tb_move.setBorder(false);
             initializeTextButton(tb_move, "nothing",
-                    Constants.VIEW_TB_MOVE_PATH, 0);
+                    Constants.VIEW_TB_MOVE_PATH, 0, _controlPaintStatus);
             tb_move.setActivable(true);
     
             tb_erase.setActivable(true);
             tb_erase.setBorder(false);
             initializeTextButton(tb_erase, "Erase",
-                    Constants.VIEW_TB_PIPETTE_PATH, 0);
+                    Constants.VIEW_TB_PIPETTE_PATH, 0, _controlPaintStatus);
             tb_erase.setActivable(true);
         }
         
@@ -444,11 +448,12 @@ public final class Paint extends Tab {
 	 */
     private int initializePageColors(final int _x, final boolean _paint, 
     		final ControlTabPainting _cPaint,
-    		final MenuListener _ml) {
+    		final MenuListener _ml,
+    		final CPaintStatus _controlPaintStatus) {
     	//the first color for the first pen
     	tb_color1 = new Item1Button(null);
     	tb_color1.setOpaque(true);
-    	tb_color1.addMouseListener(CPaintStatus.getInstance());
+    	tb_color1.addMouseListener(_controlPaintStatus);
     	tb_color1.setBorder(BorderFactory.createCompoundBorder(
     	        new LineBorder(Color.black), new LineBorder(Color.white)));
     	tb_color1.setLocation(_x, ViewSettings.getDistanceBetweenItems());
@@ -459,7 +464,7 @@ public final class Paint extends Tab {
     	//the second color for the second pen
     	tb_color2 = new Item1Button(null);
     	tb_color2.setOpaque(true);
-    	tb_color2.addMouseListener(CPaintStatus.getInstance());
+    	tb_color2.addMouseListener(_controlPaintStatus);
     	tb_color2.setBorder(BorderFactory.createCompoundBorder(
     	        new LineBorder(Color.black), new LineBorder(Color.white)));
     	tb_color2.setLocation(tb_color1.getWidth() + tb_color1.getX() 
@@ -484,7 +489,7 @@ public final class Paint extends Tab {
     		        * (height + distanceBetweenColors), width, height);
     		jbtn_colors[i].setOpaque(true);
     		jbtn_colors[i].addMouseListener(
-    		        CPaintStatus.getInstance());
+    		        _controlPaintStatus);
     		jbtn_colors[i].addMouseListener(_cPaint);
     		jbtn_colors[i].setBorder(BorderFactory.createCompoundBorder(
     		        new LineBorder(Color.black), new LineBorder(Color.white)));
@@ -575,7 +580,7 @@ public final class Paint extends Tab {
     	//
     	it_color = new Item1Menu(true);
     	it_color.setMenuListener(_ml);
-    	it_color.addMouseListener(CPaintStatus.getInstance());
+    	it_color.addMouseListener(_controlPaintStatus);
         it_color.setSize(new Dimension(ViewSettings.getSIZE_PNL_CLR().width 
         		+ 20,
         		ViewSettings.getSIZE_PNL_CLR().height));
@@ -585,7 +590,8 @@ public final class Paint extends Tab {
     	        + ViewSettings.getDistanceBetweenItems() 
     	        + jbtn_colors[jbtn_colors.length - 1].getWidth(), 
     	        ViewSettings.getDistanceBetweenItems());
-        it_color.getMPanel().add(new VColorPanel(jbtn_colors, _ml));
+        it_color.getMPanel().add(new VColorPanel(jbtn_colors, _ml,
+        		_controlPaintStatus));
         it_color.setBorder(false);
         it_color.setIcon("icon/palette.png");
         super.add(it_color);
@@ -606,7 +612,8 @@ public final class Paint extends Tab {
      * @return the new x coordinate
 	 */
 	private int initializeZoom(final int _x, final boolean _paint, 
-			final ControlTabPainting _controlTabPaint) {
+			final ControlTabPainting _controlTabPaint,
+			final CPaintStatus _controlPaintStatus) {
 
 		//zoom in
 		tb_zoomIn = new Item1Button(null);
@@ -617,7 +624,7 @@ public final class Paint extends Tab {
 		tb_zoomIn.setBorder(false);
 		initializeTextButton(tb_zoomIn,
 				TextFactory.getInstance().getTextViewTb_zoomIn(),
-				Constants.VIEW_TB_ZOOM_IN_PATH, 0);
+				Constants.VIEW_TB_ZOOM_IN_PATH, 0, _controlPaintStatus);
 		tb_zoomIn.setActivable(true);
 
 		//zoom out
@@ -626,11 +633,11 @@ public final class Paint extends Tab {
 		tb_zoomOut.setLocation(tb_zoomIn.getX(),
 				tb_zoomIn.getY() + ViewSettings.getDistanceBetweenItems() 
 				+ tb_zoomIn.getHeight());
-		tb_zoomOut.addActionListener(ControlTabPainting.getInstance());
+		tb_zoomOut.addActionListener(_controlTabPaint);
 		tb_zoomOut.setBorder(false);
 		initializeTextButton(tb_zoomOut,
 				TextFactory.getInstance().getTextViewTb_zoomOut(),
-				Constants.VIEW_TB_ZOOM_OUT_PATH, 0);
+				Constants.VIEW_TB_ZOOM_OUT_PATH, 0, _controlPaintStatus);
 		tb_zoomOut.setActivable(false);
 
 		int xLocationSeparation = tb_zoomIn.getWidth() + tb_zoomIn.getX() 
@@ -649,7 +656,8 @@ public final class Paint extends Tab {
      * @return the new x coordinate
 	 */
 	private int initializeFileOperations(final int _x, final boolean _paint,
-			final ControlTabPainting _controlTabPaint) {
+			final ControlTabPainting _controlTabPaint, 
+			final CPaintStatus _controlPaintStatus) {
 
         //save
         tb_save = new Item1Button(tb_save);
@@ -660,7 +668,8 @@ public final class Paint extends Tab {
         tb_save.addActionListener(_controlTabPaint);
         initializeTextButton(tb_save,
                 TextFactory.getInstance().getTextViewTb_save(),
-                Constants.VIEW_TB_SAVE_PATH, 0);
+                Constants.VIEW_TB_SAVE_PATH, 0,
+                _controlPaintStatus);
         tb_save.setActivable(false);
 
         //save as
@@ -673,7 +682,8 @@ public final class Paint extends Tab {
         tb_saveAs.addActionListener(_controlTabPaint);
         initializeTextButton(tb_saveAs,
                 TextFactory.getInstance().getTextViewTb_save() + " as",
-                Constants.VIEW_TB_SAVE_PATH, 0);
+                Constants.VIEW_TB_SAVE_PATH, 0,
+                _controlPaintStatus);
         tb_saveAs.setActivable(false);
 
         //save
@@ -685,7 +695,8 @@ public final class Paint extends Tab {
 		tb_load.addActionListener(_controlTabPaint);
 		initializeTextButton(tb_load,
 				"load",
-				Constants.VIEW_TB_LOAD_PATH, 0);
+				Constants.VIEW_TB_LOAD_PATH, 0,
+				_controlPaintStatus);
 		tb_load.setActivable(false);
 
         //cut
@@ -697,7 +708,8 @@ public final class Paint extends Tab {
         tb_new.addActionListener(_controlTabPaint);
         initializeTextButton(tb_new,
                 "new",
-                Constants.VIEW_TB_NEW_PATH, 0);
+                Constants.VIEW_TB_NEW_PATH, 0,
+                _controlPaintStatus);
         tb_new.setActivable(false);
 
         //cut
@@ -706,10 +718,11 @@ public final class Paint extends Tab {
         tb_turnMirror.setLocation(tb_load.getWidth() + tb_load.getX() 
                 + ViewSettings.getDistanceBetweenItems(), tb_load.getY());
         tb_turnMirror.setBorder(false);
-        tb_turnMirror.addActionListener(ControlTabPainting.getInstance());
+        tb_turnMirror.addActionListener(_controlTabPaint);
         initializeTextButton(tb_turnMirror,
                 "Spiegelung",
-                Constants.VIEW_TB_DOWN_PATH, 0);
+                Constants.VIEW_TB_DOWN_PATH, 0,
+                _controlPaintStatus);
         tb_turnMirror.setActivable(false);
 
         tb_turnNormal = new Item1Button(null);
@@ -717,10 +730,11 @@ public final class Paint extends Tab {
                 tb_turnMirror.getHeight());
         tb_turnNormal.setLocation(tb_turnMirror.getX(), tb_zoomOut.getY());
         tb_turnNormal.setBorder(false);
-        tb_turnNormal.addActionListener(ControlTabPainting.getInstance());
+        tb_turnNormal.addActionListener(_controlTabPaint);
         initializeTextButton(tb_turnNormal,
                 "Spiegelung normal",
-                Constants.VIEW_TB_UP_PATH, 0);
+                Constants.VIEW_TB_UP_PATH, 0,
+                _controlPaintStatus);
         tb_turnNormal.setActivable(false);
 
         int xLocationSeparation = tb_turnMirror.getWidth() 
@@ -738,7 +752,8 @@ public final class Paint extends Tab {
 	/**
 	 * add pens .
 	 */
-	private void addPens(final ControlTabPainting _cp) {
+	private void addPens(final ControlTabPainting _cp,
+			final CPaintStatus _controlPaintStatus) {
 
 
 		
@@ -755,7 +770,7 @@ public final class Paint extends Tab {
 			i1.addMouseListener(_cp);
 			i1.addChangeListener(new CPen(_cp, i1, it_stift1, 
 					Pen.clonePen(pen_available)));
-			i1.addMouseListener(CPaintStatus.getInstance());
+			i1.addMouseListener(_controlPaintStatus);
 
 			//add to first pen
 	        it_stift1.add(i1);
@@ -772,7 +787,7 @@ public final class Paint extends Tab {
 			i2.addMouseListener(_cp);
 			i2.addChangeListener(new CPen(_cp, i2, it_stift2,
 					Pen.clonePen(pen_available)));
-			i2.addMouseListener(CPaintStatus.getInstance());
+			i2.addMouseListener(_controlPaintStatus);
 
 			//add to first pen
 	        it_stift2.add(i2);
@@ -791,9 +806,10 @@ public final class Paint extends Tab {
      */
     private void initializeTextButton(
             final Item1Button _tb, final String _text, final String _path, 
-            final int _insertIndex) {
+            final int _insertIndex,
+            final CPaintStatus _controlPaintStatus) {
         
-       initializeTextButtonOhneAdd(_tb, _text, _path);
+       initializeTextButtonOhneAdd(_tb, _text, _path, _controlPaintStatus);
         super.add(_tb);
     }
     
@@ -807,12 +823,13 @@ public final class Paint extends Tab {
      */
     public static void initializeTextButtonOhneAdd(
             final Item1Button _tb, 
-            final String _text, final String _path) {
+            final String _text, final String _path,
+            final CPaintStatus _controlPaintStatus) {
         
         //alter settings of TextButton
         _tb.setOpaque(true);
         _tb.setText(_text);
-        _tb.addMouseListener(CPaintStatus.getInstance());
+        _tb.addMouseListener(_controlPaintStatus);
         _tb.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));

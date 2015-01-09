@@ -21,10 +21,6 @@ import view.util.mega.MButton;
  */
 public class ControlPaintSelectin implements MouseMotionListener, MouseListener {
 
-    /**
-     * the only instance of this class.
-     */
-    private static ControlPaintSelectin instance;
     
     /**
      * the start location of the JLabels (cv.getView().getPage()) for selection 
@@ -87,8 +83,6 @@ public class ControlPaintSelectin implements MouseMotionListener, MouseListener 
      * @param _cv the cv
      */
     public ControlPaintSelectin(final ControlPaint _cv) {
-    	
-    	instance = this;
     	this.cv = _cv;
         pnt_startLocationButton = new DPoint
                 [2 + 1][2 + 1];
@@ -153,20 +147,6 @@ public class ControlPaintSelectin implements MouseMotionListener, MouseListener 
      */
     public void mouseMoved(final MouseEvent _event) {
         
-    }
-
-    
-    /**
-     * simple getter method.
-     * @return the instance
-     */
-    public static ControlPaintSelectin getInstance() {
-
-        //if not yet instanced call the constructor of FetchColor.
-        if (instance == null) {
-//            instance = new CSelection();
-        }
-        return instance;
     }
 
     /**

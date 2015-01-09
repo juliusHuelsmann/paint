@@ -12,8 +12,11 @@ import java.util.logging.Level;
 
 import javax.swing.ImageIcon;
 
+import control.forms.CNew;
 import control.interfaces.MenuListener;
 import control.tabs.CExport;
+import control.tabs.CLook;
+import control.tabs.CPaintObjects;
 import control.tabs.CPaintSelection;
 import control.tabs.CPaintStatus;
 import control.tabs.CPrint;
@@ -67,6 +70,7 @@ MenuListener {
 	
 	
 	
+	
 	/**
 	 * Controller class for selection paint at the same level as this class.
 	 */
@@ -84,12 +88,17 @@ MenuListener {
 	
 	
 	private CPaintStatus cTabPaintStatus;
-	private CPaintSelection cTabPaintSelection;
 	
 	private CTabSelection cTabSelection;
 	private CExport cTabExport;
-	private 
+	private CLook cTabLook;
 	
+	private CPaintObjects cTabPaintObjects;
+	
+	private ContorlPicture controlPic;
+	
+	
+	private CNew controlnew = null;
 	
 	
 
@@ -115,7 +124,15 @@ MenuListener {
      * The thread for moving at the page.
      */
     private Thread thrd_move;
+
     
+    private Page getPage() {
+    	return view.getPage();
+    }
+    
+    private Tabs getTabs() {
+    	return view.getTabs();
+    }
 	
 	/**
 	 * 
@@ -142,7 +159,6 @@ MenuListener {
             controlPaintSelection = new ControlPaintSelectin(this);
             cTabPaint = new ControlTabPainting(this);
             cTabPaintStatus = new CPaintStatus(this);
-            cTabPaintSelection = new CPaintSelection(this);
             
             cTabs = new CTabs(this);
 
@@ -162,7 +178,6 @@ MenuListener {
              * Initialize control
              */
             Status.getLogger().info("initialize controller class.");
-            ControlTabPainting.getInstance();
             
             Status.getLogger().info(
                     "Start handling actions and initialize listeners.\n");
@@ -198,7 +213,7 @@ MenuListener {
 
 
 	       if (_event.getSource().equals(
-	        		Page.getInstance().getJlbl_painting())) { 
+	        		getPage().getJlbl_painting())) { 
 	        	
 	        	
 	        	//remove old pen - position - indication - point
@@ -218,8 +233,8 @@ MenuListener {
 		            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
 		            case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
 
-		            	BufferedImage bi = Page.getInstance().getEmptyBISelection();
-		            	Page.getInstance().getJlbl_selectionBG().setIcon(
+		            	BufferedImage bi = getPage().getEmptyBISelection();
+		            	getPage().getJlbl_selectionBG().setIcon(
 		            			new ImageIcon(bi));
 		            	break;
 	                default:
@@ -233,9 +248,9 @@ MenuListener {
 
         
         if (_event.getSource().equals(
-                Page.getInstance().getJlbl_painting())) {
+                getPage().getJlbl_painting())) {
 
-            Tabs.getInstance().closeMenues();
+            getTabs().closeMenues();
             
             // switch index of operation
             switch (Status.getIndexOperation()) {
@@ -318,7 +333,7 @@ MenuListener {
                 			//The theoretically displayed width of the image
                 			//if the image would not terminate somewhere
                 			//on screen.
-                			Page.getInstance().getJlbl_painting().getWidth()
+                			getPage().getJlbl_painting().getWidth()
                 			* Status.getImageSize().width
                 			/ Status.getImageShowSize().width
                 			/ Status.getEraseRadius(),
@@ -333,7 +348,7 @@ MenuListener {
                 			//The theoretically displayed height of the image
                 			//if the image would not terminate somewhere
                 			//on screen.
-                			Page.getInstance().getJlbl_painting().getHeight()
+                			getPage().getJlbl_painting().getHeight()
                 			* Status.getImageSize().height
                 			/ Status.getImageShowSize().height
                 			/ Status.getEraseRadius(),
@@ -368,7 +383,7 @@ MenuListener {
 
                 
                 pnt_start = _event.getPoint();
-                pnt_startLocation = Page.getInstance().getJlbl_painting()
+                pnt_startLocation = getPage().getJlbl_painting()
                         .getLocation();
                 break;
             default:
@@ -380,7 +395,7 @@ MenuListener {
 
 	public void mouseReleased(MouseEvent _event) {
 		if (_event.getSource().equals(
-                Page.getInstance().getJlbl_painting())) {
+                getPage().getJlbl_painting())) {
 			mr_painting(_event);
 		} 
 	}
@@ -411,7 +426,7 @@ MenuListener {
 
         // left mouse pressed
         final int leftMouse = 1024;
-        if (_event.getSource().equals(Page.getInstance().getJlbl_painting())) {
+        if (_event.getSource().equals(getPage().getJlbl_painting())) {
             switch (Status.getIndexOperation()) {
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
@@ -455,7 +470,7 @@ MenuListener {
             						//value if border is visible on screen; 
             						//zoomed out
             						1.0 * Status.getImageSize().width
-            						/ Page.getInstance().getJlbl_painting()
+            						/ getPage().getJlbl_painting()
             						.getWidth()
             						/ Status.getEraseRadius());
             		final double factorHeight = 
@@ -471,7 +486,7 @@ MenuListener {
             						//value if border is visible on screen; 
             						//zoomed out
             						1.0 * Status.getImageSize().height
-            						/ Page.getInstance().getJlbl_painting()
+            						/ getPage().getJlbl_painting()
             						.getHeight()
             						/ Status.getEraseRadius());
             		
@@ -486,16 +501,16 @@ MenuListener {
             				* Status.getImageShowSize().width
             				/ Status.getImageSize().width;
             		
-            		Page.getInstance().getJlbl_painting().clrRectangle(
+            		controlPic.clrRectangle(
                     		_event.getX() - displayWidth / 2, 
                     		_event.getY() - displayHeight / 2, 
                     		displayWidth,
                     		displayHeight);
             	}
 //            	Point p = new Point(
-//            			(int) (_event.getPoint().x - Page.getInstance()
+//            			(int) (_event.getPoint().x - getPage()
 //            					.getJlbl_painting().getLocation().getX()),
-//                    	(int) (_event.getPoint().y - Page.getInstance()
+//                    	(int) (_event.getPoint().y - getPage()
 //                    			.getJlbl_painting().getLocation().getY()));
 //            	mr_erase(p);
                 break;
@@ -506,7 +521,7 @@ MenuListener {
 
                     if (pnt_start == null) {
                         pnt_start = _event.getPoint();
-                        pnt_startLocation = Page.getInstance()
+                        pnt_startLocation = getPage()
                                 .getJlbl_painting().getLocation();
                         Picture.getInstance().abortPaintObject();
                     }
@@ -528,7 +543,7 @@ MenuListener {
                                 - yLocation, 
                                 Math.abs(pnt_start.y - _event.getY()));
 
-                        Page.getInstance().getJlbl_border().setBounds(xLocation,
+                        getPage().getJlbl_border().setBounds(xLocation,
                                 yLocation, xSize, ySize);
                     } else {
                         
@@ -551,7 +566,7 @@ MenuListener {
                 if (_event.getModifiersEx() == leftMouse) {
                     if (pnt_start == null) {
                         pnt_start = _event.getPoint();
-                        pnt_startLocation = Page.getInstance()
+                        pnt_startLocation = getPage()
                                 .getJlbl_painting().getLocation();
                         Picture.getInstance().abortPaintObject();
                     }
@@ -577,24 +592,20 @@ MenuListener {
                         y = pnt_startLocation.y -  _event.getY() + pnt_start.y;
                     }
                     
-                    if (x < -Status.getImageShowSize().width + Page
-                            .getInstance().getJlbl_painting().getWidth()) {
-                        x = -Status.getImageShowSize().width + Page
-                                .getInstance().getJlbl_painting().getWidth();
+                    if (x < -Status.getImageShowSize().width + getPage().getJlbl_painting().getWidth()) {
+                        x = -Status.getImageShowSize().width + getPage().getJlbl_painting().getWidth();
                     }
                     if (x > 0) {
                         x = 0;
                     }
-                    if (y < -Status.getImageShowSize().height + Page
-                            .getInstance().getJlbl_painting().getHeight()) {
-                        y = -Status.getImageShowSize().height + Page
-                                .getInstance().getJlbl_painting().getHeight();
+                    if (y < -Status.getImageShowSize().height + getPage().getJlbl_painting().getHeight()) {
+                        y = -Status.getImageShowSize().height + getPage().getJlbl_painting().getHeight();
                     }
                     if (y >= 0) {
                         y = 0;
                     } 
-                    Page.getInstance().getJlbl_painting().setLocation(x, y);
-                    Page.getInstance().refrehsSps();
+                    getPage().getJlbl_painting().setLocation(x, y);
+                    getPage().refrehsSps();
                     pnt_last = _event.getPoint();
                     break;
                 }
@@ -613,7 +624,7 @@ MenuListener {
 
 
 
-        if (_event.getSource().equals(Page.getInstance().getJlbl_painting())) {
+        if (_event.getSource().equals(getPage().getJlbl_painting())) {
 
             switch (Status.getIndexOperation()) {
             
@@ -654,7 +665,7 @@ MenuListener {
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
                 
-            	if (!Tabs.getInstance().isMenuOpen()) {
+            	if (!getTabs().isMenuOpen()) {
 
                     if (Status.isNormalRotation()) {
 
@@ -663,10 +674,10 @@ MenuListener {
                     } else {
 
                         Picture.getInstance().getPen_current().preprint(
-                        		Page.getInstance().getJlbl_painting()
+                        		getPage().getJlbl_painting()
                         		.getWidth() 
                                 - _event.getX(), 
-                                Page.getInstance().getJlbl_painting()
+                                getPage().getJlbl_painting()
                                 .getHeight() 
                                 - _event.getY());
                     }
@@ -715,13 +726,13 @@ MenuListener {
 	
 	        Picture.getInstance().changePaintObject(
 	                new DPoint((_event.getX() 
-	                        - Page.getInstance()
+	                        - getPage()
 	                        .getJlbl_painting().getLocation().x
 	                        )
 	                        * Status.getImageSize().width
 	                        / Status.getImageShowSize().width, (_event
 	                        .getY() 
-	                        - Page.getInstance().getJlbl_painting()
+	                        - getPage().getJlbl_painting()
 	                        .getLocation().y
 	                        )
 	                        * Status.getImageSize().height
@@ -730,16 +741,16 @@ MenuListener {
 	
 	        Picture.getInstance().changePaintObject(
 	                new DPoint(
-	                        Page.getInstance().getJlbl_painting().getWidth()
+	                        getPage().getJlbl_painting().getWidth()
 	                        - (_event.getX() 
-	                        + Page.getInstance()
+	                        + getPage()
 	                        .getJlbl_painting().getLocation().x
 	                        )
 	                        * Status.getImageSize().width
 	                        / Status.getImageShowSize().width, 
-	                        Page.getInstance().getJlbl_painting().getHeight()
+	                        getPage().getJlbl_painting().getHeight()
 	                        - (_event.getY() 
-	                        + Page.getInstance().getJlbl_painting()
+	                        + getPage().getJlbl_painting()
 	                        .getLocation().y
 	                        )
 	                        * Status.getImageSize().height
@@ -792,7 +803,7 @@ MenuListener {
             if (_event.getButton() == 1) {
 
                 //remove old rectangle.
-                Page.getInstance().getJlbl_border().setBounds(-1, -1, 0, 0);
+                getPage().getJlbl_border().setBounds(-1, -1, 0, 0);
                 switch (Status.getIndexSelection()) {
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
                     
@@ -815,7 +826,7 @@ MenuListener {
                 
                 //set index to moving
                 Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
-                CPaintStatus.getInstance().deactivate();
+                cTabPaintStatus.deactivate();
                 view.getTabs().getTab_paint().getTb_move().setActivated(true);
             }
             break;
@@ -824,7 +835,7 @@ MenuListener {
             if (_event.getButton() == 1) {
 
                 Rectangle r = mr_paint_calcRectangleLocation(_event);
-                Page.getInstance().getJlbl_border().setBounds(r);
+                getPage().getJlbl_border().setBounds(r);
                 //remove old rectangle.
                 switch (Status.getIndexSelection()) {
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
@@ -843,9 +854,9 @@ MenuListener {
                 
                 //set index to moving
                 Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
-                CPaintStatus.getInstance().deactivate();
+                cTabPaintStatus.deactivate();
                 view.getTabs().getTab_paint().getTb_move().setActivated(true);
-                Page.getInstance().getJlbl_background2().repaint();
+                getPage().getJlbl_background2().repaint();
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ERASE:
@@ -896,8 +907,8 @@ MenuListener {
                 if (Picture.getInstance().isSelected()) {
 
                     Picture.getInstance().releaseSelected();
-                    Page.getInstance().releaseSelected();
-                    Page.getInstance().removeButtons();
+                    controlPic.releaseSelected();
+                    getPage().removeButtons();
                 }
             }
             break;
@@ -933,12 +944,12 @@ MenuListener {
                     newHeight = Status.getImageShowSize().height
                     * ViewSettings.ZOOM_MULITPLICATOR;
 
-            Point oldLocation = new Point(Page.getInstance()
-                    .getJlbl_painting().getLocation().x, Page.getInstance()
+            Point oldLocation = new Point(getPage()
+                    .getJlbl_painting().getLocation().x, getPage()
                     .getJlbl_painting().getLocation().y);
 
             Status.setImageShowSize(new Dimension(newWidth, newHeight));
-            Page.getInstance().flip();
+            getPage().flip();
 
             /*
              * set the location of the panel.
@@ -954,11 +965,10 @@ MenuListener {
 
             // not smaller than the
             newX = Math.max(newX, -(Status.getImageShowSize().width 
-                    - Page.getInstance().getJlbl_painting()
+                    - getPage().getJlbl_painting()
                     .getWidth()));
             newY = Math.max(newY,
-                    -(Status.getImageShowSize().height - Page
-                            .getInstance().getJlbl_painting()
+                    -(Status.getImageShowSize().height - getPage().getJlbl_painting()
                             .getHeight()));
             
             
@@ -970,11 +980,11 @@ MenuListener {
             // apply the location at JLabel (with setLocation method that 
             //is not used for scrolling purpose [IMPORTANT]) and repaint the 
             //image afterwards.
-            Page.getInstance().getJlbl_painting().setLoc(newX, newY);
-            Page.getInstance().getJlbl_painting().refreshPaint();
+            getPage().getJlbl_painting().setLoc(newX, newY);
+            controlPic.refreshPaint();
 
             // apply the new location at ScrollPane
-            Page.getInstance().refrehsSps();
+            getPage().refrehsSps();
         } else {
             Message.showMessage(Message.MESSAGE_ID_INFO, "max zoom in reached");
         }
@@ -1076,7 +1086,7 @@ MenuListener {
         
         //paint the selected item and refresh entire painting.
         Picture.getInstance().paintSelected();
-        Page.getInstance().getJlbl_painting().refreshPaint();
+        controlPic.refreshPaint();
 
 
         
@@ -1245,14 +1255,14 @@ MenuListener {
         			transaction);
         	
             if (Picture.getInstance().paintSelected()) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
+            	controlPic.refreshPaint();
             }
 
         }
 
 
         Picture.getInstance().paintSelected();
-        Page.getInstance().getJlbl_painting().refreshPaint();
+        controlPic.refreshPaint();
 
     }
     
@@ -1279,12 +1289,12 @@ MenuListener {
         if (Picture.getInstance().getLs_po_sortedByX().isEmpty()) {
 
 //            //adjust location of the field for painting to view
-            _r_size.x += Page.getInstance().getJlbl_painting().getLocation()
+            _r_size.x += getPage().getJlbl_painting().getLocation()
                     .x;
-            _r_size.y += Page.getInstance().getJlbl_painting().getLocation()
+            _r_size.y += getPage().getJlbl_painting().getLocation()
                     .y;
             //paint to view
-            Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
+            controlPic.paintEntireSelectionRect(
                     _r_size);
             pnt_start = null;
             return;
@@ -1353,7 +1363,7 @@ MenuListener {
         //finish insertion into selected.
         Picture.getInstance().finishSelection();
         
-        Page.getInstance().getJlbl_painting().refreshPaint();
+        controlPic.refreshPaint();
 
         if (!Picture.getInstance().paintSelected()) {
 
@@ -1366,17 +1376,17 @@ MenuListener {
                   (1.0 * _r_size.height / cZoomFactorHeight);
           
           _r_size.x 
-          += Page.getInstance().getJlbl_painting().getLocation().x;
+          += getPage().getJlbl_painting().getLocation().x;
           _r_size.y 
-          += Page.getInstance().getJlbl_painting().getLocation().y;
+          += getPage().getJlbl_painting().getLocation().y;
           
           
-          ControlPaintSelectin.getInstance().setR_selection(_r_size,
-                  Page.getInstance().getJlbl_painting().getLocation());
-          Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
+          controlPaintSelection.setR_selection(_r_size,
+                  getPage().getJlbl_painting().getLocation());
+          controlPic.paintEntireSelectionRect(
                   _r_size);
         }
-        Page.getInstance().getJlbl_background2().repaint();
+        getPage().getJlbl_background2().repaint();
         
 
     }
@@ -1527,7 +1537,7 @@ MenuListener {
                 ls_toInsert.next();
             }
             if (Picture.getInstance().paintSelected()) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
+            	controlPic.refreshPaint();
             }
 
 
@@ -1536,20 +1546,20 @@ MenuListener {
             _r_sizeField.y /= cZoomFactorHeight;
             _r_sizeField.height /= cZoomFactorHeight;
 
-            _r_sizeField.x += Page.getInstance().getJlbl_painting()
+            _r_sizeField.x += getPage().getJlbl_painting()
             		.getLocation().getX();
-            _r_sizeField.y += Page.getInstance().getJlbl_painting()
+            _r_sizeField.y += getPage().getJlbl_painting()
             		.getLocation().getY();
             
         }
         
 
-        Page.getInstance().getJlbl_painting().refreshRectangle(
+        controlPic.refreshRectangle(
                 _r_sizeField.x, _r_sizeField.y, 
                 _r_sizeField.width, _r_sizeField.height);
 
 
-        Page.getInstance().getJlbl_background2().repaint();
+        getPage().getJlbl_background2().repaint();
 
     	//finish transaction
     	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
@@ -1685,7 +1695,7 @@ MenuListener {
         
             
             if (Picture.getInstance().paintSelected()) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
+            	controlPic.refreshPaint();
             }
 
             r_sizeField.x /= cZoomFactorWidth;
@@ -1702,10 +1712,10 @@ MenuListener {
         
 
 
-        Page.getInstance().getJlbl_painting().clrRectangle(
-                r_sizeField.x + (int) Page.getInstance()
+        controlPic.clrRectangle(
+                r_sizeField.x + (int) getPage()
 				.getJlbl_painting().getLocation().getX(),
-				r_sizeField.y + (int) Page.getInstance()
+				r_sizeField.y + (int) getPage()
 				.getJlbl_painting().getLocation().getY(),
                 r_sizeField.width, r_sizeField.height);
 
@@ -1737,7 +1747,7 @@ MenuListener {
 						//value if border is visible on screen; 
 						//zoomed out
 						1.0 * Status.getImageSize().width
-						/ Page.getInstance().getJlbl_painting()
+						/ getPage().getJlbl_painting()
 						.getWidth()
 						/ Status.getEraseRadius());
 		final double factorHeight = 
@@ -1753,7 +1763,7 @@ MenuListener {
 						//value if border is visible on screen; 
 						//zoomed out
 						1.0 * Status.getImageSize().height
-						/ Page.getInstance().getJlbl_painting()
+						/ getPage().getJlbl_painting()
 						.getHeight()
 						/ Status.getEraseRadius());
     	final DPoint pnt_stretch = new DPoint(factorWidth, factorHeight);
@@ -1784,9 +1794,9 @@ MenuListener {
             // impossible for the paintSelection to paint inside the
             // selected area
             while (po_current != null
-                    && currentX <=  (Page.getInstance().getJlbl_painting()
+                    && currentX <=  (getPage().getJlbl_painting()
                     		.getLocation().getX()
-                    		+ Page.getInstance().getJlbl_painting()
+                    		+ getPage().getJlbl_painting()
                     		.getWidth())) {
 
                 //The y condition has to be in here because the items are just 
@@ -1795,7 +1805,7 @@ MenuListener {
                 //some of its predecessors in sorted list do.
                 if (po_current.isInSelectionImageStretched(
                 		field_erase, 
-                		Page.getInstance().getJlbl_painting().getLocation(),
+                		getPage().getJlbl_painting().getLocation(),
                 		pnt_stretch)) {
                 	
 
@@ -1804,7 +1814,7 @@ MenuListener {
 
                 	ls_separatedPO 
                 	= po_current.deleteCurve(field_erase, 
-                    		Page.getInstance().getJlbl_painting().getLocation(),
+                    		getPage().getJlbl_painting().getLocation(),
                 			pnt_stretch,
                 			ls_separatedPO);
                 	if (ls_separatedPO != null) {
@@ -1866,7 +1876,7 @@ MenuListener {
         			transaction);
             
             if (Picture.getInstance().paintSelected()) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
+            	controlPic.refreshPaint();
             }
         } else {
 
@@ -1915,18 +1925,18 @@ MenuListener {
                 final int max = 25;
                 for (int i = max; i >= 0; i--) {
 
-                    int x = Page.getInstance().getJlbl_painting()
+                    int x = getPage().getJlbl_painting()
                             .getLocation().x 
                             - _mmSP.x * i / max;
-                    int y = Page.getInstance().getJlbl_painting()
+                    int y = getPage().getJlbl_painting()
                             .getLocation().y 
                             - _mmSP.y * i / max;
 
                     if (x < -Status.getImageShowSize().width 
-                            + Page.getInstance().getJlbl_painting()
+                            + getPage().getJlbl_painting()
                             .getWidth()) {
                         x = -Status.getImageShowSize().width
-                                + Page.getInstance()
+                                + getPage()
                                 .getJlbl_painting().getWidth();
                     }
                     if (x > 0) {
@@ -1934,18 +1944,18 @@ MenuListener {
                     }
                     
                     if (y < -Status.getImageShowSize().height
-                            + Page.getInstance().getJlbl_painting()
+                            + getPage().getJlbl_painting()
                             .getHeight()) {
                         y = -Status.getImageShowSize().height
-                                + Page.getInstance()
+                                + getPage()
                                 .getJlbl_painting().getHeight();
                     }
                     if (y >= 0) {
                         y = 0;
                     } 
-                    Page.getInstance().getJlbl_painting()
+                    getPage().getJlbl_painting()
                     .setLocation(x, y);
-                    Page.getInstance().refrehsSps();
+                    getPage().refrehsSps();
                     
                     try {
                         final int sleepTime = 20;
@@ -1981,9 +1991,9 @@ MenuListener {
                 - yLocation, 
                 Math.abs(pnt_start.y - _event.getY()));
 
-        xLocation -= Page.getInstance().getJlbl_painting()
+        xLocation -= getPage().getJlbl_painting()
                 .getLocation().x;
-        yLocation -= Page.getInstance().getJlbl_painting()
+        yLocation -= getPage().getJlbl_painting()
                 .getLocation().y;
 
         
@@ -2093,7 +2103,7 @@ MenuListener {
     	//release selected because of display bug otherwise.
     	if (Picture.getInstance().isSelected()) {
 	    	Picture.getInstance().releaseSelected();
-	    	Page.getInstance().releaseSelected();
+	    	controlPic.releaseSelected();
     	}		
 	}
 
@@ -2105,7 +2115,7 @@ MenuListener {
     	//release selected because of display bug otherwise.
     	if (Picture.getInstance().isSelected()) {
 	    	Picture.getInstance().releaseSelected();
-	    	Page.getInstance().releaseSelected();
+	    	controlPic.releaseSelected();
     	}		
 	}
 
@@ -2122,8 +2132,8 @@ MenuListener {
 	public void afterClose() {
 
         //when closed repaint.
-        Page.getInstance().getJlbl_painting().repaint();
-        Tabs.getInstance().repaint();		
+        getPage().getJlbl_painting().repaint();
+        getTabs().repaint();		
 	}
 
 
@@ -2164,6 +2174,106 @@ MenuListener {
 	 */
 	public void setcTabSelection(CTabSelection cTabSelection) {
 		this.cTabSelection = cTabSelection;
+	}
+
+
+
+
+	/**
+	 * @return the cTabLook
+	 */
+	public CLook getcTabLook() {
+		return cTabLook;
+	}
+
+
+
+
+	/**
+	 * @param cTabLook the cTabLook to set
+	 */
+	public void setcTabLook(CLook cTabLook) {
+		this.cTabLook = cTabLook;
+	}
+
+
+
+
+	/**
+	 * @return the cTabExport
+	 */
+	public CExport getcTabExport() {
+		return cTabExport;
+	}
+
+
+
+
+	/**
+	 * @param cTabExport the cTabExport to set
+	 */
+	public void setcTabExport(CExport cTabExport) {
+		this.cTabExport = cTabExport;
+	}
+
+
+
+
+	/**
+	 * @return the cTabPaintObjects
+	 */
+	public CPaintObjects getcTabPaintObjects() {
+		return cTabPaintObjects;
+	}
+
+
+
+
+	/**
+	 * @param cTabPaintObjects the cTabPaintObjects to set
+	 */
+	public void setcTabPaintObjects(CPaintObjects cTabPaintObjects) {
+		this.cTabPaintObjects = cTabPaintObjects;
+	}
+
+
+
+
+	/**
+	 * @return the controlPic
+	 */
+	public ContorlPicture getControlPic() {
+		return controlPic;
+	}
+
+
+
+
+	/**
+	 * @param controlPic the controlPic to set
+	 */
+	public void setControlPic(ContorlPicture controlPic) {
+		this.controlPic = controlPic;
+	}
+
+
+
+
+	/**
+	 * @return the controlnew
+	 */
+	public CNew getControlnew() {
+		return controlnew;
+	}
+
+
+
+
+	/**
+	 * @param controlnew the controlnew to set
+	 */
+	public void setControlnew(CNew controlnew) {
+		this.controlnew = controlnew;
 	}
     
 }

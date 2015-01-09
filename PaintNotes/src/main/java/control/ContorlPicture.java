@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
+import control.tabs.ControlTabPainting;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.special.PenSelection;
@@ -14,7 +15,6 @@ import model.util.paint.Utils;
 import view.forms.Page;
 import view.forms.Tabs;
 import view.tabs.PaintObjects;
-import view.util.BorderThread;
 import view.util.mega.MPanel;
 
 public class ContorlPicture {
@@ -532,6 +532,36 @@ public class ContorlPicture {
         
         //paint the background
     }
+    
+
+	/**
+	 * Release selected items and add them to normal list.
+	 */
+	public void releaseSelected() {
+
+	    for (int i = 0; i < jbtn_resize.length; i++) {
+	        for (int j = 0; j < jbtn_resize[i].length; j++) {
+	            int width = jbtn_resize[i][j].getWidth();
+
+	            jbtn_resize[i][j].setLocation(-width - 1, -1);
+	        }
+	    }
+	    //method for setting the MButtons to the size of the entire image.
+	    ControlTabPainting.getInstance().updateResizeLocation();
+	    
+	    jlbl_painting.stopBorderThread();
+	    
+        BufferedImage emptyBI = getEmptyBISelection();
+        jlbl_selectionBG.setIcon(new ImageIcon(emptyBI));
+        jlbl_selectionPainting.setIcon(new ImageIcon(emptyBI));
+        jlbl_selectionPainting.repaint();
+
+        jlbl_border.setBounds(0, 0, 0, 0);
+        jlbl_selectionBG.setLocation(0, 0);
+        jlbl_selectionPainting.setLocation(0, 0);
+        
+        jlbl_painting.refreshPaint();
+	}
     
     
     /**

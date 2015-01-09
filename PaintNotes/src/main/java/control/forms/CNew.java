@@ -9,9 +9,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.ImageIcon;
-
+import control.ControlPaint;
 import model.objects.painting.Picture;
 import model.settings.Constants;
 import model.settings.Status;
@@ -19,7 +18,6 @@ import model.util.paint.Utils;
 import view.View;
 import view.forms.Message;
 import view.forms.New;
-import view.forms.Page;
 
 /**
  * @author Julius Huelsmann
@@ -27,55 +25,64 @@ import view.forms.Page;
  */
 public final class CNew implements ActionListener, MouseListener, KeyListener {
 
-	private New v_new;
-	public CNew(New v_new) {
-		this.v_new = v_new;
+	private ControlPaint cp;
+	public CNew(ControlPaint _cp) {
+		this.cp = _cp;
 	}
+	
+
+	private final New getNew() {
+		return cp.getView().getPage().getJpnl_new();
+	}
+	private final View getView() {
+		return cp.getView();
+	}
+	
     
     /**
      * {@inheritDoc}
      */
     public void actionPerformed(final ActionEvent _event) {
-        if (_event.getSource().equals(v_new.getI1b_a4()
+        if (_event.getSource().equals(getNew().getI1b_a4()
                 .getActionCause())) {
             deactivate();
-            v_new.getJlbl_bg1().setVisible(false);
-            v_new.hideCustomInformation();
-        } else if (_event.getSource().equals(v_new.getI1b_a5()
+            getNew().getJlbl_bg1().setVisible(false);
+            getNew().hideCustomInformation();
+        } else if (_event.getSource().equals(getNew().getI1b_a5()
                 .getActionCause())) {
             deactivate();
-            v_new.getJlbl_bg2().setVisible(false);
-            v_new.hideCustomInformation();
-        } else if (_event.getSource().equals(v_new.getI1b_a6()
+            getNew().getJlbl_bg2().setVisible(false);
+            getNew().hideCustomInformation();
+        } else if (_event.getSource().equals(getNew().getI1b_a6()
                 .getActionCause())) {
             deactivate(); 
-            v_new.getJlbl_bg3().setVisible(false);
-            v_new.hideCustomInformation();
-        } else if (_event.getSource().equals(v_new.getI1b_a7()
+            getNew().getJlbl_bg3().setVisible(false);
+            getNew().hideCustomInformation();
+        } else if (_event.getSource().equals(getNew().getI1b_a7()
                 .getActionCause())) {
             deactivate();
-            v_new.getJlbl_bg4().setVisible(false);
-            v_new.hideCustomInformation();
+            getNew().getJlbl_bg4().setVisible(false);
+            getNew().hideCustomInformation();
         } else if (_event.getSource().equals(
-                v_new.getI1b_custom().getActionCause())) {
+                getNew().getI1b_custom().getActionCause())) {
             deactivate();
-            v_new.getJlbl_bg5().setVisible(false);
-            v_new.showCustomInformation();
+            getNew().getJlbl_bg5().setVisible(false);
+            getNew().showCustomInformation();
         } else if (_event.getSource().equals(
-                v_new.getJbtn_enter())) {
+                getNew().getJbtn_enter())) {
             
             int width, height, backgroundID;
-            String project = v_new.getJcb_project()
+            String project = getNew().getJcb_project()
                     .getSelectedItem().toString();
             
             //check whether settings are correct:
-            if (v_new.getI1b_custom().isActivated()) {
+            if (getNew().getI1b_custom().isActivated()) {
                 
 
                 int checkWidth = checkText(
-                        v_new.getJtf_customWidth().getText());
+                        getNew().getJtf_customWidth().getText());
                 int checkHeight = checkText(
-                        v_new.getJtf_customHeight().getText());
+                        getNew().getJtf_customHeight().getText());
                 if (checkHeight != -1 && checkWidth != -1) {
                     width = checkWidth;
                     height = checkHeight;
@@ -86,16 +93,16 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
                             + " greater than zero.");
                     return;
                 }
-            } else if (v_new.getI1b_a4().isActivated()) {
+            } else if (getNew().getI1b_a4().isActivated()) {
                 width = Constants.SIZE_A4.width;
                 height = Constants.SIZE_A4.height;
-            } else if (v_new.getI1b_a5().isActivated()) {
+            } else if (getNew().getI1b_a5().isActivated()) {
                 width = Constants.SIZE_A5.width;
                 height = Constants.SIZE_A5.height;
-            } else if (v_new.getI1b_a6().isActivated()) {
+            } else if (getNew().getI1b_a6().isActivated()) {
                 width = Constants.SIZE_A6.width;
                 height = Constants.SIZE_A6.height;
-            } else if (v_new.getI1b_a7().isActivated()) {
+            } else if (getNew().getI1b_a7().isActivated()) {
                 width = Constants.SIZE_A7.width;
                 height = Constants.SIZE_A7.height;
             } else {
@@ -104,11 +111,11 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
                 height = 2;
             }
             
-            if (v_new.getJcb_raster().isSelected()) {
+            if (getNew().getJcb_raster().isSelected()) {
                 backgroundID = Constants.CONTROL_PAGE_BACKGROUND_RASTAR;
-            } else if (v_new.getJcb_lines().isSelected()) {
+            } else if (getNew().getJcb_lines().isSelected()) {
                 backgroundID = Constants.CONTROL_PAGE_BACKGROUND_LINES;
-            } else if (v_new.getJcb_nothing().isSelected()) {
+            } else if (getNew().getJcb_nothing().isSelected()) {
                 backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
             } else {
                 Status.getLogger().warning("no background selected.");
@@ -121,22 +128,22 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
             Picture.getInstance().reload();
             Status.setOpenProject(project);
             
-            Page.getInstance().getJlbl_painting().refreshPaint();
+            cp.getControlPic().refreshPaint();
         } else if (_event.getSource().equals(
-                v_new.getJcb_lines())) {
-            v_new.getJcb_lines().setSelected(true);
-            v_new.getJcb_nothing().setSelected(false);
-            v_new.getJcb_raster().setSelected(false);
+                getNew().getJcb_lines())) {
+            getNew().getJcb_lines().setSelected(true);
+            getNew().getJcb_nothing().setSelected(false);
+            getNew().getJcb_raster().setSelected(false);
         } else if (_event.getSource().equals(
-                v_new.getJcb_nothing())) {
-            v_new.getJcb_nothing().setSelected(true);
-            v_new.getJcb_lines().setSelected(false);
-            v_new.getJcb_raster().setSelected(false);
+                getNew().getJcb_nothing())) {
+            getNew().getJcb_nothing().setSelected(true);
+            getNew().getJcb_lines().setSelected(false);
+            getNew().getJcb_raster().setSelected(false);
         } else if (_event.getSource().equals(
-                v_new.getJcb_raster())) {
-            v_new.getJcb_raster().setSelected(true);
-            v_new.getJcb_nothing().setSelected(false);
-            v_new.getJcb_lines().setSelected(false);
+                getNew().getJcb_raster())) {
+            getNew().getJcb_raster().setSelected(true);
+            getNew().getJcb_nothing().setSelected(false);
+            getNew().getJcb_lines().setSelected(false);
         }
     }
     
@@ -169,17 +176,17 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
      */
     private void deactivate() {
 
-        v_new.getI1b_a4().setActivated(false);
-        v_new.getI1b_a5().setActivated(false);
-        v_new.getI1b_a6().setActivated(false);
-        v_new.getI1b_a7().setActivated(false);
-        v_new.getI1b_custom().setActivated(false);
+        getNew().getI1b_a4().setActivated(false);
+        getNew().getI1b_a5().setActivated(false);
+        getNew().getI1b_a6().setActivated(false);
+        getNew().getI1b_a7().setActivated(false);
+        getNew().getI1b_custom().setActivated(false);
 
-        v_new.getJlbl_bg1().setVisible(true);
-        v_new.getJlbl_bg2().setVisible(true);
-        v_new.getJlbl_bg3().setVisible(true);
-        v_new.getJlbl_bg4().setVisible(true);
-        v_new.getJlbl_bg5().setVisible(true);
+        getNew().getJlbl_bg1().setVisible(true);
+        getNew().getJlbl_bg2().setVisible(true);
+        getNew().getJlbl_bg3().setVisible(true);
+        getNew().getJlbl_bg4().setVisible(true);
+        getNew().getJlbl_bg5().setVisible(true);
     }
     
     
@@ -195,8 +202,8 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
         
 
         // source: exit button at the top of the window
-        if (_event.getSource().equals(v_new.getJbtn_exit())) {
-            v_new.setVisible(false);
+        if (_event.getSource().equals(getNew().getJbtn_exit())) {
+            getNew().setVisible(false);
         } 
     }
 
@@ -208,10 +215,10 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
     public void mouseEntered(final MouseEvent _event) {
 
         // source: exit button at the top of the window
-        if (_event.getSource().equals(v_new.getJbtn_exit())) {
-            v_new.getJbtn_exit().setIcon(new ImageIcon(
-                    Utils.resizeImage(View.getInstance().getJbtn_exit()
-                            .getWidth(), v_new.getJbtn_exit()
+        if (_event.getSource().equals(getNew().getJbtn_exit())) {
+            getNew().getJbtn_exit().setIcon(new ImageIcon(
+                    Utils.resizeImage(getView().getJbtn_exit()
+                            .getWidth(), getNew().getJbtn_exit()
                             .getHeight(),
                             Constants.VIEW_JBTN_EXIT_MOUSEOVER_PATH)));
         }
@@ -225,10 +232,10 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
     public void mouseExited(final MouseEvent _event) {
 
         // source: exit button at the top of the window
-        if (_event.getSource().equals(v_new.getJbtn_exit())) {
-            v_new.getJbtn_exit().setIcon(new ImageIcon(
-                    Utils.resizeImage(View.getInstance().getJbtn_exit()
-                            .getWidth(), v_new.getJbtn_exit()
+        if (_event.getSource().equals(getNew().getJbtn_exit())) {
+            getNew().getJbtn_exit().setIcon(new ImageIcon(
+                    Utils.resizeImage(getView().getJbtn_exit()
+                            .getWidth(), getNew().getJbtn_exit()
                             .getHeight(),
                             Constants.VIEW_JBTN_EXIT_MOUSEOVER_PATH)));
         }
@@ -243,10 +250,10 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
 
 
         // source: exit button at the top of the window
-        if (_event.getSource().equals(v_new.getJbtn_exit())) {
-            v_new.getJbtn_exit().setIcon(new ImageIcon(
-                    Utils.resizeImage(View.getInstance().getJbtn_exit()
-                            .getWidth(), v_new.getJbtn_exit()
+        if (_event.getSource().equals(getNew().getJbtn_exit())) {
+            getNew().getJbtn_exit().setIcon(new ImageIcon(
+                    Utils.resizeImage(getView().getJbtn_exit()
+                            .getWidth(), getNew().getJbtn_exit()
                             .getHeight(),
                             Constants.VIEW_JBTN_EXIT_PRESSED_PATH)));
         }         
@@ -272,16 +279,16 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
      */
     public void keyPressed(final KeyEvent _event) {
         int checkWidth = checkText(
-                v_new.getJtf_customWidth().getText());
+                getNew().getJtf_customWidth().getText());
         int checkHeight = checkText(
-                v_new.getJtf_customHeight().getText());
+                getNew().getJtf_customHeight().getText());
         if (checkWidth != -1) {
 
-            oldWidth = v_new.getJtf_customWidth().getText();
+            oldWidth = getNew().getJtf_customWidth().getText();
         } 
         if (checkHeight != -1) {
 
-            oldHeight = v_new.getJtf_customHeight().getText();
+            oldHeight = getNew().getJtf_customHeight().getText();
         }
     }
 
@@ -293,22 +300,22 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
     public void keyReleased(final KeyEvent _event) {
 
         int checkWidth = checkText(
-                v_new.getJtf_customWidth().getText());
+                getNew().getJtf_customWidth().getText());
         int checkHeight = checkText(
-                v_new.getJtf_customHeight().getText());
+                getNew().getJtf_customHeight().getText());
         if (checkWidth == -1 
-                && !v_new.getJtf_customWidth()
+                && !getNew().getJtf_customWidth()
                 .getText().equals("")
                 ) {
-            v_new.getJtf_customWidth().setText(oldWidth);
+            getNew().getJtf_customWidth().setText(oldWidth);
         } 
         if ((checkHeight == -1) 
                 && 
-                !v_new.getJtf_customHeight()
+                !getNew().getJtf_customHeight()
                 .getText().equals("")
                 ) {
         
-            v_new.getJtf_customHeight().setText(oldHeight);
+            getNew().getJtf_customHeight().setText(oldHeight);
         }        
     }
 

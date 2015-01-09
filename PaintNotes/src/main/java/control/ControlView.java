@@ -38,15 +38,17 @@ public class ControlView implements ActionListener, MouseListener {
 	 * The saved instance of the view class.
 	 */
 	private final View view;
+	private ControlTabPainting ctp;
 	
 	
 	
 	/**
 	 * Constructor: initializes the view class and reads settings.
 	 */
-	public ControlView(final View _view) {
+	public ControlView(final View _view, final ControlTabPainting _ctp) {
 		
 		this.view = _view;
+		this.ctp = _ctp;
 	}
 	
 	
@@ -82,7 +84,7 @@ public class ControlView implements ActionListener, MouseListener {
 				switch (answer) {
 				case JOptionPane.YES_OPTION:
 
-					ControlTabPainting.getInstance().mr_save();
+					ctp.mr_save();
 					break;
 					
 					
@@ -133,8 +135,8 @@ public class ControlView implements ActionListener, MouseListener {
 
             view.getJbtn_exit().setIcon(
                     new ImageIcon(Utils.resizeImage(view
-                            .getJbtn_exit().getWidth(), View
-                            .getInstance().getJbtn_exit().getHeight(),
+                            .getJbtn_exit().getWidth(), view
+                            .getJbtn_exit().getHeight(),
                             Constants.VIEW_JBTN_EXIT_MOUSEOVER_PATH)));
         } else if (_event.getSource().equals(
                 view.getJbtn_fullscreen())) {
@@ -240,13 +242,8 @@ public class ControlView implements ActionListener, MouseListener {
           
           view.flip();
           view.repaint();
-          Tabs.getInstance().repaint();
-          Tabs.getInstance().openTab(0);
-          
-      
-        
+          view.getTabs().repaint();
+          view.getTabs().openTab(0);
         } 
 	}
-
-
 }

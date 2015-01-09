@@ -2,6 +2,7 @@ package control.tabs;
 
 import view.forms.Page;
 import model.settings.ViewSettings;
+import control.ContorlPicture;
 import control.ControlPaint;
 import control.interfaces.MoveEvent;
 import control.interfaces.TabbedListener;
@@ -13,7 +14,11 @@ public class CTabs implements TabbedListener{
 	 * 
 	 */
 	public CTabs(final ControlPaint _cp) {
-		
+		this.cp = _cp;
+	}
+	
+	private ContorlPicture getControlPic() {
+		return cp.getControlPic();
 	}
 	
 	public void closeListener() {
@@ -31,7 +36,8 @@ public class CTabs implements TabbedListener{
                 ViewSettings.getView_bounds_page_closed().getSize());
         page.getJlbl_selectionPainting().setSize(
                 ViewSettings.getView_bounds_page_closed().getSize());
-        page.getJlbl_painting().refreshPaint();
+        
+        getControlPic().refreshPaint();
 	}
 
 	public void moveListener(MoveEvent _event) {
@@ -55,6 +61,6 @@ public class CTabs implements TabbedListener{
                 ViewSettings.getView_bounds_page_open().getSize());
         page.getJlbl_selectionPainting().setSize(
                 ViewSettings.getView_bounds_page_open().getSize());
-        page.getJlbl_painting().refreshPaint(); 		
+        getControlPic().refreshPaint(); 		
 	}
 }

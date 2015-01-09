@@ -50,7 +50,8 @@ public final class Zoom {
      * @param _x the x coordinate
      * @param _y the y coordinate.
      */
-    public synchronized void setLocation(final int _x, final int _y) {
+    public synchronized void setLocation(final int _x, final int _y,
+    		final Page _page) {
 
         //the image pixel size in pixel for painting.
         //for example if zoomed in once, an image pixel has
@@ -68,9 +69,9 @@ public final class Zoom {
         int xNewAligned, yNewAligned;
         
         if (imagePixelSizeX != 0 && imagePixelSizeY != 0) {
-            int shiftAlinedX = -Page.getInstance().getJlbl_painting()
+            int shiftAlinedX = -_page.getJlbl_painting()
                     .getLocation().x % imagePixelSizeX,
-                    shiftAlinedY = -Page.getInstance().getJlbl_painting()
+                    shiftAlinedY = -_page.getJlbl_painting()
                     .getLocation().y % imagePixelSizeY;
 
             xNewAligned = _x + shiftAlinedX;
@@ -90,7 +91,7 @@ public final class Zoom {
             this.x = xNewAligned;
             this.y = yNewAligned;
             
-            Page.getInstance().getJlbl_painting().setZoomBox(
+            _page.getJlbl_painting().setZoomBox(
                     x, y, 
                     ViewSettings.ZOOM_SIZE.width,
                     ViewSettings.ZOOM_SIZE.height);

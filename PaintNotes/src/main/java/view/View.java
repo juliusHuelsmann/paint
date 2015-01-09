@@ -36,10 +36,6 @@ import control.util.MousePositionTracker;
  */
 @SuppressWarnings("serial") public final class View extends MFrame {
 
-	/**
-	 * the only instance of this class.
-	 */
-	private static View instance = null;
 
 	/**
 	 * close button.
@@ -73,7 +69,6 @@ import control.util.MousePositionTracker;
 	 * @param _cp instance of ControlView.
 	 */
 	public View(final ControlPaint _cp) {
-		instance = this;
 
 	    
         //initialize JFrame and alter settings
@@ -83,7 +78,7 @@ import control.util.MousePositionTracker;
         super.setUndecorated(true);
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        ControlView cv = new ControlView(this);
+        ControlView cv = new ControlView(this, _cp.getcTabPaint());
         
         JLabel jlbl_backgroundStroke = new JLabel();
         jlbl_backgroundStroke.setSize(getSize());
@@ -453,13 +448,13 @@ import control.util.MousePositionTracker;
 
         //initialize PaintObjects
         Status.getLogger().info("   initialize Page\n");
-        Page.getInstance().setSize(ViewSettings.getView_bounds_page().width, 
+        page.setSize(ViewSettings.getView_bounds_page().width, 
                 ViewSettings.getView_bounds_page().height);
-        Page.getInstance().setLocation(
+        page.setLocation(
                 ViewSettings.getView_bounds_page().getLocation());
 	    
 
-            Page.getInstance().setLocation(
+            page.setLocation(
                     ViewSettings.getView_bounds_page().getLocation());
 
 	        
@@ -476,13 +471,9 @@ import control.util.MousePositionTracker;
 	        
 	        tabs.setLocation(ViewSettings.VIEW_LOCATION_TB);
 	        
-        Page.getInstance().flip();
+        page.flip();
         tabs.flip();
         jlbl_border.setBounds(0, 0, getWidth(), getHeight());
-	}
-	
-	public static View getInstance() {
-		return instance;
 	}
 	
     

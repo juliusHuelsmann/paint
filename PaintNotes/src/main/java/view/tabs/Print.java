@@ -2,8 +2,14 @@
 package view.tabs;
 
 //import declarations
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
+import javax.swing.border.LineBorder;
+
 import model.settings.Constants;
 import model.settings.ViewSettings;
+import control.tabs.CPaintStatus;
 import control.tabs.CPrint;
 import view.util.Item1Button;
 
@@ -39,13 +45,34 @@ public final class Print extends Tab {
         		ViewSettings.getDistanceBetweenItems());
         tb_print.setBorder(false);
         tb_print.addActionListener(_cp);
-        Paint.initializeTextButtonOhneAdd(tb_print,
+        initializeTextButtonOhneAdd(tb_print,
                 "Druckauftrag",
                 Constants.VIEW_TB_NEW_PATH);
         tb_print.setActivable(false);
         super.add(tb_print);
 
 	}
+    
+    /**
+     * initialize a text button.
+     * 
+     * @param _tb the textButton
+     * @param _text the text of the button
+     * @param _path the path of the image
+     */
+    public static void initializeTextButtonOhneAdd(
+            final Item1Button _tb, 
+            final String _text, final String _path) {
+        
+        //alter settings of TextButton
+        _tb.setOpaque(true);
+        _tb.setText(_text);
+        _tb.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(Color.black),
+                new LineBorder(Color.white)));
+        _tb.setActivable(true);
+        _tb.setIcon(_path);
+    }
 	
 
 	/**

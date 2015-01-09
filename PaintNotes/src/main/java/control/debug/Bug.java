@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Rectangle;
 
 import control.ControlPaint;
-import control.tabs.ControlTabPainting;
-import start.Start;
 import model.objects.painting.Picture;
 import model.objects.pen.normal.Pencil;
 import model.settings.Constants;
@@ -42,7 +40,7 @@ public final class Bug {
         cp = new ControlPaint();
         
         //set the initialization process terminated
-        Start.increaseInitializationFinished();
+        Status.increaseInitializationFinished();
 		
 		//load bug and display it at loaded interface.
 		loadBug(_loadingPath);

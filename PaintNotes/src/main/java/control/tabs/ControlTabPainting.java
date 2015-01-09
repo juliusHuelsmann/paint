@@ -19,6 +19,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
+import control.ContorlPicture;
 import control.ControlPaint;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
@@ -30,12 +31,10 @@ import model.util.DPoint;
 import model.util.Util;
 import model.util.adt.list.List;
 import model.util.paint.MyClipboard;
-
 import view.View;
 import view.forms.Message;
 import view.forms.Page;
 import view.tabs.Paint;
-
 import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;
 
@@ -46,11 +45,6 @@ import view.util.VButtonWrapper;
  * @version %I%, %U%
  */
 public final class ControlTabPainting implements ActionListener, MouseListener {
-
-    /**
-     * the only instance of this.
-     */
-    private static ControlTabPainting instance = null;
 
 
 	/**
@@ -72,12 +66,15 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
 
     	this.controlPaint = _cp;
         // initialize and start action
-        instance = this;
 
 		//initialize the last selected array
 		this.lastSelected = new Item1PenSelection[2];
     }
 
+    
+    private ContorlPicture getControlPicture() {
+    	return controlPaint.getControlPic();
+    }
     
     
     /**
@@ -154,7 +151,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
 	            		//print a warning and turn the instance of view 
 	        			//afterwards
 	            		Status.getLogger().warning("beta rotation");
-	                    View.getInstance().turn();
+	                    getView().turn();
 	                    
 	                    //set the new rotation value.
 	                    Status.setNormalRotation(false);
@@ -195,7 +192,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
 	            		//print a warning and turn the instance of view 
 	        			//afterwards
 	            		Status.getLogger().warning("beta rotation");
-	                    View.getInstance().turn();
+	                    getView().turn();
 
 	                    //set the new rotation value.
 	                    Status.setNormalRotation(true);
@@ -225,6 +222,15 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
             } 
     	}
     }
+    
+
+    private Page getPage() {
+    	return controlPaint.getView().getPage();
+    }
+
+    private View getView() {
+    	return controlPaint.getView();
+    }
 
     
 
@@ -248,8 +254,8 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
                 Picture.getInstance().paintSelectedBI());
         
         Picture.getInstance().deleteSelected();
-        Page.getInstance().releaseSelected();
-        Page.getInstance().getJlbl_painting().refreshPaint();
+        getControlPicture().releaseSelected();
+        getControlPicture().refreshPaint();
     
     }
     
@@ -260,7 +266,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
     public void mr_paste() {
 
 
-        Page.getInstance().releaseSelected();
+    	getControlPicture().releaseSelected();
         Picture.getInstance().releaseSelected();
         Picture.getInstance().createSelected();
         
@@ -275,7 +281,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
             Picture.getInstance().finishSelection();
             
             Picture.getInstance().paintSelected();
-            Page.getInstance().getJlbl_background2().repaint();
+            getPage().getJlbl_background2().repaint();
             
 
         } else if (o instanceof List) {
@@ -335,8 +341,8 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
             Status.getLogger().warning("unknown return type of clipboard");
         }
         Picture.getInstance().paintSelected();
-        Page.getInstance().getJlbl_background2().repaint();
-        Page.getInstance().getJlbl_painting().refreshPaint();
+        getPage().getJlbl_background2().repaint();
+        getControlPicture().refreshPaint();
     
     }
 
@@ -384,7 +390,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
             JFileChooser jfc = new JFileChooser();
             jfc.setCurrentDirectory(new java.io.File("."));
             jfc.setDialogTitle("Select save location");
-            int retval = jfc.showOpenDialog(View.getInstance());
+            int retval = jfc.showOpenDialog(getView());
 
             // if selected a file.
             if (retval == JFileChooser.APPROVE_OPTION) {
@@ -398,7 +404,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
                 } else if (!file.getName().toLowerCase().endsWith(".png")
                         && !file.getName().toLowerCase().endsWith(".pic")) {
 
-                    JOptionPane.showMessageDialog(View.getInstance(),
+                    JOptionPane.showMessageDialog(getView(),
                             "Select a .png or .pic file.", "Error",
                             JOptionPane.ERROR_MESSAGE);
                     mr_save();
@@ -409,7 +415,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
                 if (file.exists()) {
 
                     int result = JOptionPane.showConfirmDialog(
-                            View.getInstance(), "File already exists. "
+                            getView(), "File already exists. "
                                     + "Owerwrite?", "Owerwrite file?",
                             JOptionPane.YES_NO_CANCEL_OPTION,
                             JOptionPane.QUESTION_MESSAGE);
@@ -447,7 +453,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
      */
     public void mr_load() {
 
-        int i = JOptionPane.showConfirmDialog(View.getInstance(),
+        int i = JOptionPane.showConfirmDialog(getView(),
                 "Do you want to save the committed changes? ",
                 "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
         // no
@@ -458,7 +464,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
             JFileChooser jfc = new JFileChooser();
             jfc.setCurrentDirectory(new java.io.File("."));
             jfc.setDialogTitle("Select load location");
-            int retval = jfc.showOpenDialog(View.getInstance());
+            int retval = jfc.showOpenDialog(getView());
 
             if (retval == JFileChooser.APPROVE_OPTION) {
                 File file = jfc.getSelectedFile();
@@ -466,7 +472,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
                 if (file.getName().toLowerCase().endsWith(".pic")) {
                     Picture.getInstance().loadPicture(file.getAbsolutePath());
                     Status.setUncommittedChanges(false);
-                    Page.getInstance().getJlbl_painting().refreshPaint();
+                    getControlPicture().refreshPaint();
                 } else if (file.getName().toLowerCase().endsWith(".png")) {
                     
                     try {
@@ -477,7 +483,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
                         Status.setImageShowSize(Status.getImageSize());
                         Picture.getInstance().emptyImage();
                         Picture.getInstance().addPaintObjectImage(bi_imageBG);
-                        Page.getInstance().getJlbl_painting().refreshPaint();
+                        getControlPicture().refreshPaint();
                         
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -493,7 +499,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
 
                 } else {
 
-                    JOptionPane.showMessageDialog(View.getInstance(),
+                    JOptionPane.showMessageDialog(getView(),
                             "Select a .png file.", "Error",
                             JOptionPane.ERROR_MESSAGE);
                     mr_save();
@@ -519,7 +525,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
     public void mr_new() {
 
         if (Status.isUncommittedChanges()) {
-            int i = JOptionPane.showConfirmDialog(View.getInstance(),
+            int i = JOptionPane.showConfirmDialog(getView(),
                     "Do you want to save the committed changes? ",
                     "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
             if (i == 0) {
@@ -572,25 +578,24 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
                     / ViewSettings.ZOOM_MULITPLICATOR;
 
             int displayedWidth = 
-            		Page.getInstance().getJlbl_painting().getWidth();
+            		getPage().getWidth();
             int displayedHeight = 
-            		Page.getInstance().getJlbl_painting().getHeight();
+            		getPage().getHeight();
             
             
-            Point oldLocation = new Point(Page.getInstance()
+            Point oldLocation = new Point(getPage()
                     .getJlbl_painting().getLocation().x + displayedWidth / 2, 
-                    Page.getInstance() 
+                    getPage() 
                     .getJlbl_painting().getLocation().y + displayedHeight / 2);
             
 
             // not smaller than the
             oldLocation.x = Math.max(oldLocation.x,
             		-(Status.getImageShowSize().width 
-                    - Page.getInstance().getJlbl_painting()
+                    - getPage()
                     .getWidth()));
             oldLocation.y = Math.max(oldLocation.y,
-                    -(Status.getImageShowSize().height - Page
-                            .getInstance().getJlbl_painting()
+                    -(Status.getImageShowSize().height - getPage().getJlbl_painting()
                             .getHeight()));
             
             
@@ -599,14 +604,14 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
             oldLocation.y = Math.min(oldLocation.y, 0); 
      
             Status.setImageShowSize(new Dimension(newWidth, newHeight));
-            Page.getInstance().flip();
+            getPage().flip();
 
-            Page.getInstance().getJlbl_painting()
+            getControlPicture()
                     .setLoc((oldLocation.x) / 2, (oldLocation.y) / 2);
-            Page.getInstance().getJlbl_painting().refreshPaint();
-            Page.getInstance().refrehsSps();
+            getControlPicture().refreshPaint();
+            getPage().refrehsSps();
 
-            Page.getInstance().releaseSelected();
+            getControlPicture().releaseSelected();
             Picture.getInstance().releaseSelected();
             updateResizeLocation();
         } else {
@@ -632,14 +637,14 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
         int h = Status.getImageShowSize().height;
 
         //set location
-        Page.getInstance().getJbtn_resize()[2][1].setLocation(w, h / 2);
-        Page.getInstance().getJbtn_resize()[2][2].setLocation(w, h);
-        Page.getInstance().getJbtn_resize()[1][2].setLocation(w / 2, h);
+        getPage().getJbtn_resize()[2][1].setLocation(w, h / 2);
+        getPage().getJbtn_resize()[2][2].setLocation(w, h);
+        getPage().getJbtn_resize()[1][2].setLocation(w / 2, h);
         
         //set visible
-        Page.getInstance().getJbtn_resize()[1][2].setVisible(true);
-        Page.getInstance().getJbtn_resize()[2][2].setVisible(true);
-        Page.getInstance().getJbtn_resize()[2][1].setVisible(true);
+        getPage().getJbtn_resize()[1][2].setVisible(true);
+        getPage().getJbtn_resize()[2][2].setVisible(true);
+        getPage().getJbtn_resize()[2][1].setVisible(true);
     }
 
 
@@ -820,17 +825,6 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
 		} catch (Exception e) {
 			return false;
 		}
-	}
-    /**
-	 * method returns only one instance of this.
-	 * 
-	 * @return the instance
-	 */
-	public static ControlTabPainting getInstance() {
-	
-	
-	    // return the only instance
-	    return instance;
 	}
 
 }

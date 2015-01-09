@@ -35,12 +35,6 @@ import view.util.VButtonWrapper;
  * @version %I%, %U%
  */
 public final class CPaintStatus implements MouseListener {
-
-	
-    /**
-     * the only instance of this class.
-     */
-	private static CPaintStatus instance;
 	
 	private ControlPaint controlPaint;
 	/**
@@ -585,23 +579,6 @@ public final class CPaintStatus implements MouseListener {
     	}
 	}
 	
-	
-	/**
-	 * this method guarantees that only one instance of this
-	 * class can be created ad runtime.
-	 * 
-	 * @return the only instance of this class.
-	 */
-	public static CPaintStatus getInstance() {
-		
-		//if class is not instanced yet instantiate
-		if (instance == null) {
-			instance = new CPaintStatus();
-		}
-		
-		//return the only instance of this class.
-		return instance;
-	}
 
 
     /**

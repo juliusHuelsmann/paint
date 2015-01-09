@@ -3,8 +3,6 @@ package view.forms;
 
 //import declarations
 import java.awt.Toolkit;
-import java.rmi.server.ExportException;
-
 import model.settings.ViewSettings;
 import control.ControlPaint;
 import control.util.CItem;
@@ -71,7 +69,8 @@ public final class Tabs extends VTabbedPane {
          * tab paint
          */
         super.addTab("Painting");
-        tab_paint =  new Paint(_cp.getcTabPaint(), _cp);
+        tab_paint =  new Paint(_cp.getcTabPaint(), _cp,
+        		_cp.getcTabPaintStatus());
         super.addToTab(tabNumber, tab_paint);
         tabNumber++;
 
@@ -97,14 +96,16 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Selection");
-        tab_selection = new Selection(_cp.getcTabPaint(), _cp.getctab(), _cp);
+        tab_selection = new Selection(
+        		_cp.getcTabPaint(), _cp.getcTabSelection(), _cp, 
+        		_cp.getcTabPaintStatus());
         super.addToTab(tabNumber, tab_selection);
         tabNumber++;
         /*
          * tab view
          */
         super.addTab("View");   //view
-        tab_look = new Look(_cp.getctablook)
+        tab_look = new Look(_cp.getcTabLook());
         super.addToTab(tabNumber, tab_look);
         tabNumber++;
 
@@ -112,7 +113,7 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Export");
-        tab_export = new Export(_cp.getctabexport);
+        tab_export = new Export(_cp.getcTabExport());
         super.addToTab(tabNumber, tab_export);
         tabNumber++;
         
@@ -129,7 +130,7 @@ public final class Tabs extends VTabbedPane {
 
 
         super.addTab("Debug");
-        tab_pos = new PaintObjects();
+        tab_pos = new PaintObjects(_cp.getcTabPaintObjects());
         tab_pos.setSize(
                 (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
                 ViewSettings.getView_heightTB());

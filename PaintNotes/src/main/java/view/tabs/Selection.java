@@ -67,15 +67,17 @@ public final class Selection extends Tab {
 	public Selection(
 			final ControlTabPainting _cPaint, 
 			final CTabSelection _cts,
-			final MenuListener _ml) {
+			final MenuListener _ml,
+			final CPaintStatus _controlPaintStatus) {
 		
 	    super(2);
         super.setOpaque(false);
         super.setLayout(null);
 
-        int x = initCololrs(distance, true, _cPaint, _cts, _ml);
+        int x = initCololrs(distance, true, _cPaint, _cts, _ml, 
+        		_controlPaintStatus);
         x = initPen(x, true, _cts);
-        initOthers(x, true, _ml);
+        initOthers(x, true, _ml, _controlPaintStatus);
         
 	}
 	
@@ -106,7 +108,8 @@ public final class Selection extends Tab {
 	private int initCololrs(final int _x, final boolean _paint,
 			final MouseListener _controlTabPainting,
 			final ActionListener _cTabSelection, 
-			final MenuListener _ml) {
+			final MenuListener _ml,
+			final CPaintStatus _controlPaintStatus) {
 
         //the first color for the first pen
         tb_color = new Item1Button(null);
@@ -136,8 +139,7 @@ public final class Selection extends Tab {
                     * (height + distanceBetweenColors), width, height);
             jbtn_colors[i].setOpaque(true);
             jbtn_colors[i].addActionListener(_cTabSelection);
-            jbtn_colors[i].addMouseListener(
-                    CPaintStatus.getInstance());
+            jbtn_colors[i].addMouseListener(_controlPaintStatus);
             jbtn_colors[i].addMouseListener(_controlTabPainting);
             jbtn_colors[i].setBorder(BorderFactory.createCompoundBorder(
                     new LineBorder(Color.black), new LineBorder(Color.white)));
@@ -230,7 +232,7 @@ public final class Selection extends Tab {
         //
         it_color = new Item1Menu(true);
         it_color.setMenuListener(_ml);
-        it_color.addMouseListener(CPaintStatus.getInstance());
+        it_color.addMouseListener(_controlPaintStatus);
         it_color.setSize(ViewSettings.getSIZE_PNL_CLR());
         it_color.setBorder(false);
         it_color.setText("+ Farben");
@@ -238,7 +240,8 @@ public final class Selection extends Tab {
                 + ViewSettings.getDistanceBetweenItems() 
                 + jbtn_colors[jbtn_colors.length - 1].getWidth(), 
                 ViewSettings.getDistanceBetweenItems());
-        it_color.getMPanel().add(new VColorPanel(jbtn_colors, _ml));
+        it_color.getMPanel().add(new VColorPanel(jbtn_colors, _ml,
+        		_controlPaintStatus));
         it_color.setBorder(false);
         it_color.setIcon("icon/palette.png");
         super.add(it_color);
@@ -318,7 +321,8 @@ public final class Selection extends Tab {
 	 * 
 	 */
 	private void initOthers(final int _x, final boolean _paint,
-			final MenuListener _ml) {
+			final MenuListener _ml,
+			final CPaintStatus _controlPaintStatus) {
 
         Item1Button tb = new Item1Button(null);
         tb.setOpaque(true);
@@ -348,7 +352,7 @@ public final class Selection extends Tab {
         //pen 1
         Item1Menu it_stift1 = new Item1Menu(false);
         it_stift1.setMenuListener(_ml);
-        it_stift1.addMouseListener(CPaintStatus.getInstance());
+        it_stift1.addMouseListener(_controlPaintStatus);
         it_stift1.setBorder(null);
         it_stift1.setBorder(false);
         it_stift1.setText("Drehen/Spiegeln");

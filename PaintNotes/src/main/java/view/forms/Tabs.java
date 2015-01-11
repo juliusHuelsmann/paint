@@ -310,4 +310,20 @@ public final class Tabs extends VTabbedPane {
 	public void setTab_pos(PaintObjects tab_pos) {
 		this.tab_pos = tab_pos;
 	}
+
+
+	/**
+	 * @return the tab_insert
+	 */
+	public Insert getTab_insert() {
+		return tab_insert;
+	}
+
+
+	/**
+	 * @param tab_insert the tab_insert to set
+	 */
+	public void setTab_insert(Insert tab_insert) {
+		this.tab_insert = tab_insert;
+	}
 }

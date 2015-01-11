@@ -196,7 +196,7 @@ public class ControlPaintSelectin implements MouseMotionListener, MouseListener 
         
         if (!_event.getSource().equals(
                 cv.getView().getPage().getJbtn_resize()[1][1])) {
-            cv.getView().getPage().getJlbl_painting().stopBorderThread();
+            cv.getControlPic().stopBorderThread();
         }
     }
 
@@ -222,7 +222,7 @@ public class ControlPaintSelectin implements MouseMotionListener, MouseListener 
                     (int) (1.0 * dX * cZoomFactorWidth), 
                     (int) (1.0 * dY * cZoomFactorHeight));
             
-            cv.getView().getPage().getJlbl_painting().paintEntireSelectionRect(
+            cv.getControlPic().paintEntireSelectionRect(
                     r_selection);
             cv.getView().getPage().getJlbl_selectionPainting().repaint();
             
@@ -335,7 +335,7 @@ public class ControlPaintSelectin implements MouseMotionListener, MouseListener 
                 (int) (newDim.height / factorH)));
         
 
-        cv.getView().getPage().getJlbl_painting().refreshPaint();
+        cv.getControlPic().refreshPaint();
         
         
         final int width = cv.getView().getPage().getJlbl_resizeSelectionSize()
@@ -625,7 +625,7 @@ public class ControlPaintSelectin implements MouseMotionListener, MouseListener 
     			closedAction);
         
         //release selected and paint them
-        cv.getView().getPage().releaseSelected();
+        cv.getControlPic().releaseSelected();
         Picture.getInstance().paintSelected();
     }
 

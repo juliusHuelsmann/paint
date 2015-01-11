@@ -50,7 +50,9 @@ public final class CPaintObjects implements ActionListener {
     /**
      * Private utility class constructor.
      */
-    private CPaintObjects() { }
+    public CPaintObjects() { }
+    
+    
     
     
     /**

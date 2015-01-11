@@ -26,10 +26,6 @@ public final class CWrite implements ActionListener {
      * Singleton
      */
     
-    /**
-     * The only instance of this class.
-     */
-    private static CWrite instance;
 
     /*
      * Identifiers
@@ -186,7 +182,7 @@ public final class CWrite implements ActionListener {
                 Status.getPenSelected2().getIconPath());
 
         Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);
-        CPaintStatus.getInstance().deactivate();
+        cp.getcTabPaintStatus().deactivate();
         paint.getIt_stift1().getTb_open().setActivated(true);
         paint.getTb_color1().setActivated(true);
     }

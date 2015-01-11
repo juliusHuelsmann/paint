@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
+import control.ContorlPicture;
 import control.ControlPaint;
 import control.util.CItem;
 import model.objects.painting.Picture;
@@ -46,8 +47,25 @@ public final class CPaintStatus implements MouseListener {
 		
 	}
 
+
+	private View getView() {
+		return controlPaint.getView();
+	}
+
+	private Page getPage() {
+		return controlPaint.getView().getPage();
+	}
     
     
+	private Insert getInsert() {
+		return controlPaint.getView().getTabs().getTab_insert();
+	}
+	private Tabs getTabs() {
+		return controlPaint.getView().getTabs();
+	}
+	private ContorlPicture getControlPicture() {
+		return controlPaint.getControlPic();
+	}
     /**
      * Fetch the instance of tab paint.
      * @return the tab paint.
@@ -75,7 +93,7 @@ public final class CPaintStatus implements MouseListener {
 	 */
 	private void setCursor(final String _path, final String _name) {
 
-	    View.getInstance().setCursor(Toolkit.getDefaultToolkit()
+	    getView().setCursor(Toolkit.getDefaultToolkit()
 	            .createCustomCursor(new ImageIcon(Utils.resizeImage(
 	                    Constants.MOUSE_ICON_SIZE, 
                         Constants.MOUSE_ICON_SIZE, 
@@ -95,7 +113,7 @@ public final class CPaintStatus implements MouseListener {
 	 */
 	private void setCursor(final BufferedImage _path, final String _name) {
 
-	    View.getInstance().setCursor(Toolkit.getDefaultToolkit()
+	    getView().setCursor(Toolkit.getDefaultToolkit()
 	            .createCustomCursor(_path, 
                         new Point(Status.getEraseRadius(), 
                         		Status.getEraseRadius()), 
@@ -227,47 +245,47 @@ public final class CPaintStatus implements MouseListener {
             
                 return (Constants.CONTROL_PAINTING_INDEX_ERASE);
             
-            } else if (_event.getSource().equals(Insert.getInstance()
+            } else if (_event.getSource().equals(getInsert()
                     .getI2_g_line())) {
             
                 return (Constants.CONTROL_PAINTING_INDEX_I_G_LINE);
             
-            } else if (_event.getSource().equals(Insert.getInstance()
+            } else if (_event.getSource().equals(getInsert()
                     .getI2_g_rect())) {
             
                 return (Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE);
             
-            } else if (_event.getSource().equals(Insert.getInstance()
+            } else if (_event.getSource().equals(getInsert()
                     .getI2_g_curve())) {
             
                 return (Constants.CONTROL_PAINTING_INDEX_I_G_CURVE);
             
-            } else if (_event.getSource().equals(Insert.getInstance()
+            } else if (_event.getSource().equals(getInsert()
                     .getI2_g_triangle())) {
             
                 return (Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE);
             
-            } else if (_event.getSource().equals(Insert.getInstance()
+            } else if (_event.getSource().equals(getInsert()
                     .getI2_g_arch())) {
             
                 return (Constants.CONTROL_PAINTING_INDEX_I_G_ARCH);
             
-            } else if (_event.getSource().equals(Insert.getInstance()
+            } else if (_event.getSource().equals(getInsert()
                     .getI2_d_diagramm())) {
             
                 return (Constants.CONTROL_PAINTING_INDEX_I_D_DIA);
             
             } else if (_event.getSource().equals(
-                    Insert.getInstance().getI2_g_archFilled())) {
+                    getInsert().getI2_g_archFilled())) {
                 return Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED;
             } else if (_event.getSource().equals(
-                    Insert.getInstance().getI2_g_rectFilled())) {
+                    getInsert().getI2_g_rectFilled())) {
                 return Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED;
             } else if (_event.getSource().equals(
-                    Insert.getInstance().getI2_g_triangleFilled())) {
+                    getInsert().getI2_g_triangleFilled())) {
                 return Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED;
             }  else if (_event.getSource().equals(
-                    Insert.getInstance().getI2_g_curve2())) {
+                    getInsert().getI2_g_curve2())) {
                 return Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2;
             } else {
                 return -1;
@@ -442,7 +460,7 @@ public final class CPaintStatus implements MouseListener {
     			if (Status.getIndexOperation()
     					== Constants.CONTROL_PAINTING_INDEX_ZOOM_IN) {
 
-    				Page.getInstance().getJlbl_painting().removeZoomBox();
+    				getControlPicture().removeZoomBox();
     			}
     			
     			
@@ -459,8 +477,8 @@ public final class CPaintStatus implements MouseListener {
 
                         //if there was selection before, release it to Picture
                         Picture.getInstance().releaseSelected();
-                        Page.getInstance().releaseSelected();
-                        Page.getInstance().removeButtons();
+                        getControlPicture().releaseSelected();
+                        getPage().removeButtons();
                     }
                     
                     
@@ -479,7 +497,7 @@ public final class CPaintStatus implements MouseListener {
                     case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
                     case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
                     case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
-//                        Insert.getInstance().getI2_g_line().
+//                        getInsert().getI2_g_line().
                         break;
                     case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
 
@@ -508,39 +526,39 @@ public final class CPaintStatus implements MouseListener {
                                 "p1");
                         break;
                     case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
-                        Tabs.getInstance().closeMenues();
+                        getTabs().closeMenues();
                         paint.getIt_selection().getTb_open()
                             .setActivated(true);
                         break;
                     case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
-                        Tabs.getInstance().closeMenues();
+                        getTabs().closeMenues();
                         paint.getIt_selection()
                         .getTb_open().setActivated(true); 
                         break;
                     case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
-                        Tabs.getInstance().closeMenues();
+                        getTabs().closeMenues();
                         paint.getIt_selection().getTb_open()
                         .setActivated(true);
                         break;	
                     case Constants.CONTROL_PAINTING_INDEX_FILL:
-                        Tabs.getInstance().closeMenues();
+                        getTabs().closeMenues();
                         paint.getTb_fill().setActivated(true);
                         break;
                     case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
-                        Tabs.getInstance().closeMenues();
+                        getTabs().closeMenues();
                         paint.getTb_zoomIn().setActivated(true);
                         break;
 
                     case Constants.CONTROL_PAINTING_INDEX_PIPETTE:
-                        Tabs.getInstance().closeMenues();
+                        getTabs().closeMenues();
                         paint.getTb_pipette().setActivated(true);
                         break;
                     case Constants.CONTROL_PAINTING_INDEX_MOVE:
-                        Tabs.getInstance().closeMenues();
+                        getTabs().closeMenues();
                         paint.getTb_move().setActivated(true);
                         break;
                     case Constants.CONTROL_PAINTING_INDEX_ERASE:
-                        Tabs.getInstance().closeMenues();
+                        getTabs().closeMenues();
                         paint.getTb_erase().setActivated(true);
 
                         BufferedImage bi_erase = new BufferedImage(

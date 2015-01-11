@@ -84,21 +84,31 @@ public class PaintLabel extends MLabel {
      */
     @Override public final synchronized void setLocation(
     		final int _x, final int _y) {
-        
-    	//TODO: error-checking (formally used for zooming in, did not work
-    	//because method is not designed for that.)
-        //update the JPanel location because the ScrollPane fetches information
-        //out of that panel
-        jpnl_toMove.setBounds(_x, _y, jpnl_toMove.getWidth(), 
-                jpnl_toMove.getHeight());
-        
+
         //Forward the set location event to the instance of paintListener
         //if it has been set.
         if (paintListener != null) {
-        	paintListener.onLocationChange(new MoveEvent(new Point(_x, _y)));
+        	paintListener.beforeLocationChange(
+        			new MoveEvent(new Point(_x, _y)));
         } else {
         	Status.getLogger().severe("PaintListener not set.");
         }
+        //save the new location
+        this.x = _x;
+        this.y = _y;
+
+        jpnl_toMove.setBounds(_x, _y, jpnl_toMove.getWidth(), 
+                jpnl_toMove.getHeight());
+        
+
+        //Forward the set location event to the instance of paintListener
+        //if it has been set.
+        if (paintListener != null) {
+        	paintListener.afterLocationChange(new MoveEvent(new Point(_x, _y)));
+        } else {
+        	Status.getLogger().severe("PaintListener not set.");
+        }
+        
     }
     
 
@@ -124,6 +134,14 @@ public class PaintLabel extends MLabel {
      * @param _p the new coordinates which are saved
      */
     @Override public final void setLocation(final Point _p) {
+
+        //Forward the set location event to the instance of paintListener
+        //if it has been set.
+        if (paintListener != null) {
+        	paintListener.beforeExternalLocationChange(new MoveEvent(_p));
+        } else {
+        	Status.getLogger().severe("PaintListener not set.");
+        }
         
         //save the new location
         this.x = _p.x;
@@ -133,15 +151,16 @@ public class PaintLabel extends MLabel {
         //out of that panel
         jpnl_toMove.setBounds(x, y, jpnl_toMove.getWidth(), 
                 jpnl_toMove.getHeight());
-
+        
 
         //Forward the set location event to the instance of paintListener
         //if it has been set.
         if (paintListener != null) {
-        	paintListener.onExternalLocationChange(new MoveEvent(_p));
+        	paintListener.afterExternalLocationChange(new MoveEvent(_p));
         } else {
         	Status.getLogger().severe("PaintListener not set.");
         }
+
     }
     
     
@@ -157,6 +176,17 @@ public class PaintLabel extends MLabel {
      */
     @Override public final void setBounds(final int _x, final int _y, 
             final int _widht, final int _height) {
+
+        //Forward the set location event to the instance of paintListener
+        //if it has been set.
+        if (paintListener != null) {
+        	paintListener.beforeExternalLocationChange(new MoveEvent(
+        			new Point(_x, _y)));
+        	paintListener.beforeExternalSizeChange(new MoveEvent(
+        			new Point(_widht, _height)));
+        } else {
+        	Status.getLogger().severe("PaintListener not set.");
+        }
         
         //save the new location 
         this.x = _x;
@@ -170,13 +200,12 @@ public class PaintLabel extends MLabel {
         //set width and height.
         super.setBounds(0, 0, _widht, _height);
         
-
         //Forward the set location event to the instance of paintListener
         //if it has been set.
         if (paintListener != null) {
-        	paintListener.onExternalLocationChange(new MoveEvent(
+        	paintListener.afterExternalLocationChange(new MoveEvent(
         			new Point(_x, _y)));
-        	paintListener.onExternalSizeChange(new MoveEvent(
+        	paintListener.afterExternalSizeChange(new MoveEvent(
         			new Point(_widht, _height)));
         } else {
         	Status.getLogger().severe("PaintListener not set.");

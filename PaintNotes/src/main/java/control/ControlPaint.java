@@ -98,6 +98,7 @@ MenuListener {
 	private ContorlPicture controlPic;
 	
 	
+	private Zoom zoom;
 	private CNew controlnew = null;
 	
 	
@@ -155,10 +156,13 @@ MenuListener {
             Status.getLogger().info("Initialize model class Page.\n");
             
             //initialize the model class picture.
+            //TODO: not null
+            controlPic = new ContorlPicture(null, null, this);
             picture = Picture.getInstance();
             controlPaintSelection = new ControlPaintSelectin(this);
             cTabPaint = new ControlTabPainting(this);
             cTabPaintStatus = new CPaintStatus(this);
+            zoom = new Zoom(controlPic);
             
             cTabs = new CTabs(this);
 
@@ -649,7 +653,7 @@ MenuListener {
                         - ViewSettings.ZOOM_SIZE.height, yLocation);
 
                 // apply new location
-                Zoom.getInstance().setLocation(xLocation, yLocation);
+                zoom.setLocation(xLocation, yLocation, getPage());
                 break;
 
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
@@ -955,9 +959,9 @@ MenuListener {
              * set the location of the panel.
              */
             // save new coordinates
-            int newX = (oldLocation.x - Zoom.getInstance().getX())
+            int newX = (oldLocation.x - zoom.getX())
                     * ViewSettings.ZOOM_MULITPLICATOR;
-            int newY = (oldLocation.y - Zoom.getInstance().getY())
+            int newY = (oldLocation.y - zoom.getY())
                     * ViewSettings.ZOOM_MULITPLICATOR;
 
             
@@ -1064,7 +1068,7 @@ MenuListener {
                 		transaction);
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
-                 new PictureOverview().remove(po_current);
+                 new PictureOverview(view.getTabs().getTab_pos()).remove(po_current);
                 Picture.getInstance().getLs_po_sortedByX().toFirst(
                 		transaction, SecureList.ID_NO_PREDECESSOR);
             } else {
@@ -1180,7 +1184,7 @@ MenuListener {
 
                     PaintObject [][] separatedPO = po_current.separate(
                     		field, new Point(xShift, yShift));
-                    new PictureOverview().remove(Picture.getInstance()
+                    new PictureOverview(view.getTabs().getTab_pos()).remove(Picture.getInstance()
                             .getLs_po_sortedByX().getItem());
                     Picture.getInstance().getLs_po_sortedByX().remove(
                     		transaction);
@@ -1215,7 +1219,7 @@ MenuListener {
                             separatedPO[0][current].recalculateSnapshotBounds();
                             ls_toInsert.insertBehind(separatedPO[0][current]);
     
-                             new PictureOverview().add(
+                             new PictureOverview(view.getTabs().getTab_pos()).add(
                                     separatedPO[0][current]);
                         } else {
 
@@ -1338,7 +1342,7 @@ MenuListener {
 
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
-                 new PictureOverview().remove(po_current);
+                 new PictureOverview(view.getTabs().getTab_pos()).remove(po_current);
                 
                 //move current item from normal list into selected list 
                 Picture.getInstance().insertIntoSelected(po_current);
@@ -1469,7 +1473,7 @@ MenuListener {
 //                    
 //                    PaintObject [][] separatedPO = 
 //                    Util.mergeDoubleArray(p, p2);
-                     new PictureOverview().remove(Picture.getInstance()
+                     new PictureOverview(view.getTabs().getTab_pos()).remove(Picture.getInstance()
                             .getLs_po_sortedByX().getItem());
                     Picture.getInstance().getLs_po_sortedByX().remove(
                     		transaction);
@@ -1505,7 +1509,7 @@ MenuListener {
                             separatedPO[0][current].recalculateSnapshotBounds();
                             ls_toInsert.insertBehind(separatedPO[0][current]);
     
-                             new PictureOverview().add(
+                             new PictureOverview(view.getTabs().getTab_pos()).add(
                                     separatedPO[0][current]);
                         } else {
 
@@ -1639,7 +1643,7 @@ MenuListener {
 
                     	if (debug_update_paintObjects_view) {
 
-                            new PictureOverview().remove(Picture.getInstance()
+                            new PictureOverview(view.getTabs().getTab_pos()).remove(Picture.getInstance()
                                     .getLs_po_sortedByX().getItem());
                     	}
                         Picture.getInstance().getLs_po_sortedByX().remove(
@@ -1678,7 +1682,7 @@ MenuListener {
 
                     	if (debug_update_paintObjects_view) {
 
-                            new PictureOverview().add(
+                            new PictureOverview(view.getTabs().getTab_pos()).add(
                            		 ls_separatedPO.getItem());
                     	}
                     } else {
@@ -1821,7 +1825,7 @@ MenuListener {
 
                     	if (debug_update_paintObjects_view) {
 
-                            new PictureOverview().remove(Picture.getInstance()
+                            new PictureOverview(view.getTabs().getTab_pos()).remove(Picture.getInstance()
                                     .getLs_po_sortedByX().getItem());
                     	}
                         Picture.getInstance().getLs_po_sortedByX().remove(
@@ -1860,8 +1864,8 @@ MenuListener {
 
                     	if (debug_update_paintObjects_view) {
 
-                            new PictureOverview().add(
-                           		 ls_separatedPO.getItem());
+                            new PictureOverview(view.getTabs().getTab_pos())
+                            .add(ls_separatedPO.getItem());
                     	}
                     } else {
 

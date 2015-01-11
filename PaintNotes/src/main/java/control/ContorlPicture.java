@@ -6,18 +6,25 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import control.tabs.ControlTabPainting;
+import control.interfaces.MoveEvent;
+import control.interfaces.PaintListener;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.special.PenSelection;
 import model.settings.Status;
 import model.util.paint.Utils;
 import view.forms.Page;
+import view.forms.PaintLabel;
 import view.forms.Tabs;
-import view.tabs.PaintObjects;
 import view.util.mega.MPanel;
 
-public class ContorlPicture {
+
+/**
+ * Listener class for PaintLabel.
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
+public class ContorlPicture implements PaintListener {
 
 
     /**
@@ -44,13 +51,32 @@ public class ContorlPicture {
     private MPanel jpnl_toMove;
     
     /**
+     * Instance of the PaintLabel.
+     */
+    private PaintLabel jlbl_paint;
+    
+    
+    /**
+     * The ControlPaint.
+     */
+    private ControlPaint cp;
+    
+    /**
      * Constructor.
      * 
      * @param _jpnl_toMove JPanel which is to be updated if location changes in
      * PaintLabel.
+     * @param _jlbl_paint the paintLabel
      */
-    public PaintLabel(final MPanel _jpnl_toMove) {
+    public ContorlPicture(
+    		final MPanel _jpnl_toMove, 
+    		final PaintLabel _jlbl_paint,
+    		final ControlPaint _cp) {
+    	
+    	
         this.jpnl_toMove = _jpnl_toMove;
+        this.jlbl_paint = _jlbl_paint;
+        this.cp = _cp;
     }
 
     
@@ -61,28 +87,42 @@ public class ContorlPicture {
 
 
         Status.getLogger().finest("refreshing PaintLabel. \nValues: "
-                + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
-                + "\n\tgetLocation:\t" + getLocation() 
-                + " vs. " + super.getLocation()
+                + "\n\tgetSize:\t" + jlbl_paint.getSize() + " vs. " 
+        		+ jpnl_toMove.getSize()
+                + "\n\tgetLocation:\t" +jlbl_paint.getLocation() 
+                + " vs. " + jpnl_toMove.getLocation()
                 + "\n\t" + "_x:\t\t"
                 + "\n\t" + "_y\t\t"
-                + "\n\t" + "_width\t\t" + getWidth()
-                + "\n\t" + "_height\t\t" + getHeight() + "\n");
+                + "\n\t" + "_width\t\t" + jlbl_paint.getWidth()
+                + "\n\t" + "_height\t\t" + jlbl_paint.getHeight() + "\n");
 
         //paint the painted stuff at graphics
         setBi(Picture.getInstance().updateRectangle(
-                -getLocation().x, 
-                -getLocation().y, getWidth() , getHeight(), 0, 0, getBi()));
+                -jlbl_paint.getLocation().x, 
+                -jlbl_paint.getLocation().y, jlbl_paint.getWidth() ,
+                jlbl_paint.getHeight(), 0, 0, getBi()));
 
         
         refreshPaintBackground();
         
-        setIcon(new ImageIcon(getBi()));
-        if (PaintObjects.getInstance() != null) {
-        	PaintObjects.getInstance().repaint();
-        }
+        jlbl_paint.setIcon(new ImageIcon(getBi()));
     }
 
+
+    /**
+     * Return the page.
+     * @return the page.
+     */
+    private Page getPage() {
+    	return cp.getView().getPage();
+    }
+    /**
+     * Return the page.
+     * @return the tabs.
+     */
+    private Tabs getTabs() {
+    	return cp.getView().getTabs();
+    }
     
     
     /**
@@ -93,32 +133,25 @@ public class ContorlPicture {
 
         //paint the painting background (e.g. raster / lines) at the graphical
         //user interface.
-        if (Page.getInstance().getJlbl_background2().getWidth() != 0
-                && Page.getInstance().getJlbl_background2().getHeight() != 0) {
+        if (getPage().getJlbl_background2().getWidth() != 0
+                && getPage().getJlbl_background2().getHeight() != 0) {
 
             
             BufferedImage ret = new BufferedImage(
-                    Page.getInstance().getJlbl_background2().getWidth(),
-                    Page.getInstance().getJlbl_background2().getHeight(),
+                    getPage().getJlbl_background2().getWidth(),
+                    getPage().getJlbl_background2().getHeight(),
                     BufferedImage.TYPE_INT_ARGB);
             ret = Picture.getInstance().emptyRectangle(
-                    -getLocation().x, 
-                    -getLocation().y, getWidth(), getHeight(), 0, 0, ret);
-            Page.getInstance().getJlbl_background2().setIcon(
-                    new ImageIcon((Utils.getBackground(ret, -getLocation().x, 
-                    -getLocation().y, -getLocation().x + getWidth(), 
-                    -getLocation().y + getHeight(), 0, 0))));  
+                    -jlbl_paint.getLocation().x, 
+                    -jlbl_paint.getLocation().y, 
+                    jlbl_paint.getWidth(), 
+                    jlbl_paint.getHeight(), 0, 0, ret);
+            getPage().getJlbl_background2().setIcon(
+                    new ImageIcon((Utils.getBackground(ret, -jlbl_paint.getLocation().x, 
+                    -jlbl_paint.getLocation().y, -jlbl_paint.getLocation().x + jlbl_paint.getWidth(), 
+                    -jlbl_paint.getLocation().y + jlbl_paint.getHeight(), 0, 0))));  
         }
 
-    }
-    
-    @Override public final void repaint() {
-        super.repaint();
-        if (PaintObjects.getInstance() != null) {
-
-            PaintObjects.getInstance().repaint(); 	
-        }
-//        New.getInstance().setVisible(false);
     }
     
     
@@ -132,7 +165,7 @@ public class ContorlPicture {
     public final void paintZoom(final int _x, final int _y, 
             final int _width, final int _height) {
         
-        Page.getInstance().getJlbl_border().setBounds(_x, _y, _width, _height);
+        getPage().getJlbl_border().setBounds(_x, _y, _width, _height);
     }
     
     
@@ -154,34 +187,34 @@ public class ContorlPicture {
         if (thrd_moveBorder != null) {
             thrd_moveBorder.interrupt();
 
-            repaint();
+            jlbl_paint.repaint();
         }
 
         //initialize the thread and start it.
-        thrd_moveBorder = new BorderThread(_r, true, null, null);
+        thrd_moveBorder = new BorderThread(_r, true, null, null, getTabs(), getPage());
         thrd_moveBorder.start();
 //        
         //paint the background
-//        BufferedImage bi_fresh = Page.getInstance().getEmptyBI();
+//        BufferedImage bi_fresh = getPage().getEmptyBI();
 //        Utils.paintRastarBlock(bi_fresh, 
 //                ViewSettings.SELECTION_BACKGROUND_CLR, _r);
 
         //        
         //show resize buttons
         
-        for (int a = 0; a < Page.getInstance().getJbtn_resize().length; a++) {
-            for (int b = 0; b < Page.getInstance().getJbtn_resize().length;
+        for (int a = 0; a < getPage().getJbtn_resize().length; a++) {
+            for (int b = 0; b < getPage().getJbtn_resize().length;
                     b++) {
                 //size of JButton
-                final int b_size = Page.getInstance().getJbtn_resize()[a][b]
+                final int b_size = getPage().getJbtn_resize()[a][b]
                         .getWidth();
                 
-                Page.getInstance().getJbtn_resize()[a][b]
+                getPage().getJbtn_resize()[a][b]
                         .setLocation(_r.x + _r.width * a / 2  - b_size / 2, 
                                 _r.y + _r.height * b / 2 - b_size / 2);
             }
         }
-        Page.getInstance().getJlbl_border().setBounds(_r);
+        getPage().getJlbl_border().setBounds(_r);
     }
     
     
@@ -198,9 +231,9 @@ public class ContorlPicture {
             final int _width, final int _height) {
 
         Status.getLogger().finest("refreshing PaintLabel. \nValues: "
-                + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
-                + "\n\tgetLocation:\t" + getLocation() 
-                + " vs. " + super.getLocation()
+                + "\n\tgetSize:\t" + jlbl_paint.getSize() + " vs. " + jpnl_toMove.getSize()
+                + "\n\tgetLocation:\t" +jlbl_paint.getLocation() 
+                + " vs. " + jpnl_toMove.getLocation()
                 + "\n\t" + "_x:\t\t" + _x
                 + "\n\t" + "_y\t\t" + _y
                 + "\n\t" + "_width\t\t" + _width
@@ -208,12 +241,11 @@ public class ContorlPicture {
 
         //paint the painted stuff at graphics
         setBi(Picture.getInstance().updateRectangle(
-                -getLocation().x + _x, 
-                -getLocation().y + _y, _width, _height, _x, _y, getBi()));
+                -jlbl_paint.getLocation().x + _x, 
+                -jlbl_paint.getLocation().y + _y, _width, _height, _x, _y, getBi()));
 
-        setIcon(new ImageIcon(getBi()));
+        jlbl_paint.setIcon(new ImageIcon(getBi()));
         
-        PaintObjects.getInstance().repaint();
         return getBi();
     }
 
@@ -230,9 +262,9 @@ public class ContorlPicture {
             final int _width, final int _height) {
 
         Status.getLogger().finest("clr PaintLabel. \nValues: "
-                + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
-                + "\n\tgetLocation:\t" + getLocation() 
-                + " vs. " + super.getLocation()
+                + "\n\tgetSize:\t" + jlbl_paint.getSize() + " vs. " + jpnl_toMove.getSize()
+                + "\n\tgetLocation:\t" + jlbl_paint.getLocation() 
+                + " vs. " + jpnl_toMove.getLocation()
                 + "\n\t" + "_x:\t\t" + _x
                 + "\n\t" + "_y\t\t" + _y
                 + "\n\t" + "_width\t\t" + _width
@@ -240,12 +272,11 @@ public class ContorlPicture {
 
         //paint the painted stuff at graphics
         setBi(Picture.getInstance().emptyRectangle(
-                -getLocation().x + _x, 
-                -getLocation().y + _y, _width, _height, _x, _y, getBi()));
+                -jlbl_paint.getLocation().x + _x, 
+                -jlbl_paint.getLocation().y + _y, _width, _height, _x, _y, getBi()));
 
-        setIcon(new ImageIcon(getBi()));
+        jlbl_paint.setIcon(new ImageIcon(getBi()));
         
-        PaintObjects.getInstance().repaint();
         return getBi();
     }
 
@@ -274,40 +305,110 @@ public class ContorlPicture {
     
 
     
-    /*
-     * Location is not set directly because the paint methods shell be able 
-     * to decide for themselves what to paint at which position.
-     * 
-     * Thus, the methods for changing the location and for getting it are
-     * overwritten and alter / return the locally saved location.
-     * 
-     * methods for changing location:
-     */
-    
 
     /**
-     * This method saves the location in x and y coordinate for being able
-     * to display the correct painting sub image.
-     * 
-     * for x and y location are saved. Thus, the painting methods
-     * are able to calculate for themselves what to paint at what position.
-     * @param _x the new x coordinate which is saved
-     * @param _y the new y coordinate which is saved
+     * Paint line selection.
+     * @param _po the PaintObject.
+     * @param _pen the pen.
      */
-    @Override public final synchronized void setLocation(
-    		final int _x, final int _y) {
-        
-    	//TODO: error-checking (formally used for zooming in, did not work
-    	//because method is not designed for that.)
-        //update the JPanel location because the ScrollPane fetches information
-        //out of that panel
-        jpnl_toMove.setBounds(_x, _y, jpnl_toMove.getWidth(), 
-                jpnl_toMove.getHeight());
-        
-        //if something changed, repaint
-        if (_x != x || _y != y) {
+    public final void paintSelection(final PaintObject _po, 
+            final PenSelection _pen) {
 
-            if (isVisible()) {
+    
+        //interrupt border thread.
+        stopBorderThread();
+        
+        //initialize the thread and start it.
+        thrd_moveBorder = new BorderThread(
+        		null, false, _po, _pen, getTabs(), getPage());
+        thrd_moveBorder.start();
+        
+        //paint the background
+    }
+    
+
+	/**
+	 * Release selected items and add them to normal list.
+	 */
+	public void releaseSelected() {
+
+	    for (int i = 0; i < getPage().getJbtn_resize().length; i++) {
+	        for (int j = 0; j < getPage().getJbtn_resize()[i].length; j++) {
+	            int width = getPage().getJbtn_resize()[i][j].getWidth();
+
+	            getPage().getJbtn_resize()[i][j].setLocation(-width - 1, -1);
+	        }
+	    }
+	    //method for setting the MButtons to the size of the entire image.
+	    cp.getcTabPaint().updateResizeLocation();
+	    
+	    stopBorderThread();
+	    
+        BufferedImage emptyBI = getPage().getEmptyBISelection();
+        getPage().getJlbl_selectionBG().setIcon(new ImageIcon(emptyBI));
+        getPage().getJlbl_selectionPainting().setIcon(new ImageIcon(emptyBI));
+        getPage().getJlbl_selectionPainting().repaint();
+
+        getPage().getJlbl_border().setBounds(0, 0, 0, 0);
+        getPage().getJlbl_selectionBG().setLocation(0, 0);
+        getPage().getJlbl_selectionPainting().setLocation(0, 0);
+        
+        refreshPaint();
+	}
+    
+    
+    /**
+     * Stop the border - thread.
+     */
+    public final void stopBorderThread() {
+
+        //close old border thread.
+        if (thrd_moveBorder != null) {
+            thrd_moveBorder.interrupt();
+            getTabs().repaint();
+        }
+    }
+    
+    
+    /*
+     * methods for getting location
+     */
+
+
+    /**
+     * @return the bi
+     */
+    public final BufferedImage getBi() {
+        return bi;
+    }
+
+    /**
+     * @param _bi the _bi to set
+     */
+    public final void setBi(final BufferedImage _bi) {
+        this.bi = _bi;
+    }
+
+
+
+
+
+    /**
+     * {@inheritDoc}
+     */
+	public final void beforeLocationChange(final MoveEvent _ev) {
+
+
+		int xNew = (int) _ev.getPnt_bottomLocation().getX();
+		int yNew = (int) _ev.getPnt_bottomLocation().getY();
+        
+		int xOld = (int) jlbl_paint.getLocation().getX();
+		int yOld = (int) jlbl_paint.getLocation().getY();
+		
+        //if something changed, repaint
+        if (xNew != xOld || yNew != yOld) {
+
+            if (jlbl_paint.isVisible()) {
             	
             	int maintainStartX = 0, 
 	            	maintainStartY = 0, 
@@ -319,28 +420,28 @@ public class ContorlPicture {
             		shiftedStartY = 0;
             	
             	//move to the left (new location is smaller than the old one)
-            	if (_x > x) {
+            	if (xNew > xOld) {
 
-            		shiftedStartX = _x - x;
+            		shiftedStartX = xNew - xOld;
             		maintainStartX = 0;
             		maintainWidth = bi.getWidth() - shiftedStartX;
-            	} else if (_x < x) {
+            	} else if (xNew < xOld) {
 
             		shiftedStartX = 0;
-            		maintainStartX =  x - _x;
+            		maintainStartX =  xOld - xNew;
             		maintainWidth = bi.getWidth() - maintainStartX;
             	}
 
             	//moved up (old location is greater than new location)
-            	if (_y > y) {
+            	if (yNew > yOld) {
             		
-            		shiftedStartY = _y - y;
+            		shiftedStartY = yNew - yOld;
             		maintainStartY = 0;
             		maintainHeight = bi.getHeight() - shiftedStartY;
-            	} else if (_y < y) {
+            	} else if (yNew < yOld) {
 
             		shiftedStartY = 0;
-            		maintainStartY =  y - _y;
+            		maintainStartY =  yOld - yNew;
             		maintainHeight = bi.getHeight() - maintainStartY;
             	}
             	
@@ -419,10 +520,6 @@ public class ContorlPicture {
                 		refreshHeightX = maintainWidth;
                 	}
 
-                    //save values
-                    this.x = _x;
-                    this.y = _y;
-                    
                     //BufferedImage
                     refreshPaintBackground();
                 	refreshRectangle(refreshWidthX, refreshWidthY, 
@@ -430,204 +527,68 @@ public class ContorlPicture {
                 	refreshRectangle(refreshHeightX, refreshHeightY, 
                 			refreshHeightWidth, refreshHeightHeight);
             	}
-            } else {
-
-                
-                //save values
-                this.x = _x;
-                this.y = _y;
             }
         }
-    }
-    
-
-    /**
-     * Really set the location.
-     * 
-     * E.g. called by controlling class in case of zooming in.
-     * 
-     * @param _x the new x coordinate which is saved
-     * @param _y the new y coordinate which is saved
-     */
-    public final void setLoc(final int _x, final int _y) {
-        
-        //if something changed, repaint
-        super.setLocation(_x, _y);
-    }
-    
-
-    /**
-     * in here, the location is not set as usual, but just the values
-     * for x and y location are saved. Thus, the painting methods
-     * are able to calculate for themselves what to paint at what position.
-     * @param _p the new coordinates which are saved
-     */
-    @Override public final void setLocation(final Point _p) {
-        
-        //save the new location
-        this.x = _p.x;
-        this.y = _p.y;
-
-        //update the JPanel location because the ScrollPane fetches information
-        //out of that panel
-        jpnl_toMove.setBounds(x, y, jpnl_toMove.getWidth(), 
-                jpnl_toMove.getHeight());
-
-        if (isVisible()) {
-            
-            //set changed
-            refreshPaint();
-        }
-    }
-    
-    
-    /**
-     * set the size of the JLabel and save the new location. Location is not 
-     * set because the paint methods shell be able to decide for themselves
-     * what to paint at which position.
-     * 
-     * @param _x the x coordinate which is saved
-     * @param _y the y coordinate which is saved
-     * @param _widht the width which is set
-     * @param _height the height which is set
-     */
-    @Override public final void setBounds(final int _x, final int _y, 
-            final int _widht, final int _height) {
-        
-        //save the new location 
-        this.x = _x;
-        this.y = _y;
-
-        //update the JPanel location because the ScrollPane fetches information
-        //out of that panel
-        jpnl_toMove.setBounds(_x, _y, jpnl_toMove.getWidth(), 
-                jpnl_toMove.getHeight());
-        
-        //set width and height.
-        super.setBounds(0, 0, _widht, _height);
-        bi = new BufferedImage(_widht, _height, BufferedImage.TYPE_INT_ARGB);
-
-        if (isVisible()) {
-            
-            //set changed
-            refreshPaint();
-        }
-    }
-
-    /**
-     * Paint line selection.
-     * @param _po the PaintObject.
-     * @param _pen the pen.
-     */
-    public final void paintSelection(final PaintObject _po, 
-            final PenSelection _pen) {
-
-    
-        //interrupt border thread.
-        stopBorderThread();
-        
-        //initialize the thread and start it.
-        thrd_moveBorder = new BorderThread(null, false, _po, _pen);
-        thrd_moveBorder.start();
-        
-        //paint the background
-    }
-    
-
-	/**
-	 * Release selected items and add them to normal list.
-	 */
-	public void releaseSelected() {
-
-	    for (int i = 0; i < jbtn_resize.length; i++) {
-	        for (int j = 0; j < jbtn_resize[i].length; j++) {
-	            int width = jbtn_resize[i][j].getWidth();
-
-	            jbtn_resize[i][j].setLocation(-width - 1, -1);
-	        }
-	    }
-	    //method for setting the MButtons to the size of the entire image.
-	    ControlTabPainting.getInstance().updateResizeLocation();
-	    
-	    jlbl_painting.stopBorderThread();
-	    
-        BufferedImage emptyBI = getEmptyBISelection();
-        jlbl_selectionBG.setIcon(new ImageIcon(emptyBI));
-        jlbl_selectionPainting.setIcon(new ImageIcon(emptyBI));
-        jlbl_selectionPainting.repaint();
-
-        jlbl_border.setBounds(0, 0, 0, 0);
-        jlbl_selectionBG.setLocation(0, 0);
-        jlbl_selectionPainting.setLocation(0, 0);
-        
-        jlbl_painting.refreshPaint();
+    		
+			
 	}
-    
-    
-    /**
-     * Stop the border - thread.
-     */
-    public final void stopBorderThread() {
 
-        //close old border thread.
-        if (thrd_moveBorder != null) {
-            thrd_moveBorder.interrupt();
-            Tabs.getInstance().repaint();
-        }
-    }
-    
-    
-    /*
-     * methods for getting location
-     */
 
-    
-    /**
-     * @return the real coordinate!
-     */
-    @Deprecated
-    @Override public final int getX() {
-        return super.getX();
-    }
 
     /**
-     * @return the real coordinate!
+     * {@inheritDoc}
      */
-    @Deprecated
-    @Override public final int getY() {
-        return super.getY();
-    }
-    
-    /**
-     * returns the saved but not applied x and y coordinates.
-     * @return the saved but not applied x and y coordinates (point).
-     */
-    @Override public final Point getLocation() {
-        return new Point(x, y);
-    }
-    
-    /**
-     * returns the saved but not applied x and y coordinates together with the
-     * applied size in a rectangle. 
-     * @return the saved but not applied x and y coordinates together with the
-     * applied size in a rectangle. 
-     */
-    @Override public final Rectangle getBounds() {
-        return new Rectangle(x, y, getWidth(), getHeight());
-    }
+	public final void beforeExternalLocationChange(final MoveEvent _ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
     /**
-     * @return the bi
+     * {@inheritDoc}
      */
-    public final BufferedImage getBi() {
-        return bi;
-    }
+	public final void beforeExternalSizeChange(final MoveEvent _ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
     /**
-     * @param _bi the _bi to set
+     * {@inheritDoc}
      */
-    public final void setBi(final BufferedImage _bi) {
-        this.bi = _bi;
-    }
+	public final void afterLocationChange(final MoveEvent _ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+    /**
+     * {@inheritDoc}
+     */
+	public final void afterExternalLocationChange(final MoveEvent _ev) {
+
+        if (jlbl_paint.isVisible()) {
+            
+            //set changed
+            refreshPaint();
+        }		
+	}
+
+
+
+    /**
+     * {@inheritDoc}
+     */
+	public final void afterExternalSizeChange(final MoveEvent _ev) {
+
+        if (jlbl_paint.isVisible()) {
+            
+            //set changed
+            refreshPaint();
+        }		
+	}
 
 }

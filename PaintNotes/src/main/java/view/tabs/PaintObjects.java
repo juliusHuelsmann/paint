@@ -95,6 +95,7 @@ public final class PaintObjects extends Tab implements Observer {
 
     //value for functionality of adding something
     
+	private CPaintObjects cps;
 	
 	/**
 	 * Constructor: initialize instances of Components and add special 
@@ -109,6 +110,7 @@ public final class PaintObjects extends Tab implements Observer {
 
 		//final rather unimportant values
 		final int tabSize = 10;
+		this.cps = _cps;
 		
 		//title
 		jlbl_title = new MLabel("Paint Objects");
@@ -192,20 +194,20 @@ public final class PaintObjects extends Tab implements Observer {
 	    final int distance = 5;
 	    
 		//update the rectangle
-		CPaintObjects.getInstance().getRec_old().y += 
-		        CPaintObjects.getInstance().getRec_old().getHeight();
+		cps.getRec_old().y += 
+		        cps.getRec_old().getHeight();
 		
 		//set bounds of c
-		_component.setSize(CPaintObjects.getInstance().getRec_old().width, 
-		        CPaintObjects.getInstance().getRec_old().height);
-		_component.setLocation(CPaintObjects.getInstance().getRec_old().x, 
-		        CPaintObjects.getInstance().getRec_old().y);
+		_component.setSize(cps.getRec_old().width, 
+		        cps.getRec_old().height);
+		_component.setLocation(cps.getRec_old().x, 
+		        cps.getRec_old().y);
 		
 		//update size of JPanel for items.
 		jpnl_items.setSize(
-		        CPaintObjects.getInstance().getRec_old().width + distance,
-		        CPaintObjects.getInstance().getRec_old().height 
-		        + CPaintObjects.getInstance().getRec_old().y + distance);
+		        cps.getRec_old().width + distance,
+		        cps.getRec_old().height 
+		        + cps.getRec_old().y + distance);
 
 		sp_up.reload();
 		
@@ -285,7 +287,7 @@ public final class PaintObjects extends Tab implements Observer {
 		        htf - jlbl_detailedPosition.getY());
 		   
 		//initialize values
-		CPaintObjects.getInstance().setRec_old(new Rectangle(
+		cps.setRec_old(new Rectangle(
 		        distance, -heightNewComponent + 1,
 		        jpnl_items.getWidth(), 
 		        heightNewComponent));
@@ -315,19 +317,19 @@ public final class PaintObjects extends Tab implements Observer {
 	    case ID_ADD_ITEM:
 	    	System.out.println(getClass() + "update add " 
 	    			+  ((PictureOverview) _obs).getCurrentPO().getElementId());
-            CPaintObjects.getInstance().updateAdd((PictureOverview) _obs);
+            cps.updateAdd((PictureOverview) _obs);
 	        break;
 	    case ID_REMOVE_ITEM:
 	    	System.out.println(getClass() + "update remove " 
 	    			+  ((PictureOverview) _obs).getCurrentPO().getElementId());
-            CPaintObjects.getInstance().updateRemove((PictureOverview) _obs);
+            cps.updateRemove((PictureOverview) _obs);
 	        break;
 	    case ID_ADD_ITEM_SELECTED:
 
 	    	//TODO:
 	    	System.out.println(getClass() + "update add selected " 
 	    			+  ((PictureOverview) _obs).getCurrentPO().getElementId());
-            CPaintObjects.getInstance().updateAddSelected(
+            cps.updateAddSelected(
                     (PictureOverview) _obs);
 	        break;
 	    case ID_REMOVE_ITEM_SELECTED:
@@ -341,7 +343,7 @@ public final class PaintObjects extends Tab implements Observer {
 		    			+  ((PictureOverview) _obs)
 		    			.getCurrentPO().getElementId());
 	    	}
-            CPaintObjects.getInstance().updateRemoveSelected(
+            cps.updateRemoveSelected(
                     (PictureOverview) _obs);
 	        break;
         default:

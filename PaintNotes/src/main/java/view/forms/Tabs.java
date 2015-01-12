@@ -49,8 +49,11 @@ public final class Tabs extends VTabbedPane {
     /**
      * Empty utility class constructor.
      */
-    public Tabs(View _view, ControlPaint _cp) {
+    public Tabs(View _view) {
     	super(_view);
+    }
+    
+    public void initialize(View _view, ControlPaint _cp){
     	super.setTabbedListener(_cp.getcTabs());
 
 
@@ -96,7 +99,8 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Selection");
-        tab_selection = new Selection(
+        tab_selection = new Selection();
+        tab_selection.initialize(
         		_cp.getcTabPaint(), _cp.getcTabSelection(), _cp, 
         		_cp.getcTabPaintStatus());
         super.addToTab(tabNumber, tab_selection);

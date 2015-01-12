@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.special.PenSelection;
 import model.settings.ViewSettings;
+import model.util.Util;
 import view.forms.Page;
 import view.forms.Tabs;
 
@@ -116,7 +117,7 @@ public class BorderThread extends Thread {
         final int sleepTimeRectangle = 100;
         final int sleepTimeLine = 400;
         int sleepTime;
-        BufferedImage bi_neutral = page.getEmptyBISelection();
+        BufferedImage bi_neutral = Util.getEmptyBISelection();
         
         //perform border movement 
         while (!isInterrupted()) {
@@ -212,7 +213,7 @@ public class BorderThread extends Thread {
 
 
         //sample code; to be written later.
-        BufferedImage bi_transformed = page.getEmptyBISelection();
+        BufferedImage bi_transformed = Util.getEmptyBISelection();
         if (po_curr == null) {
             interrupt();
         } else {

@@ -10,6 +10,9 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
+import control.ContorlPicture;
+import control.ControlPaint;
+import control.ControlPaintSelectin;
 import model.objects.PictureOverview;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
@@ -33,11 +36,6 @@ import view.util.Item1Button;
  */
 public final class CPaintObjects implements ActionListener {
 
-    
-    /**
-     * Only instance of this class.
-     */
-    private static CPaintObjects instance;
 
     /**
      * Point contains the coordinates of the last inserted item in graphical
@@ -46,14 +44,25 @@ public final class CPaintObjects implements ActionListener {
      */
     private Rectangle rec_old;
     
+    private ControlPaint cp;
     
     /**
      * Private utility class constructor.
      */
-    public CPaintObjects() { }
+    public CPaintObjects(ControlPaint _cp) {
+    	this.cp = _cp;
+    }
     
-    
-    
+
+    private PaintObjects getPaintObjects() {
+    	return cp.getView().getTabs().getTab_pos();
+    }
+    private Page getPage() {
+    	return cp.getView().getPage();
+    }
+    private ContorlPicture getControlPicture() {
+    	return cp.getControlPic();
+    }
     
     /**
      * ActionListener deals with the action performed by the buttons containing
@@ -63,7 +72,7 @@ public final class CPaintObjects implements ActionListener {
     public void actionPerformed(final ActionEvent _event) {
         
         Component[] c 
-        = PaintObjects.getInstance().getJpnl_items().getComponents();
+        = getPaintObjects().getJpnl_items().getComponents();
         
         
         for (int i = 0; i < c.length; i++) {
@@ -81,8 +90,13 @@ public final class CPaintObjects implements ActionListener {
                     i1b.setActivated(false);
                     showPaintObjectInformation(po_cu);
                     
-                    Picture.getInstance().releaseSelected();
-                    Page.getInstance().releaseSelected();
+                    Picture.getInstance().releaseSelected(
+                			cp.getControlPaintSelection(),
+                			cp.getcTabSelection(),
+                			cp.getView().getTabs().getTab_pos(),
+                			cp.getView().getPage().getJlbl_painting().getLocation().x,
+                			cp.getView().getPage().getJlbl_painting().getLocation().y);
+                    getControlPicture().releaseSelected();
 
 
 
@@ -92,9 +106,9 @@ public final class CPaintObjects implements ActionListener {
                     //decativate other menuitems and activate the current one
                     //(move)
                     Picture.getInstance().createSelected();
-                    PaintObjects.getInstance().deactivate();
-                    Picture.getInstance().insertIntoSelected(po_cu);
-                    new PictureOverview().remove(po_cu);
+                    getPaintObjects().deactivate();
+                    Picture.getInstance().insertIntoSelected(po_cu, cp.getView().getTabs().getTab_pos());
+                    new PictureOverview(getPaintObjects()).remove(po_cu);
                     Picture.getInstance().getLs_po_sortedByX().remove(
                     		SecureList.ID_NO_PREDECESSOR);
                     
@@ -107,12 +121,14 @@ public final class CPaintObjects implements ActionListener {
         }
         
         //finish insertion into selected.
-        Picture.getInstance().finishSelection();
+        Picture.getInstance().finishSelection(cp.getcTabSelection());
         
-        Picture.getInstance().paintSelected();
-        Page.getInstance().getJlbl_painting().refreshPaint();
-        PaintObjects.getInstance().repaint();
-        Page.getInstance().getJlbl_background2().repaint();
+        Picture.getInstance().paintSelected(getPage(),
+    			cp.getControlPic(),
+    			cp.getControlPaintSelection());
+        getControlPicture().refreshPaint();
+        getPaintObjects().repaint();
+        getPage().getJlbl_background2().repaint();
        
     }
 
@@ -130,7 +146,7 @@ public final class CPaintObjects implements ActionListener {
         final int itemSize = 40;
         
         //update the amount of items
-        PaintObjects.getInstance().getJlbl_amountOfItems().setText("amount = " 
+        getPaintObjects().getJlbl_amountOfItems().setText("amount = " 
         + _pov.getNumber());
 
         //create new button for the item
@@ -140,14 +156,14 @@ public final class CPaintObjects implements ActionListener {
         jbtn_new.setImageHeight(itemSize);
         jbtn_new.setBackground(Color.pink);
         jbtn_new.setBorder(true);
-        jbtn_new.addActionListener(new CPaintObjects());
+        jbtn_new.addActionListener(new CPaintObjects(cp));
         jbtn_new.setText("ID " + _pov.getCurrentPO().getElementId());
-        PaintObjects.getInstance().add(jbtn_new);
+        getPaintObjects().add(jbtn_new);
         jbtn_new.setIcon((_pov.getCurrentPO().getSnapshot()));
         
         
         //repaint view
-         PaintObjects.getInstance().repaint();
+         getPaintObjects().repaint();
         
         //return the Item1Button for later use (for example @updateAddSelected)
         return jbtn_new;
@@ -166,7 +182,7 @@ public final class CPaintObjects implements ActionListener {
      */
     public synchronized void updateRemove(final PictureOverview _pov) {
 
-        Component [] comp = PaintObjects.getInstance().getJpnl_items()
+        Component [] comp = getPaintObjects().getJpnl_items()
                 .getComponents();
         int removalY = -1;
         
@@ -210,7 +226,7 @@ public final class CPaintObjects implements ActionListener {
                             rec_old.y = rec_old.y - i1b.getHeight();
 
                             //remove and reset rectangle height.
-                            PaintObjects.getInstance().getJpnl_items()
+                            getPaintObjects().getJpnl_items()
                             .remove(comp[i]);
 
                     	} 
@@ -248,7 +264,7 @@ public final class CPaintObjects implements ActionListener {
     public void updateRemoveSelected(final PictureOverview _pov) {
 
 
-        Component [] comp = PaintObjects.getInstance().getJpnl_items()
+        Component [] comp = getPaintObjects().getJpnl_items()
                 .getComponents();
         int removalY = -1;
         
@@ -291,7 +307,7 @@ public final class CPaintObjects implements ActionListener {
                             rec_old.y = rec_old.y - i1b.getHeight();
 
                             //remove and reset rectangle height.
-                            PaintObjects.getInstance().getJpnl_items()
+                            getPaintObjects().getJpnl_items()
                             .remove(comp[i]);
 
                     	} 
@@ -354,13 +370,12 @@ public final class CPaintObjects implements ActionListener {
              }
         }
         
-        PaintObjects.getInstance().getJta_infoSelectedPanel()
+        getPaintObjects().getJta_infoSelectedPanel()
         .setText(text);
         
         //create bufferedImage
-        BufferedImage bi = new BufferedImage(PaintObjects
-                .getInstance().getJlbl_detailedPosition()
-                .getWidth(), PaintObjects.getInstance()
+        BufferedImage bi = new BufferedImage(getPaintObjects().getJlbl_detailedPosition()
+                .getWidth(), getPaintObjects()
                 .getJlbl_detailedPosition().getHeight(), 
                 BufferedImage.TYPE_INT_ARGB);
 
@@ -401,31 +416,14 @@ public final class CPaintObjects implements ActionListener {
                 }
             }
         }
-        PaintObjects.getInstance().getJlbl_detailedPosition()
+        getPaintObjects().getJlbl_detailedPosition()
         .setIcon(new ImageIcon(bi));
     }
     
-    
 
-    
-    
-    /**
-     * this method guarantees that only one instance of this
-     * class can be created ad runtime.
-     * 
-     * @return the only instance of this class.
-     */
-    public static CPaintObjects getInstance() {
-        
-        //if class is not instanced yet instantiate
-        if (instance == null) {
-            instance = new CPaintObjects();
-        }
-        
-        //return the only instance of this class.
-        return instance;
+    public CPaintObjects getInstance() {
+    	return null;
     }
-
 
     /**
      * @return the rec_old

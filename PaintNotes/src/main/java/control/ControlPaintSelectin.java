@@ -626,7 +626,9 @@ public class ControlPaintSelectin implements MouseMotionListener, MouseListener 
         
         //release selected and paint them
         cv.getControlPic().releaseSelected();
-        Picture.getInstance().paintSelected();
+        Picture.getInstance().paintSelected(cv.getView().getPage(),
+        		cv.getControlPic(),
+        		cv.getControlPaintSelection());
     }
 
     /**

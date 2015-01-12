@@ -133,8 +133,10 @@ public abstract class POInsertion extends PaintObjectPen {
 				Status.getImageSize().height, 
 				BufferedImage.TYPE_INT_ARGB), 
 				true, null, 
-                Page.getInstance().getJlbl_painting().getLocation().x,
-                Page.getInstance().getJlbl_painting().getLocation().y, null)
+//                Page.getInstance().getJlbl_painting().getLocation().x,
+//                Page.getInstance().getJlbl_painting().getLocation().y, 
+                0, 0,
+                null)
                 .getSubimage(
 						rect.x, 
 						rect.y,

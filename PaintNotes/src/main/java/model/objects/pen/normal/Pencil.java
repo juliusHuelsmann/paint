@@ -9,6 +9,7 @@ import view.forms.Page;
 import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.Status;
+import model.settings.ViewSettings;
 import model.util.DPoint;
 
 
@@ -170,14 +171,18 @@ public class Pencil extends Pen {
                             //if the x coordinates are in range (displayed
                             //at the right edge of the screen)
                             && (int) rx / imagePixelSizeX + 1 
-                            <= (int) Page.getInstance().getJlbl_painting()
-                            .getWidth() / imagePixelSizeX
+                            <= (int) ViewSettings.getView_bounds_page().width
+//                            <= (int) Page.getInstance().getJlbl_painting()
+//                            .getWidth() 
+                            / imagePixelSizeX
 
                             //if the x coordinates are in range (displayed
                             //at the bottom edge of the screen)
                             && (int) ry / imagePixelSizeY + 1 
-                            <= (int) Page.getInstance().getJlbl_painting()
-                            .getHeight() / imagePixelSizeY) {
+                            <= (int) ViewSettings.getView_bounds_page().height
+//                            <= (int) Page.getInstance().getJlbl_painting()
+//                            .getHeight() 
+                            / imagePixelSizeY) {
 
                         int rbg = 0;
                         if (rx >= 0 && rx < _g.getWidth()

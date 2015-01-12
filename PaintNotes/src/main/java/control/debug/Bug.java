@@ -62,7 +62,7 @@ public final class Bug {
 
 				Picture.getInstance().changePen(new Pencil(
 						Constants.PEN_ID_LINES, 1, Color.blue));
-				Picture.getInstance().addPaintObject();
+				Picture.getInstance().addPaintObject(cp.getView().getTabs().getTab_insert());
 
 				DPoint p = new DPoint();
 				while (!ls_strg.isBehind() 
@@ -81,14 +81,14 @@ public final class Bug {
 						p = isPoint(ls_strg.getItem());
 						if (p != null) {
 
-							Picture.getInstance().changePaintObject(p);
+							Picture.getInstance().changePaintObject(p, cp.getView().getPage(), cp.getControlPic());
 						} else {
 							ls_strg.previous();
 						}
 					}
 				}
 				
-				Picture.getInstance().finish();
+				Picture.getInstance().finish(cp.getView().getTabs().getTab_pos());
 			} else if (cString.contains("Rectangle")) {
 
 

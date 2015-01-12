@@ -12,6 +12,7 @@ import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.special.PenSelection;
 import model.settings.Status;
+import model.util.Util;
 import model.util.paint.Utils;
 import view.forms.Page;
 import view.forms.PaintLabel;
@@ -44,16 +45,7 @@ public class ContorlPicture implements PaintListener {
     @SuppressWarnings("unused")
     private Point pnt_start;
 
-    /**
-     * JPanel which is to be updated if location changes in
-     * PaintLabel.
-     */
-    private MPanel jpnl_toMove;
     
-    /**
-     * Instance of the PaintLabel.
-     */
-    private PaintLabel jlbl_paint;
     
     
     /**
@@ -69,17 +61,20 @@ public class ContorlPicture implements PaintListener {
      * @param _jlbl_paint the paintLabel
      */
     public ContorlPicture(
-    		final MPanel _jpnl_toMove, 
-    		final PaintLabel _jlbl_paint,
     		final ControlPaint _cp) {
     	
     	
-        this.jpnl_toMove = _jpnl_toMove;
-        this.jlbl_paint = _jlbl_paint;
         this.cp = _cp;
     }
 
     
+
+    private MPanel getJPnlToMove() {
+    	return cp.getView().getPage().getJpnl_toMove();
+    }
+    private PaintLabel getPaintLabel() {
+    	return cp.getView().getPage().getJlbl_painting();
+    }
     /**
      * Refresh the entire image.
      */
@@ -87,25 +82,25 @@ public class ContorlPicture implements PaintListener {
 
 
         Status.getLogger().finest("refreshing PaintLabel. \nValues: "
-                + "\n\tgetSize:\t" + jlbl_paint.getSize() + " vs. " 
-        		+ jpnl_toMove.getSize()
-                + "\n\tgetLocation:\t" +jlbl_paint.getLocation() 
-                + " vs. " + jpnl_toMove.getLocation()
+                + "\n\tgetSize:\t" + getPaintLabel().getSize() + " vs. " 
+        		+ getJPnlToMove().getSize()
+                + "\n\tgetLocation:\t" +getPaintLabel().getLocation() 
+                + " vs. " + getJPnlToMove().getLocation()
                 + "\n\t" + "_x:\t\t"
                 + "\n\t" + "_y\t\t"
-                + "\n\t" + "_width\t\t" + jlbl_paint.getWidth()
-                + "\n\t" + "_height\t\t" + jlbl_paint.getHeight() + "\n");
+                + "\n\t" + "_width\t\t" + getPaintLabel().getWidth()
+                + "\n\t" + "_height\t\t" + getPaintLabel().getHeight() + "\n");
 
         //paint the painted stuff at graphics
         setBi(Picture.getInstance().updateRectangle(
-                -jlbl_paint.getLocation().x, 
-                -jlbl_paint.getLocation().y, jlbl_paint.getWidth() ,
-                jlbl_paint.getHeight(), 0, 0, getBi()));
+                -getPaintLabel().getLocation().x, 
+                -getPaintLabel().getLocation().y, getPaintLabel().getWidth() ,
+                getPaintLabel().getHeight(), 0, 0, getBi()));
 
         
         refreshPaintBackground();
         
-        jlbl_paint.setIcon(new ImageIcon(getBi()));
+        getPaintLabel().setIcon(new ImageIcon(getBi()));
     }
 
 
@@ -142,14 +137,14 @@ public class ContorlPicture implements PaintListener {
                     getPage().getJlbl_background2().getHeight(),
                     BufferedImage.TYPE_INT_ARGB);
             ret = Picture.getInstance().emptyRectangle(
-                    -jlbl_paint.getLocation().x, 
-                    -jlbl_paint.getLocation().y, 
-                    jlbl_paint.getWidth(), 
-                    jlbl_paint.getHeight(), 0, 0, ret);
+                    -getPaintLabel().getLocation().x, 
+                    -getPaintLabel().getLocation().y, 
+                    getPaintLabel().getWidth(), 
+                    getPaintLabel().getHeight(), 0, 0, ret);
             getPage().getJlbl_background2().setIcon(
-                    new ImageIcon((Utils.getBackground(ret, -jlbl_paint.getLocation().x, 
-                    -jlbl_paint.getLocation().y, -jlbl_paint.getLocation().x + jlbl_paint.getWidth(), 
-                    -jlbl_paint.getLocation().y + jlbl_paint.getHeight(), 0, 0))));  
+                    new ImageIcon((Utils.getBackground(ret, -getPaintLabel().getLocation().x, 
+                    -getPaintLabel().getLocation().y, -getPaintLabel().getLocation().x + getPaintLabel().getWidth(), 
+                    -getPaintLabel().getLocation().y + getPaintLabel().getHeight(), 0, 0))));  
         }
 
     }
@@ -187,7 +182,7 @@ public class ContorlPicture implements PaintListener {
         if (thrd_moveBorder != null) {
             thrd_moveBorder.interrupt();
 
-            jlbl_paint.repaint();
+            getPaintLabel().repaint();
         }
 
         //initialize the thread and start it.
@@ -231,9 +226,9 @@ public class ContorlPicture implements PaintListener {
             final int _width, final int _height) {
 
         Status.getLogger().finest("refreshing PaintLabel. \nValues: "
-                + "\n\tgetSize:\t" + jlbl_paint.getSize() + " vs. " + jpnl_toMove.getSize()
-                + "\n\tgetLocation:\t" +jlbl_paint.getLocation() 
-                + " vs. " + jpnl_toMove.getLocation()
+                + "\n\tgetSize:\t" + getPaintLabel().getSize() + " vs. " + getJPnlToMove().getSize()
+                + "\n\tgetLocation:\t" +getPaintLabel().getLocation() 
+                + " vs. " + getJPnlToMove().getLocation()
                 + "\n\t" + "_x:\t\t" + _x
                 + "\n\t" + "_y\t\t" + _y
                 + "\n\t" + "_width\t\t" + _width
@@ -241,10 +236,10 @@ public class ContorlPicture implements PaintListener {
 
         //paint the painted stuff at graphics
         setBi(Picture.getInstance().updateRectangle(
-                -jlbl_paint.getLocation().x + _x, 
-                -jlbl_paint.getLocation().y + _y, _width, _height, _x, _y, getBi()));
+                -getPaintLabel().getLocation().x + _x, 
+                -getPaintLabel().getLocation().y + _y, _width, _height, _x, _y, getBi()));
 
-        jlbl_paint.setIcon(new ImageIcon(getBi()));
+        getPaintLabel().setIcon(new ImageIcon(getBi()));
         
         return getBi();
     }
@@ -262,9 +257,9 @@ public class ContorlPicture implements PaintListener {
             final int _width, final int _height) {
 
         Status.getLogger().finest("clr PaintLabel. \nValues: "
-                + "\n\tgetSize:\t" + jlbl_paint.getSize() + " vs. " + jpnl_toMove.getSize()
-                + "\n\tgetLocation:\t" + jlbl_paint.getLocation() 
-                + " vs. " + jpnl_toMove.getLocation()
+                + "\n\tgetSize:\t" + getPaintLabel().getSize() + " vs. " + getJPnlToMove().getSize()
+                + "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
+                + " vs. " + getJPnlToMove().getLocation()
                 + "\n\t" + "_x:\t\t" + _x
                 + "\n\t" + "_y\t\t" + _y
                 + "\n\t" + "_width\t\t" + _width
@@ -272,10 +267,10 @@ public class ContorlPicture implements PaintListener {
 
         //paint the painted stuff at graphics
         setBi(Picture.getInstance().emptyRectangle(
-                -jlbl_paint.getLocation().x + _x, 
-                -jlbl_paint.getLocation().y + _y, _width, _height, _x, _y, getBi()));
+                -getPaintLabel().getLocation().x + _x, 
+                -getPaintLabel().getLocation().y + _y, _width, _height, _x, _y, getBi()));
 
-        jlbl_paint.setIcon(new ImageIcon(getBi()));
+        getPaintLabel().setIcon(new ImageIcon(getBi()));
         
         return getBi();
     }
@@ -344,7 +339,7 @@ public class ContorlPicture implements PaintListener {
 	    
 	    stopBorderThread();
 	    
-        BufferedImage emptyBI = getPage().getEmptyBISelection();
+        BufferedImage emptyBI = Util.getEmptyBISelection();
         getPage().getJlbl_selectionBG().setIcon(new ImageIcon(emptyBI));
         getPage().getJlbl_selectionPainting().setIcon(new ImageIcon(emptyBI));
         getPage().getJlbl_selectionPainting().repaint();
@@ -386,6 +381,7 @@ public class ContorlPicture implements PaintListener {
      * @param _bi the _bi to set
      */
     public final void setBi(final BufferedImage _bi) {
+    	cp.getView().getPage().getJlbl_painting().setIcon(new ImageIcon(_bi));
         this.bi = _bi;
     }
 
@@ -402,13 +398,13 @@ public class ContorlPicture implements PaintListener {
 		int xNew = (int) _ev.getPnt_bottomLocation().getX();
 		int yNew = (int) _ev.getPnt_bottomLocation().getY();
         
-		int xOld = (int) jlbl_paint.getLocation().getX();
-		int yOld = (int) jlbl_paint.getLocation().getY();
+		int xOld = (int) getPaintLabel().getLocation().getX();
+		int yOld = (int) getPaintLabel().getLocation().getY();
 		
         //if something changed, repaint
         if (xNew != xOld || yNew != yOld) {
 
-            if (jlbl_paint.isVisible()) {
+            if (getPaintLabel().isVisible()) {
             	
             	int maintainStartX = 0, 
 	            	maintainStartY = 0, 
@@ -570,7 +566,7 @@ public class ContorlPicture implements PaintListener {
      */
 	public final void afterExternalLocationChange(final MoveEvent _ev) {
 
-        if (jlbl_paint.isVisible()) {
+        if (getPaintLabel().isVisible()) {
             
             //set changed
             refreshPaint();
@@ -584,7 +580,7 @@ public class ContorlPicture implements PaintListener {
      */
 	public final void afterExternalSizeChange(final MoveEvent _ev) {
 
-        if (jlbl_paint.isVisible()) {
+        if (getPaintLabel().isVisible()) {
             
             //set changed
             refreshPaint();

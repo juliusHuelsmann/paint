@@ -23,11 +23,6 @@ import model.settings.Status;
 public final class CWrite implements ActionListener {
 
     /*
-     * Singleton
-     */
-    
-
-    /*
      * Identifiers
      */
     

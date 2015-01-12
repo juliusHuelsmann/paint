@@ -88,7 +88,10 @@ import view.util.mega.MButton;
      */
     private New jpnl_new;
     
-    
+    /**
+     * 
+     */
+    private QuickAccess quickAccess;
 	/**
 	 * empty utility class constructor. 
 	 */
@@ -123,7 +126,9 @@ import view.util.mega.MButton;
         jpnl_new = new New(controlPaint.getControlnew());
         super.add(jpnl_new);
         super.add(Console.getInstance());
-        super.add(QuickAccess.getInstance());
+        
+        quickAccess = new QuickAccess(controlPaint.getControlQuickAccess());
+        super.add(quickAccess);
         
         //initialize JPanel jpnl_toMove
         jpnl_toMove = new MPanel() {
@@ -138,9 +143,11 @@ import view.util.mega.MButton;
 
         //ScrollPanel for up and down
         sp_ub = new VScrollPane(jpnl_toMove, this, true);
+        sp_ub.setActivityListener(controlPaint.getUtilityControlScrollPane());
         controlPaint.getView().add(sp_ub);
 
         sp_lr = new VScrollPane(jpnl_toMove, this, false);
+        sp_lr.setActivityListener(controlPaint.getUtilityControlScrollPane());
         controlPaint.getView().add(sp_lr);
         
         jlbl_resizeSelectionSize = new MLabel();
@@ -219,6 +226,7 @@ import view.util.mega.MButton;
         jlbl_painting.addMouseMotionListener(controlPaint);
         jlbl_painting.addMouseListener(controlPaint);
         jlbl_painting.setOpaque(false);
+        jlbl_painting.setPaintListener(controlPaint.getControlPic());
         super.add(jlbl_painting);
 
 
@@ -307,68 +315,6 @@ import view.util.mega.MButton;
 	}
 	
 	
-    /**
-     * return fully transparent BufferedImage.
-     * 
-     * @return the BufferedImage
-     */
-    public  BufferedImage getEmptyBISelection() {
-        BufferedImage bi = new BufferedImage(jlbl_selectionBG.getWidth(), 
-                jlbl_selectionBG.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        final int maxRGB = 255;
-        int rgba = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
-        for (int x = 0; x < bi.getWidth(); x++) {
-            for (int y = 0; y < bi.getHeight(); y++) {
-                bi.setRGB(x, y, rgba);
-            }
-        }
-        
-        return bi;
-    }
-    /**
-     * return fully transparent BufferedImage.
-     * 
-     * @return the BufferedImage
-     */
-    public  BufferedImage getEmptyBITransparent() {
-        BufferedImage bi = new BufferedImage(
-                Status.getImageSize().width, 
-                Status.getImageSize().height, BufferedImage.TYPE_INT_ARGB);
-        final int maxRGB = 255;
-        
-        int rgba = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
-        for (int x = 0; x < bi.getWidth(); x++) {
-            for (int y = 0; y < bi.getHeight(); y++) {
-                bi.setRGB(x, y, rgba);
-            }
-        }
-        
-        return bi;
-    }
-    
-    /**
-     * return fully transparent BufferedImage.
-     * 
-     * @return the BufferedImage
-     */
-    public  BufferedImage getEmptyBIWhite() {
-        BufferedImage bi = new BufferedImage(
-                Status.getImageSize().width, 
-                Status.getImageSize().height, BufferedImage.TYPE_INT_RGB);
-        
-        final int max = 255;
-        int rgb = new Color(max, max, max).getRGB();
-        for (int x = 0; x < bi.getWidth(); x++) {
-            for (int y = 0; y < bi.getHeight(); y++) {
-                bi.setRGB(x, y, rgb);
-            }
-        }
-        
-        return bi;
-    }
-	
-	
-
 
 
 	
@@ -455,6 +401,26 @@ import view.util.mega.MButton;
 	 */
 	public void setJpnl_new(New jpnl_new) {
 		this.jpnl_new = jpnl_new;
+	}
+
+
+	public QuickAccess getQuickAccess() {
+		return quickAccess;
+	}
+
+
+	public void setQuickAccess(QuickAccess quickAccess) {
+		this.quickAccess = quickAccess;
+	}
+
+
+	public MPanel getJpnl_toMove() {
+		return jpnl_toMove;
+	}
+
+
+	public void setJpnl_toMove(MPanel jpnl_toMove) {
+		this.jpnl_toMove = jpnl_toMove;
 	}
 }
 

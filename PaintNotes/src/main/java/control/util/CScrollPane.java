@@ -13,6 +13,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
+import control.interfaces.ActivityListener;
 import model.settings.Constants;
 import model.settings.Error;
 import model.settings.Status;
@@ -31,6 +32,11 @@ import view.util.VScrollPane;
 public class CScrollPane 
 implements MouseMotionListener, MouseListener, KeyListener {
 
+	private ActivityListener activityListener;
+	
+	public final void setActivityListener(final ActivityListener _activityListener) {
+		this.activityListener = _activityListener;
+	}
     /**
      * The view class.
      */
@@ -195,9 +201,7 @@ implements MouseMotionListener, MouseListener, KeyListener {
                 }
             } .start();
         }
-        
-        //close each open menu
-        Tabs.getInstance().closeMenues();
+        activityListener.activityOccurred(_event);
     }
 
 
@@ -387,15 +391,7 @@ implements MouseMotionListener, MouseListener, KeyListener {
             upDownPressed = false;
         }
         
-
-        for (int a = 0; a < Page.getInstance().getJbtn_resize().length; a++) {
-            for (int b = 0; b < Page.getInstance().getJbtn_resize()[a].length; 
-                    b++) {
-                Page.getInstance().getJbtn_resize()[a][b].repaint();
-            }
-        }
-        Page.getInstance().getJlbl_selectionBG().repaint();
-        Page.getInstance().getJlbl_selectionPainting().repaint();
+        activityListener.activityOccurred(_event);
     }
 
 

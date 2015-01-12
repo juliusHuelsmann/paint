@@ -2,12 +2,16 @@ package view.util;
 
 //import java.awt components
 import java.awt.Color;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
+
+
 //import rotatatble buttons and panels
 import view.util.mega.MButton;
-
+import control.interfaces.ActivityListener;
+import control.util.CItem;
 //import the controller showing mouseOver animations 
 import control.util.CItem2;
 
@@ -28,6 +32,11 @@ public class Item2 extends MButton {
      */
     private String icon = "paint/test.png", title;
     
+    
+    
+    public void setItemActivityListener(ActivityListener _activityListener) {
+    	CItem2.getInstance().addItemActivityListener(_activityListener);
+    }
     /**
      * form for items that display a form which can be inserted into image.
      */

@@ -89,7 +89,8 @@ public class PaintLabel extends MLabel {
         //if it has been set.
         if (paintListener != null) {
         	paintListener.beforeLocationChange(
-        			new MoveEvent(new Point(_x, _y)));
+        			new MoveEvent(new Point(_x, _y)), 
+        			new MoveEvent(new Point(x, y)));
         } else {
         	Status.getLogger().severe("PaintListener not set.");
         }

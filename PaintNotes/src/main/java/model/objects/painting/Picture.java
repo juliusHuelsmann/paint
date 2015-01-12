@@ -13,20 +13,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
 import control.ContorlPicture;
-import control.ControlPaint;
 import control.ControlPaintSelectin;
 import control.tabs.CTabSelection;
-import view.View;
 import view.forms.Console;
 import view.forms.Message;
 import view.forms.Page;
-import view.forms.PaintLabel;
 import view.tabs.Insert;
 import view.tabs.PaintObjects;
 import model.objects.PictureOverview;
@@ -650,7 +644,11 @@ public final class Picture {
 		while (!ls_poChronologic.isBehind() && !ls_poChronologic.isEmpty()) {
 
 			ls_poChronologic.getItem().paint(_bi, _final,
-					_bi, _x, _y,
+					_bi, 
+//					_x, _y,
+//					_paintLocationX,
+//					_paintLocationY,
+					-_x, -_y,
 //					Page.getInstance().getJlbl_painting().getBi(),
 //					Page.getInstance().getJlbl_painting().getLocation().x,
 //					Page.getInstance().getJlbl_painting().getLocation().y,

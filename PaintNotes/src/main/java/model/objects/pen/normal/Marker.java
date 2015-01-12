@@ -12,6 +12,7 @@ import model.settings.Constants;
 import model.settings.Error;
 import model.settings.Status;
 import model.settings.TextFactory;
+import model.settings.ViewSettings;
 import model.util.DPoint;
 
 
@@ -138,14 +139,19 @@ public class Marker extends Pen {
                             //if the x coordinates are in range (displayed
                             //at the right edge of the screen)
                             && (int) x / imagePixelSizeX + 1 
-                            <= (int) Page.getInstance().getJlbl_painting()
-                            .getWidth() / imagePixelSizeX
+
+                            <= (int) ViewSettings.getView_bounds_page().width
+//                            <= (int) Page.getInstance().getJlbl_painting()
+//                            .getWidth() 
+                            / imagePixelSizeX
 
                             //if the x coordinates are in range (displayed
                             //at the bottom edge of the screen)
                             && (int) y / imagePixelSizeY + 1 
-                            <= (int) Page.getInstance().getJlbl_painting()
-                            .getHeight() / imagePixelSizeY) {
+                            <= (int) ViewSettings.getView_bounds_page().height
+//                            <= (int) Page.getInstance().getJlbl_painting()
+//                            .getHeight() 
+                            / imagePixelSizeY) {
                         
                         Status.setCounter_paintedPoints(Status
                                 .getCounter_paintedPoints() + 1);

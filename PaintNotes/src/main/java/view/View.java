@@ -65,10 +65,18 @@ import control.util.MousePositionTracker;
 	private Page page;
 	
 	/**
+	 */
+	public View() {
+		
+	}
+	
+	/**
+	 * 
 	 * Constructor: initialize JFrame, alter settings and initialize items.
 	 * @param _cp instance of ControlView.
 	 */
-	public View(final ControlPaint _cp) {
+	public void initialize(final ControlPaint _cp) {
+
 
 	    
         //initialize JFrame and alter settings
@@ -134,7 +142,8 @@ import control.util.MousePositionTracker;
         page = new Page(_cp);
         
         
-        tabs = new Tabs(this, _cp);
+        tabs = new Tabs(this);
+        tabs.initialize(this, _cp);
         
         super.remove(jlbl_backgroundStroke);
         if (ViewSettings.isFullscreen()) {
@@ -161,6 +170,7 @@ import control.util.MousePositionTracker;
 
         tabs.setVisible(true);
         page.setVisible(true);
+	
 	
 	
 	}

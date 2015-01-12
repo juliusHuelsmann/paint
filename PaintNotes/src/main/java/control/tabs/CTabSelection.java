@@ -6,12 +6,15 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import control.ContorlPicture;
 import control.ControlPaint;
+import control.ControlPaintSelectin;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectPen;
 import model.settings.Constants;
 import model.util.adt.list.SecureList;
+import view.forms.Page;
 import view.tabs.Selection;
 
 /**
@@ -40,7 +43,34 @@ public final class CTabSelection implements ActionListener {
     
     
     private Selection getSelection() {
-    	return cp.getView().getTabs().getTab_selection();
+    	
+    	if (
+    			cp != null
+    			&& cp.getView() != null
+    			&& cp.getView().getTabs() != null
+    			&& cp.getView().getTabs().getTab_selection() != null) {
+
+        	return cp.getView().getTabs().getTab_selection();
+    	} else {
+    		
+    		if (cp != null){
+
+    			if ( cp.getView() != null ) {
+        			if ( cp.getView().getTabs() != null){
+        				if (cp.getView().getTabs().getTab_selection() != null) {
+
+        					System.out.println(
+        							"cp.view.tabs.tabselection != null");
+        				}
+    					System.out.println("cp.view.tabs != null");
+        			}
+					System.out.println("cp.view != null");
+    			}
+				System.out.println("cp != null");
+    		}
+    		System.exit(1);
+    		return null;
+    	}
     }
     
     /**
@@ -94,7 +124,10 @@ public final class CTabSelection implements ActionListener {
             getSelection().getJcb_maths().setSelected(false);
             getSelection().getJcb_line().setSelected(false);
             setPen(Constants.PEN_ID_POINT);
-            Picture.getInstance().paintSelectedInline();
+            Picture.getInstance().paintSelectedInline(
+        			cp.getControlPaintSelection(),
+        			cp.getView().getPage(),
+        			cp.getControlPic());
             activatePen();
         
             break;
@@ -104,7 +137,10 @@ public final class CTabSelection implements ActionListener {
             getSelection().getJcb_maths().setSelected(false);
             getSelection().getJcb_points().setSelected(false);
             setPen(Constants.PEN_ID_LINES);
-            Picture.getInstance().paintSelectedInline();
+            Picture.getInstance().paintSelectedInline(
+        			cp.getControlPaintSelection(),
+        			cp.getView().getPage(),
+        			cp.getControlPic());
             activatePen();
         
             break;
@@ -114,7 +150,10 @@ public final class CTabSelection implements ActionListener {
             getSelection().getJcb_line().setSelected(false);
             getSelection().getJcb_points().setSelected(false);
             setPen(Constants.PEN_ID_MATHS);
-            Picture.getInstance().paintSelectedInline();
+            Picture.getInstance().paintSelectedInline(
+        			cp.getControlPaintSelection(),
+        			cp.getView().getPage(),
+        			cp.getControlPic());
             activatePen();
         
             break;
@@ -140,7 +179,9 @@ public final class CTabSelection implements ActionListener {
             getSelection().getJcb_points().setSelected(true);
             getSelection().getJcb_maths().setSelected(false);
             getSelection().getJcb_line().setSelected(false);
-            Picture.getInstance().paintSelected();
+            Picture.getInstance().paintSelected(cp.getView().getPage(),
+            		cp.getControlPic(),
+            		cp.getControlPaintSelection());
         
             break;
         case Constants.PEN_ID_LINES:
@@ -148,7 +189,9 @@ public final class CTabSelection implements ActionListener {
             getSelection().getJcb_line().setSelected(true);
             getSelection().getJcb_maths().setSelected(false);
             getSelection().getJcb_points().setSelected(false);
-            Picture.getInstance().paintSelected();
+            Picture.getInstance().paintSelected(cp.getView().getPage(),
+            		cp.getControlPic(),
+            		cp.getControlPaintSelection());
         
             break;
         case Constants.PEN_ID_MATHS:
@@ -156,7 +199,9 @@ public final class CTabSelection implements ActionListener {
             getSelection().getJcb_maths().setSelected(true);
             getSelection().getJcb_line().setSelected(false);
             getSelection().getJcb_points().setSelected(false);
-            Picture.getInstance().paintSelected();
+            Picture.getInstance().paintSelected(cp.getView().getPage(),
+            		cp.getControlPic(),
+            		cp.getControlPaintSelection());
         
             break;
         default:

@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
+
 //import java.swing components
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -14,10 +15,12 @@ import javax.swing.JSlider;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeListener;
 
+
 //import rotatatble buttons and panels
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
+import model.objects.pen.Pen;
 //constants and viewSettings
 import model.settings.Constants;
 import model.util.paint.Utils;
@@ -59,7 +62,17 @@ public class Item1PenSelection extends MPanel {
 	private String imagePath;
 	
 	
+	private int pen_selection;
 	
+	public int getPenSelection() {
+		return pen_selection;
+	}
+	
+	private Pen pen;
+	
+	public Pen getPen() {
+		return pen;
+	}
 	/**
 	 * Constructor: creates graphical user interface.
 	 * @param _title the title of the item
@@ -67,7 +80,8 @@ public class Item1PenSelection extends MPanel {
 	 *         and painted.
 	 * user clicked at this button
 	 */
-	public Item1PenSelection(final String _title, final String _imagePath) {
+	public Item1PenSelection(final String _title, final String _imagePath,
+			final Pen _pen, final int _penSelection) {
 		
 		//initialize JFrame and alter settings
 		super();
@@ -78,6 +92,8 @@ public class Item1PenSelection extends MPanel {
 
 		//save current values
 		this.imagePath = _imagePath;
+		this.pen = _pen;
+		this.pen_selection = _penSelection;
 		
 		//initialize components
 		jlbl_image = new MLabel();

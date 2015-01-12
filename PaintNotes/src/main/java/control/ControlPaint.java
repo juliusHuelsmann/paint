@@ -20,10 +20,13 @@ import control.tabs.CPaintObjects;
 import control.tabs.CPaintSelection;
 import control.tabs.CPaintStatus;
 import control.tabs.CPrint;
+import control.tabs.CQuickAccess;
 import control.tabs.CTabSelection;
 import control.tabs.CTabs;
 import control.tabs.CWrite;
 import control.tabs.ControlTabPainting;
+import control.util.implementations.Item2ActivityListener;
+import control.util.implementations.ScrollPaneActivityListener;
 import model.objects.PictureOverview;
 import model.objects.Zoom;
 import model.objects.painting.PaintBI;
@@ -38,6 +41,7 @@ import model.settings.Settings;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.DPoint;
+import model.util.Util;
 import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
 import view.View;
@@ -85,7 +89,7 @@ MenuListener {
 	private CPrint cTabPrint; 
 	
 	private CWrite cTabWrite;
-	
+	private CQuickAccess controlQuickAccess;
 	
 	private CPaintStatus cTabPaintStatus;
 	
@@ -101,6 +105,8 @@ MenuListener {
 	private Zoom zoom;
 	private CNew controlnew = null;
 	
+	private ScrollPaneActivityListener utilityControlScrollPane;
+	private Item2ActivityListener utilityControlItem2;
 	
 
     /**
@@ -155,21 +161,27 @@ MenuListener {
             Status.getLogger().info("Installation found.");
             Status.getLogger().info("Initialize model class Page.\n");
             
+            Status.setControlPaint(this);
             //initialize the model class picture.
             //TODO: not null
-            controlPic = new ContorlPicture(null, null, this);
+            controlPic = new ContorlPicture(this);
+            cTabSelection = new CTabSelection(this);
             picture = Picture.getInstance();
             controlPaintSelection = new ControlPaintSelectin(this);
             cTabPaint = new ControlTabPainting(this);
             cTabPaintStatus = new CPaintStatus(this);
+            cTabPaintObjects = new CPaintObjects(this);
             zoom = new Zoom(controlPic);
             
+            utilityControlScrollPane = new ScrollPaneActivityListener(this);
+            utilityControlItem2 = new Item2ActivityListener(this);
             cTabs = new CTabs(this);
 
             //initialize view class and log information on current 
             //initialization progress
             Status.getLogger().info("initialize view class and set visible.");
-            view = new View(this);
+            view = new View();
+            view.initialize(this);
             view.setVisible(true);
             
             
@@ -237,7 +249,7 @@ MenuListener {
 		            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
 		            case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
 
-		            	BufferedImage bi = getPage().getEmptyBISelection();
+		            	BufferedImage bi = Util.getEmptyBISelection();
 		            	getPage().getJlbl_selectionBG().setIcon(
 		            			new ImageIcon(bi));
 		            	break;
@@ -309,14 +321,14 @@ MenuListener {
                 }
                     
                 // add paintObject and point to Picture
-                Picture.getInstance().addPaintObject();
+                Picture.getInstance().addPaintObject(getTabs().getTab_insert());
                 changePO(_event);
                 break;
             
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
 
                 // abort old paint object
-                Picture.getInstance().abortPaintObject();
+                Picture.getInstance().abortPaintObject(controlPic);
 
                 // change pen and add new paint object
                 Picture.getInstance().changePen(new PenSelection());
@@ -376,7 +388,7 @@ MenuListener {
             	break;
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
 
-                Picture.getInstance().abortPaintObject();
+                Picture.getInstance().abortPaintObject(controlPic);
                 Picture.getInstance().changePen(new PenSelection());
                 Picture.getInstance().addPaintObjectWrinting();
                 break;
@@ -527,7 +539,7 @@ MenuListener {
                         pnt_start = _event.getPoint();
                         pnt_startLocation = getPage()
                                 .getJlbl_painting().getLocation();
-                        Picture.getInstance().abortPaintObject();
+                        Picture.getInstance().abortPaintObject(controlPic);
                     }
 
                     if (pnt_start != null) {
@@ -561,7 +573,7 @@ MenuListener {
 
                 if (_event.getModifiersEx() == leftMouse) {
 
-                    Picture.getInstance().abortPaintObject();
+                    Picture.getInstance().abortPaintObject(controlPic);
                     Picture.getInstance().changePen(new PenSelection());
                     Picture.getInstance().addPaintObjectWrinting();
                     break;
@@ -572,7 +584,7 @@ MenuListener {
                         pnt_start = _event.getPoint();
                         pnt_startLocation = getPage()
                                 .getJlbl_painting().getLocation();
-                        Picture.getInstance().abortPaintObject();
+                        Picture.getInstance().abortPaintObject(controlPic);
                     }
                     
                     if (pnt_last != null) {
@@ -674,7 +686,10 @@ MenuListener {
                     if (Status.isNormalRotation()) {
 
                         Picture.getInstance().getPen_current().preprint(
-                                _event.getX(), _event.getY());
+                                _event.getX(), _event.getY(),
+                                Util.getEmptyBISelection(),
+                                getPage().getJlbl_selectionBG());
+
                     } else {
 
                         Picture.getInstance().getPen_current().preprint(
@@ -683,7 +698,9 @@ MenuListener {
                                 - _event.getX(), 
                                 getPage().getJlbl_painting()
                                 .getHeight() 
-                                - _event.getY());
+                                - _event.getY(),
+                                Util.getEmptyBISelection(),
+                                getPage().getJlbl_selectionBG());
                     }
             	}
                 break;
@@ -740,7 +757,9 @@ MenuListener {
 	                        .getLocation().y
 	                        )
 	                        * Status.getImageSize().height
-	                        / Status.getImageShowSize().height));
+	                        / Status.getImageShowSize().height),
+	                        getPage(),
+	                        controlPic);
 	    } else {
 	
 	        Picture.getInstance().changePaintObject(
@@ -758,7 +777,10 @@ MenuListener {
 	                        .getLocation().y
 	                        )
 	                        * Status.getImageSize().height
-	                        / Status.getImageShowSize().height));
+	                        / Status.getImageShowSize().height),
+	                        getPage(),
+	                        controlPic
+	                        );
 	    }
 	}
 
@@ -800,7 +822,7 @@ MenuListener {
         case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
          
             // write the current working picture into the global picture.
-            Picture.getInstance().finish();
+            Picture.getInstance().finish(view.getTabs().getTab_pos());
             break;
 
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
@@ -812,13 +834,13 @@ MenuListener {
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
                     
                         PaintObjectWriting pow 
-                        = Picture.getInstance().abortPaintObject();
+                        = Picture.getInstance().abortPaintObject(controlPic);
                         mr_sel_curve_complete(_event, pow);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
 
                     PaintObjectWriting pow2 
-                    = Picture.getInstance().abortPaintObject();
+                    = Picture.getInstance().abortPaintObject(controlPic);
                     mr_sel_curve_destroy(_event, pow2);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
@@ -872,7 +894,7 @@ MenuListener {
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
 
             if (_event.getButton() == 1) {
-                Picture.getInstance().abortPaintObject();
+                Picture.getInstance().abortPaintObject(controlPic);
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
@@ -910,7 +932,12 @@ MenuListener {
                 //release everything
                 if (Picture.getInstance().isSelected()) {
 
-                    Picture.getInstance().releaseSelected();
+                    Picture.getInstance().releaseSelected(
+                			getControlPaintSelection(),
+                			getcTabSelection(),
+                			getView().getTabs().getTab_pos(),
+                			getView().getPage().getJlbl_painting().getLocation().x,
+                			getView().getPage().getJlbl_painting().getLocation().y);
                     controlPic.releaseSelected();
                     getPage().removeButtons();
                 }
@@ -1063,7 +1090,7 @@ MenuListener {
             		field, new Point(xShift, yShift))) {
 
                 //move current item from normal list into selected list 
-                Picture.getInstance().insertIntoSelected(po_current);
+                Picture.getInstance().insertIntoSelected(po_current, getView().getTabs().getTab_pos());
                 Picture.getInstance().getLs_po_sortedByX().remove(
                 		transaction);
                 //remove item out of PictureOverview and paint and refresh paint
@@ -1086,10 +1113,12 @@ MenuListener {
     			transaction);
     	
         //finish insertion into selected.
-        Picture.getInstance().finishSelection();
+        Picture.getInstance().finishSelection(getcTabSelection());
         
         //paint the selected item and refresh entire painting.
-        Picture.getInstance().paintSelected();
+        Picture.getInstance().paintSelected(getPage(),
+    			getControlPic(),
+    			getControlPaintSelection());
         controlPic.refreshPaint();
 
 
@@ -1199,7 +1228,7 @@ MenuListener {
                             //insert the item into the sorted list.
                             separatedPO[1][current].recalculateSnapshotBounds();
                             Picture.getInstance().insertIntoSelected(
-                                    separatedPO[1][current]);
+                                    separatedPO[1][current], getView().getTabs().getTab_pos());
                         } else {
                             
                             Status.getLogger().warning("separated paintObject "
@@ -1208,7 +1237,7 @@ MenuListener {
                     }
                     
                     //finish insertion into selected.
-                    Picture.getInstance().finishSelection();
+                    Picture.getInstance().finishSelection(getcTabSelection());
                     
                     for (int current = 0; current < separatedPO[0].length;
                             current++) {
@@ -1258,14 +1287,18 @@ MenuListener {
         	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
         			transaction);
         	
-            if (Picture.getInstance().paintSelected()) {
+            if (Picture.getInstance().paintSelected(getPage(),
+        			getControlPic(),
+        			getControlPaintSelection())) {
             	controlPic.refreshPaint();
             }
 
         }
 
 
-        Picture.getInstance().paintSelected();
+        Picture.getInstance().paintSelected(getPage(),
+    			getControlPic(),
+    			getControlPaintSelection());
         controlPic.refreshPaint();
 
     }
@@ -1345,7 +1378,7 @@ MenuListener {
                  new PictureOverview(view.getTabs().getTab_pos()).remove(po_current);
                 
                 //move current item from normal list into selected list 
-                Picture.getInstance().insertIntoSelected(po_current);
+                Picture.getInstance().insertIntoSelected(po_current, getView().getTabs().getTab_pos());
                              
                 Picture.getInstance().getLs_po_sortedByX().remove(
                 		transaction);
@@ -1365,11 +1398,13 @@ MenuListener {
     			transaction);
 
         //finish insertion into selected.
-        Picture.getInstance().finishSelection();
+        Picture.getInstance().finishSelection(getcTabSelection());
         
         controlPic.refreshPaint();
 
-        if (!Picture.getInstance().paintSelected()) {
+        if (!Picture.getInstance().paintSelected(getPage(),
+    			getControlPic(),
+    			getControlPaintSelection())) {
 
           //transform the logical Rectangle to the painted one.
           _r_size.x = (int) (1.0 * _r_size.x / cZoomFactorWidth);
@@ -1488,7 +1523,9 @@ MenuListener {
                             //insert the item into the sorted list.
                             separatedPO[1][current].recalculateSnapshotBounds();
                             Picture.getInstance().insertIntoSelected(
-                                    separatedPO[1][current]);
+                                    separatedPO[1][current],
+                                    getView().getTabs().getTab_pos()
+                            		);
                         } else {
                             
                             Status.getLogger().warning("separated paintObject "
@@ -1498,7 +1535,7 @@ MenuListener {
                     }
 
                     //finish insertion into selected.
-                    Picture.getInstance().finishSelection();
+                    Picture.getInstance().finishSelection(getcTabSelection());
                     
                     for (int current = 0; current < separatedPO[0].length;
                             current++) {
@@ -1540,7 +1577,9 @@ MenuListener {
                         transaction);
                 ls_toInsert.next();
             }
-            if (Picture.getInstance().paintSelected()) {
+            if (Picture.getInstance().paintSelected(getPage(),
+        			getControlPic(),
+        			getControlPaintSelection())) {
             	controlPic.refreshPaint();
             }
 
@@ -1698,7 +1737,9 @@ MenuListener {
         			transaction);
         
             
-            if (Picture.getInstance().paintSelected()) {
+            if (Picture.getInstance().paintSelected(getPage(),
+        			getControlPic(),
+        			getControlPaintSelection())) {
             	controlPic.refreshPaint();
             }
 
@@ -1879,7 +1920,9 @@ MenuListener {
         	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
         			transaction);
             
-            if (Picture.getInstance().paintSelected()) {
+            if (Picture.getInstance().paintSelected(getPage(),
+        			getControlPic(),
+        			getControlPaintSelection())) {
             	controlPic.refreshPaint();
             }
         } else {
@@ -1901,7 +1944,7 @@ MenuListener {
 
 
         int color = Picture.getInstance().getColorPX(_event.getX(), 
-                _event.getY());
+                _event.getY(), getControlPic().getBi());
         if (_event.getButton() == 1) {
         	view.getTabs().getTab_paint().getTb_color1().setBackground(new Color(color));
         } else {
@@ -2106,7 +2149,12 @@ MenuListener {
 
     	//release selected because of display bug otherwise.
     	if (Picture.getInstance().isSelected()) {
-	    	Picture.getInstance().releaseSelected();
+	    	Picture.getInstance().releaseSelected(
+        			getControlPaintSelection(),
+        			getcTabSelection(),
+        			getView().getTabs().getTab_pos(),
+        			getView().getPage().getJlbl_painting().getLocation().x,
+        			getView().getPage().getJlbl_painting().getLocation().y);
 	    	controlPic.releaseSelected();
     	}		
 	}
@@ -2118,7 +2166,12 @@ MenuListener {
 
     	//release selected because of display bug otherwise.
     	if (Picture.getInstance().isSelected()) {
-	    	Picture.getInstance().releaseSelected();
+	    	Picture.getInstance().releaseSelected(
+        			getControlPaintSelection(),
+        			getcTabSelection(),
+        			getView().getTabs().getTab_pos(),
+        			getView().getPage().getJlbl_painting().getLocation().x,
+        			getView().getPage().getJlbl_painting().getLocation().y);
 	    	controlPic.releaseSelected();
     	}		
 	}
@@ -2278,6 +2331,30 @@ MenuListener {
 	 */
 	public void setControlnew(CNew controlnew) {
 		this.controlnew = controlnew;
+	}
+
+	public CQuickAccess getControlQuickAccess() {
+		return controlQuickAccess;
+	}
+
+	public void setControlQuickAccess(CQuickAccess controlQuickAccess) {
+		this.controlQuickAccess = controlQuickAccess;
+	}
+
+	public ScrollPaneActivityListener getUtilityControlScrollPane() {
+		return utilityControlScrollPane;
+	}
+
+	public void setUtilityControlScrollPane(ScrollPaneActivityListener utilityControlScrollPane) {
+		this.utilityControlScrollPane = utilityControlScrollPane;
+	}
+
+	public Item2ActivityListener getUtilityControlItem2() {
+		return utilityControlItem2;
+	}
+
+	public void setUtilityControlItem2(Item2ActivityListener utilityControlItem2) {
+		this.utilityControlItem2 = utilityControlItem2;
 	}
     
 }

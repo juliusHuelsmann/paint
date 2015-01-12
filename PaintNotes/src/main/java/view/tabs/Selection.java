@@ -60,25 +60,32 @@ public final class Selection extends Tab {
     
     /**
      * Empty Utility class Constructor.
-     * @param _cPaint the ControlTabPainting instance
-     * @param _cts the CTabSelection instance
-     * @param _ml the MenuListener instance
      */
-	public Selection(
-			final ControlTabPainting _cPaint, 
-			final CTabSelection _cts,
-			final MenuListener _ml,
-			final CPaintStatus _controlPaintStatus) {
+	public Selection() {
 		
 	    super(2);
         super.setOpaque(false);
         super.setLayout(null);
 
+        
+	}
+	
+	/**
+	 * 
+     * @param _cPaint the ControlTabPainting instance
+     * @param _cts the CTabSelection instance
+     * @param _ml the MenuListener instance
+	 */
+	public void initialize(
+			final ControlTabPainting _cPaint, 
+			final CTabSelection _cts,
+			final MenuListener _ml,
+			final CPaintStatus _controlPaintStatus){
+
         int x = initCololrs(distance, true, _cPaint, _cts, _ml, 
         		_controlPaintStatus);
         x = initPen(x, true, _cts);
         initOthers(x, true, _ml, _controlPaintStatus);
-        
 	}
 	
 	

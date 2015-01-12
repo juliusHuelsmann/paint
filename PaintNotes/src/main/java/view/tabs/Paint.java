@@ -764,7 +764,9 @@ public final class Paint extends Tab {
 			 */
 			Item1PenSelection i1 = new Item1PenSelection(
 					pen_available.getName(),
-					pen_available.getIconPath());
+					pen_available.getIconPath(),
+					pen_available,
+					1);
 			
 			//mouse listener and changeListener
 			i1.addMouseListener(_cp);
@@ -781,7 +783,9 @@ public final class Paint extends Tab {
 			 */
 			Item1PenSelection i2 = new Item1PenSelection(
 					pen_available.getName(),
-					pen_available.getIconPath());
+					pen_available.getIconPath(),
+					pen_available,
+					2);
 			
 			//mouse listener and changeListener
 			i2.addMouseListener(_cp);

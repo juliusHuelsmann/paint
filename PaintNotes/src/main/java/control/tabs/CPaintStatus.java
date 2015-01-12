@@ -476,7 +476,12 @@ public final class CPaintStatus implements MouseListener {
                     if (Picture.getInstance().isSelected()) {
 
                         //if there was selection before, release it to Picture
-                        Picture.getInstance().releaseSelected();
+                        Picture.getInstance().releaseSelected(
+                    			controlPaint.getControlPaintSelection(),
+                    			controlPaint.getcTabSelection(),
+                    			controlPaint.getView().getTabs().getTab_pos(),
+                    			controlPaint.getView().getPage().getJlbl_painting().getLocation().x,
+                    			controlPaint.getView().getPage().getJlbl_painting().getLocation().y);
                         getControlPicture().releaseSelected();
                         getPage().removeButtons();
                     }

@@ -15,6 +15,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import view.View;
@@ -141,9 +142,8 @@ public abstract class Pen implements Serializable {
         } else {
             
             //alert user.
-            JOptionPane.showMessageDialog(View.getInstance(), 
-                    "PROGRAMMIERFEHLER @ paintobjectwriting: " 
-                    + "Stift noch nicht hinzugefuegt.");
+        	Status.showMessageDialog("PROGRAMMIERFEHLER @ paintobjectwriting: "
+        			+ "Stift noch nicht hinzugefuegt.");
             
             
             //throw exception
@@ -1149,18 +1149,19 @@ public abstract class Pen implements Serializable {
      * @param _x the x coordinate
      * @param _y the y coordinate
      */
-    public final void preprint(final int _x, final int _y) {
+    public final void preprint(final int _x, final int _y,
+    		final BufferedImage _biEmtpy,
+    		final JLabel _jlbl_selectionBG) {
 
         final double factorW = 1.0 * Status.getImageSize().width 
                 / Status.getImageShowSize().width;
         final double factorH = 1.0 * Status.getImageSize().height
                 / Status.getImageShowSize().height;
-        BufferedImage bi = Page.getInstance().getEmptyBISelection();
-        paintPoint(new DPoint(_x * factorW, _y * factorH), bi, false, 
+        paintPoint(new DPoint(_x * factorW, _y * factorH), _biEmtpy, false, 
                 new DPoint(0, 0),
-                bi, null);
+                _biEmtpy, null);
         
-        Page.getInstance().getJlbl_selectionBG().setIcon(new ImageIcon(bi));
+        _jlbl_selectionBG.setIcon(new ImageIcon(_biEmtpy));
     }
 
     

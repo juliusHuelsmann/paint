@@ -14,6 +14,7 @@ import model.objects.pen.special.PenSelection;
 import model.settings.Status;
 import model.util.Util;
 import model.util.paint.Utils;
+import start.test.BufferedViewer;
 import view.forms.Page;
 import view.forms.PaintLabel;
 import view.forms.Tabs;
@@ -81,7 +82,7 @@ public class ContorlPicture implements PaintListener {
     public final void refreshPaint() {
 
 
-        Status.getLogger().finest("refreshing PaintLabel. \nValues: "
+        Status.getLogger().warning("refreshing PaintLabel. \nValues: "
                 + "\n\tgetSize:\t" + getPaintLabel().getSize() + " vs. " 
         		+ getJPnlToMove().getSize()
                 + "\n\tgetLocation:\t" +getPaintLabel().getLocation() 
@@ -95,7 +96,7 @@ public class ContorlPicture implements PaintListener {
         setBi(Picture.getInstance().updateRectangle(
                 -getPaintLabel().getLocation().x, 
                 -getPaintLabel().getLocation().y, getPaintLabel().getWidth() ,
-                getPaintLabel().getHeight(), 0, 0, getBi()));
+                getPaintLabel().getHeight(), 0, 0, getBi(), cp.getControlPic()));
 
         
         refreshPaintBackground();
@@ -237,7 +238,7 @@ public class ContorlPicture implements PaintListener {
         //paint the painted stuff at graphics
         setBi(Picture.getInstance().updateRectangle(
                 -getPaintLabel().getLocation().x + _x, 
-                -getPaintLabel().getLocation().y + _y, _width, _height, _x, _y, getBi()));
+                -getPaintLabel().getLocation().y + _y, _width, _height, _x, _y, getBi(), cp.getControlPic()));
 
         getPaintLabel().setIcon(new ImageIcon(getBi()));
         
@@ -381,7 +382,10 @@ public class ContorlPicture implements PaintListener {
      * @param _bi the _bi to set
      */
     public final void setBi(final BufferedImage _bi) {
+    	
+    	BufferedViewer.show(_bi);
     	cp.getView().getPage().getJlbl_painting().setIcon(new ImageIcon(_bi));
+    	cp.getView().getPage().getJlbl_painting().repaint();
         this.bi = _bi;
     }
 

@@ -432,7 +432,8 @@ public final class Picture {
 	 */
 	public synchronized BufferedImage updateRectangle(final int _x,
 			final int _y, final int _width, final int _height,
-			final int _graphicX, final int _graphiY, final BufferedImage _bi) {
+			final int _graphicX, final int _graphiY, final BufferedImage _bi,
+			final ContorlPicture _controlPicture) {
 
 		BufferedImage ret = emptyRectangle(_x, _y, _width, _height, _graphicX,
 				_graphiY, _bi);
@@ -443,9 +444,9 @@ public final class Picture {
 				ret == null) {
 			return new BufferedImage(2, 2, BufferedImage.TYPE_INT_ARGB);
 		}
-//		Page.getInstance().getJlbl_painting().setBi(ret);
-//		Page.getInstance().getJlbl_painting().setIcon(new ImageIcon(ret));
-//		Page.getInstance().getJlbl_painting().repaint();
+		
+		
+//		_controlPicture.setBi(ret);
 
 		ret = repaintRectangle(_x, _y, _width, _height, ret, false);
 
@@ -489,16 +490,18 @@ public final class Picture {
 
 		}
 
+		BufferedImage bi = _bi;
 		// alle die in Frage kommen neu laden.
-		if (ls_po_sortedByX == null || _bi == null) {
-			return _bi;
+		if (ls_po_sortedByX == null || bi == null) {
+			bi = new BufferedImage(_width, _height, BufferedImage.TYPE_INT_ARGB);
+//			return _bi;
 		}
 
 		final int maxRGB = 255;
-		PaintBI.fillRectangleQuick(_bi, new Color(maxRGB, maxRGB, maxRGB, 0), 
+		PaintBI.fillRectangleQuick(bi, new Color(maxRGB, maxRGB, maxRGB, 0), 
 				new Rectangle(_graphicX, _graphiY, rectWidth, rectHeight));
 
-		return _bi;
+		return bi;
 
 	}
 
@@ -747,7 +750,7 @@ public final class Picture {
 					.setIcon(new javax.swing.ImageIcon(bi_transformed));
 		} else {
 
-			BufferedImage bi_transformed;
+			BufferedImage bi_transformed = _cPicture.getBi();
 			if (po_current instanceof POCurve) {
 				bi_transformed = ((PaintObjectWriting) po_current).paint(
 						_cPicture.getBi(), false, _cPicture.getBi(), 
@@ -755,13 +758,15 @@ public final class Picture {
 						null);
 			} else if (po_current instanceof PaintObjectWriting
 					&& !(po_current instanceof POCurve)) {
+				
 				bi_transformed = ((PaintObjectWriting) po_current).paintLast(
-						_cPicture.getBi(),
+						bi_transformed,
 						_page.getJlbl_painting().getLocation().x,
 						_page.getJlbl_painting().getLocation().y);
 			} else {
 				_cPicture
-						.refreshRectangle(po_current.getSnapshotBounds().x,
+						.refreshRectangle(
+								po_current.getSnapshotBounds().x,
 								po_current.getSnapshotBounds().y,
 								po_current.getSnapshotBounds().width,
 								po_current.getSnapshotBounds().height);

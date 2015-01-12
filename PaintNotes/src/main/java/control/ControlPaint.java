@@ -262,7 +262,6 @@ MenuListener {
 
 	public void mousePressed(final MouseEvent _event) {
 
-        
         if (_event.getSource().equals(
                 getPage().getJlbl_painting())) {
 
@@ -437,7 +436,6 @@ MenuListener {
 
 
 	public void mouseDragged(MouseEvent _event) {
-
 
 
         // left mouse pressed
@@ -745,17 +743,12 @@ MenuListener {
 	
 	    if (Status.isNormalRotation()) {
 	
-	        Picture.getInstance().changePaintObject(
-	                new DPoint((_event.getX() 
-	                        - getPage()
-	                        .getJlbl_painting().getLocation().x
-	                        )
-	                        * Status.getImageSize().width
-	                        / Status.getImageShowSize().width, (_event
-	                        .getY() 
-	                        - getPage().getJlbl_painting()
-	                        .getLocation().y
-	                        )
+	        Picture.getInstance().changePaintObject(new DPoint((_event.getX() 
+	        		- getPage().getJlbl_painting().getLocation().x)
+	        		* Status.getImageSize().width
+	        		/ Status.getImageShowSize().width, 
+	        		(_event.getY() 
+	        				- getPage().getJlbl_painting().getLocation().y)
 	                        * Status.getImageSize().height
 	                        / Status.getImageShowSize().height),
 	                        getPage(),

@@ -225,8 +225,8 @@ import view.util.mega.MButton;
         jlbl_painting.setBorder(null);
         jlbl_painting.addMouseMotionListener(controlPaint);
         jlbl_painting.addMouseListener(controlPaint);
-        jlbl_painting.setOpaque(false);
         jlbl_painting.setPaintListener(controlPaint.getControlPic());
+        jlbl_painting.setOpaque(false);
         super.add(jlbl_painting);
 
 

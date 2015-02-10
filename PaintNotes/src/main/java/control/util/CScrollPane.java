@@ -201,7 +201,11 @@ implements MouseMotionListener, MouseListener, KeyListener {
                 }
             } .start();
         }
-        activityListener.activityOccurred(_event);
+        
+        if (activityListener != null) {
+
+            activityListener.activityOccurred(_event);
+        }
     }
 
 
@@ -391,7 +395,10 @@ implements MouseMotionListener, MouseListener, KeyListener {
             upDownPressed = false;
         }
         
-        activityListener.activityOccurred(_event);
+        if (activityListener != null) {
+
+            activityListener.activityOccurred(_event);
+        }
     }
 
 

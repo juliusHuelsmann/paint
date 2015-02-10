@@ -27,35 +27,42 @@ public class CTabs implements TabbedListener{
 	
 	public void closeListener() {
 		
+		double timetoclose0 = System.currentTimeMillis();
 		Page page = cp.getView().getPage();
+		
+		
+		//set new bounds in settings
 		ViewSettings.setView_bounds_page(
 				new Rectangle(ViewSettings.getView_bounds_page()));
 
 		
-		//das bufferedimage ist nicht gross genug!
-        page.getJlbl_painting().setLoc(0, 0);
-        
-        page.getJlbl_painting().setSize(
-        		ViewSettings.getView_bounds_page().getSize().width, 
-        		ViewSettings.getView_bounds_page().getSize().height - 1);
+		//re-initialize the image with the correct size
 
+		cp.getControlPic().setBi_background(new BufferedImage(
+				ViewSettings.getView_bounds_page().getSize().width,
+				ViewSettings.getView_bounds_page().getSize().height,
+				BufferedImage.TYPE_INT_ARGB));
 		cp.getControlPic().setBi(new BufferedImage(
 				ViewSettings.getView_bounds_page().getSize().width,
 				ViewSettings.getView_bounds_page().getSize().height,
 				BufferedImage.TYPE_INT_ARGB));
         
-        page.getJlbl_selectionBG().setSize(
-                ViewSettings.getView_bounds_page().getSize());   
-        page.getJpnl_toMove().setLocation(
-                ViewSettings.getView_bounds_page().getLocation());
-        page.getJlbl_painting().setSize(
-                        ViewSettings.getView_bounds_page().getSize());
-        page.getJlbl_selectionPainting().setSize(
-                ViewSettings.getView_bounds_page().getSize());
+
+		//apply new size in view
+        //takes some time and repaints the image.
+		//TODO: better algorithm for opening. 
+		//save the previously displayed image (out of BufferedImage)
+		//and write it into the new (greater one). Afterwards (re)paint
+		//the sub image that is new.
         page.setSize(
-                ViewSettings.getView_bounds_page().getSize());
+        		(int) ViewSettings.getView_bounds_page().getWidth(),
+                (int) ViewSettings.getView_bounds_page().getHeight());
         
-        getControlPic().refreshPaint();
+       //time used ca. 0.8 sec
+
+		double timetoclose1 = System.currentTimeMillis();
+		System.out.println(getClass() 
+				+ "time passed" + (timetoclose1 - timetoclose0) / 100);
 	}
 
 	public void moveListener(MoveEvent _event) {
@@ -67,34 +74,28 @@ public class CTabs implements TabbedListener{
 
 		Page page = cp.getView().getPage();
 
+		//set new bounds in settings
 		ViewSettings.setView_bounds_page(
 				new Rectangle(ViewSettings.getView_bounds_page_open()));
-		
-		
 
+		//re-initialize the image with the correct size
+		cp.getControlPic().setBi_background(new BufferedImage(
+				ViewSettings.getView_bounds_page().getSize().width,
+				ViewSettings.getView_bounds_page().getSize().height,
+				BufferedImage.TYPE_INT_ARGB));
 		cp.getControlPic().setBi(new BufferedImage(
 				ViewSettings.getView_bounds_page().getSize().width,
 				ViewSettings.getView_bounds_page().getSize().height,
 				BufferedImage.TYPE_INT_ARGB));
+
         
-        //adapt image size.
+		//apply new size in view
+        //takes some time and repaints the image.
+		//TODO: better algorithm for opening. 
+		//save the previously displayed image (out of BufferedImage)
+		//and write the necessary stuff it into the new (smaller one)
         page.setSize(
-                ViewSettings.getView_bounds_page_open().getSize());
-        page.getJlbl_painting().setSize(
-                ViewSettings.getView_bounds_page_open().getSize()
-                .width, ViewSettings.getView_bounds_page_open()
-                .getSize().height 
-                - 1);
-        page.getJlbl_selectionBG().setSize(
-                ViewSettings.getView_bounds_page_open().getSize());
-        page.getJpnl_toMove().setLocation(
-                ViewSettings.getView_bounds_page_open().getLocation());
-        page.getJlbl_painting().setSize(
-                ViewSettings.getView_bounds_page_open().getSize());
-        page.getJlbl_painting().setSize(
-                ViewSettings.getView_bounds_page_open().getSize());
-        page.getJlbl_selectionPainting().setSize(
-                ViewSettings.getView_bounds_page_open().getSize());
-        getControlPic().refreshPaint(); 		
+        		(int) ViewSettings.getView_bounds_page().getWidth(),
+                (int) ViewSettings.getView_bounds_page().getHeight());
 	}
 }

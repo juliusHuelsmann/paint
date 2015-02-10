@@ -158,6 +158,8 @@ MenuListener {
             Status.getLogger().info("Initialize model class Page.\n");
             
             Status.setControlPaint(this);
+
+            utilityControlScrollPane = new ScrollPaneActivityListener(this);
             //initialize the model class picture.
             //TODO: not null
             controlPic = new ContorlPicture(this);
@@ -169,7 +171,6 @@ MenuListener {
             cTabPaintObjects = new CPaintObjects(this);
             zoom = new Zoom(controlPic);
             
-            utilityControlScrollPane = new ScrollPaneActivityListener(this);
             utilityControlItem2 = new Item2ActivityListener(this);
             cTabs = new CTabs(this);
 

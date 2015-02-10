@@ -9,10 +9,12 @@ import javax.swing.ImageIcon;
 
 import control.interfaces.MoveEvent;
 import control.interfaces.PaintListener;
+import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.special.PenSelection;
 import model.settings.Status;
+import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
 import start.test.BufferedViewer;
@@ -33,7 +35,7 @@ public class ContorlPicture implements PaintListener {
 	/**
 	 * The bufferedImage containing the currently displayed painting stuff.
 	 */
-	private BufferedImage bi;
+	private BufferedImage bi, bi_background;
 	
 	/**
 	 * The thread which moves the border.
@@ -130,19 +132,25 @@ public class ContorlPicture implements PaintListener {
 				&& getPage().getJlbl_background2().getHeight() != 0) {
 
 			
-			BufferedImage ret = new BufferedImage(
-					getPage().getJlbl_background2().getWidth(),
-					getPage().getJlbl_background2().getHeight(),
+			bi_background = new BufferedImage(
+					ViewSettings.getView_bounds_page().getSize().width,
+					ViewSettings.getView_bounds_page().getSize().height,
 					BufferedImage.TYPE_INT_ARGB);
-			ret = Picture.getInstance().emptyRectangle(
+			
+			
+			bi_background = emptyRect(0, 0,
+					bi_background.getWidth(), 
+					bi_background.getHeight(), bi_background);
+			
+			bi_background = Utils.getBackground(
+					bi_background, 
 					-getPaintLabel().getLocation().x, 
 					-getPaintLabel().getLocation().y, 
-					getPaintLabel().getWidth(), 
-					getPaintLabel().getHeight(), 0, 0, ret);
+					-getPaintLabel().getLocation().x + getPaintLabel().getWidth(), 
+					-getPaintLabel().getLocation().y + getPaintLabel().getHeight(),
+					0, 0);
 			getPage().getJlbl_background2().setIcon(
-					new ImageIcon((Utils.getBackground(ret, -getPaintLabel().getLocation().x, 
-					-getPaintLabel().getLocation().y, -getPaintLabel().getLocation().x + getPaintLabel().getWidth(), 
-					-getPaintLabel().getLocation().y + getPaintLabel().getHeight(), 0, 0))));  
+					new ImageIcon(bi_background));  
 		}
 
 	}
@@ -244,6 +252,103 @@ public class ContorlPicture implements PaintListener {
 	}
 
 	
+	/**
+	 * repaint a special rectangle.
+	 * @param _x the x coordinate in view
+	 * @param _y the y coordinate in view
+	 * @param _width the width
+	 * @param _height the height
+	 * @return the graphics
+	 */
+	public final synchronized BufferedImage refreshRectangleBackground(
+			final int _x, final int _y, 
+			final int _width, final int _height) {
+
+		Status.getLogger().finest("refreshing rectangle background. \nValues: "
+				+ "\n\tgetSize:\t" + getPaintLabel().getSize()
+				+ " vs. " + getJPnlToMove().getSize()
+				+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
+				+ " vs. " + getJPnlToMove().getLocation()
+				+ "\n\t" + "_x:\t\t" + _x
+				+ "\n\t" + "_y\t\t" + _y
+				+ "\n\t" + "_width\t\t" + _width
+				+ "\n\t" + "_height\t\t" + _height + "\n");
+
+		
+		bi_background = emptyRect(
+				_x , _y , 
+				_width + 0, 
+				_height +  0, bi_background);
+
+		
+		bi_background = Utils.getBackground(
+				bi_background, 
+				-getPaintLabel().getLocation().x + _x,
+				-getPaintLabel().getLocation().y + _y,
+				-getPaintLabel().getLocation().x + _x + _width,
+				-getPaintLabel().getLocation().y + _y +_height, 
+				_x, _y);
+		getPage().getJlbl_background2().setIcon(
+				new ImageIcon(bi_background));
+								
+
+		//paint the painted stuff at graphics
+		///setBi(Picture.getInstance().updateRectangle(
+//				-getPaintLabel().getLocation().x + _x, 
+//				-getPaintLabel().getLocation().y + _y, 
+//				_width, _height, _x, _y, getBi(), 
+//				cp.getControlPic()));
+		
+		return getBi();
+	}
+	
+	
+	
+	
+	
+	/**
+	 * repaint the items that are in a rectangle to the (view) page (e.g. if the
+	 * JLabel is moved))..
+	 * 
+	 * @param _x
+	 *            the x coordinate
+	 * @param _y
+	 *            the y coordinate
+	 * @param _width
+	 *            the width
+	 * @param _height
+	 *            the height
+	 * @param _graphicX
+	 *            the graphics x
+	 * @param _graphiY
+	 *            the graphics y.
+	 * @param _bi
+	 *            the BufferedImage
+	 * @return the graphics
+	 */
+	public synchronized BufferedImage emptyRect(
+			final int _x, final int _y, 
+			final int _width, final int _height, final BufferedImage _bi) {
+
+		// check whether the rectangle concerns the blue border of the
+		// image which is not to be emptied and then repainted.
+		// If that's the case, the rectangle width or height are decreased.
+		int rectWidth = _width, rectHeight = _height;
+		if (_x + _width > _bi.getWidth()) {
+			rectWidth = _bi.getWidth() - _x;
+		}
+
+		if (_y + _height > _bi.getHeight()) {
+			rectHeight = _bi.getHeight() - _y;
+		}
+
+		final int maxRGB = 25;
+		PaintBI.fillRectangleQuick(_bi, new Color(maxRGB, maxRGB, maxRGB, 50), 
+				new Rectangle(_x, _y, rectWidth, rectHeight));
+
+		return _bi;
+
+	}
 	/**
 	 * clear a special rectangle.
 	 * @param _x the x coordinate in view
@@ -394,7 +499,7 @@ public class ContorlPicture implements PaintListener {
 	/**
 	 * {@inheritDoc}
 	 */
-	public final void afterLocationChange(
+	public final synchronized void afterLocationChange(
 			final MoveEvent _evNew, final MoveEvent _evOld) {
 
 
@@ -473,13 +578,30 @@ public class ContorlPicture implements PaintListener {
 							maintainHeight, 
 							rgbArray, 0, maintainWidth);
 					
-					
 					//write the maintained RGB array to shifted coordinates.
 					bi.setRGB(shiftedStartX, 
 							shiftedStartY, 
 							maintainWidth,
 							maintainHeight, 
 							rgbArray,  0, maintainWidth);
+					
+					//for the background the same stuff:
+					//TODO:
+					rgbArray = bi_background.getRGB(
+							maintainStartX, 
+							maintainStartY, 
+							maintainWidth, 
+							maintainHeight, 
+							rgbArray, 0, maintainWidth);
+					
+					//write the maintained RGB array to shifted coordinates.
+					bi_background.setRGB(shiftedStartX, 
+							shiftedStartY, 
+							maintainWidth,
+							maintainHeight, 
+							rgbArray,  0, maintainWidth);
+					
+					
 					
 					/*
 					 * paint the new stuff. 
@@ -533,12 +655,16 @@ public class ContorlPicture implements PaintListener {
 					}
 
 					//BufferedImage
-					refreshPaintBackground();
+					refreshRectangleBackground(refreshWidthX - 1, refreshWidthY - 1, 
+							refreshWidthWidth + 1, refreshWidthHeight + 1);
+					refreshRectangleBackground(refreshHeightX - 1, refreshHeightY - 1, 
+							refreshHeightWidth + 1, refreshHeightHeight + 1);
 					refreshRectangle(refreshWidthX, refreshWidthY, 
 							refreshWidthWidth, refreshWidthHeight);
 					refreshRectangle(refreshHeightX, refreshHeightY, 
 							refreshHeightWidth, refreshHeightHeight);
-					
+
+//					refreshPaintBackground();
 					
 					/*
 					 * for debugging purpose
@@ -671,6 +797,24 @@ public class ContorlPicture implements PaintListener {
 			//set changed
 			refreshPaint();
 		}		
+	}
+
+
+
+	/**
+	 * @return the bi_background
+	 */
+	public BufferedImage getBi_background() {
+		return bi_background;
+	}
+
+
+
+	/**
+	 * @param bi_background the bi_background to set
+	 */
+	public void setBi_background(BufferedImage bi_background) {
+		this.bi_background = bi_background;
 	}
 
 }

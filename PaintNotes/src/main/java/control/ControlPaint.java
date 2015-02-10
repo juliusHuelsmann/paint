@@ -970,7 +970,7 @@ MenuListener {
 
             Status.setImageShowSize(new Dimension(newWidth, newHeight));
             getPage().flip();
-
+           
             /*
              * set the location of the panel.
              */
@@ -1000,8 +1000,10 @@ MenuListener {
             // apply the location at JLabel (with setLocation method that 
             //is not used for scrolling purpose [IMPORTANT]) and repaint the 
             //image afterwards.
-            getPage().getJlbl_painting().setLoc(newX, newY);
-            controlPic.refreshPaint();
+            getPage().getJlbl_painting().setBounds(newX, newY,
+            		getPage().getJlbl_painting().getWidth(),
+            		getPage().getJlbl_painting().getHeight());
+            
 
             // apply the new location at ScrollPane
             getPage().refrehsSps();

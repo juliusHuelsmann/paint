@@ -11,3 +11,9 @@ Working environment
 =====
 
 The project is a maven project developed in eclipse. Both the used Checkstyle configuration and the dictionary are  pushed into repository's root folder.
+
+Used 
+- Eclipse
+- Maven
+- Checkstyle
+- JUnit

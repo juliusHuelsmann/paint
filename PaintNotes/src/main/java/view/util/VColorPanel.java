@@ -16,7 +16,6 @@ import view.util.mega.MPanel;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import control.interfaces.MenuListener;
-import control.tabs.CPaintStatus;
 import control.util.CColorPanel;
 
 

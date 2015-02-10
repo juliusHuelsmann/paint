@@ -3,7 +3,6 @@ package view.forms;
 
 //import declarations
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import model.settings.Constants;

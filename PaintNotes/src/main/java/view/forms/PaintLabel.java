@@ -211,10 +211,10 @@ public class PaintLabel extends MLabel {
         //Forward the set location event to the instance of paintListener
         //if it has been set.
         if (paintListener != null) {
-        	paintListener.afterExternalLocationChange(new MoveEvent(
-        			new Point(_x, _y)));
-        	paintListener.afterExternalSizeChange(new MoveEvent(
-        			new Point(_widht, _height)));
+        	
+        	paintListener.afterExternalBoundsChange(
+        			new MoveEvent(new Point(_x, _y)),
+        			new MoveEvent(new Point(_widht, _height)));
         } else {
         	Status.getLogger().severe("PaintListener not set.");
         }

@@ -79,6 +79,7 @@ public class ContorlPicture implements PaintListener {
 	 */
 	public final void refreshPaint() {
 
+		new Exception("woher kommt das?").printStackTrace();
 
 		Status.getLogger().warning("refreshing entire PaintLabel. \nValues: "
 				+ "\n\tgetSize:\t" + getPaintLabel().getSize() + " vs. " 
@@ -414,10 +415,10 @@ public class ContorlPicture implements PaintListener {
 		//wenn nach rechts oder unten geschoben wird, dann taucht das repaintete
 		//auf der falschen seite auf.
 		
-		System.out.println("beforelocation cahnge");
-		System.out.println("x: " + xNew + "\t" + xOld + "\t" + xOld2);
-		System.out.println("y: " + yNew + "\t" + yOld + "\t" + yOld2);
-		System.out.println();
+		
+		Status.getLogger().finest("beforelocation change:\n"
+				+ "x: " + xNew + "\t" + xOld + "\t" + xOld2
+				+ "y: " + yNew + "\t" + yOld + "\t" + yOld2);
 		
 		//if something changed, repaint
 		if (xNew != xOld || yNew != yOld) {
@@ -546,8 +547,10 @@ public class ContorlPicture implements PaintListener {
 					
 					/*
 					 * for debugging purpose
+					 * //TODO: put this variable into the settings. Thus it
+					 * may be enabled in testing mode (tab)
 					 */
-					boolean showRefreshRectangle = !(true == false);
+					boolean showRefreshRectangle = (true == false);
 
 					/*
 					 * 
@@ -636,6 +639,19 @@ public class ContorlPicture implements PaintListener {
 		
 	}
 
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void afterExternalBoundsChange(
+			final MoveEvent _evOldLoc, final MoveEvent _evOldSize) {
+
+		if (getPaintLabel().isVisible()) {
+			
+			//set changed
+			refreshPaint();
+		}		
+	}
 
 
 	/**

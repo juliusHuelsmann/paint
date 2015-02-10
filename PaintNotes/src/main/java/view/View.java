@@ -458,30 +458,33 @@ import control.util.MousePositionTracker;
 
         //initialize PaintObjects
         Status.getLogger().info("   initialize Page\n");
-        page.setSize(ViewSettings.getView_bounds_page().width, 
-                ViewSettings.getView_bounds_page().height);
+        
+	    
+	        	
+        jbtn_exit.setBounds(ViewSettings.getViewBoundsJbtnExit());
+        jbtn_exit.setIcon(new ImageIcon(Utils.resizeImage(
+        		jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
+        		Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
+        
+        jbtn_fullscreen.setBounds(
+        		ViewSettings.getView_bounds_jbtn_fullscreen());
+        jbtn_fullscreen.setIcon(new ImageIcon(Utils.resizeImage(
+        		jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
+        		Constants.VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
+	        	
+        tabs.setLocation(ViewSettings.VIEW_LOCATION_TB);
+	        	
+	        //the page flip is done directly inside the set size method
+	        //TODO: externalize flipping is not necessary anymore.
+//	        Remove
+        
+
         page.setLocation(
                 ViewSettings.getView_bounds_page().getLocation());
-	    
+        page.setSize(ViewSettings.getView_bounds_page().width, 
+                ViewSettings.getView_bounds_page().height);
 
-            page.setLocation(
-                    ViewSettings.getView_bounds_page().getLocation());
-
-	        
-	        jbtn_exit.setBounds(ViewSettings.getViewBoundsJbtnExit());
-	        jbtn_exit.setIcon(new ImageIcon(Utils.resizeImage(
-	                jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
-	                Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
-
-            jbtn_fullscreen.setBounds(
-                    ViewSettings.getView_bounds_jbtn_fullscreen());
-	        jbtn_fullscreen.setIcon(new ImageIcon(Utils.resizeImage(
-                    jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
-                    Constants.VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
-	        
-	        tabs.setLocation(ViewSettings.VIEW_LOCATION_TB);
-	        
-        page.flip();
+        
         tabs.flip();
         jlbl_border.setBounds(0, 0, getWidth(), getHeight());
 	}

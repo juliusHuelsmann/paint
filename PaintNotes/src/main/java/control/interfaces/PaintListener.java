@@ -68,6 +68,18 @@ public interface PaintListener {
 	 * 				PaintLabel.
 	 */
 	void afterExternalSizeChange(final MoveEvent _ev);
+	
+
+	/**
+	 * bounds change listener called after  bounds have changed externally.
+	 * Contains the old bounds in passed MouseEvent.
+	 * 
+	 * @param _ev 
+	 * 				the passed MouseEvent which contains the old bounds of 
+	 * 				PaintLabel.
+	 */
+	void afterExternalBoundsChange(final MoveEvent _evLoc, 
+			final MoveEvent _evSiz);
 	 
 	
 	

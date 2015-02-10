@@ -626,7 +626,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
             // not greater than 0
             oldLocation.x = Math.min(oldLocation.x, 0);
             oldLocation.y = Math.min(oldLocation.y, 0); 
-     
+      
 
             System.out.println(oldLocation
             		+ ".." + getPage().getJlbl_painting().getLocation().y

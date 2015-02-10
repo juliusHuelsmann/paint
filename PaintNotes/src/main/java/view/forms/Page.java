@@ -311,7 +311,10 @@ import view.util.mega.MButton;
 		//the order of painting is important! It is necessary that the 
         //paintinglabel's bounds and the locations of the ScrollPanes are 
         //set here
-        jlbl_painting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
+        jlbl_painting.setBounds(
+        		(int) jlbl_painting.getLocation().getX(),
+        		(int) jlbl_painting.getLocation().getY(), 
+        		getWidth() - 1, getHeight() - 1);
 		sp_ub.setLocation(ViewSettings.getSizeJFrame().width 
 				- sp_ub.getWidth(), ViewSettings.VIEW_SIZE_SP);
 		sp_lr.setLocation(0, ViewSettings.getSizeJFrame().height 

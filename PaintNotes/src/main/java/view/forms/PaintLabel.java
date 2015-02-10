@@ -131,7 +131,7 @@ public class PaintLabel extends MLabel {
     public final void setLoc(final int _x, final int _y) {
         
         //if something changed, repaint
-        super.setLocation(_x, _y);
+        super.setBounds(_x, _y, getWidth(), getHeight());
     }
     
 

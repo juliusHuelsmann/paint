@@ -586,52 +586,78 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
                 < Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
                         ViewSettings.MAX_ZOOM_OUT)) {
         	
-            int newWidth = Status.getImageShowSize().width
-                    / ViewSettings.ZOOM_MULITPLICATOR, newHeight = Status
-                    .getImageShowSize().height
-                    / ViewSettings.ZOOM_MULITPLICATOR;
+            int 
+                    
+            newWidth = Status.getImageShowSize().width
+            / ViewSettings.ZOOM_MULITPLICATOR, 
+            
+            newHeight = Status
+            .getImageShowSize().height
+            / ViewSettings.ZOOM_MULITPLICATOR;
 
-            int displayedWidth = 
-            		getPage().getWidth();
-            int displayedHeight = 
-            		getPage().getHeight();
-            
-            
-            Point oldLocation = new Point(getPage()
-                    .getJlbl_painting().getLocation().x + displayedWidth / 2, 
-                    getPage() 
-                    .getJlbl_painting().getLocation().y + displayedHeight / 2);
-            
+            Point oldLocation = new Point(
+            		getPage().getJlbl_painting().getLocation().x 
+            		- getPage().getJlbl_painting().getWidth() / 2
+            		+ getPage().getJlbl_painting().getWidth() 
+            		* ViewSettings.ZOOM_MULITPLICATOR / 2, 
+
+                    getPage().getJlbl_painting().getLocation().y 
+            		- getPage().getJlbl_painting().getHeight() / 2
+            		+ getPage().getJlbl_painting().getHeight() 
+            		* ViewSettings.ZOOM_MULITPLICATOR / 2);
+
+            System.out.println(getPage().getJlbl_painting().getWidth()
+                    / ViewSettings.ZOOM_MULITPLICATOR);
+            System.out.println("kleiner" + getPage().getJlbl_painting().getWidth());
+
+            System.out.println(oldLocation
+            		+ ".." + getPage().getJlbl_painting().getLocation().y
+            		+ ".. " + getPage().getJlbl_painting().getLocation().x);
 
             // not smaller than the
             oldLocation.x = Math.max(oldLocation.x,
-            		-(Status.getImageShowSize().width 
-                    - getPage()
-                    .getWidth()));
+            		-(Status.getImageShowSize().width - getPage().getWidth()));
             oldLocation.y = Math.max(oldLocation.y,
-                    -(Status.getImageShowSize().height - getPage().getJlbl_painting()
-                            .getHeight()));
+                    -(Status.getImageShowSize().height - getPage().getHeight()));
+            
+            
             
             
             // not greater than 0
             oldLocation.x = Math.min(oldLocation.x, 0);
             oldLocation.y = Math.min(oldLocation.y, 0); 
      
-            Status.setImageShowSize(new Dimension(newWidth, newHeight));
-            getPage().flip();
 
+            System.out.println(oldLocation
+            		+ ".." + getPage().getJlbl_painting().getLocation().y
+            		+ ".. " + getPage().getJlbl_painting().getLocation().x);
+            
+            //set new image size and adapt the page by flipping
+            //TODO: previously used getpage.getjlbl-p.setLoc(),
+            //why? 
+            //transformed into setLocation. works too by now.
+
+            Status.setImageShowSize(new Dimension(newWidth, newHeight));
+
+            getPage().flip();
             getPage().getJlbl_painting()
-                    .setLoc((oldLocation.x) / 2, (oldLocation.y) / 2);
-            getControlPicture().refreshPaint();
+            .setBounds(
+            		(oldLocation.x) / ViewSettings.ZOOM_MULITPLICATOR , 
+            		(oldLocation.y) / ViewSettings.ZOOM_MULITPLICATOR,
+            		getPage().getJlbl_painting().getWidth(),
+            		getPage().getJlbl_painting().getHeight());
             getPage().refrehsSps();
 
-            getControlPicture().releaseSelected();
-            Picture.getInstance().releaseSelected(
-        			controlPaint.getControlPaintSelection(),
-        			controlPaint.getcTabSelection(),
-        			controlPaint.getView().getTabs().getTab_pos(),
-        			controlPaint.getView().getPage().getJlbl_painting().getLocation().x,
-        			controlPaint.getView().getPage().getJlbl_painting().getLocation().y);
+            if (Picture.getInstance().isSelected()) {
+
+                getControlPicture().releaseSelected();
+                Picture.getInstance().releaseSelected(
+            			controlPaint.getControlPaintSelection(),
+            			controlPaint.getcTabSelection(),
+            			controlPaint.getView().getTabs().getTab_pos(),
+            			controlPaint.getView().getPage().getJlbl_painting().getLocation().x,
+            			controlPaint.getView().getPage().getJlbl_painting().getLocation().y);
+            }
             updateResizeLocation();
         } else {
             Message.showMessage(Message.MESSAGE_ID_INFO, 

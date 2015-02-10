@@ -606,14 +606,6 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
             		+ getPage().getJlbl_painting().getHeight() 
             		* ViewSettings.ZOOM_MULITPLICATOR / 2);
 
-            System.out.println(getPage().getJlbl_painting().getWidth()
-                    / ViewSettings.ZOOM_MULITPLICATOR);
-            System.out.println("kleiner" + getPage().getJlbl_painting().getWidth());
-
-            System.out.println(oldLocation
-            		+ ".." + getPage().getJlbl_painting().getLocation().y
-            		+ ".. " + getPage().getJlbl_painting().getLocation().x);
-
             // not smaller than the
             oldLocation.x = Math.max(oldLocation.x,
             		-(Status.getImageShowSize().width - getPage().getWidth()));
@@ -627,11 +619,6 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
             oldLocation.x = Math.min(oldLocation.x, 0);
             oldLocation.y = Math.min(oldLocation.y, 0); 
      
-
-            System.out.println(oldLocation
-            		+ ".." + getPage().getJlbl_painting().getLocation().y
-            		+ ".. " + getPage().getJlbl_painting().getLocation().x);
-            
             //set new image size and adapt the page by flipping
             //TODO: previously used getpage.getjlbl-p.setLoc(),
             //why? 

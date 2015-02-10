@@ -1,5 +1,6 @@
 package control;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -79,7 +80,7 @@ public class ContorlPicture implements PaintListener {
 	public final void refreshPaint() {
 
 
-		Status.getLogger().warning("refreshing PaintLabel. \nValues: "
+		Status.getLogger().warning("refreshing entire PaintLabel. \nValues: "
 				+ "\n\tgetSize:\t" + getPaintLabel().getSize() + " vs. " 
 				+ getJPnlToMove().getSize()
 				+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
@@ -395,7 +396,7 @@ public class ContorlPicture implements PaintListener {
 	/**
 	 * {@inheritDoc}
 	 */
-	public final void beforeLocationChange(
+	public final void afterLocationChange(
 			final MoveEvent _evNew, final MoveEvent _evOld) {
 
 
@@ -408,8 +409,15 @@ public class ContorlPicture implements PaintListener {
 		int xOld = (int) _evOld.getPnt_bottomLocation().getX();
 		int yOld = (int) _evOld.getPnt_bottomLocation().getY();
 		
+		
+		//hier ist irgendein shift drin!
+		//wenn nach rechts oder unten geschoben wird, dann taucht das repaintete
+		//auf der falschen seite auf.
+		
+		System.out.println("beforelocation cahnge");
 		System.out.println("x: " + xNew + "\t" + xOld + "\t" + xOld2);
 		System.out.println("y: " + yNew + "\t" + yOld + "\t" + yOld2);
+		System.out.println();
 		
 		//if something changed, repaint
 		if (xNew != xOld || yNew != yOld) {
@@ -499,7 +507,7 @@ public class ContorlPicture implements PaintListener {
 					// 		| x x x x H	|		|	 x	H H	|
 					// 		|  	   	x H	|	    |	 x	H H	|
 					// 		|	  	x H	|	    |	 x	H H	|
-					// 		|	   x H	|		| x x x	H H	|
+					// 		|	    x H	|		| x x x	H H	|
 					//		|_______x_H_|		|_W_W_W_!_!_|
 					/*
 					 * Width
@@ -532,6 +540,67 @@ public class ContorlPicture implements PaintListener {
 							refreshWidthWidth, refreshWidthHeight);
 					refreshRectangle(refreshHeightX, refreshHeightY, 
 							refreshHeightWidth, refreshHeightHeight);
+					
+					
+					
+					
+					/*
+					 * for debugging purpose
+					 */
+					boolean showRefreshRectangle = !(true == false);
+
+					/*
+					 * 
+					 */
+					if (showRefreshRectangle) {
+						
+						
+						
+						/*
+						 * The debugging colors and values
+						 */
+						final int clr_wdth = new Color(200, 240, 255).getRGB();
+						final int clr_hght = new Color(150, 190, 200).getRGB();
+						
+						final int modulo = 10;
+						final int thickness = 1;
+					
+						for (int x = refreshWidthX;
+								x < refreshWidthX + refreshWidthWidth;
+								x++) {
+	
+							for (int y = refreshWidthY;
+									y < refreshWidthY + refreshWidthHeight;
+									y++) {
+								
+								int valOnScreen = (x + y)  % modulo ;
+								
+								if (valOnScreen >= 0
+										&& valOnScreen < thickness) {
+									bi.setRGB(x, y, clr_wdth);
+								}
+							}
+						}
+						
+	
+						for (int x = refreshHeightX;
+								x < refreshHeightX + refreshHeightWidth;
+								x++) {
+	
+							for (int y = refreshHeightY;
+									y < refreshHeightY + refreshHeightHeight;
+									y++) {
+
+								int valOnScreen = (x + y)  % modulo ;
+								
+								if (valOnScreen >= 0
+										&& valOnScreen < thickness) {
+									
+									bi.setRGB(x, y, clr_hght);
+								}
+							}
+						}	
+					}
 				}
 			}
 		}
@@ -562,7 +631,7 @@ public class ContorlPicture implements PaintListener {
 	/**
 	 * {@inheritDoc}
 	 */
-	public final void afterLocationChange(final MoveEvent _ev) {
+	public final void beforeLocationChange(final MoveEvent _ev, final MoveEvent _evOld) {
 		// TODO Auto-generated method stub
 		
 	}

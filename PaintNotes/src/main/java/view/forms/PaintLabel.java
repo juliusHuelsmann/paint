@@ -94,6 +94,12 @@ public class PaintLabel extends MLabel {
         } else {
         	Status.getLogger().severe("PaintListener not set.");
         }
+        
+        //save the old values for being able to pass them to "after location
+        //changed" method
+        final int lastX = x;
+        final int lastY = y;
+        
         //save the new location
         this.x = _x;
         this.y = _y;
@@ -105,7 +111,8 @@ public class PaintLabel extends MLabel {
         //Forward the set location event to the instance of paintListener
         //if it has been set.
         if (paintListener != null) {
-        	paintListener.afterLocationChange(new MoveEvent(new Point(_x, _y)));
+        	paintListener.afterLocationChange(new MoveEvent(new Point(_x, _y)),
+        			new MoveEvent(new Point(lastX, lastY)));
         } else {
         	Status.getLogger().severe("PaintListener not set.");
         }

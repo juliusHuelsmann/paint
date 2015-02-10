@@ -47,7 +47,7 @@ public interface PaintListener {
 	 * 				the passed MouseEvent which contains the old location of 
 	 * 				PaintLabel.
 	 */
-	void afterLocationChange(final MoveEvent _ev);
+	void afterLocationChange(final MoveEvent _ev, final MoveEvent _evOld);
 
 	/**
 	 * location change listener called after location has changed externally.

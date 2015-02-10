@@ -3,12 +3,9 @@ package view.forms;
 import java.awt.Color;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-
 import javax.swing.ImageIcon;
-
 import model.settings.ViewSettings;
 import model.util.Util;
-import control.tabs.CQuickAccess;
 import control.util.MousePositionTracker;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;

@@ -68,6 +68,8 @@ public final class BufferedViewer extends JFrame {
      * @param _bi the bufferedImage.
      */
     public static synchronized void show(final BufferedImage _bi) {
+    	
+    	/*
 
     	Status.getLogger().warning("TEST" + "BufferdViewer.show");
     	System.out.println(_bi.getWidth() + ".." + _bi.getHeight());
@@ -96,7 +98,7 @@ public final class BufferedViewer extends JFrame {
         	}
     	} else {
     		System.out.println("hier");
-    	}
+    	}*/
     }
     
     

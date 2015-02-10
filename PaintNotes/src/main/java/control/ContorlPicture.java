@@ -438,8 +438,6 @@ public class ContorlPicture implements PaintListener {
 					maintainStartX = 0;
 					maintainWidth = bi.getWidth() - shiftedStartX;
 				} else if (xNew < xOld) {
-					
-					System.out.println("casus");
 
 					shiftedStartX = 0;
 					maintainStartX =  xOld - xNew;
@@ -547,7 +545,7 @@ public class ContorlPicture implements PaintListener {
 					 * //TODO: put this variable into the settings. Thus it
 					 * may be enabled in testing mode (tab)
 					 */
-					boolean showRefreshRectangle = !(true == false);
+					boolean showRefreshRectangle = !!(true == false);
 
 					/*
 					 * 

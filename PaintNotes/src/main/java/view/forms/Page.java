@@ -277,7 +277,6 @@ import view.util.mega.MButton;
 		
 	    //set standard size
 	    super.setSize(_width, _height);
-	    
 	    flip();
 	}
 	
@@ -288,31 +287,38 @@ import view.util.mega.MButton;
 	 * .
 	 */
 	public void flip() {
+		
 
-            jpnl_toMove.setBounds(0, 0,
-                    Status.getImageShowSize().width,
-                    Status.getImageShowSize().height);
+		jpnl_toMove.setBounds(0, 0,
+				Status.getImageShowSize().width,
+				Status.getImageShowSize().height);
 
-	        sp_ub.setLocation(ViewSettings.getSizeJFrame().width 
-	                - sp_ub.getWidth(), ViewSettings.VIEW_SIZE_SP);
-
-	        sp_lr.setLocation(0, ViewSettings.getSizeJFrame().height 
-	                - sp_lr.getHeight());
-            
-
-        sp_ub.setSize(ViewSettings.VIEW_SIZE_SP, 
-                ViewSettings.getSizeJFrame().height 
-                - ViewSettings.VIEW_SIZE_SP);
+		sp_ub.setSize(ViewSettings.VIEW_SIZE_SP, 
+				ViewSettings.getSizeJFrame().height 
+				- ViewSettings.VIEW_SIZE_SP);
         sp_lr.setSize(ViewSettings.getSizeJFrame().width, 
                 ViewSettings.VIEW_SIZE_SP);
 
-        jlbl_painting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_background.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_background2.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionBG.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionPainting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
 
         jlbl_background.setIcon(new ImageIcon(Status.getBi_transparency()));
+
+
+
+		//the order of painting is important! It is necessary that the 
+        //paintinglabel's bounds and the locations of the ScrollPanes are 
+        //set here
+        jlbl_painting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
+		sp_ub.setLocation(ViewSettings.getSizeJFrame().width 
+				- sp_ub.getWidth(), ViewSettings.VIEW_SIZE_SP);
+		sp_lr.setLocation(0, ViewSettings.getSizeJFrame().height 
+				- sp_lr.getHeight());
+            	
+		
+
 	}
 	
 	

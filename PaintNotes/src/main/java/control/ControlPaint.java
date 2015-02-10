@@ -9,15 +9,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
-
 import javax.swing.ImageIcon;
-
 import control.forms.CNew;
 import control.interfaces.MenuListener;
 import control.tabs.CExport;
 import control.tabs.CLook;
 import control.tabs.CPaintObjects;
-import control.tabs.CPaintSelection;
 import control.tabs.CPaintStatus;
 import control.tabs.CPrint;
 import control.tabs.CQuickAccess;
@@ -48,7 +45,6 @@ import view.View;
 import view.forms.Message;
 import view.forms.Page;
 import view.forms.Tabs;
-import view.tabs.Paint;
 
 
 /**

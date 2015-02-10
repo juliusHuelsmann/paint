@@ -920,10 +920,10 @@ public final class Picture {
 
 
     	//start transaction and closed action.
-    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    	final int transaction = getLs_po_sortedByX()
     			.startTransaction("paint selected bi", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    	final int closedAction = getLs_po_sortedByX()
     			.startClosedAction("paint selected bi", 
     					SecureList.ID_NO_PREDECESSOR);
         
@@ -951,9 +951,9 @@ public final class Picture {
 		}
 
     	//close transaction and closed action.
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    	getLs_po_sortedByX().finishTransaction(
     			transaction);
-    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    	getLs_po_sortedByX().finishClosedAction(
     			closedAction);
         
 		return bi;
@@ -1195,10 +1195,10 @@ public final class Picture {
 
 
 	    	//start transaction and closed action.
-	    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+	    	final int transaction = getLs_po_sortedByX()
 	    			.startTransaction("transformWhiteToAlpha", 
 	    					SecureList.ID_NO_PREDECESSOR);
-	    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+	    	final int closedAction = getLs_po_sortedByX()
 	    			.startClosedAction("transformWhiteToAlpha", 
 	    					SecureList.ID_NO_PREDECESSOR);
 	        
@@ -1213,9 +1213,9 @@ public final class Picture {
 			}
 
 	    	//close transaction and closed action.
-	    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+	    	getLs_po_sortedByX().finishTransaction(
 	    			transaction);
-	    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+	    	getLs_po_sortedByX().finishClosedAction(
 	    			closedAction);
 	        
 		}
@@ -1391,10 +1391,10 @@ public final class Picture {
 		}
 
     	//start transaction and closed action.
-    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    	final int transaction = getLs_po_sortedByX()
     			.startTransaction("stretch image", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    	final int closedAction = getLs_po_sortedByX()
     			.startClosedAction("stretch image", 
     					SecureList.ID_NO_PREDECESSOR);
         
@@ -1423,9 +1423,9 @@ public final class Picture {
 		}
 
     	//close transaction and closed action.
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    	getLs_po_sortedByX().finishTransaction(
     			transaction);
-    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    	getLs_po_sortedByX().finishClosedAction(
     			closedAction);
         
 	}
@@ -1494,10 +1494,10 @@ public final class Picture {
 		BufferedImage verbufft2 = Util.getEmptyBISelection();
 
     	//start transaction and closed action.
-    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    	final int transaction = getLs_po_sortedByX()
     			.startTransaction("paintSelected", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    	final int closedAction = getLs_po_sortedByX()
     			.startClosedAction("paintSelected", 
     					SecureList.ID_NO_PREDECESSOR);
         
@@ -1545,9 +1545,9 @@ public final class Picture {
 
 
     	//close transaction and closed action.
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    	getLs_po_sortedByX().finishTransaction(
     			transaction);
-    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    	getLs_po_sortedByX().finishClosedAction(
     			closedAction);
     	
 		_page.getJlbl_selectionPainting()
@@ -1608,10 +1608,10 @@ public final class Picture {
 		
 
     	//start transaction and closed action.
-    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    	final int transaction = getLs_po_sortedByX()
     			.startTransaction("paintSelectedInline", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    	final int closedAction = getLs_po_sortedByX()
     			.startClosedAction("paintSelectedInline", 
     					SecureList.ID_NO_PREDECESSOR);
         
@@ -1661,9 +1661,9 @@ public final class Picture {
 		}
 
     	//close transaction and closed action.
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    	getLs_po_sortedByX().finishTransaction(
     			transaction);
-    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    	getLs_po_sortedByX().finishClosedAction(
     			closedAction);
 		
 		page.getJlbl_selectionPainting()
@@ -1720,7 +1720,7 @@ public final class Picture {
 			int newX = (int) _xLocationPaint;
 			int newY = (int) _yLocationPaint;
 
-			Picture.getInstance().moveSelected(oldX - newX, oldY - newY);
+			moveSelected(oldX - newX, oldY - newY);
 			_controlPaintSelection.setOldPaintLabelLocation(null);
 		}
 
@@ -1871,21 +1871,20 @@ public final class Picture {
 				.getImageSize().getHeight());
 	}
 
-	/**
-	 * this method guarantees that only one instance of this class can be
-	 * created ad runtime.
-	 * 
-	 * @return the only instance of this class.
-	 */
-	public static Picture getInstance() {
 
+
+	/**
+	* this method guarantees that only one instance of this class can be
+	* created ad runtime.
+	*
+	* @return the only instance of this class.
+	*/
+	public static Picture getInstance() {
 		// if class is not instanced yet instantiate
 		if (instance == null) {
-
 			instance = new Picture();
 			instance.initialize();
 		}
-
 		// return the only instance of this class.
 		return instance;
 	}

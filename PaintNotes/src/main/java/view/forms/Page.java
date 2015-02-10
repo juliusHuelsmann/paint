@@ -180,7 +180,9 @@ import view.util.mega.MButton;
                 jbtn_resize[x][y].setOpaque(true);
                 jbtn_resize[x][y].addMouseMotionListener(
                 		controlPaint.getControlPaintSelection());
-                jbtn_resize[x][y].addMouseListener(controlPaint);
+                jbtn_resize[x][y].addMouseListener(
+                		controlPaint.getControlPaintSelection());
+             //   jbtn_resize[x][y].addMouseListener(controlPaint);
                 super.add(jbtn_resize[x][y]);
             }
         }

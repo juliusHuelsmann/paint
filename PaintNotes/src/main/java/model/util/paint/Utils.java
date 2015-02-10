@@ -464,7 +464,7 @@ public final class Utils {
                 //either the starting coordinate (_fromX) matched at the
                 //raster size or the merge front if 
                 Math.max(Status.getRasterBorderFront(), 
-                		((int) ((_fromX )/ Status.getRasterSize())) 
+                		((int) (_fromX / Status.getRasterSize())) 
                         * Status.getRasterSize());
                 //coordinate smaller than the last merge or the until x
                 //value

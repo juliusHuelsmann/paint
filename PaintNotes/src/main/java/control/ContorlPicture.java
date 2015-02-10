@@ -79,9 +79,7 @@ public class ContorlPicture implements PaintListener {
 	 */
 	public final void refreshPaint() {
 
-		new Exception("woher kommt das?").printStackTrace();
-
-		Status.getLogger().warning("refreshing entire PaintLabel. \nValues: "
+		Status.getLogger().finest("refreshing entire PaintLabel. \nValues: "
 				+ "\n\tgetSize:\t" + getPaintLabel().getSize() + " vs. " 
 				+ getJPnlToMove().getSize()
 				+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
@@ -100,7 +98,6 @@ public class ContorlPicture implements PaintListener {
 
 		
 		refreshPaintBackground();
-		
 		getPaintLabel().setIcon(new ImageIcon(getBi()));
 	}
 
@@ -441,6 +438,8 @@ public class ContorlPicture implements PaintListener {
 					maintainStartX = 0;
 					maintainWidth = bi.getWidth() - shiftedStartX;
 				} else if (xNew < xOld) {
+					
+					System.out.println("casus");
 
 					shiftedStartX = 0;
 					maintainStartX =  xOld - xNew;
@@ -543,21 +542,17 @@ public class ContorlPicture implements PaintListener {
 							refreshHeightWidth, refreshHeightHeight);
 					
 					
-					
-					
 					/*
 					 * for debugging purpose
 					 * //TODO: put this variable into the settings. Thus it
 					 * may be enabled in testing mode (tab)
 					 */
-					boolean showRefreshRectangle = (true == false);
+					boolean showRefreshRectangle = !(true == false);
 
 					/*
 					 * 
 					 */
 					if (showRefreshRectangle) {
-						
-						
 						
 						/*
 						 * The debugging colors and values

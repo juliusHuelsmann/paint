@@ -424,25 +424,28 @@ public final class Picture {
 	 *            the bufferedImage
 	 * @return the graphics
 	 */
-	public synchronized BufferedImage updateRectangle(final int _x,
-			final int _y, final int _width, final int _height,
-			final int _graphicX, final int _graphiY, final BufferedImage _bi,
+	public synchronized BufferedImage updateRectangle(
+			final int _x, final int _y, 
+			
+			final int _width, final int _height,
+			
+			final int _graphicX, final int _graphiY, 
+			
+			final BufferedImage _bi,
 			final ContorlPicture _controlPicture) {
-
-		BufferedImage ret = emptyRectangle(_x, _y, _width, _height, _graphicX,
+		
+		
+		BufferedImage ret = emptyRectangle(
+				_x, _y, _width, _height, _graphicX,
 				_graphiY, _bi);
 
 		// if the graphical user interface is not set up yet.
-		if (
-//				Page.getInstance().getJlbl_painting() == null || 
-				ret == null) {
-			return new BufferedImage(2, 2, BufferedImage.TYPE_INT_ARGB);
+		if (ret == null) {
+			return new BufferedImage(_width, _height, BufferedImage.TYPE_INT_ARGB);
 		}
 		
 		
-//		_controlPicture.setBi(ret);
-
-		ret = repaintRectangle(_x, _y, _width, _height, ret, false);
+		ret = repaintRectangle(_x, _y, _width, _height, _graphicX, _graphiY, ret, false);
 
 		return ret;
 	}
@@ -519,8 +522,17 @@ public final class Picture {
 	 * 
 	 * @return the BufferedImage with painted PaintObjects on it.
 	 */
-	public synchronized BufferedImage repaintRectangle(final int _x,
-			final int _y, final int _width, final int _height,
+	public synchronized BufferedImage repaintRectangle(
+			
+			final int _x,
+			final int _y,
+			
+			final int _width, 
+			final int _height,
+			
+			final int _xBi,
+			final int _yBi,
+			
 			final BufferedImage _bi, final boolean _final) {
 
 		// If the sorted list of PaintObjects has not been initialized yet,
@@ -648,7 +660,7 @@ public final class Picture {
 //					_x, _y,
 //					_paintLocationX,
 //					_paintLocationY,
-					-_x, -_y,
+					-_x + _xBi, -_y + _yBi,
 //					Page.getInstance().getJlbl_painting().getBi(),
 //					Page.getInstance().getJlbl_painting().getLocation().x,
 //					Page.getInstance().getJlbl_painting().getLocation().y,
@@ -984,7 +996,7 @@ public final class Picture {
 				Status.getImageSize().height, 0, 0);
 
 		bi = repaintRectangle(-_x + 0, -_y + 0, Status.getImageSize().width,
-				Status.getImageSize().height, bi, true);
+				Status.getImageSize().height, -_x + 0, -_y + 0, bi, true);
 
 		try {
 			ImageIO.write(bi, Status.getSaveFormat(),
@@ -1017,7 +1029,9 @@ public final class Picture {
 //				-Page.getInstance().getJlbl_painting().getLocation().x + 0,
 //				-Page.getInstance().getJlbl_painting().getLocation().y + 0,
 				Status.getImageSize().width,
-				Status.getImageSize().height, bi, true);
+				Status.getImageSize().height,
+				0, 0,
+				bi, true);
 
 		return bi;
 

@@ -1,14 +1,11 @@
 package model.settings;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
-
 import javax.swing.JOptionPane;
-
 import control.ControlPaint;
 import control.tabs.CWrite;
 import view.View;
@@ -253,7 +250,7 @@ public final class Status {
      */
     public static int getRasterSize() {
         final int min = 1;
-        final int normal = 28;
+        final int normal = 24;
         
         return Math.max(min, normal * imageShowSize.width / imageSize.width);
     }

@@ -342,8 +342,8 @@ public class ContorlPicture implements PaintListener {
 			rectHeight = _bi.getHeight() - _y;
 		}
 
-		final int maxRGB = 25;
-		PaintBI.fillRectangleQuick(_bi, new Color(maxRGB, maxRGB, maxRGB, 50), 
+		final int maxRGB = 255;
+		PaintBI.fillRectangleQuick(_bi, new Color(maxRGB, maxRGB, maxRGB, 0), 
 				new Rectangle(_x, _y, rectWidth, rectHeight));
 
 		return _bi;
@@ -655,10 +655,13 @@ public class ContorlPicture implements PaintListener {
 					}
 
 					//BufferedImage
-					refreshRectangleBackground(refreshWidthX - 1, refreshWidthY - 1, 
-							refreshWidthWidth + 1, refreshWidthHeight + 1);
-					refreshRectangleBackground(refreshHeightX - 1, refreshHeightY - 1, 
-							refreshHeightWidth + 1, refreshHeightHeight + 1);
+					
+					refreshRectangleBackground(refreshWidthX, refreshWidthY, 
+							refreshWidthWidth, refreshWidthHeight);
+					
+					refreshRectangleBackground(refreshHeightX, refreshHeightY, 
+							refreshHeightWidth, refreshHeightHeight);
+					
 					refreshRectangle(refreshWidthX, refreshWidthY, 
 							refreshWidthWidth, refreshWidthHeight);
 					refreshRectangle(refreshHeightX, refreshHeightY, 

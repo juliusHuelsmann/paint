@@ -162,6 +162,9 @@ MenuListener {
             utilityControlScrollPane = new ScrollPaneActivityListener(this);
             //initialize the model class picture.
             //TODO: not null
+            controlnew = new CNew(this);
+            cTabLook = new CLook(this);
+            cTabExport = new CExport(this);
             cTabWrite = new CWrite(this);
             controlPic = new ContorlPicture(this);
             cTabSelection = new CTabSelection(this);

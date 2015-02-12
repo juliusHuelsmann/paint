@@ -1,6 +1,8 @@
 package model.util.adt.list;
 
 //import declarations
+import java.io.Serializable;
+
 import model.settings.Status;
 import model.util.DPoint;
 
@@ -12,7 +14,15 @@ import model.util.DPoint;
  * @version %I%, %U%
  * @param <SecureListType>
  */
-public class SecureListSort<SecureListType> {
+public class SecureListSort<SecureListType> implements Serializable {
+
+    /**
+     * Default serial version UID for being able to identify the list's 
+     * version if saved to the disk and check whether it is possible to 
+     * load it or whether important features have been added so that the
+     * saved file is out-dated.
+     */
+    private static final long serialVersionUID = 1L;
 
 	
     /**

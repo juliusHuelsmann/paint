@@ -1,4 +1,4 @@
-package view.util;
+package control;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.special.PenSelection;
 import model.settings.ViewSettings;
+import model.util.Util;
 import view.forms.Page;
 import view.forms.Tabs;
 
@@ -60,6 +61,17 @@ public class BorderThread extends Thread {
     private boolean operationRectangle;
     
     /**
+     * Instance of view- class tab.
+     */
+    private final Tabs tab;
+    
+    
+    /**
+     * Instance of the view - class page.
+     */
+    private final Page page;
+    
+    /**
      * Constructor: save instance of PaintLabel and Rectangle.
      * 
      * which operation to take
@@ -71,10 +83,12 @@ public class BorderThread extends Thread {
      * line operation values:
      * @param _po the current PaintObject used for line operation
      * @param _pen the current Pen used for line operation
+     * 
+     * @param _tab the Tab for refreshing
      */
     public BorderThread(final Rectangle _r, 
             final boolean _operationRectangle, final PaintObject _po,
-            final PenSelection _pen) {
+            final PenSelection _pen, final Tabs _tab, final Page _page) {
         
         /*
          * save values
@@ -88,6 +102,8 @@ public class BorderThread extends Thread {
         //save line values
         this.pen_curr = _pen;
         this.po_curr = _po;
+    	this.tab = _tab;
+    	this.page = _page;
     }
 
     
@@ -101,7 +117,7 @@ public class BorderThread extends Thread {
         final int sleepTimeRectangle = 100;
         final int sleepTimeLine = 400;
         int sleepTime;
-        BufferedImage bi_neutral = Page.getInstance().getEmptyBISelection();
+        BufferedImage bi_neutral = Util.getEmptyBISelection();
         
         //perform border movement 
         while (!isInterrupted()) {
@@ -178,11 +194,11 @@ public class BorderThread extends Thread {
         indexColor = indexBackup;
         indexStep += ViewSettings.SELECTION_BORDER_MOVE_SPEED_PX;
 
-        Tabs.getInstance().repaint();
-        Page.getInstance().getJlbl_selectionBG().setIcon(
+        tab.repaint();
+        page.getJlbl_selectionBG().setIcon(
         		new ImageIcon(
                 _bi_neutral));
-        Tabs.getInstance().revalidate();
+        tab.revalidate();
         
         return indexStep;
         
@@ -197,19 +213,19 @@ public class BorderThread extends Thread {
 
 
         //sample code; to be written later.
-        BufferedImage bi_transformed = Page.getInstance().getEmptyBISelection();
+        BufferedImage bi_transformed = Util.getEmptyBISelection();
         if (po_curr == null) {
             interrupt();
         } else {
 
             bi_transformed = po_curr.paint(bi_transformed, false, 
                     bi_transformed, 
-                    Page.getInstance().getJlbl_painting().getLocation().x, 
-                    Page.getInstance().getJlbl_painting().getLocation().y, 
+                    page.getJlbl_painting().getLocation().x, 
+                    page.getJlbl_painting().getLocation().y, 
                     null);
 
 
-            Page.getInstance().getJlbl_selectionBG().setIcon(
+            page.getJlbl_selectionBG().setIcon(
                     new javax.swing.ImageIcon(bi_transformed));
             //color shift.
             pen_curr.resetCurrentBorderValue();
@@ -252,9 +268,9 @@ public class BorderThread extends Thread {
             //paint border
             for (int pixelX = fromX; pixelX <= toX; pixelX++) {
                 if (pixelX >= rect.x && pixelX < rect.x + rect.width) {
-                    int x = pixelX - Page.getInstance()
+                    int x = pixelX - page
                             .getJlbl_selectionBG().getX();
-                    int y = rect.y - Page.getInstance()
+                    int y = rect.y - page
                             .getJlbl_selectionBG().getY();
                     
                     if (x >= 0 && x < _bi_neutral.getWidth()
@@ -304,9 +320,9 @@ public class BorderThread extends Thread {
             //paint border
             for (int pixelY = fromY; pixelY <= toY; pixelY++) {
                 if (pixelY >= rect.y && pixelY < rect.y + rect.height) {
-                   int x = rect.x + rect.width - Page.getInstance()
+                   int x = rect.x + rect.width - page
                            .getJlbl_selectionBG().getX() - 1;
-                   int y = pixelY - Page.getInstance()
+                   int y = pixelY - page
                            .getJlbl_selectionBG().getY();
                    
                    if (x >= 0 && x < _bi_neutral.getWidth() 
@@ -357,9 +373,9 @@ public class BorderThread extends Thread {
             //paint border
             for (int pixelX = fromX; pixelX >= toX; pixelX--) {
                 if (pixelX <= rect.x + rect.width && pixelX > rect.x) {
-                   int x = pixelX - Page.getInstance()
+                   int x = pixelX - page
                            .getJlbl_selectionBG().getX();
-                   int y = rect.y + rect.height - Page.getInstance()
+                   int y = rect.y + rect.height - page
                            .getJlbl_selectionBG().getY() - 1;
 
                    if (x >= 0 && x < _bi_neutral.getWidth() 
@@ -409,9 +425,9 @@ public class BorderThread extends Thread {
             //paint border
             for (int pixelY = fromY; pixelY >= toY; pixelY--) {
                 if (pixelY <= rect.y + rect.height && pixelY > rect.y) {
-                   int x = rect.x - Page.getInstance()
+                   int x = rect.x - page
                            .getJlbl_selectionBG().getX();
-                   int y = pixelY - Page.getInstance()
+                   int y = pixelY - page
                            .getJlbl_selectionBG().getY();
                    if (x >= 0 && x < _bi_neutral.getWidth() 
                            && y >= 0 && y < _bi_neutral.getHeight()) {

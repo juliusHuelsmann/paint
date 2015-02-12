@@ -1,7 +1,6 @@
 package view.forms;
 
 import java.awt.Color;
-import java.awt.Toolkit;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -27,15 +26,6 @@ import view.util.mega.MPanel;
  */
 @SuppressWarnings("serial")
 public final class New extends MPanel {
-
-    /*
-     * singleton
-     */
-    
-    /**
-     * The only instance of this class.
-     */
-    private static New instance;
 
     /*
      * top elements.
@@ -123,19 +113,25 @@ public final class New extends MPanel {
     private final int 
     distanceBetweenItems = 5,
     distanceLeftRight = 5,
-    width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
-    / (2 + 1) + (2 + 1) * distanceBetweenItems, 
-    height = (int) (width / Math.sqrt(2) 
-            + 2 * distanceBetweenItems),
-            amount = 6,
-            heightImageButton = height / amount - distanceBetweenItems,
-            distanceTop = heightImageButton + 2 * distanceBetweenItems,
-            buttonHeight = 20;
+    amount = 6,
+    heightImageButton = ViewSettings.getView_size_new().height
+    / amount - distanceBetweenItems,
+    distanceTop = heightImageButton + 2 * distanceBetweenItems,
+    buttonHeight = 20;
     
+    
+    /**
+     * Controller class of New.
+     */
+    
+    private CNew c_new;
     /**
      * Empty utility class Constructor.
      */
-    public New() { }
+    public New(final CNew _cn) { 
+    	this.c_new = _cn;
+    	initialize();
+    }
 
     
     /**
@@ -148,7 +144,7 @@ public final class New extends MPanel {
          * exit button, the headline MLabel and the JPanel which contains 
          * every other components.
          */
-        super.setSize(width, height);
+        super.setSize(ViewSettings.getView_size_new());
         super.setLocation(0, 0);
         super.setOpaque(true);
         super.setLayout(null);
@@ -165,7 +161,7 @@ public final class New extends MPanel {
         
         //The container JPanel
         jpnl_stuff = new MPanel();
-        jpnl_stuff.setSize(width, height);
+        jpnl_stuff.setSize(ViewSettings.getView_size_new());
         jpnl_stuff.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK);
         jpnl_stuff.setLayout(null);
         jpnl_stuff.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -175,7 +171,7 @@ public final class New extends MPanel {
         jbtn_exit = new MButton();
         jbtn_exit.setContentAreaFilled(false);
         jbtn_exit.setOpaque(false);
-        jbtn_exit.addMouseListener(CNew.getInstance());
+        jbtn_exit.addMouseListener(c_new);
         jbtn_exit.setBorder(null);
         jbtn_exit.setFocusable(false);
         jbtn_exit.setBounds(ViewSettings.getViewBoundsJbtnExit());
@@ -193,7 +189,8 @@ public final class New extends MPanel {
         jlbl_title.setBorder(null);
         jlbl_title.setAlignmentX(CENTER_ALIGNMENT);
         jlbl_title.setLocation(distanceLeftRight, distanceLeftRight);
-        jlbl_title.setSize(width, (2 + 2) * (2 + 2 + 1));
+        jlbl_title.setSize(ViewSettings.getView_size_new().width, 
+        		(2 + 2) * (2 + 2 + 1));
         jpnl_stuff.add(jlbl_title);
 
         
@@ -331,7 +328,7 @@ public final class New extends MPanel {
         jcb_raster = new JCheckBox("Raster");
         jcb_raster.setFocusable(false);
         jcb_raster.setOpaque(false);
-        jcb_raster.addActionListener(CNew.getInstance());
+        jcb_raster.addActionListener(c_new);
         jcb_raster.setLocation(jlbl_backgroundTitle.getX(), 
                 distanceBetweenItems + jlbl_backgroundTitle.getY()
                 + jlbl_backgroundTitle.getHeight());
@@ -344,7 +341,7 @@ public final class New extends MPanel {
         jcb_lines = new JCheckBox("Lines");
         jcb_lines.setFocusable(false);
         jcb_lines.setOpaque(false);
-        jcb_lines.addActionListener(CNew.getInstance());
+        jcb_lines.addActionListener(c_new);
         jcb_lines.setLocation(jcb_raster.getWidth() + jcb_raster.getX() 
                 + distanceBetweenItems, jcb_raster.getY());
         jcb_lines.setSize(jlbl_backgroundTitle.getWidth() / (2 + 1) 
@@ -355,7 +352,7 @@ public final class New extends MPanel {
         jcb_nothing = new JCheckBox("Nothing");
         jcb_nothing.setFocusable(false);
         jcb_nothing.setOpaque(false);
-        jcb_nothing.addActionListener(CNew.getInstance());
+        jcb_nothing.addActionListener(c_new);
         jcb_nothing.setLocation(jcb_lines.getWidth() + jcb_lines.getX() 
                 + distanceBetweenItems, jcb_raster.getY());
         jcb_nothing.setSize(jlbl_backgroundTitle.getWidth() / (2 + 1) 
@@ -413,7 +410,7 @@ public final class New extends MPanel {
         
         jtf_customHeight = new JTextField();
         jtf_customHeight.setOpaque(false);
-        jtf_customHeight.addKeyListener(CNew.getInstance());
+        jtf_customHeight.addKeyListener(c_new);
         jtf_customHeight.setBorder(BorderFactory.createLineBorder(Color.gray));
         jtf_customHeight.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jtf_customHeight.setBounds(jlbl_customHeight.getX() 
@@ -434,7 +431,7 @@ public final class New extends MPanel {
 
         jtf_customWidth = new JTextField();
         jtf_customWidth.setOpaque(false);
-        jtf_customWidth.addKeyListener(CNew.getInstance());
+        jtf_customWidth.addKeyListener(c_new);
         jtf_customWidth.setBorder(BorderFactory.createLineBorder(Color.gray));
         jtf_customWidth.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jtf_customWidth.setBounds(jlbl_customWidth.getX() 
@@ -449,7 +446,7 @@ public final class New extends MPanel {
                 getWidth() / 2 - 2 * distanceLeftRight, buttonHeight);
         jbtn_enter.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jbtn_enter.setContentAreaFilled(false);
-        jbtn_enter.addActionListener(CNew.getInstance());
+        jbtn_enter.addActionListener(c_new);
         jpnl_stuff.add(jbtn_enter);
     }
     
@@ -458,8 +455,7 @@ public final class New extends MPanel {
      * {@inheritDoc}
      */
     @Override public void setVisible(final boolean _visible) {
-        super.setLocation((Page.getInstance().getWidth() - getWidth()) / 2,
-                (Page.getInstance().getHeight() - getHeight()) / 2);
+        super.setLocation(ViewSettings.getView_location_new());
         super.setVisible(_visible);
         super.requestFocus();
     }
@@ -484,10 +480,11 @@ public final class New extends MPanel {
                 new LineBorder(Color.black), new LineBorder(Color.lightGray)));
         _i1b.setText(_text);
         
-        _i1b.setSize((width - (2 + 1) * distanceBetweenItems) / 2, 
+        _i1b.setSize((ViewSettings.getView_size_new().width - (2 + 1) 
+        		* distanceBetweenItems) / 2, 
                 heightImageButton);
         _i1b.setActivable(true);
-        _i1b.addActionListener(CNew.getInstance());
+        _i1b.addActionListener(c_new);
         _i1b.setLocation(distanceBetweenItems + _plusXLocation, 
                 _plusYLocation);
         _i1b.setIconLabelY((_i1b.getHeight() 
@@ -527,24 +524,6 @@ public final class New extends MPanel {
     public void showCustomInformation() {
 
         setCustomVisible(true);
-    }
-    
-    
-    /**
-     * this method guarantees that only one instance of this
-     * class can be created ad runtime.
-     * @return the only instance of this class.
-     */ 
-    public static New getInstance() {
-        
-        //create instance if necessary.
-        if (instance == null) {
-            instance = new New();
-            instance.initialize();
-        }
-        
-        //return the only instance
-        return instance;
     }
 
     

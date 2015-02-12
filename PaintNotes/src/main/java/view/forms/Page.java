@@ -3,21 +3,16 @@ package view.forms;
 
 //import declarations
 import java.awt.Color;
-import java.awt.image.BufferedImage;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
-import view.View;
 import view.util.VScrollPane;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
-import control.CSelection;
-import control.ControlPainting;
+import control.ControlPaint;
 import view.util.mega.MButton;
 
 /**
@@ -27,14 +22,6 @@ import view.util.mega.MButton;
  */
 @SuppressWarnings("serial") public final class Page extends MPanel {
 
-    /*
-     * Only instance of this class (singleton)
-     */
-    
-    /**
-     * The only instance of this page.
-     */
-    private static Page instance;
     
     /*
      * JLabel which is being painted
@@ -95,17 +82,28 @@ import view.util.mega.MButton;
      */
     private MLabel jlbl_background, jlbl_background2;
     
+    /**
+     * 
+     */
+    private New jpnl_new;
+    
+    /**
+     * 
+     */
+    private QuickAccess quickAccess;
 	/**
 	 * empty utility class constructor. 
 	 */
-	private Page() { }
+	public Page(final ControlPaint _cv) {
+		initialize(_cv);
+	}
 
 	
 	/**
 	 * initializes graphical user interface components
      * and thus creates view. Called directly after creation.
 	 */
-	private void initialize() {
+	private void initialize(final ControlPaint controlPaint) {
 
         //alter settings
         super.setOpaque(true);
@@ -124,9 +122,13 @@ import view.util.mega.MButton;
         super.setVisible(false);
 
         //form for creating new page.
-        super.add(New.getInstance());
+        jpnl_new = new New(controlPaint.getControlnew());
+        super.add(jpnl_new);
         super.add(Console.getInstance());
-        super.add(QuickAccess.getInstance());
+        
+        quickAccess = new QuickAccess(controlPaint.getControlQuickAccess());
+        super.add(quickAccess);
+        
         //initialize JPanel jpnl_toMove
         jpnl_toMove = new MPanel() {
             
@@ -140,10 +142,12 @@ import view.util.mega.MButton;
 
         //ScrollPanel for up and down
         sp_ub = new VScrollPane(jpnl_toMove, this, true);
-        View.getInstance().add(sp_ub);
+        sp_ub.setActivityListener(controlPaint.getUtilityControlScrollPane());
+        controlPaint.getView().add(sp_ub);
 
         sp_lr = new VScrollPane(jpnl_toMove, this, false);
-        View.getInstance().add(sp_lr);
+        sp_lr.setActivityListener(controlPaint.getUtilityControlScrollPane());
+        controlPaint.getView().add(sp_lr);
         
         jlbl_resizeSelectionSize = new MLabel();
         jlbl_resizeSelectionSize.setOpaque(true);
@@ -174,9 +178,10 @@ import view.util.mega.MButton;
                 jbtn_resize[x][y].setBackground(Color.white);
                 jbtn_resize[x][y].setOpaque(true);
                 jbtn_resize[x][y].addMouseMotionListener(
-                        CSelection.getInstance());
+                		controlPaint.getControlPaintSelection());
                 jbtn_resize[x][y].addMouseListener(
-                        CSelection.getInstance());
+                		controlPaint.getControlPaintSelection());
+             //   jbtn_resize[x][y].addMouseListener(controlPaint);
                 super.add(jbtn_resize[x][y]);
             }
         }
@@ -219,8 +224,9 @@ import view.util.mega.MButton;
         jlbl_painting = new PaintLabel(jpnl_toMove);
         jlbl_painting.setFocusable(false);
         jlbl_painting.setBorder(null);
-        jlbl_painting.addMouseMotionListener(ControlPainting.getInstance());
-        jlbl_painting.addMouseListener(ControlPainting.getInstance());
+        jlbl_painting.addMouseMotionListener(controlPaint);
+        jlbl_painting.addMouseListener(controlPaint);
+        jlbl_painting.setPaintListener(controlPaint.getControlPic());
         jlbl_painting.setOpaque(false);
         super.add(jlbl_painting);
 
@@ -271,7 +277,6 @@ import view.util.mega.MButton;
 		
 	    //set standard size
 	    super.setSize(_width, _height);
-	    
 	    flip();
 	}
 	
@@ -282,147 +287,44 @@ import view.util.mega.MButton;
 	 * .
 	 */
 	public void flip() {
+		
 
-            jpnl_toMove.setBounds(0, 0,
-                    Status.getImageShowSize().width,
-                    Status.getImageShowSize().height);
+		jpnl_toMove.setBounds(0, 0,
+				Status.getImageShowSize().width,
+				Status.getImageShowSize().height);
 
-	        sp_ub.setLocation(ViewSettings.getSizeJFrame().width 
-	                - sp_ub.getWidth(), ViewSettings.VIEW_SIZE_SP);
-
-	        sp_lr.setLocation(0, ViewSettings.getSizeJFrame().height 
-	                - sp_lr.getHeight());
-            
-
-        sp_ub.setSize(ViewSettings.VIEW_SIZE_SP, 
-                ViewSettings.getSizeJFrame().height 
-                - ViewSettings.VIEW_SIZE_SP);
+		sp_ub.setSize(ViewSettings.VIEW_SIZE_SP, 
+				ViewSettings.getSizeJFrame().height 
+				- ViewSettings.VIEW_SIZE_SP);
         sp_lr.setSize(ViewSettings.getSizeJFrame().width, 
                 ViewSettings.VIEW_SIZE_SP);
 
-        jlbl_painting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_background.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_background2.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionBG.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionPainting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
 
         jlbl_background.setIcon(new ImageIcon(Status.getBi_transparency()));
+
+
+
+		//the order of painting is important! It is necessary that the 
+        //paintinglabel's bounds and the locations of the ScrollPanes are 
+        //set here
+        jlbl_painting.setBounds(
+        		(int) jlbl_painting.getLocation().getX(),
+        		(int) jlbl_painting.getLocation().getY(), 
+        		getWidth() - 1, getHeight() - 1);
+		sp_ub.setLocation(ViewSettings.getSizeJFrame().width 
+				- sp_ub.getWidth(), ViewSettings.VIEW_SIZE_SP);
+		sp_lr.setLocation(0, ViewSettings.getSizeJFrame().height 
+				- sp_lr.getHeight());
+            	
+		
+
 	}
 	
 	
-
-    /**
-     * this method guarantees that only one instance of this
-     * class can be created ad runtime.
-     * 
-     * @return the only instance of this class.
-     */
-	public static synchronized Page getInstance() {
-	    
-	    //if not initialized yet initialize
-	    if (instance == null) {
-
-	        //create instance and initialize
-	        instance = new Page();
-	        instance.initialize();
-	    }
-	    
-	    //return the only instance of this class
-	    return instance;
-	}
-	
-	
-
-    /**
-     * return fully transparent BufferedImage.
-     * 
-     * @return the BufferedImage
-     */
-    public  BufferedImage getEmptyBISelection() {
-        BufferedImage bi = new BufferedImage(jlbl_selectionBG.getWidth(), 
-                jlbl_selectionBG.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        final int maxRGB = 255;
-        int rgba = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
-        for (int x = 0; x < bi.getWidth(); x++) {
-            for (int y = 0; y < bi.getHeight(); y++) {
-                bi.setRGB(x, y, rgba);
-            }
-        }
-        
-        return bi;
-    }
-    /**
-     * return fully transparent BufferedImage.
-     * 
-     * @return the BufferedImage
-     */
-    public  BufferedImage getEmptyBITransparent() {
-        BufferedImage bi = new BufferedImage(
-                Status.getImageSize().width, 
-                Status.getImageSize().height, BufferedImage.TYPE_INT_ARGB);
-        final int maxRGB = 255;
-        
-        int rgba = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
-        for (int x = 0; x < bi.getWidth(); x++) {
-            for (int y = 0; y < bi.getHeight(); y++) {
-                bi.setRGB(x, y, rgba);
-            }
-        }
-        
-        return bi;
-    }
-    
-    /**
-     * return fully transparent BufferedImage.
-     * 
-     * @return the BufferedImage
-     */
-    public  BufferedImage getEmptyBIWhite() {
-        BufferedImage bi = new BufferedImage(
-                Status.getImageSize().width, 
-                Status.getImageSize().height, BufferedImage.TYPE_INT_RGB);
-        
-        final int max = 255;
-        int rgb = new Color(max, max, max).getRGB();
-        for (int x = 0; x < bi.getWidth(); x++) {
-            for (int y = 0; y < bi.getHeight(); y++) {
-                bi.setRGB(x, y, rgb);
-            }
-        }
-        
-        return bi;
-    }
-	
-	
-	/**
-	 * Release selected items and add them to normal list.
-	 */
-	public void releaseSelected() {
-
-	    for (int i = 0; i < jbtn_resize.length; i++) {
-	        for (int j = 0; j < jbtn_resize[i].length; j++) {
-	            int width = jbtn_resize[i][j].getWidth();
-
-	            jbtn_resize[i][j].setLocation(-width - 1, -1);
-	        }
-	    }
-	    //method for setting the MButtons to the size of the entire image.
-	    ControlPainting.getInstance().updateResizeLocation();
-	    
-	    jlbl_painting.stopBorderThread();
-	    
-        BufferedImage emptyBI = getEmptyBISelection();
-        jlbl_selectionBG.setIcon(new ImageIcon(emptyBI));
-        jlbl_selectionPainting.setIcon(new ImageIcon(emptyBI));
-        jlbl_selectionPainting.repaint();
-
-        jlbl_border.setBounds(0, 0, 0, 0);
-        jlbl_selectionBG.setLocation(0, 0);
-        jlbl_selectionPainting.setLocation(0, 0);
-        
-        jlbl_painting.refreshPaint();
-	}
-
 
 
 	
@@ -494,5 +396,41 @@ import view.util.mega.MButton;
     public MLabel getJlbl_resizeSelectionSize() {
         return jlbl_resizeSelectionSize;
     }
+
+
+	/**
+	 * @return the jpnl_new
+	 */
+	public New getJpnl_new() {
+		return jpnl_new;
+	}
+
+
+	/**
+	 * @param jpnl_new the jpnl_new to set
+	 */
+	public void setJpnl_new(New jpnl_new) {
+		this.jpnl_new = jpnl_new;
+	}
+
+
+	public QuickAccess getQuickAccess() {
+		return quickAccess;
+	}
+
+
+	public void setQuickAccess(QuickAccess quickAccess) {
+		this.quickAccess = quickAccess;
+	}
+
+
+	public MPanel getJpnl_toMove() {
+		return jpnl_toMove;
+	}
+
+
+	public void setJpnl_toMove(MPanel jpnl_toMove) {
+		this.jpnl_toMove = jpnl_toMove;
+	}
 }
 

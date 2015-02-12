@@ -2,9 +2,11 @@ package view.tabs;
 
 //import declarations
 import java.awt.Color;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.border.LineBorder;
-import control.tabs.CWrite;
+
+//
 import model.settings.ViewSettings;
 import view.util.Item1Button;
 
@@ -22,27 +24,16 @@ public final class Write extends Tab {
      */
     private Item1Button tb_pen_comment, tb_pen_theorem, tb_pen_proof, 
     tb_pen_example, tb_pen_headline1, tb_pen_headline2, tb_pen_headline3;
-    
-    
-    /**
-     * The only instance of this class.
-     */
-    private static Write instance;
-
 
     
     /**
      * Empty utility class constructor.
+     * @param _cw the CWrite ActionListener
      */
-	private Write() { 
+	public Write(final ActionListener _cw) { 
 	    super(2);
-	}
-	
-	/**
-	 * initializes Panel.
-     * @param _height the height of the panel.
-	 */
-	private void initialize(final int _height) {
+	    
+
 
 		//initialize JPanel and alter settings
 		super.setOpaque(false);
@@ -67,7 +58,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb_pen_theorem.setActivable(true);
-        tb_pen_theorem.addActionListener(CWrite.getInstance());
+        tb_pen_theorem.addActionListener(_cw);
         tb_pen_theorem.setIcon("icon/tabs/write/write.png");
         super.add(tb_pen_theorem);
 
@@ -84,7 +75,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb_pen_proof.setActivable(true);
-        tb_pen_proof.addActionListener(CWrite.getInstance());
+        tb_pen_proof.addActionListener(_cw);
         tb_pen_proof.setIcon("icon/tabs/write/write.png");
         super.add(tb_pen_proof);
 
@@ -101,7 +92,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb_pen_example.setActivable(true);
-        tb_pen_example.addActionListener(CWrite.getInstance());
+        tb_pen_example.addActionListener(_cw);
         tb_pen_example.setIcon("icon/tabs/write/write.png");
         super.add(tb_pen_example);
 
@@ -120,7 +111,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.white)));
         tb_pen_comment.setActivable(true);
         tb_pen_comment.setIcon("icon/tabs/write/write.png");
-        tb_pen_comment.addActionListener(CWrite.getInstance());
+        tb_pen_comment.addActionListener(_cw);
         super.add(tb_pen_comment);
 
 		
@@ -143,7 +134,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.white)));
         tb_pen_headline1.setActivable(true);
         tb_pen_headline1.setIcon("icon/tabs/write/write.png");
-        tb_pen_headline1.addActionListener(CWrite.getInstance());
+        tb_pen_headline1.addActionListener(_cw);
         super.add(tb_pen_headline1);
 
         tb_pen_headline2 = new Item1Button(null);
@@ -160,7 +151,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.white)));
         tb_pen_headline2.setActivable(true);
         tb_pen_headline2.setIcon("icon/tabs/write/write.png");
-        tb_pen_headline2.addActionListener(CWrite.getInstance());
+        tb_pen_headline2.addActionListener(_cw);
         super.add(tb_pen_headline2);
         
         tb_pen_headline3 = new Item1Button(null);
@@ -177,7 +168,7 @@ public final class Write extends Tab {
                 new LineBorder(Color.white)));
         tb_pen_headline3.setActivable(true);
         tb_pen_headline3.setIcon("icon/tabs/write/write.png");
-        tb_pen_headline3.addActionListener(CWrite.getInstance());
+        tb_pen_headline3.addActionListener(_cw);
         super.add(tb_pen_headline3);
 
 
@@ -187,25 +178,14 @@ public final class Write extends Tab {
                 tb_pen_headline3.getX() + tb_pen_headline3.getWidth() 
                 + ViewSettings.getDistanceBeforeLine(), 0, true);
 
+	
 	}
+	
 
 	
 	
 	
 	
-	/**
-	 * Return the only instance of this class.
-	 * @return the only instance of this singleton class
-	 */
-	public static Write getInstance() {
-	    
-	    if (instance == null) {
-	        instance = new Write();
-	        instance.initialize(ViewSettings.getView_heightTB());
-	    }
-	    
-	    return instance;
-	}
 
     /**
      * @return the tb_bemerkung

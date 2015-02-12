@@ -3,9 +3,10 @@ package view.forms;
 
 //import declarations
 import java.awt.Toolkit;
-
 import model.settings.ViewSettings;
+import control.ControlPaint;
 import control.util.CItem;
+import view.View;
 import view.tabs.Export;
 import view.tabs.Insert;
 import view.tabs.Look;
@@ -26,15 +27,19 @@ import view.util.VTabbedPane;
 public final class Tabs extends VTabbedPane {
 
     /**
-     * The instance.
-     */
-    private static Tabs instance;
-
-    /**
      * Tab for general painting stuff like pen, colors etc.
      */
     private Paint tab_paint;
     
+    private Print tab_print;
+    
+    private Write tab_write;
+    
+    private Selection tab_selection;
+    
+    private Export tab_export;
+    private Look tab_look;
+    private PaintObjects tab_pos;
     
     /**
      * Tab for things which can be inserted.
@@ -44,16 +49,13 @@ public final class Tabs extends VTabbedPane {
     /**
      * Empty utility class constructor.
      */
-    private Tabs() {
-    	
+    public Tabs(View _view) {
+    	super(_view);
     }
     
-    
-    /**
-     * 
-     * pseudo- constructor: adds instances of tabs to tabbedPane.
-     */
-    public void initialize() {
+    public void initialize(View _view, ControlPaint _cp){
+    	super.setTabbedListener(_cp.getcTabs());
+
 
         
         //TabbedPane for different pages
@@ -70,7 +72,8 @@ public final class Tabs extends VTabbedPane {
          * tab paint
          */
         super.addTab("Painting");
-        tab_paint = Paint.getInstance();
+        tab_paint =  new Paint(_cp.getcTabPaint(), _cp,
+        		_cp.getcTabPaintStatus());
         super.addToTab(tabNumber, tab_paint);
         tabNumber++;
 
@@ -78,7 +81,8 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Writing");
-        super.addToTab(tabNumber, Write.getInstance());
+        tab_write = new Write(_cp.getcTabWrite());
+        super.addToTab(tabNumber, tab_write);
         tabNumber++;
 
 
@@ -86,7 +90,7 @@ public final class Tabs extends VTabbedPane {
          * tab insert
          */
         super.addTab("Insertion");
-        tab_insert = Insert.getInstance();
+        tab_insert = new Insert(_cp.getcTabPaintStatus(), _cp);
         super.addToTab(tabNumber, tab_insert);
         tabNumber++;
 
@@ -95,21 +99,26 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Selection");
-        Selection tab_selection = Selection.getInstance();
+        tab_selection = new Selection();
+        tab_selection.initialize(
+        		_cp.getcTabPaint(), _cp.getcTabSelection(), _cp, 
+        		_cp.getcTabPaintStatus());
         super.addToTab(tabNumber, tab_selection);
         tabNumber++;
         /*
          * tab view
          */
         super.addTab("View");   //view
-        super.addToTab(tabNumber, Look.getInstance());
+        tab_look = new Look(_cp.getcTabLook());
+        super.addToTab(tabNumber, tab_look);
         tabNumber++;
 
         /*
          * 
          */
         super.addTab("Export");
-        super.addToTab(tabNumber, Export.getInstance());
+        tab_export = new Export(_cp.getcTabExport());
+        super.addToTab(tabNumber, tab_export);
         tabNumber++;
         
 
@@ -119,13 +128,14 @@ public final class Tabs extends VTabbedPane {
          * tab print
          */
         super.addTab("Printing");
-        super.addToTab(tabNumber, Print.getInstance());
+        tab_print = new Print(_cp.getcTabPrint());
+        super.addToTab(tabNumber, tab_print);
         tabNumber++;
 
 
         super.addTab("Debug");
-        PaintObjects tab_pos = PaintObjects.getInstance();
-        PaintObjects.getInstance().setSize(
+        tab_pos = new PaintObjects(_cp.getcTabPaintObjects());
+        tab_pos.setSize(
                 (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
                 ViewSettings.getView_heightTB());
         super.addToTab(tabNumber, tab_pos);
@@ -152,7 +162,16 @@ public final class Tabs extends VTabbedPane {
 
         super.setVisible(true);
     
+    
+    
+    
     }
+    
+    
+    /**
+     * 
+     * pseudo- constructor: adds instances of tabs to tabbedPane.
+     */
     
     
     
@@ -192,24 +211,6 @@ public final class Tabs extends VTabbedPane {
     			|| tab_insert.getIa_geo().isOpen() 
     			|| tab_insert.getIa_maths().isOpen());
     }
-    
-    
-    
-
-    /**
-     * this method guarantees that only one instance of this
-     * class can be created ad runtime.
-     * 
-     * @return the only instance of this class.
-     */
-    public static Tabs getInstance() {
-        
-        if (instance == null) {
-            instance = new Tabs();
-            instance.initialize();
-        }
-        return instance;
-    }
 
     /**
      * @return the tab_paint
@@ -217,4 +218,116 @@ public final class Tabs extends VTabbedPane {
     public  Paint getTab_paint() {
         return tab_paint;
     }
+
+
+	/**
+	 * @return the tab_print
+	 */
+	public Print getTab_print() {
+		return tab_print;
+	}
+
+
+	/**
+	 * @param tab_print the tab_print to set
+	 */
+	public void setTab_print(Print tab_print) {
+		this.tab_print = tab_print;
+	}
+
+
+	/**
+	 * @return the tab_write
+	 */
+	public Write getTab_write() {
+		return tab_write;
+	}
+
+
+	/**
+	 * @param tab_write the tab_write to set
+	 */
+	public void setTab_write(Write tab_write) {
+		this.tab_write = tab_write;
+	}
+
+
+	/**
+	 * @return the tab_selection
+	 */
+	public Selection getTab_selection() {
+		return tab_selection;
+	}
+
+
+	/**
+	 * @param tab_selection the tab_selection to set
+	 */
+	public void setTab_selection(Selection tab_selection) {
+		this.tab_selection = tab_selection;
+	}
+
+
+	/**
+	 * @return the tab_export
+	 */
+	public Export getTab_export() {
+		return tab_export;
+	}
+
+
+	/**
+	 * @param tab_export the tab_export to set
+	 */
+	public void setTab_export(Export tab_export) {
+		this.tab_export = tab_export;
+	}
+
+
+	/**
+	 * @return the tab_look
+	 */
+	public Look getTab_look() {
+		return tab_look;
+	}
+
+
+	/**
+	 * @param tab_look the tab_look to set
+	 */
+	public void setTab_look(Look tab_look) {
+		this.tab_look = tab_look;
+	}
+
+
+	/**
+	 * @return the tab_pos
+	 */
+	public PaintObjects getTab_pos() {
+		return tab_pos;
+	}
+
+
+	/**
+	 * @param tab_pos the tab_pos to set
+	 */
+	public void setTab_pos(PaintObjects tab_pos) {
+		this.tab_pos = tab_pos;
+	}
+
+
+	/**
+	 * @return the tab_insert
+	 */
+	public Insert getTab_insert() {
+		return tab_insert;
+	}
+
+
+	/**
+	 * @param tab_insert the tab_insert to set
+	 */
+	public void setTab_insert(Insert tab_insert) {
+		this.tab_insert = tab_insert;
+	}
 }

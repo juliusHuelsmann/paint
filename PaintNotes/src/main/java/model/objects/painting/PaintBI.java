@@ -48,7 +48,8 @@ public final class PaintBI {
             for (int y = 0; y < _r.height; y++) {
 
                 //painting points
-                if (_r.y + y < _bi.getHeight() && _r.y + y >= 0
+                if (
+                		_r.y + y < _bi.getHeight() && _r.y + y >= 0
                         && _r.x + x < _bi.getWidth() && _r.x + x >= 0) {
                     
                     _bi.setRGB(_r.x + x, _r.y + y, _clr.getRGB());

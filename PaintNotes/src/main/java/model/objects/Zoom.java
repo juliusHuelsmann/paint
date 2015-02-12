@@ -1,5 +1,6 @@
 package model.objects;
 
+import control.ContorlPicture;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import view.forms.Page;
@@ -13,16 +14,15 @@ import view.forms.Page;
  */
 public final class Zoom {
 
-    
-    /**
-     * The only instance of this class.
-     */
-    private static Zoom instance;
+	
+	private ContorlPicture controlPicture;
     
     /**
      * Initialize instance.
      */
-    private Zoom() { }
+    public Zoom(ContorlPicture _cp) { 
+    	this.controlPicture = _cp;
+    }
     
     /**
      * Location of zoom.
@@ -50,7 +50,8 @@ public final class Zoom {
      * @param _x the x coordinate
      * @param _y the y coordinate.
      */
-    public synchronized void setLocation(final int _x, final int _y) {
+    public synchronized void setLocation(final int _x, final int _y,
+    		final Page _page) {
 
         //the image pixel size in pixel for painting.
         //for example if zoomed in once, an image pixel has
@@ -68,9 +69,9 @@ public final class Zoom {
         int xNewAligned, yNewAligned;
         
         if (imagePixelSizeX != 0 && imagePixelSizeY != 0) {
-            int shiftAlinedX = -Page.getInstance().getJlbl_painting()
+            int shiftAlinedX = -_page.getJlbl_painting()
                     .getLocation().x % imagePixelSizeX,
-                    shiftAlinedY = -Page.getInstance().getJlbl_painting()
+                    shiftAlinedY = -_page.getJlbl_painting()
                     .getLocation().y % imagePixelSizeY;
 
             xNewAligned = _x + shiftAlinedX;
@@ -90,25 +91,10 @@ public final class Zoom {
             this.x = xNewAligned;
             this.y = yNewAligned;
             
-            Page.getInstance().getJlbl_painting().setZoomBox(
+            controlPicture.setZoomBox(
                     x, y, 
                     ViewSettings.ZOOM_SIZE.width,
                     ViewSettings.ZOOM_SIZE.height);
         }
-    }
-    
-
-    /**
-     * this method guarantees that only one instance of this
-     * class can be created ad runtime.
-     * 
-     * @return the only instance of this class.
-     */
-    public static Zoom getInstance() {
-        
-        if (instance == null) {
-            instance = new Zoom();
-        }
-        return instance;
     }
 }

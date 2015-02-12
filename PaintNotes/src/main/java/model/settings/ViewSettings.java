@@ -70,11 +70,20 @@ public final class ViewSettings {
     GENERAL_FONT_ITEM_SMALL = new Font("Courier New", Font.PLAIN, 10),
     GENERAL_FONT_ITEM = new Font("Courier New", Font.ITALIC, 11);
     
+    
+    
     /*
      * 
      *
      * Selection stuff
      */
+
+    
+    /**
+     * distances for items.
+     */
+    private static int distanceAfterLine = 2 + 1, distanceBeforeLine = 2, 
+            distanceBetweenItems = 2 + 1;
     
     /**
      * array of colors of border in selection.
@@ -121,6 +130,7 @@ public final class ViewSettings {
      * If changed, reinitialize background in Selection.
      */
     public static final int SELECTION_BACKGROUND_BLOCK_SIZE = 9;
+    
     
     
     /*
@@ -253,13 +263,36 @@ public final class ViewSettings {
     private static Rectangle view_bounds_page = new Rectangle(
             view_bounds_page_open);
 
+
     /**
-     * distances for items.
+     * size of item.
      */
-    private static int distanceAfterLine = 2 + 1, distanceBeforeLine = 2, 
-            distanceBetweenItems = 2 + 1,
-            itemWidth = size_jframe.width / (TWENTY_FIFE - 2 - 1), 
+    private static int itemWidth = size_jframe.width / (TWENTY_FIFE - 2 - 1), 
             itemHeight = size_jframe.height / (TEN + 2);
+
+    /**
+     * The size of the new - JPanel.
+     */
+    private static Dimension view_size_new = new Dimension(
+    		(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
+    	    / (2 + 1) + (2 + 1) * distanceBetweenItems, 
+    	    
+    	    
+    	    (int) (
+    	    		//the width
+    	    		(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
+    	    	    / (2 + 1) + (2 + 1) * distanceBetweenItems
+    	    	    
+    	    		/ Math.sqrt(2) + 2 * distanceBetweenItems));
+
+    
+    /**
+     * The default location of the new - JPanel.
+     */
+    private static Point view_location_new = new Point(
+    		(view_bounds_page.width - view_size_new.width) / 2, 
+    		(view_bounds_page.height - view_size_new.height) / 2);
+    
     
     /**
      * width of item1 menues.
@@ -373,6 +406,35 @@ public final class ViewSettings {
 
         
         
+    }
+
+    
+    /**
+	 * Return the bounds of a fullscreen window.
+     * @return the bounds of a fullscreen window.
+     */
+    public static Dimension getSizeViewFullscreen() {
+
+    	//return the size of the screen in pixel.
+    	return new Dimension(
+    			(int) (Toolkit.getDefaultToolkit().getScreenSize()
+    					.getWidth()), 
+    			(int) (Toolkit.getDefaultToolkit().getScreenSize()
+    					.getHeight()));
+    }
+    
+    /**
+	 * Return the bounds of a not-fullscreen window.
+     * @return the bounds of a not-fullscreen window.
+     */
+    public static Dimension getSizeViewWindow() {
+
+    	//return the size of the screen in pixel.
+    	return new Dimension(
+    			(int) (Toolkit.getDefaultToolkit().getScreenSize()
+    					.getWidth() * 2 / (2 + 1)), 
+    			(int) (Toolkit.getDefaultToolkit().getScreenSize()
+    					.getHeight() * 2 / (2 + 1)));
     }
     
     
@@ -759,5 +821,25 @@ public final class ViewSettings {
         return size_jframe.height - getView_heightTB() / ViewSettings
                 .TABBED_PANE_TITLE_PROPORTION_HEIGHT - 1;
     }
+
+
+
+
+	/**
+	 * @return the view_size_new
+	 */
+	public static Dimension getView_size_new() {
+		return view_size_new;
+	}
+
+
+
+
+	/**
+	 * @return the view_location_new
+	 */
+	public static Point getView_location_new() {
+		return view_location_new;
+	}
     
 }

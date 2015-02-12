@@ -1,40 +1,36 @@
-//package declaration
 package control;
 
-//import declarations
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
-import org.omg.CORBA._PolicyStub;
-
+import control.forms.CNew;
+import control.interfaces.MenuListener;
+import control.tabs.CExport;
+import control.tabs.CLook;
+import control.tabs.CPaintObjects;
 import control.tabs.CPaintStatus;
-import control.tabs.CPaintVisualEffects;
+import control.tabs.CPrint;
+import control.tabs.CQuickAccess;
+import control.tabs.CTabSelection;
+import control.tabs.CTabs;
+import control.tabs.CWrite;
+import control.tabs.ControlTabPainting;
+import control.util.implementations.Item2ActivityListener;
+import control.util.implementations.ScrollPaneActivityListener;
 import model.objects.PictureOverview;
 import model.objects.Zoom;
 import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
-import model.objects.painting.po.PaintObjectImage;
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.Pen;
-import model.objects.pen.normal.BallPen;
 import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
 import model.settings.ReadSettings;
@@ -45,35 +41,69 @@ import model.util.DPoint;
 import model.util.Util;
 import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
-import model.util.paint.MyClipboard;
-import model.util.paint.Utils;
 import view.View;
 import view.forms.Message;
-import view.forms.New;
 import view.forms.Page;
 import view.forms.Tabs;
-import view.tabs.Paint;
-import view.tabs.Print;
+
 
 /**
- * Controller class dealing with main paint stuff.
  * 
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class ControlPainting implements MouseListener,
-        MouseMotionListener, ActionListener {
+public class ControlPaint implements MouseListener, MouseMotionListener, 
+MenuListener {
 
-    /**
-     * the only instance of this.
-     */
-    private static ControlPainting instance = null;
-
-    /**
-     * Boolean which indicates, whether the necessary instances of View and
-     * Picture have been set by now.
-     */
-    private boolean startPerform;
+	/**
+	 * Central view class.
+	 */
+	private View view;
+	
+	
+	/**
+	 * Central model class.
+	 */
+	private Picture picture;
+	
+	private CTabs cTabs;
+	
+	
+	
+	
+	/**
+	 * Controller class for selection paint at the same level as this class.
+	 */
+	private ControlPaintSelectin controlPaintSelection;
+	
+	
+	/**
+	 * Controller class for the painting tab.
+	 */
+	private ControlTabPainting cTabPaint;
+	
+	private CPrint cTabPrint; 
+	
+	private CWrite cTabWrite;
+	private CQuickAccess controlQuickAccess;
+	
+	private CPaintStatus cTabPaintStatus;
+	
+	private CTabSelection cTabSelection;
+	private CExport cTabExport;
+	private CLook cTabLook;
+	
+	private CPaintObjects cTabPaintObjects;
+	
+	private ContorlPicture controlPic;
+	
+	
+	private Zoom zoom;
+	private CNew controlnew = null;
+	
+	private ScrollPaneActivityListener utilityControlScrollPane;
+	private Item2ActivityListener utilityControlItem2;
+	
 
     /**
      * Start point mouseDragged and the speed of movement for continuous 
@@ -97,199 +127,146 @@ public final class ControlPainting implements MouseListener,
      * The thread for moving at the page.
      */
     private Thread thrd_move;
+
     
-    /**
-     * empty utility class Constructor.
-     */
-    private ControlPainting() { }
+    private Page getPage() {
+    	return view.getPage();
+    }
+    
+    private Tabs getTabs() {
+    	return view.getTabs();
+    }
+	
+	/**
+	 * 
+	 */
+	public ControlPaint() {
 
-    /**
-     * pseudo-constructor method. Used because of getInstance.
-     */
-    private void start() {
+		
 
-        // get location of current workspace
+        //get location of current workspace and set logger level to finest; 
+		//thus every log message is shown.
         Settings.setWsLocation(ReadSettings.install());
-
-        // initialize startPerform
-        this.startPerform = false;
-        
-        //set logger level to finest; thus every log message is shown.
         Status.getLogger().setLevel(Level.WARNING);
 
-        // if installed
+        //if the installation has been found, initialize the whole program.
+        //Otherwise print an error and exit program
         if (!Settings.getWsLocation().equals("")) {
             
-            Status.getLogger().info("installation found.\n");
+        	//Print logger status to console.
+            Status.getLogger().info("Installation found.");
+            Status.getLogger().info("Initialize model class Page.\n");
+            
+            Status.setControlPaint(this);
 
+            utilityControlScrollPane = new ScrollPaneActivityListener(this);
+            //initialize the model class picture.
+            //TODO: not null
+            controlnew = new CNew(this);
+            cTabLook = new CLook(this);
+            cTabExport = new CExport(this);
+            cTabWrite = new CWrite(this);
+            controlPic = new ContorlPicture(this);
+            cTabSelection = new CTabSelection(this);
+            picture = Picture.getInstance();
+            controlPaintSelection = new ControlPaintSelectin(this);
+            cTabPaint = new ControlTabPainting(this);
+            cTabPaintStatus = new CPaintStatus(this);
+            cTabPaintObjects = new CPaintObjects(this);
+            zoom = new Zoom(controlPic);
+            
+            utilityControlItem2 = new Item2ActivityListener(this);
+            cTabs = new CTabs(this);
+
+            //initialize view class and log information on current 
+            //initialization progress
+            Status.getLogger().info("initialize view class and set visible.");
+            view = new View();
+            view.initialize(this);
+            view.setVisible(true);
+            
+            
+            //enable current operation
+            view.getTabs().getTab_paint().getTb_color1().setActivated(true);
+            view.getTabs().getTab_paint().getIt_stift1().getTb_open().setActivated(true);
+           
+            
             /*
-             * initialize model
+             * Initialize control
              */
-
-            Status.getLogger().info(
-                    "initialize model class Pen and current pen.\n");
+            Status.getLogger().info("initialize controller class.");
             
-            Picture.getInstance().initializePen(
-                    new BallPen(Constants.PEN_ID_POINT, 1, Color.black));
-            Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);
-            Paint.getInstance().getTb_color1().setActivated(true);
-            Paint.getInstance().getIt_stift1().getTb_open().setActivated(true);
-            
-
-
-            /*
-             * initialize view.
-             */
-            Status.getLogger().info(
-                    "initialize view class and make visible.\n");
-            
-            View.getInstance().setVisible(true);
-
-
             Status.getLogger().info(
                     "Start handling actions and initialize listeners.\n");
-            
-            // tell all the controller classes to start to perform
-            this.startPerform = true;
-            CPaintStatus.getInstance().initialize();
-            CPaintVisualEffects.getInstance().enable(true);
 
             Status.getLogger().info("initialization process completed.\n\n"
                     + "-------------------------------------------------\n");
         } else {
 
-            // if not installed and no installation done
+            //if not installed and no installation done print error and write
+        	//null values into final variables
+        	Status.getLogger().severe("Fatal error: no installation found");
+        	this.view = null;
+        	this.picture = null;
+        	
+        	//exit program
             System.exit(1);
         }
-    }
+	
+	}
+	
+	
+	
 
-    /**
-     * Enable or disable listeners.
-     * 
-     * @param _what
-     *            whether enabled or disabled.
-     */
-    public void enable(final boolean _what) {
-        startPerform = _what;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public void mouseClicked(final MouseEvent arg0) { }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void actionPerformed(final ActionEvent _event) {
+	public void mouseEntered(MouseEvent arg0) { }
 
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
+	public void mouseExited(MouseEvent _event) {
+
+
+
+	       if (_event.getSource().equals(
+	        		getPage().getJlbl_painting())) { 
+	        	
+	        	
+	        	//remove old pen - position - indication - point
+	        	if (!Picture.getInstance().isSelected()) {
+	        		switch (Status.getIndexOperation()) {
+
+		        	case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
+		        	case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
+		            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+		            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
+		            case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
+		            case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+		            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
+		            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
+		            case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
+		            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
+		            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
+		            case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
+
+		            	BufferedImage bi = Util.getEmptyBISelection();
+		            	getPage().getJlbl_selectionBG().setIcon(
+		            			new ImageIcon(bi));
+		            	break;
+	                default:
+	                	break;
+	        		}
+	        	}
+	        }		
+	}
+
+	public void mousePressed(final MouseEvent _event) {
 
         if (_event.getSource().equals(
-                Paint.getInstance().getTb_turnMirror().getActionCause())) {
+                getPage().getJlbl_painting())) {
 
-
-        	String commandNormal = "xrandr -o normal";
-        	String result = Util.executeCommandLinux(commandNormal);
-        	if (result.startsWith(Util.EXECUTION_SUCCESS)) {
-        		
-        		Status.getLogger().info("Rotation normal success");
-        	} else if (result.startsWith(Util.EXECUTION_FAILED)) {
-        		
-        		if (Status.isNormalRotation()) {
-
-            		
-            		Status.getLogger().warning("beta rotation");
-                    View.getInstance().turn();
-                    Status.setNormalRotation(false);
-            	}
-            }
-        } else if (_event.getSource().equals(
-                Paint.getInstance().getTb_turnNormal().getActionCause())) {
-
-
-        	String commandInverted = "xrandr -o inverted";
-        	String result = Util.executeCommandLinux(commandInverted);
-        	if (result.startsWith(Util.EXECUTION_SUCCESS)) {
-        		
-        		Status.getLogger().info("Rotation normal success");
-        	} else if (result.startsWith(Util.EXECUTION_FAILED)) {
-        		
-        		if (Status.isNormalRotation()) {
-
-            		
-            		Status.getLogger().warning("beta rotation");
-                	
-                    View.getInstance().turn();
-                    Status.setNormalRotation(true);
-            	}
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void mouseClicked(final MouseEvent _event) {
-
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
-
-        if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
-
-            if (Status.isUncommittedChanges()) {
-
-                int i = JOptionPane.showConfirmDialog(View.getInstance(),
-                        "Changes Uncommitted. Do you want to save them "
-                                + "before exiting? ", "Save changes",
-                        JOptionPane.YES_NO_CANCEL_OPTION);
-                if (i == 0) {
-                    // okay
-                    mr_save();
-                } else if (i == 1) {
-
-                    // no
-                    System.exit(1);
-                } 
-                //i == 2 ^ interrupt
-            } else {
-                System.exit(1);
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void mousePressed(final MouseEvent _event) {
-
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is
-        // performed.
-        if (!startPerform) {
-            return;
-        }
-
-        // source: exit button at the top of the window
-        if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
-            View.getInstance().getJbtn_exit().setIcon(
-                    new ImageIcon(Utils.resizeImage(View.getInstance()
-                            .getJbtn_exit().getWidth(), View
-                            .getInstance().getJbtn_exit().getHeight(),
-                            Constants.VIEW_JBTN_EXIT_PRESSED_PATH)));
-        } else if (_event.getSource().equals(
-                View.getInstance().getJbtn_fullscreen())) {
-            View.getInstance().getJbtn_fullscreen().setIcon(new ImageIcon(Utils
-                    .resizeImage(View.getInstance().getJbtn_exit().getWidth(), 
-                            View.getInstance().getJbtn_exit().getHeight(),
-                                    Constants
-                                    .VIEW_JBTN_FULLSCREEN_PRESSED_PATH)));
-        } else if (_event.getSource().equals(
-                Page.getInstance().getJlbl_painting())) {
-
-            Tabs.getInstance().closeMenues();
+            getTabs().closeMenues();
             
             // switch index of operation
             switch (Status.getIndexOperation()) {
@@ -344,14 +321,14 @@ public final class ControlPainting implements MouseListener,
                 }
                     
                 // add paintObject and point to Picture
-                Picture.getInstance().addPaintObject();
+                Picture.getInstance().addPaintObject(getTabs().getTab_insert());
                 changePO(_event);
                 break;
             
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
 
                 // abort old paint object
-                Picture.getInstance().abortPaintObject();
+                Picture.getInstance().abortPaintObject(controlPic);
 
                 // change pen and add new paint object
                 Picture.getInstance().changePen(new PenSelection());
@@ -372,7 +349,7 @@ public final class ControlPainting implements MouseListener,
                 			//The theoretically displayed width of the image
                 			//if the image would not terminate somewhere
                 			//on screen.
-                			Page.getInstance().getJlbl_painting().getWidth()
+                			getPage().getJlbl_painting().getWidth()
                 			* Status.getImageSize().width
                 			/ Status.getImageShowSize().width
                 			/ Status.getEraseRadius(),
@@ -387,7 +364,7 @@ public final class ControlPainting implements MouseListener,
                 			//The theoretically displayed height of the image
                 			//if the image would not terminate somewhere
                 			//on screen.
-                			Page.getInstance().getJlbl_painting().getHeight()
+                			getPage().getJlbl_painting().getHeight()
                 			* Status.getImageSize().height
                 			/ Status.getImageShowSize().height
                 			/ Status.getEraseRadius(),
@@ -411,7 +388,7 @@ public final class ControlPainting implements MouseListener,
             	break;
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
 
-                Picture.getInstance().abortPaintObject();
+                Picture.getInstance().abortPaintObject(controlPic);
                 Picture.getInstance().changePen(new PenSelection());
                 Picture.getInstance().addPaintObjectWrinting();
                 break;
@@ -422,7 +399,7 @@ public final class ControlPainting implements MouseListener,
 
                 
                 pnt_start = _event.getPoint();
-                pnt_startLocation = Page.getInstance().getJlbl_painting()
+                pnt_startLocation = getPage().getJlbl_painting()
                         .getLocation();
                 break;
             default:
@@ -432,62 +409,39 @@ public final class ControlPainting implements MouseListener,
         }
     }
 
-    
-    /**
-     * Change PaintObject.
-     * @param _event the event.
-     */
-    private void changePO(final MouseEvent _event) {
+	public void mouseReleased(MouseEvent _event) {
+		if (_event.getSource().equals(
+                getPage().getJlbl_painting())) {
+			mr_painting(_event);
+		} 
+	}
 
-        if (Status.isNormalRotation()) {
 
-            Picture.getInstance().changePaintObject(
-                    new DPoint((_event.getX() 
-                            - Page.getInstance()
-                            .getJlbl_painting().getLocation().x
-                            )
-                            * Status.getImageSize().width
-                            / Status.getImageShowSize().width, (_event
-                            .getY() 
-                            - Page.getInstance().getJlbl_painting()
-                            .getLocation().y
-                            )
-                            * Status.getImageSize().height
-                            / Status.getImageShowSize().height));
-        } else {
 
-            Picture.getInstance().changePaintObject(
-                    new DPoint(
-                            Page.getInstance().getJlbl_painting().getWidth()
-                            - (_event.getX() 
-                            + Page.getInstance()
-                            .getJlbl_painting().getLocation().x
-                            )
-                            * Status.getImageSize().width
-                            / Status.getImageShowSize().width, 
-                            Page.getInstance().getJlbl_painting().getHeight()
-                            - (_event.getY() 
-                            + Page.getInstance().getJlbl_painting()
-                            .getLocation().y
-                            )
-                            * Status.getImageSize().height
-                            / Status.getImageShowSize().height));
-        }
-    }
-    /**
-     * {@inheritDoc}
-     */
-    public void mouseDragged(final MouseEvent _event) {
+	/**
+	 * @return the view
+	 */
+	public View getView() {
+		return view;
+	}
 
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
+
+
+	/**
+	 * @param view the view to set
+	 */
+	public void setView(View view) {
+		this.view = view;
+	}
+
+
+
+	public void mouseDragged(MouseEvent _event) {
+
 
         // left mouse pressed
         final int leftMouse = 1024;
-        if (_event.getSource().equals(Page.getInstance().getJlbl_painting())) {
+        if (_event.getSource().equals(getPage().getJlbl_painting())) {
             switch (Status.getIndexOperation()) {
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
@@ -513,67 +467,74 @@ public final class ControlPainting implements MouseListener,
 
             case Constants.CONTROL_PAINTING_INDEX_ERASE:
 
-            	mr_erase(_event.getPoint());
-            	if (field_erase != null) {
+            	final boolean rectangleOperation = true;
+            	
+            	if (!rectangleOperation) {
+//            		mr_eraseNew();
+            		mr_erase(_event.getPoint());
+                				
+                					
+                	//(_event.getPoint());
+                	if (field_erase != null) {
 
+                		final double factorWidth = 
+                				1.0 * Math.min(
+                						
+                						//the value if the border of the picture
+                						//is not displayed (because not enough
+                						//zoom out)
+                						1.0 * Status.getImageSize().width
+                						/ Status.getImageShowSize().width
+                						/ Status.getEraseRadius(),
+
+                						//value if border is visible on screen; 
+                						//zoomed out
+                						1.0 * Status.getImageSize().width
+                						/ getPage().getJlbl_painting()
+                						.getWidth()
+                						/ Status.getEraseRadius());
+                		final double factorHeight = 
+                				1.0 * Math.min(
+                						
+                						//the value if the border of the picture
+                						//is not displayed (because not enough
+                						//zoom out)
+                						1.0 * Status.getImageSize().height
+                						/ Status.getImageShowSize().height
+                						/ Status.getEraseRadius(),
+
+                						//value if border is visible on screen; 
+                						//zoomed out
+                						1.0 * Status.getImageSize().height
+                						/ getPage().getJlbl_painting()
+                						.getHeight()
+                						/ Status.getEraseRadius());
                 		
+                		field_erase [(int) (_event.getPoint().x * factorWidth)]
+                					[(int) (_event.getPoint().y * factorHeight)]
+                							= PaintBI.FREE;
 
-            		final double factorWidth = 
-            				1.0 * Math.min(
-            						
-            						//the value if the border of the picture
-            						//is not displayed (because not enough
-            						//zoom out)
-            						1.0 * Status.getImageSize().width
-            						/ Status.getImageShowSize().width
-            						/ Status.getEraseRadius(),
-
-            						//value if border is visible on screen; 
-            						//zoomed out
-            						1.0 * Status.getImageSize().width
-            						/ Page.getInstance().getJlbl_painting()
-            						.getWidth()
-            						/ Status.getEraseRadius());
-            		final double factorHeight = 
-            				1.0 * Math.min(
-            						
-            						//the value if the border of the picture
-            						//is not displayed (because not enough
-            						//zoom out)
-            						1.0 * Status.getImageSize().height
-            						/ Status.getImageShowSize().height
-            						/ Status.getEraseRadius(),
-
-            						//value if border is visible on screen; 
-            						//zoomed out
-            						1.0 * Status.getImageSize().height
-            						/ Page.getInstance().getJlbl_painting()
-            						.getHeight()
-            						/ Status.getEraseRadius());
-            		
-            		field_erase[ (int) (_event.getPoint().x * factorWidth)]
-            				[ (int) (_event.getPoint().y * factorHeight)]
-            						= PaintBI.FREE;
-
-            		final int displayHeight = Status.getEraseRadius()
-            				* Status.getImageShowSize().height
-            				/ Status.getImageSize().height;
-            		final int displayWidth = Status.getEraseRadius()
-            				* Status.getImageShowSize().width
-            				/ Status.getImageSize().width;
-            		
-            		Page.getInstance().getJlbl_painting().clrRectangle(
-                    		_event.getX() - displayWidth / 2, 
-                    		_event.getY() - displayHeight / 2, 
-                    		displayWidth,
-                    		displayHeight);
+                		final int displayHeight = Status.getEraseRadius()
+                				* Status.getImageShowSize().height
+                				/ Status.getImageSize().height;
+                		final int displayWidth = Status.getEraseRadius()
+                				* Status.getImageShowSize().width
+                				/ Status.getImageSize().width;
+                		
+                		controlPic.clrRectangle(
+                        		_event.getX() - displayWidth / 2, 
+                        		_event.getY() - displayHeight / 2, 
+                        		displayWidth,
+                        		displayHeight);
+                	}
             	}
-//            	Point p = new Point(
-//            			(int) (_event.getPoint().x - Page.getInstance()
-//            					.getJlbl_painting().getLocation().getX()),
-//                    	(int) (_event.getPoint().y - Page.getInstance()
-//                    			.getJlbl_painting().getLocation().getY()));
-//            	mr_erase(p);
+            	
+            	Point p = new Point(
+            			(int) (_event.getPoint().x - getPage()
+            					.getJlbl_painting().getLocation().getX()),
+                    	(int) (_event.getPoint().y - getPage()
+                    			.getJlbl_painting().getLocation().getY()));
+            	mr_erase(p);
                 break;
                 
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
@@ -582,9 +543,9 @@ public final class ControlPainting implements MouseListener,
 
                     if (pnt_start == null) {
                         pnt_start = _event.getPoint();
-                        pnt_startLocation = Page.getInstance()
+                        pnt_startLocation = getPage()
                                 .getJlbl_painting().getLocation();
-                        Picture.getInstance().abortPaintObject();
+                        Picture.getInstance().abortPaintObject(controlPic);
                     }
 
                     if (pnt_start != null) {
@@ -604,7 +565,7 @@ public final class ControlPainting implements MouseListener,
                                 - yLocation, 
                                 Math.abs(pnt_start.y - _event.getY()));
 
-                        Page.getInstance().getJlbl_border().setBounds(xLocation,
+                        getPage().getJlbl_border().setBounds(xLocation,
                                 yLocation, xSize, ySize);
                     } else {
                         
@@ -618,7 +579,7 @@ public final class ControlPainting implements MouseListener,
 
                 if (_event.getModifiersEx() == leftMouse) {
 
-                    Picture.getInstance().abortPaintObject();
+                    Picture.getInstance().abortPaintObject(controlPic);
                     Picture.getInstance().changePen(new PenSelection());
                     Picture.getInstance().addPaintObjectWrinting();
                     break;
@@ -627,9 +588,9 @@ public final class ControlPainting implements MouseListener,
                 if (_event.getModifiersEx() == leftMouse) {
                     if (pnt_start == null) {
                         pnt_start = _event.getPoint();
-                        pnt_startLocation = Page.getInstance()
+                        pnt_startLocation = getPage()
                                 .getJlbl_painting().getLocation();
-                        Picture.getInstance().abortPaintObject();
+                        Picture.getInstance().abortPaintObject(controlPic);
                     }
                     
                     if (pnt_last != null) {
@@ -653,24 +614,20 @@ public final class ControlPainting implements MouseListener,
                         y = pnt_startLocation.y -  _event.getY() + pnt_start.y;
                     }
                     
-                    if (x < -Status.getImageShowSize().width + Page
-                            .getInstance().getJlbl_painting().getWidth()) {
-                        x = -Status.getImageShowSize().width + Page
-                                .getInstance().getJlbl_painting().getWidth();
+                    if (x < -Status.getImageShowSize().width + getPage().getJlbl_painting().getWidth()) {
+                        x = -Status.getImageShowSize().width + getPage().getJlbl_painting().getWidth();
                     }
                     if (x > 0) {
                         x = 0;
                     }
-                    if (y < -Status.getImageShowSize().height + Page
-                            .getInstance().getJlbl_painting().getHeight()) {
-                        y = -Status.getImageShowSize().height + Page
-                                .getInstance().getJlbl_painting().getHeight();
+                    if (y < -Status.getImageShowSize().height + getPage().getJlbl_painting().getHeight()) {
+                        y = -Status.getImageShowSize().height + getPage().getJlbl_painting().getHeight();
                     }
                     if (y >= 0) {
                         y = 0;
                     } 
-                    Page.getInstance().getJlbl_painting().setLocation(x, y);
-                    Page.getInstance().refrehsSps();
+                    getPage().getJlbl_painting().setLocation(x, y);
+                    getPage().refrehsSps();
                     pnt_last = _event.getPoint();
                     break;
                 }
@@ -679,199 +636,17 @@ public final class ControlPainting implements MouseListener,
                 break;
             }
         }
-        New.getInstance().repaint();
-    }
-
-    /*
-     * mouse over
-     */
-
-    /**
-     * {@inheritDoc}
-     */
-    public void mouseReleased(final MouseEvent _event) {
-
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
-
-        // source: exit button at the top of the window
-        if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
-            mr_exit();
-        } else if (_event.getSource().equals(
-                View.getInstance().getJbtn_fullscreen())) {
-            mr_fullscreen();
-        } else if (_event.getSource().equals(
-                Paint.getInstance().getTb_new().getActionCause())) {
-            mr_new();
-        } else if (_event.getSource().equals(
-                Paint.getInstance().getTb_save().getActionCause())) {
-            mr_save();
-        } else if (_event.getSource().equals(
-                Paint.getInstance().getTb_load().getActionCause())) {
-            mr_load();
-        } else if (_event.getSource().equals(
-                Paint.getInstance().getTb_zoomOut().getActionCause())) {
-            mr_zoomOut();
-        } else if (_event.getSource().equals(
-                Paint.getInstance().getTb_copy().getActionCause())) {
-            mr_copy();
-        } else if (_event.getSource().equals(
-                Paint.getInstance().getTb_paste().getActionCause())) {
-            mr_paste();
-        } else if (_event.getSource().equals(
-                Paint.getInstance().getTb_cut().getActionCause())) {
-            mr_cut();
-        } else if (_event.getSource().equals(
-        		Print.getInstance().getTb_print().getActionCause())) {
-        	Util.print();
-        	
-        } else if (_event.getSource().equals(
-                        Page.getInstance().getJlbl_painting())) {
-            mr_painting(_event);
-        } 
-    }
-    
+//        New.getInstance().repaint();
+    		
+	}
 
 
-    
-    /**
-     * make fullscreen or normal size.
-     */
-    private void mr_fullscreen() {
-//        View.getInstance().setFullscreen();
-        ViewSettings.setFULLSCREEN(!ViewSettings.isFullscreen());
-        
-        if (ViewSettings.isFullscreen()) {
 
-            ViewSettings.setSize_jframe(
-                new Dimension(
-                (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()), 
-                (int) (Toolkit.getDefaultToolkit().getScreenSize()
-                        .getHeight())));
-        } else {
+	public void mouseMoved(MouseEvent _event) {
 
-            ViewSettings.setSize_jframe(
-                   new Dimension(
-                   (int) (Toolkit.getDefaultToolkit().getScreenSize()
-                           .getWidth() 
-                           * 2 / (2 + 1)), 
-                   (int) (Toolkit.getDefaultToolkit().getScreenSize()
-                           .getHeight() 
-                           * 2 / (2 + 1))));
-        }
-        
-        View.getInstance().setVisible(true);
-        View.getInstance().flip();
-        View.getInstance().repaint();
-        Tabs.getInstance().repaint();
-        Tabs.getInstance().openTab(0);
-        
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void mouseExited(final MouseEvent _event) {
 
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
-
-        // source: exit button at the top of the window
-        if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
-            View.getInstance().getJbtn_exit().setIcon(new ImageIcon(Utils
-                    .resizeImage(View.getInstance().getJbtn_exit().getWidth(), 
-                            View.getInstance().getJbtn_exit().getHeight(),
-                                    Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
-        } else if (_event.getSource().equals(
-                View.getInstance().getJbtn_fullscreen())) {
-            View.getInstance().getJbtn_fullscreen().setIcon(new ImageIcon(Utils
-                    .resizeImage(View.getInstance().getJbtn_exit().getWidth(), 
-                            View.getInstance().getJbtn_exit().getHeight(),
-                                    Constants
-                                    .VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
-        } else if (_event.getSource().equals(
-        		Page.getInstance().getJlbl_painting())) { 
-        	
-        	
-        	//remove old pen - position - indication - point
-        	if (!Picture.getInstance().isSelected()) {
-        		switch (Status.getIndexOperation()) {
-
-	        	case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
-	        	case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
-	            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
-	            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
-	            case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
-	            case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
-	            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
-	            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
-	            case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
-	            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
-	            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
-	            case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
-
-	            	BufferedImage bi = Page.getInstance().getEmptyBISelection();
-	            	Page.getInstance().getJlbl_selectionBG().setIcon(
-	            			new ImageIcon(bi));
-	            	break;
-                default:
-                	break;
-        		}
-        	}
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void mouseEntered(final MouseEvent _event) {
-
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
-
-        // source: exit button at the top of the window
-        if (_event.getSource().equals(View.getInstance().getJbtn_exit())) {
-
-            View.getInstance().getJbtn_exit().setIcon(
-                    new ImageIcon(Utils.resizeImage(View.getInstance()
-                            .getJbtn_exit().getWidth(), View
-                            .getInstance().getJbtn_exit().getHeight(),
-                            Constants.VIEW_JBTN_EXIT_MOUSEOVER_PATH)));
-        } else if (_event.getSource().equals(
-                View.getInstance().getJbtn_fullscreen())) {
-            View.getInstance().getJbtn_fullscreen().setIcon(new ImageIcon(Utils
-                    .resizeImage(View.getInstance().getJbtn_exit().getWidth(), 
-                            View.getInstance().getJbtn_exit().getHeight(),
-                                    Constants
-                                    .VIEW_JBTN_FULLSCREEN_MOUSEOVER_PATH)));
-        }
-    }
-
-    /*
-     * mouseMoved
-     */
-
-    /**
-     * {@inheritDoc}
-     */
-    public void mouseMoved(final MouseEvent _event) {
-
-        // if the ActionListener is not ready to listen to events because
-        // the view is not visible yet return each time an action is performed.
-        if (!startPerform) {
-            return;
-        }
-
-        if (_event.getSource().equals(Page.getInstance().getJlbl_painting())) {
+        if (_event.getSource().equals(getPage().getJlbl_painting())) {
 
             switch (Status.getIndexOperation()) {
             
@@ -896,7 +671,7 @@ public final class ControlPainting implements MouseListener,
                         - ViewSettings.ZOOM_SIZE.height, yLocation);
 
                 // apply new location
-                Zoom.getInstance().setLocation(xLocation, yLocation);
+                zoom.setLocation(xLocation, yLocation, getPage());
                 break;
 
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
@@ -912,21 +687,26 @@ public final class ControlPainting implements MouseListener,
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
                 
-            	if (!Tabs.getInstance().isMenuOpen()) {
+            	if (!getTabs().isMenuOpen()) {
 
                     if (Status.isNormalRotation()) {
 
                         Picture.getInstance().getPen_current().preprint(
-                                _event.getX(), _event.getY());
+                                _event.getX(), _event.getY(),
+                                Util.getEmptyBISelection(),
+                                getPage().getJlbl_selectionBG());
+
                     } else {
 
                         Picture.getInstance().getPen_current().preprint(
-                        		Page.getInstance().getJlbl_painting()
+                        		getPage().getJlbl_painting()
                         		.getWidth() 
                                 - _event.getX(), 
-                                Page.getInstance().getJlbl_painting()
+                                getPage().getJlbl_painting()
                                 .getHeight() 
-                                - _event.getY());
+                                - _event.getY(),
+                                Util.getEmptyBISelection(),
+                                getPage().getJlbl_selectionBG());
                     }
             	}
                 break;
@@ -935,428 +715,248 @@ public final class ControlPainting implements MouseListener,
                 break;
             }
         }
-    }
+    		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
-    /**
-     * method returns only one instance of this.
-     * 
-     * @return the instance
-     */
-    public static ControlPainting getInstance() {
-
-        // if instance is not yet created
-        if (instance == null) {
-
-            // initialize and start action
-            instance = new ControlPainting();
-            instance.start();
-        }
-
-        // return the only instance
-        return instance;
-    }
-
-    
-    /*
-     * 
-     * 
-     * clipboard
-     * 
-     * 
-     */
     
     /**
-     * MouseReleased method for button press at button cut.
-     */
-    private void mr_cut() {
+	 * Change PaintObject.
+	 * @param _event the event.
+	 */
+	private void changePO(final MouseEvent _event) {
+	
+	    if (Status.isNormalRotation()) {
+	
+	        Picture.getInstance().changePaintObject(new DPoint((_event.getX() 
+	        		- getPage().getJlbl_painting().getLocation().x)
+	        		* Status.getImageSize().width
+	        		/ Status.getImageShowSize().width, 
+	        		(_event.getY() 
+	        				- getPage().getJlbl_painting().getLocation().y)
+	                        * Status.getImageSize().height
+	                        / Status.getImageShowSize().height),
+	                        getPage(),
+	                        controlPic);
+	    } else {
+	
+	        Picture.getInstance().changePaintObject(
+	                new DPoint(
+	                        getPage().getJlbl_painting().getWidth()
+	                        - (_event.getX() 
+	                        + getPage()
+	                        .getJlbl_painting().getLocation().x
+	                        )
+	                        * Status.getImageSize().width
+	                        / Status.getImageShowSize().width, 
+	                        getPage().getJlbl_painting().getHeight()
+	                        - (_event.getY() 
+	                        + getPage().getJlbl_painting()
+	                        .getLocation().y
+	                        )
+	                        * Status.getImageSize().height
+	                        / Status.getImageShowSize().height),
+	                        getPage(),
+	                        controlPic
+	                        );
+	    }
+	}
 
-        MyClipboard.getInstance().copyPaintObjects(
-                Picture.getInstance().getLs_poSelected(), 
-                Picture.getInstance().paintSelectedBI());
-        
-        Picture.getInstance().deleteSelected();
-        Page.getInstance().releaseSelected();
-        Page.getInstance().getJlbl_painting().refreshPaint();
-    
-    }
-    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 
     /**
-     * MouseReleased method for button press at button paste.
+     * the mouse released event of painting JLabel.
+     * @param _event the event given to mouseListener.
      */
-    private void mr_paste() {
+    private void mr_painting(final MouseEvent _event) {
 
+        // switch index of operation
+        switch (Status.getIndexOperation()) {
+        case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
+        case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
+        case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
+        case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
+        case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
+         
+            // write the current working picture into the global picture.
+            Picture.getInstance().finish(view.getTabs().getTab_pos());
+            break;
 
-        Page.getInstance().releaseSelected();
-        Picture.getInstance().releaseSelected();
-        Picture.getInstance().createSelected();
-        
-        Object o = MyClipboard.getInstance().paste();
-        if (o instanceof BufferedImage) {
+        case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
+            if (_event.getButton() == 1) {
 
-            PaintObjectImage poi = Picture.createPOI(
-                    (BufferedImage) o);
-            Picture.getInstance().insertIntoSelected(poi);
-
-            //finish insertion into selected.
-            Picture.getInstance().finishSelection();
-            
-            Picture.getInstance().paintSelected();
-            Page.getInstance().getJlbl_background2().repaint();
-            
-
-        } else if (o instanceof List) {
-            @SuppressWarnings("unchecked")
-            List<PaintObject> ls = (List<PaintObject>) o;
-            ls.toFirst();
-            
-            while (!ls.isEmpty() && !ls.isBehind()) {
-                PaintObject po = ls.getItem();
-                if (po instanceof PaintObjectImage) {
-                    PaintObjectImage poi = (PaintObjectImage) po;
-                    PaintObjectImage poi_new = Picture.createPOI(
-                    		poi.getSnapshot());
-                    Picture.getInstance().insertIntoSelected(poi_new);
-
-                    //finish insertion into selected.
-                    Picture.getInstance().finishSelection();
+                //remove old rectangle.
+                getPage().getJlbl_border().setBounds(-1, -1, 0, 0);
+                switch (Status.getIndexSelection()) {
+                case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
                     
-                } else if (po instanceof PaintObjectWriting) {
-                    PaintObjectWriting pow = (PaintObjectWriting) po;
-                    PaintObjectWriting pow_new 
-                    = Picture.createPOW(pow.getPen());
-                    
-                    pow.getPoints().toFirst();
-                    while (!pow.getPoints().isEmpty() 
-                            && !pow.getPoints().isBehind()) {
-                        pow_new.addPoint(new DPoint(
-                                pow.getPoints().getItem()));
-                        pow.getPoints().next();
-                    }
-                    Picture.getInstance().insertIntoSelected(pow_new);
+                        PaintObjectWriting pow 
+                        = Picture.getInstance().abortPaintObject(controlPic);
+                        mr_sel_curve_complete(_event, pow);
+                    break;
+                case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
 
-                    //finish insertion into selected.
-                    Picture.getInstance().finishSelection();
+                    PaintObjectWriting pow2 
+                    = Picture.getInstance().abortPaintObject(controlPic);
+                    mr_sel_curve_destroy(_event, pow2);
+                    break;
+                case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
+                    break;
+                default:
+                    break;
+                }
+                pnt_start = null;
                 
-                } else  if (po != null) {
-                    Status.getLogger().warning("unknown kind of "
-                            + "PaintObject; element = " + po);
-                }
-                ls.next();
+                //set index to moving
+                Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
+                cTabPaintStatus.deactivate();
+                view.getTabs().getTab_paint().getTb_move().setActivated(true);
             }
-            
-        } else if (o instanceof PaintObjectWriting) {
-            Picture.getInstance().insertIntoSelected(
-                    (PaintObjectWriting) o);
+            break;
 
-            //finish insertion into selected.
-            Picture.getInstance().finishSelection();
-        } else if (o instanceof PaintObjectImage) {
-            Picture.getInstance().insertIntoSelected(
-                    (PaintObjectImage) o);
+        case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
+            if (_event.getButton() == 1) {
 
-            //finish insertion into selected.
-            Picture.getInstance().finishSelection();
-            new Exception("hier").printStackTrace();
-        } else {
-            Status.getLogger().warning("unknown return type of clipboard");
-        }
-        Picture.getInstance().paintSelected();
-        Page.getInstance().getJlbl_background2().repaint();
-        Page.getInstance().getJlbl_painting().refreshPaint();
-    
-    }
-
-    /**
-     * MouseReleased method for button press at button copy.
-     */
-    private void mr_copy() {
-
-        MyClipboard.getInstance().copyPaintObjects(
-                Picture.getInstance().getLs_poSelected(), 
-                Picture.getInstance().paintSelectedBI());
-            
-    }
-    
-    
-    /*
-     * 
-     * 
-     * exit
-     * 
-     * 
-     */
-
-    /**
-     * MouseReleased method for button press at button exit.
-     */
-    private void mr_exit() {
-
-        View.getInstance().getJbtn_exit().setIcon(new ImageIcon(
-                Utils.resizeImage(View.getInstance().getJbtn_exit()
-                        .getWidth(), View.getInstance().getJbtn_exit()
-                        .getHeight(), 
-                        Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
-            
-    }
-
-
-    /*
-     * 
-     * 
-     * File operations
-     * 
-     * 
-     */
-    
-    
-    
-    /**
-     * the save action.
-     */
-    private void mr_save() {
-
-        // if not saved yet. Otherwise use the saved save path.
-        if (Status.getSavePath() == null) {
-
-            // choose a file
-            JFileChooser jfc = new JFileChooser();
-            jfc.setCurrentDirectory(new java.io.File("."));
-            jfc.setDialogTitle("Select save location");
-            int retval = jfc.showOpenDialog(View.getInstance());
-
-            // if selected a file.
-            if (retval == JFileChooser.APPROVE_OPTION) {
-
-                // fetch the selected file.
-                File file = jfc.getSelectedFile();
-
-                // edit file ending
-                if (!file.getName().toLowerCase().contains(".")) {
-                    file = new File(file.getAbsolutePath() + ".pic");
-                } else if (!file.getName().toLowerCase().endsWith(".png")
-                        && !file.getName().toLowerCase().endsWith(".pic")) {
-
-                    JOptionPane.showMessageDialog(View.getInstance(),
-                            "Select a .png or .pic file.", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    mr_save();
-                    return;
+                Rectangle r = mr_paint_calcRectangleLocation(_event);
+                getPage().getJlbl_border().setBounds(r);
+                //remove old rectangle.
+                switch (Status.getIndexSelection()) {
+                case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
+                    mr_sel_line_complete(_event, r);
+                    break;
+                case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
+                    mr_sel_line_destroy(r);
+                    break;
+                case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
+                    break;
+                default:
+                    break;
                 }
-
-                // if file already exists
-                if (file.exists()) {
-
-                    int result = JOptionPane.showConfirmDialog(
-                            View.getInstance(), "File already exists. "
-                                    + "Owerwrite?", "Owerwrite file?",
-                            JOptionPane.YES_NO_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE);
-                    if (result == 1) {
-                        // no
-                        mr_save();
-                        return;
-                    } else if (result == 2) {
-                        // interrupt
-                        return;
-                    }
-                    // overwrite
-                }
-                Status.setSavePath(file.getAbsolutePath());
+                // reset values
+                pnt_start = null;
+                
+                //set index to moving
+                Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
+                cTabPaintStatus.deactivate();
+                view.getTabs().getTab_paint().getTb_move().setActivated(true);
+                getPage().getJlbl_background2().repaint();
             }
-        }
+            break;
+        case Constants.CONTROL_PAINTING_INDEX_ERASE:
 
-        // generate path without the file ending.
-        if (Status.getSavePath() != null) {
-
-            int d = Status.getSavePath().toCharArray().length - 2 - 1;
-            String firstPath = Status.getSavePath().substring(0, d);
-            
-            // save images in both formats.
-            Picture.getInstance().saveIMAGE(firstPath);
-            Picture.getInstance().savePicture(firstPath + "pic");
-
-
-            Status.setUncommittedChanges(false);
-        }
-    }
-    
-    /**
-     * MouseReleased method for button press at button load.
-     */
-    private void mr_load() {
-
-        int i = JOptionPane.showConfirmDialog(View.getInstance(),
-                "Do you want to save the committed changes? ",
-                "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
-        // no
-        if (i == 1) {
-
-
-
-            JFileChooser jfc = new JFileChooser();
-            jfc.setCurrentDirectory(new java.io.File("."));
-            jfc.setDialogTitle("Select load location");
-            int retval = jfc.showOpenDialog(View.getInstance());
-
-            if (retval == JFileChooser.APPROVE_OPTION) {
-                File file = jfc.getSelectedFile();
-
-                if (file.getName().toLowerCase().endsWith(".pic")) {
-                    Picture.getInstance().loadPicture(file.getAbsolutePath());
-                    Status.setUncommittedChanges(false);
-                    Page.getInstance().getJlbl_painting().refreshPaint();
-                } else if (file.getName().toLowerCase().endsWith(".png")) {
-                    
-                    try {
-                        BufferedImage bi_imageBG = ImageIO.read(file);
-                        Status.setImageSize(new Dimension(
-                                bi_imageBG.getWidth(), 
-                                bi_imageBG.getHeight()));
-                        Status.setImageShowSize(Status.getImageSize());
-                        Picture.getInstance().emptyImage();
-                        Picture.getInstance().addPaintObjectImage(bi_imageBG);
-                        Page.getInstance().getJlbl_painting().refreshPaint();
-                        
-                    } catch (IOException e) {
-                        e.printStackTrace();
-
-                        new Error("not supported yet to load pictures "
-                                + "because there are no paintObjects for "
-                                + "pictures"
-                                + "but only those for lines.")
-                        .printStackTrace();
-                    }
-                    
-                    
-
-                } else {
-
-                    JOptionPane.showMessageDialog(View.getInstance(),
-                            "Select a .png file.", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    mr_save();
-                    Status.setUncommittedChanges(false);
-                }
-            }
-        
-        
-        
-        
-        
-        } else if (i == 0) {
-            // yes
-            mr_save();
-        }        
-    }
-
-
-
-    /**
-     * the action which is performed if new image is released.
-     */
-    private void mr_new() {
-
-        if (Status.isUncommittedChanges()) {
-            int i = JOptionPane.showConfirmDialog(View.getInstance(),
-                    "Do you want to save the committed changes? ",
-                    "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
-            if (i == 0) {
-                mr_save();
-                mr_new();
-            } 
-            
-            //if the user does not want to interrupt recall actionNew
-            if (i == 1) {
-
-                New.getInstance().setVisible(true);
-                Picture.getInstance().reload();
-                Status.setUncommittedChanges(false);
-            }
-        } else {
-
-            New.getInstance().setVisible(true);
-            Picture.getInstance().reload();
-            Status.setUncommittedChanges(false);
-
-        }
-    }
-
-    
-    
-    /*
-     * 
-     * 
-     * Zoom
-     * 
-     * 
-     */
-    
-    
-    /**
-     * MouseReleased method for button press at button zoom out.
-     */
-    private void mr_zoomOut() {
-
-    	//TODO: adjust this one.
-        //if able to zoom out
-        if (Status.getImageSize().width
-                / Status.getImageShowSize().width 
-                < Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
-                        ViewSettings.MAX_ZOOM_OUT)) {
+//        	mr_erase();
         	
-            int newWidth = Status.getImageShowSize().width
-                    / ViewSettings.ZOOM_MULITPLICATOR, newHeight = Status
-                    .getImageShowSize().height
-                    / ViewSettings.ZOOM_MULITPLICATOR;
+        	break;
 
-            int displayedWidth = 
-            		Page.getInstance().getJlbl_painting().getWidth();
-            int displayedHeight = 
-            		Page.getInstance().getJlbl_painting().getHeight();
-            
-            
-            Point oldLocation = new Point(Page.getInstance()
-                    .getJlbl_painting().getLocation().x + displayedWidth / 2, 
-                    Page.getInstance() 
-                    .getJlbl_painting().getLocation().y + displayedHeight / 2);
-            
+        case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
 
-            // not smaller than the
-            oldLocation.x = Math.max(oldLocation.x,
-            		-(Status.getImageShowSize().width 
-                    - Page.getInstance().getJlbl_painting()
-                    .getWidth()));
-            oldLocation.y = Math.max(oldLocation.y,
-                    -(Status.getImageShowSize().height - Page
-                            .getInstance().getJlbl_painting()
-                            .getHeight()));
-            
-            
-            // not greater than 0
-            oldLocation.x = Math.min(oldLocation.x, 0);
-            oldLocation.y = Math.min(oldLocation.y, 0); 
-     
-            Status.setImageShowSize(new Dimension(newWidth, newHeight));
-            Page.getInstance().flip();
+            if (_event.getButton() == 1) {
+                Picture.getInstance().abortPaintObject(controlPic);
+            }
+            break;
+        case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
 
-            Page.getInstance().getJlbl_painting()
-                    .setLoc((oldLocation.x) / 2, (oldLocation.y) / 2);
-            Page.getInstance().getJlbl_painting().refreshPaint();
-            Page.getInstance().refrehsSps();
+            if (_event.getButton() == MouseEvent.BUTTON1) {
+                mr_zoom(_event);
+                cTabPaint.updateResizeLocation();
+            } else if (_event.getButton() == MouseEvent.BUTTON3) {
+            	cTabPaint.mr_zoomOut();
+            	cTabPaint.updateResizeLocation();
+            }
+            break;
+        case Constants.CONTROL_PAINTING_INDEX_PIPETTE:
+            mr_paint_pipette(_event);
+            break;
+        case Constants.CONTROL_PAINTING_INDEX_MOVE:
 
-            Page.getInstance().releaseSelected();
-            Picture.getInstance().releaseSelected();
-            updateResizeLocation();
-        } else {
-            Message.showMessage(Message.MESSAGE_ID_INFO, 
-                    "max zoom out reached");
-            updateResizeLocation();
+            if (_event.getButton() == 1) {
+
+                final Point mmSP = pnt_movementSpeed;
+                if (mmSP != null) {
+                    if (thrd_move != null) {
+                        thrd_move.interrupt();
+                    }
+//                    mr_paint_initializeMovementThread(mmSP);
+//                    thrd_move.start();
+                }
+                
+                //set points to null
+                pnt_start = null;
+                pnt_startLocation = null;
+                pnt_last = null;
+                pnt_movementSpeed = null;
+                
+                //release everything
+                if (Picture.getInstance().isSelected()) {
+
+                    Picture.getInstance().releaseSelected(
+                			getControlPaintSelection(),
+                			getcTabSelection(),
+                			getView().getTabs().getTab_pos(),
+                			getView().getPage().getJlbl_painting().getLocation().x,
+                			getView().getPage().getJlbl_painting().getLocation().y);
+                    controlPic.releaseSelected();
+                    getPage().removeButtons();
+                }
+            }
+            break;
+           
+        default:
+            Status.getLogger().warning("Switch in mouseReleased default");
+            break;
         }
-
-        // TODO: hier die location aktualisieren.
-    
+        view.getPage().getJpnl_new().setVisible(false);
     }
+
+    
+    
+    
+    
+    
     
     
 
@@ -1376,20 +976,20 @@ public final class ControlPainting implements MouseListener,
                     newHeight = Status.getImageShowSize().height
                     * ViewSettings.ZOOM_MULITPLICATOR;
 
-            Point oldLocation = new Point(Page.getInstance()
-                    .getJlbl_painting().getLocation().x, Page.getInstance()
+            Point oldLocation = new Point(getPage()
+                    .getJlbl_painting().getLocation().x, getPage()
                     .getJlbl_painting().getLocation().y);
 
             Status.setImageShowSize(new Dimension(newWidth, newHeight));
-            Page.getInstance().flip();
-
+            getPage().flip();
+           
             /*
              * set the location of the panel.
              */
             // save new coordinates
-            int newX = (oldLocation.x - Zoom.getInstance().getX())
+            int newX = (oldLocation.x - zoom.getX())
                     * ViewSettings.ZOOM_MULITPLICATOR;
-            int newY = (oldLocation.y - Zoom.getInstance().getY())
+            int newY = (oldLocation.y - zoom.getY())
                     * ViewSettings.ZOOM_MULITPLICATOR;
 
             
@@ -1397,11 +997,10 @@ public final class ControlPainting implements MouseListener,
 
             // not smaller than the
             newX = Math.max(newX, -(Status.getImageShowSize().width 
-                    - Page.getInstance().getJlbl_painting()
+                    - getPage().getJlbl_painting()
                     .getWidth()));
             newY = Math.max(newY,
-                    -(Status.getImageShowSize().height - Page
-                            .getInstance().getJlbl_painting()
+                    -(Status.getImageShowSize().height - getPage().getJlbl_painting()
                             .getHeight()));
             
             
@@ -1413,11 +1012,13 @@ public final class ControlPainting implements MouseListener,
             // apply the location at JLabel (with setLocation method that 
             //is not used for scrolling purpose [IMPORTANT]) and repaint the 
             //image afterwards.
-            Page.getInstance().getJlbl_painting().setLoc(newX, newY);
-            Page.getInstance().getJlbl_painting().refreshPaint();
+            getPage().getJlbl_painting().setBounds(newX, newY,
+            		getPage().getJlbl_painting().getWidth(),
+            		getPage().getJlbl_painting().getHeight());
+            
 
             // apply the new location at ScrollPane
-            Page.getInstance().refrehsSps();
+            getPage().refrehsSps();
         } else {
             Message.showMessage(Message.MESSAGE_ID_INFO, "max zoom in reached");
         }
@@ -1492,12 +1093,12 @@ public final class ControlPainting implements MouseListener,
             		field, new Point(xShift, yShift))) {
 
                 //move current item from normal list into selected list 
-                Picture.getInstance().insertIntoSelected(po_current);
+                Picture.getInstance().insertIntoSelected(po_current, getView().getTabs().getTab_pos());
                 Picture.getInstance().getLs_po_sortedByX().remove(
                 		transaction);
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
-                 new PictureOverview().remove(po_current);
+                 new PictureOverview(view.getTabs().getTab_pos()).remove(po_current);
                 Picture.getInstance().getLs_po_sortedByX().toFirst(
                 		transaction, SecureList.ID_NO_PREDECESSOR);
             } else {
@@ -1515,11 +1116,13 @@ public final class ControlPainting implements MouseListener,
     			transaction);
     	
         //finish insertion into selected.
-        Picture.getInstance().finishSelection();
+        Picture.getInstance().finishSelection(getcTabSelection());
         
         //paint the selected item and refresh entire painting.
-        Picture.getInstance().paintSelected();
-        Page.getInstance().getJlbl_painting().refreshPaint();
+        Picture.getInstance().paintSelected(getPage(),
+    			getControlPic(),
+    			getControlPaintSelection());
+        controlPic.refreshPaint();
 
 
         
@@ -1613,7 +1216,7 @@ public final class ControlPainting implements MouseListener,
 
                     PaintObject [][] separatedPO = po_current.separate(
                     		field, new Point(xShift, yShift));
-                    new PictureOverview().remove(Picture.getInstance()
+                    new PictureOverview(view.getTabs().getTab_pos()).remove(Picture.getInstance()
                             .getLs_po_sortedByX().getItem());
                     Picture.getInstance().getLs_po_sortedByX().remove(
                     		transaction);
@@ -1628,7 +1231,7 @@ public final class ControlPainting implements MouseListener,
                             //insert the item into the sorted list.
                             separatedPO[1][current].recalculateSnapshotBounds();
                             Picture.getInstance().insertIntoSelected(
-                                    separatedPO[1][current]);
+                                    separatedPO[1][current], getView().getTabs().getTab_pos());
                         } else {
                             
                             Status.getLogger().warning("separated paintObject "
@@ -1637,7 +1240,7 @@ public final class ControlPainting implements MouseListener,
                     }
                     
                     //finish insertion into selected.
-                    Picture.getInstance().finishSelection();
+                    Picture.getInstance().finishSelection(getcTabSelection());
                     
                     for (int current = 0; current < separatedPO[0].length;
                             current++) {
@@ -1648,7 +1251,7 @@ public final class ControlPainting implements MouseListener,
                             separatedPO[0][current].recalculateSnapshotBounds();
                             ls_toInsert.insertBehind(separatedPO[0][current]);
     
-                             new PictureOverview().add(
+                             new PictureOverview(view.getTabs().getTab_pos()).add(
                                     separatedPO[0][current]);
                         } else {
 
@@ -1687,15 +1290,19 @@ public final class ControlPainting implements MouseListener,
         	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
         			transaction);
         	
-            if (Picture.getInstance().paintSelected()) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
+            if (Picture.getInstance().paintSelected(getPage(),
+        			getControlPic(),
+        			getControlPaintSelection())) {
+            	controlPic.refreshPaint();
             }
 
         }
 
 
-        Picture.getInstance().paintSelected();
-        Page.getInstance().getJlbl_painting().refreshPaint();
+        Picture.getInstance().paintSelected(getPage(),
+    			getControlPic(),
+    			getControlPaintSelection());
+        controlPic.refreshPaint();
 
     }
     
@@ -1722,12 +1329,12 @@ public final class ControlPainting implements MouseListener,
         if (Picture.getInstance().getLs_po_sortedByX().isEmpty()) {
 
 //            //adjust location of the field for painting to view
-            _r_size.x += Page.getInstance().getJlbl_painting().getLocation()
+            _r_size.x += getPage().getJlbl_painting().getLocation()
                     .x;
-            _r_size.y += Page.getInstance().getJlbl_painting().getLocation()
+            _r_size.y += getPage().getJlbl_painting().getLocation()
                     .y;
             //paint to view
-            Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
+            controlPic.paintEntireSelectionRect(
                     _r_size);
             pnt_start = null;
             return;
@@ -1771,10 +1378,10 @@ public final class ControlPainting implements MouseListener,
 
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
-                 new PictureOverview().remove(po_current);
+                 new PictureOverview(view.getTabs().getTab_pos()).remove(po_current);
                 
                 //move current item from normal list into selected list 
-                Picture.getInstance().insertIntoSelected(po_current);
+                Picture.getInstance().insertIntoSelected(po_current, getView().getTabs().getTab_pos());
                              
                 Picture.getInstance().getLs_po_sortedByX().remove(
                 		transaction);
@@ -1794,11 +1401,13 @@ public final class ControlPainting implements MouseListener,
     			transaction);
 
         //finish insertion into selected.
-        Picture.getInstance().finishSelection();
+        Picture.getInstance().finishSelection(getcTabSelection());
         
-        Page.getInstance().getJlbl_painting().refreshPaint();
+        controlPic.refreshPaint();
 
-        if (!Picture.getInstance().paintSelected()) {
+        if (!Picture.getInstance().paintSelected(getPage(),
+    			getControlPic(),
+    			getControlPaintSelection())) {
 
           //transform the logical Rectangle to the painted one.
           _r_size.x = (int) (1.0 * _r_size.x / cZoomFactorWidth);
@@ -1809,17 +1418,17 @@ public final class ControlPainting implements MouseListener,
                   (1.0 * _r_size.height / cZoomFactorHeight);
           
           _r_size.x 
-          += Page.getInstance().getJlbl_painting().getLocation().x;
+          += getPage().getJlbl_painting().getLocation().x;
           _r_size.y 
-          += Page.getInstance().getJlbl_painting().getLocation().y;
+          += getPage().getJlbl_painting().getLocation().y;
           
           
-          CSelection.getInstance().setR_selection(_r_size,
-                  Page.getInstance().getJlbl_painting().getLocation());
-          Page.getInstance().getJlbl_painting().paintEntireSelectionRect(
+          controlPaintSelection.setR_selection(_r_size,
+                  getPage().getJlbl_painting().getLocation());
+          controlPic.paintEntireSelectionRect(
                   _r_size);
         }
-        Page.getInstance().getJlbl_background2().repaint();
+        getPage().getJlbl_background2().repaint();
         
 
     }
@@ -1902,7 +1511,7 @@ public final class ControlPainting implements MouseListener,
 //                    
 //                    PaintObject [][] separatedPO = 
 //                    Util.mergeDoubleArray(p, p2);
-                     new PictureOverview().remove(Picture.getInstance()
+                     new PictureOverview(view.getTabs().getTab_pos()).remove(Picture.getInstance()
                             .getLs_po_sortedByX().getItem());
                     Picture.getInstance().getLs_po_sortedByX().remove(
                     		transaction);
@@ -1917,7 +1526,9 @@ public final class ControlPainting implements MouseListener,
                             //insert the item into the sorted list.
                             separatedPO[1][current].recalculateSnapshotBounds();
                             Picture.getInstance().insertIntoSelected(
-                                    separatedPO[1][current]);
+                                    separatedPO[1][current],
+                                    getView().getTabs().getTab_pos()
+                            		);
                         } else {
                             
                             Status.getLogger().warning("separated paintObject "
@@ -1927,7 +1538,7 @@ public final class ControlPainting implements MouseListener,
                     }
 
                     //finish insertion into selected.
-                    Picture.getInstance().finishSelection();
+                    Picture.getInstance().finishSelection(getcTabSelection());
                     
                     for (int current = 0; current < separatedPO[0].length;
                             current++) {
@@ -1938,7 +1549,7 @@ public final class ControlPainting implements MouseListener,
                             separatedPO[0][current].recalculateSnapshotBounds();
                             ls_toInsert.insertBehind(separatedPO[0][current]);
     
-                             new PictureOverview().add(
+                             new PictureOverview(view.getTabs().getTab_pos()).add(
                                     separatedPO[0][current]);
                         } else {
 
@@ -1969,8 +1580,10 @@ public final class ControlPainting implements MouseListener,
                         transaction);
                 ls_toInsert.next();
             }
-            if (Picture.getInstance().paintSelected()) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
+            if (Picture.getInstance().paintSelected(getPage(),
+        			getControlPic(),
+        			getControlPaintSelection())) {
+            	controlPic.refreshPaint();
             }
 
 
@@ -1979,20 +1592,20 @@ public final class ControlPainting implements MouseListener,
             _r_sizeField.y /= cZoomFactorHeight;
             _r_sizeField.height /= cZoomFactorHeight;
 
-            _r_sizeField.x += Page.getInstance().getJlbl_painting()
+            _r_sizeField.x += getPage().getJlbl_painting()
             		.getLocation().getX();
-            _r_sizeField.y += Page.getInstance().getJlbl_painting()
+            _r_sizeField.y += getPage().getJlbl_painting()
             		.getLocation().getY();
             
         }
         
 
-        Page.getInstance().getJlbl_painting().refreshRectangle(
+        controlPic.refreshRectangle(
                 _r_sizeField.x, _r_sizeField.y, 
                 _r_sizeField.width, _r_sizeField.height);
 
 
-        Page.getInstance().getJlbl_background2().repaint();
+        getPage().getJlbl_background2().repaint();
 
     	//finish transaction
     	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
@@ -2072,7 +1685,7 @@ public final class ControlPainting implements MouseListener,
 
                     	if (debug_update_paintObjects_view) {
 
-                            new PictureOverview().remove(Picture.getInstance()
+                            new PictureOverview(view.getTabs().getTab_pos()).remove(Picture.getInstance()
                                     .getLs_po_sortedByX().getItem());
                     	}
                         Picture.getInstance().getLs_po_sortedByX().remove(
@@ -2111,7 +1724,7 @@ public final class ControlPainting implements MouseListener,
 
                     	if (debug_update_paintObjects_view) {
 
-                            new PictureOverview().add(
+                            new PictureOverview(view.getTabs().getTab_pos()).add(
                            		 ls_separatedPO.getItem());
                     	}
                     } else {
@@ -2127,8 +1740,10 @@ public final class ControlPainting implements MouseListener,
         			transaction);
         
             
-            if (Picture.getInstance().paintSelected()) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
+            if (Picture.getInstance().paintSelected(getPage(),
+        			getControlPic(),
+        			getControlPaintSelection())) {
+            	controlPic.refreshPaint();
             }
 
             r_sizeField.x /= cZoomFactorWidth;
@@ -2145,10 +1760,10 @@ public final class ControlPainting implements MouseListener,
         
 
 
-        Page.getInstance().getJlbl_painting().clrRectangle(
-                r_sizeField.x + (int) Page.getInstance()
+        controlPic.clrRectangle(
+                r_sizeField.x + (int) getPage()
 				.getJlbl_painting().getLocation().getX(),
-				r_sizeField.y + (int) Page.getInstance()
+				r_sizeField.y + (int) getPage()
 				.getJlbl_painting().getLocation().getY(),
                 r_sizeField.width, r_sizeField.height);
 
@@ -2180,7 +1795,7 @@ public final class ControlPainting implements MouseListener,
 						//value if border is visible on screen; 
 						//zoomed out
 						1.0 * Status.getImageSize().width
-						/ Page.getInstance().getJlbl_painting()
+						/ getPage().getJlbl_painting()
 						.getWidth()
 						/ Status.getEraseRadius());
 		final double factorHeight = 
@@ -2196,7 +1811,7 @@ public final class ControlPainting implements MouseListener,
 						//value if border is visible on screen; 
 						//zoomed out
 						1.0 * Status.getImageSize().height
-						/ Page.getInstance().getJlbl_painting()
+						/ getPage().getJlbl_painting()
 						.getHeight()
 						/ Status.getEraseRadius());
     	final DPoint pnt_stretch = new DPoint(factorWidth, factorHeight);
@@ -2227,9 +1842,9 @@ public final class ControlPainting implements MouseListener,
             // impossible for the paintSelection to paint inside the
             // selected area
             while (po_current != null
-                    && currentX <=  (Page.getInstance().getJlbl_painting()
+                    && currentX <=  (getPage().getJlbl_painting()
                     		.getLocation().getX()
-                    		+ Page.getInstance().getJlbl_painting()
+                    		+ getPage().getJlbl_painting()
                     		.getWidth())) {
 
                 //The y condition has to be in here because the items are just 
@@ -2238,7 +1853,7 @@ public final class ControlPainting implements MouseListener,
                 //some of its predecessors in sorted list do.
                 if (po_current.isInSelectionImageStretched(
                 		field_erase, 
-                		Page.getInstance().getJlbl_painting().getLocation(),
+                		getPage().getJlbl_painting().getLocation(),
                 		pnt_stretch)) {
                 	
 
@@ -2247,14 +1862,14 @@ public final class ControlPainting implements MouseListener,
 
                 	ls_separatedPO 
                 	= po_current.deleteCurve(field_erase, 
-                    		Page.getInstance().getJlbl_painting().getLocation(),
+                    		getPage().getJlbl_painting().getLocation(),
                 			pnt_stretch,
                 			ls_separatedPO);
                 	if (ls_separatedPO != null) {
 
                     	if (debug_update_paintObjects_view) {
 
-                            new PictureOverview().remove(Picture.getInstance()
+                            new PictureOverview(view.getTabs().getTab_pos()).remove(Picture.getInstance()
                                     .getLs_po_sortedByX().getItem());
                     	}
                         Picture.getInstance().getLs_po_sortedByX().remove(
@@ -2293,8 +1908,8 @@ public final class ControlPainting implements MouseListener,
 
                     	if (debug_update_paintObjects_view) {
 
-                            new PictureOverview().add(
-                           		 ls_separatedPO.getItem());
+                            new PictureOverview(view.getTabs().getTab_pos())
+                            .add(ls_separatedPO.getItem());
                     	}
                     } else {
 
@@ -2308,8 +1923,10 @@ public final class ControlPainting implements MouseListener,
         	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
         			transaction);
             
-            if (Picture.getInstance().paintSelected()) {
-                Page.getInstance().getJlbl_painting().refreshPaint();
+            if (Picture.getInstance().paintSelected(getPage(),
+        			getControlPic(),
+        			getControlPaintSelection())) {
+            	controlPic.refreshPaint();
             }
         } else {
 
@@ -2318,152 +1935,6 @@ public final class ControlPainting implements MouseListener,
         			transaction);
         }
     
-    }
-
-    /**
-     * the mouse released event of painting JLabel.
-     * @param _event the event given to mouseListener.
-     */
-    private void mr_painting(final MouseEvent _event) {
-
-        // switch index of operation
-        switch (Status.getIndexOperation()) {
-        case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
-        case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
-        case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
-        case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
-        case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
-        case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
-        case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
-        case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
-        case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
-        case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
-        case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
-        case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
-         
-            // write the current working picture into the global picture.
-            Picture.getInstance().finish();
-            break;
-
-        case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
-            if (_event.getButton() == 1) {
-
-                //remove old rectangle.
-                Page.getInstance().getJlbl_border().setBounds(-1, -1, 0, 0);
-                switch (Status.getIndexSelection()) {
-                case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
-                    
-                        PaintObjectWriting pow 
-                        = Picture.getInstance().abortPaintObject();
-                        mr_sel_curve_complete(_event, pow);
-                    break;
-                case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
-
-                    PaintObjectWriting pow2 
-                    = Picture.getInstance().abortPaintObject();
-                    mr_sel_curve_destroy(_event, pow2);
-                    break;
-                case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
-                    break;
-                default:
-                    break;
-                }
-                pnt_start = null;
-                
-                //set index to moving
-                Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
-                CPaintStatus.getInstance().deactivate();
-                Paint.getInstance().getTb_move().setActivated(true);
-            }
-            break;
-
-        case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
-            if (_event.getButton() == 1) {
-
-                Rectangle r = mr_paint_calcRectangleLocation(_event);
-                Page.getInstance().getJlbl_border().setBounds(r);
-                //remove old rectangle.
-                switch (Status.getIndexSelection()) {
-                case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
-                    mr_sel_line_complete(_event, r);
-                    break;
-                case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
-                    mr_sel_line_destroy(r);
-                    break;
-                case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
-                    break;
-                default:
-                    break;
-                }
-                // reset values
-                pnt_start = null;
-                
-                //set index to moving
-                Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
-                CPaintStatus.getInstance().deactivate();
-                Paint.getInstance().getTb_move().setActivated(true);
-                Page.getInstance().getJlbl_background2().repaint();
-            }
-            break;
-        case Constants.CONTROL_PAINTING_INDEX_ERASE:
-
-//        	mr_erase();
-        	
-        	break;
-
-        case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
-
-            if (_event.getButton() == 1) {
-                Picture.getInstance().abortPaintObject();
-            }
-            break;
-        case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
-
-            if (_event.getButton() == MouseEvent.BUTTON1) {
-                mr_zoom(_event);
-                updateResizeLocation();
-            } else if (_event.getButton() == MouseEvent.BUTTON3) {
-            	mr_zoomOut();
-            	updateResizeLocation();
-            }
-            break;
-        case Constants.CONTROL_PAINTING_INDEX_PIPETTE:
-            mr_paint_pipette(_event);
-            break;
-        case Constants.CONTROL_PAINTING_INDEX_MOVE:
-
-            if (_event.getButton() == 1) {
-
-                final Point mmSP = pnt_movementSpeed;
-                if (mmSP != null) {
-                    if (thrd_move != null) {
-                        thrd_move.interrupt();
-                    }
-//                    mr_paint_initializeMovementThread(mmSP);
-//                    thrd_move.start();
-                }
-                
-                //set points to null
-                pnt_start = null;
-                pnt_startLocation = null;
-                pnt_last = null;
-                pnt_movementSpeed = null;
-                
-                //release everything
-                if (Picture.getInstance().isSelected()) {
-
-                    Picture.getInstance().releaseSelected();
-                    Page.getInstance().releaseSelected();
-                    Page.getInstance().removeButtons();
-                }
-            }
-            break;
-           
-        default:
-            Status.getLogger().warning("Switch in mouseReleased default");
-            break;
-        }
-        New.getInstance().setVisible(false);
     }
 
     /**
@@ -2476,14 +1947,22 @@ public final class ControlPainting implements MouseListener,
 
 
         int color = Picture.getInstance().getColorPX(_event.getX(), 
-                _event.getY());
+                _event.getY(), getControlPic().getBi());
         if (_event.getButton() == 1) {
-            Paint.getInstance().getTb_color1().setBackground(new Color(color));
+        	view.getTabs().getTab_paint().getTb_color1().setBackground(new Color(color));
         } else {
-            Paint.getInstance().getTb_color2().setBackground(new Color(color));
+        	view.getTabs().getTab_paint().getTb_color2().setBackground(new Color(color));
         }
     }
     
+    
+    
+    
+    
+    
+    
+
+
     
     
     /**
@@ -2496,18 +1975,18 @@ public final class ControlPainting implements MouseListener,
                 final int max = 25;
                 for (int i = max; i >= 0; i--) {
 
-                    int x = Page.getInstance().getJlbl_painting()
+                    int x = getPage().getJlbl_painting()
                             .getLocation().x 
                             - _mmSP.x * i / max;
-                    int y = Page.getInstance().getJlbl_painting()
+                    int y = getPage().getJlbl_painting()
                             .getLocation().y 
                             - _mmSP.y * i / max;
 
                     if (x < -Status.getImageShowSize().width 
-                            + Page.getInstance().getJlbl_painting()
+                            + getPage().getJlbl_painting()
                             .getWidth()) {
                         x = -Status.getImageShowSize().width
-                                + Page.getInstance()
+                                + getPage()
                                 .getJlbl_painting().getWidth();
                     }
                     if (x > 0) {
@@ -2515,18 +1994,18 @@ public final class ControlPainting implements MouseListener,
                     }
                     
                     if (y < -Status.getImageShowSize().height
-                            + Page.getInstance().getJlbl_painting()
+                            + getPage().getJlbl_painting()
                             .getHeight()) {
                         y = -Status.getImageShowSize().height
-                                + Page.getInstance()
+                                + getPage()
                                 .getJlbl_painting().getHeight();
                     }
                     if (y >= 0) {
                         y = 0;
                     } 
-                    Page.getInstance().getJlbl_painting()
+                    getPage().getJlbl_painting()
                     .setLocation(x, y);
-                    Page.getInstance().refrehsSps();
+                    getPage().refrehsSps();
                     
                     try {
                         final int sleepTime = 20;
@@ -2562,9 +2041,9 @@ public final class ControlPainting implements MouseListener,
                 - yLocation, 
                 Math.abs(pnt_start.y - _event.getY()));
 
-        xLocation -= Page.getInstance().getJlbl_painting()
+        xLocation -= getPage().getJlbl_painting()
                 .getLocation().x;
-        yLocation -= Page.getInstance().getJlbl_painting()
+        yLocation -= getPage().getJlbl_painting()
                 .getLocation().y;
 
         
@@ -2575,26 +2054,310 @@ public final class ControlPainting implements MouseListener,
                 ySize);
 
     }
-    
-    
-    /**
-     * Update the location of the JButtons for resizing. Thus the user is
-     * able to resize the whole image.
-     */
-    public void updateResizeLocation() {
 
-        //the width and the height
-        int w = Status.getImageShowSize().width;
-        int h = Status.getImageShowSize().height;
 
-        //set location
-        Page.getInstance().getJbtn_resize()[2][1].setLocation(w, h / 2);
-        Page.getInstance().getJbtn_resize()[2][2].setLocation(w, h);
-        Page.getInstance().getJbtn_resize()[1][2].setLocation(w / 2, h);
-        
-        //set visible
-        Page.getInstance().getJbtn_resize()[1][2].setVisible(true);
-        Page.getInstance().getJbtn_resize()[2][2].setVisible(true);
-        Page.getInstance().getJbtn_resize()[2][1].setVisible(true);
-    }
+
+
+	/**
+	 * @return the controlPaintSelection
+	 */
+	public ControlPaintSelectin getControlPaintSelection() {
+		return controlPaintSelection;
+	}
+
+
+
+
+	/**
+	 * @return the cTabPaint
+	 */
+	public ControlTabPainting getcTabPaint() {
+		return cTabPaint;
+	}
+
+
+
+
+	/**
+	 * @param cTabPaint the cTabPaint to set
+	 */
+	public void setcTabPaint(ControlTabPainting cTabPaint) {
+		this.cTabPaint = cTabPaint;
+	}
+
+
+
+
+	/**
+	 * @return the cTabPrint
+	 */
+	public CPrint getcTabPrint() {
+		return cTabPrint;
+	}
+
+
+
+
+	/**
+	 * @param cTabPrint the cTabPrint to set
+	 */
+	public void setcTabPrint(CPrint cTabPrint) {
+		this.cTabPrint = cTabPrint;
+	}
+
+
+
+
+	/**
+	 * @return the cTabWrite
+	 */
+	public CWrite getcTabWrite() {
+		return cTabWrite;
+	}
+
+
+
+
+	/**
+	 * @param cTabWrite the cTabWrite to set
+	 */
+	public void setcTabWrite(CWrite cTabWrite) {
+		this.cTabWrite = cTabWrite;
+	}
+
+
+
+
+	/**
+	 * @return the cTabPaintStatus
+	 */
+	public CPaintStatus getcTabPaintStatus() {
+		return cTabPaintStatus;
+	}
+
+
+
+
+	/**
+	 * @param cTabPaintStatus the cTabPaintStatus to set
+	 */
+	public void setcTabPaintStatus(CPaintStatus cTabPaintStatus) {
+		this.cTabPaintStatus = cTabPaintStatus;
+	}
+
+
+
+
+	public void beforeOpen() {
+
+    	//release selected because of display bug otherwise.
+    	if (Picture.getInstance().isSelected()) {
+	    	Picture.getInstance().releaseSelected(
+        			getControlPaintSelection(),
+        			getcTabSelection(),
+        			getView().getTabs().getTab_pos(),
+        			getView().getPage().getJlbl_painting().getLocation().x,
+        			getView().getPage().getJlbl_painting().getLocation().y);
+	    	controlPic.releaseSelected();
+    	}		
+	}
+
+
+
+
+	public void beforeClose() {
+
+    	//release selected because of display bug otherwise.
+    	if (Picture.getInstance().isSelected()) {
+	    	Picture.getInstance().releaseSelected(
+        			getControlPaintSelection(),
+        			getcTabSelection(),
+        			getView().getTabs().getTab_pos(),
+        			getView().getPage().getJlbl_painting().getLocation().x,
+        			getView().getPage().getJlbl_painting().getLocation().y);
+	    	controlPic.releaseSelected();
+    	}		
+	}
+
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void afterOpen() { }
+
+
+
+
+	public void afterClose() {
+
+        //when closed repaint.
+        getPage().getJlbl_painting().repaint();
+        getTabs().repaint();		
+	}
+
+
+
+
+	/**
+	 * @return the cTabs
+	 */
+	public CTabs getcTabs() {
+		return cTabs;
+	}
+
+
+
+
+	/**
+	 * @param cTabs the cTabs to set
+	 */
+	public void setcTabs(CTabs cTabs) {
+		this.cTabs = cTabs;
+	}
+
+
+
+
+	/**
+	 * @return the cTabSelection
+	 */
+	public CTabSelection getcTabSelection() {
+		return cTabSelection;
+	}
+
+
+
+
+	/**
+	 * @param cTabSelection the cTabSelection to set
+	 */
+	public void setcTabSelection(CTabSelection cTabSelection) {
+		this.cTabSelection = cTabSelection;
+	}
+
+
+
+
+	/**
+	 * @return the cTabLook
+	 */
+	public CLook getcTabLook() {
+		return cTabLook;
+	}
+
+
+
+
+	/**
+	 * @param cTabLook the cTabLook to set
+	 */
+	public void setcTabLook(CLook cTabLook) {
+		this.cTabLook = cTabLook;
+	}
+
+
+
+
+	/**
+	 * @return the cTabExport
+	 */
+	public CExport getcTabExport() {
+		return cTabExport;
+	}
+
+
+
+
+	/**
+	 * @param cTabExport the cTabExport to set
+	 */
+	public void setcTabExport(CExport cTabExport) {
+		this.cTabExport = cTabExport;
+	}
+
+
+
+
+	/**
+	 * @return the cTabPaintObjects
+	 */
+	public CPaintObjects getcTabPaintObjects() {
+		return cTabPaintObjects;
+	}
+
+
+
+
+	/**
+	 * @param cTabPaintObjects the cTabPaintObjects to set
+	 */
+	public void setcTabPaintObjects(CPaintObjects cTabPaintObjects) {
+		this.cTabPaintObjects = cTabPaintObjects;
+	}
+
+
+
+
+	/**
+	 * @return the controlPic
+	 */
+	public ContorlPicture getControlPic() {
+		return controlPic;
+	}
+
+
+
+
+	/**
+	 * @param controlPic the controlPic to set
+	 */
+	public void setControlPic(ContorlPicture controlPic) {
+		this.controlPic = controlPic;
+	}
+
+
+
+
+	/**
+	 * @return the controlnew
+	 */
+	public CNew getControlnew() {
+		return controlnew;
+	}
+
+
+
+
+	/**
+	 * @param controlnew the controlnew to set
+	 */
+	public void setControlnew(CNew controlnew) {
+		this.controlnew = controlnew;
+	}
+
+	public CQuickAccess getControlQuickAccess() {
+		return controlQuickAccess;
+	}
+
+	public void setControlQuickAccess(CQuickAccess controlQuickAccess) {
+		this.controlQuickAccess = controlQuickAccess;
+	}
+
+	public ScrollPaneActivityListener getUtilityControlScrollPane() {
+		return utilityControlScrollPane;
+	}
+
+	public void setUtilityControlScrollPane(ScrollPaneActivityListener utilityControlScrollPane) {
+		this.utilityControlScrollPane = utilityControlScrollPane;
+	}
+
+	public Item2ActivityListener getUtilityControlItem2() {
+		return utilityControlItem2;
+	}
+
+	public void setUtilityControlItem2(Item2ActivityListener utilityControlItem2) {
+		this.utilityControlItem2 = utilityControlItem2;
+	}
+    
 }

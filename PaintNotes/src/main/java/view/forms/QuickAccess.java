@@ -1,11 +1,11 @@
 package view.forms;
 
 import java.awt.Color;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import model.settings.ViewSettings;
 import model.util.Util;
-import control.tabs.CQuickAccess;
 import control.util.MousePositionTracker;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
@@ -38,7 +38,7 @@ public class QuickAccess extends MPanel {
 	/**
 	 * Constructor: initializes the graphical user interface.
 	 */
-	public QuickAccess() {
+	public QuickAccess(MouseListener _controlQuickAccess) {
 
 		super();
 		super.setLayout(null);
@@ -97,7 +97,7 @@ public class QuickAccess extends MPanel {
 		jlbl_outsideLeft = new MLabel();
 		jlbl_outsideLeft.setSize(getSize());
 		jlbl_outsideLeft.setOpaque(false);
-		jlbl_outsideLeft.addMouseListener(CQuickAccess.getInstance());
+		jlbl_outsideLeft.addMouseListener(_controlQuickAccess);
 		super.add(jlbl_outsideLeft);
 
 		jlbl_outsideRight = new MLabel();
@@ -130,17 +130,6 @@ public class QuickAccess extends MPanel {
 
 	}
 
-	/**
-	 * Return the only instance of this class.
-	 * 
-	 * @return the only instance of this class
-	 */
-	public static final QuickAccess getInstance() {
-		if (instance == null) {
-			instance = new QuickAccess();
-		}
-		return instance;
-	}
 
 	/**
 	 * Paint components' background.

@@ -3,17 +3,15 @@ package view.forms;
 //import declarations
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
-import view.tabs.PaintObjects;
-import view.util.BorderThread;
+
+//
+import control.interfaces.MoveEvent;
+import control.interfaces.PaintListener;
+
+//
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
-import model.objects.painting.Picture;
-import model.objects.painting.po.PaintObject;
-import model.objects.pen.special.PenSelection;
 import model.settings.Status;
-import model.util.paint.Utils;
 
 
 /**
@@ -23,28 +21,17 @@ import model.util.paint.Utils;
  */
 @SuppressWarnings("serial")
 public class PaintLabel extends MLabel {
-
-    /**
-     * The bufferedImage containing the currently displayed painting stuff.
-     */
-    private BufferedImage bi;
     
     /**
      * The location which can be changed and given.
      */
-    private int x = 0, y = 0;
-    
-    /**
-     * The thread which moves the border.
-     */
-    private BorderThread thrd_moveBorder;
-    
-    
-    /**
-     * Point is subtracted from new location of item JLabel.
-     */
-    @SuppressWarnings("unused")
-    private Point pnt_start;
+    private int x = 0, y = 0;    
+
+	/**
+	 * The menuListener provides an interface for listening for set of location
+	 * and size events.
+	 */
+    private PaintListener paintListener;
 
     /**
      * JPanel which is to be updated if location changes in
@@ -62,226 +49,18 @@ public class PaintLabel extends MLabel {
         this.jpnl_toMove = _jpnl_toMove;
     }
 
-    
     /**
-     * Refresh the entire image.
-     */
-    public final void refreshPaint() {
-
-
-        Status.getLogger().finest("refreshing PaintLabel. \nValues: "
-                + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
-                + "\n\tgetLocation:\t" + getLocation() 
-                + " vs. " + super.getLocation()
-                + "\n\t" + "_x:\t\t"
-                + "\n\t" + "_y\t\t"
-                + "\n\t" + "_width\t\t" + getWidth()
-                + "\n\t" + "_height\t\t" + getHeight() + "\n");
-
-        //paint the painted stuff at graphics
-        setBi(Picture.getInstance().updateRectangle(
-                -getLocation().x, 
-                -getLocation().y, getWidth() , getHeight(), 0, 0, getBi()));
-
-        
-        refreshPaintBackground();
-        
-        setIcon(new ImageIcon(getBi()));
-        if (PaintObjects.getInstance() != null) {
-        	PaintObjects.getInstance().repaint();
-        }
-    }
-
-    
-    
-    /**
-     * Refresh the background of painting.
-     *  //TODO: quicker! like in repainting of painted content.
-     */
-    private void refreshPaintBackground() {
-
-        //paint the painting background (e.g. raster / lines) at the graphical
-        //user interface.
-        if (Page.getInstance().getJlbl_background2().getWidth() != 0
-                && Page.getInstance().getJlbl_background2().getHeight() != 0) {
-
-            
-            BufferedImage ret = new BufferedImage(
-                    Page.getInstance().getJlbl_background2().getWidth(),
-                    Page.getInstance().getJlbl_background2().getHeight(),
-                    BufferedImage.TYPE_INT_ARGB);
-            ret = Picture.getInstance().emptyRectangle(
-                    -getLocation().x, 
-                    -getLocation().y, getWidth(), getHeight(), 0, 0, ret);
-            Page.getInstance().getJlbl_background2().setIcon(
-                    new ImageIcon((Utils.getBackground(ret, -getLocation().x, 
-                    -getLocation().y, -getLocation().x + getWidth(), 
-                    -getLocation().y + getHeight(), 0, 0))));  
-        }
-
-    }
-    
-    @Override public final void repaint() {
-        super.repaint();
-        if (PaintObjects.getInstance() != null) {
-
-            PaintObjects.getInstance().repaint(); 	
-        }
-        New.getInstance().setVisible(false);
-    }
-    
-    
-    /**
-     * das gleiche wie unten nur mut zoom rec.t.
-     * @param _x the x coordinate in view
-     * @param _y the y coordinate in view
-     * @param _width the width
-     * @param _height the height
-     */
-    public final void paintZoom(final int _x, final int _y, 
-            final int _width, final int _height) {
-        
-        Page.getInstance().getJlbl_border().setBounds(_x, _y, _width, _height);
-    }
-    
-    
-    /**
-     * Remove the zoom box because operation zoom has changed.
-     */
-    public final void removeZoomBox() {
-    	paintZoom(0, 0, 0, 0);
-    }
-    
-    
-    /**
-     * Paint the entire selection stuff.
-     * @param _r the rectangle which is selected.
-     */
-    public final void paintEntireSelectionRect(final Rectangle _r) {
-
-        //close old border thread.
-        if (thrd_moveBorder != null) {
-            thrd_moveBorder.interrupt();
-
-            repaint();
-        }
-
-        //initialize the thread and start it.
-        thrd_moveBorder = new BorderThread(_r, true, null, null);
-        thrd_moveBorder.start();
-//        
-        //paint the background
-//        BufferedImage bi_fresh = Page.getInstance().getEmptyBI();
-//        Utils.paintRastarBlock(bi_fresh, 
-//                ViewSettings.SELECTION_BACKGROUND_CLR, _r);
-
-        //        
-        //show resize buttons
-        
-        for (int a = 0; a < Page.getInstance().getJbtn_resize().length; a++) {
-            for (int b = 0; b < Page.getInstance().getJbtn_resize().length;
-                    b++) {
-                //size of JButton
-                final int b_size = Page.getInstance().getJbtn_resize()[a][b]
-                        .getWidth();
-                
-                Page.getInstance().getJbtn_resize()[a][b]
-                        .setLocation(_r.x + _r.width * a / 2  - b_size / 2, 
-                                _r.y + _r.height * b / 2 - b_size / 2);
-            }
-        }
-        Page.getInstance().getJlbl_border().setBounds(_r);
-    }
-    
-    
-    
-    /**
-     * repaint a special rectangle.
-     * @param _x the x coordinate in view
-     * @param _y the y coordinate in view
-     * @param _width the width
-     * @param _height the height
-     * @return the graphics
-     */
-    public final BufferedImage refreshRectangle(final int _x, final int _y, 
-            final int _width, final int _height) {
-
-        Status.getLogger().finest("refreshing PaintLabel. \nValues: "
-                + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
-                + "\n\tgetLocation:\t" + getLocation() 
-                + " vs. " + super.getLocation()
-                + "\n\t" + "_x:\t\t" + _x
-                + "\n\t" + "_y\t\t" + _y
-                + "\n\t" + "_width\t\t" + _width
-                + "\n\t" + "_height\t\t" + _height + "\n");
-
-        //paint the painted stuff at graphics
-        setBi(Picture.getInstance().updateRectangle(
-                -getLocation().x + _x, 
-                -getLocation().y + _y, _width, _height, _x, _y, getBi()));
-
-        setIcon(new ImageIcon(getBi()));
-        
-        PaintObjects.getInstance().repaint();
-        return getBi();
-    }
-
-    
-    /**
-     * clear a special rectangle.
-     * @param _x the x coordinate in view
-     * @param _y the y coordinate in view
-     * @param _width the width
-     * @param _height the height
-     * @return the graphics
-     */
-    public final BufferedImage clrRectangle(final int _x, final int _y, 
-            final int _width, final int _height) {
-
-        Status.getLogger().finest("clr PaintLabel. \nValues: "
-                + "\n\tgetSize:\t" + getSize() + " vs. " + super.getSize()
-                + "\n\tgetLocation:\t" + getLocation() 
-                + " vs. " + super.getLocation()
-                + "\n\t" + "_x:\t\t" + _x
-                + "\n\t" + "_y\t\t" + _y
-                + "\n\t" + "_width\t\t" + _width
-                + "\n\t" + "_height\t\t" + _height + "\n");
-
-        //paint the painted stuff at graphics
-        setBi(Picture.getInstance().emptyRectangle(
-                -getLocation().x + _x, 
-                -getLocation().y + _y, _width, _height, _x, _y, getBi()));
-
-        setIcon(new ImageIcon(getBi()));
-        
-        PaintObjects.getInstance().repaint();
-        return getBi();
-    }
-
-    
-    /**
-     * Not necessary.
-     */
-    public void refreshPopup() {
-        //not necessary anymore because paitned to bi and autorefreshes.
-//        refreshPaint();
-    }
-    
-    
-    /**
-     * Paint a zoom box.
+     * Set the PaintListener which provides an interface for  listening for set 
+     * of location and size events outside this utility class.
      * 
-     * @param _x the x coordinate
-     * @param _y the y coordinate
-     * @param _width the width 
-     * @param _height the height
+     * It is only possible to set one MenuListener at a time.
+     * 
+     * @param _pl the PaintListener
      */
-    public final void setZoomBox(final int _x, final int _y, 
-            final int _width, final int _height) {
-        paintZoom(_x, _y, _width, _height);
+    public final void setPaintListener(final PaintListener _pl) {
+    	this.paintListener = _pl;
     }
     
-
     
     /*
      * Location is not set directly because the paint methods shell be able 
@@ -305,148 +84,39 @@ public class PaintLabel extends MLabel {
      */
     @Override public final synchronized void setLocation(
     		final int _x, final int _y) {
+
+        //Forward the set location event to the instance of paintListener
+        //if it has been set.
+        if (paintListener != null) {
+        	paintListener.beforeLocationChange(
+        			new MoveEvent(new Point(_x, _y)), 
+        			new MoveEvent(new Point(x, y)));
+        } else {
+        	Status.getLogger().severe("PaintListener not set.");
+        }
         
-    	//TODO: error-checking (formally used for zooming in, did not work
-    	//because method is not designed for that.)
-        //update the JPanel location because the ScrollPane fetches information
-        //out of that panel
+        //save the old values for being able to pass them to "after location
+        //changed" method
+        final int lastX = x;
+        final int lastY = y;
+        
+        //save the new location
+        this.x = _x;
+        this.y = _y;
+
         jpnl_toMove.setBounds(_x, _y, jpnl_toMove.getWidth(), 
                 jpnl_toMove.getHeight());
         
-        //if something changed, repaint
-        if (_x != x || _y != y) {
 
-            if (isVisible()) {
-            	
-            	int maintainStartX = 0, 
-	            	maintainStartY = 0, 
-	            	maintainWidth = bi.getWidth(), 
-	            	maintainHeight = bi.getHeight();
-            	
-
-            	int shiftedStartX = 0,
-            		shiftedStartY = 0;
-            	
-            	//move to the left (new location is smaller than the old one)
-            	if (_x > x) {
-
-            		shiftedStartX = _x - x;
-            		maintainStartX = 0;
-            		maintainWidth = bi.getWidth() - shiftedStartX;
-            	} else if (_x < x) {
-
-            		shiftedStartX = 0;
-            		maintainStartX =  x - _x;
-            		maintainWidth = bi.getWidth() - maintainStartX;
-            	}
-
-            	//moved up (old location is greater than new location)
-            	if (_y > y) {
-            		
-            		shiftedStartY = _y - y;
-            		maintainStartY = 0;
-            		maintainHeight = bi.getHeight() - shiftedStartY;
-            	} else if (_y < y) {
-
-            		shiftedStartY = 0;
-            		maintainStartY =  y - _y;
-            		maintainHeight = bi.getHeight() - maintainStartY;
-            	}
-            	
-            	/*
-            	 * shift the maintained stuff
-            	 */
-            	
-            	if (maintainWidth > 0 && maintainHeight > 0) {
-            		//fetch the the RGB array of the subImage which is to be 
-                	//maintained but moved somewhere.
-                	//TODO: zoom error occurs.
-                	int[] rgbArray = new int[maintainWidth * maintainHeight];
-                	rgbArray = bi.getRGB(
-                			maintainStartX, 
-                			maintainStartY, 
-                			maintainWidth, 
-                			maintainHeight, 
-                			rgbArray, 0, maintainWidth);
-                	
-                	
-                	//write the maintained RGB array to shifted coordinates.
-                	bi.setRGB(shiftedStartX, 
-                			shiftedStartY, 
-                			maintainWidth,
-                			maintainHeight, 
-                			rgbArray,  0, maintainWidth);
-                	
-                	/*
-                	 * paint the new stuff. 
-                	 * The rectangle location is the complement of the 
-                	 * maintained in size of bufferedImage.
-                	 */
-                	//Refresh both in direction of width and of height.
-                    //In the simplest way of doing this, there may be an area 
-                	//which is painted twice (depicted with '!'). 
-                    //For further optimization of displaying speed this should 
-                    //be eliminated by the way of refreshing done beneath the 
-                	//picture. Picture:
-                	//shiftedStartY == 0
-                	//		____________		____________
-                    //		| ! W W W W	|       | H	x      	|
-                    // 		| H	x x x x |       | H	x       |
-                    // 		| H	x      	|       | H	x     	|
-                    // 		| H	x      	|       | H	x     	|
-                    // 		| H	x       |       | H	x x x x	|
-                	//		|_H_x_______|		|_!_W_W_W_W_|
-                	//		____________		____________
-                    //	    | W	W W W! !|		|     x	H H	|
-                    // 	    | x x x x H	|		|     x	H H	|
-                    // 	    |  	   	x H	|       |     x	H H	|
-                    // 	    |      	x H	|       |     x	H H	|
-                    // 	    |       x H	|		| x x x	H H	|
-                	//		|_______x_H_|		|_W_W_W_!_!_|
-                	/*
-                	 * Width
-                	 */
-                	//here the (!) are painted!
-                	int refreshWidthWidth = bi.getWidth();
-                	int refreshWidthHeight = bi.getHeight() - maintainHeight;
-                	int refreshWidthY = 0;
-                	int refreshWidthX = 0;
-                	
-                	if (shiftedStartY == 0) {
-                		refreshWidthY = maintainHeight;
-                	}
-                	/*
-                	 * height
-                	 */
-                	int refreshHeightWidth = bi.getWidth() - maintainWidth;
-                	int refreshHeightHeight = bi.getHeight()
-                			- refreshWidthHeight;
-                	int refreshHeightY = 0;
-                	int refreshHeightX = 0;
-                	
-                	if (shiftedStartX == 0) {
-                		refreshHeightX = maintainWidth;
-                	}
-
-                    //save values
-                    this.x = _x;
-                    this.y = _y;
-                    
-                    //BufferedImage
-                    refreshPaintBackground();
-                	refreshRectangle(refreshWidthX, refreshWidthY, 
-                			refreshWidthWidth, refreshWidthHeight);
-                	refreshRectangle(refreshHeightX, refreshHeightY, 
-                			refreshHeightWidth, refreshHeightHeight);
-            	}
-            } else {
-
-                
-                //save values
-                this.x = _x;
-                this.y = _y;
-            }
+        //Forward the set location event to the instance of paintListener
+        //if it has been set.
+        if (paintListener != null) {
+        	paintListener.afterLocationChange(new MoveEvent(new Point(_x, _y)),
+        			new MoveEvent(new Point(lastX, lastY)));
+        } else {
+        	Status.getLogger().severe("PaintListener not set.");
         }
+        
     }
     
 
@@ -461,7 +131,7 @@ public class PaintLabel extends MLabel {
     public final void setLoc(final int _x, final int _y) {
         
         //if something changed, repaint
-        super.setLocation(_x, _y);
+        super.setBounds(_x, _y, getWidth(), getHeight());
     }
     
 
@@ -472,6 +142,14 @@ public class PaintLabel extends MLabel {
      * @param _p the new coordinates which are saved
      */
     @Override public final void setLocation(final Point _p) {
+
+        //Forward the set location event to the instance of paintListener
+        //if it has been set.
+        if (paintListener != null) {
+        	paintListener.beforeExternalLocationChange(new MoveEvent(_p));
+        } else {
+        	Status.getLogger().severe("PaintListener not set.");
+        }
         
         //save the new location
         this.x = _p.x;
@@ -481,12 +159,16 @@ public class PaintLabel extends MLabel {
         //out of that panel
         jpnl_toMove.setBounds(x, y, jpnl_toMove.getWidth(), 
                 jpnl_toMove.getHeight());
+        
 
-        if (isVisible()) {
-            
-            //set changed
-            refreshPaint();
+        //Forward the set location event to the instance of paintListener
+        //if it has been set.
+        if (paintListener != null) {
+        	paintListener.afterExternalLocationChange(new MoveEvent(_p));
+        } else {
+        	Status.getLogger().severe("PaintListener not set.");
         }
+
     }
     
     
@@ -502,6 +184,17 @@ public class PaintLabel extends MLabel {
      */
     @Override public final void setBounds(final int _x, final int _y, 
             final int _widht, final int _height) {
+
+        //Forward the set location event to the instance of paintListener
+        //if it has been set.
+        if (paintListener != null) {
+        	paintListener.beforeExternalLocationChange(new MoveEvent(
+        			new Point(_x, _y)));
+        	paintListener.beforeExternalSizeChange(new MoveEvent(
+        			new Point(_widht, _height)));
+        } else {
+        	Status.getLogger().severe("PaintListener not set.");
+        }
         
         //save the new location 
         this.x = _x;
@@ -514,46 +207,20 @@ public class PaintLabel extends MLabel {
         
         //set width and height.
         super.setBounds(0, 0, _widht, _height);
-        bi = new BufferedImage(_widht, _height, BufferedImage.TYPE_INT_ARGB);
-
-        if (isVisible()) {
-            
-            //set changed
-            refreshPaint();
+        
+        //Forward the set location event to the instance of paintListener
+        //if it has been set.
+        if (paintListener != null) {
+        	
+        	paintListener.afterExternalBoundsChange(
+        			new MoveEvent(new Point(_x, _y)),
+        			new MoveEvent(new Point(_widht, _height)));
+        } else {
+        	Status.getLogger().severe("PaintListener not set.");
         }
     }
 
-    /**
-     * Paint line selection.
-     * @param _po the PaintObject.
-     * @param _pen the pen.
-     */
-    public final void paintSelection(final PaintObject _po, 
-            final PenSelection _pen) {
-
     
-        //interrupt border thread.
-        stopBorderThread();
-        
-        //initialize the thread and start it.
-        thrd_moveBorder = new BorderThread(null, false, _po, _pen);
-        thrd_moveBorder.start();
-        
-        //paint the background
-    }
-    
-    
-    /**
-     * Stop the border - thread.
-     */
-    public final void stopBorderThread() {
-
-        //close old border thread.
-        if (thrd_moveBorder != null) {
-            thrd_moveBorder.interrupt();
-            Tabs.getInstance().repaint();
-        }
-    }
     
     
     /*
@@ -593,19 +260,5 @@ public class PaintLabel extends MLabel {
      */
     @Override public final Rectangle getBounds() {
         return new Rectangle(x, y, getWidth(), getHeight());
-    }
-
-    /**
-     * @return the bi
-     */
-    public final BufferedImage getBi() {
-        return bi;
-    }
-
-    /**
-     * @param _bi the _bi to set
-     */
-    public final void setBi(final BufferedImage _bi) {
-        this.bi = _bi;
     }
 }

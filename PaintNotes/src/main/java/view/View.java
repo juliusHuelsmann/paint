@@ -16,18 +16,19 @@ import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
-import start.Start;
 import view.forms.Message;
 import view.forms.Page;
 import view.forms.Tabs;
 import view.util.mega.MButton;
 import view.util.mega.MFrame;
 import view.util.mega.MLabel;
-import control.ControlPainting;
+import control.ControlPaint;
+import control.ControlView;
 import control.util.MousePositionTracker;
 
+
 /**
- * Singleton view class.
+ * View class.
  * Contains all sub graphical user interface items; consists of MFrame.
  * 
  * @author Julius Huelsmann
@@ -35,10 +36,6 @@ import control.util.MousePositionTracker;
  */
 @SuppressWarnings("serial") public final class View extends MFrame {
 
-	/**
-	 * the only instance of this class.
-	 */
-	private static View instance = null;
 
 	/**
 	 * close button.
@@ -58,14 +55,29 @@ import control.util.MousePositionTracker;
 	private MLabel jlbl_title, jlbl_border;
 	
 	/**
-	 * Constructor: initialize JFrame, alter settings and initialize items.
+	 * The tab.
 	 */
-	private View() { }
+	private Tabs tabs;
 	
 	/**
-	 * initialize MainJFrame (add content).
+	 * The Page.
 	 */
-	private void initialize() {
+	private Page page;
+	
+	/**
+	 */
+	public View() {
+		
+	}
+	
+	/**
+	 * 
+	 * Constructor: initialize JFrame, alter settings and initialize items.
+	 * @param _cp instance of ControlView.
+	 */
+	public void initialize(final ControlPaint _cp) {
+
+
 	    
         //initialize JFrame and alter settings
         super.setAlwaysOnTop(false);
@@ -74,6 +86,8 @@ import control.util.MousePositionTracker;
         super.setUndecorated(true);
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        ControlView cv = new ControlView(this, _cp.getcTabPaint());
+        
         JLabel jlbl_backgroundStroke = new JLabel();
         jlbl_backgroundStroke.setSize(getSize());
         jlbl_backgroundStroke.setVisible(true);
@@ -107,7 +121,8 @@ import control.util.MousePositionTracker;
         jbtn_exit = new MButton();
         jbtn_exit.setContentAreaFilled(false);
         jbtn_exit.setOpaque(false);
-        jbtn_exit.addMouseListener(ControlPainting.getInstance());
+        jbtn_exit.addMouseListener(cv);
+        jbtn_exit.addActionListener(cv);
         jbtn_exit.setBorder(null);
         jbtn_exit.setFocusable(false);
         super.add(jbtn_exit);
@@ -116,11 +131,20 @@ import control.util.MousePositionTracker;
         jbtn_fullscreen = new MButton();
         jbtn_fullscreen.setContentAreaFilled(false);
         jbtn_fullscreen.setOpaque(false);
-        jbtn_fullscreen.addMouseListener(ControlPainting.getInstance());
+        jbtn_fullscreen.addMouseListener(cv);
+        jbtn_fullscreen.addActionListener(cv);
         jbtn_fullscreen.setBorder(null);
         jbtn_fullscreen.setFocusable(false);
         super.add(jbtn_fullscreen);
 
+        
+        
+        page = new Page(_cp);
+        
+        
+        tabs = new Tabs(this);
+        tabs.initialize(this, _cp);
+        
         super.remove(jlbl_backgroundStroke);
         if (ViewSettings.isFullscreen()) {
 
@@ -139,20 +163,18 @@ import control.util.MousePositionTracker;
         /*
          * add Message form, tab, overview about paintObjects and Page
          */
-        Message.addMyself();
-        super.add(Tabs.getInstance());
-        Tabs.getInstance().setVisible(true);
-        super.add(Page.getInstance());
-        Page.getInstance().setVisible(true);
+        super.add(new Message());
+        
+        super.add(tabs);
+        super.add(page);
 
-        
-//        mainThread.setPriority(Thread.MAX_PRIORITY);
-        
-        //display tabs and page.
-        
-//        Tabs.getInstance().stroke();
-
+        tabs.setVisible(true);
+        page.setVisible(true);
+	
+	
+	
 	}
+	
 	
 
     /**
@@ -353,7 +375,7 @@ import control.util.MousePositionTracker;
 		            }
 		        }
 
-			    while (!Start.isInitializationFinished()) {
+			    while (!Status.isInitializationFinished()) {
 			        //sleep for a while
 			        try {
 			            Thread.sleep(time * 2);
@@ -426,7 +448,7 @@ import control.util.MousePositionTracker;
         
         //initialize tabs
         Status.getLogger().info("   initialize Tabs\n");
-        Tabs.getInstance().setSize(
+        tabs.setSize(
                 ViewSettings.getView_widthTb(), 
                 ViewSettings.getView_heightTB(),
                 ViewSettings.getView_heightTB_visible());
@@ -436,53 +458,37 @@ import control.util.MousePositionTracker;
 
         //initialize PaintObjects
         Status.getLogger().info("   initialize Page\n");
-        Page.getInstance().setSize(ViewSettings.getView_bounds_page().width, 
-                ViewSettings.getView_bounds_page().height);
-        Page.getInstance().setLocation(
-                ViewSettings.getView_bounds_page().getLocation());
+        
 	    
+	        	
+        jbtn_exit.setBounds(ViewSettings.getViewBoundsJbtnExit());
+        jbtn_exit.setIcon(new ImageIcon(Utils.resizeImage(
+        		jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
+        		Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
+        
+        jbtn_fullscreen.setBounds(
+        		ViewSettings.getView_bounds_jbtn_fullscreen());
+        jbtn_fullscreen.setIcon(new ImageIcon(Utils.resizeImage(
+        		jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
+        		Constants.VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
+	        	
+        tabs.setLocation(ViewSettings.VIEW_LOCATION_TB);
+	        	
+	        //the page flip is done directly inside the set size method
+	        //TODO: externalize flipping is not necessary anymore.
+//	        Remove
+        
 
-            Page.getInstance().setLocation(
-                    ViewSettings.getView_bounds_page().getLocation());
+        page.setLocation(
+                ViewSettings.getView_bounds_page().getLocation());
+        page.setSize(ViewSettings.getView_bounds_page().width, 
+                ViewSettings.getView_bounds_page().height);
 
-	        
-	        jbtn_exit.setBounds(ViewSettings.getViewBoundsJbtnExit());
-	        jbtn_exit.setIcon(new ImageIcon(Utils.resizeImage(
-	                jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
-	                Constants.VIEW_JBTN_EXIT_NORMAL_PATH)));
-
-            jbtn_fullscreen.setBounds(
-                    ViewSettings.getView_bounds_jbtn_fullscreen());
-	        jbtn_fullscreen.setIcon(new ImageIcon(Utils.resizeImage(
-                    jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
-                    Constants.VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
-	        
-	        Tabs.getInstance().setLocation(ViewSettings.VIEW_LOCATION_TB);
-	        
-        Page.getInstance().flip();
-        Tabs.getInstance().flip();
+        
+        tabs.flip();
         jlbl_border.setBounds(0, 0, getWidth(), getHeight());
 	}
 	
-	
-    /**
-     * this method guarantees that only one instance of this
-     * class can be created ad runtime.
-     * 
-     * @return the only instance of this class.
-     */
-    public static View getInstance() {
-        
-        //if class is not instanced yet instantiate
-        if (instance == null) {
-            instance = new View();
-            instance.initialize();
-        }
-        
-        //return the only instance of this class.
-        return instance;
-    }
-    
     
     /*
      * getter methods
@@ -501,4 +507,21 @@ import control.util.MousePositionTracker;
     public MButton getJbtn_fullscreen() {
         return jbtn_fullscreen;
     }
+
+	/**
+	 * @return the page
+	 */
+	public Page getPage() {
+		return page;
+	}
+
+
+
+	/**
+	 * @return the tabs
+	 */
+	public Tabs getTabs() {
+		return tabs;
+	}
+
 }

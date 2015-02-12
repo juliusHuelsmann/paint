@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import control.ControlPaint;
 import view.forms.QuickAccess;
 
 /**
@@ -14,19 +16,21 @@ import view.forms.QuickAccess;
  */
 public class CQuickAccess implements ActionListener, MouseListener {
 
-	
-	/**
-	 * The only instance of the quick access controller class.
-	 */
-	private static CQuickAccess instance;
+	private ControlPaint cp;
+	private QuickAccess getQuickAccess() {
+		return cp.getView().getPage().getQuickAccess();
+	}
+	public CQuickAccess (ControlPaint _cp) {
+		this.cp = _cp;
+	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	public final void mouseClicked(final MouseEvent _event) {
 		if (_event.getSource().equals(
-				QuickAccess.getInstance().getJlbl_outsideLeft())) {
-			QuickAccess.getInstance().openLeft();
+				getQuickAccess().getJlbl_outsideLeft())) {
+			getQuickAccess().openLeft();
 		}
 	}
 
@@ -59,17 +63,5 @@ public class CQuickAccess implements ActionListener, MouseListener {
 	 * {@inheritDoc}
 	 */
 	public void actionPerformed(final ActionEvent _event) { }
-
-	
-	/**
-	 * Return the only instance of this class.
-	 * @return the only instance of this class
-	 */
-	public static final CQuickAccess getInstance() {
-		if (instance == null) {
-			instance = new CQuickAccess();
-		}
-		return instance;
-	}
 
 }

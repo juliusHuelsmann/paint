@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import control.ControlPaint;
 import view.tabs.Paint;
 import view.tabs.Write;
 import model.objects.pen.Pen;
@@ -20,15 +21,6 @@ import model.settings.Status;
  * @version %I%, %U%
  */
 public final class CWrite implements ActionListener {
-
-    /*
-     * Singleton
-     */
-    
-    /**
-     * The only instance of this class.
-     */
-    private static CWrite instance;
 
     /*
      * Identifiers
@@ -83,10 +75,13 @@ public final class CWrite implements ActionListener {
      * Constructor
      */
     
+    private ControlPaint cp;
     /**
      * Empty utility class constructor.
      */
-    private CWrite() { }
+    public CWrite(ControlPaint _cp) { 
+    	this.cp = _cp;
+    }
 
     /*
      * ActionListener
@@ -96,13 +91,16 @@ public final class CWrite implements ActionListener {
      * {@inheritDoc}
      */
     public void actionPerformed(final ActionEvent _event) {
-
-        if (_event.getSource().equals(Write.getInstance()
+    	
+    	
+    	Paint paint = cp.getView().getTabs().getTab_paint();
+    	Write write = cp.getView().getTabs().getTab_write();
+        if (_event.getSource().equals(write
                 .getTb_beispiel().getActionCause())) {
             deactivate();
-            Paint.getInstance().getJbtn_color1().setBackground(
+            paint.getJbtn_color1().setBackground(
                     PEN_EXMPL_1.getClr_foreground());
-            Paint.getInstance().getJbtn_color2().setBackground(
+            paint.getJbtn_color2().setBackground(
                     PEN_EXMPL_2.getClr_foreground());
             Status.setPenSelected1(Pen.clonePen(PEN_EXMPL_1));
             Status.setPenSelected2(Pen.clonePen(PEN_EXMPL_2));
@@ -110,76 +108,76 @@ public final class CWrite implements ActionListener {
             System.out.println(PEN_EXMPL_1.getClr_foreground());
             System.out.println(Status.getPenSelected1().getClr_foreground());
 
-        } else if (_event.getSource().equals(Write.getInstance()
+        } else if (_event.getSource().equals(write
                 .getTb_bemerkung().getActionCause())) {
             deactivate();
-            Paint.getInstance().getJbtn_color1().setBackground(
+            paint.getJbtn_color1().setBackground(
                     PEN_CMMNT_1.getClr_foreground());
-            Paint.getInstance().getJbtn_color2().setBackground(
+            paint.getJbtn_color2().setBackground(
                     PEN_CMMNT_2.getClr_foreground());
             Status.setPenSelected1(Pen.clonePen(PEN_CMMNT_1));
             Status.setPenSelected2(Pen.clonePen(PEN_CMMNT_2));
 
-        } else if (_event.getSource().equals(Write.getInstance()
+        } else if (_event.getSource().equals(write
                 .getTb_beweis().getActionCause())) {
             deactivate();
-            Paint.getInstance().getJbtn_color1().setBackground(
+            paint.getJbtn_color1().setBackground(
                     PEN_PROOF_1.getClr_foreground());
-            Paint.getInstance().getJbtn_color2().setBackground(
+            paint.getJbtn_color2().setBackground(
                     PEN_PROOF_2.getClr_foreground());
             Status.setPenSelected1(Pen.clonePen(PEN_PROOF_1));
             Status.setPenSelected2(Pen.clonePen(PEN_PROOF_2));
-        } else if (_event.getSource().equals(Write.getInstance()
+        } else if (_event.getSource().equals(write
                 .getTb_headline1().getActionCause())) {
             deactivate();
-            Paint.getInstance().getJbtn_color1().setBackground(
+            paint.getJbtn_color1().setBackground(
                     PEN_HEADLINE_1_1.getClr_foreground());
-            Paint.getInstance().getJbtn_color2().setBackground(
+            paint.getJbtn_color2().setBackground(
                     PEN_HEADLINE_1_2.getClr_foreground());
             Status.setPenSelected1(Pen.clonePen(PEN_HEADLINE_1_1));
             Status.setPenSelected2(Pen.clonePen(PEN_HEADLINE_1_2));
             //TODO: update paint gui.
-        } else if (_event.getSource().equals(Write.getInstance()
+        } else if (_event.getSource().equals(write
                 .getTb_headline2().getActionCause())) {
             deactivate();
-            Paint.getInstance().getJbtn_color1().setBackground(
+            paint.getJbtn_color1().setBackground(
                     PEN_HEADLINE_2_1.getClr_foreground());
-            Paint.getInstance().getJbtn_color2().setBackground(
+            paint.getJbtn_color2().setBackground(
                     PEN_HEADLINE_2_2.getClr_foreground());
             Status.setPenSelected1(Pen.clonePen(PEN_HEADLINE_2_1));
             Status.setPenSelected2(Pen.clonePen(PEN_HEADLINE_2_2));
             //TODO: update paint gui.
-        } else if (_event.getSource().equals(Write.getInstance()
+        } else if (_event.getSource().equals(write
                 .getTb_headline3().getActionCause())) {
             deactivate();
-            Paint.getInstance().getJbtn_color1().setBackground(
+            paint.getJbtn_color1().setBackground(
                     PEN_HEADLINE_3_1.getClr_foreground());
-            Paint.getInstance().getJbtn_color2().setBackground(
+            paint.getJbtn_color2().setBackground(
                     PEN_HEADLINE_3_2.getClr_foreground());
             Status.setPenSelected1(Pen.clonePen(PEN_HEADLINE_3_1));
             Status.setPenSelected2(Pen.clonePen(PEN_HEADLINE_3_2));
             //TODO: update paint gui.
-        } else if (_event.getSource().equals(Write.getInstance()
+        } else if (_event.getSource().equals(write
                 .getTb_satz().getActionCause())) {
             deactivate();
-            Paint.getInstance().getJbtn_color1().setBackground(
+            paint.getJbtn_color1().setBackground(
                     PEN_THEOREM_1.getClr_foreground());
-            Paint.getInstance().getJbtn_color2().setBackground(
+            paint.getJbtn_color2().setBackground(
                     PEN_THEOREM_2.getClr_foreground());
             Status.setPenSelected1(Pen.clonePen(PEN_THEOREM_1));
             Status.setPenSelected2(Pen.clonePen(PEN_THEOREM_2));
             //TODO: update paint gui.
         }
 
-        Paint.getInstance().getIt_stift1().setIcon(
+        paint.getIt_stift1().setIcon(
                 Status.getPenSelected1().getIconPath());
-        Paint.getInstance().getIt_stift2().setIcon(
+        paint.getIt_stift2().setIcon(
                 Status.getPenSelected2().getIconPath());
 
         Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);
-        CPaintStatus.getInstance().deactivate();
-        Paint.getInstance().getIt_stift1().getTb_open().setActivated(true);
-        Paint.getInstance().getTb_color1().setActivated(true);
+        cp.getcTabPaintStatus().deactivate();
+        paint.getIt_stift1().getTb_open().setActivated(true);
+        paint.getTb_color1().setActivated(true);
     }
     
     
@@ -209,13 +207,14 @@ public final class CWrite implements ActionListener {
      * Deactivate all graphical user interface items.
      */
     public void deactivate() {
-        Write.getInstance().getTb_beispiel().setActivated(false);
-        Write.getInstance().getTb_bemerkung().setActivated(false);
-        Write.getInstance().getTb_beweis().setActivated(false);
-        Write.getInstance().getTb_satz().setActivated(false);
-        Write.getInstance().getTb_headline1().setActivated(false);
-        Write.getInstance().getTb_headline2().setActivated(false);
-        Write.getInstance().getTb_headline3().setActivated(false);
+    	Write write = cp.getView().getTabs().getTab_write();
+        write.getTb_beispiel().setActivated(false);
+        write.getTb_bemerkung().setActivated(false);
+        write.getTb_beweis().setActivated(false);
+        write.getTb_satz().setActivated(false);
+        write.getTb_headline1().setActivated(false);
+        write.getTb_headline2().setActivated(false);
+        write.getTb_headline3().setActivated(false);
     }
     
     
@@ -226,40 +225,29 @@ public final class CWrite implements ActionListener {
      */
     public void penChanged() {
         deactivate();
+    	Write write = cp.getView().getTabs().getTab_write();
         if (Status.getPenSelected1().equals(PEN_THEOREM_1)
                 && Status.getPenSelected2().equals(PEN_THEOREM_2)) {
-            Write.getInstance().getTb_satz().setActivated(true);
+            write.getTb_satz().setActivated(true);
         } else if (Status.getPenSelected1().equals(PEN_PROOF_1)
                 && Status.getPenSelected2().equals(PEN_PROOF_2)) {
-            Write.getInstance().getTb_beweis().setActivated(true);
+            write.getTb_beweis().setActivated(true);
         } else if (Status.getPenSelected1().equals(PEN_EXMPL_1)
                 && Status.getPenSelected2().equals(PEN_EXMPL_2)) {
-            Write.getInstance().getTb_beispiel().setActivated(true);
+            write.getTb_beispiel().setActivated(true);
         } else if (Status.getPenSelected1().equals(PEN_CMMNT_1)
                 && Status.getPenSelected2().equals(PEN_CMMNT_2)) {
-            Write.getInstance().getTb_bemerkung().setActivated(true);
+            write.getTb_bemerkung().setActivated(true);
         } else if (Status.getPenSelected1().equals(PEN_HEADLINE_1_1)
                 && Status.getPenSelected2().equals(PEN_HEADLINE_1_2)) {
-            Write.getInstance().getTb_headline1().setActivated(true);
+            write.getTb_headline1().setActivated(true);
         } else if (Status.getPenSelected1().equals(PEN_HEADLINE_2_1)
                 && Status.getPenSelected2().equals(PEN_HEADLINE_2_2)) {
-            Write.getInstance().getTb_headline2().setActivated(true);
+            write.getTb_headline2().setActivated(true);
         } else if (Status.getPenSelected1().equals(PEN_HEADLINE_3_1)
                 && Status.getPenSelected2().equals(PEN_HEADLINE_3_2)) {
-            Write.getInstance().getTb_headline3().setActivated(true);
+            write.getTb_headline3().setActivated(true);
         } 
     }
     
-    
-    /**
-     * Return the only instance of this class.
-     * @return the only instance of this class.
-     */
-    public static CWrite getInstance() {
-        if (instance == null) {
-            instance = new CWrite();
-        }
-        return instance;
-    }
-
 }

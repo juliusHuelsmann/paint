@@ -1,22 +1,34 @@
 //package declaration
 package view.util;
 
-//import declarations
+//import java.awt components
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.MouseListener;
 
+
+
+//import java.swing components
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 
-import view.forms.Page;
-import view.forms.Tabs;
+
+
+//import rotatatble buttons and panels
 import view.util.mega.MButton;
 import view.util.mega.MPanel;
-import control.tabs.CPaintStatus;
+
+//import the MenuListener controller interface giving the possibility to listen 
+//for menu open and menu close events
+
+import control.interfaces.MenuListener;
+//import the controller responsible for opening and closing the menu
 import control.util.CItem;
-import model.objects.painting.Picture;
+
+import model.settings.Status;
+//import utility classes and settings
 import model.settings.ViewSettings;
 import model.util.adt.list.List;
 import model.util.paint.Utils;
@@ -30,6 +42,16 @@ import model.util.paint.Utils;
 public class Item1Menu extends MPanel {
 
 	/**
+	 * The menuListener provides an interface for listening for menu - closing
+	 * and menu - opening events.
+	 * 
+	 * Thus for example the application can program different repaints if the
+	 * menu closes.
+	 */
+    private MenuListener menuListener;
+    
+	
+	/**
 	 * final value for items placed in one row.
 	 */
 	private byte itemsInRow = 2 + 1;
@@ -39,7 +61,7 @@ public class Item1Menu extends MPanel {
 	private List<Component> ls_item;
 
 	/**
-	 * boolean for whether inserting line by line or spalte by spalte.
+	 * boolean for whether inserting line by line or column by column.
 	 */
 	private boolean orderHeight = false;
 	
@@ -118,7 +140,6 @@ public class Item1Menu extends MPanel {
 		//initialize MButton
 		tb_select = new Item1Button(this);
 		tb_select.setActivable(false);
-		tb_select.addMouseListener(CPaintStatus.getInstance());
 		tb_select.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		tb_select.setFocusable(false);
 		if (_openSelectOneButton) {
@@ -166,6 +187,16 @@ public class Item1Menu extends MPanel {
 	
 	
 	/**
+	 * Add mouseListener to select button.
+	 * @param _ml the mouseListener
+	 */
+	public final void addMouseListener(final MouseListener _ml) {
+
+		tb_select.addMouseListener(_ml);
+	}
+	
+	
+	/**
 	 * remove scrollPanel if not necessary.
 	 */
 	public final void removeScroll() {
@@ -189,31 +220,64 @@ public class Item1Menu extends MPanel {
     	
     	if (open != _open) {
 
-	    	//release selected because of display bug otherwise.
-	    	if (Picture.getInstance().isSelected()) {
-		    	Picture.getInstance().releaseSelected();
-		    	Page.getInstance().releaseSelected();
-	    	}
 	    	
         	//open or close
             open = _open;
             if (_open) {
+            	
+
+        		if (menuListener != null) {
+            		menuListener.beforeOpen();
+        		} else {
+            		Status.getLogger().warning("no menu listener inserted!");
+            	}
+            	
                 setSize(openedWidth, openedHeight);
 
                 jpnl_container.setBorder(BorderFactory.createLineBorder(
                         ViewSettings.GENERAL_CLR_BORDER));
 
                 jpnl_container.requestFocus();
-                
+
+
+        		if (menuListener != null) {
+            		menuListener.afterOpen();
+        		} else {
+            		Status.getLogger().warning("no menu listener inserted!");
+            	}
+            	
             } else {
+            	if (menuListener != null) {
+
+            		menuListener.beforeClose();
+        		} else {
+            		Status.getLogger().warning("no menu listener inserted!");
+            	}
+            	
                 setSize(closedWidth, closedHeight);
                 jpnl_container.setBorder(null);
                 
-                //when closed repaint.
-                Page.getInstance().getJlbl_painting().repaint();
-                Tabs.getInstance().repaint();
+
+        		if (menuListener != null) {
+
+            		menuListener.afterClose();
+        		} else {
+            		Status.getLogger().warning("no menu listener inserted!");
+            	}
             }
     	}
+    }
+    
+    /**
+     * Set the MenuListener which provides an interface for listening for 
+     * menu - closing and menu - opening events outside this utility class.
+     * 
+     * It is only possible to set one MenuListener at a time.
+     * 
+     * @param _ml the MenuListener
+     */
+    public final void setMenuListener(final MenuListener _ml) {
+    	this.menuListener = _ml;
     }
     
     /**

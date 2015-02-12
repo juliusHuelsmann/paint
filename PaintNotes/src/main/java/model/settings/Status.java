@@ -5,12 +5,16 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
-
+import javax.swing.JOptionPane;
+import control.ControlPaint;
 import control.tabs.CWrite;
+import view.View;
 import view.forms.Page;
 import model.objects.painting.PaintBI;
+import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
+import model.objects.pen.normal.Marker;
 import model.objects.pen.normal.Pencil;
 import model.util.paint.Utils;
 
@@ -23,6 +27,48 @@ import model.util.paint.Utils;
  */
 public final class Status {
 
+	
+	private static ControlPaint controlPaint;
+	
+
+	private static CWrite getControlTabWrite() {
+		return controlPaint.getcTabWrite();
+	}
+	private static Page getPage() {
+		return controlPaint.getView().getPage();
+	}
+
+	private static View getView() {
+		return controlPaint.getView();
+	}
+	
+	
+	public static void setControlPaint(ControlPaint _controlPaint) {
+		if (_controlPaint != null) {
+
+			controlPaint = _controlPaint;
+		} else {
+			
+			if (controlPaint == null) {
+
+				getLogger().severe("initialized controlPaint "
+						+ "in Status with "
+						+ "not existing controller class.");
+			} else {
+
+				getLogger().severe("Tried to overwrite"
+						+ " existing controller class in"
+						+ " Status.");
+			}
+		}
+	}
+	
+	/**
+	 * Whether the initialization process has finished or not. If it has,
+	 * the fadeOut can disappear.
+	 */
+	private static int initializationFinished = 0;
+	
 
     /**
      * The format in which the image files are saved.
@@ -83,6 +129,20 @@ public final class Status {
     
     
     /**
+     * The entire list of available pens.
+     */
+    private static final Pen[] pen_available = new Pen[]{
+    		new Pencil(Constants.PEN_ID_POINT, 2, Color.black),
+            new Pencil(Constants.PEN_ID_LINES, 2, Color.black),
+            new Pencil(Constants.PEN_ID_MATHS, 2, Color.black),
+
+            new BallPen(Constants.PEN_ID_MATHS, 2, Color.black),
+            new BallPen(Constants.PEN_ID_LINES, 2, Color.black),
+            new BallPen(Constants.PEN_ID_POINT, 2, Color.black),
+
+            new Marker(Constants.PEN_ID_LINES, 2, Color.black)};
+    
+    /**
      * Erase radius.
      */
     private static int eraseRadius = 10;
@@ -104,6 +164,7 @@ public final class Status {
     borderRightPercentExport = borderLeftPercentExport, 
     borderTopPercentExport = Constants.BORDER_PRERCENTAGES[1], 
     borderBottomPercentExport = Constants.BORDER_PRERCENTAGES[1];
+
     
 
 
@@ -189,7 +250,7 @@ public final class Status {
      */
     public static int getRasterSize() {
         final int min = 1;
-        final int normal = 28;
+        final int normal = 24;
         
         return Math.max(min, normal * imageShowSize.width / imageSize.width);
     }
@@ -368,7 +429,7 @@ public final class Status {
      */
     public static void setPenSelected1(final Pen _penSelected1) {
         Status.penSelected1 = _penSelected1;
-        CWrite.getInstance().penChanged();
+        getControlTabWrite().penChanged();
     }
 
     /**
@@ -383,7 +444,7 @@ public final class Status {
      */
     public static void setPenSelected2(final Pen _penSelected2) {
         Status.penSelected2 = _penSelected2;
-        CWrite.getInstance().penChanged();
+        getControlTabWrite().penChanged();
     }
 
     /**
@@ -699,8 +760,8 @@ public final class Status {
         
         Status.showAlpha = _showAlpha;
         
-        if (Page.getInstance().getJlbl_background().getWidth() <= 0
-                || Page.getInstance().getJlbl_background().getHeight() <= 0) {
+        if (getPage().getJlbl_background().getWidth() <= 0
+                || getPage().getJlbl_background().getHeight() <= 0) {
             return;
         }
         if (_showAlpha) {
@@ -711,14 +772,14 @@ public final class Status {
             
             bi_transparency = Utils.paintRastarBlock(
                     new BufferedImage(
-                            Page.getInstance().getJlbl_background().getWidth(), 
-                            Page.getInstance().getJlbl_background()
+                            getPage().getJlbl_background().getWidth(), 
+                            getPage().getJlbl_background()
                             .getHeight(), 
                             BufferedImage.TYPE_INT_RGB), 
                     new Color[]{color1, color2},
                     new Rectangle(0, 0, 
-                            Page.getInstance().getJlbl_background().getWidth(), 
-                            Page.getInstance().getJlbl_background()
+                            getPage().getJlbl_background().getWidth(), 
+                            getPage().getJlbl_background()
                             .getHeight()), 
                             transparencyRectanlgeSize);
 
@@ -726,20 +787,32 @@ public final class Status {
             
             bi_transparency =  
                     new BufferedImage(
-                            Page.getInstance().getJlbl_background().getWidth(), 
-                            Page.getInstance().getJlbl_background()
+                            getPage().getJlbl_background().getWidth(), 
+                            getPage().getJlbl_background()
                             .getHeight(), 
                             BufferedImage.TYPE_INT_RGB);
             PaintBI.fillRectangleQuick(bi_transparency, Color.white, 
                     new Rectangle(0, 0, 
-                            Page.getInstance().getJlbl_background().getWidth(), 
-                            Page.getInstance().getJlbl_background()
+                            getPage().getJlbl_background().getWidth(), 
+                            getPage().getJlbl_background()
                             .getHeight()));
         }
-        
-        
     }
 
+    
+    
+
+
+    /**
+     * Apply the standard pen operation in picture and status.
+     * @param _picture the picture
+     */
+	public static void applyStandardPen(final Picture _picture) {
+
+        Picture.getInstance().initializePen(
+                new BallPen(Constants.PEN_ID_POINT, 1, Color.black));
+        setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);	
+	}
 
     /**
      * @return the saveFormat
@@ -770,6 +843,34 @@ public final class Status {
 	 */
 	public static void setEraseRadius(int eraseRadius) {
 		Status.eraseRadius = eraseRadius;
+	}
+
+
+	/**
+	 * @return the pen_available
+	 */
+	public static Pen[] getPen_available() {
+		return pen_available;
+	}
+	
+
+
+	/**
+	 * @return the initializationFinished
+	 */
+	public static boolean isInitializationFinished() {
+		return (initializationFinished >= 2);
+	}
+
+	
+	/**
+	 * Set the current operation finished.
+	 */
+	public static synchronized void increaseInitializationFinished() {
+		initializationFinished++;
+	}
+	public static void showMessageDialog(String _message) {
+		JOptionPane.showMessageDialog(getView(), _message);
 	}
 
 }

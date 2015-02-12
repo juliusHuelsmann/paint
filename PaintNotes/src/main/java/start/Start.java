@@ -3,10 +3,9 @@ package start;
 
 //import declarations
 import java.io.File;
-
 import model.objects.painting.Picture;
 import model.settings.Status;
-import control.ControlPainting;
+import control.ControlPaint;
 
 
 
@@ -18,12 +17,6 @@ import control.ControlPainting;
  */
 public final class Start {
 
-	/**
-	 * Whether the initialization process has finished or not. If it has,
-	 * the fadeOut can disappear.
-	 */
-	private static int initializationFinished = 0;
-	
 	/**
 	 * Utility class constructor.
 	 */
@@ -57,7 +50,7 @@ public final class Start {
                     
                     p.load(currentFile.getPath());
                     p.transformWhiteToAlpha();
-                    p.saveIMAGE(currentFile.getPath() + "2");
+                    p.saveIMAGE(currentFile.getPath() + "2", 0, 0);
                 } else {
                     Status.getLogger().info("unknown type");
                 }
@@ -103,10 +96,10 @@ public final class Start {
 	        Status.getLogger().info("normal start: launch programm!\n\n");
 	        
 	        //call controller
-	        ControlPainting.getInstance();
+	        new ControlPaint();
 	        
 	        //set the initialization process terminated
-            increaseInitializationFinished();
+            Status.increaseInitializationFinished();
 	        
 	        break;
 	        
@@ -122,25 +115,10 @@ public final class Start {
             }
 
 	        //set the initialization process terminated
-            increaseInitializationFinished();
+            Status.increaseInitializationFinished();
             
             break;
 	    }
-	}
-
-	/**
-	 * @return the initializationFinished
-	 */
-	public static boolean isInitializationFinished() {
-		return (initializationFinished >= 2);
-	}
-
-	
-	/**
-	 * Set the current operation finished.
-	 */
-	public static synchronized void increaseInitializationFinished() {
-		initializationFinished++;
 	}
 
 }

@@ -22,11 +22,6 @@ public final class VHistory extends JFrame implements Observer {
 
     
     /**
-     * the only instance of this class.
-     */
-    private static VHistory instance;
-    
-    /**
      * JTextArea for information.
      */
     private JTextArea jta_info;
@@ -35,7 +30,7 @@ public final class VHistory extends JFrame implements Observer {
     /**
      * constructor of ViewHistory. initializes the components.
      */
-    private VHistory() {
+    public VHistory() {
         super();
         super.setSize(ViewSettings.SIZE_OF_HISTORY);
         super.setAlwaysOnTop(true);
@@ -81,21 +76,4 @@ public final class VHistory extends JFrame implements Observer {
         }
     }
     
-
-    /**
-     * this method guarantees that only one instance of this
-     * class can be created ad runtime.
-     * 
-     * @return the only instance of this class.
-     */
-    public static synchronized VHistory getInstance() {
-        
-        //if not initialized yet
-        if (instance == null) {
-            instance = new VHistory();
-        }
-        
-        //return the instance of VHistory
-        return instance;
-    }
 }

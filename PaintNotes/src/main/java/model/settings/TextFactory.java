@@ -33,9 +33,12 @@ public final class TextFactory {
 	 * string containing the text of component in different languages.
 	 */
 	private final String[] view_tb_paste, view_tb_copy,  view_tb_cut, 
-	view_tb_zoomIn, view_tb_zoomOut, view_tb_save, 
+	view_tb_zoomIn, view_tb_zoomOut, view_tb_save, view_popup_saveChangesTitle,
+	view_popup_saveChangesText, 
 	
-	colorPanel_red, colorPanel_green, colorPanel_blue, colorPanel_submit;
+	colorPanel_red, colorPanel_green, colorPanel_blue, colorPanel_submit,
+	
+	name_pencil, name_ballPen, name_marker, name_funny, name_selection;
 
 	
 	
@@ -50,7 +53,7 @@ public final class TextFactory {
 		this.specifiedLanguage = 0;
 		
 		//initialize the texts of strings
-		view_tb_paste = new String[]{"Einfuegen", "Paste"};
+		view_tb_paste = new String[]{"Einfügen", "Paste"};
 		view_tb_copy = new String[]{"Kopieren", "Copy"};
 		view_tb_cut = new String[]{"Ausschneiden", "Cut"};
 		
@@ -64,8 +67,43 @@ public final class TextFactory {
         colorPanel_red = new String [] {"Rot", "red"};
         colorPanel_green = new String [] {"Gruen", "green"};
         colorPanel_blue = new String [] {"Blau", "blue"};
-		
+
         colorPanel_submit = new String [] {"ok", "add"};
+        
+        
+        //view pop-up which is opened if the user tries to exit the program, to
+        //load a file from hard drive or to open a blank page if there are 
+        //unsaved changes
+        view_popup_saveChangesTitle = new String [] {
+        		"Änderungen speichern?", 
+        		"Save changes?"};
+        view_popup_saveChangesText = new String [] {
+        		"Möchten Sie vor dem Schließen ungespeicherte Änderungen "
+        		+ "speichern?", 
+        		"Do you want to save the uncommitted changes before exiting? "};
+        
+        
+        //displayed name of pens
+        name_pencil = new String []{
+        		"Füller",
+        		"Pencil"
+        };
+        name_ballPen = new String [] {
+        		"Bleistift",
+        		"Ball-pen"
+        };
+        name_marker = new String []{
+        		"Textmarker",
+        		"Marker"
+        };
+        name_funny = new String []{
+        		"Funny",
+        		"Funny"
+        };
+        name_selection = new String[] {
+        		"Auswahl",
+        		"Selection"
+        };
 	}
 
 	/**
@@ -157,7 +195,7 @@ public final class TextFactory {
 	public String getTextViewTb_zoomIn() {
 		return view_tb_zoomIn[specifiedLanguage];
 	}
-	
+
 	/**
 	 * simple getter method.
 	 * @return the text
@@ -172,5 +210,57 @@ public final class TextFactory {
 	 */
 	public String getTextViewTb_save() {
 		return view_tb_save[specifiedLanguage];
+	}
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getTextViewPopupSaveChangesText() {
+		return view_popup_saveChangesText[specifiedLanguage];
+	}
+	
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getTextViewPopupSaveChangesTitle() {
+		return view_popup_saveChangesTitle[specifiedLanguage];
+	}
+
+
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getName_ballPen() {
+		return name_ballPen[specifiedLanguage];
+	}
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getName_Funny() {
+		return name_funny[specifiedLanguage];
+	}
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getName_marker() {
+		return name_marker[specifiedLanguage];
+	}
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getName_pencil() {
+		return name_pencil[specifiedLanguage];
+	}
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getName_selection() {
+		return name_selection[specifiedLanguage];
 	}
 }

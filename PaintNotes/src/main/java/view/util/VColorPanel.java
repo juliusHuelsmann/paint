@@ -4,6 +4,7 @@ package view.util;
 //import declarations
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
@@ -14,6 +15,7 @@ import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
+import control.interfaces.MenuListener;
 import control.util.CColorPanel;
 
 
@@ -77,8 +79,11 @@ import control.util.CColorPanel;
 	 * Constructor: initializes things.
 	 * 
 	 * @param _jbtn_toUpdate the MButtons which are being updated.
+	 * @param _ml the menuListener for all item1- and item2- menus
 	 */
-	public VColorPanel(final MButton[] _jbtn_toUpdate) {
+	public VColorPanel(final MButton[] _jbtn_toUpdate, 
+			final MenuListener _ml, 
+			final MouseListener _controlPaintStatus) {
 
 		//initialize JPanel and alter settings
 		super();
@@ -92,7 +97,7 @@ import control.util.CColorPanel;
         control = new CColorPanel(this);
 
         //add components
-		int height = addComponents();
+		int height = addComponents(_ml, _controlPaintStatus);
 		
 		jlbl_selectedColor.setBounds(
 		        jbtn_colorsUpdate[jbtn_colorsUpdate.length - 1].getX()
@@ -152,9 +157,11 @@ import control.util.CColorPanel;
 	
 	/**
 	 * add components to JPanel and return height.
+	 * @param _ml the menuListener for all item1- and item2- menus
 	 * @return the height
 	 */
-	private int addComponents() {
+	private int addComponents(final MenuListener _ml,
+			final MouseListener _controlPaintStatus) {
 
         //save final values that are rather unimportant.
         final Dimension dim_JLabel = new Dimension(40, 16);
@@ -233,7 +240,8 @@ import control.util.CColorPanel;
 
         //add controller for this class.
 
-        this.insertColorPanel(widthTotal, currentHeight);
+        this.insertColorPanel(widthTotal, currentHeight, _ml, 
+        		_controlPaintStatus);
         
         int width = sizeBigColor / 2;
         int height = sizeBigColor / (2 + 1);
@@ -270,10 +278,15 @@ import control.util.CColorPanel;
 	 * 
 	 * @param _width the width of the panel
 	 * @param _height the height of the panel
+	 * @param _ml the menuListener for all item1- and item2- menus
 	 * 
 	 * @return the height of the ColorPanel.
 	 */
-	private int insertColorPanel(final int _width, final int _height) {
+	private int insertColorPanel(
+			final int _width, 
+			final int _height,
+			final MenuListener _ml,
+			final MouseListener _controlPaintStatus) {
 
         /**
          * first and second colorPanels
@@ -287,12 +300,16 @@ import control.util.CColorPanel;
         
         //initialize them
         it_color1 = new Item1Menu(false);
+        it_color1.setMenuListener(_ml);
+        it_color1.addMouseListener(_controlPaintStatus);
         it_color1.setOrderHeight(true);
         it_color1.setSize(new Dimension(1, heightPanel));
         it_color1.setItemsInRow(itemsInRow);
         
         it_color2 = new Item1Menu(false);
         it_color2.setOrderHeight(true);
+        it_color2.setMenuListener(_ml);
+        it_color2.addMouseListener(_controlPaintStatus);
         it_color2.setSize(new Dimension(1, heightPanel));
         it_color2.setItemsInRow(itemsInRow);
 
@@ -311,7 +328,6 @@ import control.util.CColorPanel;
                 insertPanel(it_color1, new Color(r, tempGb, tempGb));
             }
         }   
-        
         /*
          * red (to green)
          */

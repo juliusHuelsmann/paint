@@ -75,7 +75,6 @@ public final class CWrite implements ActionListener {
      * Constructor
      */
     
-    private Paint paint;
     private ControlPaint cp;
     /**
      * Empty utility class constructor.
@@ -94,7 +93,7 @@ public final class CWrite implements ActionListener {
     public void actionPerformed(final ActionEvent _event) {
     	
     	
-    	Paint _paint = cp.getView().getTabs().getTab_paint();
+    	Paint paint = cp.getView().getTabs().getTab_paint();
     	Write write = cp.getView().getTabs().getTab_write();
         if (_event.getSource().equals(write
                 .getTb_beispiel().getActionCause())) {

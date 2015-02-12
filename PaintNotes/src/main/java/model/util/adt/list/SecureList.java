@@ -1,5 +1,7 @@
 package model.util.adt.list;
 
+import java.io.Serializable;
+
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.adt.stack.Stack;
@@ -30,7 +32,15 @@ import model.util.adt.stack.Stack;
  * @version %I%, %U%
  * @param <SecureListType>
  */
-public class SecureList<SecureListType> {
+public class SecureList<SecureListType> implements Serializable {
+
+    /**
+     * Default serial version UID for being able to identify the list's 
+     * version if saved to the disk and check whether it is possible to 
+     * load it or whether important features have been added so that the
+     * saved file is out-dated.
+     */
+    private static final long serialVersionUID = 1L;
 
 	
 	/**

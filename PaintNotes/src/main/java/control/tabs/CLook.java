@@ -45,101 +45,104 @@ public final class CLook implements ActionListener {
      */
     public void actionPerformed(final ActionEvent _event) {
 
-        int backgroundID;
-        if (_event.getSource().equals(getLook().getJcb_raster())) {
-            backgroundID = Constants.CONTROL_PAGE_BACKGROUND_RASTAR;
-            getLook().getJcb_raster().setSelected(true);
-            getLook().getJcb_nothing().setSelected(false);
-            getLook().getJcb_lines().setSelected(false);
-            Status.setIndexPageBackground(backgroundID);
-        
-        } else if (_event.getSource().equals(
-                getLook().getJcb_lines())) {
-            backgroundID = Constants.CONTROL_PAGE_BACKGROUND_LINES;
-            getLook().getJcb_lines().setSelected(true);
-            getLook().getJcb_nothing().setSelected(false);
-            getLook().getJcb_raster().setSelected(false);
-            Status.setIndexPageBackground(backgroundID);
-        
-        } else if (_event.getSource().equals(
-                getLook().getJcb_nothing())) {
-            backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
-            getLook().getJcb_nothing().setSelected(true);
-            getLook().getJcb_lines().setSelected(false);
-            getLook().getJcb_raster().setSelected(false);
-            Status.setIndexPageBackground(backgroundID);
-        
-        } else if (_event.getSource().equals(
-                getLook().getJcb_margeBottom())) {
-            
-            String str_selected = getLook().getJcb_margeBottom()
-                    .getSelectedItem().toString().replace("%", "");
-            
-            try {
+    	if (getLook() != null) {
+    		  int backgroundID;
+    	        if (_event.getSource().equals(getLook().getJcb_raster())) {
+    	            backgroundID = Constants.CONTROL_PAGE_BACKGROUND_RASTAR;
+    	            getLook().getJcb_raster().setSelected(true);
+    	            getLook().getJcb_nothing().setSelected(false);
+    	            getLook().getJcb_lines().setSelected(false);
+    	            Status.setIndexPageBackground(backgroundID);
+    	        
+    	        } else if (_event.getSource().equals(
+    	                getLook().getJcb_lines())) {
+    	            backgroundID = Constants.CONTROL_PAGE_BACKGROUND_LINES;
+    	            getLook().getJcb_lines().setSelected(true);
+    	            getLook().getJcb_nothing().setSelected(false);
+    	            getLook().getJcb_raster().setSelected(false);
+    	            Status.setIndexPageBackground(backgroundID);
+    	        
+    	        } else if (_event.getSource().equals(
+    	                getLook().getJcb_nothing())) {
+    	            backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
+    	            getLook().getJcb_nothing().setSelected(true);
+    	            getLook().getJcb_lines().setSelected(false);
+    	            getLook().getJcb_raster().setSelected(false);
+    	            Status.setIndexPageBackground(backgroundID);
+    	        
+    	        } else if (_event.getSource().equals(
+    	                getLook().getJcb_margeBottom())) {
+    	            
+    	            String str_selected = getLook().getJcb_margeBottom()
+    	                    .getSelectedItem().toString().replace("%", "");
+    	            
+    	            try {
 
-                int int_selected = Integer.parseInt(str_selected);
-                Status.setBorderBottomPercent(int_selected);
-            } catch (Exception e) {
-                Status.getLogger().severe(
-                        "error: change border size: wrong input");
-            }
-        } else if (_event.getSource().equals(
-                getLook().getJcb_margeLeft())) {
-            
+    	                int int_selected = Integer.parseInt(str_selected);
+    	                Status.setBorderBottomPercent(int_selected);
+    	            } catch (Exception e) {
+    	                Status.getLogger().severe(
+    	                        "error: change border size: wrong input");
+    	            }
+    	        } else if (_event.getSource().equals(
+    	                getLook().getJcb_margeLeft())) {
+    	            
 
-            String str_selected = getLook().getJcb_margeLeft()
-                    .getSelectedItem().toString().replace("%", "");
-            
-            try {
+    	            String str_selected = getLook().getJcb_margeLeft()
+    	                    .getSelectedItem().toString().replace("%", "");
+    	            
+    	            try {
 
-                int int_selected = Integer.parseInt(str_selected);
-                Status.setBorderLeftPercent(int_selected);
-            } catch (Exception e) {
-                Status.getLogger().severe(
-                        "error: change border size: wrong input");
-            }
-        } else if (_event.getSource().equals(
-                getLook().getJcb_margeTop())) {
+    	                int int_selected = Integer.parseInt(str_selected);
+    	                Status.setBorderLeftPercent(int_selected);
+    	            } catch (Exception e) {
+    	                Status.getLogger().severe(
+    	                        "error: change border size: wrong input");
+    	            }
+    	        } else if (_event.getSource().equals(
+    	                getLook().getJcb_margeTop())) {
 
-            String str_selected = getLook().getJcb_margeTop()
-                    .getSelectedItem().toString().replace("%", "");
-            
-            try {
+    	            String str_selected = getLook().getJcb_margeTop()
+    	                    .getSelectedItem().toString().replace("%", "");
+    	            
+    	            try {
 
-                int int_selected = Integer.parseInt(str_selected);
-                Status.setBorderTopPercent(int_selected);
-            } catch (Exception e) {
-                Status.getLogger().severe(
-                        "error: change border size: wrong input");
-            }
-        } else if (_event.getSource().equals(
-                getLook().getJcb_margeRight())) {
+    	                int int_selected = Integer.parseInt(str_selected);
+    	                Status.setBorderTopPercent(int_selected);
+    	            } catch (Exception e) {
+    	                Status.getLogger().severe(
+    	                        "error: change border size: wrong input");
+    	            }
+    	        } else if (_event.getSource().equals(
+    	                getLook().getJcb_margeRight())) {
 
-            String str_selected = getLook().getJcb_margeRight()
-                    .getSelectedItem().toString().replace("%", "");
-            
-            try {
+    	            String str_selected = getLook().getJcb_margeRight()
+    	                    .getSelectedItem().toString().replace("%", "");
+    	            
+    	            try {
 
-                int int_selected = Integer.parseInt(str_selected);
-                Status.setBorderRightPercent(int_selected);
-            } catch (Exception e) {
-                Status.getLogger().severe(
-                        "error: change border size: wrong input");
-            }
-        } else if (_event.getSource().equals(getLook()
-                .getJcb_displayAlpha())) {
+    	                int int_selected = Integer.parseInt(str_selected);
+    	                Status.setBorderRightPercent(int_selected);
+    	            } catch (Exception e) {
+    	                Status.getLogger().severe(
+    	                        "error: change border size: wrong input");
+    	            }
+    	        } else if (_event.getSource().equals(getLook()
+    	                .getJcb_displayAlpha())) {
 
-            Status.setShowAlpha(getLook().getJcb_displayAlpha()
-                    .getSelectedItem().equals(Constants.ID_DISPLAY_ALPHA));
-            
-            if (getPage().getWidth() > 0) {
+    	            Status.setShowAlpha(getLook().getJcb_displayAlpha()
+    	                    .getSelectedItem().equals(Constants.ID_DISPLAY_ALPHA));
+    	            
+    	            if (getPage().getWidth() > 0) {
 
-                
-            	getPage().flip();
-            }
-            
-        }
-        getControlPicture().refreshPaint();
-        
+    	                
+    	            	getPage().flip();
+    	            }
+    	            
+    	        }
+    	        getControlPicture().refreshPaint();
+    	        
+    	    }
     }
+      
 }

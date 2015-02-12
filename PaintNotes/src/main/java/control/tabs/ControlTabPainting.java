@@ -81,7 +81,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
      * Fetch the instance of tab paint.
      * @return the tab paint.
      */
-    private Paint getTabPaint() {
+    public Paint getTabPaint() {
     	
     	if (controlPaint != null
     			&& controlPaint.getView() != null

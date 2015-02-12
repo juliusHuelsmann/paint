@@ -356,81 +356,6 @@ public final class CPaintStatus implements MouseListener {
     	}
     }
     
-    
-    /**
-     * mouseReleased action for changing pen.
-     * @param _event the ActionEvent
-     * @return whether the _event is suitable for this operation
-     */
-    private boolean mouseReleasedPenChange(final MouseEvent _event) {
-
-
-    	/**
-    	 * Instance of paint fetched out of instance of the main controller
-    	 * class.
-    	 * The getter method handles the printing of an error message if the 
-    	 * instance of Paint is null.
-    	 */
-    	final Paint paint = getTabPaint();
-
-    	
-    	//if the initialization process has terminated without errors
-    	//the instance of Paint is not equal to null, thus it is possible to
-    	//check the source of the ActionEvent.
-    	if (paint != null) {
-    		/*
-             * the different pens in open pen menu
-             */
-            if (ControlTabPainting.isAStiftAuswahl((_event.getSource()))) {
-                Item1PenSelection sa = (Item1PenSelection) ((VButtonWrapper) 
-                        _event.getSource()).wrapObject();
-                
-                //set the image of the current pen, close the menu and
-                //reset the last open menu; thus no menu has to be closed the next
-                //time another menu is opened
-                if (sa.getPenSelection() == 1) {
-                    
-                    paint.getIt_stift1().setIcon(sa.getImagePath());
-                    paint.getIt_stift1().setOpen(false);
-                    Status.setIndexOperation(
-                            Constants.CONTROL_PAINTING_INDEX_PAINT_1);
-                    deactivate();
-                    paint.getIt_stift1().getTb_open()
-                    .setActivated(true);
-                    paint.getTb_color1()
-                    .setActivated(true);
-                    
-                    
-                } else if (sa.getPenSelection() == 2) {
-                    
-                    paint.getIt_stift2().setIcon(sa.getImagePath());
-                    paint.getIt_stift2().setOpen(false);
-                    Status.setIndexOperation(
-                            Constants.CONTROL_PAINTING_INDEX_PAINT_2);
-
-                    deactivate();
-                    paint.getIt_stift2().getTb_open()
-                    .setActivated(true);
-                    paint.getTb_color2()
-                    .setActivated(true);
-                }
-                ControlTabPainting.applyFocus(sa);
-                Picture.getInstance().userSetPen(sa.getPen(), sa.getPenSelection());
-                CItem.getInstance().reset();
-                
-                //return that this operation has been performed
-                return true;
-            } else {
-                
-                //return that the operation has not been found yet.
-                return false;
-            }
-    	} else {
-            
-            //return that the operation has not been found yet.
-    		return false;
-    	}
-    }
 
 
     /**
@@ -454,7 +379,6 @@ public final class CPaintStatus implements MouseListener {
     	//check the source of the ActionEvent.
     	if (paint != null) {
 
-    		if (!mouseReleasedPenChange(_event)) {
     			
     			//if previously zoomed remove zoom field.
     			if (Status.getIndexOperation()
@@ -599,7 +523,6 @@ public final class CPaintStatus implements MouseListener {
     	            mouseReleasedColorChange(_event);
     		    }
     		}
-    	}
 	}
 	
 

@@ -148,7 +148,7 @@ public class Item1PenSelection extends MPanel {
 	 * add MouseListener to JButton jbtn_select.
 	 * @param _l the MouseListener
 	 */
-	public final void addMouseLListener(final MouseListener _l) {
+	public final void addMouseListener(final MouseListener _l) {
 		jbtn_select.addMouseListener(_l);
 	}
 	

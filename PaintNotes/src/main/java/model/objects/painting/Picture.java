@@ -1974,7 +1974,7 @@ public final class Picture {
 			pen.setClr_foreground(Status.getPenSelected2().getClr_foreground());
 			Status.setPenSelected2(pen);
 		} else {
-			Status.getLogger().severe("wrong identifier.");
+			Status.getLogger().severe("wrong identifier: " + _id);
 		}
 	}
 

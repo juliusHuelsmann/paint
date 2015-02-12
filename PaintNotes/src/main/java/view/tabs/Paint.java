@@ -293,6 +293,7 @@ public final class Paint extends Tab {
             it_stift1 = new Item1Menu(false);
             it_stift1.setMenuListener(_ml);
             it_stift1.addMouseListener(_controlPaintStatus);
+
             tb_erase = new Item1Button(null);
             tb_move = new Item1Button(null);
             tb_fill = new Item1Button(null);
@@ -770,9 +771,10 @@ public final class Paint extends Tab {
 			
 			//mouse listener and changeListener
 			i1.addMouseListener(_cp);
-			i1.addChangeListener(new CPen(_cp, i1, it_stift1, 
-					Pen.clonePen(pen_available)));
-			i1.addMouseListener(_controlPaintStatus);
+			CPen cpen = new CPen(_cp, i1, it_stift1, 
+					Pen.clonePen(pen_available), 1, _controlPaintStatus);
+			i1.addChangeListener(cpen);
+			i1.addMouseListener(cpen);
 
 			//add to first pen
 	        it_stift1.add(i1);
@@ -789,9 +791,10 @@ public final class Paint extends Tab {
 			
 			//mouse listener and changeListener
 			i2.addMouseListener(_cp);
-			i2.addChangeListener(new CPen(_cp, i2, it_stift2,
-					Pen.clonePen(pen_available)));
-			i2.addMouseListener(_controlPaintStatus);
+			CPen cpen2 = new CPen(_cp, i2, it_stift2,
+					Pen.clonePen(pen_available), 2, _controlPaintStatus);
+			i2.addChangeListener(cpen2);
+			i2.addMouseListener(cpen2);
 
 			//add to first pen
 	        it_stift2.add(i2);

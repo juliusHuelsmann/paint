@@ -76,7 +76,6 @@ public final class CWrite implements ActionListener {
      */
     
     private Paint paint;
-    private Write write;
     private ControlPaint cp;
     /**
      * Empty utility class constructor.
@@ -96,7 +95,7 @@ public final class CWrite implements ActionListener {
     	
     	
     	Paint _paint = cp.getView().getTabs().getTab_paint();
-    	Write _write = cp.getView().getTabs().getTab_write();
+    	Write write = cp.getView().getTabs().getTab_write();
         if (_event.getSource().equals(write
                 .getTb_beispiel().getActionCause())) {
             deactivate();
@@ -209,6 +208,7 @@ public final class CWrite implements ActionListener {
      * Deactivate all graphical user interface items.
      */
     public void deactivate() {
+    	Write write = cp.getView().getTabs().getTab_write();
         write.getTb_beispiel().setActivated(false);
         write.getTb_bemerkung().setActivated(false);
         write.getTb_beweis().setActivated(false);
@@ -226,6 +226,7 @@ public final class CWrite implements ActionListener {
      */
     public void penChanged() {
         deactivate();
+    	Write write = cp.getView().getTabs().getTab_write();
         if (Status.getPenSelected1().equals(PEN_THEOREM_1)
                 && Status.getPenSelected2().equals(PEN_THEOREM_2)) {
             write.getTb_satz().setActivated(true);

@@ -13,18 +13,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
-import control.CSelection;
+import control.ContorlPicture;
+import control.ControlPaintSelectin;
 import control.tabs.CTabSelection;
-import view.View;
 import view.forms.Console;
 import view.forms.Message;
 import view.forms.Page;
 import view.tabs.Insert;
+import view.tabs.PaintObjects;
 import model.objects.PictureOverview;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
@@ -47,6 +45,7 @@ import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
 import model.settings.Status;
 import model.util.DPoint;
+import model.util.Util;
 import model.util.adt.list.SecureList;
 import model.util.adt.list.SecureListSort;
 import model.util.paint.Utils;
@@ -141,6 +140,10 @@ public final class Picture {
 
 		// save current id
 		this.currentId = 0;
+		
+		//initialize the standard pen and the standard operation id in 
+		//controller class for pen1 selected.
+		Status.applyStandardPen(this);
 	}
 
 	/**
@@ -258,7 +261,7 @@ public final class Picture {
 	/**
 	 * Add the paintObject.
 	 */
-	public void addPaintObject() {
+	public void addPaintObject(final Insert _tab_insert) {
 
 		int casus = -1;
 		// switch index of operation
@@ -319,14 +322,14 @@ public final class Picture {
 
 		case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
 
-			String srows = Insert.getInstance().getJtf_amountRows().getText();
+			String srows = _tab_insert.getJtf_amountRows().getText();
 			int rows = 0;
 			try {
 				rows = Integer.parseInt(srows);
 			} catch (Exception e) {
 				Message.showMessage(Message.MESSAGE_ID_INFO, "enter valid row");
 			}
-			String slines = Insert.getInstance().getJtf_amountLines().getText();
+			String slines = _tab_insert.getJtf_amountLines().getText();
 			int lines = 0;
 			try {
 				lines = Integer.parseInt(slines);
@@ -391,11 +394,14 @@ public final class Picture {
 	 *            coordinate of normal-sized BufferedImage.
 	 * @param _pxY
 	 *            coordinate of normal-sized BufferedImage.
+	 *            
+	 * @param _bi 
+	 * 				The BufferedImage which pixel is checked.
 	 * 
 	 * @return the RGB integer of the color at given coordinate.
 	 */
-	public int getColorPX(final int _pxX, final int _pxY) {
-		return Page.getInstance().getJlbl_painting().getBi().getRGB(_pxX, _pxY);
+	public int getColorPX(final int _pxX, final int _pxY, final BufferedImage _bi) {
+		return _bi.getRGB(_pxX, _pxY);
 	}
 
 	/**
@@ -418,22 +424,28 @@ public final class Picture {
 	 *            the bufferedImage
 	 * @return the graphics
 	 */
-	public synchronized BufferedImage updateRectangle(final int _x,
-			final int _y, final int _width, final int _height,
-			final int _graphicX, final int _graphiY, final BufferedImage _bi) {
-
-		BufferedImage ret = emptyRectangle(_x, _y, _width, _height, _graphicX,
+	public synchronized BufferedImage updateRectangle(
+			final int _x, final int _y, 
+			
+			final int _width, final int _height,
+			
+			final int _graphicX, final int _graphiY, 
+			
+			final BufferedImage _bi,
+			final ContorlPicture _controlPicture) {
+		
+		
+		BufferedImage ret = emptyRectangle(
+				_x, _y, _width, _height, _graphicX,
 				_graphiY, _bi);
 
 		// if the graphical user interface is not set up yet.
-		if (Page.getInstance().getJlbl_painting() == null || ret == null) {
-			return new BufferedImage(2, 2, BufferedImage.TYPE_INT_ARGB);
+		if (ret == null) {
+			return new BufferedImage(_width, _height, BufferedImage.TYPE_INT_ARGB);
 		}
-		Page.getInstance().getJlbl_painting().setBi(ret);
-		Page.getInstance().getJlbl_painting().setIcon(new ImageIcon(ret));
-		Page.getInstance().getJlbl_painting().repaint();
-
-		ret = repaintRectangle(_x, _y, _width, _height, ret, false);
+		
+		
+		ret = repaintRectangle(_x, _y, _width, _height, _graphicX, _graphiY, ret, false);
 
 		return ret;
 	}
@@ -475,16 +487,18 @@ public final class Picture {
 
 		}
 
+		BufferedImage bi = _bi;
 		// alle die in Frage kommen neu laden.
-		if (ls_po_sortedByX == null || _bi == null) {
-			return _bi;
+		if (ls_po_sortedByX == null || bi == null) {
+			bi = new BufferedImage(_width, _height, BufferedImage.TYPE_INT_ARGB);
+//			return _bi;
 		}
 
 		final int maxRGB = 255;
-		PaintBI.fillRectangleQuick(_bi, new Color(maxRGB, maxRGB, maxRGB, 0), 
+		PaintBI.fillRectangleQuick(bi, new Color(maxRGB, maxRGB, maxRGB, 0), 
 				new Rectangle(_graphicX, _graphiY, rectWidth, rectHeight));
 
-		return _bi;
+		return bi;
 
 	}
 
@@ -508,8 +522,17 @@ public final class Picture {
 	 * 
 	 * @return the BufferedImage with painted PaintObjects on it.
 	 */
-	public synchronized BufferedImage repaintRectangle(final int _x,
-			final int _y, final int _width, final int _height,
+	public synchronized BufferedImage repaintRectangle(
+			
+			final int _x,
+			final int _y,
+			
+			final int _width, 
+			final int _height,
+			
+			final int _xBi,
+			final int _yBi,
+			
 			final BufferedImage _bi, final boolean _final) {
 
 		// If the sorted list of PaintObjects has not been initialized yet,
@@ -633,9 +656,14 @@ public final class Picture {
 		while (!ls_poChronologic.isBehind() && !ls_poChronologic.isEmpty()) {
 
 			ls_poChronologic.getItem().paint(_bi, _final,
-					Page.getInstance().getJlbl_painting().getBi(),
-					Page.getInstance().getJlbl_painting().getLocation().x,
-					Page.getInstance().getJlbl_painting().getLocation().y,
+					_bi, 
+//					_x, _y,
+//					_paintLocationX,
+//					_paintLocationY,
+					-_x + _xBi, -_y + _yBi,
+//					Page.getInstance().getJlbl_painting().getBi(),
+//					Page.getInstance().getJlbl_painting().getLocation().x,
+//					Page.getInstance().getJlbl_painting().getLocation().y,
 					r_selection);
 			counter++;
 			ls_poChronologic.next(SecureList.ID_NO_PREDECESSOR, 
@@ -667,7 +695,9 @@ public final class Picture {
 	 * @param _pnt
 	 *            the point which is to be added.
 	 */
-	public void changePaintObject(final DPoint _pnt) {
+	public void changePaintObject(final DPoint _pnt,
+			final Page _page,
+			final ContorlPicture _cPicture) {
 
 		if (po_current == null) {
 
@@ -704,7 +734,7 @@ public final class Picture {
 
 			POInsertion pow = (POInsertion) po_current;
 			if (pow.getPnt_first() != null && pow.getPnt_last() != null) {
-				Page.getInstance().getJlbl_painting().refreshPaint();
+				_cPicture.refreshPaint();
 			}
 
 			po_current.addPoint(_pnt);
@@ -712,55 +742,50 @@ public final class Picture {
 
 			POCurve pow = (POCurve) po_current;
 			pow.addPoint(_pnt);
-			Page.getInstance().getJlbl_painting().refreshPaint();
+			_cPicture.refreshPaint();
 		}
 
 		if (pen_current instanceof PenSelection) {
 
-			BufferedImage bi_transformed = Page.getInstance()
+			BufferedImage bi_transformed = Util
 					.getEmptyBISelection();
 			bi_transformed = po_current.paint(
 					bi_transformed, false,
 					bi_transformed, 
-					Page.getInstance().getJlbl_painting().getLocation().x,
-					Page.getInstance().getJlbl_painting().getLocation().y, 
+					_page.getJlbl_painting().getLocation().x,
+					_page.getJlbl_painting().getLocation().y, 
 					null);
 
-			Page.getInstance().getJlbl_selectionBG()
+			_page.getJlbl_selectionBG()
 					.setIcon(new javax.swing.ImageIcon(bi_transformed));
 		} else {
 
-			BufferedImage bi_transformed;
+			BufferedImage bi_transformed = _cPicture.getBi();
 			if (po_current instanceof POCurve) {
-				bi_transformed = ((PaintObjectWriting) po_current).paint(Page
-						.getInstance().getJlbl_painting().getBi(), false, Page
-						.getInstance().getJlbl_painting().getBi(), Page
-						.getInstance().getJlbl_painting().getLocation().x, Page
-						.getInstance().getJlbl_painting().getLocation().y,
+				bi_transformed = ((PaintObjectWriting) po_current).paint(
+						_cPicture.getBi(), false, _cPicture.getBi(), 
+						_page.getJlbl_painting().getLocation().x, _page.getJlbl_painting().getLocation().y,
 						null);
 			} else if (po_current instanceof PaintObjectWriting
 					&& !(po_current instanceof POCurve)) {
+				
 				bi_transformed = ((PaintObjectWriting) po_current).paintLast(
-						Page.getInstance().getJlbl_painting().getBi(),
-						Page.getInstance().getJlbl_painting().getLocation().x,
-						Page.getInstance().getJlbl_painting().getLocation().y);
+						bi_transformed,
+						_page.getJlbl_painting().getLocation().x,
+						_page.getJlbl_painting().getLocation().y);
 			} else {
-				Page.getInstance()
-						.getJlbl_painting()
-						.refreshRectangle(po_current.getSnapshotBounds().x,
+				_cPicture
+						.refreshRectangle(
+								po_current.getSnapshotBounds().x,
 								po_current.getSnapshotBounds().y,
 								po_current.getSnapshotBounds().width,
 								po_current.getSnapshotBounds().height);
 
-				bi_transformed = po_current.paint(Page.getInstance()
-						.getJlbl_painting().getBi(), false, Page.getInstance()
-						.getJlbl_painting().getBi(), Page.getInstance()
-						.getJlbl_painting().getLocation().x, Page.getInstance()
+				bi_transformed = po_current.paint(_cPicture.getBi(), false, _cPicture.getBi(), _page
+						.getJlbl_painting().getLocation().x, _page
 						.getJlbl_painting().getLocation().y, null);
 			}
-			Page.getInstance().getJlbl_painting().setBi(bi_transformed);
-			Page.getInstance().getJlbl_painting()
-					.setIcon(new javax.swing.ImageIcon(bi_transformed));
+			_cPicture.setBi(bi_transformed);
 
 		}
 
@@ -771,14 +796,14 @@ public final class Picture {
 	/**
 	 * @return the paintObject.
 	 */
-	public PaintObjectWriting abortPaintObject() {
+	public PaintObjectWriting abortPaintObject(ContorlPicture _controlPic) {
 		PaintObjectWriting pow = null;
 		// PaintObjectWriting pow = new PaintObjectWriting(-1, pen_current);
 		// List<DPoint> ls_points = null;
 		// pow.
 		if (pen_current instanceof PenSelection) {
 
-			Page.getInstance().getJlbl_painting()
+			_controlPic
 					.paintSelection(po_current, (PenSelection) pen_current);
 
 		}
@@ -795,7 +820,7 @@ public final class Picture {
 	/**
 	 * Finishes current PaintObject.
 	 */
-	public void finish() {
+	public void finish(final PaintObjects _po) {
 
 		if (po_current == null) {
 
@@ -815,7 +840,7 @@ public final class Picture {
 
 			ls_po_sortedByX.insertSorted(po_current, b.x, 
 					SecureList.ID_NO_PREDECESSOR);
-			new PictureOverview().add(po_current);
+			new PictureOverview(_po).add(po_current);
 
 			// reset current instance of PaintObject
 			po_current = null;
@@ -855,7 +880,7 @@ public final class Picture {
 		} else {
 
 			// alert user.
-			JOptionPane.showMessageDialog(View.getInstance(),
+			Status.showMessageDialog(
 					"PROGRAMMIERFEHLER @ paintobjectwriting: "
 							+ "Stift noch nicht hinzugefuegt.");
 
@@ -894,24 +919,23 @@ public final class Picture {
 	 * 
 	 * @return the painted BufferedImage.
 	 */
-	public BufferedImage paintSelectedBI() {
+	public BufferedImage paintSelectedBI(final Rectangle _recSelection) {
 
-		if (CSelection.getInstance().getR_selection() == null) {
+		if (_recSelection == null) {
 
 			Status.getLogger().warning("the selection square does not exist!");
 			return null;
 		}
 
-		BufferedImage bi = new BufferedImage(CSelection.getInstance()
-				.getR_selection().width + 1, CSelection.getInstance()
-				.getR_selection().height + 1, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bi = new BufferedImage(_recSelection.width + 1, 
+				_recSelection.height + 1, BufferedImage.TYPE_INT_ARGB);
 
 
     	//start transaction and closed action.
-    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    	final int transaction = getLs_po_sortedByX()
     			.startTransaction("paint selected bi", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    	final int closedAction = getLs_po_sortedByX()
     			.startClosedAction("paint selected bi", 
     					SecureList.ID_NO_PREDECESSOR);
         
@@ -924,15 +948,12 @@ public final class Picture {
 				PaintObjectWriting pow = (PaintObjectWriting) po;
 
 				// TODO: zoom, scroll adjust?
-				pow.paint(bi, false, bi, -CSelection.getInstance()
-						.getR_selection().x, -CSelection.getInstance()
-						.getR_selection().y, null);
+				pow.paint(bi, false, bi, -_recSelection.x, 
+						-_recSelection.y, null);
 
 			} else if (po instanceof PaintObjectImage) {
 				PaintObjectImage poi = (PaintObjectImage) po;
-				poi.paint(bi, false, bi, -CSelection.getInstance()
-						.getR_selection().x, -CSelection.getInstance()
-						.getR_selection().y, null);
+				poi.paint(bi, false, bi, -_recSelection.x, -_recSelection.y, null);
 
 			} else {
 				Status.getLogger().warning("unknown kind of PaintObject" + po);
@@ -942,9 +963,9 @@ public final class Picture {
 		}
 
     	//close transaction and closed action.
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    	getLs_po_sortedByX().finishTransaction(
     			transaction);
-    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    	getLs_po_sortedByX().finishClosedAction(
     			closedAction);
         
 		return bi;
@@ -955,24 +976,27 @@ public final class Picture {
 	 * 
 	 * @param _wsLoc
 	 *            the path of the location.
+	 *            
+	 *            @param _x the location of the PaintLabel.
+	 *            @param _y the location of the PaintLabel.
 	 */
-	public void saveIMAGE(final String _wsLoc) {
+	public void saveIMAGE(final String _wsLoc,
+			final int _x,
+			final int _y) {
 
 		BufferedImage bi;
 		if (Status.isExportAlpha()) {
 
-			bi = Page.getInstance().getEmptyBITransparent();
+			bi = Util.getEmptyBITransparent();
 		} else {
-			bi = Page.getInstance().getEmptyBIWhite();
+			bi = Util.getEmptyBIWhite();
 		}
 
 		bi = Utils.getBackgroundExport(bi, 0, 0, Status.getImageSize().width,
 				Status.getImageSize().height, 0, 0);
 
-		bi = repaintRectangle(-Page.getInstance().getJlbl_painting()
-				.getLocation().x + 0, -Page.getInstance().getJlbl_painting()
-				.getLocation().y + 0, Status.getImageSize().width,
-				Status.getImageSize().height, bi, true);
+		bi = repaintRectangle(-_x + 0, -_y + 0, Status.getImageSize().width,
+				Status.getImageSize().height, -_x + 0, -_y + 0, bi, true);
 
 		try {
 			ImageIO.write(bi, Status.getSaveFormat(),
@@ -991,18 +1015,23 @@ public final class Picture {
 		BufferedImage bi;
 		if (Status.isExportAlpha()) {
 
-			bi = Page.getInstance().getEmptyBITransparent();
+			bi = Util.getEmptyBITransparent();
 		} else {
-			bi = Page.getInstance().getEmptyBIWhite();
+			bi = Util.getEmptyBIWhite();
 		}
 
 		bi = Utils.getBackgroundExport(bi, 0, 0, Status.getImageSize().width,
 				Status.getImageSize().height, 0, 0);
 
-		bi = repaintRectangle(-Page.getInstance().getJlbl_painting()
-				.getLocation().x + 0, -Page.getInstance().getJlbl_painting()
-				.getLocation().y + 0, Status.getImageSize().width,
-				Status.getImageSize().height, bi, true);
+		bi = repaintRectangle(
+				
+				0, 0,
+//				-Page.getInstance().getJlbl_painting().getLocation().x + 0,
+//				-Page.getInstance().getJlbl_painting().getLocation().y + 0,
+				Status.getImageSize().width,
+				Status.getImageSize().height,
+				0, 0,
+				bi, true);
 
 		return bi;
 
@@ -1180,10 +1209,10 @@ public final class Picture {
 
 
 	    	//start transaction and closed action.
-	    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+	    	final int transaction = getLs_po_sortedByX()
 	    			.startTransaction("transformWhiteToAlpha", 
 	    					SecureList.ID_NO_PREDECESSOR);
-	    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+	    	final int closedAction = getLs_po_sortedByX()
 	    			.startClosedAction("transformWhiteToAlpha", 
 	    					SecureList.ID_NO_PREDECESSOR);
 	        
@@ -1198,9 +1227,9 @@ public final class Picture {
 			}
 
 	    	//close transaction and closed action.
-	    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+	    	getLs_po_sortedByX().finishTransaction(
 	    			transaction);
-	    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+	    	getLs_po_sortedByX().finishClosedAction(
 	    			closedAction);
 	        
 		}
@@ -1294,7 +1323,8 @@ public final class Picture {
 	 * @param _po
 	 *            the paintObject to be inserted.
 	 */
-	public synchronized void insertIntoSelected(final PaintObject _po) {
+	public synchronized void insertIntoSelected(final PaintObject _po,
+			final PaintObjects _paintObjects) {
 
 		// deactivates to change operations of selected items
 		if (ls_poSelected == null) {
@@ -1311,7 +1341,7 @@ public final class Picture {
 //			}
 
 			ls_poSelected.insertAfterHead(_po, SecureList.ID_NO_PREDECESSOR);
-			new PictureOverview().addSelected(_po);
+			new PictureOverview(_paintObjects).addSelected(_po);
 
 		}
 	}
@@ -1320,7 +1350,7 @@ public final class Picture {
 	 * objects and tell the paintObjects selection interface controller
 	 * the color and the pen.
 	 */
-	public synchronized void finishSelection() {
+	public synchronized void finishSelection(CTabSelection _ctabSelection) {
 
 		// deactivates to change operations of selected items
 		if (ls_poSelected == null) {
@@ -1337,7 +1367,7 @@ public final class Picture {
 					SecureList.ID_NO_PREDECESSOR);
 			
 			ls_poSelected.toFirst(transaction, closedAction);
-			CTabSelection.activateOp();
+			_ctabSelection.activateOp();
 
 			while (!ls_poSelected.isBehind()) {
 				
@@ -1346,7 +1376,7 @@ public final class Picture {
 
 					PaintObjectWriting pow = 
 							(PaintObjectWriting) ls_poSelected.getItem();
-					CTabSelection.getInstance().change(ls_poSelected.isEmpty(),
+					_ctabSelection.change(ls_poSelected.isEmpty(),
 							pow.getPen().getId_operation(),
 							pow.getPen().getClr_foreground().getRGB());
 				}
@@ -1375,10 +1405,10 @@ public final class Picture {
 		}
 
     	//start transaction and closed action.
-    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    	final int transaction = getLs_po_sortedByX()
     			.startTransaction("stretch image", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    	final int closedAction = getLs_po_sortedByX()
     			.startClosedAction("stretch image", 
     					SecureList.ID_NO_PREDECESSOR);
         
@@ -1407,9 +1437,9 @@ public final class Picture {
 		}
 
     	//close transaction and closed action.
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    	getLs_po_sortedByX().finishTransaction(
     			transaction);
-    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    	getLs_po_sortedByX().finishClosedAction(
     			closedAction);
         
 	}
@@ -1469,17 +1499,19 @@ public final class Picture {
 	 * 
 	 * @return whether there is something to be painted or not.
 	 */
-	public boolean paintSelected() {
+	public boolean paintSelected(Page _page,
+			final ContorlPicture _cp,
+			final ControlPaintSelectin _cps) {
 
-		Page.getInstance().getJlbl_selectionPainting().setLocation(0, 0);
-		BufferedImage verbufft = Page.getInstance().getEmptyBISelection();
-		BufferedImage verbufft2 = Page.getInstance().getEmptyBISelection();
+		_page.getJlbl_selectionPainting().setLocation(0, 0);
+		BufferedImage verbufft = Util.getEmptyBISelection();
+		BufferedImage verbufft2 = Util.getEmptyBISelection();
 
     	//start transaction and closed action.
-    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    	final int transaction = getLs_po_sortedByX()
     			.startTransaction("paintSelected", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    	final int closedAction = getLs_po_sortedByX()
     			.startClosedAction("paintSelected", 
     					SecureList.ID_NO_PREDECESSOR);
         
@@ -1511,8 +1543,8 @@ public final class Picture {
 				}
 				// paint the object.
 				ls_poSelected.getItem().paint(verbufft2, false, verbufft,
-						Page.getInstance().getJlbl_painting().getLocation().x,
-						Page.getInstance().getJlbl_painting().getLocation().y, 
+						_page.getJlbl_painting().getLocation().x,
+						_page.getJlbl_painting().getLocation().y, 
 						null);
 
 				if (ls_poSelected.getItem() instanceof PaintObjectWriting) {
@@ -1527,12 +1559,12 @@ public final class Picture {
 
 
     	//close transaction and closed action.
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    	getLs_po_sortedByX().finishTransaction(
     			transaction);
-    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    	getLs_po_sortedByX().finishClosedAction(
     			closedAction);
     	
-		Page.getInstance().getJlbl_selectionPainting()
+		_page.getJlbl_selectionPainting()
 				.setIcon(new ImageIcon(verbufft));
 
 		if (r_max != null) {
@@ -1550,17 +1582,14 @@ public final class Picture {
 			realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
 			realRect.height = (int) (1.0 * realRect.height / cZoomFactorHeight);
 
-			realRect.x += Page.getInstance().getJlbl_painting().getLocation().x;
-			realRect.y += Page.getInstance().getJlbl_painting().getLocation().y;
+			realRect.x += _page.getJlbl_painting().getLocation().x;
+			realRect.y += _page.getJlbl_painting().getLocation().y;
 
-			Page.getInstance()
-					.getJlbl_painting()
-					.refreshRectangle(realRect.x, realRect.y, realRect.width,
+			_cp.refreshRectangle(realRect.x, realRect.y, realRect.width,
 							realRect.height);
-			CSelection.getInstance().setR_selection(realRect,
-					Page.getInstance().getJlbl_painting().getLocation());
-			Page.getInstance().getJlbl_painting()
-					.paintEntireSelectionRect(realRect);
+			_cps.setR_selection(realRect,
+					_page.getJlbl_painting().getLocation());
+			_cp.paintEntireSelectionRect(realRect);
 
 			return true;
 		}
@@ -1572,30 +1601,31 @@ public final class Picture {
 	 * 
 	 * @return whether there is something to be painted or not.
 	 */
-	public boolean paintSelectedInline() {
+	public boolean paintSelectedInline(
+			ControlPaintSelectin _controlPaintSelection,
+			final Page page,
+			final ContorlPicture _controlPic) {
 
 		// it occurred that the start point equal to 0. Why?
 		int px, py;
-		if (CSelection.getInstance().getPnt_start() == null) {
+		if (_controlPaintSelection.getPnt_start() == null) {
 			px = 0;
 			py = 0;
 		} else {
-			px = (int) (CSelection.getInstance().getPnt_start().getX() - Page
-					.getInstance().getJlbl_painting().getLocation().getX());
-			py = (int) (CSelection.getInstance().getPnt_start().getY() - Page
-					.getInstance().getJlbl_painting().getLocation().getY());
+			px = (int) (_controlPaintSelection.getPnt_start().getX() - page.getJlbl_painting().getLocation().getX());
+			py = (int) (_controlPaintSelection.getPnt_start().getY() - page.getJlbl_painting().getLocation().getY());
 
 		}
 
-		BufferedImage verbufft = Page.getInstance().getEmptyBISelection();
-		BufferedImage verbufft2 = Page.getInstance().getEmptyBISelection();
+		BufferedImage verbufft = Util.getEmptyBISelection();
+		BufferedImage verbufft2 = Util.getEmptyBISelection();
 		
 
     	//start transaction and closed action.
-    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    	final int transaction = getLs_po_sortedByX()
     			.startTransaction("paintSelectedInline", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    	final int closedAction = getLs_po_sortedByX()
     			.startClosedAction("paintSelectedInline", 
     					SecureList.ID_NO_PREDECESSOR);
         
@@ -1629,9 +1659,9 @@ public final class Picture {
 						verbufft2,
 						false,
 						verbufft,
-						Page.getInstance().getJlbl_painting().getLocation().x
+						page.getJlbl_painting().getLocation().x
 								- px,
-						Page.getInstance().getJlbl_painting().getLocation().y
+								page.getJlbl_painting().getLocation().y
 								- py, null);
 
 				if (ls_poSelected.getItem() instanceof PaintObjectWriting) {
@@ -1645,12 +1675,12 @@ public final class Picture {
 		}
 
     	//close transaction and closed action.
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    	getLs_po_sortedByX().finishTransaction(
     			transaction);
-    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    	getLs_po_sortedByX().finishClosedAction(
     			closedAction);
 		
-		Page.getInstance().getJlbl_selectionPainting()
+		page.getJlbl_selectionPainting()
 				.setIcon(new ImageIcon(verbufft));
 
 		if (r_max != null) {
@@ -1668,16 +1698,15 @@ public final class Picture {
 			realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
 			realRect.height = (int) (1.0 * realRect.height / cZoomFactorHeight);
 
-			realRect.x += Page.getInstance().getJlbl_painting().getLocation().x;
-			realRect.y += Page.getInstance().getJlbl_painting().getLocation().y;
+			realRect.x += page.getJlbl_painting().getLocation().x;
+			realRect.y += page.getJlbl_painting().getLocation().y;
 
-			Page.getInstance()
-					.getJlbl_painting()
+			_controlPic
 					.refreshRectangle(realRect.x, realRect.y, realRect.width,
 							realRect.height);
-			CSelection.getInstance().setR_selection(realRect,
-					Page.getInstance().getJlbl_painting().getLocation());
-			Page.getInstance().getJlbl_painting()
+			_controlPaintSelection.setR_selection(realRect,
+					page.getJlbl_painting().getLocation());
+			_controlPic
 					.paintEntireSelectionRect(realRect);
 			return true;
 		}
@@ -1687,28 +1716,30 @@ public final class Picture {
 	/**
 	 * release selected elements to normal list.
 	 */
-	public synchronized void releaseSelected() {
+	public synchronized void releaseSelected(
+			final ControlPaintSelectin _controlPaintSelection,
+			final CTabSelection _controlTabSelection,
+			final PaintObjects _paintObjects,
+			final int _xLocationPaint, final int _yLocationPaint) {
 
 		// adjust the bounds of the selected items to the performed
 		// scrolling
-		if (CSelection.getInstance().getOldPaintLabelLocation() != null) {
+		if (_controlPaintSelection.getOldPaintLabelLocation() != null) {
 
-			int oldX = (int) CSelection.getInstance()
+			int oldX = (int) _controlPaintSelection
 					.getOldPaintLabelLocation().getX();
-			int oldY = (int) CSelection.getInstance()
+			int oldY = (int) _controlPaintSelection
 					.getOldPaintLabelLocation().getY();
 
-			int newX = (int) Page.getInstance().getJlbl_painting()
-					.getLocation().getX();
-			int newY = (int) Page.getInstance().getJlbl_painting()
-					.getLocation().getY();
+			int newX = (int) _xLocationPaint;
+			int newY = (int) _yLocationPaint;
 
-			Picture.getInstance().moveSelected(oldX - newX, oldY - newY);
-			CSelection.getInstance().setOldPaintLabelLocation(null);
+			moveSelected(oldX - newX, oldY - newY);
+			_controlPaintSelection.setOldPaintLabelLocation(null);
 		}
 
 		// deactivates to change operations of selected items
-		CTabSelection.deactivateOp();
+		_controlTabSelection.deactivateOp();
 		if (ls_poSelected == null) {
 			Status.getLogger().info("o selected elements");
 			return;
@@ -1729,16 +1760,16 @@ public final class Picture {
 				Status.getLogger().warning("error: empty list item");
 			}
 
-			new PictureOverview().removeSelected(po);
+			new PictureOverview(_paintObjects).removeSelected(po);
 
 			if (po instanceof PaintObjectWriting) {
 				PaintObjectWriting pow = (PaintObjectWriting) po;
-				new PictureOverview().add(pow);
+				new PictureOverview(_paintObjects).add(pow);
 				ls_po_sortedByX.insertSorted(pow, pow.getSnapshotBounds().x,
 						SecureList.ID_NO_PREDECESSOR);
 			} else if (po instanceof PaintObjectImage) {
 				PaintObjectImage poi = (PaintObjectImage) po;
-				new PictureOverview().add(poi);
+				new PictureOverview(_paintObjects).add(poi);
 
 				ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x,
 						SecureList.ID_NO_PREDECESSOR);
@@ -1746,7 +1777,7 @@ public final class Picture {
 
 				POLine p = (POLine) ls_poSelected.getItem();
 				p.recalculateSnapshotBounds();
-				new PictureOverview().add(p);
+				new PictureOverview(_paintObjects).add(p);
 
 				ls_po_sortedByX.insertSorted(p, p.getSnapshotBounds().x,
 						SecureList.ID_NO_PREDECESSOR);
@@ -1765,7 +1796,9 @@ public final class Picture {
 	/**
 	 * release selected elements to normal list.
 	 */
-	public synchronized void deleteSelected() {
+	public synchronized void deleteSelected(
+			final PaintObjects _pos,
+			CTabSelection _cts) {
 
 		if (ls_poSelected == null) {
 			Status.getLogger().info("o selected elements");
@@ -1784,12 +1817,12 @@ public final class Picture {
 				Status.getLogger().warning("error: empty list item");
 			}
 
-			new PictureOverview().removeSelected(ls_poSelected.getItem());
+			new PictureOverview(_pos).removeSelected(ls_poSelected.getItem());
 			ls_poSelected.remove(transaction);
 			ls_poSelected.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
 		}
 		// deactivates to change operations of selected items
-		CTabSelection.deactivateOp();
+		_cts.deactivateOp();
 
 		//finish transaction and destroy list of selected items.
 		ls_poSelected.finishTransaction(transaction);
@@ -1852,21 +1885,20 @@ public final class Picture {
 				.getImageSize().getHeight());
 	}
 
-	/**
-	 * this method guarantees that only one instance of this class can be
-	 * created ad runtime.
-	 * 
-	 * @return the only instance of this class.
-	 */
-	public static Picture getInstance() {
 
+
+	/**
+	* this method guarantees that only one instance of this class can be
+	* created ad runtime.
+	*
+	* @return the only instance of this class.
+	*/
+	public static Picture getInstance() {
 		// if class is not instanced yet instantiate
 		if (instance == null) {
-
 			instance = new Picture();
 			instance.initialize();
 		}
-
 		// return the only instance of this class.
 		return instance;
 	}
@@ -1942,7 +1974,7 @@ public final class Picture {
 			pen.setClr_foreground(Status.getPenSelected2().getClr_foreground());
 			Status.setPenSelected2(pen);
 		} else {
-			Status.getLogger().severe("wrong identifier.");
+			Status.getLogger().severe("wrong identifier: " + _id);
 		}
 	}
 

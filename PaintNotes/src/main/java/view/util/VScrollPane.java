@@ -4,13 +4,16 @@ package view.util;
 //import declarations
 import java.awt.Color;
 import java.awt.Component;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+
 import view.util.mega.MButton;
 import view.util.mega.MPanel;
 import model.settings.Constants;
 import model.settings.Status;
 import model.util.paint.Utils;
+import control.interfaces.ActivityListener;
 import control.util.CScrollPane;
 
 /**
@@ -110,7 +113,12 @@ public class VScrollPane extends MPanel {
 		}
 		jbtn_center = initializeMButton(null);
 	}
+
 	
+	
+	public final void setActivityListener(final ActivityListener _activityListener) {
+		control.setActivityListener(_activityListener);;
+	}
 	
 	/**
 	 * Method for initializing MButton for scrolling.

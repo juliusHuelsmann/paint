@@ -5,9 +5,8 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: myCheck
-    Description: 
-Altered sun coding conventions.
+    Checkstyle-Configuration: pushed check
+    Description: none
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>
@@ -86,6 +85,12 @@ Altered sun coding conventions.
     <module name="FinalParameters"/>
     <module name="TodoComment"/>
     <module name="UpperEll"/>
+    <module name="LineLength">
+      <property name="tabWidth" value="4"/>
+    </module>
+    <module name="LineLength">
+      <property name="tabWidth" value="4"/>
+    </module>
     <module name="LineLength">
       <property name="tabWidth" value="4"/>
     </module>

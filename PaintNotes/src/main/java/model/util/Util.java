@@ -1,8 +1,6 @@
 package model.util;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.IllegalComponentStateException;
@@ -16,17 +14,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import view.View;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
+import model.settings.Status;
+import model.settings.ViewSettings;
 import model.util.adt.list.List;
 
 
@@ -482,4 +479,82 @@ public final class Util {
 		}
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+    /**
+     * return fully transparent BufferedImage.
+     * 
+     * @return the BufferedImage
+     */
+    public static BufferedImage getEmptyBISelection() {
+    	
+    	
+        BufferedImage bi = new BufferedImage(
+        		ViewSettings.getView_bounds_page().width - 1,
+        		ViewSettings.getView_bounds_page().height - 1,
+        		
+//        		jlbl_selectionBG.getWidth(), 
+//                jlbl_selectionBG.getHeight(),
+                BufferedImage.TYPE_INT_ARGB);
+        final int maxRGB = 255;
+        int rgba = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
+        for (int x = 0; x < bi.getWidth(); x++) {
+            for (int y = 0; y < bi.getHeight(); y++) {
+                bi.setRGB(x, y, rgba);
+            }
+        }
+        
+        return bi;
+    }
+    /**
+     * return fully transparent BufferedImage.
+     * 
+     * @return the BufferedImage
+     */
+    public static BufferedImage getEmptyBITransparent() {
+        BufferedImage bi = new BufferedImage(
+                Status.getImageSize().width, 
+                Status.getImageSize().height, BufferedImage.TYPE_INT_ARGB);
+        final int maxRGB = 255;
+        
+        int rgba = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
+        for (int x = 0; x < bi.getWidth(); x++) {
+            for (int y = 0; y < bi.getHeight(); y++) {
+                bi.setRGB(x, y, rgba);
+            }
+        }
+        
+        return bi;
+    }
+    
+    /**
+     * return fully transparent BufferedImage.
+     * 
+     * @return the BufferedImage
+     */
+    public static BufferedImage getEmptyBIWhite() {
+        BufferedImage bi = new BufferedImage(
+                Status.getImageSize().width, 
+                Status.getImageSize().height, BufferedImage.TYPE_INT_RGB);
+        
+        final int max = 255;
+        int rgb = new Color(max, max, max).getRGB();
+        for (int x = 0; x < bi.getWidth(); x++) {
+            for (int y = 0; y < bi.getHeight(); y++) {
+                bi.setRGB(x, y, rgb);
+            }
+        }
+        
+        return bi;
+    }
+	
+	
+
 }

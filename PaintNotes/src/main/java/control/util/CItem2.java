@@ -3,7 +3,10 @@ package control.util;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 import javax.swing.BorderFactory;
+
+import control.interfaces.ActivityListener;
 import view.tabs.Insert;
 import view.util.Item2;
 
@@ -24,7 +27,12 @@ public final class CItem2 implements MouseListener {
      * The only instance of this class.
      */
     private static CItem2 instance;
+
+    private ActivityListener activityListener;
     
+    public void addItemActivityListener(ActivityListener _activityListener) {
+    	activityListener = _activityListener;
+    }
     
     /**
      * Empty utility class constructor.
@@ -40,8 +48,8 @@ public final class CItem2 implements MouseListener {
 
             Item2 i2 = (Item2) _event.getSource();
             i2.setBorder(BorderFactory.createLineBorder(clr_mouseOver));
-            Insert.getInstance().getTb_selected().setIcon(i2.getIconPath());
-            Insert.getInstance().getTb_selected().setText(i2.getTitle());
+            
+            activityListener.activityOccurred(_event);
         }
     }
     /**

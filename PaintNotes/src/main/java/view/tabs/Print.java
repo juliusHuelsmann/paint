@@ -2,9 +2,15 @@
 package view.tabs;
 
 //import declarations
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
+import javax.swing.border.LineBorder;
+
 import model.settings.Constants;
 import model.settings.ViewSettings;
-import control.ControlPainting;
+import control.tabs.CPaintStatus;
+import control.tabs.CPrint;
 import view.util.Item1Button;
 
 
@@ -15,14 +21,6 @@ import view.util.Item1Button;
  */
 @SuppressWarnings("serial")
 public final class Print extends Tab {
-
-	
-	
-	/**
-	 * The only instance of this class.
-	 */
-	private static Print instance;
-	
 	/**
 	 * 
 	 */
@@ -32,7 +30,7 @@ public final class Print extends Tab {
 	 /**
 	  * Constructor: initializes view.
 	  */
-	private Print() {
+	public Print(final CPrint _cp) {
 		super(0);
 		super.setOpaque(false);
 		super.setLayout(null);
@@ -46,29 +44,36 @@ public final class Print extends Tab {
         tb_print.setLocation(ViewSettings.getDistanceBetweenItems(), 
         		ViewSettings.getDistanceBetweenItems());
         tb_print.setBorder(false);
-        tb_print.addMouseListener(ControlPainting.getInstance());
-        Paint.initializeTextButtonOhneAdd(tb_print,
+        tb_print.addActionListener(_cp);
+        initializeTextButtonOhneAdd(tb_print,
                 "Druckauftrag",
                 Constants.VIEW_TB_NEW_PATH);
         tb_print.setActivable(false);
         super.add(tb_print);
 
 	}
+    
+    /**
+     * initialize a text button.
+     * 
+     * @param _tb the textButton
+     * @param _text the text of the button
+     * @param _path the path of the image
+     */
+    public static void initializeTextButtonOhneAdd(
+            final Item1Button _tb, 
+            final String _text, final String _path) {
+        
+        //alter settings of TextButton
+        _tb.setOpaque(true);
+        _tb.setText(_text);
+        _tb.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(Color.black),
+                new LineBorder(Color.white)));
+        _tb.setActivable(true);
+        _tb.setIcon(_path);
+    }
 	
-	
-	
-	
-	/**
-	 * Return the only instance of this class.
-	 * @return the only instance of this class
-	 */
-	public static Print getInstance() {
-		if (instance == null) {
-			
-			instance = new Print();
-		}
-		return instance;
-	}
 
 	/**
 	 * @return the tb_new

@@ -90,8 +90,8 @@ public class PictureOverview extends Observable {
 	/**
 	 * Constructor: adds observer.
 	 */
-	public PictureOverview() {
-		super.addObserver(PaintObjects.getInstance());
+	public PictureOverview(PaintObjects _po) {
+		super.addObserver(_po);
 	}
 
 

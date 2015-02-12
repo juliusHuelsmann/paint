@@ -9,12 +9,11 @@ import java.awt.Point;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 
-import view.forms.Page;
-import view.forms.Tabs;
 import view.util.mega.MButton;
 import view.util.mega.MPanel;
-import model.objects.painting.Picture;
+import model.settings.Status;
 import model.settings.ViewSettings;
+import control.interfaces.MenuListener;
 import control.util.CItemAufklappen;
 
 /**
@@ -27,6 +26,15 @@ import control.util.CItemAufklappen;
 @SuppressWarnings("serial")
 public class Item2Menu extends MPanel {
 
+	/**
+	 * The menuListener provides an interface for listening for menu - closing
+	 * and menu - opening events.
+	 * 
+	 * Thus for example the application can program different repaints if the
+	 * menu closes.
+	 */
+    private MenuListener menuListener;
+	
     /**
      * MButton for the border.
      */
@@ -62,7 +70,19 @@ public class Item2Menu extends MPanel {
      * if the Item2Menu is opened the component height is overwritten.
      */
     private int height;
+
     
+    /**
+     * Set the MenuListener which provides an interface for listening for 
+     * menu - closing and menu - opening events outside this utility class.
+     * 
+     * It is only possible to set one MenuListener at a time.
+     * 
+     * @param _ml the MenuListener
+     */
+    public final void setMenuListener(final MenuListener _ml) {
+    	this.menuListener = _ml;
+    }
     
 	/**
 	 * Constructor: shows closed item.
@@ -157,13 +177,17 @@ public class Item2Menu extends MPanel {
 	    if (_open != opened) {
 
 
-	    	//release selected because of display bug otherwise.
-	    	if (Picture.getInstance().isSelected()) {
+        	if (menuListener != null) {
+        		if (isOpen()) {
 
-		    	Picture.getInstance().releaseSelected();
-		    	Page.getInstance().releaseSelected();
-	    	}
-	    	
+	        		menuListener.beforeOpen();
+        		} else {
+
+	        		menuListener.beforeClose();
+        		}
+        	} else {
+        		Status.getLogger().warning("no menu listener inserted!");
+        	}
 	    	//open or close
 	    	
 	        this.opened = _open;
@@ -211,12 +235,19 @@ public class Item2Menu extends MPanel {
 	                jlbl_border.getY() + jlbl_border.getHeight(), 
 	                jlbl_border.getWidth(), 
 	                heightMButton);
-	        if (!opened) {
+	        
 
-                //when closed repaint.
-                Page.getInstance().getJlbl_painting().repaint();
-                Tabs.getInstance().repaint();
-	        }
+        	if (menuListener != null) {
+        		if (isOpen()) {
+
+	        		menuListener.afterOpen();
+        		} else {
+
+	        		menuListener.afterClose();
+        		}
+        	} else {
+        		Status.getLogger().warning("no menu listener inserted!");
+        	}
 	        
 	    } //otherwise nothing to do
 	    repaint();

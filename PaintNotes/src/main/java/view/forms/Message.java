@@ -4,9 +4,7 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
-
 import control.forms.CMessage;
-import view.View;
 import view.util.RoundedBorder;
 import view.util.mega.MButton;
 import view.util.mega.MPanel;
@@ -69,7 +67,9 @@ public final class Message extends MPanel {
     /**
      * Empty utility class constructor.
      */
-    private Message() { }
+    public Message() { 
+    	initialize();
+    }
     
     
     /**
@@ -161,18 +161,6 @@ public final class Message extends MPanel {
     }
     
     
-    /**
-     * This method adds the Message to graphical user interface. Is done 
-     * inside the class for not having to create a getter method for an 
-     * instance of Message.
-     */
-    public static void addMyself() {
-        if (instance == null) { 
-            instance = new Message();
-            instance.initialize();
-        }
-        View.getInstance().add(instance);
-    }
     
     
     /**

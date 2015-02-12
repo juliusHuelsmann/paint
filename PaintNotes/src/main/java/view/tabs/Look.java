@@ -22,10 +22,6 @@ import control.tabs.CLook;
 @SuppressWarnings("serial")
 public final class Look extends Tab {
 
-    /**
-     * The only instance of this class.
-     */
-    private static Look instance;
 
     /**
      * The JCheckBox for background of new Image.
@@ -60,30 +56,23 @@ public final class Look extends Tab {
     /**
      * Empty utility class constructor.
      */
-    private Look() { 
+    public Look(final CLook _clook) { 
         super(2);
-    }
-    
-    
-    /**
-     * Initialize the view class.
-     */
-    private void initialize() {
-
         //initialize JPanel and alter settings
         super.setOpaque(false);
         super.setLayout(null);
         super.setVisible(true);
 
         //initialize the content for the background
-        int x = initializeFirstColumn(0);
+        int x = initializeFirstColumn(0, _clook);
         
         //initialize the content for the visualization
-        initializeSecondColumn(x);
+        initializeSecondColumn(x, _clook);
         
         //apply the right settings to components (out of Status class)
         applySettings();
     }
+    
     
     
 
@@ -92,7 +81,7 @@ public final class Look extends Tab {
      * @param _x the x start coordinate
      * @return the x coordinate of the separation element.
      */
-    private int initializeFirstColumn(final int _x) {
+    private int initializeFirstColumn(final int _x, final CLook _clook) {
 
         jlbl_backgroundTitle = new MLabel("Background:");
         jlbl_backgroundTitle.setBounds(ViewSettings.getDistanceBetweenItems(),
@@ -105,7 +94,7 @@ public final class Look extends Tab {
         jcb_raster = new JCheckBox("Raster");
         jcb_raster.setFocusable(false);
         jcb_raster.setOpaque(false);
-        jcb_raster.addActionListener(CLook.getInstance());
+        jcb_raster.addActionListener(_clook);
         jcb_raster.setLocation(jlbl_backgroundTitle.getX(), 
                 ViewSettings.getDistanceBetweenItems()
                 + jlbl_backgroundTitle.getY()
@@ -118,7 +107,7 @@ public final class Look extends Tab {
         jcb_lines = new JCheckBox("Lines");
         jcb_lines.setFocusable(false);
         jcb_lines.setOpaque(false);
-        jcb_lines.addActionListener(CLook.getInstance());
+        jcb_lines.addActionListener(_clook);
         jcb_lines.setLocation(jcb_raster.getWidth() + jcb_raster.getX() 
                 + ViewSettings.getDistanceBetweenItems(), jcb_raster.getY());
         jcb_lines.setSize(jcb_raster.getSize());
@@ -128,7 +117,7 @@ public final class Look extends Tab {
         jcb_nothing = new JCheckBox("Nothing");
         jcb_nothing.setFocusable(false);
         jcb_nothing.setOpaque(false);
-        jcb_nothing.addActionListener(CLook.getInstance());
+        jcb_nothing.addActionListener(_clook);
         jcb_nothing.setLocation(jcb_lines.getWidth() + jcb_lines.getX() 
                 + ViewSettings.getDistanceBetweenItems(), jcb_raster.getY());
         jcb_nothing.setSize(jcb_raster.getSize());
@@ -160,7 +149,7 @@ public final class Look extends Tab {
                 + jlbl_subtitle_borderTop.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderTop.getY());
-        jcb_margeTop.addActionListener(CLook.getInstance());
+        jcb_margeTop.addActionListener(_clook);
         super.add(jcb_margeTop);
         //left
         jlbl_subtitle_borderLeft = new MLabel("Left");
@@ -179,7 +168,7 @@ public final class Look extends Tab {
                 + jlbl_subtitle_borderLeft.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderLeft.getY());
-        jcb_margeLeft.addActionListener(CLook.getInstance());
+        jcb_margeLeft.addActionListener(_clook);
         super.add(jcb_margeLeft);
         //bottom
         jlbl_subtitle_borderBottom = new MLabel("Bottom");
@@ -199,7 +188,7 @@ public final class Look extends Tab {
                 + jlbl_subtitle_borderBottom.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderBottom.getY());
-        jcb_margeBottom.addActionListener(CLook.getInstance());
+        jcb_margeBottom.addActionListener(_clook);
         super.add(jcb_margeBottom);
 
         //right
@@ -221,7 +210,7 @@ public final class Look extends Tab {
                 + jlbl_subtitle_borderRight.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(), 
                 jlbl_subtitle_borderRight.getY());
-        jcb_margeRight.addActionListener(CLook.getInstance());
+        jcb_margeRight.addActionListener(_clook);
         super.add(jcb_margeRight);
         
         
@@ -314,7 +303,7 @@ public final class Look extends Tab {
      * @param _x the start x coorindate.
      * @return the x location of the separation element
      */
-    private int initializeSecondColumn(final int _x) {
+    private int initializeSecondColumn(final int _x, final CLook _clook) {
 
         /*
          * Alpha
@@ -347,7 +336,7 @@ public final class Look extends Tab {
                 + jlbl_subtitle_alpha.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(),
                 jlbl_subtitle_alpha.getY());
-        jcb_displayAlpha.addActionListener(CLook.getInstance());
+        jcb_displayAlpha.addActionListener(_clook);
         super.add(jcb_displayAlpha);
 
         insertSectionStuff("Visualization", jlbl_displayAlphaTitle.getX(), 
@@ -379,17 +368,6 @@ public final class Look extends Tab {
      */
     public JCheckBox getJcb_nothing() {
         return jcb_nothing;
-    }
-    /**
-     * @return the instance
-     */
-    public static Look getInstance() {
-        
-        if (instance == null) {
-            instance = new Look();
-            instance.initialize();
-        }
-        return instance;
     }
 
 

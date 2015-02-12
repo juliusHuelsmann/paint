@@ -261,8 +261,9 @@ public class PaintObjectWriting extends PaintObjectPen {
                         Status.getImageSize().height, 
                         BufferedImage.TYPE_INT_ARGB), 
                         true, null, 
-                        Page.getInstance().getJlbl_painting().getLocation().x,
-                        Page.getInstance().getJlbl_painting().getLocation().y,
+//                        Page.getInstance().getJlbl_painting().getLocation().x,
+//                        Page.getInstance().getJlbl_painting().getLocation().y,
+                        0,0,
                         null)
                         .getSubimage(
                                 0, 0, 1, 1);
@@ -278,8 +279,9 @@ public class PaintObjectWriting extends PaintObjectPen {
                     Status.getImageSize().height, 
                     BufferedImage.TYPE_INT_ARGB), 
                     true, null, 
-                    Page.getInstance().getJlbl_painting().getLocation().x,
-                    Page.getInstance().getJlbl_painting().getLocation().y,
+//                  Page.getInstance().getJlbl_painting().getLocation().x,
+//                  Page.getInstance().getJlbl_painting().getLocation().y,
+                    0, 0,
                     null)
                     .getSubimage(
                             x, y, width, height);
@@ -1853,10 +1855,13 @@ public class PaintObjectWriting extends PaintObjectPen {
      * Utility method for printing aDPoint.
      * Move to utils.
      * 
+     * @param _bi the BufferedImage to which the point is printed.
+     * 			should be the one owned by the controller class of
+     * 			picture and PaintObjetWriting.
      * @param _p theDPoint which is to be printed
      * @param _c the color in which the point is to be printed.
      */
-    public static void verifyPnt(final DPoint _p, final Color _c) {
+    public static void verifyPnt(final BufferedImage _bi, final DPoint _p, final Color _c) {
 
         new Thread() {
             public void run() {
@@ -1868,7 +1873,7 @@ public class PaintObjectWriting extends PaintObjectPen {
                     
                     final int thickness = 5;
                     PaintBI.fillRectangleQuick(
-                            Page.getInstance().getJlbl_painting().getBi(),
+                    		_bi,
                             _c, new Rectangle((int) _p.getX(), 
                                     (int) _p.getY(), thickness, thickness));
                     

@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
-
-import view.forms.Page;
 import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.Status;
@@ -119,7 +117,7 @@ public class Pencil extends Pen {
                     if (_final && x >= 0 && x < _bi.getWidth() 
                     		&& y >= 0 && y < _bi.getHeight()) {
 
-                        final int rbg = printPixelArea2(x, y, i, j, x, y, _bi);
+                        final int rbg = printPixel(x, y, i, j, x, y, _bi);
                         
                         if (x + i >= 0 && x + i < _bi.getWidth()
                                 && y + j >= 0 && y + j < _bi.getHeight()) {
@@ -187,7 +185,7 @@ public class Pencil extends Pen {
                         int rbg = 0;
                         if (rx >= 0 && rx < _g.getWidth()
                                 && ry >= 0 && ry < _g.getHeight()) {
-                            rbg = printPixelArea2(x, y, i, j, (int)
+                            rbg = printPixel(x, y, i, j, (int)
                                 (rx),
                                 (int) (ry), _g);
                         }
@@ -238,6 +236,21 @@ public class Pencil extends Pen {
         double value = maxRBG - 1.0 * (_clrA * (1 + ma) + _clrB * (1 + mb)) 
                 / (2 * 2);
         return (int) value;
+    }
+    
+    
+    private int printPixel(final int _x, 
+            final int _y, final int _i, final int _j, final int _rX, 
+            final int _rY, final BufferedImage _bi) {
+    	
+    	boolean oldVersion = false;
+    	
+    	if (oldVersion ) {
+    		return printPixelArea(_x, _y, _i, _j, _rX, _rY, _bi);
+    	} else {
+    		return printPixelArea2(_x, _y, _i, _j, _rX, _rY, _bi);
+    	}
+    	
     }
 
     
@@ -373,7 +386,7 @@ public class Pencil extends Pen {
 
         
         //the (inverted) colors
-        Color rgbInversOld, rgbInversNew;
+        Color clr_new0;
         final int maxRBG = 255;
         final int divisor = 1;
         
@@ -397,14 +410,14 @@ public class Pencil extends Pen {
             if (sum != 0) {
 
 	                
-	            rgbInversNew = new Color(
+	            clr_new0 = new Color(
 	            		   v * getClr_foreground().getRed() / sum / divisor, 
 	            		   v * getClr_foreground().getGreen() / sum / divisor, 
 	            		   v * getClr_foreground().getBlue() / sum / divisor,
 	            		   alphaOutside);
 	        } else {
 	
-	            rgbInversNew = new Color(
+	            clr_new0 = new Color(
 	         		   v,
 	         		   (v + 1),
 	         		   (v + 2),
@@ -424,14 +437,14 @@ public class Pencil extends Pen {
             		+ getClr_foreground().getBlue();
             if (sum != 0) {
 
-                rgbInversNew = new Color(
+                clr_new0 = new Color(
              		   v * getClr_foreground().getRed() / sum / divisor, 
              		   (v + 1) * getClr_foreground().getGreen() / sum / divisor, 
              		   (v + 2) * getClr_foreground().getBlue() / sum / divisor,
              		  alphaInside);
             } else {
 
-                rgbInversNew = new Color(
+                clr_new0 = new Color(
              		   v,
              		   (v + 1),
              		   (v + 2),
@@ -449,21 +462,21 @@ public class Pencil extends Pen {
         final int value = (valueOld * 1 + valueNew * 2) / 3;
         
         //TODO generate the alpha value (new)
-        final int alphaTotal = clr_old.getAlpha() + rgbInversNew.getAlpha();
+        final int alphaTotal = clr_old.getAlpha() + clr_new0.getAlpha();
         
         Color clr_new = new Color(
         		clr_old.getRed() * clr_old.getAlpha() / alphaTotal
-        		+ rgbInversNew.getRed() * rgbInversNew.getAlpha() / alphaTotal,
+        		+ clr_new0.getRed() * clr_new0.getAlpha() / alphaTotal,
         		
         		clr_old.getGreen() * clr_old.getAlpha() / alphaTotal
-        		+ rgbInversNew.getGreen() * rgbInversNew.getAlpha() / alphaTotal,
+        		+ clr_new0.getGreen() * clr_new0.getAlpha() / alphaTotal,
         		
         		clr_old.getBlue() * clr_old.getAlpha() / alphaTotal
-        		+ rgbInversNew.getBlue() * rgbInversNew.getAlpha() / alphaTotal,
+        		+ clr_new0.getBlue() * clr_new0.getAlpha() / alphaTotal,
         		
         		Math.min(255,
-        				(2 * Math.max(rgbInversNew.getAlpha(),clr_old.getAlpha())
-        				 + 1 * Math.min(rgbInversNew.getAlpha(),clr_old.getAlpha())) / 3
+        				(2 * Math.max(clr_new0.getAlpha(),clr_old.getAlpha())
+        				 + 1 * Math.min(clr_new0.getAlpha(),clr_old.getAlpha())) / 3
         				
         				));
         

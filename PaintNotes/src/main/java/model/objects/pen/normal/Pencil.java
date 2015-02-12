@@ -28,8 +28,8 @@ public class Pencil extends Pen {
     /**
      * The variance and the expectancies for inside and outside.
      */
-    private final int variance = 50, expectancyInside = 100, 
-            expectancyOutside = 15;
+    private final int variance = 50, expectancyInside = 140, 
+            expectancyOutside = 65;
     
 
     /**
@@ -119,7 +119,7 @@ public class Pencil extends Pen {
                     if (_final && x >= 0 && x < _bi.getWidth() 
                     		&& y >= 0 && y < _bi.getHeight()) {
 
-                        final int rbg = printPixelArea(x, y, i, j, x, y, _bi);
+                        final int rbg = printPixelArea2(x, y, i, j, x, y, _bi);
                         
                         if (x + i >= 0 && x + i < _bi.getWidth()
                                 && y + j >= 0 && y + j < _bi.getHeight()) {
@@ -187,7 +187,7 @@ public class Pencil extends Pen {
                         int rbg = 0;
                         if (rx >= 0 && rx < _g.getWidth()
                                 && ry >= 0 && ry < _g.getHeight()) {
-                            rbg = printPixelArea(x, y, i, j, (int)
+                            rbg = printPixelArea2(x, y, i, j, (int)
                                 (rx),
                                 (int) (ry), _g);
                         }
@@ -239,7 +239,7 @@ public class Pencil extends Pen {
                 / (2 * 2);
         return (int) value;
     }
-    
+
     
     /**
      * Return a part of the pixel area around point (x,y) at point (x+i, y+j).
@@ -313,6 +313,7 @@ public class Pencil extends Pen {
                + getClr_foreground().getGreen()
                + getClr_foreground().getBlue();
         final double hellerD = 2.5;
+        
        double anteilR = 1.0 * getClr_foreground().getRed() / fgSum;
        double anteilG = 1.0 * getClr_foreground().getGreen() / fgSum;
        double anteilB = 1.0 * getClr_foreground().getBlue() / fgSum;
@@ -335,9 +336,148 @@ public class Pencil extends Pen {
        if (blue > maxRBG) {
            blue = maxRBG;
        }
-        
+       
+       int abstand = Math.max(Math.abs(_i)* 2 + Math.abs(_j), 1);
+       red = 255 - (255 - red) / abstand;
+       green = 255 - (255 - green) / abstand;
+       blue = 255 - (255 - blue) / abstand;
+       
+       
        final int alpha = 175;
         return new Color(red, green, blue, alpha).getRGB();
+    
+    }
+    
+
+    
+    /**
+     * Return a part of the pixel area around point (x,y) at point (x+i, y+j).
+     * @param _x the x point 
+     * @param _y the y point
+     * @param _i the x distance to center
+     * @param _j the y distance to center
+     * @param _rX the real x coordinate in image for fetching point
+     * @param _rY the real y coordinate in image for fetching point.
+     * @param _bi the BufferedImage for fetching old point.
+     * @return the RGB value of the pixel which will be printed.
+     */
+    private int printPixelArea2(
+    		final int _x, 
+            final int _y, 
+            
+            final int _i, final int _j, 
+            
+            final int _rX, final int _rY, 
+            
+            final BufferedImage _bi) {
+
+        
+        //the (inverted) colors
+        Color rgbInversOld, rgbInversNew;
+        final int maxRBG = 255;
+        final int divisor = 1;
+        
+        //use different functions depending on whether the 
+        //point is outside (or in the else branch inside) 
+        if (
+                (_i == -1 && _j == -1)
+                || (_i == 2)
+                || (_j == 2)) {
+        	final int alphaOutside = 5;
+            int v = (int) normalDistribution(
+                    expectancyOutside, variance);
+            if (v >= maxRBG - 1) {
+                v = maxRBG - 2;
+            }
+            
+            final int sum = getClr_foreground().getRed() 
+            		+ getClr_foreground().getGreen()
+            		+ getClr_foreground().getBlue();
+         
+            if (sum != 0) {
+
+	                
+	            rgbInversNew = new Color(
+	            		   v * getClr_foreground().getRed() / sum / divisor, 
+	            		   v * getClr_foreground().getGreen() / sum / divisor, 
+	            		   v * getClr_foreground().getBlue() / sum / divisor,
+	            		   alphaOutside);
+	        } else {
+	
+	            rgbInversNew = new Color(
+	         		   v,
+	         		   (v + 1),
+	         		   (v + 2),
+	         		  alphaOutside);
+	        }
+        } else {
+
+            int v = (int) normalDistribution(
+                    expectancyInside, variance);
+            if (v >= maxRBG - 1) {
+                v = maxRBG - 2;
+            }
+
+            final int alphaInside = 140;
+            final int sum = getClr_foreground().getRed() 
+            		+ getClr_foreground().getGreen()
+            		+ getClr_foreground().getBlue();
+            if (sum != 0) {
+
+                rgbInversNew = new Color(
+             		   v * getClr_foreground().getRed() / sum / divisor, 
+             		   (v + 1) * getClr_foreground().getGreen() / sum / divisor, 
+             		   (v + 2) * getClr_foreground().getBlue() / sum / divisor,
+             		  alphaInside);
+            } else {
+
+                rgbInversNew = new Color(
+             		   v,
+             		   (v + 1),
+             		   (v + 2),
+             		  alphaInside);
+            }
+        }
+        
+        final Color clr_old = new Color(_bi.getRGB(_rX, _rY), true);
+
+        
+        
+        final int valueOld = (clr_old.getRed() + clr_old.getGreen() + clr_old.getBlue()) / 3;
+        final int valueNew = (getClr_foreground().getRed() + getClr_foreground().getGreen() + getClr_foreground().getBlue()) / 3;
+        
+        final int value = (valueOld * 1 + valueNew * 2) / 3;
+        
+        //TODO generate the alpha value (new)
+        final int alphaTotal = clr_old.getAlpha() + rgbInversNew.getAlpha();
+        
+        Color clr_new = new Color(
+        		clr_old.getRed() * clr_old.getAlpha() / alphaTotal
+        		+ rgbInversNew.getRed() * rgbInversNew.getAlpha() / alphaTotal,
+        		
+        		clr_old.getGreen() * clr_old.getAlpha() / alphaTotal
+        		+ rgbInversNew.getGreen() * rgbInversNew.getAlpha() / alphaTotal,
+        		
+        		clr_old.getBlue() * clr_old.getAlpha() / alphaTotal
+        		+ rgbInversNew.getBlue() * rgbInversNew.getAlpha() / alphaTotal,
+        		
+        		Math.min(255,
+        				(2 * Math.max(rgbInversNew.getAlpha(),clr_old.getAlpha())
+        				 + 1 * Math.min(rgbInversNew.getAlpha(),clr_old.getAlpha())) / 3
+        				
+        				));
+        
+        final int valueCalced = (clr_new.getRed() + clr_new.getGreen() + clr_new.getBlue() ) / 3;
+        
+        
+        Color clr_new_intensityAdapted = new Color(
+        		Math.min(clr_new.getRed() * value / valueCalced, 254),
+        		Math.min(clr_new.getGreen() * value / valueCalced, 254),
+        		Math.min(clr_new.getBlue() * value / valueCalced, 254),
+        		clr_new.getAlpha());
+        
+        
+        return clr_new_intensityAdapted.getRGB();
     
     }
     

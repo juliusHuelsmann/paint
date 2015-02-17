@@ -5,16 +5,12 @@ package control.tabs;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import control.ContorlPicture;
 import control.ControlPaint;
-import control.ControlPaintSelectin;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectPen;
 import model.settings.Constants;
 import model.util.adt.list.SecureList;
-import view.forms.Page;
 import view.tabs.Selection;
 
 /**
@@ -102,7 +98,11 @@ public final class CTabSelection implements ActionListener {
                     setColor(new Color(selectionColor));
                     getSelection().getTb_color().setBackground(
                             new Color(selectionColor));
-//                    Picture.getInstance().paintSelected();
+
+                    Picture.getInstance().paintSelectedInline(
+                			cp.getControlPaintSelection(),
+                			cp.getView().getPage(),
+                			cp.getControlPic());
                     activateColor();
                 }
             }

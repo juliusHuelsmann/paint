@@ -1616,6 +1616,14 @@ public final class Picture {
 			py = (int) (_controlPaintSelection.getPnt_start().getY() - page.getJlbl_painting().getLocation().getY());
 
 		}
+		
+		
+		//reset the point which shaves the shift of the selection
+		//because now the shift that has been done is applied.
+		_controlPaintSelection.resetPntStartLocationLabel();
+		page.getJlbl_selectionPainting().setLocation(0,0);
+		
+		
 
 		BufferedImage verbufft = Util.getEmptyBISelection();
 		BufferedImage verbufft2 = Util.getEmptyBISelection();
@@ -1710,6 +1718,7 @@ public final class Picture {
 					.paintEntireSelectionRect(realRect);
 			return true;
 		}
+		
 		return false;
 	}
 

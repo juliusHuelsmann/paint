@@ -15,10 +15,11 @@ import model.settings.Constants;
 import model.settings.Status;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
+import control.ControlPaintSelectin;
 import control.interfaces.MenuListener;
 import control.tabs.CPaintStatus;
-import control.tabs.CPaintSelection;
 import control.tabs.ControlTabPainting;
+import control.util.CPaintSelection;
 import control.util.CPen;
 import view.util.Item1Menu;
 import view.util.Item1PenSelection;
@@ -384,8 +385,10 @@ public final class Paint extends Tab {
             jcb_image.setFocusable(false);
             jcb_image.setVerticalAlignment(SwingConstants.TOP);
             it_selection.add(jcb_image);
+            
+            
             //initialize MouesListiener
-            CPaintSelection.getInstance(
+            new CPaintSelection(
                     jcb_whole, jcb_separated, jcb_image,
                     tb_selectionLine, tb_selectionCurve, tb_selectionMagic);
             it_selection.setBorder(false);

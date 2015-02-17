@@ -97,7 +97,7 @@ public final class CPaintObjects implements ActionListener {
     	                    i1b.setActivated(false);
     	                    showPaintObjectInformation(po_cu);
     	                    
-    	                    Picture.getInstance().releaseSelected(
+    	                    cp.getPicture().releaseSelected(
     	                			cp.getControlPaintSelection(),
     	                			cp.getcTabSelection(),
     	                			cp.getView().getTabs().getTab_pos(),
@@ -112,11 +112,11 @@ public final class CPaintObjects implements ActionListener {
     	                    
     	                    //decativate other menuitems and activate the current one
     	                    //(move)
-    	                    Picture.getInstance().createSelected();
+    	                    cp.getPicture().createSelected();
     	                    getPaintObjects().deactivate();
-    	                    Picture.getInstance().insertIntoSelected(po_cu, cp.getView().getTabs().getTab_pos());
+    	                    cp.getPicture().insertIntoSelected(po_cu, cp.getView().getTabs().getTab_pos());
     	                    new PictureOverview(getPaintObjects()).remove(po_cu);
-    	                    Picture.getInstance().getLs_po_sortedByX().remove(
+    	                    cp.getPicture().getLs_po_sortedByX().remove(
     	                    		SecureList.ID_NO_PREDECESSOR);
     	                    
     	                }
@@ -128,9 +128,9 @@ public final class CPaintObjects implements ActionListener {
     	        }
     	        
     	        //finish insertion into selected.
-    	        Picture.getInstance().finishSelection(cp.getcTabSelection());
+    	        cp.getPicture().finishSelection(cp.getcTabSelection());
     	        
-    	        Picture.getInstance().paintSelected(getPage(),
+    	        cp.getPicture().paintSelected(getPage(),
     	    			cp.getControlPic(),
     	    			cp.getControlPaintSelection());
     	        getControlPicture().refreshPaint();

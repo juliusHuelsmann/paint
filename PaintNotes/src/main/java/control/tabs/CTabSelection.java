@@ -95,11 +95,11 @@ public final class CTabSelection implements ActionListener {
                     
                     this.selectionColor = getSelection().getJbtn_colors()[i].getBackground()
                             .getRGB();
-                    setColor(new Color(selectionColor));
+                    setColor(cp, new Color(selectionColor));
                     getSelection().getTb_color().setBackground(
                             new Color(selectionColor));
 
-                    Picture.getInstance().paintSelectedInline(
+                    cp.getPicture().paintSelectedInline(
                 			cp.getControlPaintSelection(),
                 			cp.getView().getPage(),
                 			cp.getControlPic());
@@ -123,8 +123,8 @@ public final class CTabSelection implements ActionListener {
             getSelection().getJcb_points().setSelected(true);
             getSelection().getJcb_maths().setSelected(false);
             getSelection().getJcb_line().setSelected(false);
-            setPen(Constants.PEN_ID_POINT);
-            Picture.getInstance().paintSelectedInline(
+            setPen(cp, Constants.PEN_ID_POINT);
+            cp.getPicture().paintSelectedInline(
         			cp.getControlPaintSelection(),
         			cp.getView().getPage(),
         			cp.getControlPic());
@@ -136,8 +136,8 @@ public final class CTabSelection implements ActionListener {
             getSelection().getJcb_line().setSelected(true);
             getSelection().getJcb_maths().setSelected(false);
             getSelection().getJcb_points().setSelected(false);
-            setPen(Constants.PEN_ID_LINES);
-            Picture.getInstance().paintSelectedInline(
+            setPen(cp, Constants.PEN_ID_LINES);
+            cp.getPicture().paintSelectedInline(
         			cp.getControlPaintSelection(),
         			cp.getView().getPage(),
         			cp.getControlPic());
@@ -149,8 +149,8 @@ public final class CTabSelection implements ActionListener {
             getSelection().getJcb_maths().setSelected(true);
             getSelection().getJcb_line().setSelected(false);
             getSelection().getJcb_points().setSelected(false);
-            setPen(Constants.PEN_ID_MATHS);
-            Picture.getInstance().paintSelectedInline(
+            setPen(cp, Constants.PEN_ID_MATHS);
+            cp.getPicture().paintSelectedInline(
         			cp.getControlPaintSelection(),
         			cp.getView().getPage(),
         			cp.getControlPic());
@@ -179,7 +179,7 @@ public final class CTabSelection implements ActionListener {
             getSelection().getJcb_points().setSelected(true);
             getSelection().getJcb_maths().setSelected(false);
             getSelection().getJcb_line().setSelected(false);
-            Picture.getInstance().paintSelected(cp.getView().getPage(),
+            cp.getPicture().paintSelected(cp.getView().getPage(),
             		cp.getControlPic(),
             		cp.getControlPaintSelection());
         
@@ -189,7 +189,7 @@ public final class CTabSelection implements ActionListener {
             getSelection().getJcb_line().setSelected(true);
             getSelection().getJcb_maths().setSelected(false);
             getSelection().getJcb_points().setSelected(false);
-            Picture.getInstance().paintSelected(cp.getView().getPage(),
+            cp.getPicture().paintSelected(cp.getView().getPage(),
             		cp.getControlPic(),
             		cp.getControlPaintSelection());
         
@@ -199,7 +199,7 @@ public final class CTabSelection implements ActionListener {
             getSelection().getJcb_maths().setSelected(true);
             getSelection().getJcb_line().setSelected(false);
             getSelection().getJcb_points().setSelected(false);
-            Picture.getInstance().paintSelected(cp.getView().getPage(),
+            cp.getPicture().paintSelected(cp.getView().getPage(),
             		cp.getControlPic(),
             		cp.getControlPaintSelection());
         
@@ -266,36 +266,37 @@ public final class CTabSelection implements ActionListener {
      * Set id for selected paintObject's pens.
      * @param _id_operation the id
      */
-    private static synchronized void setPen(final int _id_operation) {
+    private static synchronized void setPen(final ControlPaint _cp, 
+    		final int _id_operation) {
     	
 
 
     	//start transaction and closed action.
-    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    	final int transaction = _cp.getPicture().getLs_po_sortedByX()
     			.startTransaction("set pen", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    	final int closedAction = _cp.getPicture().getLs_po_sortedByX()
     			.startClosedAction("set pen", 
     					SecureList.ID_NO_PREDECESSOR);
     	
-        Picture.getInstance().getLs_poSelected().toFirst(
+        _cp.getPicture().getLs_poSelected().toFirst(
         		transaction, closedAction);
-        while (!Picture.getInstance().getLs_poSelected().isBehind() 
-                && !Picture.getInstance().getLs_poSelected().isEmpty()) {
-            PaintObject o = Picture.getInstance().getLs_poSelected().getItem();
+        while (!_cp.getPicture().getLs_poSelected().isBehind() 
+                && !_cp.getPicture().getLs_poSelected().isEmpty()) {
+            PaintObject o = _cp.getPicture().getLs_poSelected().getItem();
             if (o instanceof PaintObjectPen) {
                 PaintObjectPen pow = (PaintObjectPen) o;
                 pow.getPen().setId_operation(_id_operation);
             }
-            Picture.getInstance().getLs_poSelected().next(
+            _cp.getPicture().getLs_poSelected().next(
             		transaction, closedAction);
         }
         
 
     	//close transaction and closed action.
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    	_cp.getPicture().getLs_po_sortedByX().finishTransaction(
     			transaction);
-    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    	_cp.getPicture().getLs_po_sortedByX().finishClosedAction(
     			closedAction);
         
     }
@@ -304,38 +305,38 @@ public final class CTabSelection implements ActionListener {
      * Set selected paintObject's color.
      * @param _clr the Color
      */
-    private static synchronized void setColor(final Color _clr) {
+    private static synchronized void setColor(final ControlPaint _cp, final Color _clr) {
 
 
     	//start transaction and closed action.
-    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    	final int transaction = _cp.getPicture().getLs_po_sortedByX()
     			.startTransaction("set color", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    	final int closedAction = _cp.getPicture().getLs_po_sortedByX()
     			.startClosedAction("set color", 
     					SecureList.ID_NO_PREDECESSOR);
     	
-        if (Picture.getInstance().getLs_poSelected() != null) {
+        if (_cp.getPicture().getLs_poSelected() != null) {
 
-            Picture.getInstance().getLs_poSelected().toFirst(
+            _cp.getPicture().getLs_poSelected().toFirst(
             		transaction, closedAction);
-            while (!Picture.getInstance().getLs_poSelected().isBehind() 
-                    && !Picture.getInstance().getLs_poSelected().isEmpty()) {
-                PaintObject o = Picture.getInstance().getLs_poSelected()
+            while (!_cp.getPicture().getLs_poSelected().isBehind() 
+                    && !_cp.getPicture().getLs_poSelected().isEmpty()) {
+                PaintObject o = _cp.getPicture().getLs_poSelected()
                         .getItem();
                 if (o instanceof PaintObjectPen) {
                     PaintObjectPen pow = (PaintObjectPen) o;
                     pow.getPen().setClr_foreground(new Color(_clr.getRGB()));
                 }
-                Picture.getInstance().getLs_poSelected().next(
+                _cp.getPicture().getLs_poSelected().next(
                 		transaction, closedAction);
             }
         }
 
     	//close transaction and closed action.
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    	_cp.getPicture().getLs_po_sortedByX().finishTransaction(
     			transaction);
-    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    	_cp.getPicture().getLs_po_sortedByX().finishClosedAction(
     			closedAction);
         
     }

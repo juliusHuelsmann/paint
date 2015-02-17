@@ -128,7 +128,7 @@ public class PaintObjectSelectLineDestroy extends TestCase {
     		final DPoint _p1, final DPoint _p2) {
     	
     	//create PaintObjectWriting.
-    	PaintObjectWriting pow = new PaintObjectWriting(
+    	PaintObjectWriting pow = new PaintObjectWriting(null, 
     			0, new Pencil(1, 1, Color.black));
     	
     	//insert points.
@@ -152,7 +152,7 @@ public class PaintObjectSelectLineDestroy extends TestCase {
     		final DPoint _p3, final DPoint _p4) {
     	
     	//create PaintObjectWriting.
-    	PaintObjectWriting pow = new PaintObjectWriting(
+    	PaintObjectWriting pow = new PaintObjectWriting(null, 
     			0, new Pencil(1, 1, Color.black));
     	
     	//insert points.
@@ -1716,7 +1716,7 @@ public class PaintObjectSelectLineDestroy extends TestCase {
   	+ "			     *	\n"
   	+ "			     1 \n\n");
   	r = new Rectangle(C50, C50, C10, C10);
-  	PaintObjectWriting pow = new PaintObjectWriting(0, new Pencil(1, 1, Color.black));
+  	PaintObjectWriting pow = new PaintObjectWriting(null, 0, new Pencil(1, 1, Color.black));
   	pow.addPoint(new DPoint(C55, C65));
   	pow.addPoint(new DPoint(C55, C49));
   	result = pow.separate(r);
@@ -1781,7 +1781,7 @@ public class PaintObjectSelectLineDestroy extends TestCase {
   	+ "			     *	\n"
   	+ "			     1 \n\n");
   	r = new Rectangle(C50, C50, C10, C10);
-  	pow = new PaintObjectWriting(0, new Pencil(1, 1, Color.black));
+  	pow = new PaintObjectWriting(null, 0, new Pencil(1, 1, Color.black));
   	pow.addPoint(new DPoint(C55, C49));
   	pow.addPoint(new DPoint(C55, C65));
   	result = pow.separate(r);
@@ -3723,38 +3723,38 @@ class CheckEnvironment {
 
 
 		//simple direction.
-    	p_left2Right = new PaintObjectWriting(0, new Pencil(1, 1, Color.black));
+    	p_left2Right = new PaintObjectWriting(null, 0, new Pencil(1, 1, Color.black));
 
     	getP_left2Right().addPoint(new DPoint(C55 , C55));
     	getP_left2Right().addPoint(new DPoint(C60 , C55));
     	
-    	p_right2Left = new PaintObjectWriting(0, new Pencil(1, 1, Color.black));
+    	p_right2Left = new PaintObjectWriting(null, 0, new Pencil(1, 1, Color.black));
     	getP_right2Left().addPoint(new DPoint(C60 , C55));
     	getP_right2Left().addPoint(new DPoint(C55 , C55));
 
-    	p_top2Bottom = new PaintObjectWriting(1, new Pencil(1, 1, Color.black));
+    	p_top2Bottom = new PaintObjectWriting(null, 1, new Pencil(1, 1, Color.black));
     	getP_top2Bottom().addPoint(new DPoint(C55 , C55));
     	getP_top2Bottom().addPoint(new DPoint(C55 , C60));
     	
-    	p_bottom2Top = new PaintObjectWriting(1, new Pencil(1, 1, Color.black));
+    	p_bottom2Top = new PaintObjectWriting(null, 1, new Pencil(1, 1, Color.black));
     	p_bottom2Top.addPoint(new DPoint(C55 , C60));
     	p_bottom2Top.addPoint(new DPoint(C55 , C55));
     	
 
     	//mixed directions.
-    	p_mixedLT2BR = new PaintObjectWriting(0, new Pencil(1, 1, Color.black));
+    	p_mixedLT2BR = new PaintObjectWriting(null, 0, new Pencil(1, 1, Color.black));
     	getP_mixedLT2BR().addPoint(new DPoint(C55 , C55));
     	getP_mixedLT2BR().addPoint(new DPoint(C60 , C60));
     	
-    	p_mixedBR2LT = new PaintObjectWriting(0, new Pencil(1, 1, Color.black));
+    	p_mixedBR2LT = new PaintObjectWriting(null,0, new Pencil(1, 1, Color.black));
     	getP_mixedBR2LT().addPoint(new DPoint(C60 , C60));
     	getP_mixedBR2LT().addPoint(new DPoint(C55 , C55));
 
-    	p_mixedLB2RT = new PaintObjectWriting(1, new Pencil(1, 1, Color.black));
+    	p_mixedLB2RT = new PaintObjectWriting(null,1, new Pencil(1, 1, Color.black));
     	getP_mixedLB2RT().addPoint(new DPoint(C55 , C60));
     	getP_mixedLB2RT().addPoint(new DPoint(C60 , C55));
     	
-    	p_mixedRT2LB = new PaintObjectWriting(1, new Pencil(1, 1, Color.black));
+    	p_mixedRT2LB = new PaintObjectWriting(null,1, new Pencil(1, 1, Color.black));
     	getP_mixedRT2LB().addPoint(new DPoint(C60 , C55));
     	getP_mixedRT2LB().addPoint(new DPoint(C55 , C60));
 	}

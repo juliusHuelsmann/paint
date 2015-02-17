@@ -220,7 +220,7 @@ public class ControlPaintSelectin implements MouseMotionListener, MouseListener 
             final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
                     / Status.getImageShowSize().height;
             
-            Picture.getInstance().moveSelected(
+            cv.getPicture().moveSelected(
                     (int) (1.0 * dX * cZoomFactorWidth), 
                     (int) (1.0 * dY * cZoomFactorHeight));
             
@@ -228,13 +228,13 @@ public class ControlPaintSelectin implements MouseMotionListener, MouseListener 
                     r_selection);
             cv.getView().getPage().getJlbl_selectionPainting().repaint();
             
-//            Picture.getInstance().paintSelected();
+//            cv.getPicture().paintSelected();
             
         } else {
 
 //            if (!wholeImageSelected) {
 //
-//                Picture.getInstance().getLs_poSelected().toFirst();
+//                cv.getPicture().getLs_poSelected().toFirst();
 //            }
             
             //fetch DPoints from which the vectory may start
@@ -602,33 +602,33 @@ public class ControlPaintSelectin implements MouseMotionListener, MouseListener 
         
 
     	//start transaction and closed action.
-    	final int transaction = Picture.getInstance().getLs_po_sortedByX()
+    	final int transaction = cv.getPicture().getLs_po_sortedByX()
     			.startTransaction("stretch image", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = Picture.getInstance().getLs_po_sortedByX()
+    	final int closedAction = cv.getPicture().getLs_po_sortedByX()
     			.startClosedAction("stretch image", 
     					SecureList.ID_NO_PREDECESSOR);
         
-        Picture.getInstance().getLs_poSelected().toFirst(
+        cv.getPicture().getLs_poSelected().toFirst(
         		transaction, closedAction);
-        while (!Picture.getInstance().getLs_poSelected().isBehind()) {
+        while (!cv.getPicture().getLs_poSelected().isBehind()) {
 
 
-            Picture.getInstance().getLs_poSelected().getItem().stretch(
+            cv.getPicture().getLs_poSelected().getItem().stretch(
                     pnt_stretchFrom, pnt_totalStretch, pnt_size);
-            Picture.getInstance().getLs_poSelected().next(
+            cv.getPicture().getLs_poSelected().next(
             		transaction, closedAction);
         }
 
     	//close transaction and closed action.
-    	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+    	cv.getPicture().getLs_po_sortedByX().finishTransaction(
     			transaction);
-    	Picture.getInstance().getLs_po_sortedByX().finishClosedAction(
+    	cv.getPicture().getLs_po_sortedByX().finishClosedAction(
     			closedAction);
         
         //release selected and paint them
         cv.getControlPic().releaseSelected();
-        Picture.getInstance().paintSelected(cv.getView().getPage(),
+        cv.getPicture().paintSelected(cv.getView().getPage(),
         		cv.getControlPic(),
         		cv.getControlPaintSelection());
     }

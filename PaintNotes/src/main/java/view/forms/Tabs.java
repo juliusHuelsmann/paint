@@ -72,7 +72,8 @@ public final class Tabs extends VTabbedPane {
          * tab paint
          */
         super.addTab("Painting");
-        tab_paint =  new Paint(_cp.getcTabPaint(), _cp,
+        tab_paint =  new Paint(
+        		_cp, _cp.getcTabPaint(), _cp,
         		_cp.getcTabPaintStatus());
         super.addToTab(tabNumber, tab_paint);
         tabNumber++;

@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import view.forms.Page;
+import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.settings.Status;
 import model.util.DPoint;
@@ -66,10 +67,10 @@ public abstract class POInsertion extends PaintObjectPen {
 	 * @param _elementId the id of the element.
 	 * @param _pen the pen which is painted
 	 */
-	public POInsertion(final int _elementId, final Pen _pen) {
+	public POInsertion(final int _elementId, final Pen _pen, final Picture _picture) {
 		
 	    //call super constructor
-	    super(_elementId, _pen);
+	    super(_elementId, _pen, _picture);
 
 	}
 	

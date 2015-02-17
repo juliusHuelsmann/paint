@@ -28,6 +28,8 @@ public class HistoryObject  {
 	 */
 	private final int id_next, id_previous;
 	
+	private HistorySession session;
+	
 	
 	
 	/**
@@ -36,8 +38,13 @@ public class HistoryObject  {
 	 * @param _o_previous the previous object
 	 * @param _o_next the next object
 	 */
-	public HistoryObject(final int _currentID, final Object _o_previous,
+	public HistoryObject(
+			
+			final HistorySession _session,
+			final int _currentID, final Object _o_previous,
 			final Object _o_next) {
+		
+		this.session = _session;
 	
 		//save next id
 		this.id_next = _currentID;
@@ -266,19 +273,19 @@ public class HistoryObject  {
 		if (_object instanceof PaintObject) {
 			
 			//start a new transaction
-			final int transactionID = Picture.getInstance()
+			final int transactionID = session.getPicture()
 					.getLs_po_sortedByX().startTransaction(
 							"history apply add", 
 							SecureList.ID_NO_PREDECESSOR);
 
 			//add item.
-			Picture.getInstance().getLs_po_sortedByX().insertSorted(
+			session.getPicture().getLs_po_sortedByX().insertSorted(
 					(PaintObject) _object, 
 					((PaintObject) _object).getSnapshotBounds().x, 
 					transactionID);
 
 			//finish current transaction.
-			Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+			session.getPicture().getLs_po_sortedByX().finishTransaction(
 					transactionID);
 				
 		} else {
@@ -300,13 +307,13 @@ public class HistoryObject  {
 		if (_object instanceof PaintObject) {
 			
 			//start a new transaction
-			final int transactionID = Picture.getInstance()
+			final int transactionID = session.getPicture()
 					.getLs_po_sortedByX().startTransaction(
 							"history apply remove", 
 							SecureList.ID_NO_PREDECESSOR);
 			
 			//search the element which is to be removed
-			boolean found = Picture.getInstance().getLs_po_sortedByX().find(
+			boolean found = session.getPicture().getLs_po_sortedByX().find(
 					(PaintObject) _object, 
 					SecureList.ID_NO_PREDECESSOR);
 
@@ -314,7 +321,7 @@ public class HistoryObject  {
 			if (found) {
 				
 				//remove item.
-				Picture.getInstance().getLs_po_sortedByX().remove(
+				session.getPicture().getLs_po_sortedByX().remove(
 						transactionID);
 				
 			} else {
@@ -325,7 +332,7 @@ public class HistoryObject  {
 			}
 			
 			//finish current transaction.
-			Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+			session.getPicture().getLs_po_sortedByX().finishTransaction(
 					transactionID);
 		} else {
 			
@@ -349,13 +356,13 @@ public class HistoryObject  {
 				&& _objectMoved instanceof PaintObject) {
 			
 			//start a new transaction
-			final int transactionID = Picture.getInstance()
+			final int transactionID = session.getPicture()
 					.getLs_po_sortedByX().startTransaction(
 							"history apply move", 
 							SecureList.ID_NO_PREDECESSOR);
 			
 			//search the element which is to be removed
-			boolean found = Picture.getInstance().getLs_po_sortedByX().find(
+			boolean found = session.getPicture().getLs_po_sortedByX().find(
 					(PaintObject) _objectOrig, 
 					SecureList.ID_NO_PREDECESSOR);
 
@@ -363,11 +370,11 @@ public class HistoryObject  {
 			if (found) {
 				
 				//remove item.
-				Picture.getInstance().getLs_po_sortedByX().remove(
+				session.getPicture().getLs_po_sortedByX().remove(
 						transactionID);
 
 				//insert moved item.
-				Picture.getInstance().getLs_po_sortedByX().insertSorted(
+				session.getPicture().getLs_po_sortedByX().insertSorted(
 						(PaintObject) _objectMoved, 
 						((PaintObject) _objectMoved).getSnapshotBounds().x, 
 						transactionID);
@@ -380,7 +387,7 @@ public class HistoryObject  {
 			}
 			
 			//finish current transaction.
-			Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+			session.getPicture().getLs_po_sortedByX().finishTransaction(
 					transactionID);
 		} else {
 			
@@ -452,7 +459,7 @@ public class HistoryObject  {
 				&& _objectOld instanceof SecureList<?>) {
 			
 			//start a new transaction
-			final int transactionID = Picture.getInstance()
+			final int transactionID = session.getPicture()
 					.getLs_po_sortedByX().startTransaction(
 							"history apply move", 
 							SecureList.ID_NO_PREDECESSOR);
@@ -477,7 +484,7 @@ public class HistoryObject  {
 
 					//search the element which is to be removed
 					boolean found =
-							Picture.getInstance().getLs_po_sortedByX().find(
+							session.getPicture().getLs_po_sortedByX().find(
 							(PaintObject) sl_toRemove.getItem(), 
 							SecureList.ID_NO_PREDECESSOR);
 					
@@ -486,7 +493,7 @@ public class HistoryObject  {
 					if (found) {
 						
 						//remove item.
-						Picture.getInstance().getLs_po_sortedByX().remove(
+						session.getPicture().getLs_po_sortedByX().remove(
 								transactionID);
 
 					} else {
@@ -524,7 +531,7 @@ public class HistoryObject  {
 
 					//search the element which is to be removed
 					boolean found =
-							Picture.getInstance().getLs_po_sortedByX().find(
+							session.getPicture().getLs_po_sortedByX().find(
 							(PaintObject) sl_toAdd.getItem(), 
 							SecureList.ID_NO_PREDECESSOR);
 					
@@ -534,7 +541,7 @@ public class HistoryObject  {
 						
 
 						//insert moved item.
-						Picture.getInstance().getLs_po_sortedByX().insertSorted(
+						session.getPicture().getLs_po_sortedByX().insertSorted(
 								(PaintObject) sl_toAdd.getItem() , 
 								((PaintObject) sl_toAdd.getItem())
 								.getSnapshotBounds().x, 
@@ -562,7 +569,7 @@ public class HistoryObject  {
 
 			
 			//finish current transaction.
-			Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+			session.getPicture().getLs_po_sortedByX().finishTransaction(
 					transactionID);
 		} else {
 			

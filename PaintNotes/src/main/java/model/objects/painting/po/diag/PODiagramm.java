@@ -5,6 +5,7 @@ package model.objects.painting.po.diag;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import model.objects.painting.Picture;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.Pen;
@@ -69,10 +70,11 @@ public class PODiagramm extends POInsertion {
 	 * @param _amountOfRows the amount of rows
 	 */
 	public PODiagramm(final int _elementId, final Pen _pen, 
-	        final int _amountOfLines, final int _amountOfRows) {
+	        final int _amountOfLines, final int _amountOfRows,
+	        final Picture _pic) {
 		
 	    //call super constructor
-	    super(_elementId, _pen);
+	    super(_elementId, _pen, _pic);
 
         this.amountLines = _amountOfLines;
         this.amountRows = _amountOfRows;

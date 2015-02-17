@@ -18,7 +18,7 @@ public class CPrint implements ActionListener {
 	
 	public final void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource().equals(cp.getView().getTabs().getTab_print().getTb_print().getActionCause())) {
-        	Util.print();
+        	Util.print(cp.getPicture());
 		}
 	}
 

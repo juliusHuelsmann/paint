@@ -114,8 +114,7 @@ public final class Picture {
 	 * Empty utility class constructor because the Picture instance has to exist
 	 * in process of initialization of Picture attributes.
 	 */
-	private Picture() {
-
+	public Picture() {
 	}
 
 	/**
@@ -123,7 +122,7 @@ public final class Picture {
 	 * creates a new instance of sorted PaintObject list and sets up the
 	 * currentID.
 	 */
-	private void initialize() {
+	public void initialize() {
 		reload();
 	}
 
@@ -168,8 +167,8 @@ public final class Picture {
 	 * 
 	 * @return the new created PaintObjectImage.
 	 */
-	public static PaintObjectImage createPOI(final BufferedImage _bi) {
-		return new PaintObjectImage(getInstance().getIncreaseCID(), _bi);
+	public PaintObjectImage createPOI(final BufferedImage _bi) {
+		return new PaintObjectImage(getIncreaseCID(), _bi, this);
 
 	}
 
@@ -183,8 +182,8 @@ public final class Picture {
 	 *
 	 * @return the new created PaintObjectWriting
 	 */
-	public static PaintObjectWriting createPOW(final Pen _pen) {
-		return new PaintObjectWriting(getInstance().getIncreaseCID(), _pen);
+	public PaintObjectWriting createPOW(final Pen _pen) {
+		return new PaintObjectWriting(this, getIncreaseCID(), _pen);
 	}
 
 	/**
@@ -210,7 +209,7 @@ public final class Picture {
 		if (!(po_current instanceof POCurve)) {
 
 			// create new PaintObject and insert it into list of
-			po_current = new PaintObjectWriting(currentId, pen_current);
+			po_current = new PaintObjectWriting(this, currentId, pen_current);
 
 			// increase current id
 			currentId++;
@@ -246,7 +245,7 @@ public final class Picture {
 		} else {
 
 			// create new PaintObject and insert it into list of
-			PaintObjectImage poi = new PaintObjectImage(currentId, _bi);
+			PaintObjectImage poi = new PaintObjectImage(currentId, _bi, this);
 			ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x,
 					SecureList.ID_NO_PREDECESSOR);
 
@@ -268,7 +267,7 @@ public final class Picture {
 		switch (Status.getIndexOperation()) {
 
 		case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
-			addPaintObject(new POLine(currentId, pen_current));
+			addPaintObject(new POLine(currentId, pen_current, this));
 			break;
 		case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
 
@@ -298,26 +297,26 @@ public final class Picture {
 				// throw exception
 				throw new Error("Fehler: stift noch nicht hinzugefuegt.");
 			}
-			addPaintObject(new POCurve(casus, pen, casus));
+			addPaintObject(new POCurve(casus, pen, casus, this));
 			break;
 		case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
-			addPaintObject(new PORectangle(currentId, pen_current));
+			addPaintObject(new PORectangle(currentId, pen_current, this));
 			break;
 		case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
-			addPaintObject(new POTriangle(currentId, pen_current));
+			addPaintObject(new POTriangle(currentId, pen_current,this));
 			break;
 
 		case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
-			addPaintObject(new POArchFilled(currentId, pen_current));
+			addPaintObject(new POArchFilled(currentId, pen_current, this));
 			break;
 		case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
-			addPaintObject(new PoRectangleFilled(currentId, pen_current));
+			addPaintObject(new PoRectangleFilled(currentId, pen_current, this));
 			break;
 		case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
-			addPaintObject(new POTriangleFilled(currentId, pen_current));
+			addPaintObject(new POTriangleFilled(currentId, pen_current, this));
 			break;
 		case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
-			addPaintObject(new POArch(currentId, pen_current));
+			addPaintObject(new POArch(currentId, pen_current, this));
 			break;
 
 		case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
@@ -337,11 +336,11 @@ public final class Picture {
 				Message.showMessage(Message.MESSAGE_ID_INFO,
 						"enter valid column");
 			}
-			addPaintObject(new PODiagramm(currentId, pen_current, lines, rows));
+			addPaintObject(new PODiagramm(currentId, pen_current, lines, rows, this));
 			break;
 		case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
 		case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
-			addPaintObject(new PaintObjectWriting(currentId, pen_current));
+			addPaintObject(new PaintObjectWriting(this, currentId, pen_current));
 			break;
 		default:
 			Status.getLogger().warning("unknown index operation");
@@ -2063,21 +2062,6 @@ public final class Picture {
 
 
 
-	/**
-	* this method guarantees that only one instance of this class can be
-	* created ad runtime.
-	*
-	* @return the only instance of this class.
-	*/
-	public static Picture getInstance() {
-		// if class is not instanced yet instantiate
-		if (instance == null) {
-			instance = new Picture();
-			instance.initialize();
-		}
-		// return the only instance of this class.
-		return instance;
-	}
 
 	/*
 	 * getter and setter methods

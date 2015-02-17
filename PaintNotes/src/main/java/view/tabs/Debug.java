@@ -10,10 +10,14 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.omg.CORBA._IDLTypeStub;
+
 import model.objects.PictureOverview;
+import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import control.tabs.CPaintObjects;
@@ -30,7 +34,7 @@ import view.util.mega.MPanel;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public final class PaintObjects extends Tab implements Observer {
+public final class Debug extends Tab implements Observer {
 
 	//identifier for 
 	/**
@@ -97,11 +101,17 @@ public final class PaintObjects extends Tab implements Observer {
     
 	private CPaintObjects cps;
 	
+	
+	/**
+	 * JButton for to enable and disable console.
+	 */
+	private Item1Button i1b_console;
+	
 	/**
 	 * Constructor: initialize instances of Components and add special 
 	 * MouseMotionListener.
 	 */
-	public PaintObjects(CPaintObjects _cps) {
+	public Debug(CPaintObjects _cps) {
 		
 		//initialize JPanel and alter settings
 		super(0);
@@ -170,7 +180,17 @@ public final class PaintObjects extends Tab implements Observer {
 		jlbl_detailedPosition.setBorder(
 		        BorderFactory.createLineBorder(Color.black));
 		super.add(jlbl_detailedPosition);
-		
+
+
+		i1b_console = new Item1Button(null);
+
+		i1b_console.setLocation(ViewSettings.getDistanceBetweenItems(), 
+        		ViewSettings.getDistanceBetweenItems());
+		i1b_console.setBorder(false);
+        i1b_console.addActionListener(null);
+        i1b_console.addActionListener(_cps);
+        i1b_console.setActivable(false);
+		super.add(i1b_console);
 	}
 	
 	
@@ -293,7 +313,13 @@ public final class PaintObjects extends Tab implements Observer {
 		        heightNewComponent));
 		
 		
-		
+		i1b_console.setLocation(jpnl_container.getX() + jpnl_container.getWidth() + 5,5);
+		i1b_console.setSize(ViewSettings.getItemMenu1Width(), 
+                ViewSettings.getItemMenu1Height());
+
+        Print.initializeTextButtonOhneAdd(i1b_console,
+                "Druckauftrag",
+                Constants.VIEW_TB_NEW_PATH);
 	}
 	
 	
@@ -400,4 +426,20 @@ public final class PaintObjects extends Tab implements Observer {
     public MPanel getJpnl_items() {
         return jpnl_items;
     }
+
+
+	/**
+	 * @return the i1b_console
+	 */
+	public Item1Button getI1b_console() {
+		return i1b_console;
+	}
+
+
+	/**
+	 * @param i1b_console the i1b_console to set
+	 */
+	public void setI1b_console(Item1Button i1b_console) {
+		this.i1b_console = i1b_console;
+	}
 }

@@ -3,7 +3,7 @@ package model.objects;
 import java.util.Observable;
 
 import model.objects.painting.po.PaintObject;
-import view.tabs.PaintObjects;
+import view.tabs.Debug;
 
 /**
  * The class corresponding to the view PaintObjects class. 
@@ -38,7 +38,7 @@ public class PictureOverview extends Observable {
         
         //notify observer
         setChanged();
-        notifyObservers(PaintObjects.ID_ADD_ITEM);
+        notifyObservers(Debug.ID_ADD_ITEM);
     }
     
     /**
@@ -53,7 +53,7 @@ public class PictureOverview extends Observable {
         
         //notify observer
         setChanged();
-        notifyObservers(PaintObjects.ID_REMOVE_ITEM);
+        notifyObservers(Debug.ID_REMOVE_ITEM);
     }
     
     /**
@@ -68,7 +68,7 @@ public class PictureOverview extends Observable {
         
         //notify observer
         setChanged();
-        notifyObservers(PaintObjects.ID_ADD_ITEM_SELECTED);
+        notifyObservers(Debug.ID_ADD_ITEM_SELECTED);
     }
     
     /**
@@ -83,14 +83,14 @@ public class PictureOverview extends Observable {
         
         //notify observer
         setChanged();
-        notifyObservers(PaintObjects.ID_REMOVE_ITEM_SELECTED);
+        notifyObservers(Debug.ID_REMOVE_ITEM_SELECTED);
     }
 
 	
 	/**
 	 * Constructor: adds observer.
 	 */
-	public PictureOverview(PaintObjects _po) {
+	public PictureOverview(Debug _po) {
 		super.addObserver(_po);
 	}
 

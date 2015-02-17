@@ -1494,12 +1494,176 @@ public final class Picture {
 		return _pow;
 	}
 
+	
+	
+	
+	
+	
+	public boolean paintSelected(Page _page,
+			final ContorlPicture _cp,
+			final ControlPaintSelectin _cps) {
+
+
+		// If the list of PaintObjects has not been initialized yet or
+		// the list is empty return that there is nothing to do
+		if (ls_poSelected == null 
+				|| ls_poSelected.isEmpty()) {
+			return false;
+		}
+		
+		// Start a transaction. That means that after the transaction has
+		// been terminated, the current item of the list is reset.
+    	final int id_transaction = getLs_po_sortedByX()
+    			.startTransaction("paintSelected", 
+    					SecureList.ID_NO_PREDECESSOR);
+    	final int id_closedAction = getLs_po_sortedByX()
+    			.startClosedAction("paintSelected", 
+    					SecureList.ID_NO_PREDECESSOR);
+
+		// Initialize new list into which the Items are inserted that are inside
+		// the specified rectangle. List is sorted by id for painting the
+		// items chronologically.
+		SecureListSort<PaintObject> ls_poChronologic 
+		= new SecureListSort<PaintObject>();
+
+		// reset value for debugging and speed testing.
+		Status.setCounter_paintedPoints(0);
+
+		
+		ls_poSelected.toFirst(id_transaction, id_closedAction);
+		Rectangle r_max = null;
+		while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
+
+			// if the current item is not initialized only perform the
+			// next operation.
+			if (ls_poSelected.getItem() != null) {
+
+				// create new Rectangle consisting of the bounds of the current
+				// paitnObject otherwise adjust the existing bounds
+				if (r_max == null) {
+					Rectangle b = ls_poSelected.getItem().getSnapshotBounds();
+					r_max = new Rectangle(b.x, b.y, b.width + b.x, b.height
+							+ b.y);
+				} else {
+					Rectangle b = ls_poSelected.getItem().getSnapshotBounds();
+					r_max.x = Math.min(r_max.x, b.x);
+					r_max.y = Math.min(r_max.y, b.y);
+					r_max.width = Math.max(r_max.width, b.x + b.width);
+					r_max.height = Math.max(r_max.height, b.y + b.height);
+				}
+
+
+				//insert the current element into the list containing 
+				//the selected items by sorted by time of insertion 
+				//indicated by their index.
+				ls_poChronologic.insertSorted(ls_poSelected.getItem(),
+						ls_poSelected.getItem().getElementId(),
+						SecureList.ID_NO_PREDECESSOR);
+			} else {
+
+				// log severe error because of unnecessary PaintObject inside
+				// list.
+				Status.getLogger().severe(
+						"Error. Null PaintObject inside"
+								+ " the list of sorted paintObjects.");
+			}
+			ls_poSelected.next(id_closedAction, id_transaction);
+		}
+
+		/*
+		 * Go through the sorted list of items and paint them
+		 */
+		ls_poChronologic.toFirst(SecureList.ID_NO_PREDECESSOR, 
+				SecureList.ID_NO_PREDECESSOR);
+		BufferedImage verbufft = Util.getEmptyBISelection();
+		BufferedImage verbufft2 = Util.getEmptyBISelection();
+		int counter = 0;
+		while (!ls_poChronologic.isBehind() && !ls_poChronologic.isEmpty()) {
+
+			if (ls_poChronologic.getItem() instanceof PaintObjectWriting) {
+				PaintObjectWriting pow = (PaintObjectWriting) ls_poChronologic
+						.getItem();
+				pow.enableSelected();
+			}
+			// paint the object.
+			ls_poChronologic.getItem().paint(verbufft2, false, verbufft,
+					_page.getJlbl_painting().getLocation().x,
+					_page.getJlbl_painting().getLocation().y, 
+					null);
+
+			if (ls_poChronologic.getItem() instanceof PaintObjectWriting) {
+				PaintObjectWriting pow = (PaintObjectWriting) ls_poChronologic
+						.getItem();
+				pow.disableSelected();
+			}
+			
+			counter++;
+			ls_poChronologic.next(SecureList.ID_NO_PREDECESSOR, 
+					SecureList.ID_NO_PREDECESSOR);
+		}
+		//log repainting action in console.
+		if (counter > 0) {
+			Console.log(counter
+					+ " Item painted in rectanlge (" + r_max + ").",
+					Console.ID_INFO_UNIMPORTANT, 
+					getClass(), "repaintRectangle");
+		}
+		
+		// print logging method
+		Status.getLogger().info("Painted " + Status.getCounter_paintedPoints()
+						+ "pixel points for this operation. (paint selected)");
+
+		//finish transaction and finish closed action; adjust the current
+		//element to its state before the list transaction.
+		ls_po_sortedByX.finishTransaction(id_transaction);
+		ls_po_sortedByX.finishClosedAction(id_closedAction);
+
+		_page.getJlbl_selectionPainting()
+				.setIcon(new ImageIcon(verbufft));
+
+		if (r_max != null) {
+
+			Rectangle realRect = new Rectangle(r_max.x, r_max.y, r_max.width
+					- r_max.x, r_max.height - r_max.y);
+
+			// adapt the rectangle to the currently used zoom factor.
+			final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
+					/ Status.getImageShowSize().width;
+			final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
+					/ Status.getImageShowSize().height;
+			realRect.x = (int) (1.0 * realRect.x / cZoomFactorWidth);
+			realRect.width = (int) (1.0 * realRect.width / cZoomFactorWidth);
+			realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
+			realRect.height = (int) (1.0 * realRect.height / cZoomFactorHeight);
+
+			realRect.x += _page.getJlbl_painting().getLocation().x;
+			realRect.y += _page.getJlbl_painting().getLocation().y;
+
+			_cp.refreshRectangle(realRect.x, realRect.y, realRect.width,
+							realRect.height);
+			_cps.setR_selection(realRect,
+					_page.getJlbl_painting().getLocation());
+			_cp.paintEntireSelectionRect(realRect);
+
+			return true;
+		}
+		return false;	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Paint the selected items to the selection JLabel.
 	 * 
 	 * @return whether there is something to be painted or not.
 	 */
-	public boolean paintSelected(Page _page,
+	public boolean paintSelectedOld(Page _page,
 			final ContorlPicture _cp,
 			final ControlPaintSelectin _cps) {
 
@@ -1519,7 +1683,6 @@ public final class Picture {
 		ls_poSelected.toFirst(transaction, closedAction);
 		Rectangle r_max = null;
 		while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
-
 			if (ls_poSelected.getItem() != null) {
 
 				// create new Rectangle consisting of the bounds of the current

@@ -5,6 +5,7 @@ package model.objects.painting.po.geo;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import model.objects.painting.Picture;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.Pen;
@@ -60,10 +61,10 @@ public class POTriangle extends POInsertion {
 	 * @param _elementId the id of the element.
 	 * @param _pen the pen which is painted
 	 */
-	public POTriangle(final int _elementId, final Pen _pen) {
+	public POTriangle(final int _elementId, final Pen _pen, final Picture _pic) {
 		
 	    //call super constructor
-	    super(_elementId, _pen);
+	    super(_elementId, _pen, _pic);
 
 	}
 	

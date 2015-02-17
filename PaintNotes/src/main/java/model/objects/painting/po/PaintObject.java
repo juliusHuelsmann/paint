@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
+import model.objects.painting.Picture;
 import model.util.DPoint;
 import model.util.adt.list.List;
 
@@ -100,14 +101,17 @@ public abstract class PaintObject implements Serializable {
             final DPoint _pnt_size);
     
 
+    private Picture picture;
+
 	/**
 	 * Constructor creates new instance
 	 * of list.
 	 * 
 	 * @param _elementId the id of the element.
 	 */
-	public PaintObject(final int _elementId) {
+	public PaintObject(final Picture _picture, final int _elementId) {
 		
+		this.picture = _picture;
 		//save values
 		this.elementId = _elementId;
 	}
@@ -245,6 +249,22 @@ public abstract class PaintObject implements Serializable {
     public final int getElementId() {
         return elementId;
     }
+
+
+	/**
+	 * @return the picture
+	 */
+	public Picture getPicture() {
+		return picture;
+	}
+
+
+	/**
+	 * @param picture the picture to set
+	 */
+	public void setPicture(Picture picture) {
+		this.picture = picture;
+	}
 
 
     

@@ -15,6 +15,7 @@ import model.settings.Constants;
 import model.settings.Status;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
+import control.ControlPaint;
 import control.ControlPaintSelectin;
 import control.interfaces.MenuListener;
 import control.tabs.CPaintStatus;
@@ -85,7 +86,8 @@ public final class Paint extends Tab {
 	/**
 	 * Constructor of Paint.
 	 */
-	public Paint(final ControlTabPainting _paint, final MenuListener _ml,
+	public Paint(final ControlPaint _controlPaint,
+			final ControlTabPainting _paint, final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus) {
 
 		//initialize JPanel and alter settings
@@ -96,7 +98,7 @@ public final class Paint extends Tab {
 		
 		int x = initializeClipboard(0, true, _paint, _controlPaintStatus);
         x = initializeHistory(x, true, _controlPaintStatus);
-		x = initializePagePens(x, true, _paint, _ml, _controlPaintStatus);
+		x = initializePagePens(_controlPaint, x, true, _paint, _ml, _controlPaintStatus);
         x = initializePageColors(x, true, _paint, _ml, _controlPaintStatus);
 		x = initializeZoom(x, true, _paint, _controlPaintStatus);
         x = initializeFileOperations(x, true, _paint, _controlPaintStatus);
@@ -283,7 +285,9 @@ public final class Paint extends Tab {
      * 
      * @return the new x coordinate
 	 */
-	private int initializePagePens(final int _x, final boolean _paint,
+	private int initializePagePens(
+			final ControlPaint _controlPaint, 
+			final int _x, final boolean _paint,
 			final ControlTabPainting _cp,
 			final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus) {
@@ -357,7 +361,7 @@ public final class Paint extends Tab {
         	it_stift2.setItemsInRow((byte) 1);
         	it_stift2.setBorder(false);
         	super.add(it_stift2);
-        	addPens(_cp, _controlPaintStatus);
+        	addPens(_controlPaint, _cp, _controlPaintStatus);
 
             it_selection.setText("Auswahl");
             it_selection.setBorder(false);
@@ -798,7 +802,8 @@ public final class Paint extends Tab {
 	/**
 	 * add pens .
 	 */
-	private void addPens(final ControlTabPainting _cp,
+	private void addPens(final ControlPaint _controlPaint, 
+			final ControlTabPainting _cp,
 			final CPaintStatus _controlPaintStatus) {
 
 
@@ -816,7 +821,7 @@ public final class Paint extends Tab {
 			
 			//mouse listener and changeListener
 			i1.addMouseListener(_cp);
-			CPen cpen = new CPen(_cp, i1, it_stift1, 
+			CPen cpen = new CPen(_controlPaint, _cp, i1, it_stift1, 
 					Pen.clonePen(pen_available), 1, _controlPaintStatus);
 			i1.addChangeListener(cpen);
 			i1.addMouseListener(cpen);
@@ -836,7 +841,7 @@ public final class Paint extends Tab {
 			
 			//mouse listener and changeListener
 			i2.addMouseListener(_cp);
-			CPen cpen2 = new CPen(_cp, i2, it_stift2,
+			CPen cpen2 = new CPen(_controlPaint, _cp, i2, it_stift2,
 					Pen.clonePen(pen_available), 2, _controlPaintStatus);
 			i2.addChangeListener(cpen2);
 			i2.addMouseListener(cpen2);

@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import model.objects.painting.Picture;
 import model.settings.Error;
 import model.settings.Status;
 import model.util.DPoint;
@@ -45,8 +46,8 @@ public class PaintObjectImage extends PaintObject {
      * @param _elementId the id of the element
      * @param _bi the bufferedImage which is displayed.
      */
-    public PaintObjectImage(final int _elementId, final BufferedImage _bi) {
-        super(_elementId);
+    public PaintObjectImage(final int _elementId, final BufferedImage _bi, Picture _picture) {
+        super(_picture, _elementId);
         this.bi_image = _bi;
         this.pnt_locationOfImage = new Point(0, 0);
     }

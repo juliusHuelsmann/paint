@@ -60,9 +60,9 @@ public final class Bug {
 			String cString = ls_strg.getItem();
 			if (cString.equals("Line")) {
 
-				Picture.getInstance().changePen(new Pencil(
+				cp.getPicture().changePen(new Pencil(
 						Constants.PEN_ID_LINES, 1, Color.blue));
-				Picture.getInstance().addPaintObject(cp.getView().getTabs().getTab_insert());
+				cp.getPicture().addPaintObject(cp.getView().getTabs().getTab_insert());
 
 				DPoint p = new DPoint();
 				while (!ls_strg.isBehind() 
@@ -81,14 +81,14 @@ public final class Bug {
 						p = isPoint(ls_strg.getItem());
 						if (p != null) {
 
-							Picture.getInstance().changePaintObject(p, cp.getView().getPage(), cp.getControlPic());
+							cp.getPicture().changePaintObject(p, cp.getView().getPage(), cp.getControlPic());
 						} else {
 							ls_strg.previous();
 						}
 					}
 				}
 				
-				Picture.getInstance().finish(cp.getView().getTabs().getTab_pos());
+				cp.getPicture().finish(cp.getView().getTabs().getTab_pos());
 			} else if (cString.contains("Rectangle")) {
 
 

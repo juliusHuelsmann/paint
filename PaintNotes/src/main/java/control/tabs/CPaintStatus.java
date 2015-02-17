@@ -397,10 +397,10 @@ public final class CPaintStatus implements MouseListener {
                     Status.setIndexOperation(operationID);
                     deactivate();
                     
-                    if (Picture.getInstance().isSelected()) {
+                    if (controlPaint.getPicture().isSelected()) {
 
                         //if there was selection before, release it to Picture
-                        Picture.getInstance().releaseSelected(
+                        controlPaint.getPicture().releaseSelected(
                     			controlPaint.getControlPaintSelection(),
                     			controlPaint.getcTabSelection(),
                     			controlPaint.getView().getTabs().getTab_pos(),

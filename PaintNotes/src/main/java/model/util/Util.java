@@ -44,9 +44,9 @@ public final class Util {
     private Util() { }
     
 
-    public static void print(){
+    public static void print(Picture _pic){
 
-    	BufferedImage bi_pic = Picture.getInstance().calculateImage();
+    	BufferedImage bi_pic = _pic.calculateImage();
   		JFrame jf = new JFrame();
     	jf.setSize(
     			(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()

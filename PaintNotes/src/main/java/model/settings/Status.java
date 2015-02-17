@@ -29,6 +29,7 @@ public final class Status {
 
 	
 	private static ControlPaint controlPaint;
+	private static Picture picture;
 	
 
 	private static CWrite getControlTabWrite() {
@@ -46,7 +47,7 @@ public final class Status {
 	public static final int ERASE_DESTROY = 1;
 	
 	private static int eraseIndex = ERASE_ALL;
-	
+
 	
 	public static void setControlPaint(ControlPaint _controlPaint) {
 		if (_controlPaint != null) {
@@ -55,6 +56,26 @@ public final class Status {
 		} else {
 			
 			if (controlPaint == null) {
+
+				getLogger().severe("initialized controlPaint "
+						+ "in Status with "
+						+ "not existing controller class.");
+			} else {
+
+				getLogger().severe("Tried to overwrite"
+						+ " existing controller class in"
+						+ " Status.");
+			}
+		}
+	}
+	
+	public static void setPicture(Picture _picture) {
+		if (_picture != null) {
+
+			picture = _picture;
+		} else {
+			
+			if (picture == null) {
 
 				getLogger().severe("initialized controlPaint "
 						+ "in Status with "
@@ -814,7 +835,7 @@ public final class Status {
      */
 	public static void applyStandardPen(final Picture _picture) {
 
-        Picture.getInstance().initializePen(
+        picture.initializePen(
                 new BallPen(Constants.PEN_ID_POINT, 1, Color.black));
         setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);	
 	}

@@ -136,7 +136,7 @@ public class PaintObjectWriting extends PaintObjectPen {
         //if the item has not been found return false
         return false;
     }
-
+    
 	/**
 	 * Constructor creates new instance
 	 * of list.
@@ -144,10 +144,11 @@ public class PaintObjectWriting extends PaintObjectPen {
 	 * @param _elementId the id of the element.
 	 * @param _pen the pen which is painted
 	 */
-	public PaintObjectWriting(final int _elementId, final Pen _pen) {
+	public PaintObjectWriting(
+			Picture _pic, final int _elementId, final Pen _pen) {
 		
 	    //call super constructor
-	    super(_elementId, _pen);
+	    super(_elementId, _pen, _pic);
 
 		//save values
 		this.ls_point = new List<DPoint>();
@@ -526,7 +527,7 @@ public class PaintObjectWriting extends PaintObjectPen {
      * 				inside this method (for not double - adding something).
 	 * 
      */
-    public static PaintObjectWriting checkPointLink(
+    public PaintObjectWriting checkPointLink(
     		
     		//the first and the second point between which the selection is
     		//checked
@@ -611,7 +612,7 @@ public class PaintObjectWriting extends PaintObjectPen {
                 	insidePrevious = insideCurr;
 
                 	//create new list
-                	pow_current = Picture.createPOW(Pen.clonePen(
+                	pow_current = getPicture().createPOW(Pen.clonePen(
                 			pow_current.getPen()));
                 	pow_current.addPoint(pnt_current);
                 	
@@ -692,7 +693,7 @@ public class PaintObjectWriting extends PaintObjectPen {
 //        
 //        //create new PaintObjectWriting where to insert the following points.
 //        PaintObjectWriting pow_current = new PaintObjectWriting(
-//        		Picture.getInstance().getIncreaseCID(), getPen());
+//        		getPicture().getIncreaseCID(), getPen());
 //        pow_current.addPoint(new DPoint(pc));
 //        
 //        
@@ -735,7 +736,7 @@ public class PaintObjectWriting extends PaintObjectPen {
 //                //crate new PaintObject and add the borderDPoint to the 
 //                //new PaintObject
 //                pow_current = new PaintObjectWriting(
-//                		Picture.getInstance().getIncreaseCID(), 
+//                		getPicture().getIncreaseCID(), 
 //                		getPen());
 //                if (pnt_border != null) {
 //                    pow_current.addPoint(new DPoint(pnt_border));
@@ -762,7 +763,7 @@ public class PaintObjectWriting extends PaintObjectPen {
 //                //crate new PaintObject and add the borderDPoint to the 
 //                //new PaintObject
 //                pow_current = new PaintObjectWriting(
-//                		Picture.getInstance().getIncreaseCID(), 
+//                		getPicture().getIncreaseCID(), 
 //                        getPen());
 //                if (pnt_border != null) {
 //                    pow_current.addPoint(new DPoint(pnt_border));
@@ -852,7 +853,8 @@ public class PaintObjectWriting extends PaintObjectPen {
         
         //create new PaintObjectWriting where to insert the following points.
         PaintObjectWriting pow_current = new PaintObjectWriting(
-        		Picture.getInstance().getIncreaseCID(), getPen());
+        		getPicture(),
+        		getPicture().getIncreaseCID(), getPen());
         pow_current.addPoint(new DPoint(pc));
         
         ls_point.next();
@@ -890,7 +892,8 @@ public class PaintObjectWriting extends PaintObjectPen {
                 //crate new PaintObject and add the borderDPoint to the 
                 //new PaintObject
                 pow_current = new PaintObjectWriting(
-                		Picture.getInstance().getIncreaseCID(), 
+                		getPicture(),
+                		getPicture().getIncreaseCID(), 
                 		getPen());
                 if (pnt_border != null) {
                     pow_current.addPoint(new DPoint(pnt_border));
@@ -913,7 +916,8 @@ public class PaintObjectWriting extends PaintObjectPen {
                 //crate new PaintObject and add the borderDPoint to the 
                 //new PaintObject
                 pow_current = new PaintObjectWriting(
-                		Picture.getInstance().getIncreaseCID(), 
+                		getPicture(),
+                		getPicture().getIncreaseCID(), 
                         getPen());
                 if (pnt_border != null) {
                     pow_current.addPoint(new DPoint(pnt_border));
@@ -940,7 +944,8 @@ public class PaintObjectWriting extends PaintObjectPen {
                     
                     //inside
                     pow_current = new PaintObjectWriting(
-                    		Picture.getInstance().getIncreaseCID(), 
+                    		getPicture(),
+                    		getPicture().getIncreaseCID(), 
                     		getPen());
                     if (pnt_border2 != null) {
                         pow_current.addPoint(new DPoint(pnt_border1));
@@ -960,7 +965,8 @@ public class PaintObjectWriting extends PaintObjectPen {
                     }
                     
                     pow_current = new PaintObjectWriting(
-                    		Picture.getInstance().getIncreaseCID(), getPen());
+                    		getPicture(),
+                    		getPicture().getIncreaseCID(), getPen());
 
                     if (pnt_border2 != null) {
                         pow_current.addPoint(new DPoint(pnt_border2));
@@ -1017,7 +1023,7 @@ public class PaintObjectWriting extends PaintObjectPen {
     	ls_point.next();
     	
     	//insert first point into new PaintObjectWriting
-		PaintObjectWriting pow_current = Picture.createPOW(getPen());
+		PaintObjectWriting pow_current = getPicture().createPOW(getPen());
     	pow_current.addPoint(pnt_predecessor);
 		while (!ls_point.isEmpty() && !ls_point.isBehind()) {
     		
@@ -1147,7 +1153,8 @@ public class PaintObjectWriting extends PaintObjectPen {
         
         //create new PaintObjectWriting where to insert the following points.
         PaintObjectWriting pow_current = new PaintObjectWriting(
-        		Picture.getInstance().getIncreaseCID(), getPen());
+        		getPicture(),
+        		getPicture().getIncreaseCID(), getPen());
         pow_current.addPoint(new DPoint(pc));
         
         
@@ -1177,7 +1184,8 @@ public class PaintObjectWriting extends PaintObjectPen {
                 }
                 
                 pow_current = new PaintObjectWriting(
-                		Picture.getInstance().getIncreaseCID(), 
+                		getPicture(),
+                		getPicture().getIncreaseCID(), 
                 		getPen());
             
             } else if (!cInside && lInside) {
@@ -1231,7 +1239,8 @@ public class PaintObjectWriting extends PaintObjectPen {
                         
 
                         pow_current = new PaintObjectWriting(
-                        		Picture.getInstance().getIncreaseCID(), 
+                        		getPicture(),
+                        		getPicture().getIncreaseCID(), 
                         		getPen());
 
                         if (pnt_border2 != null) {
@@ -1289,7 +1298,7 @@ public class PaintObjectWriting extends PaintObjectPen {
     	ls_point.next();
     	
     	//insert first point into new PaintObjectWriting
-		PaintObjectWriting pow_current = Picture.createPOW(getPen());
+		PaintObjectWriting pow_current = getPicture().createPOW(getPen());
     	pow_current.addPoint(pnt_predecessor);
 		while (!ls_point.isEmpty() && !ls_point.isBehind()) {
     		

@@ -15,6 +15,7 @@ import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.Status;
+import control.ControlPaint;
 import control.tabs.CPaintStatus;
 import control.tabs.ControlTabPainting;
 
@@ -32,18 +33,21 @@ public class CPen implements ChangeListener, MouseListener{
 	private Item1Menu i1m_toSet;
 	
 	private CPaintStatus cps;
+	private ControlPaint controlPaint;
 	/**
 	 * The pen.
 	 */
 	private Pen pen;
 	
 	public CPen(
+			final ControlPaint _controlPaint,
 			final ControlTabPainting _cp, 
 			final Item1PenSelection _i1ps,
 			final Item1Menu _i1m_toSet,
 			final Pen _pen,
 			final int _penSelection,
 			final CPaintStatus _cps) {
+		this. controlPaint = _controlPaint;
 		this.penSelection = _penSelection;
 		this.cp = _cp;
 		this.i1ps = _i1ps;
@@ -64,7 +68,7 @@ public class CPen implements ChangeListener, MouseListener{
 			pen.setThickness(thickness);
 			
 			
-			Picture.getInstance().userSetPen(pen, penSelection);
+			controlPaint.getPicture().userSetPen(pen, penSelection);
 	        //set the image of the current pen, close the menu and
 	        //reset the last open menu; thus no menu has to be closed the 
 			//next time another menu is opened
@@ -134,7 +138,7 @@ public class CPen implements ChangeListener, MouseListener{
                     .setActivated(true);
                 }
                 ControlTabPainting.applyFocus(sa);
-                Picture.getInstance().userSetPen(pen, penSelection);
+                controlPaint.getPicture().userSetPen(pen, penSelection);
                 CItem.getInstance().reset();
                 
                 //return that this operation has been performed

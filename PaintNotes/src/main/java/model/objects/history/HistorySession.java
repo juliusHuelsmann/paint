@@ -1,6 +1,8 @@
 package model.objects.history;
 
 //import declaration
+import model.objects.PictureOverview;
+import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Status;
@@ -76,17 +78,18 @@ public class HistorySession {
 	 */
 	private SecureList<HistoryObject> ls_history;
 	
-	
+	private Picture picture;
 	/**
 	 * Constructor of history session.
 	 * 
 	 * Initializes the list which contains the history items of the current
 	 * session.
 	 */
-	public HistorySession() {
+	public HistorySession(Picture _picture) {
 		
 		//initialize secure list.
 		ls_history = new SecureList <HistoryObject>();
+		this.picture = _picture;
 	}
 	
 	
@@ -162,7 +165,7 @@ public class HistorySession {
 	 */
 	public final HistoryObject createAddItem(final PaintObject _poPrev,
 			final PaintObject _poNext) {
-		return new HistoryObject(ID_HISTORY_PO_ADD, _poPrev, _poNext);
+		return new HistoryObject(this, ID_HISTORY_PO_ADD, _poPrev, _poNext);
 	}
 
 	/**
@@ -174,7 +177,7 @@ public class HistorySession {
 	 */
 	public final HistoryObject createRemoveItem(final PaintObject _poPrev,
 			final PaintObject _poNext) {
-		return new HistoryObject(ID_HISTORY_PO_REMOVE, _poPrev, _poNext);
+		return new HistoryObject(this, ID_HISTORY_PO_REMOVE, _poPrev, _poNext);
 	}
 
 	/**
@@ -186,7 +189,7 @@ public class HistorySession {
 	 */
 	public final HistoryObject createMoveItem(final PaintObject _poPrev,
 			final PaintObject _poNext) {
-		return new HistoryObject(ID_HISTORY_PO_MOVE, _poPrev, _poNext);
+		return new HistoryObject(this, ID_HISTORY_PO_MOVE, _poPrev, _poNext);
 	}
 
 	/**
@@ -198,7 +201,7 @@ public class HistorySession {
 	 */
 	public final HistoryObject createResizeItem(final PaintObject _poPrev,
 			final PaintObject _poNext) {
-		return new HistoryObject(ID_HISTORY_PO_RESIZE, _poPrev, _poNext);
+		return new HistoryObject(this, ID_HISTORY_PO_RESIZE, _poPrev, _poNext);
 	}
 
 
@@ -212,7 +215,7 @@ public class HistorySession {
 	public final HistoryObject createResizeItem(
 			final SecureList<PaintObject> _poPrev,
 			final SecureList<PaintObject> _poNext) {
-		return new HistoryObject(ID_HISTORY_ERASE, _poPrev, _poNext);
+		return new HistoryObject(this, ID_HISTORY_ERASE, _poPrev, _poNext);
 	}
 	
 	/**
@@ -226,7 +229,7 @@ public class HistorySession {
 			final SecureList<PaintObject> _poPrev,
 			final SecureList<PaintObject> _poNext) {
 		return new HistoryObject(
-				ID_HISTORY_SELECTION_DESTORY, _poPrev, _poNext);
+				this, ID_HISTORY_SELECTION_DESTORY, _poPrev, _poNext);
 	}
 	
 	
@@ -260,6 +263,24 @@ public class HistorySession {
 					SecureList.ID_NO_PREDECESSOR);
 			ls_history.getItem().applyNext();
 		}
+	}
+
+
+
+	/**
+	 * @return the picture
+	 */
+	public Picture getPicture() {
+		return picture;
+	}
+
+
+
+	/**
+	 * @param picture the picture to set
+	 */
+	public void setPicture(Picture picture) {
+		this.picture = picture;
 	}
 }
 

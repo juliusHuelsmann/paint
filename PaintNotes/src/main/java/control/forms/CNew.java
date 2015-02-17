@@ -125,7 +125,7 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
             Status.setImageShowSize(new Dimension(width, height));
             Status.setImageSize(new Dimension(width, height));
             Status.setIndexPageBackground(backgroundID);
-            Picture.getInstance().reload();
+            cp.getPicture().reload();
             Status.setOpenProject(project);
             
             cp.getControlPic().refreshPaint();

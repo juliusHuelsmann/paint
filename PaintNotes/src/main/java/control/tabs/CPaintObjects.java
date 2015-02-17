@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.Console;
 
 import javax.swing.ImageIcon;
 
@@ -24,7 +25,7 @@ import model.util.DPoint;
 import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
 import view.forms.Page;
-import view.tabs.PaintObjects;
+import view.tabs.Debug;
 import view.util.Item1Button;
 
 
@@ -54,7 +55,7 @@ public final class CPaintObjects implements ActionListener {
     }
     
 
-    private PaintObjects getPaintObjects() {
+    private Debug getPaintObjects() {
     	return cp.getView().getTabs().getTab_pos();
     }
     private Page getPage() {
@@ -71,64 +72,72 @@ public final class CPaintObjects implements ActionListener {
      */
     public void actionPerformed(final ActionEvent _event) {
         
-        Component[] c 
-        = getPaintObjects().getJpnl_items().getComponents();
-        
-        
-        for (int i = 0; i < c.length; i++) {
+    	
+    	if (_event.getSource().equals(getPaintObjects()
+    			.getI1b_console().getActionCause())) {
+    		view.forms.Console.getInstance().setVisible(
+    				!view.forms.Console.getInstance().isVisible());
+    	} else {
+    		 Component[] c 
+    	        = getPaintObjects().getJpnl_items().getComponents();
+    	        
+    	        
+    	        for (int i = 0; i < c.length; i++) {
 
-            if (c[i] instanceof Item1Button
-                    && ((Item1Button) c[i]).getAdditionalInformation() 
-                    instanceof PaintObject) {
+    	            if (c[i] instanceof Item1Button
+    	                    && ((Item1Button) c[i]).getAdditionalInformation() 
+    	                    instanceof PaintObject) {
 
-                Item1Button i1b = (Item1Button) c[i];
-                final PaintObject po_cu = (PaintObject) i1b
-                        .getAdditionalInformation();
-                if (_event.getSource().equals(i1b.getActionCause())) {
-
-
-                    i1b.setActivated(false);
-                    showPaintObjectInformation(po_cu);
-                    
-                    Picture.getInstance().releaseSelected(
-                			cp.getControlPaintSelection(),
-                			cp.getcTabSelection(),
-                			cp.getView().getTabs().getTab_pos(),
-                			cp.getView().getPage().getJlbl_painting().getLocation().x,
-                			cp.getView().getPage().getJlbl_painting().getLocation().y);
-                    getControlPicture().releaseSelected();
+    	                Item1Button i1b = (Item1Button) c[i];
+    	                final PaintObject po_cu = (PaintObject) i1b
+    	                        .getAdditionalInformation();
+    	                if (_event.getSource().equals(i1b.getActionCause())) {
 
 
+    	                    i1b.setActivated(false);
+    	                    showPaintObjectInformation(po_cu);
+    	                    
+    	                    Picture.getInstance().releaseSelected(
+    	                			cp.getControlPaintSelection(),
+    	                			cp.getcTabSelection(),
+    	                			cp.getView().getTabs().getTab_pos(),
+    	                			cp.getView().getPage().getJlbl_painting().getLocation().x,
+    	                			cp.getView().getPage().getJlbl_painting().getLocation().y);
+    	                    getControlPicture().releaseSelected();
 
-                    Status.setIndexOperation(
-                            Constants.CONTROL_PAINTING_INDEX_MOVE);
-                    
-                    //decativate other menuitems and activate the current one
-                    //(move)
-                    Picture.getInstance().createSelected();
-                    getPaintObjects().deactivate();
-                    Picture.getInstance().insertIntoSelected(po_cu, cp.getView().getTabs().getTab_pos());
-                    new PictureOverview(getPaintObjects()).remove(po_cu);
-                    Picture.getInstance().getLs_po_sortedByX().remove(
-                    		SecureList.ID_NO_PREDECESSOR);
-                    
-                }
-            } else {
-                Status.getLogger().severe("Error in ActionListener: "
-                        + "wrong kind of element. "
-                        + "This error should never occure");
-            }
-        }
-        
-        //finish insertion into selected.
-        Picture.getInstance().finishSelection(cp.getcTabSelection());
-        
-        Picture.getInstance().paintSelected(getPage(),
-    			cp.getControlPic(),
-    			cp.getControlPaintSelection());
-        getControlPicture().refreshPaint();
-        getPaintObjects().repaint();
-        getPage().getJlbl_background2().repaint();
+
+
+    	                    Status.setIndexOperation(
+    	                            Constants.CONTROL_PAINTING_INDEX_MOVE);
+    	                    
+    	                    //decativate other menuitems and activate the current one
+    	                    //(move)
+    	                    Picture.getInstance().createSelected();
+    	                    getPaintObjects().deactivate();
+    	                    Picture.getInstance().insertIntoSelected(po_cu, cp.getView().getTabs().getTab_pos());
+    	                    new PictureOverview(getPaintObjects()).remove(po_cu);
+    	                    Picture.getInstance().getLs_po_sortedByX().remove(
+    	                    		SecureList.ID_NO_PREDECESSOR);
+    	                    
+    	                }
+    	            } else {
+    	                Status.getLogger().severe("Error in ActionListener: "
+    	                        + "wrong kind of element. "
+    	                        + "This error should never occure");
+    	            }
+    	        }
+    	        
+    	        //finish insertion into selected.
+    	        Picture.getInstance().finishSelection(cp.getcTabSelection());
+    	        
+    	        Picture.getInstance().paintSelected(getPage(),
+    	    			cp.getControlPic(),
+    	    			cp.getControlPaintSelection());
+    	        getControlPicture().refreshPaint();
+    	        getPaintObjects().repaint();
+    	        getPage().getJlbl_background2().repaint();
+    	}
+       
        
     }
 

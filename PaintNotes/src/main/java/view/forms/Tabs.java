@@ -11,7 +11,7 @@ import view.tabs.Export;
 import view.tabs.Insert;
 import view.tabs.Look;
 import view.tabs.Paint;
-import view.tabs.PaintObjects;
+import view.tabs.Debug;
 import view.tabs.Print;
 import view.tabs.Selection;
 import view.tabs.Write;
@@ -39,7 +39,7 @@ public final class Tabs extends VTabbedPane {
     
     private Export tab_export;
     private Look tab_look;
-    private PaintObjects tab_pos;
+    private Debug tab_pos;
     
     /**
      * Tab for things which can be inserted.
@@ -134,7 +134,7 @@ public final class Tabs extends VTabbedPane {
 
 
         super.addTab("Debug");
-        tab_pos = new PaintObjects(_cp.getcTabPaintObjects());
+        tab_pos = new Debug(_cp.getcTabPaintObjects());
         tab_pos.setSize(
                 (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
                 ViewSettings.getView_heightTB());
@@ -303,7 +303,7 @@ public final class Tabs extends VTabbedPane {
 	/**
 	 * @return the tab_pos
 	 */
-	public PaintObjects getTab_pos() {
+	public Debug getTab_pos() {
 		return tab_pos;
 	}
 
@@ -311,7 +311,7 @@ public final class Tabs extends VTabbedPane {
 	/**
 	 * @param tab_pos the tab_pos to set
 	 */
-	public void setTab_pos(PaintObjects tab_pos) {
+	public void setTab_pos(Debug tab_pos) {
 		this.tab_pos = tab_pos;
 	}
 

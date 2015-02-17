@@ -22,7 +22,7 @@ import view.forms.Console;
 import view.forms.Message;
 import view.forms.Page;
 import view.tabs.Insert;
-import view.tabs.PaintObjects;
+import view.tabs.Debug;
 import model.objects.PictureOverview;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
@@ -820,7 +820,7 @@ public final class Picture {
 	/**
 	 * Finishes current PaintObject.
 	 */
-	public void finish(final PaintObjects _po) {
+	public void finish(final Debug _po) {
 
 		if (po_current == null) {
 
@@ -1324,7 +1324,7 @@ public final class Picture {
 	 *            the paintObject to be inserted.
 	 */
 	public synchronized void insertIntoSelected(final PaintObject _po,
-			final PaintObjects _paintObjects) {
+			final Debug _paintObjects) {
 
 		// deactivates to change operations of selected items
 		if (ls_poSelected == null) {
@@ -1497,8 +1497,11 @@ public final class Picture {
 	
 	
 	
-	
-	
+	/**
+	 * Paint the selected items to the selection JLabel.
+	 * 
+	 * @return whether there is something to be painted or not.
+	 */
 	public boolean paintSelected(Page _page,
 			final ContorlPicture _cp,
 			final ControlPaintSelectin _cps) {
@@ -1660,6 +1663,7 @@ public final class Picture {
 	
 	/**
 	 * Paint the selected items to the selection JLabel.
+	 * NOT USED ANYMORE
 	 * 
 	 * @return whether there is something to be painted or not.
 	 */
@@ -1891,7 +1895,7 @@ public final class Picture {
 	public synchronized void releaseSelected(
 			final ControlPaintSelectin _controlPaintSelection,
 			final CTabSelection _controlTabSelection,
-			final PaintObjects _paintObjects,
+			final Debug _paintObjects,
 			final int _xLocationPaint, final int _yLocationPaint) {
 
 		// adjust the bounds of the selected items to the performed
@@ -1969,7 +1973,7 @@ public final class Picture {
 	 * release selected elements to normal list.
 	 */
 	public synchronized void deleteSelected(
-			final PaintObjects _pos,
+			final Debug _pos,
 			CTabSelection _cts) {
 
 		if (ls_poSelected == null) {

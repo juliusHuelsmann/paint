@@ -185,11 +185,13 @@ public final class Tabs extends VTabbedPane {
         tab_paint.getIt_stift2().setOpen(false);
         tab_paint.getIt_selection().setOpen(false);
         tab_paint.getIt_color().setOpen(false);
+        tab_paint.getTb_erase().setOpen(false);
 
         //menus in insert tab
         tab_insert.getIa_diagram().setOpen(false);
         tab_insert.getIa_geo().setOpen(false);
         tab_insert.getIa_maths().setOpen(false);
+        
         
         //reset open tab.
         CItem.getInstance().reset();
@@ -207,6 +209,7 @@ public final class Tabs extends VTabbedPane {
     			|| tab_paint.getIt_stift2().isOpen() 
     			|| tab_paint.getIt_selection().isOpen() 
     			|| tab_paint.getIt_color().isOpen() 
+    			||  tab_paint.getTb_erase().isOpen()
     			|| tab_insert.getIa_diagram().isOpen() 
     			|| tab_insert.getIa_geo().isOpen() 
     			|| tab_insert.getIa_maths().isOpen());

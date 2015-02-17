@@ -153,7 +153,7 @@ public final class CPaintStatus implements MouseListener {
             paint.getTb_fill().setActivated(false);
             paint.getTb_zoomIn().setActivated(false);
             paint.getTb_move().setActivated(false);
-            paint.getTb_erase().setActivated(false);
+            paint.getTb_erase().getTb_open().setActivated(false);
     	}
     }
     
@@ -241,7 +241,7 @@ public final class CPaintStatus implements MouseListener {
                 return (Constants.CONTROL_PAINTING_INDEX_MOVE);
             
             } else if (_event.getSource().equals(paint
-                    .getTb_erase().getActionCause())) {
+                    .getTb_erase().getTb_open().getActionCause())) {
             
                 return (Constants.CONTROL_PAINTING_INDEX_ERASE);
             
@@ -487,8 +487,14 @@ public final class CPaintStatus implements MouseListener {
                         paint.getTb_move().setActivated(true);
                         break;
                     case Constants.CONTROL_PAINTING_INDEX_ERASE:
+
+                        //enable buttons
+                        paint.getTb_erase().getTb_open()
+                        .setActivated(true);
+                    	
+                    	
                         getTabs().closeMenues();
-                        paint.getTb_erase().setActivated(true);
+                        paint.getTb_erase().getTb_open().setActivated(true);
 
                         BufferedImage bi_erase = new BufferedImage(
                         		Status.getEraseRadius() * 2,

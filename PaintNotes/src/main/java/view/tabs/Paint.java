@@ -61,12 +61,12 @@ public final class Paint extends Tab {
 	/**
 	 * item for the second and the first pen.
 	 */		
-	private Item1Menu it_stift1, it_stift2;
+	private Item1Menu it_stift1, it_stift2,it_erase;
 	
 	/**
 	 * buttons.
 	 */
-	private Item1Button tb_pipette, tb_fill, tb_move, tb_erase, 
+	private Item1Button tb_pipette, tb_fill, tb_move, 
 	tb_selectionLine, tb_selectionMagic, tb_selectionCurve, tb_saveAs;
 
 	
@@ -75,6 +75,7 @@ public final class Paint extends Tab {
 	 */
 	private Item1Menu it_selection;
 	
+	private Item1Button tb_eraseAll, tb_eraseDestroy;
 	
 	/**
 	 * constants.
@@ -287,15 +288,22 @@ public final class Paint extends Tab {
 			final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus) {
         final Dimension sizeIT = new Dimension(550, 550);
-        final Dimension sizeIT_selection = new Dimension(350, 370);
-//        = new Dimension(350, 270);//for my laptop
+        final Dimension sizeIT_selection = new Dimension(350, 280);
+//      = new Dimension(350, 270);//for my laptop
+        final Dimension sizeIT_erasae = new Dimension(tb_copy.getWidth() * 2, tb_copy.getHeight() * 2 + 5);
+
         final int sizeHeight = 110;
         if (_paint) {
             it_stift1 = new Item1Menu(false);
+            it_stift1.removeScroll();
             it_stift1.setMenuListener(_ml);
             it_stift1.addMouseListener(_controlPaintStatus);
 
-            tb_erase = new Item1Button(null);
+            it_erase = new Item1Menu(false);
+            it_erase.setMenuListener(_ml);
+            it_erase.removeScroll();
+            it_erase.addMouseListener(_controlPaintStatus);
+            
             tb_move = new Item1Button(null);
             tb_fill = new Item1Button(null);
             tb_pipette = new Item1Button(null);
@@ -308,6 +316,7 @@ public final class Paint extends Tab {
             it_selection.setMenuListener(_ml);
             it_stift2 = new Item1Menu(false);
             it_stift2.setMenuListener(_ml);;
+            it_stift2.removeScroll();
             it_stift2.addMouseListener(_controlPaintStatus);
         }
         it_stift1.flip();
@@ -320,7 +329,12 @@ public final class Paint extends Tab {
         it_selection.setSize(sizeIT_selection);
         it_selection.setSizeHeight(sizeHeight);
 
-        tb_erase.setSize(tb_copy.getWidth(), tb_copy.getHeight());
+        it_erase.flip();
+        it_erase.changeClosedSizes(tb_copy.getWidth(), tb_copy.getHeight());
+        it_erase.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        it_erase.setSize(sizeIT_erasae);
+        it_erase.setSizeHeight(tb_copy.getWidth());
+        
         tb_move.setSize(tb_copy.getWidth(), tb_copy.getHeight());
         tb_fill.setSize(tb_copy.getWidth(), tb_copy.getHeight());
         tb_pipette.setSize(tb_copy.getWidth(), tb_copy.getHeight());
@@ -410,11 +424,38 @@ public final class Paint extends Tab {
                     Constants.VIEW_TB_MOVE_PATH, 0, _controlPaintStatus);
             tb_move.setActivable(true);
     
-            tb_erase.setActivable(true);
-            tb_erase.setBorder(false);
-            initializeTextButton(tb_erase, "Erase",
-                    Constants.VIEW_TB_PIPETTE_PATH, 0, _controlPaintStatus);
-            tb_erase.setActivable(true);
+
+            it_erase.setBorder(null);
+            it_erase.setText("Erase");
+            it_erase.setItemsInRow((byte) 2);
+            it_erase.setActivable();
+            it_erase.setBorder(false);
+        	super.add(it_erase);
+        	
+
+            tb_eraseAll = new Item1Button(null);
+            tb_eraseAll.addActionListener(_cp);
+            tb_eraseAll.setSize(tb_copy.getWidth(), 
+            		tb_copy.getHeight());
+            tb_eraseAll.setBorder(false);
+            it_erase.add(tb_eraseAll);
+            initializeTextButtonOhneAdd(tb_eraseAll,
+                    "entire PO", Constants.VIEW_TB_PIPETTE_PATH, _controlPaintStatus);
+            tb_eraseAll.setActivable(true);
+            tb_eraseAll.setOpaque(false);
+            
+            tb_eraseDestroy = new Item1Button(null);
+            tb_eraseDestroy.addActionListener(_cp);
+            tb_eraseDestroy.setSize(tb_copy.getWidth(), 
+            		tb_copy.getHeight());
+            tb_eraseDestroy.setBorder(false);
+            it_erase.add(tb_eraseDestroy);
+            initializeTextButtonOhneAdd(tb_eraseDestroy,
+                    "destroy", Constants.VIEW_TB_PIPETTE_PATH, _controlPaintStatus);
+            tb_eraseDestroy.setActivable(true);
+            tb_eraseDestroy.setOpaque(false);
+
+            //Constants.VIEW_TB_PIPETTE_PATH
         }
         
 
@@ -435,7 +476,7 @@ public final class Paint extends Tab {
             tb_move.setLocation(tb_pipette.getX() + tb_pipette.getWidth()
                     + ViewSettings.getDistanceBetweenItems(),
                     tb_pipette.getY());
-            tb_erase.setLocation(tb_move.getX(),
+            it_erase.setLocation(tb_move.getX(),
                     tb_move.getY() + tb_move.getHeight() 
                     + ViewSettings.getDistanceBetweenItems());
         int xLocationSeparation = tb_move.getWidth() + tb_move.getX() 
@@ -583,6 +624,7 @@ public final class Paint extends Tab {
     
     	//
     	it_color = new Item1Menu(true);
+    	it_color.removeScroll();
     	it_color.setMenuListener(_ml);
     	it_color.addMouseListener(_controlPaintStatus);
         it_color.setSize(new Dimension(ViewSettings.getSIZE_PNL_CLR().width 
@@ -1067,8 +1109,36 @@ public final class Paint extends Tab {
     /**
      * @return the tb_erase
      */
-    public Item1Button getTb_erase() {
-        return tb_erase;
+    public Item1Menu getTb_erase() {
+        return it_erase;
     }
+
+	/**
+	 * @return the tb_eraseAll
+	 */
+	public Item1Button getTb_eraseAll() {
+		return tb_eraseAll;
+	}
+
+	/**
+	 * @param tb_eraseAll the tb_eraseAll to set
+	 */
+	public void setTb_eraseAll(Item1Button tb_eraseAll) {
+		this.tb_eraseAll = tb_eraseAll;
+	}
+
+	/**
+	 * @return the tb_eraseDestroy
+	 */
+	public Item1Button getTb_eraseDestroy() {
+		return tb_eraseDestroy;
+	}
+
+	/**
+	 * @param tb_eraseDestroy the tb_eraseDestroy to set
+	 */
+	public void setTb_eraseDestroy(Item1Button tb_eraseDestroy) {
+		this.tb_eraseDestroy = tb_eraseDestroy;
+	}
 
 }

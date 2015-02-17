@@ -219,6 +219,16 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
             } else if (_event.getSource().equals(
             		paint.getTb_cut().getActionCause())) {
                 mr_cut();
+            } else if (_event.getSource().equals(
+            		paint.getTb_eraseAll().getActionCause())) {
+            	Status.setEraseIndex(Status.ERASE_ALL);
+            	getView().getTabs().getTab_paint().getTb_erase().setOpen(false);
+            	
+            } else if (_event.getSource().equals(
+            		paint.getTb_eraseDestroy().getActionCause())) {
+
+            	Status.setEraseIndex(Status.ERASE_DESTROY);
+            	getView().getTabs().getTab_paint().getTb_erase().setOpen(false);
             } 
     	}
     }

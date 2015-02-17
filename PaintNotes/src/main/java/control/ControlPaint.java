@@ -885,7 +885,7 @@ MenuListener {
                 //remove old rectangle.
                 switch (Status.getIndexSelection()) {
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
-                    mr_sel_line_complete(_event, r);
+                    mr_sel_line_complete(r);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
                     mr_sel_line_destroy(r);
@@ -1333,7 +1333,7 @@ MenuListener {
      * @param _event
      *            the mouseEvent.
      */
-    private synchronized void mr_sel_line_complete(final MouseEvent _event,
+    private synchronized void mr_sel_line_complete(
             final Rectangle _r_size) {
 
     	
@@ -1639,6 +1639,8 @@ MenuListener {
      */
     public synchronized void mr_erase(final Point _p) {
 
+    	
+    	
     	//start transaction 
     	final int transaction = Picture.getInstance().getLs_po_sortedByX()
     			.startTransaction("erase", 
@@ -1682,93 +1684,153 @@ MenuListener {
             r_sizeField.height *= cZoomFactorHeight;
             List<PaintObjectWriting> ls_separatedPO = null;
             
-            // go through list. until either list is empty or it is
-            // impossible for the paintSelection to paint inside the
-            // selected area
-            while (po_current != null
-                    && currentX 
-                    <= (r_sizeField.x + r_sizeField.width)) {
+            
+            switch (Status.getEraseIndex()) {
+            case Status.ERASE_ALL:
 
-                //The y condition has to be in here because the items are just 
-                //sorted by x coordinate; thus it is possible that one 
-                //PaintObject is not suitable for the specified rectangle but 
-                //some of its predecessors in sorted list do.
-                if (po_current.isInSelectionImage(r_sizeField)) {
+                
+                // go through list. until either list is empty or it is
+                // impossible for the paintSelection to paint inside the
+                // selected area
+                while (po_current != null
+                        && currentX 
+                        <= (r_sizeField.x + r_sizeField.width)) {
 
-                    // get item; remove it out of lists and add it to
-                    // selection list
 
-                	ls_separatedPO 
-                	= po_current.deleteRectangle(r_sizeField, ls_separatedPO);
-                	if (ls_separatedPO != null) {
+                    //The y condition has to be in here because the items are just 
+                    //sorted by x coordinate; thus it is possible that one PaintObject 
+                    //is not suitable for the specified rectangle but some of its 
+                    //predecessors in sorted list do.
+                    if (po_current.isInSelectionImage(r_sizeField)) {
 
-                    	if (debug_update_paintObjects_view) {
 
-                            new PictureOverview(view.getTabs().getTab_pos()).remove(Picture.getInstance()
-                                    .getLs_po_sortedByX().getItem());
-                    	}
+                        //remove item out of PictureOverview and paint and refresh paint
+                        //otherwise it is not possible to select more than one item
+                         new PictureOverview(view.getTabs().getTab_pos()).remove(po_current);
+                        
                         Picture.getInstance().getLs_po_sortedByX().remove(
                         		transaction);
-                	}
-                } 
-                // next
-                Picture.getInstance().getLs_po_sortedByX().next(transaction,
-                		SecureList.ID_NO_PREDECESSOR);
+                    }            
 
+                    Picture.getInstance().getLs_po_sortedByX().next(
+                    		transaction, SecureList.ID_NO_PREDECESSOR);
 
-                // update current values
-                currentX = po_current.getSnapshotBounds().x;
-                po_current = Picture.getInstance().getLs_po_sortedByX()
-                        .getItem();
-            }
+                    // update current values
+                    currentX = po_current.getSnapshotBounds().x;
+                    po_current = Picture.getInstance().getLs_po_sortedByX().getItem();
 
-            
-
-            if (ls_separatedPO != null) {
-
-            	ls_separatedPO.toFirst();
-                while (ls_separatedPO != null
-                		&& !ls_separatedPO.isEmpty()
-                		&& !ls_separatedPO.isBehind()) {
-
-                    if (ls_separatedPO.getItem() != null) {
-                        //recalculate snapshot bounds for being able to
-                        //insert the item into the sorted list.
-                    	ls_separatedPO.getItem().recalculateSnapshotBounds();
-
-                        Picture.getInstance().getLs_po_sortedByX().insertSorted(
-                        		ls_separatedPO.getItem(), 
-                        		ls_separatedPO.getItem().getSnapshotBounds().x,
-                        		transaction);
-
-                    	if (debug_update_paintObjects_view) {
-
-                            new PictureOverview(view.getTabs().getTab_pos()).add(
-                           		 ls_separatedPO.getItem());
-                    	}
-                    } else {
-
-                        Status.getLogger().warning("separated paintObject "
-                                + "is null");
-                    }
-                    ls_separatedPO.next();
                 }
-            }
-        	//finish transaction
-        	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
-        			transaction);
-        
-            
-            if (Picture.getInstance().paintSelected(getPage(),
-        			getControlPic(),
-        			getControlPaintSelection())) {
-            	controlPic.refreshPaint();
-            }
 
-            r_sizeField.x /= cZoomFactorWidth;
-            r_sizeField.width /= cZoomFactorWidth;
-            r_sizeField.y /= cZoomFactorHeight;
-            r_sizeField.height /= cZoomFactorHeight;
+            	//finish transaction 
+            	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+            			transaction);
+
+                //finish insertion into selected.
+                Picture.getInstance().finishSelection(getcTabSelection());
+                
+                controlPic.refreshPaint();
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	Picture.getInstance().deleteSelected(getView().getTabs().getTab_pos(), cTabSelection);
+            	break;
+            case Status.ERASE_DESTROY:
+
+            
+	            // go through list. until either list is empty or it is
+	            // impossible for the paintSelection to paint inside the
+	            // selected area
+	            while (po_current != null
+	                    && currentX 
+	                    <= (r_sizeField.x + r_sizeField.width)) {
+	
+	                //The y condition has to be in here because the items are just 
+	                //sorted by x coordinate; thus it is possible that one 
+	                //PaintObject is not suitable for the specified rectangle but 
+	                //some of its predecessors in sorted list do.
+	                if (po_current.isInSelectionImage(r_sizeField)) {
+	
+	                    // get item; remove it out of lists and add it to
+	                    // selection list
+	
+	                	ls_separatedPO 
+	                	= po_current.deleteRectangle(r_sizeField, ls_separatedPO);
+	                	if (ls_separatedPO != null) {
+	
+	                    	if (debug_update_paintObjects_view) {
+	
+	                            new PictureOverview(view.getTabs().getTab_pos()).remove(Picture.getInstance()
+	                                    .getLs_po_sortedByX().getItem());
+	                    	}
+	                        Picture.getInstance().getLs_po_sortedByX().remove(
+	                        		transaction);
+	                	}
+	                } 
+	                // next
+	                Picture.getInstance().getLs_po_sortedByX().next(transaction,
+	                		SecureList.ID_NO_PREDECESSOR);
+	
+	
+	                // update current values
+	                currentX = po_current.getSnapshotBounds().x;
+	                po_current = Picture.getInstance().getLs_po_sortedByX()
+	                        .getItem();
+	            }
+	
+	            
+	
+	            if (ls_separatedPO != null) {
+	
+	            	ls_separatedPO.toFirst();
+	                while (ls_separatedPO != null
+	                		&& !ls_separatedPO.isEmpty()
+	                		&& !ls_separatedPO.isBehind()) {
+	
+	                    if (ls_separatedPO.getItem() != null) {
+	                        //recalculate snapshot bounds for being able to
+	                        //insert the item into the sorted list.
+	                    	ls_separatedPO.getItem().recalculateSnapshotBounds();
+	
+	                        Picture.getInstance().getLs_po_sortedByX().insertSorted(
+	                        		ls_separatedPO.getItem(), 
+	                        		ls_separatedPO.getItem().getSnapshotBounds().x,
+	                        		transaction);
+	
+	                    	if (debug_update_paintObjects_view) {
+	
+	                            new PictureOverview(view.getTabs().getTab_pos()).add(
+	                           		 ls_separatedPO.getItem());
+	                    	}
+	                    } else {
+	
+	                        Status.getLogger().warning("separated paintObject "
+	                                + "is null");
+	                    }
+	                    ls_separatedPO.next();
+	                }
+	            }
+	        	//finish transaction
+	        	Picture.getInstance().getLs_po_sortedByX().finishTransaction(
+	        			transaction);
+	        
+	            
+	            if (Picture.getInstance().paintSelected(getPage(),
+	        			getControlPic(),
+	        			getControlPaintSelection())) {
+	            	controlPic.refreshPaint();
+	            }
+	
+	            r_sizeField.x /= cZoomFactorWidth;
+	            r_sizeField.width /= cZoomFactorWidth;
+	            r_sizeField.y /= cZoomFactorHeight;
+	            r_sizeField.height /= cZoomFactorHeight;
+	
+	        	break;
+	        }
         } else {
 
         	//finish transaction
@@ -1777,7 +1839,6 @@ MenuListener {
         
         }
         
-
 
         controlPic.clrRectangle(
                 r_sizeField.x + (int) getPage()

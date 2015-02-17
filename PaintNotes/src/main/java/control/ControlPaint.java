@@ -250,10 +250,17 @@ MenuListener {
 		            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
 		            case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
 
-		            	BufferedImage bi = Util.getEmptyBISelection();
-		            	getPage().getJlbl_selectionBG().setIcon(
-		            			new ImageIcon(bi));
-		            	break;
+
+		            	//do only preprint if there is no menu open (because
+		            	//that would cause a repaint of the view and close
+		            	//the menu.
+		            	if (!getTabs().isMenuOpen()) {
+
+			            	BufferedImage bi = Util.getEmptyBISelection();
+			            	getPage().getJlbl_selectionBG().setIcon(
+			            			new ImageIcon(bi));
+			            	break;
+		            	}
 	                default:
 	                	break;
 	        		}
@@ -266,7 +273,10 @@ MenuListener {
         if (_event.getSource().equals(
                 getPage().getJlbl_painting())) {
 
-            getTabs().closeMenues();
+        	if (getTabs().isMenuOpen()) {
+
+                getTabs().closeMenues();
+        	}
             
             // switch index of operation
             switch (Status.getIndexOperation()) {
@@ -652,26 +662,31 @@ MenuListener {
             
             case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
 
-                // save x and y location
-                int xLocation = 
-                _event.getX() - ViewSettings.ZOOM_SIZE.width / 2;
-                int yLocation = 
-                        _event.getY() - ViewSettings.ZOOM_SIZE.height / 2;
-
-                // check whether values are in range
-
-                // not smaller than zero
-                xLocation = Math.max(0, xLocation);
-                yLocation = Math.max(0, yLocation);
-
-                // not greater than the entire shown image - the width of zoom
-                xLocation = Math.min(Status.getImageShowSize().width
-                        - ViewSettings.ZOOM_SIZE.width, xLocation);
-                yLocation = Math.min(Status.getImageShowSize().height
-                        - ViewSettings.ZOOM_SIZE.height, yLocation);
-
-                // apply new location
-                zoom.setLocation(xLocation, yLocation, getPage());
+            	//do only display zoom box if there is no menu open (because
+            	//that would cause a repaint of the view and close
+            	//the menu.
+            	if (!getTabs().isMenuOpen()) {
+	                // save x and y location
+	                int xLocation = 
+	                _event.getX() - ViewSettings.ZOOM_SIZE.width / 2;
+	                int yLocation = 
+	                        _event.getY() - ViewSettings.ZOOM_SIZE.height / 2;
+	
+	                // check whether values are in range
+	
+	                // not smaller than zero
+	                xLocation = Math.max(0, xLocation);
+	                yLocation = Math.max(0, yLocation);
+	
+	                // not greater than the entire shown image - the width of zoom
+	                xLocation = Math.min(Status.getImageShowSize().width
+	                        - ViewSettings.ZOOM_SIZE.width, xLocation);
+	                yLocation = Math.min(Status.getImageShowSize().height
+	                        - ViewSettings.ZOOM_SIZE.height, yLocation);
+	
+	                // apply new location
+	                zoom.setLocation(xLocation, yLocation, getPage());
+            	}
                 break;
 
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
@@ -686,8 +701,12 @@ MenuListener {
             case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
-                
+
+            	//do only preprint if there is no menu open (because
+            	//that would cause a repaint of the view and close
+            	//the menu.
             	if (!getTabs().isMenuOpen()) {
+
 
                     if (Status.isNormalRotation()) {
 

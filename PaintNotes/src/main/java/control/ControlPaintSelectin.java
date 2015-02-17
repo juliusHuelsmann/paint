@@ -101,9 +101,11 @@ public class ControlPaintSelectin implements MouseMotionListener, MouseListener 
             
             int dX = (int) (_event.getXOnScreen() - pnt_start.getX()), 
                     dY = (int) (_event.getYOnScreen() - pnt_start.getY());
+            
             cv.getView().getPage().getJlbl_selectionBG().setLocation(
                     (int) pnt_startLocationLabel.getX() + dX,
                     (int) pnt_startLocationLabel.getY() + dY);
+            
             cv.getView().getPage().getJlbl_selectionPainting().setLocation(
                     (int) pnt_startLocationLabel.getX() + dX,
                     (int) pnt_startLocationLabel.getY() + dY);
@@ -670,6 +672,13 @@ public class ControlPaintSelectin implements MouseMotionListener, MouseListener 
 //            }
             this.pnt_startPaintLabelLocation = _pnt;
         }
+    }
+    
+    
+    public void resetPntStartLocationLabel() {
+    	this.pnt_startLocationLabel = new DPoint(0, 0);
+    	pnt_startPaintLabelLocation = new Point(0,0);
+    	cv.getView().getPage().getJlbl_selectionBG().setLocation(pnt_startPaintLabelLocation);
     }
 
     /**

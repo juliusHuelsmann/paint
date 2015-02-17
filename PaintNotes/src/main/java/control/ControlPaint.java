@@ -163,6 +163,7 @@ MenuListener {
             //initialize the model class picture.
             //TODO: not null
             controlnew = new CNew(this);
+            cTabPrint = new CPrint(this);
             cTabLook = new CLook(this);
             cTabExport = new CExport(this);
             cTabWrite = new CWrite(this);

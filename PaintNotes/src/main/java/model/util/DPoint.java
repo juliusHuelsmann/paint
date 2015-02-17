@@ -48,8 +48,12 @@ public class DPoint implements Serializable {
      * @param _dp coordinates
      */
     public DPoint(final DPoint _dp) {
-        x = _dp.x;
-        y = _dp.y;
+    	
+    	if (_dp != null) {
+
+            x = _dp.x;
+            y = _dp.y;
+    	}
     }
 
     

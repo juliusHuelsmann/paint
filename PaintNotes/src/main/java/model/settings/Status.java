@@ -42,6 +42,11 @@ public final class Status {
 		return controlPaint.getView();
 	}
 	
+	public static final int ERASE_ALL = 0;
+	public static final int ERASE_DESTROY = 1;
+	
+	private static int eraseIndex = ERASE_ALL;
+	
 	
 	public static void setControlPaint(ControlPaint _controlPaint) {
 		if (_controlPaint != null) {
@@ -871,6 +876,18 @@ public final class Status {
 	}
 	public static void showMessageDialog(String _message) {
 		JOptionPane.showMessageDialog(getView(), _message);
+	}
+	/**
+	 * @return the eraseIndex
+	 */
+	public static int getEraseIndex() {
+		return eraseIndex;
+	}
+	/**
+	 * @param eraseIndex the eraseIndex to set
+	 */
+	public static void setEraseIndex(int eraseIndex) {
+		Status.eraseIndex = eraseIndex;
 	}
 
 }

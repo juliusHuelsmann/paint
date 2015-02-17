@@ -342,6 +342,15 @@ public class Item1Menu extends MPanel {
 	}
 	
 	
+	public final void changeClosedSizes(int _cw, int _ch) {
+		open = false;
+		this.closedWidth = _cw;
+		this.closedHeight = _ch;
+		setSize(closedWidth, closedHeight);
+	    tb_select.flip();
+		
+	}
+	
 	/**
 	 * resize.
 	 */

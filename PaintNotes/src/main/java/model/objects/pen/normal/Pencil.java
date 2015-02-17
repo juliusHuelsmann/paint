@@ -480,7 +480,7 @@ public class Pencil extends Pen {
         				
         				));
         
-        final int valueCalced = (clr_new.getRed() + clr_new.getGreen() + clr_new.getBlue() ) / 3;
+        final int valueCalced = Math.max((clr_new.getRed() + clr_new.getGreen() + clr_new.getBlue() ) / 3, 1);
         
         
         Color clr_new_intensityAdapted = new Color(

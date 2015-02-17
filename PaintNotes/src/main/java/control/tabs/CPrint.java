@@ -11,8 +11,8 @@ public class CPrint implements ActionListener {
 
 	private ControlPaint cp;
 	
-	public CPrint() {
-		
+	public CPrint(ControlPaint _cp) {
+		this.cp = _cp;
 	}
 	
 	

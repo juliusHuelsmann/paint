@@ -97,17 +97,16 @@ public final class Paint extends Tab {
 		
 		
 		int x = initializeClipboard(0, true, _paint, _controlPaintStatus);
-        x = initializeHistory(x, true, _controlPaintStatus);
+        x = initializeHistory(x, true, _paint, _controlPaintStatus);
 		x = initializePagePens(_controlPaint, x, true, _paint, _ml, _controlPaintStatus);
         x = initializePageColors(x, true, _paint, _ml, _controlPaintStatus);
 		x = initializeZoom(x, true, _paint, _controlPaintStatus);
         x = initializeFileOperations(x, true, _paint, _controlPaintStatus);
 
         //disable icons which functionality is not implemented yet.
-        tb_prev.disable();
-        tb_next.disable();
+//        tb_prev.disable();
+//        tb_next.disable();
         tb_fill.disable();
-        tb_new.disable();
         tb_selectionMagic.disable();
 
         //activate first color and set colors.
@@ -219,12 +218,15 @@ public final class Paint extends Tab {
 	 * @return the new x coordinate
 	 */
 	private int initializeHistory(final int _x, final boolean _paint,
+			final ControlTabPainting _ctp,
 			final CPaintStatus _controlPaintStatus) {
 
 	    if (_paint) {
 
             tb_prev = new Item1Button(null);
             tb_next = new Item1Button(null);
+            tb_prev.addActionListener(_ctp);
+            tb_next.addActionListener(_ctp);
 	    }
 
         tb_prev.setSize(ViewSettings.getItemWidth(), 

@@ -309,6 +309,21 @@ public class HistoryObject implements Serializable {
 	
 	
 	
+	public boolean findInList(final int _transactionID, final int _closedActionID, final int _elementid) {
+		session.getPicture().getLs_po_sortedByX().toFirst(_transactionID, _closedActionID);
+		while(
+				!session.getPicture().getLs_po_sortedByX().isEmpty()
+				&& !session.getPicture().getLs_po_sortedByX().isBehind()) {
+			if (session.getPicture().getLs_po_sortedByX().getItem().getElementId() == _elementid) {
+				return true;
+			}
+			session.getPicture().getLs_po_sortedByX().next(_transactionID, _closedActionID);
+		}
+		return false;
+		
+	}
+	
+	
 	/**
 	 * Apply remove action.
 	 * @param _object the object to be removed out of list of PaintObjects.
@@ -324,9 +339,10 @@ public class HistoryObject implements Serializable {
 							SecureList.ID_NO_PREDECESSOR);
 			
 			//search the element which is to be removed
-			boolean found = session.getPicture().getLs_po_sortedByX().find(
-					(PaintObject) _object, 
-					SecureList.ID_NO_PREDECESSOR);
+			boolean found = findInList(
+					transactionID, SecureList.ID_NO_PREDECESSOR, 
+					((PaintObject) _object).getElementId());
+			
 
 			//if the element was found, remove it.
 			if (found) {

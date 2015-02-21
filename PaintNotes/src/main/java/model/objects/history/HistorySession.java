@@ -134,6 +134,10 @@ public class HistorySession implements Serializable {
 				ls_history.remove(transactionID);
 				ls_history.next(transactionID, SecureList.ID_NO_PREDECESSOR);
 			}
+			
+			
+			//finish the current transaction.
+			ls_history.finishTransaction(transactionID);
 		} else if (
 				//if the list containing the history is null log an error 
 				//because it is initialized inside the constructor of this
@@ -253,8 +257,11 @@ public class HistorySession implements Serializable {
 	 */
 	public final void applyPrevious() {
 		
-		if (!ls_history.isInFrontOf()) {
+		ls_history.previous(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
+		if (!ls_history.isEmpty()
+				&& !ls_history.isInFrontOf()) {
 
+			System.out.println(ls_history.getItem());
 			ls_history.getItem().applyPrevious();
 			ls_history.previous(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
@@ -269,8 +276,6 @@ public class HistorySession implements Serializable {
 		
 		if (!ls_history.isBehind()) {
 
-			ls_history.next(SecureList.ID_NO_PREDECESSOR, 
-					SecureList.ID_NO_PREDECESSOR);
 			ls_history.getItem().applyNext();
 		}
 	}

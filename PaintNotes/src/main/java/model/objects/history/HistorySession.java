@@ -261,10 +261,7 @@ public class HistorySession implements Serializable {
 		if (!ls_history.isEmpty()
 				&& !ls_history.isInFrontOf()) {
 
-			System.out.println(ls_history.getItem());
 			ls_history.getItem().applyPrevious();
-			ls_history.previous(SecureList.ID_NO_PREDECESSOR, 
-					SecureList.ID_NO_PREDECESSOR);
 		}
 	}
 	
@@ -274,9 +271,13 @@ public class HistorySession implements Serializable {
 	 */
 	public final void applyNext() {
 		
-		if (!ls_history.isBehind()) {
+		if (ls_history.isInFrontOf())
+			ls_history.next(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
+		
+		if (!ls_history.isEmpty() && !ls_history.isBehind()) {
 
 			ls_history.getItem().applyNext();
+			ls_history.next(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);;
 		}
 	}
 

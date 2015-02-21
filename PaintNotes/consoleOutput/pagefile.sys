@@ -1,0 +1,180 @@
+21.02.2015 15:36:51 start.Start main
+INFO: normal start: launch programm!
+
+
+class view.tabs.Debugupdate add 0
+21.02.2015 15:36:58 model.util.adt.list.SecureList startTransaction
+SCHWERWIEGEND: Transaction Add History Item not terminated! New transaction name: Add History Item
+class view.tabs.Debugupdate add 1
+21.02.2015 15:36:58 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  insertBehind
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:36:58 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  next
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:36:59 model.util.adt.list.SecureList startTransaction
+SCHWERWIEGEND: Transaction Add History Item not terminated! New transaction name: Add History Item
+21.02.2015 15:36:59 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  insertBehind
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:36:59 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  next
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+class view.tabs.Debugupdate add 2
+21.02.2015 15:36:59 model.util.adt.list.SecureList startTransaction
+SCHWERWIEGEND: Transaction Add History Item not terminated! New transaction name: Add History Item
+21.02.2015 15:36:59 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  insertBehind
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:36:59 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  next
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+class view.tabs.Debugupdate add 3
+21.02.2015 15:36:59 model.util.adt.list.SecureList startTransaction
+SCHWERWIEGEND: Transaction Add History Item not terminated! New transaction name: Add History Item
+class view.tabs.Debugupdate add 4
+21.02.2015 15:36:59 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  insertBehind
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:36:59 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  next
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:37:00 model.util.adt.list.SecureList startTransaction
+SCHWERWIEGEND: Transaction Add History Item not terminated! New transaction name: Add History Item
+21.02.2015 15:37:00 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  insertBehind
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:37:00 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  next
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+class view.tabs.Debugupdate add 5
+21.02.2015 15:37:00 model.util.adt.list.SecureList startTransaction
+SCHWERWIEGEND: Transaction Add History Item not terminated! New transaction name: Add History Item
+class view.tabs.Debugupdate add 6
+21.02.2015 15:37:00 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  insertBehind
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:37:00 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  next
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:37:01 model.util.adt.list.SecureList startTransaction
+SCHWERWIEGEND: Transaction Add History Item not terminated! New transaction name: Add History Item
+21.02.2015 15:37:01 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  insertBehind
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:37:01 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  next
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+class view.tabs.Debugupdate add 7
+21.02.2015 15:37:01 model.util.adt.list.SecureList startTransaction
+SCHWERWIEGEND: Transaction Add History Item not terminated! New transaction name: Add History Item
+21.02.2015 15:37:01 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  insertBehind
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:37:01 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  next
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+class view.tabs.Debugupdate add 8
+21.02.2015 15:37:19 start.Start main
+INFO: normal start: launch programm!
+
+
+class view.tabs.Debugupdate add 0
+21.02.2015 15:37:28 model.util.adt.list.SecureList startTransaction
+SCHWERWIEGEND: Transaction Add History Item not terminated! New transaction name: Add History Item
+class view.tabs.Debugupdate add 1
+21.02.2015 15:37:28 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  insertBehind
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:37:28 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  next
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:37:29 model.util.adt.list.SecureList startTransaction
+SCHWERWIEGEND: Transaction Add History Item not terminated! New transaction name: Add History Item
+21.02.2015 15:37:29 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  insertBehind
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+21.02.2015 15:37:29 model.util.adt.list.SecureList checkTransaction
+SCHWERWIEGEND: Error starting transaction.
+	Demanded for Action:  next
+	Demanded action-id:   -1
+	Currenct action-id:   0
+	Current  action-name: Add History Item:
+Trying to perform an action which is part a different transaction.
+class view.tabs.Debugupdate add 2

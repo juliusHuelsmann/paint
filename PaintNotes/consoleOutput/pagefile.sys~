@@ -1,25 +1,524 @@
-21.02.2015 15:36:17 start.Start main
+21.02.2015 15:39:54 start.Start main
 INFO: normal start: launch programm!
 
 
-empyty, want output
 class view.tabs.Debugupdate add 0
-21.02.2015 15:36:30 model.util.adt.list.SecureList startTransaction
-SCHWERWIEGEND: Transaction Add History Item not terminated! New transaction name: Add History Item
 class view.tabs.Debugupdate add 1
-21.02.2015 15:36:30 model.util.adt.list.SecureList checkTransaction
+class view.tabs.Debugupdate add 2
+class view.tabs.Debugupdate add 3
+21.02.2015 15:46:10 start.Start main
+INFO: normal start: launch programm!
+
+
+class view.tabs.Debugupdate add 0
+class view.tabs.Debugupdate add 1
+class view.tabs.Debugupdate add 2
+class view.tabs.Debugupdate add 3
+class view.tabs.Debugupdate add 4
+class view.tabs.Debugupdate add 5
+class view.tabs.Debugupdate add 6
+class view.tabs.Debugupdate add 7
+class view.tabs.Debugupdate add 8
+class view.tabs.Debugupdate add 9
+class view.tabs.Debugupdate remove 1
+class view.tabs.Debugupdate add selected 1
+class view.tabs.Debugupdate remove 0
+class view.tabs.Debugupdate add selected 0
+class view.tabs.Debugupdate remove 2
+class view.tabs.Debugupdate add selected 2
+class view.tabs.Debugupdate remove 3
+class view.tabs.Debugupdate add selected 3
+class view.tabs.Debugupdate remove 4
+class view.tabs.Debugupdate add selected 4
+class view.tabs.Debugupdate remove 5
+class view.tabs.Debugupdate add selected 5
+class view.tabs.Debugupdate remove 6
+class view.tabs.Debugupdate add selected 6
+class view.tabs.Debugupdate remove 7
+class view.tabs.Debugupdate add selected 7
+class view.tabs.Debugupdate remove 8
+class view.tabs.Debugupdate add selected 8
+class view.tabs.Debugupdate remove 9
+class view.tabs.Debugupdate add selected 9
+class view.tabs.Debugupdate remove selected 9
+class view.tabs.Debugupdate add 9
+class view.tabs.Debugupdate remove selected 8
+class view.tabs.Debugupdate add 8
+class view.tabs.Debugupdate remove selected 7
+class view.tabs.Debugupdate add 7
+class view.tabs.Debugupdate remove selected 6
+class view.tabs.Debugupdate add 6
+class view.tabs.Debugupdate remove selected 5
+class view.tabs.Debugupdate add 5
+class view.tabs.Debugupdate remove selected 4
+class view.tabs.Debugupdate add 4
+class view.tabs.Debugupdate remove selected 3
+class view.tabs.Debugupdate add 3
+class view.tabs.Debugupdate remove selected 2
+class view.tabs.Debugupdate add 2
+class view.tabs.Debugupdate remove selected 0
+class view.tabs.Debugupdate add 0
+class view.tabs.Debugupdate remove selected 1
+class view.tabs.Debugupdate add 1
+21.02.2015 15:49:25 start.Start main
+INFO: normal start: launch programm!
+
+
+21.02.2015 15:49:43 start.Start main
+INFO: normal start: launch programm!
+
+
+class view.tabs.Debugupdate add 0
+class view.tabs.Debugupdate add 1
+class view.tabs.Debugupdate add 2
+class view.tabs.Debugupdate add 3
+class view.tabs.Debugupdate add 4
+21.02.2015 15:50:51 start.Start main
+INFO: normal start: launch programm!
+
+
+21.02.2015 15:52:38 start.Start main
+INFO: normal start: launch programm!
+
+
+class view.tabs.Debugupdate add 0
+class view.tabs.Debugupdate add 1
+class view.tabs.Debugupdate add 2
+Exception in thread "AWT-EventQueue-1" java.lang.NullPointerException
+	at model.objects.history.HistorySession.applyPrevious(HistorySession.java:262)
+	at control.tabs.ControlTabPainting.actionPerformed(ControlTabPainting.java:235)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2012)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2335)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:404)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.Component.processMouseEvent(Component.java:6288)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
+	at java.awt.Component.processEvent(Component.java:6053)
+	at java.awt.Container.processEvent(Container.java:2045)
+	at java.awt.Component.dispatchEventImpl(Component.java:4649)
+	at java.awt.Container.dispatchEventImpl(Container.java:2103)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4633)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4297)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4227)
+	at java.awt.Container.dispatchEventImpl(Container.java:2089)
+	at java.awt.Window.dispatchEventImpl(Window.java:2588)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:680)
+	at java.awt.EventQueue.access$400(EventQueue.java:96)
+	at java.awt.EventQueue$2.run(EventQueue.java:639)
+	at java.awt.EventQueue$2.run(EventQueue.java:637)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:119)
+	at java.awt.EventQueue$3.run(EventQueue.java:653)
+	at java.awt.EventQueue$3.run(EventQueue.java:651)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:650)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:275)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:200)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:190)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:185)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:177)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:138)
+21.02.2015 15:53:25 start.Start main
+INFO: normal start: launch programm!
+
+
+class view.tabs.Debugupdate add 0
+null
+Exception in thread "AWT-EventQueue-1" java.lang.NullPointerException
+	at model.objects.history.HistorySession.applyPrevious(HistorySession.java:264)
+	at control.tabs.ControlTabPainting.actionPerformed(ControlTabPainting.java:235)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2012)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2335)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:404)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.Component.processMouseEvent(Component.java:6288)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
+	at java.awt.Component.processEvent(Component.java:6053)
+	at java.awt.Container.processEvent(Container.java:2045)
+	at java.awt.Component.dispatchEventImpl(Component.java:4649)
+	at java.awt.Container.dispatchEventImpl(Container.java:2103)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4633)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4297)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4227)
+	at java.awt.Container.dispatchEventImpl(Container.java:2089)
+	at java.awt.Window.dispatchEventImpl(Window.java:2588)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:680)
+	at java.awt.EventQueue.access$400(EventQueue.java:96)
+	at java.awt.EventQueue$2.run(EventQueue.java:639)
+	at java.awt.EventQueue$2.run(EventQueue.java:637)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:119)
+	at java.awt.EventQueue$3.run(EventQueue.java:653)
+	at java.awt.EventQueue$3.run(EventQueue.java:651)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:650)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:275)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:200)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:190)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:185)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:177)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:138)
+21.02.2015 15:54:01 start.Start main
+INFO: normal start: launch programm!
+
+
+class view.tabs.Debugupdate add 0
+model.objects.history.HistoryObject@1ed4d71
+21.02.2015 15:54:09 model.util.adt.list.SecureList checkTransaction
 SCHWERWIEGEND: Error starting transaction.
-	Demanded for Action:  insertBehind
+	Demanded for Action:  find
 	Demanded action-id:   -1
 	Currenct action-id:   0
-	Current  action-name: Add History Item:
+	Current  action-name: history apply remove:
 Trying to perform an action which is part a different transaction.
-21.02.2015 15:36:30 model.util.adt.list.SecureList checkTransaction
-SCHWERWIEGEND: Error starting transaction.
-	Demanded for Action:  next
-	Demanded action-id:   -1
-	Currenct action-id:   0
-	Current  action-name: Add History Item:
-Trying to perform an action which is part a different transaction.
-empyty, want output
-empyty, want output
+21.02.2015 15:54:09 model.objects.history.HistoryObject applyRemove
+SCHWERWIEGEND: Fatal error. Remove. Object not found.
+21.02.2015 15:56:03 start.Start main
+INFO: normal start: launch programm!
+
+
+21.02.2015 15:56:08 start.Start main
+INFO: normal start: launch programm!
+
+
+class view.tabs.Debugupdate add 0
+class view.tabs.Debugupdate add 1
+class view.tabs.Debugupdate add 2
+model.objects.history.HistoryObject@1aca0d9
+21.02.2015 15:56:17 model.objects.history.HistoryObject applyRemove
+SCHWERWIEGEND: Fatal error. Remove. Object not found.
+21.02.2015 15:59:58 start.Start main
+INFO: normal start: launch programm!
+
+
+class view.tabs.Debugupdate add 0
+model.objects.history.HistoryObject@1122921
+21.02.2015 16:00:11 start.Start main
+INFO: normal start: launch programm!
+
+
+class view.tabs.Debugupdate add 0
+class view.tabs.Debugupdate add 1
+class view.tabs.Debugupdate add 2
+class view.tabs.Debugupdate add 3
+class view.tabs.Debugupdate add 4
+class view.tabs.Debugupdate add 5
+class view.tabs.Debugupdate add 6
+class view.tabs.Debugupdate add 7
+model.objects.history.HistoryObject@174b10a
+model.objects.history.HistoryObject@bcbb51
+model.objects.history.HistoryObject@12da9f5
+model.objects.history.HistoryObject@18e2a23
+21.02.2015 16:00:40 start.Start main
+INFO: normal start: launch programm!
+
+
+class view.tabs.Debugupdate add 0
+class view.tabs.Debugupdate add 1
+class view.tabs.Debugupdate add 2
+class view.tabs.Debugupdate add 3
+class view.tabs.Debugupdate add 4
+model.objects.history.HistoryObject@3b50a0
+model.objects.history.HistoryObject@f003c0
+model.objects.history.HistoryObject@a1c228
+Exception in thread "AWT-EventQueue-1" java.lang.NullPointerException
+	at model.objects.history.HistorySession.applyNext(HistorySession.java:279)
+	at control.tabs.ControlTabPainting.actionPerformed(ControlTabPainting.java:241)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2012)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2335)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:404)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.Component.processMouseEvent(Component.java:6288)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
+	at java.awt.Component.processEvent(Component.java:6053)
+	at java.awt.Container.processEvent(Container.java:2045)
+	at java.awt.Component.dispatchEventImpl(Component.java:4649)
+	at java.awt.Container.dispatchEventImpl(Container.java:2103)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4633)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4297)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4227)
+	at java.awt.Container.dispatchEventImpl(Container.java:2089)
+	at java.awt.Window.dispatchEventImpl(Window.java:2588)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:680)
+	at java.awt.EventQueue.access$400(EventQueue.java:96)
+	at java.awt.EventQueue$2.run(EventQueue.java:639)
+	at java.awt.EventQueue$2.run(EventQueue.java:637)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:119)
+	at java.awt.EventQueue$3.run(EventQueue.java:653)
+	at java.awt.EventQueue$3.run(EventQueue.java:651)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:650)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:275)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:200)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:190)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:185)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:177)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:138)
+Exception in thread "AWT-EventQueue-1" java.lang.NullPointerException
+	at model.objects.history.HistorySession.applyNext(HistorySession.java:279)
+	at control.tabs.ControlTabPainting.actionPerformed(ControlTabPainting.java:241)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2012)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2335)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:404)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.Component.processMouseEvent(Component.java:6288)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
+	at java.awt.Component.processEvent(Component.java:6053)
+	at java.awt.Container.processEvent(Container.java:2045)
+	at java.awt.Component.dispatchEventImpl(Component.java:4649)
+	at java.awt.Container.dispatchEventImpl(Container.java:2103)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4633)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4297)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4227)
+	at java.awt.Container.dispatchEventImpl(Container.java:2089)
+	at java.awt.Window.dispatchEventImpl(Window.java:2588)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:680)
+	at java.awt.EventQueue.access$400(EventQueue.java:96)
+	at java.awt.EventQueue$2.run(EventQueue.java:639)
+	at java.awt.EventQueue$2.run(EventQueue.java:637)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:119)
+	at java.awt.EventQueue$3.run(EventQueue.java:653)
+	at java.awt.EventQueue$3.run(EventQueue.java:651)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:650)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:275)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:200)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:190)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:185)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:177)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:138)
+Exception in thread "AWT-EventQueue-1" java.lang.NullPointerException
+	at model.objects.history.HistorySession.applyNext(HistorySession.java:279)
+	at control.tabs.ControlTabPainting.actionPerformed(ControlTabPainting.java:241)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2012)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2335)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:404)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.Component.processMouseEvent(Component.java:6288)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
+	at java.awt.Component.processEvent(Component.java:6053)
+	at java.awt.Container.processEvent(Container.java:2045)
+	at java.awt.Component.dispatchEventImpl(Component.java:4649)
+	at java.awt.Container.dispatchEventImpl(Container.java:2103)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4633)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4297)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4227)
+	at java.awt.Container.dispatchEventImpl(Container.java:2089)
+	at java.awt.Window.dispatchEventImpl(Window.java:2588)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:680)
+	at java.awt.EventQueue.access$400(EventQueue.java:96)
+	at java.awt.EventQueue$2.run(EventQueue.java:639)
+	at java.awt.EventQueue$2.run(EventQueue.java:637)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:119)
+	at java.awt.EventQueue$3.run(EventQueue.java:653)
+	at java.awt.EventQueue$3.run(EventQueue.java:651)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:650)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:275)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:200)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:190)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:185)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:177)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:138)
+Exception in thread "AWT-EventQueue-1" java.lang.NullPointerException
+	at model.objects.history.HistorySession.applyNext(HistorySession.java:279)
+	at control.tabs.ControlTabPainting.actionPerformed(ControlTabPainting.java:241)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2012)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2335)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:404)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.Component.processMouseEvent(Component.java:6288)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
+	at java.awt.Component.processEvent(Component.java:6053)
+	at java.awt.Container.processEvent(Container.java:2045)
+	at java.awt.Component.dispatchEventImpl(Component.java:4649)
+	at java.awt.Container.dispatchEventImpl(Container.java:2103)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4633)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4297)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4227)
+	at java.awt.Container.dispatchEventImpl(Container.java:2089)
+	at java.awt.Window.dispatchEventImpl(Window.java:2588)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:680)
+	at java.awt.EventQueue.access$400(EventQueue.java:96)
+	at java.awt.EventQueue$2.run(EventQueue.java:639)
+	at java.awt.EventQueue$2.run(EventQueue.java:637)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:119)
+	at java.awt.EventQueue$3.run(EventQueue.java:653)
+	at java.awt.EventQueue$3.run(EventQueue.java:651)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:650)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:275)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:200)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:190)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:185)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:177)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:138)
+Exception in thread "AWT-EventQueue-1" java.lang.NullPointerException
+	at model.objects.history.HistorySession.applyNext(HistorySession.java:279)
+	at control.tabs.ControlTabPainting.actionPerformed(ControlTabPainting.java:241)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2012)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2335)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:404)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.Component.processMouseEvent(Component.java:6288)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
+	at java.awt.Component.processEvent(Component.java:6053)
+	at java.awt.Container.processEvent(Container.java:2045)
+	at java.awt.Component.dispatchEventImpl(Component.java:4649)
+	at java.awt.Container.dispatchEventImpl(Container.java:2103)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4633)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4297)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4227)
+	at java.awt.Container.dispatchEventImpl(Container.java:2089)
+	at java.awt.Window.dispatchEventImpl(Window.java:2588)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:680)
+	at java.awt.EventQueue.access$400(EventQueue.java:96)
+	at java.awt.EventQueue$2.run(EventQueue.java:639)
+	at java.awt.EventQueue$2.run(EventQueue.java:637)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:119)
+	at java.awt.EventQueue$3.run(EventQueue.java:653)
+	at java.awt.EventQueue$3.run(EventQueue.java:651)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:650)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:275)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:200)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:190)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:185)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:177)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:138)
+Exception in thread "AWT-EventQueue-1" java.lang.NullPointerException
+	at model.objects.history.HistorySession.applyNext(HistorySession.java:279)
+	at control.tabs.ControlTabPainting.actionPerformed(ControlTabPainting.java:241)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2012)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2335)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:404)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.Component.processMouseEvent(Component.java:6288)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
+	at java.awt.Component.processEvent(Component.java:6053)
+	at java.awt.Container.processEvent(Container.java:2045)
+	at java.awt.Component.dispatchEventImpl(Component.java:4649)
+	at java.awt.Container.dispatchEventImpl(Container.java:2103)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4633)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4297)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4227)
+	at java.awt.Container.dispatchEventImpl(Container.java:2089)
+	at java.awt.Window.dispatchEventImpl(Window.java:2588)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:680)
+	at java.awt.EventQueue.access$400(EventQueue.java:96)
+	at java.awt.EventQueue$2.run(EventQueue.java:639)
+	at java.awt.EventQueue$2.run(EventQueue.java:637)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:119)
+	at java.awt.EventQueue$3.run(EventQueue.java:653)
+	at java.awt.EventQueue$3.run(EventQueue.java:651)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:650)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:275)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:200)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:190)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:185)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:177)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:138)
+Exception in thread "AWT-EventQueue-1" java.lang.NullPointerException
+	at model.objects.history.HistorySession.applyNext(HistorySession.java:279)
+	at control.tabs.ControlTabPainting.actionPerformed(ControlTabPainting.java:241)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2012)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2335)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:404)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.Component.processMouseEvent(Component.java:6288)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3267)
+	at java.awt.Component.processEvent(Component.java:6053)
+	at java.awt.Container.processEvent(Container.java:2045)
+	at java.awt.Component.dispatchEventImpl(Component.java:4649)
+	at java.awt.Container.dispatchEventImpl(Container.java:2103)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4633)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4297)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4227)
+	at java.awt.Container.dispatchEventImpl(Container.java:2089)
+	at java.awt.Window.dispatchEventImpl(Window.java:2588)
+	at java.awt.Component.dispatchEvent(Component.java:4475)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:680)
+	at java.awt.EventQueue.access$400(EventQueue.java:96)
+	at java.awt.EventQueue$2.run(EventQueue.java:639)
+	at java.awt.EventQueue$2.run(EventQueue.java:637)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:119)
+	at java.awt.EventQueue$3.run(EventQueue.java:653)
+	at java.awt.EventQueue$3.run(EventQueue.java:651)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.AccessControlContext$1.doIntersectionPrivilege(AccessControlContext.java:108)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:650)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:275)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:200)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:190)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:185)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:177)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:138)

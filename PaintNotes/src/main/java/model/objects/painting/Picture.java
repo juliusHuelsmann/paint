@@ -2192,4 +2192,18 @@ public final class Picture implements Serializable {
 		return !(ls_poSelected == null || ls_poSelected.isEmpty());
 	}
 
+	/**
+	 * @return the history
+	 */
+	public HistorySession getHistory() {
+		return history;
+	}
+
+	/**
+	 * @param history the history to set
+	 */
+	public void setHistory(HistorySession history) {
+		this.history = history;
+	}
+
 }

@@ -26,10 +26,13 @@ import model.util.adt.list.List;
  * @author Julius Huelsmann
  * @version %U%,%I%
  */
-public abstract class PaintObject implements Serializable {
+public abstract class PaintObject implements Serializable, Cloneable {
 
 	/**
-     * serial version because the list of PaintObjects is saved.
+     * Default serial version UID for being able to identify the list's 
+     * version if saved to the disk and check whether it is possible to 
+     * load it or whether important features have been added so that the
+     * saved file is out-dated.
      */
     private static final long serialVersionUID = -3730582547146097485L;
 
@@ -237,6 +240,25 @@ public abstract class PaintObject implements Serializable {
     		byte[][] _r, Point _pnt_shiftRectangle, 
 			final DPoint _pnt_stretch, 
     		List<PaintObjectWriting> _l);
+    
+    
+    
+    /**
+     * 
+     */
+    public PaintObject clone() {
+    	
+    	
+    	
+    	
+    	try {
+			return (PaintObject) super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+    }
   
     /*
      * getter methods.

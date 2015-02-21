@@ -1,10 +1,11 @@
 package model.objects.history;
 
 //import declaration
-import model.objects.PictureOverview;
+import java.io.Serializable;
+import java.util.ListIterator;
+
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
-import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Status;
 import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
@@ -15,10 +16,18 @@ import model.util.adt.list.SecureList;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class HistorySession {
+public class HistorySession implements Serializable {
 
 	
 	
+	/**
+     * Default serial version UID for being able to identify the list's 
+     * version if saved to the disk and check whether it is possible to 
+     * load it or whether important features have been added so that the
+     * saved file is out-dated.
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Identifiers that are contained by the instances of HistoryObject.
 	 * They identify on the one hand the action that is applied after performing
@@ -187,8 +196,9 @@ public class HistorySession {
 	 * @param _poNext the next paintObject
 	 * @return the new created History Object.
 	 */
-	public final HistoryObject createMoveItem(final PaintObject _poPrev,
-			final PaintObject _poNext) {
+	public final HistoryObject createMoveItem(
+			final SecureList<PaintObject> _poPrev,
+			final SecureList<PaintObject> _poNext) {
 		return new HistoryObject(this, ID_HISTORY_PO_MOVE, _poPrev, _poNext);
 	}
 

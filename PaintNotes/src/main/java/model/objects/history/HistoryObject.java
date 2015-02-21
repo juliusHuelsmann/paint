@@ -1,9 +1,11 @@
 package model.objects.history;
 
 //import declarations
-import model.objects.painting.Picture;
+import java.io.Serializable;
+
 import model.objects.painting.po.PaintObject;
 import model.settings.Status;
+import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
 
 
@@ -13,9 +15,18 @@ import model.util.adt.list.SecureList;
  * @author Julius Huelsmann
  *
  */
-public class HistoryObject  {
+public class HistoryObject implements Serializable {
 
 	
+	/**
+     * Default serial version UID for being able to identify the list's 
+     * version if saved to the disk and check whether it is possible to 
+     * load it or whether important features have been added so that the
+     * saved file is out-dated.
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	/**
 	 * The PaintObject.
 	 */
@@ -280,7 +291,7 @@ public class HistoryObject  {
 
 			//add item.
 			session.getPicture().getLs_po_sortedByX().insertSorted(
-					(PaintObject) _object, 
+					((PaintObject) _object).clone(), 
 					((PaintObject) _object).getSnapshotBounds().x, 
 					transactionID);
 
@@ -352,43 +363,81 @@ public class HistoryObject  {
 	private void applyMove(final Object _objectMoved, 
 			final Object _objectOrig) {
 
-		if (_objectOrig instanceof PaintObject
-				&& _objectMoved instanceof PaintObject) {
+		if (_objectOrig instanceof SecureList<?>
+				&& _objectMoved instanceof SecureList<?>) {
 			
 			//start a new transaction
 			final int transactionID = session.getPicture()
 					.getLs_po_sortedByX().startTransaction(
 							"history apply move", 
 							SecureList.ID_NO_PREDECESSOR);
+
+			final SecureList<?> ls_orig =  (SecureList<?>) _objectOrig;
+			final SecureList<?> ls_moved = (SecureList<?>) _objectMoved;
 			
-			//search the element which is to be removed
-			boolean found = session.getPicture().getLs_po_sortedByX().find(
-					(PaintObject) _objectOrig, 
-					SecureList.ID_NO_PREDECESSOR);
+			ls_orig.toFirst(
+					SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
+			
+			while (!ls_orig.isBehind() && !ls_orig.isEmpty()) {
+				
 
-			//if the element was found, remove it.
-			if (found) {
+				PaintObject po_orig = (PaintObject) ls_orig.getItem();
+				PaintObject po_moved = (PaintObject) ls_moved.getItem();
 				
-				//remove item.
-				session.getPicture().getLs_po_sortedByX().remove(
-						transactionID);
+				if (po_orig == null || po_moved == null) {
 
-				//insert moved item.
-				session.getPicture().getLs_po_sortedByX().insertSorted(
-						(PaintObject) _objectMoved, 
-						((PaintObject) _objectMoved).getSnapshotBounds().x, 
-						transactionID);
+
+					//otherwise print error.
+					Status.getLogger().severe("Fatal error. apply move. "
+							+ "Paint Object null. "
+							+ "Maybe Length of lists does not match. "
+							+ "Maybe forgot to copy items.");
 				
-			} else {
+				} else {
+
+					//search the element which is to be removed
+					boolean found = session.getPicture().getLs_po_sortedByX()
+							.find(po_orig, SecureList.ID_NO_PREDECESSOR);
+
+					//if the element was found, remove it.
+					if (found) {
+						
+						//remove item.
+						session.getPicture().getLs_po_sortedByX().remove(
+								transactionID);
+
+						//insert moved item.
+						session.getPicture().getLs_po_sortedByX().insertSorted(
+								(PaintObject) po_moved.clone(), 
+								((PaintObject) po_moved).getSnapshotBounds().x, 
+								transactionID);
+					
+					} else {
+					
+						//otherwise print error.
+						Status.getLogger().severe("Fatal error. apply move. "
+								+ "Object not found.");
+					}
+				}
 				
-				//otherwise print error.
-				Status.getLogger().severe("Fatal error. apply move. "
-						+ "Object not found.");
+				//proceed
+				ls_orig.next(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
+				ls_moved.next(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
 			}
 			
+			if (ls_moved.isBehind() != ls_orig.isBehind()) {
+
+				//otherwise print error.
+				Status.getLogger().severe("Fatal error. apply move. "
+						+ "Length of lists does not match.");
+			}
+
 			//finish current transaction.
 			session.getPicture().getLs_po_sortedByX().finishTransaction(
 					transactionID);
+		
+			
+		
 		} else {
 			
 			//print error because the object does not match 
@@ -542,7 +591,7 @@ public class HistoryObject  {
 
 						//insert moved item.
 						session.getPicture().getLs_po_sortedByX().insertSorted(
-								(PaintObject) sl_toAdd.getItem() , 
+								((PaintObject) sl_toAdd.getItem()).clone() , 
 								((PaintObject) sl_toAdd.getItem())
 								.getSnapshotBounds().x, 
 								transactionID);

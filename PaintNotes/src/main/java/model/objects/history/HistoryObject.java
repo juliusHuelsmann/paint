@@ -134,6 +134,7 @@ public class HistoryObject implements Serializable {
 	 */
 	public final void applyPrevious() {
 		apply(id_previous, o_statePrevious);
+		
 	}
 	
 	

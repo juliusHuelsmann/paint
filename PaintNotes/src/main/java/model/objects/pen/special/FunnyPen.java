@@ -5,6 +5,7 @@ package model.objects.pen.special;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 import model.objects.pen.Pen;
 import model.settings.Constants;
@@ -18,10 +19,17 @@ import model.util.DPoint;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-@SuppressWarnings("serial")
-public class FunnyPen extends Pen {
+public class FunnyPen extends Pen implements Serializable {
 
     /**
+	 * 
+     * Default serial version UID for being able to identify the list's 
+     * version if saved to the disk and check whether it is possible to 
+     * load it or whether important features have been added so that the
+     * saved file is out-dated.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
      * values for moving the border.
      */
     private int currentBorderValue = 0, 

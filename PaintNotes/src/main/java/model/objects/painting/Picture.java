@@ -13,8 +13,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
 import control.ContorlPicture;
 import control.ControlPaintSelectin;
 import control.tabs.CTabSelection;
@@ -24,6 +27,7 @@ import view.forms.Page;
 import view.tabs.Insert;
 import view.tabs.Debug;
 import model.objects.PictureOverview;
+import model.objects.history.HistorySession;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
@@ -60,12 +64,16 @@ import model.util.paint.Utils;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class Picture {
+public final class Picture implements Serializable {
 
 	/**
-	 * The only instance of this class.
+     * Default serial version UID for being able to identify the list's 
+     * version if saved to the disk and check whether it is possible to 
+     * load it or whether important features have been added so that the
+     * saved file is out-dated.
 	 */
-	private static Picture instance = null;
+	private static final long serialVersionUID = 29882073145378042L;
+
 
 	/**
 	 * List of PaintObjects into which all non-selected paintObjects are added 
@@ -111,18 +119,23 @@ public final class Picture {
 	private int currentId;
 
 	/**
+	 * The history.
+	 */
+	private HistorySession history; 
+	
+	/**
 	 * Empty utility class constructor because the Picture instance has to exist
 	 * in process of initialization of Picture attributes.
 	 */
-	public Picture() {
-	}
+	public Picture() { }
 
 	/**
 	 * Initialization method of class Picture. Calls the reload() method which
 	 * creates a new instance of sorted PaintObject list and sets up the
 	 * currentID.
 	 */
-	public void initialize() {
+	public void initialize(HistorySession _history) {
+		this.history = _history;
 		reload();
 	}
 
@@ -827,31 +840,36 @@ public final class Picture {
 			Status.getLogger().severe(
 					"Es soll ein nicht existentes Objekt beendet werden.\n"
 							+ "Programm wird beendet.");
-		}
-
-		// insert into sorted lists sorted by x and y positions.
-		final Rectangle b = po_current.getSnapshotBounds();
-
-		if (po_current instanceof POCurve) {
-			POCurve pc = (POCurve) po_current;
-			pc.setReady();
 		} else {
 
-			ls_po_sortedByX.insertSorted(po_current, b.x, 
-					SecureList.ID_NO_PREDECESSOR);
-			new PictureOverview(_po).add(po_current);
+			//add a new history item that indicates an add operation.
+			history.addHistoryItem(
+					history.createAddItem(po_current.clone(), po_current.clone()));
 
-			// reset current instance of PaintObject
-			po_current = null;
-		}
+			// insert into sorted lists sorted by x and y positions.
+			final Rectangle b = po_current.getSnapshotBounds();
 
-		// setChanged();
-		// notifyObservers(bi_normalSize);
+			if (po_current instanceof POCurve) {
+				POCurve pc = (POCurve) po_current;
+				pc.setReady();
+			} else {
 
-		if (!(pen_current instanceof PenSelection)) {
+				ls_po_sortedByX.insertSorted(po_current, b.x, 
+						SecureList.ID_NO_PREDECESSOR);
+				new PictureOverview(_po).add(po_current);
 
-			// set uncommitted changes.
-			Status.setUncommittedChanges(true);
+				// reset current instance of PaintObject
+				po_current = null;
+			}
+
+			// setChanged();
+			// notifyObservers(bi_normalSize);
+
+			if (!(pen_current instanceof PenSelection)) {
+
+				// set uncommitted changes.
+				Status.setUncommittedChanges(true);
+			}
 		}
 	}
 
@@ -1098,7 +1116,7 @@ public final class Picture {
 			@SuppressWarnings("unchecked")
 			SecureListSort<PaintObject> p = 
 			(SecureListSort<PaintObject>) oos.readObject();
-			instance.ls_po_sortedByX = p;
+			ls_po_sortedByX = p;
 
 			oos.close();
 			fos.close();
@@ -1388,6 +1406,26 @@ public final class Picture {
 			ls_poSelected.finishTransaction(transaction);
 		}
 	}
+	
+	
+	
+	public SecureList<PaintObject> cloneSecureListPaintObject(
+			final SecureList<PaintObject> _slpo) {
+		
+		SecureList<PaintObject> sl_new = new SecureList<PaintObject>();
+		
+		if (_slpo != null) {
+
+			_slpo.toFirst(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
+			while (!_slpo.isBehind() && !_slpo.isEmpty()) {
+				
+				sl_new.insertBehind(_slpo.getItem().clone(), SecureList.ID_NO_PREDECESSOR);
+				_slpo.next(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
+			}
+		}
+		return sl_new;
+		
+	}
 
 	/**
 	 * Move selected items.
@@ -1402,6 +1440,13 @@ public final class Picture {
 		if (ls_poSelected == null) {
 			return;
 		}
+		
+
+		
+//		add a new history item that indicates an add operation.
+		history.addHistoryItem(history.createMoveItem(
+				ls_poSelected, ls_poSelected));
+
 
     	//start transaction and closed action.
     	final int transaction = getLs_po_sortedByX()

@@ -25,10 +25,13 @@ import model.util.DPoint;
  * @author Julius Huelsmann
  * @version %U%,%I%
  */
-public abstract class PaintObjectPen extends PaintObject {
+public abstract class PaintObjectPen extends PaintObject implements Cloneable {
 
 	/**
-     * serial version because the list of PaintObjects is saved.
+     * Default serial version UID for being able to identify the list's 
+     * version if saved to the disk and check whether it is possible to 
+     * load it or whether important features have been added so that the
+     * saved file is out-dated.
      */
     private static final long serialVersionUID = -3730582547146097485L;
 

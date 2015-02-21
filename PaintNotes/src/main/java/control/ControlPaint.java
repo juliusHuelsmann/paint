@@ -9,7 +9,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
+
 import javax.swing.ImageIcon;
+
 import control.forms.CNew;
 import control.interfaces.MenuListener;
 import control.tabs.CExport;
@@ -24,6 +26,7 @@ import control.tabs.CWrite;
 import control.tabs.ControlTabPainting;
 import control.util.implementations.Item2ActivityListener;
 import control.util.implementations.ScrollPaneActivityListener;
+import model.Project;
 import model.objects.PictureOverview;
 import model.objects.Zoom;
 import model.objects.painting.PaintBI;
@@ -104,6 +107,7 @@ MenuListener {
 	private ScrollPaneActivityListener utilityControlScrollPane;
 	private Item2ActivityListener utilityControlItem2;
 	
+	private Project project;
 
     /**
      * Start point mouseDragged and the speed of movement for continuous 
@@ -157,9 +161,9 @@ MenuListener {
             Status.getLogger().info("Installation found.");
             Status.getLogger().info("Initialize model class Page.\n");
 
-            picture = new Picture();
-            Status.setPicture(picture);
-            picture.initialize();
+            project = new Project();
+            picture = project.getPicture();
+            
             Status.setControlPaint(this);
 
             utilityControlScrollPane = new ScrollPaneActivityListener(this);

@@ -98,7 +98,7 @@ public class Marker extends Pen {
 				    }
 				}
 
-                if (_g != null) {
+                if (!_final) {
 
                     //adjust the location at the zoom.
                     x = ((x) * Status.getImageShowSize().width)

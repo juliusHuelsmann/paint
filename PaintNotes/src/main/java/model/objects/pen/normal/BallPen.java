@@ -107,12 +107,12 @@ public class BallPen extends Pen {
 				    }
 				}
 
-                if (_g != null) {
+                if (!_final) {
 
                     //adjust the location at the zoom.
-                    x = ((x) * Status.getImageShowSize().width)
+                    x = ((x + i) * Status.getImageShowSize().width)
                             / Status.getImageSize().width;
-                    y = ((y) * Status.getImageShowSize().height)
+                    y = ((y + j) * Status.getImageShowSize().height)
                             / Status.getImageSize().height;
 
                     //add the shift coordinates for painting.

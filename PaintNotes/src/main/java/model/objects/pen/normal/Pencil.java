@@ -130,7 +130,7 @@ public class Pencil extends Pen {
                     }
                 }
 
-                if (_g != null) {
+                if (!_final) {
 
                     //adjust the location at the zoom.
                     int rx = ((x + i) * Status.getImageShowSize().width)

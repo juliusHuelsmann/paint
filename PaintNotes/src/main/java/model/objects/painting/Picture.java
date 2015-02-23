@@ -1408,7 +1408,7 @@ public final class Picture implements Serializable {
 	}
 	
 	
-	
+
 	public SecureList<PaintObject> cloneSecureListPaintObject(
 			final SecureList<PaintObject> _slpo) {
 		
@@ -1442,10 +1442,8 @@ public final class Picture implements Serializable {
 		}
 		
 
-		
+		SecureList <PaintObject> sl_oldMove = cloneSecureListPaintObject(ls_poSelected);
 //		add a new history item that indicates an add operation.
-		history.addHistoryItem(history.createMoveItem(
-				ls_poSelected, ls_poSelected));
 
 
     	//start transaction and closed action.
@@ -1480,6 +1478,12 @@ public final class Picture implements Serializable {
 			ls_poSelected.next(transaction, closedAction);
 		}
 
+
+		SecureList <PaintObject> sl_newMoved = cloneSecureListPaintObject(ls_poSelected);
+
+		history.addHistoryItem(history.createMoveItem(
+				sl_oldMove, sl_newMoved));
+		
     	//close transaction and closed action.
     	getLs_po_sortedByX().finishTransaction(
     			transaction);

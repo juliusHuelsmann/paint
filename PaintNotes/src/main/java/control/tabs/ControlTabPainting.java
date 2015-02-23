@@ -477,8 +477,10 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
             String firstPath = Status.getSavePath().substring(0, d);
             
             // save images in both formats.
-            controlPaint.getPicture().saveIMAGE(firstPath, getPage().getJlbl_painting().getLocation().x,
-            		getPage().getJlbl_painting().getLocation().y);
+//            controlPaint.getPicture().saveIMAGE(
+//            		firstPath, getPage().getJlbl_painting().getLocation().x,
+//            		getPage().getJlbl_painting().getLocation().y);
+            controlPaint.getPicture().saveIMAGE(firstPath, 0, 0);
             controlPaint.getPicture().savePicture(firstPath + "pic");
 
 

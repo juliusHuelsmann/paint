@@ -2,11 +2,10 @@ package model.objects.history;
 
 //import declarations
 import java.io.Serializable;
-
 import model.objects.painting.po.PaintObject;
 import model.settings.Status;
-import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
+import model.util.adt.list.SecureListSort;
 
 
 
@@ -307,18 +306,28 @@ public class HistoryObject implements Serializable {
 					+ "Objects does not match identifier.");
 		}
 	}
-	
+
 	
 	
 	public boolean findInList(final int _transactionID, final int _closedActionID, final int _elementid) {
-		session.getPicture().getLs_po_sortedByX().toFirst(_transactionID, _closedActionID);
+
+		return findInList(session.getPicture().getLs_po_sortedByX(),
+				_transactionID, _closedActionID, _elementid);
+	}
+	
+	
+	public boolean findInList(
+			
+			final SecureListSort<PaintObject> _sl, 
+			final int _transactionID, final int _closedActionID, final int _elementid) {
+		_sl.toFirst(_transactionID, _closedActionID);
 		while(
-				!session.getPicture().getLs_po_sortedByX().isEmpty()
-				&& !session.getPicture().getLs_po_sortedByX().isBehind()) {
-			if (session.getPicture().getLs_po_sortedByX().getItem().getElementId() == _elementid) {
+				!_sl.isEmpty()
+				&& !_sl.isBehind()) {
+			if (_sl.getItem().getElementId() == _elementid) {
 				return true;
 			}
-			session.getPicture().getLs_po_sortedByX().next(_transactionID, _closedActionID);
+			_sl.next(_transactionID, _closedActionID);
 		}
 		return false;
 		
@@ -413,8 +422,7 @@ public class HistoryObject implements Serializable {
 				} else {
 
 					//search the element which is to be removed
-					boolean found = session.getPicture().getLs_po_sortedByX()
-							.find(po_orig, SecureList.ID_NO_PREDECESSOR);
+					boolean found = findInList(transactionID, SecureList.ID_NO_PREDECESSOR, po_orig.getElementId());
 
 					//if the element was found, remove it.
 					if (found) {

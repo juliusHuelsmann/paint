@@ -2,29 +2,15 @@
 package view.tabs;
 
 //import declarations
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Rectangle;
-import java.util.Observable;
-import java.util.Observer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.omg.CORBA._IDLTypeStub;
-
-import model.objects.PictureOverview;
-import model.settings.Constants;
-import model.settings.Status;
-import model.settings.ViewSettings;
-import control.tabs.CPaintObjects;
-import view.util.VScrollPane;
+import control.tabs.CAbout;
 import view.util.Item1Button;
-import view.util.mega.MLabel;
-import view.util.mega.MPanel;
+import model.settings.Constants;
+import model.settings.ViewSettings;
 
 /**
  * JPanel which shows the list of existing non-selected PaintObjects and 
@@ -43,7 +29,7 @@ public final class About extends Tab {
 	 * Constructor: initialize instances of Components and add special 
 	 * MouseMotionListener.
 	 */
-	public About() {
+	public About(CAbout _controlTabAbout) {
 		
 		//initialize JPanel and alter settings
 		super(0);
@@ -67,7 +53,7 @@ public final class About extends Tab {
 		i1b_checkForUpdates.setLocation(ViewSettings.getDistanceBetweenItems(), 
         		ViewSettings.getDistanceBetweenItems());
 		i1b_checkForUpdates.setBorder(false);
-        i1b_checkForUpdates.addActionListener(null);
+        i1b_checkForUpdates.addActionListener(_controlTabAbout);
         i1b_checkForUpdates.setActivable(false);
 		super.add(i1b_checkForUpdates);
 		
@@ -88,6 +74,34 @@ public final class About extends Tab {
 		i1b_checkForUpdates.setActivable(false);
         jta_about.setLocation(i1b_checkForUpdates.getX() + i1b_checkForUpdates.getWidth() + 5, 5);
         jta_about.setSize(350, ViewSettings.getView_heightTB_visible() - 5 * 2 - 40);
+	}
+
+	/**
+	 * @return the i1b_checkForUpdates
+	 */
+	public Item1Button getI1b_checkForUpdates() {
+		return i1b_checkForUpdates;
+	}
+
+	/**
+	 * @param i1b_checkForUpdates the i1b_checkForUpdates to set
+	 */
+	public void setI1b_checkForUpdates(Item1Button i1b_checkForUpdates) {
+		this.i1b_checkForUpdates = i1b_checkForUpdates;
+	}
+
+	/**
+	 * @return the jta_about
+	 */
+	public JTextArea getJta_about() {
+		return jta_about;
+	}
+
+	/**
+	 * @param jta_about the jta_about to set
+	 */
+	public void setJta_about(JTextArea jta_about) {
+		this.jta_about = jta_about;
 	}
 	
 	

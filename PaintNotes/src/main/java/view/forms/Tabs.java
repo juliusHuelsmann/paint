@@ -42,6 +42,7 @@ public final class Tabs extends VTabbedPane {
     private Export tab_export;
     private Look tab_look;
     private Debug tab_pos;
+    private About tab_about;
     
     /**
      * Tab for things which can be inserted.
@@ -165,8 +166,7 @@ public final class Tabs extends VTabbedPane {
          * tab print
          */
         super.addTab("About");
-        About tab_about;
-        tab_about = new About();
+        tab_about = new About(_cp.getcTabAbout());
         tab_about.setSize(
                 (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
                 ViewSettings.getView_heightTB());
@@ -347,5 +347,19 @@ public final class Tabs extends VTabbedPane {
 	 */
 	public void setTab_insert(Insert tab_insert) {
 		this.tab_insert = tab_insert;
+	}
+
+	/**
+	 * @return the tab_about
+	 */
+	public About getTab_about() {
+		return tab_about;
+	}
+
+	/**
+	 * @param tab_about the tab_about to set
+	 */
+	public void setTab_about(About tab_about) {
+		this.tab_about = tab_about;
 	}
 }

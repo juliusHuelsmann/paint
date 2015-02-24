@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 
 import control.forms.CNew;
 import control.interfaces.MenuListener;
+import control.tabs.CAbout;
 import control.tabs.CExport;
 import control.tabs.CLook;
 import control.tabs.CPaintObjects;
@@ -89,6 +90,7 @@ MenuListener {
 	
 	private CWrite cTabWrite;
 	private CQuickAccess controlQuickAccess;
+	private CAbout cTabAbout;
 	
 	private CPaintStatus cTabPaintStatus;
 	
@@ -174,6 +176,7 @@ MenuListener {
             cTabLook = new CLook(this);
             cTabExport = new CExport(this);
             cTabWrite = new CWrite(this);
+            cTabAbout = new CAbout(this);
             controlPic = new ContorlPicture(this);
             cTabSelection = new CTabSelection(this);
             controlPaintSelection = new ControlPaintSelectin(this);
@@ -2452,6 +2455,20 @@ MenuListener {
 	 */
 	public Picture getPicture() {
 		return picture;
+	}
+
+	/**
+	 * @return the cTabAbout
+	 */
+	public CAbout getcTabAbout() {
+		return cTabAbout;
+	}
+
+	/**
+	 * @param cTabAbout the cTabAbout to set
+	 */
+	public void setcTabAbout(CAbout cTabAbout) {
+		this.cTabAbout = cTabAbout;
 	}
     
 }

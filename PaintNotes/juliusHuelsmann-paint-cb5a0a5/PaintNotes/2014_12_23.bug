@@ -1,0 +1,34 @@
+Line
+486.0 108.0
+494.0 115.0
+501.0 122.0
+506.0 128.0
+512.0 134.0
+517.0 141.0
+530.0 160.0
+537.0 171.0
+545.0 182.0
+553.0 194.0
+561.0 206.0
+//maybe the intersect value
+665.6153846153847 376.0
+
+//2nd part
+//reconstruction problem because two lines. the right one will be right i
+//suppose
+
+//3rd part
+//the second part of first line
+//maybe the intersect value
+//675.5925925925926 376.0
+683.0 386.0
+692.0 396.0
+700.0 406.0
+708.0 414.0
+722.0 428.0
+
+
+
+
+Rectangle // from y 206? to 376! => 376 - 206 = 170
+562.0 207.0 300 170.0

@@ -1,5 +1,0 @@
-/**
- * Contains starter.
- */
-package start;
-

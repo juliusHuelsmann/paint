@@ -318,7 +318,7 @@ public final class Debug extends Tab implements Observer {
                 ViewSettings.getItemMenu1Height());
 
         Print.initializeTextButtonOhneAdd(i1b_console,
-                "Druckauftrag",
+                "show/hide console",
                 Constants.VIEW_TB_NEW_PATH);
 	}
 	

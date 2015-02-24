@@ -3,10 +3,12 @@ package view.forms;
 
 //import declarations
 import java.awt.Toolkit;
+
 import model.settings.ViewSettings;
 import control.ControlPaint;
 import control.util.CItem;
 import view.View;
+import view.tabs.About;
 import view.tabs.Export;
 import view.tabs.Insert;
 import view.tabs.Look;
@@ -158,6 +160,18 @@ public final class Tabs extends VTabbedPane {
          * tab print
          */
         super.addTab("Overview");
+        tabNumber++;
+        /*
+         * tab print
+         */
+        super.addTab("About");
+        About tab_about;
+        tab_about = new About();
+        tab_about.setSize(
+                (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
+                ViewSettings.getView_heightTB());
+        super.addToTab(tabNumber, tab_about);
+        
         tabNumber++;
 
 

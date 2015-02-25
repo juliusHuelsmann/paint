@@ -17,3 +17,13 @@ Used
 - Maven
 - Checkstyle
 - JUnit
+
+
+Use recommended checkstyle configuration file
+====
+
+- due to an error it is necessary to install libwebkitgtk-1.0-0 for being able to load the config file
+
+```
+sudo apt-get install libwebkitgtk-1.0-0
+```

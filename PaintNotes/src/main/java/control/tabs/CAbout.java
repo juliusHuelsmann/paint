@@ -18,10 +18,10 @@ import control.ControlPaint;
 
 public class CAbout implements ActionListener {
 
-	
+	final int currentVersion = -1;
 	
 	final String repoURL = 
-			"https://github.com/juliusHuelsmann/paint/archive/release0.zip";
+			"https://github.com/juliusHuelsmann/paint/archive/release" + (currentVersion + 1) +".zip";
 	
 	final String [] defaultTempLoadPath = {"tmp", "Paint", "program.zip"};
 	

@@ -5,8 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
+import control.tabs.ControlTabPainting;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.TextFactory;

@@ -6,8 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import control.interfaces.MoveEvent;
-import control.interfaces.TabbedListener;
 import model.settings.Error;
 import model.settings.ViewSettings;
 import view.util.VButtonWrapper;

@@ -3,7 +3,6 @@ package control.util.implementations;
 import java.awt.event.MouseEvent;
 
 import model.settings.Status;
-import view.tabs.Insert;
 import view.util.Item2;
 import control.ControlPaint;
 import control.interfaces.ActivityListener;

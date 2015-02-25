@@ -5,23 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.logging.Level;
-
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
-import control.tabs.ControlTabPainting;
-import model.objects.painting.Picture;
 import model.settings.Constants;
-import model.settings.ReadSettings;
-import model.settings.Settings;
 import model.settings.Status;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
 import view.View;
-import view.forms.Tabs;
-import view.tabs.Paint;
 
 
 /**

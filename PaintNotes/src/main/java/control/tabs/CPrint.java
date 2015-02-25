@@ -2,22 +2,42 @@ package control.tabs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import model.util.Util;
-import view.tabs.Print;
 import control.ControlPaint;
 
+
+/**
+ * Controller class for Print Tab.
+ * 
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
 public class CPrint implements ActionListener {
 
+
+	/**
+	 * Instance of the main controller.
+	 */
 	private ControlPaint cp;
 	
-	public CPrint(ControlPaint _cp) {
+	
+	/**
+	 * Constructor: save main controller.
+	 * @param _cp instance of main controller 
+	 */
+	public CPrint(final ControlPaint _cp) {
 		this.cp = _cp;
 	}
 	
-	
-	public final void actionPerformed(ActionEvent arg0) {
-		if (arg0.getSource().equals(cp.getView().getTabs().getTab_print().getTb_print().getActionCause())) {
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void actionPerformed(final ActionEvent _event) {
+		if (_event.getSource().equals(
+				cp.getView().getTabs().getTab_print().getTb_print()
+				.getActionCause())) {
         	Util.print(cp.getPicture());
 		}
 	}

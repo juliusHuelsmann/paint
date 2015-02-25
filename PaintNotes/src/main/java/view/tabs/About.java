@@ -2,11 +2,7 @@
 package view.tabs;
 
 //import declarations
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JTextArea;
-
 import control.tabs.CAbout;
 import view.util.Item1Button;
 import model.settings.Constants;

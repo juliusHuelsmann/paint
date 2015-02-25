@@ -7,15 +7,10 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.Console;
-
 import javax.swing.ImageIcon;
-
 import control.ContorlPicture;
 import control.ControlPaint;
-import control.ControlPaintSelectin;
 import model.objects.PictureOverview;
-import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.Pen;

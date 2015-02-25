@@ -11,7 +11,6 @@ import view.tabs.Paint;
 import view.util.Item1Menu;
 import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;
-import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.Status;
@@ -155,27 +154,46 @@ public class CPen implements ChangeListener, MouseListener{
     	}
     }
 
-	public void mouseClicked(MouseEvent arg0) {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void mouseClicked(final MouseEvent _event) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void mouseEntered(MouseEvent arg0) {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void mouseEntered(final MouseEvent _event) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void mouseExited(MouseEvent arg0) {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void mouseExited(final MouseEvent _event) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void mousePressed(MouseEvent arg0) {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void mousePressed(final MouseEvent _event) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void mouseReleased(MouseEvent arg0) {
-		mouseReleasedPenChange(arg0);		
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void mouseReleased(final MouseEvent _event) {
+		mouseReleasedPenChange(_event);		
 	}
 }

@@ -8,14 +8,9 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.util.Observable;
 import java.util.Observer;
-
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-
-import org.omg.CORBA._IDLTypeStub;
-
 import model.objects.PictureOverview;
 import model.settings.Constants;
 import model.settings.Status;

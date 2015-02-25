@@ -6,8 +6,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
-import model.objects.painting.Picture;
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.adt.list.SecureList;

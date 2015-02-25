@@ -13,8 +13,6 @@ import javax.swing.ImageIcon;
 
 import control.ContorlPicture;
 import control.ControlPaint;
-import control.util.CItem;
-import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.Status;
@@ -24,8 +22,6 @@ import view.forms.Page;
 import view.forms.Tabs;
 import view.tabs.Insert;
 import view.tabs.Paint;
-import view.util.Item1PenSelection;
-import view.util.VButtonWrapper;
 
 
 /**

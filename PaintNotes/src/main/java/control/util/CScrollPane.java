@@ -18,8 +18,6 @@ import model.settings.Constants;
 import model.settings.Error;
 import model.settings.Status;
 import model.util.paint.Utils;
-import view.forms.Page;
-import view.forms.Tabs;
 import view.util.VScrollPane;
 
 

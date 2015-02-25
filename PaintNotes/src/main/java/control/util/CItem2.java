@@ -7,7 +7,6 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 
 import control.interfaces.ActivityListener;
-import view.tabs.Insert;
 import view.util.Item2;
 
 /**

@@ -5,8 +5,6 @@ package model.objects.pen.normal;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
-import view.forms.Page;
 import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.Error;

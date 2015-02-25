@@ -1,9 +1,7 @@
 package control.tabs;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import view.forms.Page;
 import model.settings.ViewSettings;
 import control.ContorlPicture;
@@ -11,9 +9,20 @@ import control.ControlPaint;
 import control.interfaces.MoveEvent;
 import control.interfaces.TabbedListener;
 
+/**
+ * Controller class for Tabs.
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ *
+ */
 public class CTabs implements TabbedListener{
 
-	ControlPaint cp;
+	
+	/**
+	 * Instance of the main controller.
+	 */
+	private ControlPaint cp;
+	
 	/**
 	 * 
 	 */

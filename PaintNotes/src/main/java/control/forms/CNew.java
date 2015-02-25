@@ -11,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import control.ControlPaint;
-import model.objects.painting.Picture;
 import model.settings.Constants;
 import model.settings.Status;
 import model.util.paint.Utils;
@@ -25,16 +24,35 @@ import view.forms.New;
  */
 public final class CNew implements ActionListener, MouseListener, KeyListener {
 
+	
+	/**
+	 * Instance of the main controller.
+	 */
 	private ControlPaint cp;
-	public CNew(ControlPaint _cp) {
+	
+	
+	/**
+	 * 
+	 * @param _cp the main controller
+	 */
+	public CNew(final ControlPaint _cp) {
 		this.cp = _cp;
 	}
 	
 
-	private final New getNew() {
+	/**
+	 * 
+	 * @return the new
+	 */
+	private New getNew() {
 		return cp.getView().getPage().getJpnl_new();
 	}
-	private final View getView() {
+	
+	/**
+	 * 
+	 * @return the view
+	 */
+	private View getView() {
 		return cp.getView();
 	}
 	

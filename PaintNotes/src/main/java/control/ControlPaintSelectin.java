@@ -19,7 +19,8 @@ import view.util.mega.MButton;
  * @author Julius Huelsmann
  * @version %I%,%U%
  */
-public class ControlPaintSelectin implements MouseMotionListener, MouseListener {
+public class ControlPaintSelectin implements 
+MouseMotionListener, MouseListener {
 
     
     /**

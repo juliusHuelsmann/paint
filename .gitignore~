@@ -16,4 +16,4 @@ hs_err_pid*
 
 # Console output for debugging purpose must not be uploaded because the files
 # are getting too huge very quickly
-PaintNotes/consoleOutput/*
+consoleOutput/*

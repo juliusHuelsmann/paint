@@ -4,19 +4,16 @@ package view.tabs;
 //import declarations
 import java.awt.Color;
 import java.awt.Dimension;
-
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-
 import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import control.ControlPaint;
-import control.ControlPaintSelectin;
 import control.interfaces.MenuListener;
 import control.tabs.CPaintStatus;
 import control.tabs.ControlTabPainting;
@@ -227,6 +224,8 @@ public final class Paint extends Tab {
             tb_next = new Item1Button(null);
             tb_prev.addActionListener(_ctp);
             tb_next.addActionListener(_ctp);
+            
+            
 	    }
 
         tb_prev.setSize(ViewSettings.getItemWidth(), 
@@ -245,7 +244,9 @@ public final class Paint extends Tab {
 	                "next",
 	                Constants.VIEW_TB_NEXT_PATH, 0, _controlPaintStatus);
 
-	    
+
+	        tb_prev.setActivable(false);
+	        tb_next.setActivable(false);
 	    }
 
             int xLocationSeparation;

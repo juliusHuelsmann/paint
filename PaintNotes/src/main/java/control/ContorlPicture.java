@@ -4,13 +4,10 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import javax.swing.ImageIcon;
-
 import control.interfaces.MoveEvent;
 import control.interfaces.PaintListener;
 import model.objects.painting.PaintBI;
-import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.special.PenSelection;
 import model.settings.Status;
@@ -807,17 +804,17 @@ public class ContorlPicture implements PaintListener {
 	/**
 	 * @return the bi_background
 	 */
-	public BufferedImage getBi_background() {
+	public final BufferedImage getBi_background() {
 		return bi_background;
 	}
 
 
 
 	/**
-	 * @param bi_background the bi_background to set
+	 * @param _bi_background the bi_background to set
 	 */
-	public void setBi_background(BufferedImage bi_background) {
-		this.bi_background = bi_background;
+	public final void setBi_background(final BufferedImage _bi_background) {
+		this.bi_background = _bi_background;
 	}
 
 }

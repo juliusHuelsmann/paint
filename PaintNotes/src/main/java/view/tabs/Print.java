@@ -9,7 +9,6 @@ import javax.swing.border.LineBorder;
 
 import model.settings.Constants;
 import model.settings.ViewSettings;
-import control.tabs.CPaintStatus;
 import control.tabs.CPrint;
 import view.util.Item1Button;
 
@@ -21,6 +20,7 @@ import view.util.Item1Button;
  */
 @SuppressWarnings("serial")
 public final class Print extends Tab {
+	
 	/**
 	 * 
 	 */
@@ -29,6 +29,7 @@ public final class Print extends Tab {
 	 
 	 /**
 	  * Constructor: initializes view.
+	  * @param _cp the control paint.
 	  */
 	public Print(final CPrint _cp) {
 		super(0);

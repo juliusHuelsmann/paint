@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Rectangle;
 
 import control.ControlPaint;
-import model.objects.painting.Picture;
 import model.objects.pen.normal.Pencil;
 import model.settings.Constants;
 import model.settings.Status;

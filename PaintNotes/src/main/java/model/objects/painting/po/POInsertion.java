@@ -5,8 +5,6 @@ package model.objects.painting.po;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
-import view.forms.Page;
 import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.settings.Status;

@@ -198,7 +198,8 @@ MenuListener {
             
             //enable current operation
             view.getTabs().getTab_paint().getTb_color1().setActivated(true);
-            view.getTabs().getTab_paint().getIt_stift1().getTb_open().setActivated(true);
+            view.getTabs().getTab_paint().getIt_stift1()
+            .getTb_open().setActivated(true);
            
             
             /*
@@ -231,11 +232,17 @@ MenuListener {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void mouseClicked(final MouseEvent arg0) { }
+	public void mouseClicked(final MouseEvent _event) { }
 
-	public void mouseEntered(MouseEvent arg0) { }
+	/**
+	 * {@inheritDoc}
+	 */
+	public void mouseEntered(final MouseEvent _event) { }
 
-	public void mouseExited(MouseEvent _event) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void mouseExited(final MouseEvent _event) {
 
 
 
@@ -278,7 +285,10 @@ MenuListener {
 	        }		
 	}
 
-	public void mousePressed(final MouseEvent _event) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void mousePressed(final MouseEvent _event) {
 
         if (_event.getSource().equals(
                 getPage().getJlbl_painting())) {
@@ -429,7 +439,10 @@ MenuListener {
         }
     }
 
-	public void mouseReleased(MouseEvent _event) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void mouseReleased(final MouseEvent _event) {
 		if (_event.getSource().equals(
                 getPage().getJlbl_painting())) {
 			mr_painting(_event);
@@ -441,22 +454,17 @@ MenuListener {
 	/**
 	 * @return the view
 	 */
-	public View getView() {
+	public final  View getView() {
 		return view;
 	}
 
 
 
+
 	/**
-	 * @param view the view to set
+	 * {@inheritDoc}
 	 */
-	public void setView(View view) {
-		this.view = view;
-	}
-
-
-
-	public void mouseDragged(MouseEvent _event) {
+	public final void mouseDragged(final MouseEvent _event) {
 
 
         // left mouse pressed
@@ -2151,7 +2159,7 @@ MenuListener {
 	/**
 	 * @return the controlPaintSelection
 	 */
-	public ControlPaintSelectin getControlPaintSelection() {
+	public final ControlPaintSelectin getControlPaintSelection() {
 		return controlPaintSelection;
 	}
 
@@ -2161,19 +2169,11 @@ MenuListener {
 	/**
 	 * @return the cTabPaint
 	 */
-	public ControlTabPainting getcTabPaint() {
+	public final ControlTabPainting getcTabPaint() {
 		return cTabPaint;
 	}
 
 
-
-
-	/**
-	 * @param cTabPaint the cTabPaint to set
-	 */
-	public void setcTabPaint(ControlTabPainting cTabPaint) {
-		this.cTabPaint = cTabPaint;
-	}
 
 
 
@@ -2181,19 +2181,10 @@ MenuListener {
 	/**
 	 * @return the cTabPrint
 	 */
-	public CPrint getcTabPrint() {
+	public final CPrint getcTabPrint() {
 		return cTabPrint;
 	}
 
-
-
-
-	/**
-	 * @param cTabPrint the cTabPrint to set
-	 */
-	public void setcTabPrint(CPrint cTabPrint) {
-		this.cTabPrint = cTabPrint;
-	}
 
 
 
@@ -2201,19 +2192,13 @@ MenuListener {
 	/**
 	 * @return the cTabWrite
 	 */
-	public CWrite getcTabWrite() {
+	public final CWrite getcTabWrite() {
 		return cTabWrite;
 	}
 
 
 
 
-	/**
-	 * @param cTabWrite the cTabWrite to set
-	 */
-	public void setcTabWrite(CWrite cTabWrite) {
-		this.cTabWrite = cTabWrite;
-	}
 
 
 
@@ -2221,7 +2206,7 @@ MenuListener {
 	/**
 	 * @return the cTabPaintStatus
 	 */
-	public CPaintStatus getcTabPaintStatus() {
+	public final CPaintStatus getcTabPaintStatus() {
 		return cTabPaintStatus;
 	}
 
@@ -2229,16 +2214,9 @@ MenuListener {
 
 
 	/**
-	 * @param cTabPaintStatus the cTabPaintStatus to set
+	 * {@inheritDoc}
 	 */
-	public void setcTabPaintStatus(CPaintStatus cTabPaintStatus) {
-		this.cTabPaintStatus = cTabPaintStatus;
-	}
-
-
-
-
-	public void beforeOpen() {
+	public final void beforeOpen() {
 
     	//release selected because of display bug otherwise.
     	if (picture.isSelected()) {
@@ -2255,7 +2233,10 @@ MenuListener {
 
 
 
-	public void beforeClose() {
+	/**
+	 *  {@inheritDoc}
+	 */
+	public final void beforeClose() {
 
     	//release selected because of display bug otherwise.
     	if (picture.isSelected()) {
@@ -2279,7 +2260,10 @@ MenuListener {
 
 
 
-	public void afterClose() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void afterClose() {
 
         //when closed repaint.
         getPage().getJlbl_painting().repaint();
@@ -2292,7 +2276,7 @@ MenuListener {
 	/**
 	 * @return the cTabs
 	 */
-	public CTabs getcTabs() {
+	public final CTabs getcTabs() {
 		return cTabs;
 	}
 
@@ -2300,10 +2284,10 @@ MenuListener {
 
 
 	/**
-	 * @param cTabs the cTabs to set
+	 * @param _cTabs the cTabs to set
 	 */
-	public void setcTabs(CTabs cTabs) {
-		this.cTabs = cTabs;
+	public final void setcTabs(final CTabs _cTabs) {
+		this.cTabs = _cTabs;
 	}
 
 
@@ -2312,7 +2296,7 @@ MenuListener {
 	/**
 	 * @return the cTabSelection
 	 */
-	public CTabSelection getcTabSelection() {
+	public final CTabSelection getcTabSelection() {
 		return cTabSelection;
 	}
 
@@ -2320,10 +2304,10 @@ MenuListener {
 
 
 	/**
-	 * @param cTabSelection the cTabSelection to set
+	 * @param _cTabSelection the cTabSelection to set
 	 */
-	public void setcTabSelection(CTabSelection cTabSelection) {
-		this.cTabSelection = cTabSelection;
+	public final void setcTabSelection(final CTabSelection _cTabSelection) {
+		this.cTabSelection = _cTabSelection;
 	}
 
 
@@ -2332,19 +2316,12 @@ MenuListener {
 	/**
 	 * @return the cTabLook
 	 */
-	public CLook getcTabLook() {
+	public final CLook getcTabLook() {
 		return cTabLook;
 	}
 
 
 
-
-	/**
-	 * @param cTabLook the cTabLook to set
-	 */
-	public void setcTabLook(CLook cTabLook) {
-		this.cTabLook = cTabLook;
-	}
 
 
 
@@ -2352,19 +2329,11 @@ MenuListener {
 	/**
 	 * @return the cTabExport
 	 */
-	public CExport getcTabExport() {
+	public final CExport getcTabExport() {
 		return cTabExport;
 	}
 
 
-
-
-	/**
-	 * @param cTabExport the cTabExport to set
-	 */
-	public void setcTabExport(CExport cTabExport) {
-		this.cTabExport = cTabExport;
-	}
 
 
 
@@ -2372,19 +2341,10 @@ MenuListener {
 	/**
 	 * @return the cTabPaintObjects
 	 */
-	public CPaintObjects getcTabPaintObjects() {
+	public final CPaintObjects getcTabPaintObjects() {
 		return cTabPaintObjects;
 	}
 
-
-
-
-	/**
-	 * @param cTabPaintObjects the cTabPaintObjects to set
-	 */
-	public void setcTabPaintObjects(CPaintObjects cTabPaintObjects) {
-		this.cTabPaintObjects = cTabPaintObjects;
-	}
 
 
 
@@ -2392,19 +2352,10 @@ MenuListener {
 	/**
 	 * @return the controlPic
 	 */
-	public ContorlPicture getControlPic() {
+	public final ContorlPicture getControlPic() {
 		return controlPic;
 	}
 
-
-
-
-	/**
-	 * @param controlPic the controlPic to set
-	 */
-	public void setControlPic(ContorlPicture controlPic) {
-		this.controlPic = controlPic;
-	}
 
 
 
@@ -2412,7 +2363,7 @@ MenuListener {
 	/**
 	 * @return the controlnew
 	 */
-	public CNew getControlnew() {
+	public final CNew getControlnew() {
 		return controlnew;
 	}
 
@@ -2420,55 +2371,43 @@ MenuListener {
 
 
 	/**
-	 * @param controlnew the controlnew to set
+	 * 
+	 * @return the controlQuickAccess
 	 */
-	public void setControlnew(CNew controlnew) {
-		this.controlnew = controlnew;
-	}
-
-	public CQuickAccess getControlQuickAccess() {
+	public final CQuickAccess getControlQuickAccess() {
 		return controlQuickAccess;
 	}
 
-	public void setControlQuickAccess(CQuickAccess controlQuickAccess) {
-		this.controlQuickAccess = controlQuickAccess;
-	}
 
-	public ScrollPaneActivityListener getUtilityControlScrollPane() {
+	/**
+	 * 
+	 * @return the utilityControlScrollPane
+	 */
+	public final ScrollPaneActivityListener getUtilityControlScrollPane() {
 		return utilityControlScrollPane;
 	}
 
-	public void setUtilityControlScrollPane(ScrollPaneActivityListener utilityControlScrollPane) {
-		this.utilityControlScrollPane = utilityControlScrollPane;
-	}
 
-	public Item2ActivityListener getUtilityControlItem2() {
+	/**
+	 * 
+	 * @return the utilityControlItem2
+	 */
+	public final Item2ActivityListener getUtilityControlItem2() {
 		return utilityControlItem2;
-	}
-
-	public void setUtilityControlItem2(Item2ActivityListener utilityControlItem2) {
-		this.utilityControlItem2 = utilityControlItem2;
 	}
 
 	/**
 	 * @return the picture
 	 */
-	public Picture getPicture() {
+	public final Picture getPicture() {
 		return picture;
 	}
 
 	/**
 	 * @return the cTabAbout
 	 */
-	public CAbout getcTabAbout() {
+	public final CAbout getcTabAbout() {
 		return cTabAbout;
-	}
-
-	/**
-	 * @param cTabAbout the cTabAbout to set
-	 */
-	public void setcTabAbout(CAbout cTabAbout) {
-		this.cTabAbout = cTabAbout;
 	}
     
 }

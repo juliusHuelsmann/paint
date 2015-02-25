@@ -2,12 +2,9 @@ package model.objects.history;
 
 //import declaration
 import java.io.Serializable;
-import java.util.ListIterator;
-
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.settings.Status;
-import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
 
 

@@ -1,14 +1,8 @@
 package start.test;
 
 import java.awt.image.BufferedImage;
-
-import javax.naming.TimeLimitExceededException;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import model.settings.Status;
-import model.util.Util;
 
 
 /**

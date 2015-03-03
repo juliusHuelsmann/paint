@@ -342,7 +342,7 @@ public class List<Type> implements Serializable {
         	Element<Type> succ = elemCurrent.getElemSuccessor();
             succ.setElemPredecessor(elemCurrent.getElemPredecessor());
             
-            Element <Type> pred = elemCurrent.getElemPredecessor();
+            Element<Type> pred = elemCurrent.getElemPredecessor();
             pred.setElemSuccessor(succ);
             
             //The new current element is the predecessor of the removed element

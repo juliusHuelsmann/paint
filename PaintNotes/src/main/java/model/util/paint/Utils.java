@@ -809,7 +809,7 @@ public final class Utils {
                     		
                     		untilY_raster); 
                     //proceeds with the speed of distancePoints
-                    y ++) {
+                    y++) {
     
                 //calculate the values of the coordinates which are painted 
                 //at the graphics.

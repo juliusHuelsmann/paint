@@ -47,7 +47,7 @@ public class SecureListSort<SecureListType> implements Serializable {
 	/**
 	 * The list out of which the sorted secure list consists.
 	 */
-	private SecureList <SecureListType> ls;
+	private SecureList<SecureListType> ls;
 	
 
     /**

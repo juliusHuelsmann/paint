@@ -27,9 +27,22 @@ public final class CItem2 implements MouseListener {
      */
     private static CItem2 instance;
 
+    
+    /**
+     * Instance of Activity listener which can be added to the CItem2.
+     * Once added, the activityListener informs about each click performed
+     * on the instance of Item2 by calling the activityOccurred function.
+     */
     private ActivityListener activityListener;
     
-    public void addItemActivityListener(ActivityListener _activityListener) {
+    
+    /**
+     * Method for adding activity listener.
+     * 
+     * @param _activityListener	implementation of ActivityListener
+     */
+    public void addItemActivityListener(
+    		final ActivityListener _activityListener) {
     	activityListener = _activityListener;
     }
     

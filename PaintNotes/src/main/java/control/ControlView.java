@@ -32,12 +32,19 @@ public class ControlView implements ActionListener, MouseListener {
 	 * The saved instance of the view class.
 	 */
 	private final View view;
+	
+	
+	/**
+	 * Instance of the controller class controlTabPainting.
+	 */
 	private ControlTabPainting ctp;
 	
 	
 	
 	/**
 	 * Constructor: initializes the view class and reads settings.
+	 * @param _view instance of view
+	 * @param _ctp instance of ControlTabPainting
 	 */
 	public ControlView(final View _view, final ControlTabPainting _ctp) {
 		

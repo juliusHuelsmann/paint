@@ -248,7 +248,7 @@ public class Pencil extends Pen {
     	
     	boolean oldVersion = false;
     	
-    	if (oldVersion ) {
+    	if (oldVersion) {
     		return printPixelArea(_x, _y, _i, _j, _rX, _rY, _bi);
     	} else {
     		return printPixelArea2(_x, _y, _i, _j, _rX, _rY, _bi);
@@ -483,7 +483,9 @@ public class Pencil extends Pen {
         				
         				));
         
-        final int valueCalced = Math.max((clr_new.getRed() + clr_new.getGreen() + clr_new.getBlue() ) / 3, 1);
+        final int valueCalced = Math.max(
+        		(clr_new.getRed() + clr_new.getGreen()
+        				+ clr_new.getBlue()) / 3, 1);
         
         
         Color clr_new_intensityAdapted = new Color(

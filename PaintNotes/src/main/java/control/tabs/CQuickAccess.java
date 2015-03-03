@@ -20,7 +20,7 @@ public class CQuickAccess implements ActionListener, MouseListener {
 	private QuickAccess getQuickAccess() {
 		return cp.getView().getPage().getQuickAccess();
 	}
-	public CQuickAccess (ControlPaint _cp) {
+	public CQuickAccess(ControlPaint _cp) {
 		this.cp = _cp;
 	}
 	

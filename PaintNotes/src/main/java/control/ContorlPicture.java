@@ -695,7 +695,7 @@ public class ContorlPicture implements PaintListener {
 									y < refreshWidthY + refreshWidthHeight;
 									y++) {
 								
-								int valOnScreen = (x + y)  % modulo ;
+								int valOnScreen = (x + y)  % modulo;
 								
 								if (valOnScreen >= 0
 										&& valOnScreen < thickness) {
@@ -713,7 +713,7 @@ public class ContorlPicture implements PaintListener {
 									y < refreshHeightY + refreshHeightHeight;
 									y++) {
 
-								int valOnScreen = (x + y)  % modulo ;
+								int valOnScreen = (x + y)  % modulo;
 								
 								if (valOnScreen >= 0
 										&& valOnScreen < thickness) {

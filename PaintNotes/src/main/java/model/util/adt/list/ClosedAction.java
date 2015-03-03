@@ -18,7 +18,7 @@ public class ClosedAction<ClosedActionType> {
 	/**
 	 * The element which is the current element inside closed action.
 	 */
-	private Element <ClosedActionType> elem_secure;
+	private Element<ClosedActionType> elem_secure;
 
     
     /**
@@ -74,7 +74,7 @@ public class ClosedAction<ClosedActionType> {
 	/**
 	 * @return the elem_secure
 	 */
-	public final Element <ClosedActionType> getElem_secure() {
+	public final Element<ClosedActionType> getElem_secure() {
 		return elem_secure;
 	}
 	
@@ -83,7 +83,7 @@ public class ClosedAction<ClosedActionType> {
 	 * @param _elem_secure the elem_secure to set
 	 */
 	public final void setElem_secure(
-			final Element <ClosedActionType> _elem_secure) {
+			final Element<ClosedActionType> _elem_secure) {
 		this.elem_secure = _elem_secure;
 	}
 	

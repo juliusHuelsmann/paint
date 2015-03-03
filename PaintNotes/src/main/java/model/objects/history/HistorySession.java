@@ -84,17 +84,24 @@ public class HistorySession implements Serializable {
 	 */
 	private SecureList<HistoryObject> ls_history;
 	
+	
+	/**
+	 * Instance of picture.
+	 */
 	private Picture picture;
+	
 	/**
 	 * Constructor of history session.
 	 * 
 	 * Initializes the list which contains the history items of the current
 	 * session.
+	 * @param _picture	instance of Picture e.g. for being able to apply 
+	 * 					previous states of the picture.
 	 */
-	public HistorySession(Picture _picture) {
+	public HistorySession(final Picture _picture) {
 		
 		//initialize secure list.
-		ls_history = new SecureList <HistoryObject>();
+		ls_history = new SecureList<HistoryObject>();
 		this.picture = _picture;
 	}
 	
@@ -145,7 +152,7 @@ public class HistorySession implements Serializable {
 			//throw error and reinitialize the list.
 			Status.getLogger().severe("Error: list of History Items is not"
 					+ " initialized. Reinitializing.");
-			ls_history = new SecureList <HistoryObject>();
+			ls_history = new SecureList<HistoryObject>();
 			
 		} else {
 			

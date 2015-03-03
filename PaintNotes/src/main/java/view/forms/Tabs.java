@@ -321,7 +321,7 @@ public final class Tabs extends VTabbedPane {
 	/**
 	 * @return the tab_pos
 	 */
-	public Debug getTab_pos() {
+	public Debug getTab_debug() {
 		return tab_pos;
 	}
 

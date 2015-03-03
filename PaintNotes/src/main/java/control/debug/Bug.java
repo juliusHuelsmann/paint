@@ -51,7 +51,7 @@ public final class Bug {
 	 * @param _loadingPath the path of the bug file that is loaded.
 	 */
 	private void loadBug(final String _loadingPath) {
-		List <String> ls_strg = Util.loadTextFile(_loadingPath);
+		List<String> ls_strg = Util.loadTextFile(_loadingPath);
 		
 		ls_strg.toFirst();
 		while (!ls_strg.isBehind() && !ls_strg.isEmpty()) {
@@ -87,7 +87,7 @@ public final class Bug {
 					}
 				}
 				
-				cp.getPicture().finish(cp.getView().getTabs().getTab_pos());
+				cp.getPicture().finish(cp.getView().getTabs().getTab_debug());
 			} else if (cString.contains("Rectangle")) {
 
 

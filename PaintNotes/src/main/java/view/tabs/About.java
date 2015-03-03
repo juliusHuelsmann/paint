@@ -24,8 +24,9 @@ public final class About extends Tab {
 	/**
 	 * Constructor: initialize instances of Components and add special 
 	 * MouseMotionListener.
+	 * @param _controlTabAbout instance of controller class for this view item
 	 */
-	public About(CAbout _controlTabAbout) {
+	public About(final CAbout _controlTabAbout) {
 		
 		//initialize JPanel and alter settings
 		super(0);
@@ -56,11 +57,19 @@ public final class About extends Tab {
 		
 	}
 
-	public void setSize(int _width, int _height) {
-		super.setSize(_width, _height);;
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setSize(final int _width, final int _height) {
 		
-
-		i1b_checkForUpdates.setLocation(5, 5);
+		//call super function
+		super.setSize(_width, _height);
+		
+		//change contents
+		i1b_checkForUpdates.setLocation(ViewSettings.getDistanceBetweenItems(),
+				ViewSettings.getDistanceBetweenItems());
 		i1b_checkForUpdates.setSize(ViewSettings.getItemMenu1Width(), 
                 ViewSettings.getItemMenu1Height());
 
@@ -68,8 +77,13 @@ public final class About extends Tab {
                 "check for updates",
                 Constants.VIEW_TB_NEW_PATH);
 		i1b_checkForUpdates.setActivable(false);
-        jta_about.setLocation(i1b_checkForUpdates.getX() + i1b_checkForUpdates.getWidth() + 5, 5);
-        jta_about.setSize(350, ViewSettings.getView_heightTB_visible() - 5 * 2 - 40);
+        jta_about.setLocation(i1b_checkForUpdates.getX() 
+        		+ i1b_checkForUpdates.getWidth() 
+        		+ ViewSettings.getDistanceBetweenItems() , 
+        		ViewSettings.getDistanceBetweenItems());
+        
+        jta_about.setSize(350, ViewSettings.getView_heightTB_visible() 
+        		- 5 * 2 - 40);
 	}
 
 	/**
@@ -80,10 +94,10 @@ public final class About extends Tab {
 	}
 
 	/**
-	 * @param i1b_checkForUpdates the i1b_checkForUpdates to set
+	 * @param _i1b_checkForUpdates the i1b_checkForUpdates to set
 	 */
-	public void setI1b_checkForUpdates(Item1Button i1b_checkForUpdates) {
-		this.i1b_checkForUpdates = i1b_checkForUpdates;
+	public void setI1b_checkForUpdates(final Item1Button _i1b_checkForUpdates) {
+		this.i1b_checkForUpdates = _i1b_checkForUpdates;
 	}
 
 	/**
@@ -94,10 +108,10 @@ public final class About extends Tab {
 	}
 
 	/**
-	 * @param jta_about the jta_about to set
+	 * @param _jta_about the jta_about to set
 	 */
-	public void setJta_about(JTextArea jta_about) {
-		this.jta_about = jta_about;
+	public void setJta_about(final JTextArea _jta_about) {
+		this.jta_about = _jta_about;
 	}
 	
 	

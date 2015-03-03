@@ -16,48 +16,81 @@ import model.util.Util;
 import view.tabs.About;
 import control.ControlPaint;
 
+
+/**
+ * Controller class for about - tab which contains information on the program 
+ * and the web site which contains its different versions and a button for 
+ * checking for updates.
+ * The ladder functionality is executed by an instnace of this class.
+ * 
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
 public class CAbout implements ActionListener {
 
-	final int currentVersion = -1;
-	
-	final String repoURL = 
-			"https://github.com/juliusHuelsmann/paint/archive/release" + (currentVersion + 1) +".zip";
-	
-	final String [] defaultTempLoadPath = {"tmp", "Paint", "program.zip"};
-	
-	final String unzippedFoderName = "program";
 	
 	/**
-	 * 
+	 * The current version number.
+	 */
+	private final int currentVersion = -1;
+	
+	/**
+	 * The URL of the repository release for the next version.
+	 */
+	private final String repoURL = 
+			"https://github.com/juliusHuelsmann/paint/archive/release" 
+					+ (currentVersion + 1) + ".zip";
+	
+	/**
+	 * The default path for saving the download as .ZIP file. Saved as 
+	 * n-dimensional array; split into directory names and the file name.
+	 */
+	private final String [] defaultTempLoadPath = 
+		{"tmp", "Paint", "program.zip"};
+
+	/**
+	 * An instance of the root controller class.
 	 */
 	private ControlPaint cp;
 	
 	
+	
+	/**
+	 * Constructor: saves an instance of the root controller class.
+	 * 
+	 * @param _cp	instance of the root controller class which is saved.
+	 */
 	public CAbout(final ControlPaint _cp) {
 		this.cp = _cp;
 	}
 	
-	
-	
-	private About getAbout() {
-		return cp.getView().getTabs().getTab_about();
-	}
-	
-	public void actionPerformed(ActionEvent _event) {
 
-		if (_event.getSource().equals (getAbout().getI1b_checkForUpdates().getActionCause())) {
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void actionPerformed(final ActionEvent _event) {
+
+		if (_event.getSource().equals(
+				getAbout().getI1b_checkForUpdates().getActionCause())) {
 			checkForUpdates();
 		}
 	}
 
 	
 
+	/**
+	 * Method for checking for program updates.
+	 * @return whether there is a valid program update.
+	 */
 	private boolean checkForUpdates() {
 
+		final int defaultLocationPathLenght = 3;
+		
 		URL website;
 		try {
 			
-			if (defaultTempLoadPath.length != 3) {
+			if (defaultTempLoadPath.length != defaultLocationPathLenght) {
 			
 				Status.getLogger().severe(
 						"implementation error: wrong default temp load path");
@@ -97,11 +130,12 @@ public class CAbout implements ActionListener {
 					//clear all stuff inserted in this file
 					
 					/**
-					 * The command which is executed in terminal for rotating the
-					 * screen.
+					 * The command which is executed in terminal for rotating 
+					 * the screen.
 					 */
 			    	final String commandUnzip = "rm -r " 
-					 + tempLoadPath.substring(0, tempLoadPath.length() - defaultTempLoadPath[2].length()) + "*";
+					 + tempLoadPath.substring(0, tempLoadPath.length() 
+							 - defaultTempLoadPath[2].length()) + "*";
 			    	System.out.println(commandUnzip);
 
 			    	/**
@@ -109,7 +143,8 @@ public class CAbout implements ActionListener {
 			    	 * If the response tells that the command has been executed
 			    	 * successfully, there is nothing to do.
 			    	 */
-			    	final String resultUnzip = Util.executeCommandLinux(commandUnzip);
+			    	final String resultUnzip = Util.executeCommandLinux(
+			    			commandUnzip);
 			    	System.out.println(resultUnzip);
 			    	if (resultUnzip.startsWith(Util.EXECUTION_SUCCESS)) {
 			    		
@@ -170,7 +205,8 @@ public class CAbout implements ActionListener {
 			 * screen.
 			 */
 	    	final String commandUnzip = "unzip " + tempLoadPath + " -d " 
-			 + tempLoadPath.substring(0, tempLoadPath.length() - defaultTempLoadPath[2].length());
+			 + tempLoadPath.substring(0, tempLoadPath.length()
+					 - defaultTempLoadPath[2].length());
 
 	    	/**
 	    	 * The result of the command's execution in terminal.
@@ -238,4 +274,38 @@ public class CAbout implements ActionListener {
 			return false;
 		}	
 	}	
+	
+	
+	
+	
+	/**
+	 * Error - checked getter method for the about tab.
+	 * 
+	 * @return 	instance of About (tab) fetched out of the root controller 
+	 * 			class.
+	 */
+	private About getAbout() {
+		
+		if (cp != null) {
+			if (cp.getView() != null) {
+				if (cp.getView().getTabs() != null) {
+					if (cp.getView().getTabs().getTab_about() != null) {
+
+						return cp.getView().getTabs().getTab_about();
+					} else {
+						Status.getLogger().severe("cp.getView()"
+								+ ".getTabs().getTab_about()is null.");
+					}
+				} else {
+					Status.getLogger().severe("cp.getView().getTabs()"
+							+ " is null.");
+				}
+			} else {
+				Status.getLogger().severe("cp.getView() is null.");
+			}
+		} else {
+			Status.getLogger().severe("cp is null.");
+		}
+		return null;
+	}
 }

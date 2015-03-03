@@ -1442,7 +1442,8 @@ public final class Picture implements Serializable {
 		}
 		
 
-		SecureList <PaintObject> sl_oldMove = cloneSecureListPaintObject(ls_poSelected);
+		SecureList<PaintObject> sl_oldMove 
+		= cloneSecureListPaintObject(ls_poSelected);
 //		add a new history item that indicates an add operation.
 
 
@@ -1479,7 +1480,7 @@ public final class Picture implements Serializable {
 		}
 
 
-		SecureList <PaintObject> sl_newMoved = cloneSecureListPaintObject(ls_poSelected);
+		SecureList<PaintObject> sl_newMoved = cloneSecureListPaintObject(ls_poSelected);
 
 		history.addHistoryItem(history.createMoveItem(
 				sl_oldMove, sl_newMoved));

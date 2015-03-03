@@ -275,7 +275,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
                 		.getControlPaintSelection().getR_selection()));
         
         controlPaint.getPicture().deleteSelected(
-        		controlPaint.getView().getTabs().getTab_pos(),
+        		controlPaint.getView().getTabs().getTab_debug(),
         		controlPaint.getcTabSelection());
         getControlPicture().releaseSelected();
         getControlPicture().refreshPaint();
@@ -293,7 +293,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
         controlPaint.getPicture().releaseSelected(
     			controlPaint.getControlPaintSelection(),
     			controlPaint.getcTabSelection(),
-    			controlPaint.getView().getTabs().getTab_pos(),
+    			controlPaint.getView().getTabs().getTab_debug(),
     			controlPaint.getView().getPage().getJlbl_painting().getLocation().x,
     			controlPaint.getView().getPage().getJlbl_painting().getLocation().y);
         controlPaint.getPicture().createSelected();
@@ -303,7 +303,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
 
             PaintObjectImage poi = controlPaint.getPicture().createPOI(
                     (BufferedImage) o);
-            controlPaint.getPicture().insertIntoSelected(poi, controlPaint.getView().getTabs().getTab_pos());
+            controlPaint.getPicture().insertIntoSelected(poi, controlPaint.getView().getTabs().getTab_debug());
 
             //finish insertion into selected.
             controlPaint.getPicture().finishSelection(controlPaint.getcTabSelection());
@@ -325,7 +325,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
                     PaintObjectImage poi = (PaintObjectImage) po;
                     PaintObjectImage poi_new = controlPaint.getPicture().createPOI(
                     		poi.getSnapshot());
-                    controlPaint.getPicture().insertIntoSelected(poi_new, controlPaint.getView().getTabs().getTab_pos());
+                    controlPaint.getPicture().insertIntoSelected(poi_new, controlPaint.getView().getTabs().getTab_debug());
 
                     //finish insertion into selected.
                     controlPaint.getPicture().finishSelection(controlPaint.getcTabSelection());
@@ -342,7 +342,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
                                 pow.getPoints().getItem()));
                         pow.getPoints().next();
                     }
-                    controlPaint.getPicture().insertIntoSelected(pow_new, controlPaint.getView().getTabs().getTab_pos());
+                    controlPaint.getPicture().insertIntoSelected(pow_new, controlPaint.getView().getTabs().getTab_debug());
 
                     //finish insertion into selected.
                     controlPaint.getPicture().finishSelection(controlPaint.getcTabSelection());
@@ -356,13 +356,13 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
             
         } else if (o instanceof PaintObjectWriting) {
             controlPaint.getPicture().insertIntoSelected(
-                    (PaintObjectWriting) o, controlPaint.getView().getTabs().getTab_pos());
+                    (PaintObjectWriting) o, controlPaint.getView().getTabs().getTab_debug());
 
             //finish insertion into selected.
             controlPaint.getPicture().finishSelection(controlPaint.getcTabSelection());
         } else if (o instanceof PaintObjectImage) {
             controlPaint.getPicture().insertIntoSelected(
-                    (PaintObjectImage) o, controlPaint.getView().getTabs().getTab_pos());
+                    (PaintObjectImage) o, controlPaint.getView().getTabs().getTab_debug());
 
             //finish insertion into selected.
             controlPaint.getPicture().finishSelection(controlPaint.getcTabSelection());
@@ -664,7 +664,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
                 controlPaint.getPicture().releaseSelected(
             			controlPaint.getControlPaintSelection(),
             			controlPaint.getcTabSelection(),
-            			controlPaint.getView().getTabs().getTab_pos(),
+            			controlPaint.getView().getTabs().getTab_debug(),
             			controlPaint.getView().getPage().getJlbl_painting().getLocation().x,
             			controlPaint.getView().getPage().getJlbl_painting().getLocation().y);
             }

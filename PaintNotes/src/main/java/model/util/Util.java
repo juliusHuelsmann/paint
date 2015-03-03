@@ -322,9 +322,9 @@ public final class Util {
 			BufferedImage bi_stroke = new BufferedImage(jlbl_stroke.getWidth(), 
 	        		jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	        
-	        for (int x = 0; x < bi_stroke.getWidth(); x ++) {
+	        for (int x = 0; x < bi_stroke.getWidth(); x++) {
 
-	            for (int y = 0; y < bi_stroke.getHeight(); y ++) {
+	            for (int y = 0; y < bi_stroke.getHeight(); y++) {
 	            	
 
 //	            	if ( (_addX + x + y +  _addY) % 20 == 0) {
@@ -364,14 +364,14 @@ public final class Util {
 			BufferedImage bi_stroke = new BufferedImage(jlbl_stroke.getWidth(), 
 	        		jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	        
-	        for (int x = 0; x < bi_stroke.getWidth(); x ++) {
+	        for (int x = 0; x < bi_stroke.getWidth(); x++) {
 
-	            for (int y = 0; y < bi_stroke.getHeight(); y ++) {
+	            for (int y = 0; y < bi_stroke.getHeight(); y++) {
 	            	
 
 //	            	if ( (_addX + x + y +  _addY) % 20 == 0) {
 	            	
-	            	try{
+	            	try {
 	            		if ( (x + jlbl_stroke.getLocationOnScreen().x
 		            			- y - jlbl_stroke.getLocationOnScreen().y) 
 		            			% strokeDistance == 0
@@ -411,14 +411,14 @@ public final class Util {
 			BufferedImage bi_stroke = new BufferedImage(jlbl_stroke.getWidth(), 
 	        		jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	        
-	        for (int x = 0; x < bi_stroke.getWidth(); x ++) {
+	        for (int x = 0; x < bi_stroke.getWidth(); x++) {
 
-	            for (int y = 0; y < bi_stroke.getHeight(); y ++) {
+	            for (int y = 0; y < bi_stroke.getHeight(); y++) {
 	            	
 
 	            	
-	            	try{
-	            		if ( 
+	            	try {
+	            		if (
 	            				(x + jlbl_stroke.getLocationOnScreen().x
 		            			- y - jlbl_stroke.getLocationOnScreen().y) 
 		            			% strokeDistance == 0
@@ -430,7 +430,8 @@ public final class Util {
 		                	bi_stroke.setRGB(x, y, Color.lightGray.getRGB());
 		            	} else {
 
-		                	bi_stroke.setRGB(x, y, new Color(255, 250, 255).getRGB());
+		                	bi_stroke.setRGB(
+		                			x, y, new Color(255, 250, 255).getRGB());
 		            	}
 	            	} catch (IllegalComponentStateException e) {
 	            		x = bi_stroke.getWidth();
@@ -459,9 +460,9 @@ public final class Util {
 			BufferedImage bi_stroke = new BufferedImage(jlbl_stroke.getWidth(), 
 	        		jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	        
-	        for (int x = 0; x < bi_stroke.getWidth(); x ++) {
+	        for (int x = 0; x < bi_stroke.getWidth(); x++) {
 
-	            for (int y = 0; y < bi_stroke.getHeight(); y ++) {
+	            for (int y = 0; y < bi_stroke.getHeight(); y++) {
 	            	
 
 //	            	if ( (_addX + x + y +  _addY) % 20 == 0) {

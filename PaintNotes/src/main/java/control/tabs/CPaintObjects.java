@@ -40,26 +40,21 @@ public final class CPaintObjects implements ActionListener {
      */
     private Rectangle rec_old;
     
+    
+    /**
+     * Instance of the root-controller-class.
+     */
     private ControlPaint cp;
     
     /**
      * Private utility class constructor.
+     * @param _cp	instance of the root-controller-class
      */
-    public CPaintObjects(ControlPaint _cp) {
+    public CPaintObjects(final ControlPaint _cp) {
     	this.cp = _cp;
     }
     
 
-    private Debug getPaintObjects() {
-    	return cp.getView().getTabs().getTab_pos();
-    }
-    private Page getPage() {
-    	return cp.getView().getPage();
-    }
-    private ContorlPicture getControlPicture() {
-    	return cp.getControlPic();
-    }
-    
     /**
      * ActionListener deals with the action performed by the buttons containing
      * a PaintObject of the PaintObjects' view.
@@ -95,7 +90,7 @@ public final class CPaintObjects implements ActionListener {
     	                    cp.getPicture().releaseSelected(
     	                			cp.getControlPaintSelection(),
     	                			cp.getcTabSelection(),
-    	                			cp.getView().getTabs().getTab_pos(),
+    	                			cp.getView().getTabs().getTab_debug(),
     	                			cp.getView().getPage().getJlbl_painting().getLocation().x,
     	                			cp.getView().getPage().getJlbl_painting().getLocation().y);
     	                    getControlPicture().releaseSelected();
@@ -109,7 +104,7 @@ public final class CPaintObjects implements ActionListener {
     	                    //(move)
     	                    cp.getPicture().createSelected();
     	                    getPaintObjects().deactivate();
-    	                    cp.getPicture().insertIntoSelected(po_cu, cp.getView().getTabs().getTab_pos());
+    	                    cp.getPicture().insertIntoSelected(po_cu, cp.getView().getTabs().getTab_debug());
     	                    new PictureOverview(getPaintObjects()).remove(po_cu);
     	                    cp.getPicture().getLs_po_sortedByX().remove(
     	                    		SecureList.ID_NO_PREDECESSOR);
@@ -378,7 +373,8 @@ public final class CPaintObjects implements ActionListener {
         .setText(text);
         
         //create bufferedImage
-        BufferedImage bi = new BufferedImage(getPaintObjects().getJlbl_detailedPosition()
+        BufferedImage bi = new BufferedImage(
+        		getPaintObjects().getJlbl_detailedPosition()
                 .getWidth(), getPaintObjects()
                 .getJlbl_detailedPosition().getHeight(), 
                 BufferedImage.TYPE_INT_ARGB);
@@ -425,9 +421,49 @@ public final class CPaintObjects implements ActionListener {
     }
     
 
-    public CPaintObjects getInstance() {
+    
+    /**
+     * Error-checked getter class for getting the debug tab.
+     * @return	instance of Debug fetched out of the root- controller class.
+     */
+    private Debug getPaintObjects() {
+    	
+    	if (cp != null) {
+    		if (cp.getView() != null) {
+    			if (cp.getView().getTabs() != null) {
+    				if (cp.getView().getTabs().getTab_debug() != null) {
+
+    					return cp.getView().getTabs().getTab_debug();
+    				} else {
+    					Status.getLogger().severe("cp.getView().getTabs()"
+    							+ ".getTab_debug() is null");
+    				}
+    			} else {
+					Status.getLogger().severe("cp.getView().getTabs()"
+							+ " is null");
+				}
+    		} else {
+				Status.getLogger().severe("cp.getView()"
+						+ " is null");
+			}
+    	} else {
+			Status.getLogger().severe("cp"
+					+ " is null");
+		}
     	return null;
-    }
+	}
+
+
+	private Page getPage() {
+		return cp.getView().getPage();
+	}
+
+
+	private ContorlPicture getControlPicture() {
+		return cp.getControlPic();
+	}
+
+
 
     /**
      * @return the rec_old

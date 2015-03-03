@@ -134,14 +134,6 @@ MenuListener {
      */
     private Thread thrd_move;
 
-    
-    private Page getPage() {
-    	return view.getPage();
-    }
-    
-    private Tabs getTabs() {
-    	return view.getTabs();
-    }
 	
 	/**
 	 * 
@@ -368,9 +360,11 @@ MenuListener {
             case Constants.CONTROL_PAINTING_INDEX_ERASE:
             	
             	mr_erase(_event.getPoint());
-            	if (0 == -1) {
+            	final boolean oldStuff = false;
+            	if (oldStuff) {
             		/*
-                	 * Initialize the field for erasing. Therefore calculate the 
+                	 * Initialize the field for erasing. 
+                	 * Therefore calculate the 
                 	 * dimension of the array first.
                 	 */
                 	final int width = 
@@ -386,7 +380,8 @@ MenuListener {
                 			
                 			//the maximal displayed image size adapted to the
                 			//erase radius.
-                			Status.getImageSize().width / Status.getEraseRadius());
+                			Status.getImageSize().width
+                			/ Status.getEraseRadius());
                 	
                 	final int height = 
                 	Math.min(
@@ -401,17 +396,11 @@ MenuListener {
 
                 			//the maximal displayed image size adapted to the
                 			//erase radius.
-                			Status.getImageSize().height / Status.getEraseRadius());
+                			Status.getImageSize().height 
+                			/ Status.getEraseRadius());
                 	
                 	//initialize the field.
                 	field_erase = new byte[width][height];
-                	
-//                	//set default values
-//                	for (int x = 0; x < field_erase.length; x++) {
-//    					for (int y = 0; y < field_erase[x].length; y++) {
-//    	            		field_erase[x][y] = PaintBI.OCCUPIED;
-//    					}
-//    				}
             	}
             	
             	
@@ -642,14 +631,19 @@ MenuListener {
                         y = pnt_startLocation.y -  _event.getY() + pnt_start.y;
                     }
                     
-                    if (x < -Status.getImageShowSize().width + getPage().getJlbl_painting().getWidth()) {
-                        x = -Status.getImageShowSize().width + getPage().getJlbl_painting().getWidth();
+                    if (x < -Status.getImageShowSize().width 
+                    		+ getPage().getJlbl_painting().getWidth()) {
+                    	
+                        x = -Status.getImageShowSize().width 
+                        		+ getPage().getJlbl_painting().getWidth();
                     }
                     if (x > 0) {
                         x = 0;
                     }
-                    if (y < -Status.getImageShowSize().height + getPage().getJlbl_painting().getHeight()) {
-                        y = -Status.getImageShowSize().height + getPage().getJlbl_painting().getHeight();
+                    if (y < -Status.getImageShowSize().height 
+                    		+ getPage().getJlbl_painting().getHeight()) {
+                        y = -Status.getImageShowSize().height 
+                        		+ getPage().getJlbl_painting().getHeight();
                     }
                     if (y >= 0) {
                         y = 0;
@@ -670,8 +664,11 @@ MenuListener {
 
 
 
-	public void mouseMoved(MouseEvent _event) {
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void mouseMoved(final MouseEvent _event) {
 
 
         if (_event.getSource().equals(getPage().getJlbl_painting())) {
@@ -696,7 +693,8 @@ MenuListener {
 	                xLocation = Math.max(0, xLocation);
 	                yLocation = Math.max(0, yLocation);
 	
-	                // not greater than the entire shown image - the width of zoom
+	                // not greater than the entire shown image - 
+	                // the width of zoom
 	                xLocation = Math.min(Status.getImageShowSize().width
 	                        - ViewSettings.ZOOM_SIZE.width, xLocation);
 	                yLocation = Math.min(Status.getImageShowSize().height
@@ -860,7 +858,7 @@ MenuListener {
         case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
          
             // write the current working picture into the global picture.
-            picture.finish(view.getTabs().getTab_pos());
+            picture.finish(view.getTabs().getTab_debug());
             break;
 
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
@@ -973,7 +971,7 @@ MenuListener {
                     picture.releaseSelected(
                 			getControlPaintSelection(),
                 			getcTabSelection(),
-                			getView().getTabs().getTab_pos(),
+                			getView().getTabs().getTab_debug(),
                 			getView().getPage().getJlbl_painting().getLocation().x,
                 			getView().getPage().getJlbl_painting().getLocation().y);
                     controlPic.releaseSelected();
@@ -1130,12 +1128,12 @@ MenuListener {
             		field, new Point(xShift, yShift))) {
 
                 //move current item from normal list into selected list 
-                picture.insertIntoSelected(po_current, getView().getTabs().getTab_pos());
+                picture.insertIntoSelected(po_current, getView().getTabs().getTab_debug());
                 picture.getLs_po_sortedByX().remove(
                 		transaction);
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
-                 new PictureOverview(view.getTabs().getTab_pos()).remove(po_current);
+                 new PictureOverview(view.getTabs().getTab_debug()).remove(po_current);
                 picture.getLs_po_sortedByX().toFirst(
                 		transaction, SecureList.ID_NO_PREDECESSOR);
             } else {
@@ -1253,7 +1251,7 @@ MenuListener {
 
                     PaintObject [][] separatedPO = po_current.separate(
                     		field, new Point(xShift, yShift));
-                    new PictureOverview(view.getTabs().getTab_pos()).remove(picture
+                    new PictureOverview(view.getTabs().getTab_debug()).remove(picture
                             .getLs_po_sortedByX().getItem());
                     picture.getLs_po_sortedByX().remove(
                     		transaction);
@@ -1268,7 +1266,7 @@ MenuListener {
                             //insert the item into the sorted list.
                             separatedPO[1][current].recalculateSnapshotBounds();
                             picture.insertIntoSelected(
-                                    separatedPO[1][current], getView().getTabs().getTab_pos());
+                                    separatedPO[1][current], getView().getTabs().getTab_debug());
                         } else {
                             
                             Status.getLogger().warning("separated paintObject "
@@ -1288,7 +1286,7 @@ MenuListener {
                             separatedPO[0][current].recalculateSnapshotBounds();
                             ls_toInsert.insertBehind(separatedPO[0][current]);
     
-                             new PictureOverview(view.getTabs().getTab_pos()).add(
+                             new PictureOverview(view.getTabs().getTab_debug()).add(
                                     separatedPO[0][current]);
                         } else {
 
@@ -1415,10 +1413,10 @@ MenuListener {
 
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
-                 new PictureOverview(view.getTabs().getTab_pos()).remove(po_current);
+                 new PictureOverview(view.getTabs().getTab_debug()).remove(po_current);
                 
                 //move current item from normal list into selected list 
-                picture.insertIntoSelected(po_current, getView().getTabs().getTab_pos());
+                picture.insertIntoSelected(po_current, getView().getTabs().getTab_debug());
                              
                 picture.getLs_po_sortedByX().remove(
                 		transaction);
@@ -1548,7 +1546,7 @@ MenuListener {
 //                    
 //                    PaintObject [][] separatedPO = 
 //                    Util.mergeDoubleArray(p, p2);
-                     new PictureOverview(view.getTabs().getTab_pos()).remove(picture
+                     new PictureOverview(view.getTabs().getTab_debug()).remove(picture
                             .getLs_po_sortedByX().getItem());
                     picture.getLs_po_sortedByX().remove(
                     		transaction);
@@ -1564,7 +1562,7 @@ MenuListener {
                             separatedPO[1][current].recalculateSnapshotBounds();
                             picture.insertIntoSelected(
                                     separatedPO[1][current],
-                                    getView().getTabs().getTab_pos()
+                                    getView().getTabs().getTab_debug()
                             		);
                         } else {
                             
@@ -1586,7 +1584,7 @@ MenuListener {
                             separatedPO[0][current].recalculateSnapshotBounds();
                             ls_toInsert.insertBehind(separatedPO[0][current]);
     
-                             new PictureOverview(view.getTabs().getTab_pos()).add(
+                             new PictureOverview(view.getTabs().getTab_debug()).add(
                                     separatedPO[0][current]);
                         } else {
 
@@ -1724,7 +1722,7 @@ MenuListener {
 
                         //remove item out of PictureOverview and paint and refresh paint
                         //otherwise it is not possible to select more than one item
-                         new PictureOverview(view.getTabs().getTab_pos()).remove(po_current);
+                         new PictureOverview(view.getTabs().getTab_debug()).remove(po_current);
                         
                         picture.getLs_po_sortedByX().remove(
                         		transaction);
@@ -1754,7 +1752,7 @@ MenuListener {
             	
             	
             	
-            	picture.deleteSelected(getView().getTabs().getTab_pos(), cTabSelection);
+            	picture.deleteSelected(getView().getTabs().getTab_debug(), cTabSelection);
             	break;
             case Status.ERASE_DESTROY:
 
@@ -1781,7 +1779,7 @@ MenuListener {
 	
 	                    	if (debug_update_paintObjects_view) {
 	
-	                            new PictureOverview(view.getTabs().getTab_pos()).remove(picture
+	                            new PictureOverview(view.getTabs().getTab_debug()).remove(picture
 	                                    .getLs_po_sortedByX().getItem());
 	                    	}
 	                        picture.getLs_po_sortedByX().remove(
@@ -1820,7 +1818,7 @@ MenuListener {
 	
 	                    	if (debug_update_paintObjects_view) {
 	
-	                            new PictureOverview(view.getTabs().getTab_pos()).add(
+	                            new PictureOverview(view.getTabs().getTab_debug()).add(
 	                           		 ls_separatedPO.getItem());
 	                    	}
 	                    } else {
@@ -1967,7 +1965,7 @@ MenuListener {
 
                     	if (debug_update_paintObjects_view) {
 
-                            new PictureOverview(view.getTabs().getTab_pos()).remove(picture
+                            new PictureOverview(view.getTabs().getTab_debug()).remove(picture
                                     .getLs_po_sortedByX().getItem());
                     	}
                         picture.getLs_po_sortedByX().remove(
@@ -2006,7 +2004,7 @@ MenuListener {
 
                     	if (debug_update_paintObjects_view) {
 
-                            new PictureOverview(view.getTabs().getTab_pos())
+                            new PictureOverview(view.getTabs().getTab_debug())
                             .add(ls_separatedPO.getItem());
                     	}
                     } else {
@@ -2223,7 +2221,7 @@ MenuListener {
 	    	picture.releaseSelected(
         			getControlPaintSelection(),
         			getcTabSelection(),
-        			getView().getTabs().getTab_pos(),
+        			getView().getTabs().getTab_debug(),
         			getView().getPage().getJlbl_painting().getLocation().x,
         			getView().getPage().getJlbl_painting().getLocation().y);
 	    	controlPic.releaseSelected();
@@ -2243,7 +2241,7 @@ MenuListener {
 	    	picture.releaseSelected(
         			getControlPaintSelection(),
         			getcTabSelection(),
-        			getView().getTabs().getTab_pos(),
+        			getView().getTabs().getTab_debug(),
         			getView().getPage().getJlbl_painting().getLocation().x,
         			getView().getPage().getJlbl_painting().getLocation().y);
 	    	controlPic.releaseSelected();
@@ -2271,6 +2269,44 @@ MenuListener {
 	}
 
 
+    
+    /**
+     * Error checked getter method for page.
+     * 
+     * @return 	instance of Page fetched out of the saved view class.
+     */
+    private Page getPage() {
+    	
+    	if (view != null) {
+    		if (view.getPage() != null) {
+    	    	return view.getPage();
+    		} else {
+    			Status.getLogger().severe("view.getPage() is null");
+    		}
+    	} else {
+			Status.getLogger().severe("view is null");
+    	}
+    	return null;
+    }
+
+    
+    /**
+     * Error checked getter method for tabs.
+     * 
+     * @return 	instance of Tabs fetched out of the saved view class.
+     */
+    private Tabs getTabs() {
+    	if (view != null) {
+    		if (view.getTabs() != null) {
+    	    	return view.getTabs();
+    		} else {
+    			Status.getLogger().severe("view.getTabs() is null");
+    		}
+    	} else {
+			Status.getLogger().severe("view is null");
+    	}
+    	return null;
+    }
 
 
 	/**

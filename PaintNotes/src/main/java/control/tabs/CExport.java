@@ -17,22 +17,24 @@ import model.settings.Status;
  */
 public final class CExport implements ActionListener {
 
-	
+	/**
+	 * An instance of the root - controller - class for fetching the instances
+	 * of important classes.
+	 */
 	private ControlPaint cp;
-    /**
+    
+	/**
      * Empty utility class constructor.
+     * @param _cp	an instance of the root-controller-class out of which the
+     * 				instances of important classes can be fetched.
      */
-    public CExport(ControlPaint _cp) {
+    public CExport(final ControlPaint _cp) {
     	this.cp = _cp;
     }
 
 
     
     
-    private Export getExport() {
-    	return cp.getView().getTabs().getTab_export();
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -123,7 +125,8 @@ public final class CExport implements ActionListener {
     	        } else if (_event.getSource().equals(getExport()
     	                .getJcb_displayAlpha())) {
     	            Status.setExportAlpha(getExport().getJcb_displayAlpha()
-    	                    .getSelectedItem().equals(Constants.ID_DISPLAY_ALPHA));
+    	                    .getSelectedItem().equals(
+    	                    		Constants.ID_DISPLAY_ALPHA));
     	        } else if (_event.getSource().equals(getExport()
     	                .getJcb_saveFormats())) {
     	            Status.setSaveFormat(getExport().getJcb_saveFormats()
@@ -132,6 +135,38 @@ public final class CExport implements ActionListener {
     	        
     	    }
     	}
+
+
+
+
+	/**
+	 * Error - checked getter method for getting the export-tab.
+	 * 
+	 * @return 	an instance of Export fetched out of the root controller-class.
+	 */
+	private Export getExport() {
+		
+		if (cp != null) {
+			if (cp.getView() != null) {
+				if (cp.getView().getTabs() != null) {
+					if (cp.getView().getTabs().getTab_export() != null) {
+	
+				    	return cp.getView().getTabs().getTab_export();
+					} else {
+						Status.getLogger().severe("cp.getView().getTabs()"
+								+ ".getTab_export() is null");
+					}
+				} else {
+					Status.getLogger().severe("cp.getView().getTabs() is null");
+				}
+			} else {
+				Status.getLogger().severe("cp.getView() is null");
+			}
+		} else {
+			Status.getLogger().severe("cp is null");
+		}
+		return null;
+	}
        
 
 }

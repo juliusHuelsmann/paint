@@ -6,9 +6,11 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.adt.list.SecureList;
+import view.forms.Page;
 import view.util.mega.MButton;
 
 
@@ -22,7 +24,7 @@ MouseMotionListener, MouseListener {
 
     
     /**
-     * the start location of the JLabels (cv.getView().getPage()) for selection 
+     * the start location of the JLabels (getPage()) for selection 
      * background and
      * selection. For moving operation.
      */
@@ -74,7 +76,9 @@ MouseMotionListener, MouseListener {
     private double factorW, factorH;
     
     
-    
+    /**
+     * Instance of ControlPaint.
+     */
     private ControlPaint cv;
     
     /**
@@ -85,7 +89,6 @@ MouseMotionListener, MouseListener {
     	this.cv = _cv;
         pnt_startLocationButton = new DPoint
                 [2 + 1][2 + 1];
-        
     }
     
     /**
@@ -96,16 +99,16 @@ MouseMotionListener, MouseListener {
     public final void mouseDragged(final MouseEvent _event) {
         
         if (_event.getSource().equals(
-                cv.getView().getPage().getJbtn_resize()[1][1])) {
+                getPage().getJbtn_resize()[1][1])) {
             
             int dX = (int) (_event.getXOnScreen() - pnt_start.getX()), 
                     dY = (int) (_event.getYOnScreen() - pnt_start.getY());
             
-            cv.getView().getPage().getJlbl_selectionBG().setLocation(
+            getPage().getJlbl_selectionBG().setLocation(
                     (int) pnt_startLocationLabel.getX() + dX,
                     (int) pnt_startLocationLabel.getY() + dY);
             
-            cv.getView().getPage().getJlbl_selectionPainting().setLocation(
+            getPage().getJlbl_selectionPainting().setLocation(
                     (int) pnt_startLocationLabel.getX() + dX,
                     (int) pnt_startLocationLabel.getY() + dY);
 
@@ -119,8 +122,8 @@ MouseMotionListener, MouseListener {
                             || (x == 0 && y == 2)
                             || !wholeImageSelected) {
 
-                        cv.getView().getPage().getJbtn_resize()[x][y].setLocation(
-                                (int) pnt_startLocationButton[x][y].getX() 
+                    	getPage().getJbtn_resize()[x][y].setLocation(
+                    			(int) pnt_startLocationButton[x][y].getX() 
                                 + dX,
                                 (int) pnt_startLocationButton[x][y].getY() 
                                 + dY);
@@ -132,7 +135,7 @@ MouseMotionListener, MouseListener {
             r_selection.x = (int) pnt_rSelectionStart.getX() + dX;
             r_selection.y =  (int) pnt_rSelectionStart.getY() + dY;
             
-            cv.getView().getPage().getJlbl_border().setBounds(r_selection);
+            getPage().getJlbl_border().setBounds(r_selection);
         } else {
             if (wholeImageSelected) {
                 md_buttonLocationWholeImage(_event);
@@ -185,18 +188,18 @@ MouseMotionListener, MouseListener {
             pnt_rSelectionStart = new DPoint(r_selection.getLocation());
         }
         pnt_startLocationLabel = new DPoint(
-                cv.getView().getPage().getJlbl_selectionBG().getLocation());
+                getPage().getJlbl_selectionBG().getLocation());
 
         for (int x = 0; x < pnt_startLocationButton.length; x++) {
 
             for (int y = 0; y < pnt_startLocationButton.length; y++) {
-                pnt_startLocationButton[x][y] = new DPoint(cv.getView().getPage()
-                        .getJbtn_resize()[x][y].getLocation());
+                pnt_startLocationButton[x][y] = new DPoint(cv.getView()
+                		.getPage().getJbtn_resize()[x][y].getLocation());
             }
         }
         
         if (!_event.getSource().equals(
-                cv.getView().getPage().getJbtn_resize()[1][1])) {
+                getPage().getJbtn_resize()[1][1])) {
             cv.getControlPic().stopBorderThread();
         }
     }
@@ -209,7 +212,7 @@ MouseMotionListener, MouseListener {
         
 
         if (_event.getSource().equals(
-                cv.getView().getPage().getJbtn_resize()[1][1])) {
+                getPage().getJbtn_resize()[1][1])) {
             
             int dX = (int) (_event.getXOnScreen() - pnt_start.getX()), 
                     dY = (int) (_event.getYOnScreen() - pnt_start.getY());
@@ -225,7 +228,7 @@ MouseMotionListener, MouseListener {
             
             cv.getControlPic().paintEntireSelectionRect(
                     r_selection);
-            cv.getView().getPage().getJlbl_selectionPainting().repaint();
+            getPage().getJlbl_selectionPainting().repaint();
             
 //            cv.getPicture().paintSelected();
             
@@ -241,11 +244,11 @@ MouseMotionListener, MouseListener {
             if (_event.getSource() instanceof MButton) {
                 
 
-                final int jrssW = cv.getView().getPage()
+                final int jrssW = getPage()
                         .getJlbl_resizeSelectionSize().getWidth();
-                final int jrssH = cv.getView().getPage()
+                final int jrssH = getPage()
                         .getJlbl_resizeSelectionSize().getWidth();
-                cv.getView().getPage().getJlbl_resizeSelectionSize().setLocation(
+                getPage().getJlbl_resizeSelectionSize().setLocation(
                         (-jrssW), 
                         (-jrssH));
                 if (wholeImageSelected) {
@@ -274,7 +277,7 @@ MouseMotionListener, MouseListener {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
-        MButton[][] j = cv.getView().getPage().getJbtn_resize();
+        MButton[][] j = getPage().getJbtn_resize();
         DPoint[][] p = pnt_startLocationButton;
         double distanceXY;
         if ((distanceX) < (distanceY)) {
@@ -282,7 +285,6 @@ MouseMotionListener, MouseListener {
         } else {
             distanceXY = distanceY;
         }
-        //TODO:
         Dimension newDim = null;
         
             
@@ -339,31 +341,31 @@ MouseMotionListener, MouseListener {
         cv.getControlPic().refreshPaint();
         
         
-        final int width = cv.getView().getPage().getJlbl_resizeSelectionSize()
+        final int width = getPage().getJlbl_resizeSelectionSize()
                 .getWidth();
-        final int height = cv.getView().getPage().getJlbl_resizeSelectionSize()
+        final int height = getPage().getJlbl_resizeSelectionSize()
                 .getHeight();
-        cv.getView().getPage().getJlbl_resizeSelectionSize().setLocation(
+        getPage().getJlbl_resizeSelectionSize().setLocation(
                 (j[2][2].getX() - width) / 2, 
                 (j[2][2].getY() - height) / 2);
 
-        if (cv.getView().getPage().getJlbl_resizeSelectionSize().getX() 
+        if (getPage().getJlbl_resizeSelectionSize().getX() 
                 < 0) {
-            cv.getView().getPage().getJlbl_resizeSelectionSize().setLocation(
-                    j[2][2].getX(),
-                    cv.getView().getPage().getJlbl_resizeSelectionSize().getY());
+            getPage().getJlbl_resizeSelectionSize().setLocation(
+                    j[2][2].getX(), getPage()
+                    .getJlbl_resizeSelectionSize().getY());
         }
-        if (cv.getView().getPage().getJlbl_resizeSelectionSize().getY() 
+        if (getPage().getJlbl_resizeSelectionSize().getY() 
                 < 0) {
-            cv.getView().getPage().getJlbl_resizeSelectionSize().setLocation(
-                    cv.getView().getPage().getJlbl_resizeSelectionSize().getX(),
+            getPage().getJlbl_resizeSelectionSize().setLocation(
+                    getPage().getJlbl_resizeSelectionSize().getX(),
                     j[2][2].getY());
         }
         
-        cv.getView().getPage().getJlbl_resizeSelectionSize().setText(
+        getPage().getJlbl_resizeSelectionSize().setText(
                 newDim.width + "x" + newDim.height + "");
 
-        cv.getView().getPage().refrehsSps();
+        getPage().refrehsSps();
         
         
     }
@@ -377,7 +379,7 @@ MouseMotionListener, MouseListener {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
-        MButton[][] j = cv.getView().getPage().getJbtn_resize();
+        MButton[][] j = getPage().getJbtn_resize();
         DPoint[][] p = pnt_startLocationButton;
         double distanceXY, distanceXY2;
         if (Math.abs(distanceX) < Math.abs(distanceY)) {
@@ -514,7 +516,7 @@ MouseMotionListener, MouseListener {
                     j[0][1].getY() + size - sizeButton);
         }
 
-        cv.getView().getPage().getJlbl_border().setBounds(j[0][0].getX() + size,
+        getPage().getJlbl_border().setBounds(j[0][0].getX() + size,
                 j[0][0].getY() + size, j[2][0].getX() - j[0][0].getX(),
                 j[0][2].getY() - j[0][0].getY());
         r_selection = new Rectangle(j[0][0].getX() + size,
@@ -541,7 +543,7 @@ MouseMotionListener, MouseListener {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
-        MButton[][] j = cv.getView().getPage().getJbtn_resize();
+        MButton[][] j = getPage().getJbtn_resize();
         double distanceXY, distanceXY2;
         if (Math.abs(distanceX) < Math.abs(distanceY)) {
             distanceXY = distanceX;
@@ -627,7 +629,7 @@ MouseMotionListener, MouseListener {
         
         //release selected and paint them
         cv.getControlPic().releaseSelected();
-        cv.getPicture().paintSelected(cv.getView().getPage(),
+        cv.getPicture().paintSelected(getPage(),
         		cv.getControlPic(),
         		cv.getControlPaintSelection());
     }
@@ -674,10 +676,33 @@ MouseMotionListener, MouseListener {
     }
     
     
-    public void resetPntStartLocationLabel() {
+    
+    /**
+     * Reset the start points after some movement is applied.
+     * This is necessary because of the following scenario:
+     * 		1) 	The user selects PaintObjects
+     * 		2)	The user moves the selection
+     * 			-> 	Inside this controller class the movement is saved.
+     * 				The displayed graphical movement is performed by moving
+     * 				the container of the selection image and not by repainting
+     * 				the selection each time it is moved (for better speed)
+     * 		3)  The user demands for a repaint (e.g. because of a change of 
+     * 			color)
+     * 			->	The paintObjects are repainted using the new position
+     * 				(resulting from movement). thus the start locations and the 
+     * 				location of the selection background have to be reset to 
+     * 				zero. Otherwise there will be an error in the next step:
+     * 		4) 	The user moves the PaintObjects
+     * 			-> 	Otherwise:
+     * 					The selected PaintObjects are painted double-shifted:
+     * 					Once by the location of the PaintLabel, once by 
+     * 					the shift that is saved in model value
+     */
+    public final void resetPntStartLocationLabel() {
     	this.pnt_startLocationLabel = new DPoint(0, 0);
-    	pnt_startPaintLabelLocation = new Point(0,0);
-    	cv.getView().getPage().getJlbl_selectionBG().setLocation(pnt_startPaintLabelLocation);
+    	pnt_startPaintLabelLocation = new Point(0, 0);
+    	getPage().getJlbl_selectionBG().setLocation(
+    			pnt_startPaintLabelLocation);
     }
 
     /**
@@ -688,7 +713,33 @@ MouseMotionListener, MouseListener {
             final Point _pnt_startPaintLabelLocation) {
         this.r_selection = _r_selection;
         this.pnt_startPaintLabelLocation = _pnt_startPaintLabelLocation;
-//        this.pnt_startPaintBGLocation = _pnt_startPaintLabelLocation;
+    }
+    
+
+    
+    
+    
+    /**
+     * Error-checking getter method of page.
+     * 
+     * @return	instance of Page fetched out of the controller-class 
+     * 			ControlPaint.
+     */
+    private Page getPage() {
+    	if (cv != null) {
+    		if (cv.getView() != null) {
+    			if (cv.getView().getPage() != null) {
+        			return cv.getView().getPage();	
+    			} else {
+        			Status.getLogger().severe("cv.getView().getPage() is null");
+    			}
+    		} else {
+    			Status.getLogger().severe("cv.getView() is null");	
+    		}
+    	} else {
+			Status.getLogger().severe("cv is null");	
+    	}
+    	return null;
     }
 
     /**

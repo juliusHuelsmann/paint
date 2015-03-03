@@ -47,7 +47,7 @@ public class SecureList<SecureListType> implements Serializable {
 	 * The list which is the base of the SecureList and which methods
 	 * are used.
 	 */
-	private List <SecureListType> ls;
+	private List<SecureListType> ls;
 	
 	
 	/**
@@ -80,7 +80,7 @@ public class SecureList<SecureListType> implements Serializable {
      * and to add items to list but it is only possible to pass the list
      * by using next and previous methods and to check the current element.
      */
-    private  Stack<ClosedAction<SecureListType> > stck_closedAction;
+    private  Stack<ClosedAction<SecureListType>> stck_closedAction;
     
 
     /**
@@ -91,7 +91,7 @@ public class SecureList<SecureListType> implements Serializable {
 	 * Thus it is impossible to perform an action outside the current 
 	 * transaction.
      */
-    private  Stack<Transaction<SecureListType> > stck_transaction;
+    private  Stack<Transaction<SecureListType>> stck_transaction;
     
     /*
      * Constructor

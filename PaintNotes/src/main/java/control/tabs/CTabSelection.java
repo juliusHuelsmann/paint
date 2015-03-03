@@ -48,10 +48,10 @@ public final class CTabSelection implements ActionListener {
         	return cp.getView().getTabs().getTab_selection();
     	} else {
     		
-    		if (cp != null){
+    		if (cp != null) {
 
-    			if ( cp.getView() != null ) {
-        			if ( cp.getView().getTabs() != null){
+    			if (cp.getView() != null) {
+        			if (cp.getView().getTabs() != null) {
         				if (cp.getView().getTabs().getTab_selection() != null) {
 
         					System.out.println(

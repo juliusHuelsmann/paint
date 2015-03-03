@@ -1,8 +1,13 @@
 package start.test;
 
 import java.awt.image.BufferedImage;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import model.settings.Status;
+import model.util.Util;
 
 
 /**
@@ -63,38 +68,40 @@ public final class BufferedViewer extends JFrame {
      */
     public static synchronized void show(final BufferedImage _bi) {
     	
-    	/*
+    	final boolean showEnabled = false;
+    	if (showEnabled) {
+        	
+    		final int minTimeDiff = 5000;
+    		final int maxWindowSize = 300;
+    		
+    		Status.getLogger().warning("TEST" + "BufferdViewer.show");
 
-    	Status.getLogger().warning("TEST" + "BufferdViewer.show");
-    	System.out.println(_bi.getWidth() + ".." + _bi.getHeight());
-    	final double time = System.currentTimeMillis();
-//
-    	if (time - timeLast > 5000) {
-    		timeLast = time;
-        	if (_bi.getWidth() > 0
-        			&&_bi.getHeight() > 0) {
+        	final double time = System.currentTimeMillis();
 
-        		int width = _bi.getWidth();
-        		int height = _bi.getHeight();
-        		if (_bi.getWidth() > 300) {
-        			width = 300;
-        		}
-        		if (_bi.getHeight() > 300) {
-        			height = 300;
-        		}
-        		
-        		BufferedImage bi = Util.resize(_bi, width, height);
-        		
-                getInstance().setSize(bi.getWidth(), bi.getHeight());
-                getInstance().jlbl_painting.setSize(bi.getWidth(), bi.getHeight());
-                getInstance().jlbl_painting.setIcon(new ImageIcon(bi));
-                System.out.println("passed");
+        	if (time - timeLast > minTimeDiff) {
+        		timeLast = time;
+            	if (_bi.getWidth() > 0
+            			&& _bi.getHeight() > 0) {
+
+            		int width = _bi.getWidth();
+            		int height = _bi.getHeight();
+            		
+            		if (_bi.getWidth() > maxWindowSize) {
+            			width = maxWindowSize;
+            		}
+            		if (_bi.getHeight() > maxWindowSize) {
+            			height = maxWindowSize;
+            		}
+            		
+            		BufferedImage bi = Util.resize(_bi, width, height);
+            		
+                    getInstance().setSize(bi.getWidth(), bi.getHeight());
+                    getInstance().jlbl_painting.setSize(bi.getWidth(),
+                    		bi.getHeight());
+                    getInstance().jlbl_painting.setIcon(new ImageIcon(bi));
+                    System.out.println("passed");
+            	}
         	}
-    	} else {
-    		System.out.println("hier");
-    	}*/
+    	}
     }
-    
-    
-    
 }

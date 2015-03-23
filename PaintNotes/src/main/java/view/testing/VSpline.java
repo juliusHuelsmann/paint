@@ -71,7 +71,7 @@ public class VSpline extends JPanel{
 			
 			if (!error) {
 
-				double [][] a = Pen.spline(ls_point, true);
+				double [][] a = Pen.spline(ls_point, true, null, null, null);
 				
 				setVisible(false);
 				if (a.length > 0) {

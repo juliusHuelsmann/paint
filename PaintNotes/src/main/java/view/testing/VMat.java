@@ -82,7 +82,7 @@ public class VMat extends JPanel {
 		if (jlbl_matrix != null) {
 
 			for (int heig = 0; heig < jlbl_matrix.length; heig++) {
-				for (int widt = 0; widt < jlbl_matrix[widt].length; widt++) {
+				for (int widt = 0; widt < jlbl_matrix[heig].length; widt++) {
 					double itW = 1.0 * (getWidth()) / jlbl_matrix[widt].length;
 					double itH = 1.0 * (getHeight() - jlbl_amountCols.getHeight() - jlbl_amountCols.getY()- 50) / jlbl_matrix.length;
 					jlbl_matrix[widt][heig].setBounds((int)(heig * itW) ,(int) (widt * itH+ jlbl_amountCols.getHeight() +jlbl_amountCols.getY() + 5), (int)(itW), (int)itH);

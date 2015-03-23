@@ -101,6 +101,7 @@ public class Matrix {
         //- zero will be checked on the fly during the calculation.
         if (content == null || content.length == 0) {
         	 return null;
+        	 
         } else if (content.length + 1 != content[0].length) {
             Status.getLogger().severe("unable to solve matrix: not quadratic!");
             return null;

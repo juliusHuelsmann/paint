@@ -16,6 +16,8 @@ import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
+import start.test.BufferedViewer;
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Marker;
@@ -637,7 +639,11 @@ public abstract class Pen implements Serializable {
     }
     
     
-    public static double[][] spline(final List<DPoint> _ls_point, final boolean _testing) {
+    public static double[][] spline(final List<DPoint> _ls_point, 
+    		final boolean _testing,
+    		final DPoint _pnt_shift,
+    		final BufferedImage _bi_paint,
+    		final Pen _pen) {
 
     	
     	
@@ -726,12 +732,8 @@ public abstract class Pen implements Serializable {
     	
     	System.out.println(m.printMatrix());
     	
-    	System.out.println("try to solve" );
     	double[] a2_i = m.solve();
-    	System.out.println(a2_i.length + ".." + (len - 3));
-    	System.out.println(a2_i);
     	for (int i = 1; i < b.length - 1; i++) {
-    		System.out.println("inside");
     		b[i] = a2_i[i - 1];
     	}
     	
@@ -777,7 +779,58 @@ public abstract class Pen implements Serializable {
 				abcd[2][i] = c[i];
 				abcd[3][i] = d[i];
 			}
+    	} else {
+    		int currentXIndex = 0;
+    		boolean interrupt = false;
+    		int lastX = -1;
+    		int lastY = -1;
+    		for (double cX = (int)x[0]; cX < (int)x[x.length - 1]; cX+= 
+    				Math.max(Math.min(1, Math.abs((x[currentXIndex + 1] - x[currentXIndex]) / (y[currentXIndex + 1] - y[currentXIndex]))), 0.01)) {
+    			
+    			while (cX > x[currentXIndex]) {
+    				currentXIndex++;
+    				
+    				if (currentXIndex >= x.length - 1){
+    					interrupt = true;
+    					break;
+    				}
+    			}
+    			if (interrupt)
+    			 	break;
+    			
+    			
+    			int xCoordiante = (int) (cX);
+    			int yCoordinate = (int)
+    					(a[currentXIndex] * Math.pow(cX - x[currentXIndex], 3)
+    					+ b[currentXIndex] * Math.pow(cX - x[currentXIndex], 2)
+    					+ c[currentXIndex] * Math.pow(cX - x[currentXIndex], 1)
+    					+ d[currentXIndex]);
+
+    			if (!(lastX== -1 && lastY == -1)) {
+    				_pen.setClr_foreground(Color.green);
+    				_pen.paintLine(new DPoint(lastX, lastY), new DPoint(xCoordiante, yCoordinate), _bi_paint, true, _bi_paint, _pnt_shift);
+    				_pen.paintLine(new DPoint(lastX, lastY), new DPoint(xCoordiante, yCoordinate), _bi_paint, false, _bi_paint, _pnt_shift);
+    				_pen.setClr_foreground(Color.black);
+//                    try{
+//
+//                        _bi_paint.setRGB(
+//                        		(int)(xCoordiante - _pnt_shift.getX()),
+//                        		(int) (yCoordinate - _pnt_shift.getY()),
+//                        		new Color(255, 5, 5).getRGB());
+//                        
+//                    } catch (Exception e) {
+//                    	System.out.println("fehler");
+//                    }
+    			}
+    			lastX = xCoordiante;
+    			lastY = yCoordinate;
+            
+                
+    		}
+    		BufferedViewer.show(_bi_paint);
     	}
+    	
+    	
     	
     	
     	return abcd;
@@ -802,7 +855,7 @@ public abstract class Pen implements Serializable {
             final BufferedImage _g) {
 
     	if (_final) {
-    		spline(_ls_point, false);
+    		spline(_ls_point, false, _p_shift, _bi, this);
     	} else {
     		final int amountOfRuns = 1;
             DPoint pnt_1 = null, pnt_2 = null, pnt_3 = null;

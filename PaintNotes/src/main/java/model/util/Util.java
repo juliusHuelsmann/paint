@@ -7,6 +7,7 @@ import java.awt.IllegalComponentStateException;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.PrintJob;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -14,6 +15,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Random;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -311,7 +314,7 @@ public final class Util {
      * Apply stroke on background.
      * @param jlbl_stroke the background carrying item.
      */
-	public static void getStroke(JLabel jlbl_stroke, int _addX, int _addY) {
+	public static BufferedImage getStroke(JLabel jlbl_stroke) {
 		
 		
 		final int strokeDistance = 10;
@@ -347,9 +350,162 @@ public final class Util {
 	            }	
 	        }
 	        jlbl_stroke.setIcon(new ImageIcon(bi_stroke));
+			return bi_stroke;
 		}
+		return null;
 		
-	}   /**
+	}   
+	
+	
+	
+	
+	
+	
+	
+	
+	  /**
+     * Apply stroke on background.
+     * @param jlbl_stroke the background carrying item.
+     */
+	public static BufferedImage getStrokeMove(BufferedImage _bi, JLabel jlbl_stroke, int _dX, int _dY) {
+		
+		if (_dY >= _bi.getHeight() || _dX >= _bi.getWidth()){
+			return getStroke(jlbl_stroke);
+		} 
+		
+		
+		
+		
+		final int strokeDistance = 10;
+		if (_bi.getWidth() > 0 
+				&& _bi.getHeight() > 0) {
+			
+
+			Rectangle rec_maintain = new Rectangle();
+			Rectangle rec_new1 = new Rectangle();
+			Rectangle rec_new2 = new Rectangle();
+
+			if (_dX > 0) {
+				
+				System.out.println("c11");
+				rec_maintain.x = 0;
+				rec_maintain.width = _bi.getWidth() - _dX;
+				
+				rec_new1.x = rec_maintain.width;
+				rec_new1.width = _dX;
+				rec_new1.height = _bi.getHeight();
+				rec_new1.y = 0;
+			} else {
+
+				System.out.println("c12");
+				rec_maintain.x = -_dX;
+				rec_maintain.width = _bi.getWidth() + _dX;
+				
+				rec_new1.x = 0;
+				rec_new1.width = -_dX;
+				rec_new1.height = _bi.getHeight();
+				rec_new1.y = 0;
+			}
+
+			if (_dY > 0) {
+				
+
+				System.out.println("c21");
+				rec_maintain.y = 0;
+				rec_maintain.height = _bi.getHeight() - _dY;
+				
+				rec_new2.y = rec_maintain.height;
+				rec_new2.height = _dY;
+				rec_new2.x = 0;
+				rec_new2.width = _bi.getWidth();
+			} else {
+				System.out.println("c22");
+				rec_maintain.y = -_dY;
+				rec_maintain.height = _bi.getHeight() + _dY;
+
+				rec_new2.y = 0;
+				rec_new2.height = -_dY;
+				rec_new2.x = 0;
+				rec_new2.width = _bi.getWidth();
+			}
+
+
+	        for (int x = rec_new1.x; x < rec_new1.x + rec_new1.width; x++) {
+	            for (int y = rec_new1.y; y < rec_new1.y + rec_new1.height; y++) {
+	            	_bi.setRGB(x, y, Color.red.getRGB());
+	            }
+	        }
+
+	        for (int x = rec_new2.x; x < rec_new2.x + rec_new2.width; x++) {
+	            for (int y = rec_new2.y; y < rec_new2.y + rec_new2.height; y++) {
+	            	_bi.setRGB(x, y, Color.red.getRGB());
+	            }
+	        }
+
+	        for (int x = rec_maintain.x; x < rec_maintain.x + rec_maintain.width; x++) {
+	            for (int y = rec_maintain.y; y < rec_maintain.y + rec_maintain.height; y++) {
+//	            	_bi.setRGB(x, y, Color.green.getRGB());
+	            }
+	        }
+	        if (0 == 0)
+	        return _bi;
+			
+			
+			
+			//TODO: beides falsch
+			int[] bt = new int[rec_maintain.width * rec_maintain.height];
+			bt = _bi.getRGB(rec_maintain.x, rec_maintain.y, rec_maintain.width, rec_maintain.height, bt, 1, rec_maintain.width - 1);
+			for (int i = 0; i < bt.length; i++) {
+				bt[i] = new Color(new Random(0).nextInt(254), new Random(0).nextInt(254), 255).getRGB();
+			}
+			
+			_bi.setRGB(rec_maintain.x + _dX, rec_maintain.y + _dY,rec_maintain.width, rec_maintain.height, bt, 1, rec_maintain.width - 1);
+
+			
+	        for (int x = rec_new1.x; x <= rec_new1.x + rec_new1.width; x++) {
+
+	            for (int y = rec_new1.y; y <= rec_new1.y + rec_new1.height; y++) {
+	            	
+	            	try{
+	            		if ( (x + jlbl_stroke.getLocationOnScreen().x
+		            			+ y + jlbl_stroke.getLocationOnScreen().y) 
+		            			% strokeDistance == 0) {
+
+	            			System.out.println("pt");
+	            			_bi.setRGB(x, y, new Color(10,10,10, 10).getRGB());
+		            	} else {
+
+	            			System.out.println("black");
+		            		_bi.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+		            	}
+	            	} catch (IllegalComponentStateException e) {
+	            		
+	            		//interrupt
+	            		x = rec_new1.width;
+	            		y = rec_new1.height;
+	            	}
+	            
+	            }	
+	        }
+	        jlbl_stroke.setIcon(new ImageIcon(_bi));
+	        System.out.println("return");
+	        return _bi;
+		}
+		return null;
+	}   
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
      * Apply stroke on background.
      * @param jlbl_stroke the background carrying item.
      */

@@ -281,7 +281,7 @@ public final class ViewSettings {
     	    (int) (
     	    		//the width
     	    		(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
-    	    	    / (2 + 1) + (2 + 1) * distanceBetweenItems
+    	    	    / (2 + 2 + 2 + 1) + (2 + 2 + 2) * distanceBetweenItems
     	    	    
     	    		/ Math.sqrt(2) + 2 * distanceBetweenItems));
 

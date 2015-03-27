@@ -432,6 +432,7 @@ public final class Util {
 					rec_new2.x = 0;
 					rec_new2.width = _bi.getWidth();
 				}
+//				rec_new1.height = rec_new2.y + rec_new2.height - rec_new1.y;
 				rec_maintainStart.width = rec_maintainDest.width;
 				rec_maintainStart.height = rec_maintainDest.height;
 

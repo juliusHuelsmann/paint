@@ -605,7 +605,7 @@ public final class New extends MPanel {
     	if (jlbl_stroke != null) {
 
     		if (bi == null) {
-    			bi = Util.getStroke(jlbl_stroke );;
+    			bi = Util.getStroke(jlbl_stroke);
     		} else {
     			bi = Util.getStrokeMove(bi, jlbl_stroke, dX, dY);
     		}

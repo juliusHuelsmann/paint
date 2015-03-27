@@ -374,124 +374,121 @@ public final class Util {
 		} 
 		
 		
-		
-		
 		final int strokeDistance = 10;
 		if (_bi.getWidth() > 0 
 				&& _bi.getHeight() > 0) {
 			
 
-			Rectangle rec_maintain = new Rectangle();
-			Rectangle rec_new1 = new Rectangle();
-			Rectangle rec_new2 = new Rectangle();
+			if (Math.abs(_dX) > _bi.getWidth() / 2 || Math.abs(_dY) > _bi.getHeight() / 2) {
 
-			if (_dX > 0) {
-				
-				System.out.println("c11");
-				rec_maintain.x = 0;
-				rec_maintain.width = _bi.getWidth() - _dX;
-				
-				rec_new1.x = rec_maintain.width;
-				rec_new1.width = _dX;
-				rec_new1.height = _bi.getHeight();
-				rec_new1.y = 0;
+				_bi = getStroke(jlbl_stroke);
+				return _bi;
 			} else {
+				Rectangle rec_maintainStart = new Rectangle();
+				Rectangle rec_maintainDest = new Rectangle();
+				Rectangle rec_new1 = new Rectangle();
+				Rectangle rec_new2 = new Rectangle();
 
-				System.out.println("c12");
-				rec_maintain.x = -_dX;
-				rec_maintain.width = _bi.getWidth() + _dX;
+				if (_dX > 0) {
+
+					rec_maintainStart.x = _dX;
+					rec_maintainDest.x = 0;
+					rec_maintainDest.width = _bi.getWidth() - _dX;
+
+					rec_new1.x = rec_maintainDest.width;
+					rec_new1.width = _dX;
+					rec_new1.height = _bi.getHeight();
+					rec_new1.y = 0;
+				} else {
+
+					rec_maintainStart.x = 0;
+					rec_maintainDest.x = -_dX;
+					rec_maintainDest.width = _bi.getWidth() + _dX;
+
+					rec_new1.x = 0;
+					rec_new1.width = -_dX;
+					rec_new1.height = _bi.getHeight();
+					rec_new1.y = 0;
+				}
+
+				if (_dY > 0) {
+					
+
+					rec_maintainStart.y = _dY;
+					rec_maintainDest.y = 0;
+					rec_maintainDest.height = _bi.getHeight() - _dY;
+
+					rec_new2.y = _bi.getHeight() - _dY;
+					rec_new2.height = _dY;
+					rec_new2.x = 0;
+					rec_new2.width = _bi.getWidth();
+				} else {
+					rec_maintainStart.y = 0;
+					rec_maintainDest.y = -_dY;
+					rec_maintainDest.height = _bi.getHeight() + _dY;
+
+					rec_new2.y = 0;
+					rec_new2.height = -_dY;
+					rec_new2.x = 0;
+					rec_new2.width = _bi.getWidth();
+				}
+				rec_maintainStart.width = rec_maintainDest.width;
+				rec_maintainStart.height = rec_maintainDest.height;
+
+		        
+				int[] bt = new int[rec_maintainDest.width * rec_maintainDest.height];
+				bt = _bi.getRGB(rec_maintainStart.x, rec_maintainStart.y, rec_maintainStart.width, rec_maintainStart.height, bt, 1, rec_maintainStart.width - 1);
 				
-				rec_new1.x = 0;
-				rec_new1.width = -_dX;
-				rec_new1.height = _bi.getHeight();
-				rec_new1.y = 0;
-			}
-
-			if (_dY > 0) {
-				
-
-				System.out.println("c21");
-				rec_maintain.y = 0;
-				rec_maintain.height = _bi.getHeight() - _dY;
-				
-				rec_new2.y = rec_maintain.height;
-				rec_new2.height = _dY;
-				rec_new2.x = 0;
-				rec_new2.width = _bi.getWidth();
-			} else {
-				System.out.println("c22");
-				rec_maintain.y = -_dY;
-				rec_maintain.height = _bi.getHeight() + _dY;
-
-				rec_new2.y = 0;
-				rec_new2.height = -_dY;
-				rec_new2.x = 0;
-				rec_new2.width = _bi.getWidth();
-			}
+				_bi.setRGB(rec_maintainDest.x, rec_maintainDest.y,rec_maintainDest.width, rec_maintainDest.height, bt, 1, rec_maintainDest.width - 1);
 
 
-	        for (int x = rec_new1.x; x < rec_new1.x + rec_new1.width; x++) {
-	            for (int y = rec_new1.y; y < rec_new1.y + rec_new1.height; y++) {
-	            	_bi.setRGB(x, y, Color.red.getRGB());
-	            }
-	        }
+		        for (int x = rec_new1.x; x < rec_new1.x + rec_new1.width; x++) {
+		            for (int y = rec_new1.y; y < rec_new1.y + rec_new1.height; y++) {
+		            	
+		            	try{
+		            		if ( (x + jlbl_stroke.getLocationOnScreen().x
+			            			+ y + jlbl_stroke.getLocationOnScreen().y) 
+			            			% strokeDistance == 0) {
 
-	        for (int x = rec_new2.x; x < rec_new2.x + rec_new2.width; x++) {
-	            for (int y = rec_new2.y; y < rec_new2.y + rec_new2.height; y++) {
-	            	_bi.setRGB(x, y, Color.red.getRGB());
-	            }
-	        }
+		            			_bi.setRGB(x, y, new Color(10,10,10, 10).getRGB());
+			            	} else {
 
-	        for (int x = rec_maintain.x; x < rec_maintain.x + rec_maintain.width; x++) {
-	            for (int y = rec_maintain.y; y < rec_maintain.y + rec_maintain.height; y++) {
-//	            	_bi.setRGB(x, y, Color.green.getRGB());
-	            }
-	        }
-	        if (0 == 0)
-	        return _bi;
-			
-			
-			
-			//TODO: beides falsch
-			int[] bt = new int[rec_maintain.width * rec_maintain.height];
-			bt = _bi.getRGB(rec_maintain.x, rec_maintain.y, rec_maintain.width, rec_maintain.height, bt, 1, rec_maintain.width - 1);
-			for (int i = 0; i < bt.length; i++) {
-				bt[i] = new Color(new Random(0).nextInt(254), new Random(0).nextInt(254), 255).getRGB();
-			}
-			
-			_bi.setRGB(rec_maintain.x + _dX, rec_maintain.y + _dY,rec_maintain.width, rec_maintain.height, bt, 1, rec_maintain.width - 1);
-
-			
-	        for (int x = rec_new1.x; x <= rec_new1.x + rec_new1.width; x++) {
-
-	            for (int y = rec_new1.y; y <= rec_new1.y + rec_new1.height; y++) {
-	            	
-	            	try{
-	            		if ( (x + jlbl_stroke.getLocationOnScreen().x
-		            			+ y + jlbl_stroke.getLocationOnScreen().y) 
-		            			% strokeDistance == 0) {
-
-	            			System.out.println("pt");
-	            			_bi.setRGB(x, y, new Color(10,10,10, 10).getRGB());
-		            	} else {
-
-	            			System.out.println("black");
-		            		_bi.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+			            		_bi.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+			            	}
+		            	} catch (IllegalComponentStateException e) {
+		            		
+		            		//interrupt
+		            		x = rec_new1.width;
+		            		y = rec_new1.height;
 		            	}
-	            	} catch (IllegalComponentStateException e) {
-	            		
-	            		//interrupt
-	            		x = rec_new1.width;
-	            		y = rec_new1.height;
-	            	}
-	            
-	            }	
-	        }
-	        jlbl_stroke.setIcon(new ImageIcon(_bi));
-	        System.out.println("return");
-	        return _bi;
+		            }	
+		        }
+		        for (int x = rec_new2.x; x < rec_new2.x + rec_new2.width; x++) {
+		            for (int y = rec_new2.y; y < rec_new2.y + rec_new2.height; y++) {
+		            	
+		            	try{
+		            		if ( (x + jlbl_stroke.getLocationOnScreen().x
+			            			+ y + jlbl_stroke.getLocationOnScreen().y) 
+			            			% strokeDistance == 0) {
+
+		            			_bi.setRGB(x, y, new Color(10,10,10, 10).getRGB());
+			            	} else {
+
+			            		_bi.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+			            	}
+		            	} catch (IllegalComponentStateException e) {
+		            		
+		            		//interrupt
+		            		x = rec_new2.width;
+		            		y = rec_new2.height;
+		            	}
+		            }	
+		        }
+		        jlbl_stroke.setIcon(new ImageIcon(_bi));
+		        return _bi;
+			}
 		}
-		return null;
+		return getStroke(jlbl_stroke);
 	}   
 	
 	

@@ -25,6 +25,7 @@ import view.util.mega.MLabel;
 import control.ControlPaint;
 import control.ControlView;
 import control.util.MousePositionTracker;
+import control.util.WindowMover;
 
 
 /**
@@ -47,6 +48,7 @@ import control.util.MousePositionTracker;
      */
     private final int dsgn_maxFadeIn = 150, dsgn_max_moveTitle = 100;
 	
+    
 	/**
 	 * JLabel which contains the program title (for start fade in) and JLabel
 	 * for painting border of JFrame if non-fullscreen mode is enabled.
@@ -94,6 +96,12 @@ import control.util.MousePositionTracker;
         super.add(jlbl_backgroundStroke);
 
 
+        jlbl_border = new MLabel();
+        jlbl_border.setOpaque(false);
+        jlbl_border.setBorder(BorderFactory.createLineBorder(Color.gray));
+        jlbl_border.setFocusable(false);
+        super.add(jlbl_border);
+        
         Thread t = null;
         if (ViewSettings.isFullscreen()) {
 
@@ -105,17 +113,19 @@ import control.util.MousePositionTracker;
             t =  fadeIn();
 
         } else {
-            MousePositionTracker mpt = new MousePositionTracker(this);
-            super.addMouseListener(mpt);
-            super.addMouseMotionListener(mpt);
+//            MousePositionTracker mpt = new MousePositionTracker(this);
+//            super.addMouseListener(mpt);
+//            super.addMouseMotionListener(mpt);
+
+            WindowMover wmv = new WindowMover(this);
+            wmv.setActivityListener(cv);
+            super.addMouseListener(wmv);
+            super.addMouseMotionListener(wmv);
+            
         }
 
         
-        jlbl_border = new MLabel();
-        jlbl_border.setOpaque(false);
-        jlbl_border.setBorder(BorderFactory.createLineBorder(Color.gray));
-        jlbl_border.setFocusable(false);
-        super.add(jlbl_border);
+
         
         //exit
         jbtn_exit = new MButton();
@@ -407,7 +417,7 @@ import control.util.MousePositionTracker;
         
 	}
 	
-	
+
 	
 	/**
 	 * set FullscreenMode.
@@ -445,6 +455,45 @@ import control.util.MousePositionTracker;
         repaint();
         
         device.setFullScreenWindow(this);
+        setVisible(false);
+	}
+	
+	/**
+	 * set FullscreenMode.
+	 */
+	public void setNotFullscreen() {
+
+		//initialize instances
+        GraphicsEnvironment ge 
+        = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice device 
+        = ge.getDefaultScreenDevice();
+ 
+        //if fullScreen modus is supported
+        if (device.isFullScreenSupported()) {
+            if (!isUndecorated()) {
+
+                setUndecorated(true);
+            }
+            device.setFullScreenWindow(null);
+        } else {
+            device.setFullScreenWindow(null);
+        }
+        
+        repaint();
+        setVisible(false);
+        dispose();
+        setUndecorated(false);
+        repaint();
+    
+        if (isDisplayable()) {
+            setVisible(false);
+            dispose();
+        }
+        setUndecorated(true);
+        repaint();
+        
+        device.setFullScreenWindow(null);
         setVisible(false);
 	}
 

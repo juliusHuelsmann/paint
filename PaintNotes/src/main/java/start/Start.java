@@ -118,11 +118,12 @@ public final class Start {
 //        		
 //        		Afterwards chmod a+x .../paint.contract
 //        		
+//        		the file content:
 //        		[Contractor Entry]
-//        				Name=Paint
+//        		Name=Paint
 //        				Icon=gksu-root-terminal
 //        				Description=Open paint
-//        				MimeType=inode;application/x-sh;image/png;application/x-executable;
+//        				MimeType=image/png;image/jpg;
 //        				Exec=java -jar /home/juli/Software/file.jar %U
 //        				Gettext-Domain=java
         		

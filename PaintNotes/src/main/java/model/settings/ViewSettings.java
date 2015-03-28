@@ -252,8 +252,12 @@ public final class ViewSettings {
             1,  view_heightTB_visible 
             + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
             getSize_jframe().width - TWENTY_FIFE - TEN - 2, 
-            getSize_jframe().height - getSize_jframe().height / FIFE 
-            - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
+            
+//            getSize_jframe().height - getSize_jframe().height / FIFE 
+//            - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
+    
+    		getSize_jframe().height - (view_heightTB_visible 
+            + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y + VIEW_SIZE_SP));
             //the last 25 is the size 
     /**
      * the bounds of the Page.
@@ -387,18 +391,18 @@ public final class ViewSettings {
                 2, h1, h2, h3);
 
          view_bounds_page_open = new Rectangle(
-                1, 1 + view_heightTB_visible 
-                + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
-                getSize_jframe().width - TWENTY_FIFE - TEN - 2, 
-                getSize_jframe().height - getSize_jframe().height / FIFE 
-                - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
+                 1, 1 + view_heightTB_visible 
+                 + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
+                 getSize_jframe().width - TWENTY_FIFE - TEN - 2, 
+                 getSize_jframe().height - getSize_jframe().height / FIFE 
+                 - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
                 //the last 25 is the size 
          view_bounds_page_closed = new Rectangle(
-                view_bounds_page_open.x, 
-                view_bounds_page_open.y - view_heightTB_visible, 
-                view_bounds_page_open.width, 
-                view_bounds_page_open.height + view_heightTB_visible 
-                - TWENTY_FIFE);
+                 view_bounds_page_open.x, 
+                 view_bounds_page_open.y - view_heightTB_visible, 
+                 view_bounds_page_open.width, 
+                 view_bounds_page_open.height + view_heightTB_visible 
+                 - TWENTY_FIFE);
         
          view_bounds_page = new Rectangle(
                 view_bounds_page_open);

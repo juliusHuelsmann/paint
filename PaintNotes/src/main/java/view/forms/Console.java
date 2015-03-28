@@ -71,7 +71,7 @@ public final class Console extends MPanel {
 		super.addMouseMotionListener(mpt);
 		super.setSize(width , height);
 		super.setLocation(0, 0);
-		super.setVisible(true);
+		super.setVisible(false);
 
 		/*
 		 * The text output.

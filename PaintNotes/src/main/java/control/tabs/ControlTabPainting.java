@@ -883,4 +883,14 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
 		}
 	}
 
+
+	public ControlPaint getControlPaint() {
+		return controlPaint;
+	}
+
+
+	public void setControlPaint(ControlPaint controlPaint) {
+		this.controlPaint = controlPaint;
+	}
+
 }

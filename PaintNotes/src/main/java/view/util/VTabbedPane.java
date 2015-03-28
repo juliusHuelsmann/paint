@@ -933,6 +933,32 @@ public class VTabbedPane extends MPanel {
 
 
     /**
+     * set size and location of contents depending on the current
+     * rotation given in parameter.
+     * 
+     */
+    public final void flipSons() {
+
+    	
+    	flip();
+            
+
+            //set size and location of headlines and tabs.
+	        for (int index = 0; jbtn_stuffHeadline != null 
+	                && index < jbtn_stuffHeadline.length; index++) {
+	            
+	        	for (Component k : jpnl_stuff[index].getComponents()) {
+	        		if (k instanceof Tab) {
+	        			((Tab) k).setSize(k.getWidth(), k.getHeight());
+	        		}
+	        		
+	        	}
+	        }
+
+	}
+
+
+    /**
      * @return the openTab
      */
     public final int getOpenTab() {

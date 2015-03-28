@@ -38,8 +38,17 @@ public abstract class Tab extends MPanel {
         //initialize the Labels
         jlbl_information = new MLabel[_amount];
         jlbl_separation = new MLabel[_amount];
+    	this.applyMySize();
+    }
+    
+    private void applyMySize() {
+
         super.setSize(ViewSettings.getView_widthTb(), 
                 ViewSettings.getView_heightTab());
+    }
+    
+    public void applySize() {
+    	this.applyMySize();
     }
     
 

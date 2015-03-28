@@ -303,7 +303,7 @@ import view.util.mega.MButton;
         jlbl_background2.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionBG.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionPainting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
-
+        
         jlbl_background.setIcon(new ImageIcon(Status.getBi_transparency()));
 
 

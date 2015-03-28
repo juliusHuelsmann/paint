@@ -56,16 +56,27 @@ public final class Tabs extends VTabbedPane {
     	super(_view);
     }
     
+    
+    public void reApplySize() {
+
+        super.setSize(
+                ViewSettings.getView_widthTb(), 
+                ViewSettings.getView_heightTB(),
+                ViewSettings.getView_heightTB_visible());
+        
+        if (tab_paint != null) {
+
+            tab_paint.applySize();
+        }
+    }
+    
     public void initialize(View _view, ControlPaint _cp){
     	super.setTabbedListener(_cp.getcTabs());
 
 
         
         //TabbedPane for different pages
-        super.setSize(
-                ViewSettings.getView_widthTb(), 
-                ViewSettings.getView_heightTB(),
-                ViewSettings.getView_heightTB_visible());
+    	reApplySize();
         super.setOpaque(true);
         super.setVisible(false);
         super.setFocusable(false);

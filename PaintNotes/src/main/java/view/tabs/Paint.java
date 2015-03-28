@@ -120,6 +120,20 @@ public final class Paint extends Tab {
 		it_stift1.setIcon(Status.getPenSelected1().getIconPath());
 		it_stift2.setIcon(Status.getPenSelected2().getIconPath());
 	}
+	
+	
+	public void applySize() {
+		super.applySize();
+		int x = initializeClipboard(0, false, null, null);
+        x = initializeHistory(x, false, null, null);
+		x = initializePagePens(null, x, false, null, null, null);
+        x = initializePageColors(x, false, null, null, null);
+		x = initializeZoom(x, false, null, null);
+        x = initializeFileOperations(x, false, null, null);
+
+		it_stift1.setIcon(Status.getPenSelected1().getIconPath());
+		it_stift2.setIcon(Status.getPenSelected2().getIconPath());
+	}
 
 	/**
 	 * initialize buttons such as 
@@ -141,7 +155,6 @@ public final class Paint extends Tab {
         }
 	    
 
-
         tb_cut.setSize(ViewSettings.getItemWidth(), 
                 ViewSettings.getItemHeight());
         tb_paste.setSize(ViewSettings.getItemWidth(), 
@@ -155,28 +168,28 @@ public final class Paint extends Tab {
 	        //paste
 	        tb_paste.setBorder(false);
 	        tb_paste.addActionListener(cp);
-	        initializeTextButton(tb_paste,
-	                TextFactory.getInstance().getTextViewTb_paste(),
-	                Constants.VIEW_TB_PASTE_PATH, 0, _controlPaintStatus);
 	        tb_paste.setActivable(false);
 
 	        //copy
 	        tb_copy.setBorder(false);
 	        tb_copy.addActionListener(cp);
-	        initializeTextButton(tb_copy,
-	                TextFactory.getInstance().getTextViewTb_copy(),
-	                Constants.VIEW_TB_COPY_PATH, 0, _controlPaintStatus);
 	        tb_copy.setActivable(false);
 
 	        //cut
 	        tb_cut.setBorder(false);
 	        tb_cut.addActionListener(cp);
-	        initializeTextButton(tb_cut,
-	                TextFactory.getInstance().getTextViewTb_cut(),
-	                Constants.VIEW_TB_CUT_PATH, 0, _controlPaintStatus);
 	        tb_cut.setActivable(false);
 
 	    }
+        initializeTextButton(tb_paste,
+                TextFactory.getInstance().getTextViewTb_paste(),
+                Constants.VIEW_TB_PASTE_PATH, 0, _controlPaintStatus, _paint);
+        initializeTextButton(tb_copy,
+                TextFactory.getInstance().getTextViewTb_copy(),
+                Constants.VIEW_TB_COPY_PATH, 0, _controlPaintStatus, _paint);
+        initializeTextButton(tb_cut,
+                TextFactory.getInstance().getTextViewTb_cut(),
+                Constants.VIEW_TB_CUT_PATH, 0, _controlPaintStatus, _paint);
 	    
 	    int xLocationSeparation;
 	    
@@ -235,20 +248,21 @@ public final class Paint extends Tab {
 	    if (_paint) {
 
 	        tb_prev.setBorder(false);
-	        initializeTextButton(tb_prev,
-	                "previous",
-	                Constants.VIEW_TB_PREV_PATH, 0, _controlPaintStatus);
 
 	        tb_next.setBorder(false);
-	        initializeTextButton(tb_next,
-	                "next",
-	                Constants.VIEW_TB_NEXT_PATH, 0, _controlPaintStatus);
 
 
 	        tb_prev.setActivable(false);
 	        tb_next.setActivable(false);
 	    }
 
+        initializeTextButton(tb_next,
+                "next",
+                Constants.VIEW_TB_NEXT_PATH, 0, _controlPaintStatus, _paint);
+
+        initializeTextButton(tb_prev,
+                "previous",
+                Constants.VIEW_TB_PREV_PATH, 0, _controlPaintStatus, _paint);
             int xLocationSeparation;
 
                 tb_prev.setLocation(_x, ViewSettings.getDistanceBetweenItems());
@@ -369,26 +383,19 @@ public final class Paint extends Tab {
             it_selection.setText("Auswahl");
             it_selection.setBorder(false);
             it_selection.setActivable();
-            it_selection.setIcon(Constants.VIEW_TB_SELECT_LINE_PATH);
             it_selection.setItemsInRow((byte) (2 + 1));
             it_selection.removeScroll();
 
             tb_selectionLine.setBorder(false);
             it_selection.add(tb_selectionLine);
-            initializeTextButtonOhneAdd(tb_selectionLine,
-                    "line", Constants.VIEW_TB_SELECT_LINE_PATH, _controlPaintStatus);
             tb_selectionLine.setOpaque(false);
 
             tb_selectionCurve.setBorder(false);
             it_selection.add(tb_selectionCurve);
-            initializeTextButtonOhneAdd(tb_selectionCurve, "curve",
-                    Constants.VIEW_TB_SELECT_CURVE_PATH, _controlPaintStatus);
             tb_selectionCurve.setOpaque(false);
 
             tb_selectionMagic.setBorder(false);
             it_selection.add(tb_selectionMagic);
-            initializeTextButtonOhneAdd(tb_selectionMagic, "magic",
-                    Constants.VIEW_TB_SELECT_MAGIC_PATH, _controlPaintStatus);
             tb_selectionMagic.setOpaque(false);
         
             JCheckBox jcb_whole = new JCheckBox("whole");
@@ -416,19 +423,13 @@ public final class Paint extends Tab {
             super.add(it_selection);
 
             tb_pipette.setBorder(false);
-            initializeTextButton(tb_pipette, "pipette",
-                    Constants.VIEW_TB_PIPETTE_PATH, 0, _controlPaintStatus);
             tb_pipette.setActivable(true);
 
             tb_fill.setActivable(true);
             tb_fill.setBorder(false);
-            initializeTextButton(tb_fill, "fuellen",
-                    Constants.VIEW_TB_FILL_PATH, 0, _controlPaintStatus);
             tb_fill.setActivable(true);
 
             tb_move.setBorder(false);
-            initializeTextButton(tb_move, "nothing",
-                    Constants.VIEW_TB_MOVE_PATH, 0, _controlPaintStatus);
             tb_move.setActivable(true);
     
 
@@ -446,8 +447,6 @@ public final class Paint extends Tab {
             		tb_copy.getHeight());
             tb_eraseAll.setBorder(false);
             it_erase.add(tb_eraseAll);
-            initializeTextButtonOhneAdd(tb_eraseAll,
-                    "entire PO", Constants.VIEW_TB_PIPETTE_PATH, _controlPaintStatus);
             tb_eraseAll.setActivable(true);
             tb_eraseAll.setOpaque(false);
             
@@ -457,13 +456,28 @@ public final class Paint extends Tab {
             		tb_copy.getHeight());
             tb_eraseDestroy.setBorder(false);
             it_erase.add(tb_eraseDestroy);
-            initializeTextButtonOhneAdd(tb_eraseDestroy,
-                    "destroy", Constants.VIEW_TB_PIPETTE_PATH, _controlPaintStatus);
             tb_eraseDestroy.setActivable(true);
             tb_eraseDestroy.setOpaque(false);
 
             //Constants.VIEW_TB_PIPETTE_PATH
         }
+        it_selection.setIcon(Constants.VIEW_TB_SELECT_LINE_PATH);
+        initializeTextButtonOhneAdd(tb_selectionLine,
+                "line", Constants.VIEW_TB_SELECT_LINE_PATH, _controlPaintStatus);
+        initializeTextButtonOhneAdd(tb_selectionCurve, "curve",
+                Constants.VIEW_TB_SELECT_CURVE_PATH, _controlPaintStatus);
+        initializeTextButtonOhneAdd(tb_selectionMagic, "magic",
+                Constants.VIEW_TB_SELECT_MAGIC_PATH, _controlPaintStatus);
+        initializeTextButtonOhneAdd(tb_eraseAll,
+                "entire PO", Constants.VIEW_TB_PIPETTE_PATH, _controlPaintStatus);
+        initializeTextButtonOhneAdd(tb_eraseDestroy,
+                "destroy", Constants.VIEW_TB_PIPETTE_PATH, _controlPaintStatus);
+        initializeTextButton(tb_pipette, "pipette",
+                Constants.VIEW_TB_PIPETTE_PATH, 0, _controlPaintStatus, _paint);
+        initializeTextButton(tb_fill, "fuellen",
+                Constants.VIEW_TB_FILL_PATH, 0, _controlPaintStatus, _paint);
+        initializeTextButton(tb_move, "nothing",
+                Constants.VIEW_TB_MOVE_PATH, 0, _controlPaintStatus, _paint);
         
 
             it_stift1.setLocation(_x, ViewSettings.getDistanceBetweenItems());
@@ -502,28 +516,36 @@ public final class Paint extends Tab {
     		final ControlTabPainting _cPaint,
     		final MenuListener _ml,
     		final CPaintStatus _controlPaintStatus) {
-    	//the first color for the first pen
-    	tb_color1 = new Item1Button(null);
-    	tb_color1.setOpaque(true);
-    	tb_color1.addMouseListener(_controlPaintStatus);
-    	tb_color1.setBorder(BorderFactory.createCompoundBorder(
-    	        new LineBorder(Color.black), new LineBorder(Color.white)));
+    	
+    	
+    	if (_paint) {
+    		//the first color for the first pen
+        	tb_color1 = new Item1Button(null);
+        	tb_color1.setOpaque(true);
+        	tb_color1.addMouseListener(_controlPaintStatus);
+        	tb_color1.setBorder(BorderFactory.createCompoundBorder(
+        	        new LineBorder(Color.black), new LineBorder(Color.white)));
+
+        	tb_color1.setText("Farbe 1");
+        	super.add(tb_color1);
+        	
+
+        	//the second color for the second pen
+        	tb_color2 = new Item1Button(null);
+        	tb_color2.setOpaque(true);
+        	tb_color2.addMouseListener(_controlPaintStatus);
+        	tb_color2.setBorder(BorderFactory.createCompoundBorder(
+        	        new LineBorder(Color.black), new LineBorder(Color.white)));
+        	tb_color2.setText("Farbe 2");
+        	super.add(tb_color2);
+    	}
+    	
     	tb_color1.setLocation(_x, ViewSettings.getDistanceBetweenItems());
     	tb_color1.setSize(ViewSettings.getItemMenu1Width(), 
     	        ViewSettings.getItemMenu1Height());
-    	tb_color1.setText("Farbe 1");
-    	super.add(tb_color1);
-    	//the second color for the second pen
-    	tb_color2 = new Item1Button(null);
-    	tb_color2.setOpaque(true);
-    	tb_color2.addMouseListener(_controlPaintStatus);
-    	tb_color2.setBorder(BorderFactory.createCompoundBorder(
-    	        new LineBorder(Color.black), new LineBorder(Color.white)));
     	tb_color2.setLocation(tb_color1.getWidth() + tb_color1.getX() 
     	        + 2 + 2 + 2 + 1, ViewSettings.getDistanceBetweenItems());
     	tb_color2.setSize(tb_color1.getWidth(), tb_color1.getHeight());
-    	tb_color2.setText("Farbe 2");
-    	super.add(tb_color2);
     
     	final int distanceBetweenColors = 2;
     	final int width = (2 + 2 + 1) * (2 + 2 + 1) - 2 - 2;
@@ -531,123 +553,143 @@ public final class Paint extends Tab {
     	final int height = ViewSettings.getItemMenu1Height() / amountOfItems
     	        -  distanceBetweenColors;
     	final int anzInR = 7;
-    	jbtn_colors = new MButton[anzInR * (2 + 2)];
+    	
+    	if (_paint) {
+    		jbtn_colors = new MButton[anzInR * (2 + 2)];
+
+    	}
+    	
     	for (int i = 0; i < jbtn_colors.length; i++) {
-    		jbtn_colors[i] = new MButton();
+    		
+    		if (_paint ) {
+    			jbtn_colors[i] = new MButton();
+    		}
+    		
     		jbtn_colors[i].setBounds(tb_color2.getX() + tb_color2.getWidth() 
     		        + distanceBetweenColors 
     		        + (i % anzInR) * (width + distanceBetweenColors),
     		        distanceBetweenColors + (i / anzInR) 
     		        * (height + distanceBetweenColors), width, height);
-    		jbtn_colors[i].setOpaque(true);
-    		jbtn_colors[i].addMouseListener(
-    		        _controlPaintStatus);
-    		jbtn_colors[i].addMouseListener(_cPaint);
-    		jbtn_colors[i].setBorder(BorderFactory.createCompoundBorder(
-    		        new LineBorder(Color.black), new LineBorder(Color.white)));
-    		super.add(jbtn_colors[i]);
+    		
+    		if (_paint) {
+
+        		jbtn_colors[i].setOpaque(true);
+        		jbtn_colors[i].addMouseListener(
+        		        _controlPaintStatus);
+        		jbtn_colors[i].addMouseListener(_cPaint);
+        		jbtn_colors[i].setBorder(BorderFactory.createCompoundBorder(
+        		        new LineBorder(Color.black), new LineBorder(Color.white)));
+        		super.add(jbtn_colors[i]);
+        	}
     	}
-    	int i = 0;
-    	final int three = 3;
-    	final Color 
-    	c1n0 = Color.black,
-    	c1n1 = new Color(80, 80, 80),
-    	c1n2 = new Color(160, 160, 160),
-    	c1n3 = Color.white,
     	
-    	c2n0 = new Color(23, 32, 164),
-    	c2n1 = new Color(63, 72, 204), 
-    	c2n2 = new Color(103, 112, 244),
-    	c2n3 = new Color(153, 162, 255), 
+    	if (_paint) {
     	
-    	c3n0 = new Color(180, 10, 10),
-    	c3n1 = new Color(200, 20, 20), 
-    	c3n2 = new Color(250, 75, 75),
-    	c3n3 = new Color(255, 100, 100), 
+	    	int i = 0;
+	    	final int three = 3;
+	    	final Color 
+	    	c1n0 = Color.black,
+	    	c1n1 = new Color(80, 80, 80),
+	    	c1n2 = new Color(160, 160, 160),
+	    	c1n3 = Color.white,
+	    	
+	    	c2n0 = new Color(23, 32, 164),
+	    	c2n1 = new Color(63, 72, 204), 
+	    	c2n2 = new Color(103, 112, 244),
+	    	c2n3 = new Color(153, 162, 255), 
+	    	
+	    	c3n0 = new Color(180, 10, 10),
+	    	c3n1 = new Color(200, 20, 20), 
+	    	c3n2 = new Color(250, 75, 75),
+	    	c3n3 = new Color(255, 100, 100), 
+	    	
+	    	c4n0 = new Color(24, 157, 45),
+	    	c4n1 = new Color(34, 177, 67), 
+	    	c4n2 = new Color(64, 197, 97),
+	    	c4n3 = new Color(104, 255, 147), 
+	    	
+	    	c5n0 = new Color(235, 107, 73),
+	    	c5n1 = new Color(255, 127, 93), 
+	    	c5n2 = new Color(255, 147, 113),
+	    	c5n3 = new Color(255, 187, 153), 
+	    	
+	    	c6n0 = new Color(133, 33, 134),
+	    	c6n1 = new Color(163, 73, 164), 
+	    	c6n2 = new Color(193, 103, 194),
+	    	c6n3 = new Color(255, 153, 254),
+	    	
+	    	c7n0 = new Color(112, 146, 190),
+	    	c7n1 = new Color(200, 191, 231), 
+	    	c7n2 = new Color(255, 201, 14),
+	    	c7n3 = new Color(120, 74, 50);
+	    	
+	    	//schwarz bis grau
+	    	jbtn_colors[i + anzInR * 0].setBackground(c1n0);
+	    	jbtn_colors[i + anzInR * 1].setBackground(c1n1);
+	    	jbtn_colors[i + anzInR * 2].setBackground(c1n2);
+	    	jbtn_colors[i + anzInR * three].setBackground(c1n3);
+	    	//blue
+	    	i++;
+	    	jbtn_colors[i + anzInR * 0].setBackground(c2n0);
+	    	jbtn_colors[i + anzInR * 1].setBackground(c2n1);
+	    	jbtn_colors[i + anzInR * 2].setBackground(c2n2);
+	    	jbtn_colors[i + anzInR * three].setBackground(c2n3);
+	    
+	    	//red
+	    	i++;
+	    	jbtn_colors[i + anzInR * 0].setBackground(c3n0);
+	    	jbtn_colors[i + anzInR * 1].setBackground(c3n1);
+	    	jbtn_colors[i + anzInR * 2].setBackground(c3n2);
+	    	jbtn_colors[i + anzInR * three].setBackground(c3n3);
+	    	//green
+	    	i++;
+	    	jbtn_colors[i + anzInR * 0].setBackground(c4n0);
+	    	jbtn_colors[i + anzInR * 1].setBackground(c4n1);
+	    	jbtn_colors[i + anzInR * 2].setBackground(c4n2);
+	    	jbtn_colors[i + anzInR * three].setBackground(c4n3);
+	    
+	    	//orange
+	    	i++;
+	    	jbtn_colors[i + anzInR * 0].setBackground(c5n0);
+	    	jbtn_colors[i + anzInR * 1].setBackground(c5n1);
+	    	jbtn_colors[i + anzInR * 2].setBackground(c5n2);
+	    	jbtn_colors[i + anzInR * three].setBackground(c5n3);
+	    	//pink
+	    	i++;
+	    	jbtn_colors[i + anzInR * 0].setBackground(c6n0);
+	    	jbtn_colors[i + anzInR * 1].setBackground(c6n1);
+	    	jbtn_colors[i + anzInR * 2].setBackground(c6n2);
+	    	jbtn_colors[i + anzInR * three].setBackground(c6n3);
+	    
+	    	i++;
+	    	jbtn_colors[i + anzInR * 0].setBackground(c7n0);
+	    	jbtn_colors[i + anzInR * 1].setBackground(c7n1);
+	    	jbtn_colors[i + anzInR * 2].setBackground(c7n2);
+	    	jbtn_colors[i + anzInR * three].setBackground(c7n3);
+
+	    	it_color = new Item1Menu(true);
+	    	it_color.removeScroll();
+	    	it_color.setMenuListener(_ml);
+	    	it_color.addMouseListener(_controlPaintStatus);
+	    	it_color.setBorder(false);
+	    	it_color.setText("+ Farben");
+	        it_color.getMPanel().add(new VColorPanel(jbtn_colors, _ml,
+	        		_controlPaintStatus));
+	        it_color.setBorder(false);
+	        super.add(it_color);
+    	}
     	
-    	c4n0 = new Color(24, 157, 45),
-    	c4n1 = new Color(34, 177, 67), 
-    	c4n2 = new Color(64, 197, 97),
-    	c4n3 = new Color(104, 255, 147), 
-    	
-    	c5n0 = new Color(235, 107, 73),
-    	c5n1 = new Color(255, 127, 93), 
-    	c5n2 = new Color(255, 147, 113),
-    	c5n3 = new Color(255, 187, 153), 
-    	
-    	c6n0 = new Color(133, 33, 134),
-    	c6n1 = new Color(163, 73, 164), 
-    	c6n2 = new Color(193, 103, 194),
-    	c6n3 = new Color(255, 153, 254),
-    	
-    	c7n0 = new Color(112, 146, 190),
-    	c7n1 = new Color(200, 191, 231), 
-    	c7n2 = new Color(255, 201, 14),
-    	c7n3 = new Color(120, 74, 50);
-    	
-    	//schwarz bis grau
-    	jbtn_colors[i + anzInR * 0].setBackground(c1n0);
-    	jbtn_colors[i + anzInR * 1].setBackground(c1n1);
-    	jbtn_colors[i + anzInR * 2].setBackground(c1n2);
-    	jbtn_colors[i + anzInR * three].setBackground(c1n3);
-    	//blue
-    	i++;
-    	jbtn_colors[i + anzInR * 0].setBackground(c2n0);
-    	jbtn_colors[i + anzInR * 1].setBackground(c2n1);
-    	jbtn_colors[i + anzInR * 2].setBackground(c2n2);
-    	jbtn_colors[i + anzInR * three].setBackground(c2n3);
-    
-    	//red
-    	i++;
-    	jbtn_colors[i + anzInR * 0].setBackground(c3n0);
-    	jbtn_colors[i + anzInR * 1].setBackground(c3n1);
-    	jbtn_colors[i + anzInR * 2].setBackground(c3n2);
-    	jbtn_colors[i + anzInR * three].setBackground(c3n3);
-    	//green
-    	i++;
-    	jbtn_colors[i + anzInR * 0].setBackground(c4n0);
-    	jbtn_colors[i + anzInR * 1].setBackground(c4n1);
-    	jbtn_colors[i + anzInR * 2].setBackground(c4n2);
-    	jbtn_colors[i + anzInR * three].setBackground(c4n3);
-    
-    	//orange
-    	i++;
-    	jbtn_colors[i + anzInR * 0].setBackground(c5n0);
-    	jbtn_colors[i + anzInR * 1].setBackground(c5n1);
-    	jbtn_colors[i + anzInR * 2].setBackground(c5n2);
-    	jbtn_colors[i + anzInR * three].setBackground(c5n3);
-    	//pink
-    	i++;
-    	jbtn_colors[i + anzInR * 0].setBackground(c6n0);
-    	jbtn_colors[i + anzInR * 1].setBackground(c6n1);
-    	jbtn_colors[i + anzInR * 2].setBackground(c6n2);
-    	jbtn_colors[i + anzInR * three].setBackground(c6n3);
-    
-    	i++;
-    	jbtn_colors[i + anzInR * 0].setBackground(c7n0);
-    	jbtn_colors[i + anzInR * 1].setBackground(c7n1);
-    	jbtn_colors[i + anzInR * 2].setBackground(c7n2);
-    	jbtn_colors[i + anzInR * three].setBackground(c7n3);
-    
     	//
-    	it_color = new Item1Menu(true);
-    	it_color.removeScroll();
-    	it_color.setMenuListener(_ml);
-    	it_color.addMouseListener(_controlPaintStatus);
         it_color.setSize(new Dimension(ViewSettings.getSIZE_PNL_CLR().width 
         		+ 20,
         		ViewSettings.getSIZE_PNL_CLR().height));
-    	it_color.setBorder(false);
-    	it_color.setText("+ Farben");
     	it_color.setLocation(jbtn_colors[jbtn_colors.length - 1].getX() 
     	        + ViewSettings.getDistanceBetweenItems() 
     	        + jbtn_colors[jbtn_colors.length - 1].getWidth(), 
     	        ViewSettings.getDistanceBetweenItems());
-        it_color.getMPanel().add(new VColorPanel(jbtn_colors, _ml,
-        		_controlPaintStatus));
-        it_color.setBorder(false);
+    	
+
         it_color.setIcon("icon/palette.png");
-        super.add(it_color);
         
         int xLocationSeparation = it_color.getWidth() + it_color.getX() 
                 + ViewSettings.getDistanceBeforeLine();
@@ -668,35 +710,44 @@ public final class Paint extends Tab {
 			final ControlTabPainting _controlTabPaint,
 			final CPaintStatus _controlPaintStatus) {
 
+		
+		if (_paint) {
+
+			tb_zoomIn = new Item1Button(null);
+			tb_zoomIn.setBorder(false);
+			tb_zoomIn.setActivable(true);
+			
+
+			tb_zoomOut = new Item1Button(tb_zoomOut);
+			tb_zoomOut.addActionListener(_controlTabPaint);
+			tb_zoomOut.setBorder(false);
+
+			tb_zoomOut.setActivable(false);
+		}
 		//zoom in
-		tb_zoomIn = new Item1Button(null);
 		tb_zoomIn.setSize(tb_copy.getWidth(), tb_copy.getHeight());
 		tb_zoomIn.setLocation(tb_paste.getX(), 
 		        tb_paste.getHeight() + 2 + 2 + 2 + 1);
 		tb_zoomIn.setLocation(_x , ViewSettings.getDistanceBetweenItems());
-		tb_zoomIn.setBorder(false);
-		initializeTextButton(tb_zoomIn,
-				TextFactory.getInstance().getTextViewTb_zoomIn(),
-				Constants.VIEW_TB_ZOOM_IN_PATH, 0, _controlPaintStatus);
-		tb_zoomIn.setActivable(true);
 
 		//zoom out
-		tb_zoomOut = new Item1Button(tb_zoomOut);
 		tb_zoomOut.setSize(tb_copy.getWidth(), tb_copy.getHeight());
 		tb_zoomOut.setLocation(tb_zoomIn.getX(),
 				tb_zoomIn.getY() + ViewSettings.getDistanceBetweenItems() 
 				+ tb_zoomIn.getHeight());
-		tb_zoomOut.addActionListener(_controlTabPaint);
-		tb_zoomOut.setBorder(false);
-		initializeTextButton(tb_zoomOut,
-				TextFactory.getInstance().getTextViewTb_zoomOut(),
-				Constants.VIEW_TB_ZOOM_OUT_PATH, 0, _controlPaintStatus);
-		tb_zoomOut.setActivable(false);
 
+
+			initializeTextButton(tb_zoomIn,
+					TextFactory.getInstance().getTextViewTb_zoomIn(),
+					Constants.VIEW_TB_ZOOM_IN_PATH, 0, _controlPaintStatus, _paint);
+			initializeTextButton(tb_zoomOut,
+					TextFactory.getInstance().getTextViewTb_zoomOut(),
+					Constants.VIEW_TB_ZOOM_OUT_PATH, 0, _controlPaintStatus, _paint);
+		
 		int xLocationSeparation = tb_zoomIn.getWidth() + tb_zoomIn.getX() 
                 + ViewSettings.getDistanceBeforeLine();
 		insertSectionStuff("Zoom", _x, xLocationSeparation, 
-		        2 + 2, true);
+		        2 + 2, _paint);
 
         return xLocationSeparation + ViewSettings.getDistanceAfterLine();
 	}
@@ -712,84 +763,97 @@ public final class Paint extends Tab {
 			final ControlTabPainting _controlTabPaint, 
 			final CPaintStatus _controlPaintStatus) {
 
-        //save
-        tb_save = new Item1Button(tb_save);
+		
+		if (_paint) {
+
+	        //save
+	        tb_save = new Item1Button(tb_save);
+	        tb_save.setBorder(false);
+	        tb_save.addActionListener(_controlTabPaint);
+	        tb_save.setActivable(false);
+
+	        //save as
+	        tb_saveAs = new Item1Button(tb_saveAs);
+	        tb_saveAs.setBorder(false);
+	        tb_saveAs.addActionListener(_controlTabPaint);
+	        tb_saveAs.setActivable(false);
+	        
+	        tb_load = new Item1Button(tb_load);
+			tb_load.setBorder(false);
+			tb_load.addActionListener(_controlTabPaint);
+			tb_load.setActivable(false);
+
+	        tb_new = new Item1Button(null);
+	        tb_new.setBorder(false);
+	        tb_new.addActionListener(_controlTabPaint);
+	        tb_new.setActivable(false);
+
+	        //cut
+	        tb_turnMirror = new Item1Button(null);
+	        tb_turnMirror.setBorder(false);
+	        tb_turnMirror.addActionListener(_controlTabPaint);
+	        tb_turnMirror.setActivable(false);
+
+	        tb_turnNormal = new Item1Button(null);
+	        tb_turnNormal.setBorder(false);
+	        tb_turnNormal.addActionListener(_controlTabPaint);
+	        tb_turnNormal.setActivable(false);
+	        
+		}
         tb_save.setSize(tb_copy.getWidth(), tb_copy.getHeight());
         tb_save.setLocation(_x + ViewSettings.getDistanceAfterLine(),
                 tb_zoomIn.getY());
-        tb_save.setBorder(false);
-        tb_save.addActionListener(_controlTabPaint);
-        initializeTextButton(tb_save,
-                TextFactory.getInstance().getTextViewTb_save(),
-                Constants.VIEW_TB_SAVE_PATH, 0,
-                _controlPaintStatus);
-        tb_save.setActivable(false);
-
-        //save as
-        tb_saveAs = new Item1Button(tb_saveAs);
         tb_saveAs.setSize(tb_copy.getWidth(), tb_copy.getHeight());
         tb_saveAs.setLocation(tb_save.getX(),
                 tb_save.getY() + tb_save.getHeight() 
                 + ViewSettings.getDistanceBetweenItems());
-        tb_saveAs.setBorder(false);
-        tb_saveAs.addActionListener(_controlTabPaint);
-        initializeTextButton(tb_saveAs,
-                TextFactory.getInstance().getTextViewTb_save() + " as",
-                Constants.VIEW_TB_SAVE_PATH, 0,
-                _controlPaintStatus);
-        tb_saveAs.setActivable(false);
+        
 
         //save
-		tb_load = new Item1Button(tb_load);
+		
 		tb_load.setSize(tb_copy.getWidth(), tb_copy.getHeight());
 		tb_load.setLocation(tb_save.getWidth() + tb_save.getX()
                 + ViewSettings.getDistanceBetweenItems(), tb_save.getY());
-		tb_load.setBorder(false);
-		tb_load.addActionListener(_controlTabPaint);
-		initializeTextButton(tb_load,
-				"load",
-				Constants.VIEW_TB_LOAD_PATH, 0,
-				_controlPaintStatus);
-		tb_load.setActivable(false);
 
         //cut
-        tb_new = new Item1Button(null);
         tb_new.setSize(tb_copy.getWidth(), tb_copy.getHeight());
         tb_new.setLocation(tb_saveAs.getWidth() + tb_saveAs.getX()
                 + ViewSettings.getDistanceBetweenItems(), tb_saveAs.getY());
-        tb_new.setBorder(false);
-        tb_new.addActionListener(_controlTabPaint);
-        initializeTextButton(tb_new,
-                "new",
-                Constants.VIEW_TB_NEW_PATH, 0,
-                _controlPaintStatus);
-        tb_new.setActivable(false);
 
-        //cut
-        tb_turnMirror = new Item1Button(null);
         tb_turnMirror.setSize(tb_load.getWidth(), tb_load.getHeight());
         tb_turnMirror.setLocation(tb_load.getWidth() + tb_load.getX() 
                 + ViewSettings.getDistanceBetweenItems(), tb_load.getY());
-        tb_turnMirror.setBorder(false);
-        tb_turnMirror.addActionListener(_controlTabPaint);
-        initializeTextButton(tb_turnMirror,
-                "Spiegelung",
-                Constants.VIEW_TB_DOWN_PATH, 0,
-                _controlPaintStatus);
-        tb_turnMirror.setActivable(false);
 
-        tb_turnNormal = new Item1Button(null);
         tb_turnNormal.setSize(tb_turnMirror.getWidth(),
                 tb_turnMirror.getHeight());
         tb_turnNormal.setLocation(tb_turnMirror.getX(), tb_zoomOut.getY());
-        tb_turnNormal.setBorder(false);
-        tb_turnNormal.addActionListener(_controlTabPaint);
-        initializeTextButton(tb_turnNormal,
-                "Spiegelung normal",
-                Constants.VIEW_TB_UP_PATH, 0,
-                _controlPaintStatus);
-        tb_turnNormal.setActivable(false);
 
+
+	        initializeTextButton(tb_save,
+	                TextFactory.getInstance().getTextViewTb_save(),
+	                Constants.VIEW_TB_SAVE_PATH, 0,
+	                _controlPaintStatus, _paint);
+	        initializeTextButton(tb_saveAs,
+	                TextFactory.getInstance().getTextViewTb_save() + " as",
+	                Constants.VIEW_TB_SAVE_PATH, 0,
+	                _controlPaintStatus, _paint);
+			initializeTextButton(tb_load,
+					"load",
+					Constants.VIEW_TB_LOAD_PATH, 0,
+					_controlPaintStatus, _paint);
+	        initializeTextButton(tb_new,
+	                "new",
+	                Constants.VIEW_TB_NEW_PATH, 0,
+	                _controlPaintStatus, _paint);
+	        initializeTextButton(tb_turnMirror,
+	                "Spiegelung",
+	                Constants.VIEW_TB_DOWN_PATH, 0,
+	                _controlPaintStatus, _paint);
+	        initializeTextButton(tb_turnNormal,
+	                "Spiegelung normal",
+	                Constants.VIEW_TB_UP_PATH, 0,
+	                _controlPaintStatus, _paint);
+        
         int xLocationSeparation = tb_turnMirror.getWidth() 
                 + tb_turnMirror.getX() 
                 + ViewSettings.getDistanceBeforeLine();
@@ -867,10 +931,17 @@ public final class Paint extends Tab {
     private void initializeTextButton(
             final Item1Button _tb, final String _text, final String _path, 
             final int _insertIndex,
-            final CPaintStatus _controlPaintStatus) {
+            final CPaintStatus _controlPaintStatus,
+            final boolean _paint) {
         
-       initializeTextButtonOhneAdd(_tb, _text, _path, _controlPaintStatus);
-        super.add(_tb);
+    	if (_paint) {
+
+    	       initializeTextButtonOhneAdd(_tb, _text, _path, _controlPaintStatus);
+    	        super.add(_tb);
+    	} else {
+
+ 	       initializeTextButtonOhneAdd(_tb, _text, _path, null);
+    	}
     }
     
     

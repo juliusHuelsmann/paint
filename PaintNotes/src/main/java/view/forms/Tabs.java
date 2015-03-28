@@ -121,7 +121,8 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Export");
-        tab_export = new Export(_cp.getcTabExport());
+        tab_export = new Export();
+        tab_export.initialize(_cp.getcTabExport());
         super.addToTab(tabNumber, tab_export);
         tabNumber++;
         

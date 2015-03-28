@@ -2446,5 +2446,19 @@ MenuListener {
 	public final CAbout getcTabAbout() {
 		return cTabAbout;
 	}
+
+
+
+
+	public Project getProject() {
+		return project;
+	}
+
+
+
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
     
 }

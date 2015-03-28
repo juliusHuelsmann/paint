@@ -17,6 +17,11 @@ public final class Settings {
     
     
     /**
+     * Used if file not found.
+     */
+    public static final String ALTERNATIVE_FILE_START = "/home/juli/Software/";
+    
+    /**
      * utility class constructor.
      */
     private Settings() {

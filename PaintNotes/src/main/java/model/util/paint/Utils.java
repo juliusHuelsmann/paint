@@ -11,8 +11,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import model.objects.painting.PaintBI;
 import model.settings.Constants;
+import model.settings.Settings;
 import model.settings.Status;
 import model.settings.ViewSettings;
+import model.util.Util;
 
 /**
  * Class which contains utility methods.
@@ -138,8 +140,17 @@ public final class Utils {
             g.dispose();
             return outImg;
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+        	
+        	if (!_path.contains(Settings.ALTERNATIVE_FILE_START)) {
+        		Status.getLogger().severe("other location used for loading images. May be due to an error.");
+        		return normalResizeImage(_width, _height, Settings.ALTERNATIVE_FILE_START + _path);
+        	} else {
+
+        		System.out.println(_path);
+                e.printStackTrace();
+                return null;
+        	}
+        	
         }
     }
     

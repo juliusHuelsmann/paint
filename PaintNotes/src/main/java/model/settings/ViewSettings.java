@@ -141,18 +141,22 @@ public final class ViewSettings {
     /**
      * Whether fullscreen or not.
      */
-    private static boolean fullscreen = true;
+    private static boolean fullscreen = !true;
     //sizes
     
-    /**
-     * The size of the JFrame.
-     */
-    private static Dimension size_jframe = 
+    
+    private static Dimension standard_size_jframe_normalSize = 
             new Dimension(
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() 
-                    ), 
+                    ) * 2/ 3, 
             (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() 
-                    ));
+                    ) * 2 / 3),
+                    standard_size_jframe_fullscreen = 
+                    new Dimension(
+                    (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() 
+                            ), 
+                    (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() 
+                            ));;
 
 
     
@@ -169,20 +173,24 @@ public final class ViewSettings {
      * just for information purpose.
      */
     private static Dimension sizeMessage = new Dimension(500, 40);
+
+    
+    
     
     /**
      * .
      */
     private static Point messageLocation
-    = new Point((size_jframe.width - getSizeMessage().width) / 2, 
-            size_jframe.height - getSizeMessage().height - 2 * 2 * 2 * 2 * 2);
+    = new Point((getSize_jframe().width - getSizeMessage().width) / 2, 
+            getSize_jframe().height - getSizeMessage().height - 2 * 2 * 2 * 2 * 2);
 
 
+    
     /**
      * The Bounds of the Exit button.
      */
     private static Rectangle view_bounds_jbtn_exit = new Rectangle(
-            size_jframe.width - TWENTY_FIFE * 2 - FIFE, 0, 
+            getSize_jframe().width - TWENTY_FIFE * 2 - FIFE, 0, 
             TWENTY_FIFE * 2 + FIFE, 2  * TEN);
 
     /**
@@ -200,19 +208,19 @@ public final class ViewSettings {
     /**
      * the width of the TabbedPane.
      */
-    private static int view_widthTb = size_jframe.width - 2
+    private static int view_widthTb = getSize_jframe().width - 2
             - ((2 * 2 * 2 * 2 + 1) * 2 + 1); //35
 
     /**
      * the height of the TabbedPane.
      */
-    private static int view_heightTB = size_jframe.height - 1;
+    private static int view_heightTB = getSize_jframe().height - 1;
 
     /**
      * the visible height of the TabbedPane.
      */
     private static int view_heightTB_visible = 
-            (int) (size_jframe.height / (2 + 2 + 1 / 2));
+            (int) (getSize_jframe().height / (2 + 2 + 1 / 2));
 
     /**
      * The size of the tabbedPane opener.
@@ -243,8 +251,8 @@ public final class ViewSettings {
     private static Rectangle view_bounds_page_open = new Rectangle(
             1,  view_heightTB_visible 
             + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
-            size_jframe.width - TWENTY_FIFE - TEN - 2, 
-            size_jframe.height - size_jframe.height / FIFE 
+            getSize_jframe().width - TWENTY_FIFE - TEN - 2, 
+            getSize_jframe().height - getSize_jframe().height / FIFE 
             - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
             //the last 25 is the size 
     /**
@@ -267,21 +275,21 @@ public final class ViewSettings {
     /**
      * size of item.
      */
-    private static int itemWidth = size_jframe.width / (TWENTY_FIFE - 2 - 1), 
-            itemHeight = size_jframe.height / (TEN + 2);
+    private static int itemWidth = getSize_jframe().width / (TWENTY_FIFE - 2 - 1), 
+            itemHeight = getSize_jframe().height / (TEN + 2);
 
     /**
      * The size of the new - JPanel.
      */
     private static Dimension view_size_new = new Dimension(
     		(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
-    	    / (2 + 1) + (2 + 1) * distanceBetweenItems, 
+    	    * (5) / (2 + 2 + 2) / 2 + (2 + 1) * distanceBetweenItems, 
     	    
     	    
     	    (int) (
     	    		//the width
     	    		(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
-    	    	    / (2 + 2 + 2 + 1) + (2 + 2 + 2) * distanceBetweenItems
+    	    	    / (2 + 2 + 2 )+ (2 + 2 + 2) * distanceBetweenItems
     	    	    
     	    		/ Math.sqrt(2) + 2 * distanceBetweenItems));
 
@@ -353,12 +361,12 @@ public final class ViewSettings {
      */
     private static void recalculate() {
          messageLocation
-        = new Point((size_jframe.width - getSizeMessage().width) / 2, 
-                size_jframe.height 
+        = new Point((getSize_jframe().width - getSizeMessage().width) / 2, 
+                getSize_jframe().height 
                 - getSizeMessage().height - 2 * 2 * 2 * 2 * 2);
 
          view_bounds_jbtn_exit = new Rectangle(
-                size_jframe.width - TWENTY_FIFE * 2 - FIFE, 0, 
+                getSize_jframe().width - TWENTY_FIFE * 2 - FIFE, 0, 
                 TWENTY_FIFE * 2 + FIFE, 2  * TEN);
          view_bounds_jbtn_fullscreen = new Rectangle(
                 getView_bounds_jbtn_exit().x 
@@ -366,11 +374,11 @@ public final class ViewSettings {
                 TWENTY_FIFE * 2 + FIFE, 2  * TEN);
         
 
-         view_widthTb = size_jframe.width - 2
+         view_widthTb = getSize_jframe().width - 2
                 - ((2 * 2 * 2 * 2 + 1) * 2 + 1); //35
-         view_heightTB = size_jframe.height - 1;
+         view_heightTB = getSize_jframe().height - 1;
          view_heightTB_visible = 
-                (int) (size_jframe.height / (2 + 2 + 1 / 2));
+                (int) (getSize_jframe().height / (2 + 2 + 1 / 2));
 
          final int h1 = 180, h2 = 190, h3 = 560;
          view_heightTB_opener =
@@ -381,8 +389,8 @@ public final class ViewSettings {
          view_bounds_page_open = new Rectangle(
                 1, 1 + view_heightTB_visible 
                 + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
-                size_jframe.width - TWENTY_FIFE - TEN - 2, 
-                size_jframe.height - size_jframe.height / FIFE 
+                getSize_jframe().width - TWENTY_FIFE - TEN - 2, 
+                getSize_jframe().height - getSize_jframe().height / FIFE 
                 - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
                 //the last 25 is the size 
          view_bounds_page_closed = new Rectangle(
@@ -397,8 +405,8 @@ public final class ViewSettings {
 
          distanceAfterLine = 2 + 1; distanceBeforeLine = 2; 
                 distanceBetweenItems = 2 + 1; 
-                itemWidth = size_jframe.width / (TWENTY_FIFE - 2 - 1); 
-                itemHeight = size_jframe.height / (TEN + 2);
+                itemWidth = getSize_jframe().width / (TWENTY_FIFE - 2 - 1); 
+                itemHeight = getSize_jframe().height / (TEN + 2);
         
          itemMenu1Width 
         = (int) (ViewSettings.getItemWidth() * (1 + 1.0 / (2 + 2)));
@@ -443,7 +451,7 @@ public final class ViewSettings {
      * @return the vIEW_SIZE_JFRAME
      */
     public static Dimension getSizeJFrame() {
-        return size_jframe;
+        return getSize_jframe();
     }
 
 
@@ -452,7 +460,7 @@ public final class ViewSettings {
      */
     public static void setSize_jframe(final Dimension _size) {
         
-        size_jframe = _size;
+        standard_size_jframe_normalSize = _size;
         recalculate();
     }
 
@@ -818,7 +826,7 @@ public final class ViewSettings {
      * @return the height of each tab
      */
     public static int getView_heightTab() {
-        return size_jframe.height - getView_heightTB() / ViewSettings
+        return getSize_jframe().height - getView_heightTB() / ViewSettings
                 .TABBED_PANE_TITLE_PROPORTION_HEIGHT - 1;
     }
 
@@ -840,6 +848,15 @@ public final class ViewSettings {
 	 */
 	public static Point getView_location_new() {
 		return view_location_new;
+	}
+
+
+
+
+	public static Dimension getSize_jframe() {
+		if (isFullscreen()) {
+			return standard_size_jframe_fullscreen;
+		} return standard_size_jframe_normalSize;
 	}
     
 }

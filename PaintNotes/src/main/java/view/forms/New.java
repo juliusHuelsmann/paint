@@ -3,7 +3,6 @@ package view.forms;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.image.BufferedImage;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -18,7 +17,6 @@ import model.util.Util;
 import model.util.paint.Utils;
 import control.forms.CNew;
 import control.util.MousePositionTracker;
-import view.testing.VSpline;
 import view.util.Item1Button;
 import view.util.mega.MButton;
 import view.util.mega.MLabel;

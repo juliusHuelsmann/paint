@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
+import model.settings.Settings;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.adt.list.List;
@@ -91,16 +92,23 @@ public final class Util {
 	}  
 
     public static BufferedImage resize(
-    		String _bi, int _width, int _height) { 
+    		String _path, int _width, int _height) { 
 	   
     	BufferedImage img_scaled;
 		try {
-			img_scaled = ImageIO.read(new File(_bi));
+			img_scaled = ImageIO.read(new File(_path));
 		    return resize(img_scaled, _width, _height);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+
+        	if (!_path.contains(Settings.ALTERNATIVE_FILE_START)) {
+        		Status.getLogger().severe("other location used for loading images. May be due to an error.");
+        		return resize(Settings.ALTERNATIVE_FILE_START + _path, _width, _height);
+        	} else {
+
+        		System.out.println(_path);
+                e.printStackTrace();
+                return null;
+        	}
 		}
     	
 

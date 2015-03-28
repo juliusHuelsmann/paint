@@ -3,6 +3,9 @@ package start;
 
 //import declarations
 import java.io.File;
+
+import javax.swing.JOptionPane;
+
 import model.objects.painting.Picture;
 import model.settings.Status;
 import control.ControlPaint;
@@ -106,17 +109,51 @@ public final class Start {
 	    //one or more inputs: change folder
         default:
 
-            //print case message
-            Status.getLogger().info("start with parameters; alter images!\n\n");
-            
-            //go through array of Strings
-            for (int currPath = 0; currPath < _args.length; currPath++) {
-                changeFolder(_args[currPath]);
-            }
+        	
+        	boolean newStart = true;
+        	if (newStart) {
+        		
+//        		TODO: automatically create in installation process:
+//        		in /usr/share/contractor/paint.contract
+//        		
+//        		Afterwards chmod a+x .../paint.contract
+//        		
+//        		[Contractor Entry]
+//        				Name=Paint
+//        				Icon=gksu-root-terminal
+//        				Description=Open paint
+//        				MimeType=inode;application/x-sh;image/png;application/x-executable;
+//        				Exec=java -jar /home/juli/Software/file.jar %U
+//        				Gettext-Domain=java
+        		
+        		JOptionPane.showMessageDialog(null, "Starting Paint with the following parameter:" + _args[0]);
 
-	        //set the initialization process terminated
-            Status.increaseInitializationFinished();
-            
+    	        //call controller
+    	        new ControlPaint().getPicture().load(_args[0]);
+    	        
+    	        //set the initialization process terminated
+                Status.increaseInitializationFinished();
+    	        
+        		
+        		
+        	} else {
+
+            	//print case message
+                Status.getLogger().info("start with parameters; alter images!\n\n");
+                
+                //go through array of Strings
+                for (int currPath = 0; currPath < _args.length; currPath++) {
+                    changeFolder(_args[currPath]);
+                }
+
+    	        //set the initialization process terminated
+                Status.increaseInitializationFinished();
+                
+        	}
+        	
+        	
+        	
+        	
             break;
 	    }
 	}

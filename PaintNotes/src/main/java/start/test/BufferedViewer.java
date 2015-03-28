@@ -68,7 +68,7 @@ public final class BufferedViewer extends JFrame {
      */
     public static synchronized void show(final BufferedImage _bi) {
     	
-    	final boolean showEnabled = true;
+    	final boolean showEnabled = false;
     	if (showEnabled) {
         	
     		final int minTimeDiff = 5000;

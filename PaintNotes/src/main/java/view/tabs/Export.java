@@ -78,15 +78,22 @@ public final class Export extends Tab {
     /**
      * Empty utility class constructor.
      */
-    public Export(CExport _cex) {
+    public Export() {
         super(2);
         //initialize JPanel and alter settings
         super.setOpaque(false);
         super.setLayout(null);
         super.setVisible(true);
 
+    }
+    
+    /**
+     * Initializes the content for the background.
+     */
+    public void initialize(CExport _cex) {
+
         //initialize the content for the background
-        initializeColumn1(_cex);
+        initializeColumn1(_cex);    	
     }
     
 

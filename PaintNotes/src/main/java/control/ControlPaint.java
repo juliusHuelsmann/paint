@@ -183,6 +183,7 @@ MenuListener {
             //initialize view class and log information on current 
             //initialization progress
             Status.getLogger().info("initialize view class and set visible.");
+          
             view = new View();
             view.initialize(this);
             view.setVisible(true);

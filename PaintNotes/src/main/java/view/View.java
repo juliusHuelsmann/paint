@@ -145,13 +145,17 @@ import control.util.MousePositionTracker;
         tabs = new Tabs(this);
         tabs.initialize(this, _cp);
         
+
         super.remove(jlbl_backgroundStroke);
-        if (ViewSettings.isFullscreen()) {
+        if (t != null) {
 
-            //fade out
-            fadeOut(t);
+            if (ViewSettings.isFullscreen()) {
+
+                //fade out
+                fadeOut(t);
+            }
+
         }
-
         //set some things visible and repaint the whole window.
         flip();
         repaint();
@@ -212,6 +216,12 @@ import control.util.MousePositionTracker;
 	     */
         final int maxLoop = 200;
         
+        
+        /**
+         * Whether to show animation or not.
+         */
+        final boolean fade = false;
+        
         /**
          * The maximum mount of movements the JLabel performs.
          */
@@ -222,6 +232,10 @@ import control.util.MousePositionTracker;
          */
         final int movementEnforce = 60;
         
+        if (!fade) {
+
+        	return null;
+        }
         //initialize the JLabel and set view visible
         jlbl_title = new MLabel("Paint!");
         jlbl_title.setBounds(title_start_x, title_start_y,
@@ -259,39 +273,40 @@ import control.util.MousePositionTracker;
                 getContentPane().setBackground(clr_bg);
         	}
         };
+
         t_waitFor.start();
         
         //move JLabel into the graphical user interface.
         for (int i = 0; i < dsgn_max_moveTitle; i++) {
-                    jlbl_title.setBounds((int) (title_start_x 
-                            + (getWidth() + title_start_width) / 2 * ((i))
-                            / dsgn_max_moveTitle),
-                            title_start_y,
-                            title_start_width, title_start_height);
-                    try {
-                        Thread.sleep(2);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+        	jlbl_title.setBounds((int) (title_start_x 
+        			+ (getWidth() + title_start_width) / 2 * ((i))
+        			/ dsgn_max_moveTitle),
+        			title_start_y,
+        			title_start_width, title_start_height);
+        	try {
+        		Thread.sleep(2);
+        	} catch (InterruptedException e) {
+        		e.printStackTrace();
+        	}
+        }
                 
-                /**
-                 * The last position of the title-JLabel. Used for 
-                 */
-                int lastPosition = -1;
+        /**
+         * The last position of the title-JLabel. Used for 
+         */
+        int lastPosition = -1;
 
-                //let JLabel swing.
-                for (int anzSteps = 1; 
-                        anzSteps <= maxAmountMovement; 
-                        anzSteps++) {
+        //let JLabel swing.
+        for (int anzSteps = 1; 
+        		anzSteps <= maxAmountMovement; 
+        		anzSteps++) {
                     
-                    for (int i = 0; i < maxLoop; i++) {
+        	for (int i = 0; i < maxLoop; i++) {
     
-                        lastPosition = 
-                                (int) ((getWidth() - title_start_width) / 2 
-                                + (movementEnforce / anzSteps 
-                                        / Math.sqrt(anzSteps) 
-                                        * maxAmountMovement 
+        		lastPosition = 
+        				(int) ((getWidth() - title_start_width) / 2 
+        						+ (movementEnforce / anzSteps 
+        								/ Math.sqrt(anzSteps) 
+        								* maxAmountMovement 
                                         * Math.sqrt(maxAmountMovement))
                                         * Math.sin(2 * Math.PI * i / maxLoop));
                          
@@ -385,6 +400,7 @@ import control.util.MousePositionTracker;
 			    }
 		        jlbl_title.setVisible(false);
 		        getContentPane().setBackground(Color.white);
+		        requestFocus();
 			}
 		} .start();
 	    

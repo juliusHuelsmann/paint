@@ -16,6 +16,8 @@ import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
+import start.test.BufferedViewer;
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Marker;
@@ -25,6 +27,7 @@ import model.settings.Constants;
 import model.settings.Status;
 import model.util.DPoint;
 import model.util.adt.list.List;
+import model.util.paint.Utils;
 import model.util.solveLGS.Matrix;
 
 /**
@@ -634,6 +637,205 @@ public abstract class Pen implements Serializable {
             ls_point.next();
         }
     }
+    
+    
+    public static double[][] spline(final List<DPoint> _ls_point, 
+    		final boolean _testing,
+    		final DPoint _pnt_shift,
+    		final BufferedImage _bi_paint,
+    		final Pen _pen) {
+
+    	
+    	
+    	double [] a, b, c, d;
+    	double [] x, y;
+		
+    	
+    	/*
+    	 * Calculate amount of points.
+    	 */
+    	int len = 0;
+    	_ls_point.toFirst();
+    	while (!_ls_point.isEmpty() && !_ls_point.isBehind()) {
+    		_ls_point.next();
+    		len++;
+    	}
+
+    	/*
+    	 * Initialize the values which will contain the temporary result.
+    	 * The length of b is not equal to the length of a, b, c, d for
+    	 * computation reason.
+    	 */
+    	a = new double[len - 1];
+    	b = new double[len - 0];
+    	c = new double[len - 1];
+    	d = new double[len - 1];
+    	
+    	// the x and y values from point
+    	x = new double [len];
+    	y = new double [len];
+    	
+    	/*
+    	 * step 1: calculation fo d_i and of the x and y values
+    	 * 
+    	 */
+    	_ls_point.toFirst();
+    	for (int i = 0; i < x.length; i++) {
+    		x[i] = _ls_point.getItem().getX();
+    		y[i] = _ls_point.getItem().getY();
+    		if (i < d.length) {
+        		d[i] = y[i];
+    		}
+    		_ls_point.next();
+    	}
+    	
+    	/*
+    	 * Step 2: Calulcation of b_i
+    	 */
+    	b[0] = 0;
+    	b[b.length - 1] = 0;
+    	Matrix m = new Matrix(len - 2, len - 1);
+    	for (int i = 0; i < b.length - 2 ; i++) {
+
+    		//
+    		// Diagonale und sub&super diagonale
+    		//
+
+    		if (i <= len - 3) {
+	    		if (i - 1 >= 0) {
+	    			m.setValue (i, i - 1, x[i + 2] - x[i + 1]);
+	    		}
+    		
+	        	m.setValue(i, i, 2 * (x[i + 2] - x[i]));
+    		
+
+	    		if (i + 1 <= len - 3) {
+	    			m.setValue (i, i + 1, x[i + 2] - x[i + 1]);
+	    		}
+    		}
+    		
+    		
+    		// The stuff at the result fields
+    		if ( i < len - 2) {
+    			int j = i + 1;
+    			//max j = len - 2, len - 1 also 
+    			double sVal;
+    			if (j + 1 >= d.length) {
+    				sVal = -3.0 * ((d[j] - d[j - 1] ) / (x[j] - x[j - 1]));
+    			} else {
+    				sVal = 3.0 * ((d[j + 1] - d[j]) / (x[j + 1] - x[j]) - (d[j] - d[j - 1] ) / (x[j] - x[j - 1]));
+    			}
+    			m.setValue(i, len - 2, sVal);
+    		}
+    		
+    	}
+    	
+    	System.out.println(m.printMatrix());
+    	
+    	double[] a2_i = m.solve();
+    	for (int i = 1; i < b.length - 1; i++) {
+    		b[i] = a2_i[i - 1];
+    	}
+    	
+    	
+    	/*
+    	 * Step 3
+    	 */
+    	
+    	for (int i = 0; i < c.length; i++) {
+    		int j = i + 1;
+    		a[j - 1] = (b[j] - b[j - 1]) / (3 * (x[j] - x[j - 1]));
+
+    		double hi = x[i + 1] - x[i];
+    		if (i + 1 >= d.length) {
+
+//        		c[i] = 
+//        				+ (b[i+1] - b[i]) * (x[i + 1] - x[i]) / 3
+//        				- b[i] * (x[i+1] - x[i]);
+
+        		c[i] = 
+        				- (b[i+1] - b[i]) * (x[i + 1] - x[i]) / 3
+        				- b[i] * (x[i+1] - x[i]);
+
+    		} else {
+
+        		c[i] = (d[i + 1] - d[i]) / (x[i + 1] - x[i]) 
+        				- (b[i+1] - b[i]) * (x[i + 1] - x[i]) / 3
+        				- b[i] * (x[i+1] - x[i]);
+    		}
+    	}
+		System.out.println("a\tb\tc\td\t");
+    	for (int i = 0; i < c.length; i++) {
+
+    		System.out.println(a[i] + "\t" + b[i] + "\t" + c[i] + "\t" + d[i]);
+    	}
+
+		double abcd[][] = null;
+    	if (_testing){
+    		abcd = new double[4][a.length];
+    		for (int i = 0; i < abcd[0].length; i++) {
+				abcd[0][i] = a[i];
+				abcd[1][i] = b[i];
+				abcd[2][i] = c[i];
+				abcd[3][i] = d[i];
+			}
+    	} else {
+    		int currentXIndex = 0;
+    		boolean interrupt = false;
+    		int lastX = -1;
+    		int lastY = -1;
+    		for (double cX = (int)x[0]; cX < (int)x[x.length - 1]; cX+= 
+    				Math.max(Math.min(1, Math.abs((x[currentXIndex + 1] - x[currentXIndex]) / (y[currentXIndex + 1] - y[currentXIndex]))), 0.01)) {
+    			
+    			while (cX > x[currentXIndex]) {
+    				currentXIndex++;
+    				
+    				if (currentXIndex >= x.length - 1){
+    					interrupt = true;
+    					break;
+    				}
+    			}
+    			if (interrupt)
+    			 	break;
+    			
+    			
+    			int xCoordiante = (int) (cX);
+    			int yCoordinate = (int)
+    					(a[currentXIndex] * Math.pow(cX - x[currentXIndex], 3)
+    					+ b[currentXIndex] * Math.pow(cX - x[currentXIndex], 2)
+    					+ c[currentXIndex] * Math.pow(cX - x[currentXIndex], 1)
+    					+ d[currentXIndex]);
+
+    			if (!(lastX== -1 && lastY == -1)) {
+    				_pen.setClr_foreground(Color.green);
+    				_pen.paintLine(new DPoint(lastX, lastY), new DPoint(xCoordiante, yCoordinate), _bi_paint, true, _bi_paint, _pnt_shift);
+    				_pen.paintLine(new DPoint(lastX, lastY), new DPoint(xCoordiante, yCoordinate), _bi_paint, false, _bi_paint, _pnt_shift);
+    				_pen.setClr_foreground(Color.black);
+//                    try{
+//
+//                        _bi_paint.setRGB(
+//                        		(int)(xCoordiante - _pnt_shift.getX()),
+//                        		(int) (yCoordinate - _pnt_shift.getY()),
+//                        		new Color(255, 5, 5).getRGB());
+//                        
+//                    } catch (Exception e) {
+//                    	System.out.println("fehler");
+//                    }
+    			}
+    			lastX = xCoordiante;
+    			lastY = yCoordinate;
+            
+                
+    		}
+    		BufferedViewer.show(_bi_paint);
+    	}
+    	
+    	
+    	
+    	
+    	return abcd;
+	
+    }
 
     
     /**
@@ -652,141 +854,148 @@ public abstract class Pen implements Serializable {
             final boolean _final, final DPoint _p_shift, 
             final BufferedImage _g) {
 
-        final int amountOfRuns = 1;
-        DPoint pnt_1 = null, pnt_2 = null, pnt_3 = null;
-        
-        //does only contain the new new points (not merged)
-        List<DPoint> ls_newPoints = new List<DPoint>();
-        
-        //contains all new and old points, new ones merged together
-        //if necessary
-        List<DPoint> ls_allPoints = new List<DPoint>();
-        thickness = amountOfRuns;
-        thickness = 1;
-        for (int i = 0; i < amountOfRuns; i++) {
+    	if (_final) {
+    		spline(_ls_point, false, _p_shift, _bi, this);
+    	} else {
+    		final int amountOfRuns = 1;
+            DPoint pnt_1 = null, pnt_2 = null, pnt_3 = null;
             
-            ls_newPoints = new List<DPoint>();
-            //reinitialize the ls_newPoints and go to the beginning of the
-            //points list.
-            if (ls_allPoints.isEmpty()) {
-                //init
-                _ls_point.toFirst();
-                while (!_ls_point.isBehind()) {
-                    ls_newPoints.insertAtTheEnd(new DPoint(
-                            _ls_point.getItem().getX(), 
-                            _ls_point.getItem().getY()));
-                    _ls_point.next();
-                }
-            } else {
-
-                ls_newPoints = new List<DPoint>();
-                ls_allPoints.toFirst();
-                while (!ls_allPoints.isBehind()) {
-                    ls_newPoints.insertAtTheEnd(new DPoint(
-                            ls_allPoints.getItem().getX(), 
-                            ls_allPoints.getItem().getY()));
-                    ls_allPoints.next();
-                }
-                ls_allPoints = new List<DPoint>();
-            }
-            ls_newPoints.toFirst();
-
-            //0 items
-            if (ls_newPoints.isBehind()) {
-                return;
-            }
-            pnt_1 = ls_newPoints.getItem();
-            ls_newPoints.next();
+            //does only contain the new new points (not merged)
+            List<DPoint> ls_newPoints = new List<DPoint>();
             
-            //1 item
-            if (ls_newPoints.isBehind()) {
-                paintPoint(pnt_1, _bi, _final, _p_shift, _g, null);
-                return;
-            }
-            pnt_2 = ls_newPoints.getItem();
-            ls_newPoints.next();
-            
-            //2 items
-            if (ls_newPoints.isBehind()) {
-                paintLine(pnt_1, pnt_2, _bi, _final, _g, _p_shift);
-                return;
-            }
-            
-//            clr_foreground = Color.black;
-//            paintPoint(pnt_1, _bi);
-//            paintPoint(pnt_2, _bi);
-            ls_allPoints.insertAtTheEnd(pnt_1);
-            ls_allPoints.insertAtTheEnd(pnt_2);
-            
-            while (!ls_newPoints.isBehind()) {
-                pnt_3 = ls_newPoints.getItem();
-                ls_allPoints.insertAtTheEnd(pnt_3);
-
+            //contains all new and old points, new ones merged together
+            //if necessary
+            List<DPoint> ls_allPoints = new List<DPoint>();
+            thickness = amountOfRuns;
+            thickness = 1;
+            for (int i = 0; i < amountOfRuns; i++) {
                 
-                //calculate 2 extra points and insert them at the right 
-                //position
-                Rectangle r = op_mathsGetNewPoints(pnt_1, pnt_2, pnt_3, _bi);
-
-                if (r.x != -1) {
-                ls_allPoints.toLast();
-                ls_allPoints.previous();
-                ls_allPoints.previous();
-                if (!ls_allPoints.getItem().equals(pnt_1)) {
-                    //merge
-                    
-                    DPoint pnt_new = new DPoint(
-                            (ls_allPoints.getItem().getX() + r.x) / 2, 
-                            (ls_allPoints.getItem().getY() + r.y) / 2);
-                    ls_allPoints.remove();
-                    ls_allPoints.insertBehind(pnt_new);
-                } else  {
-
-                    ls_allPoints.insertBehind(new DPoint(r.getLocation()));  
-                }
+                ls_newPoints = new List<DPoint>();
+                //reinitialize the ls_newPoints and go to the beginning of the
+                //points list.
+                if (ls_allPoints.isEmpty()) {
+                    //init
+                    _ls_point.toFirst();
+                    while (!_ls_point.isBehind()) {
+                        ls_newPoints.insertAtTheEnd(new DPoint(
+                                _ls_point.getItem().getX(), 
+                                _ls_point.getItem().getY()));
+                        _ls_point.next();
+                    }
                 } else {
+
+                    ls_newPoints = new List<DPoint>();
+                    ls_allPoints.toFirst();
+                    while (!ls_allPoints.isBehind()) {
+                        ls_newPoints.insertAtTheEnd(new DPoint(
+                                ls_allPoints.getItem().getX(), 
+                                ls_allPoints.getItem().getY()));
+                        ls_allPoints.next();
+                    }
+                    ls_allPoints = new List<DPoint>();
+                }
+                ls_newPoints.toFirst();
+
+                //0 items
+                if (ls_newPoints.isBehind()) {
+                    return;
+                }
+                pnt_1 = ls_newPoints.getItem();
+                ls_newPoints.next();
+                
+                //1 item
+                if (ls_newPoints.isBehind()) {
+                    paintPoint(pnt_1, _bi, _final, _p_shift, _g, null);
+                    return;
+                }
+                pnt_2 = ls_newPoints.getItem();
+                ls_newPoints.next();
+                
+                //2 items
+                if (ls_newPoints.isBehind()) {
+                    paintLine(pnt_1, pnt_2, _bi, _final, _g, _p_shift);
+                    return;
+                }
+                
+//                clr_foreground = Color.black;
+//                paintPoint(pnt_1, _bi);
+//                paintPoint(pnt_2, _bi);
+                ls_allPoints.insertAtTheEnd(pnt_1);
+                ls_allPoints.insertAtTheEnd(pnt_2);
+                
+                while (!ls_newPoints.isBehind()) {
+                    pnt_3 = ls_newPoints.getItem();
+                    ls_allPoints.insertAtTheEnd(pnt_3);
+
+                    
+                    //calculate 2 extra points and insert them at the right 
+                    //position
+                    Rectangle r = op_mathsGetNewPoints(pnt_1, pnt_2, pnt_3, _bi);
+
+                    if (r.x != -1) {
                     ls_allPoints.toLast();
                     ls_allPoints.previous();
                     ls_allPoints.previous();
-                }
-                ls_allPoints.next();
-                if (r.width != -1) {
+                    if (!ls_allPoints.getItem().equals(pnt_1)) {
+                        //merge
+                        
+                        DPoint pnt_new = new DPoint(
+                                (ls_allPoints.getItem().getX() + r.x) / 2, 
+                                (ls_allPoints.getItem().getY() + r.y) / 2);
+                        ls_allPoints.remove();
+                        ls_allPoints.insertBehind(pnt_new);
+                    } else  {
 
-                    ls_allPoints.insertBehind(new DPoint(r.width, r.height));   
-                }
-//                paintPoint(r.getLocation(), _bi);
-//                paintPoint(new Point(r.width, r.height), _bi);
-                
-                
-                //set pnt_1, pnt_2 for next run
-                pnt_1 = pnt_2;
-                pnt_2 = pnt_3;
-                
-                //next
-                ls_newPoints.next();
-            }
-            
-            ls_allPoints.toFirst();
+                        ls_allPoints.insertBehind(new DPoint(r.getLocation()));  
+                    }
+                    } else {
+                        ls_allPoints.toLast();
+                        ls_allPoints.previous();
+                        ls_allPoints.previous();
+                    }
+                    ls_allPoints.next();
+                    if (r.width != -1) {
 
-//            if( i == amountOfRuns - 1){
-//
-//                thickness = 2;
-//                ls_allPoints.toFirst();
-//                int k = 0;
-//                while(!ls_allPoints.isBehind() && k < 43){
-//                    paintPoint(ls_allPoints.getItem(), _bi);
-//                    ls_allPoints.next();
-//                    k++;
+                        ls_allPoints.insertBehind(new DPoint(r.width, r.height));   
+                    }
+//                    paintPoint(r.getLocation(), _bi);
+//                    paintPoint(new Point(r.width, r.height), _bi);
+                    
+                    
+                    //set pnt_1, pnt_2 for next run
+                    pnt_1 = pnt_2;
+                    pnt_2 = pnt_3;
+                    
+                    //next
+                    ls_newPoints.next();
+                }
+                
+                ls_allPoints.toFirst();
+
+//                if( i == amountOfRuns - 1){
+    //
+//                    thickness = 2;
+//                    ls_allPoints.toFirst();
+//                    int k = 0;
+//                    while(!ls_allPoints.isBehind() && k < 43){
+//                        paintPoint(ls_allPoints.getItem(), _bi);
+//                        ls_allPoints.next();
+//                        k++;
+//                    }
 //                }
-//            }
-//            else{
+//                else{
 
-//            }
-//            thickness -= 1;
+//                }
+//                thickness -= 1;
+
+            }
+
+            operationLine(ls_allPoints, _bi, _final, _p_shift, _g, null);   
+    	}
+    	
+    	
+        
             
-
-        }
-
-        operationLine(ls_allPoints, _bi, _final, _p_shift, _g, null);   
 //      thickness =  1;
 //      operationLine(ls_allPoints, _bi, _p_start);
         //add old points to the total list 

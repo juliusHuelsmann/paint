@@ -130,14 +130,19 @@ public final class Start {
         		
         		JOptionPane.showMessageDialog(
         				null, 
-        				"Information message: \nA pre-release paint version has been started " +
-        				"with the following parameter:" + _args[0]);
+        				"Information message: \n\nA pre-release paint version has been started " +
+        				"with the following parameter:\n\t" + _args[0] 
+        						+ "\n\nThis program is developed and maintained by Julius Hülsmann "
+        						+ "\n(For more information visit https://github.com/juliusHuelsmann/paint)",
+        				"PaintNotes",
+        				JOptionPane.INFORMATION_MESSAGE);
 
     	        //call controller
     	        ControlPaint cp =  new ControlPaint();
     	        cp.getPicture().load(_args[0]);
     	        cp.getcTabLook().setBackgroundNone();
     	        cp.getcTabLook().setMargeNone();
+    	        
     	        
     	        //set the initialization process terminated
                 Status.increaseInitializationFinished();

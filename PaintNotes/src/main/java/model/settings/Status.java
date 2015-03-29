@@ -315,6 +315,7 @@ public final class Status {
                 + (size % getRasterSize() - 1);
     }
     
+
     
     /**
      * return the size of the first border (left edge) for the raster.
@@ -909,6 +910,18 @@ public final class Status {
 	 */
 	public static void setEraseIndex(int eraseIndex) {
 		Status.eraseIndex = eraseIndex;
+	}
+	public static int getBorderRightPercentShow() {
+		return borderRightPercentShow;
+	}
+	public static void setBorderRightPercentShow(int borderRightPercentShow) {
+		Status.borderRightPercentShow = borderRightPercentShow;
+	}
+	public static int getBorderBottomPercentShow() {
+		return borderBottomPercentShow;
+	}
+	public static void setBorderBottomPercentShow(int borderBottomPercentShow) {
+		Status.borderBottomPercentShow = borderBottomPercentShow;
 	}
 
 }

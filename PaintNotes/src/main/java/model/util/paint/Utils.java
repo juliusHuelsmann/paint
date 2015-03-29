@@ -995,10 +995,7 @@ public final class Utils {
         //                  |                       |
         //                  |                       |
 
-        System.out.println("asdf" + Status.getRasterBorderFront());
-        System.out.println("asdfgh" + Status.getRasterBorderEnd());
-        System.out.println("..:" + Status.getImageShowSize().width + "..." + Status.getImageShowSize().height);
-    	if (Status.getRasterBorderFront() != 0 || Status.getRasterBorderEnd() != Status.getImageShowSize().width) {
+    	if (Status.getRasterBorderFront() != 0 || Status.getBorderRightPercentShow() != 0) {
     	
         for (int x : new int[]{Status.getRasterBorderFront(), 
             width - Status.getRasterBorderEnd()}) {
@@ -1051,7 +1048,7 @@ public final class Utils {
         
         
 
-    	if (Status.getRasterBorderBottom() !=Status.getImageShowSize().height || Status.getRasterBorderTop() != 0) {
+    	if (Status.getBorderBottomPercentShow() !=0 || Status.getRasterBorderTop() != 0) {
     	
         //horizontal lines  _______________________
         //

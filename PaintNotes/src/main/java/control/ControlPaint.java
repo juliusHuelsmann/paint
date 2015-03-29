@@ -12,6 +12,7 @@ import java.util.logging.Level;
 
 import javax.swing.ImageIcon;
 
+import control.forms.CLoading;
 import control.forms.CNew;
 import control.interfaces.MenuListener;
 import control.tabs.CAbout;
@@ -64,7 +65,7 @@ MenuListener {
 	 */
 	private View view;
 	
-	
+	private CLoading cl;
 	/**
 	 * Central model class.
 	 */
@@ -187,6 +188,7 @@ MenuListener {
             view = new View();
             view.initialize(this);
             view.setVisible(true);
+            cl = new CLoading(view.getLoading());
             
             
             //enable current operation

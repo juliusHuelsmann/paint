@@ -16,6 +16,7 @@ import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
+import view.forms.Loading;
 import view.forms.Message;
 import view.forms.Page;
 import view.forms.Tabs;
@@ -24,6 +25,7 @@ import view.util.mega.MFrame;
 import view.util.mega.MLabel;
 import control.ControlPaint;
 import control.ControlView;
+import control.forms.CLoading;
 import control.util.MousePositionTracker;
 import control.util.WindowMover;
 
@@ -61,6 +63,7 @@ import control.util.WindowMover;
 	 */
 	private Tabs tabs;
 	
+	private Loading loading;
 	/**
 	 * The Page.
 	 */
@@ -148,7 +151,8 @@ import control.util.WindowMover;
         super.add(jbtn_fullscreen);
 
         
-        
+        loading = new Loading();
+        super.add(loading);
         page = new Page(_cp);
         
         
@@ -509,7 +513,9 @@ import control.util.WindowMover;
 	    //set gui bounds
         super.setSize(ViewSettings.getSizeJFrame());
 
-        
+
+        loading.setSize(getWidth() / 3, getHeight() / 3);
+        loading.setLocation(getWidth() /3, getHeight() / 3);
         
         //initialize tabs
         Status.getLogger().info("   initialize Tabs\n");
@@ -587,6 +593,14 @@ import control.util.WindowMover;
 	 */
 	public Tabs getTabs() {
 		return tabs;
+	}
+
+	public Loading getLoading() {
+		return loading;
+	}
+
+	public void setLoading(Loading loading) {
+		this.loading = loading;
 	}
 
 }

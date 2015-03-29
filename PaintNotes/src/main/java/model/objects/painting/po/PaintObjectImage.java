@@ -2,9 +2,11 @@
 package model.objects.painting.po;
 
 //import declarations
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import model.objects.painting.Picture;
 import model.settings.Error;
@@ -155,7 +157,9 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             int y = (int) (pnt_locationOfImage.y * cZoomFactorHeight + _y);
             int width = bi_image.getWidth();
             int height = bi_image.getHeight();
-            
+/*
+            int nix = (int) ((_r.x + _x) * cZoomFactorWidth );
+            int niy = (int) ((_r.y + _y) * cZoomFactorHeight );
             //TODO maybe contain a scaledInstance for quick painting which is updated
             // if painted and size changed.
             
@@ -164,32 +168,58 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             }
             
             //fetch the area of the image that as to be painted
-            /*BufferedImage bi_section = new BufferedImage(
-            		_r.width, _r.height, 
+            BufferedImage bi_section = new BufferedImage(
+            		(_r.width - _r.x), (_r.height - _r.y), 
             		BufferedImage.TYPE_INT_ARGB);
             
-            int[] rgbA = new int[_r.height * _r.width];
+            int[] rgbA = new int[(_r.height - _r.y) * (_r.width - _r.x)];
 
 
-            System.out.println("hallo hier bin ich sehr negativ" + _x + ".." + _y);
-            System.out.println(bi_image.getWidth() + ".." + bi_image.getHeight());
-            System.out.println((_r.x - pnt_locationOfImage.x)+ "\n" + 
-            		(_r.y - pnt_locationOfImage.y)+ "\n" + 
-            		(_r.width + _r.x - pnt_locationOfImage.x)+ "\n" + 
-            		(_r.height + _r.y - pnt_locationOfImage.y)+ "\n" + 
-            		rgbA+ "\n" + 
-            		1+ "\n" + 
+
+            
+            int locationX = (int)( _r.x - pnt_locationOfImage.x);
+            int locationY = (int)(_r.y - pnt_locationOfImage.y);
+            
+            System.out.println("plog");
+            System.out.println(pnt_locationOfImage);
+            
+            System.out.println(_x + "...." + _y);
+            System.out.println("\nImages:" + bi_image.getWidth() + ".." + bi_image.getHeight());
+            System.out.println(
+            		(locationX)+ "\n" + 
+            		(locationY)+ "\n" + 
+            		(_r.width  )+ "\n" + 
+            		(_r.height )+ "\n" + 
             		_r.height);
             rgbA = bi_image.getRGB(
-            		_r.x - pnt_locationOfImage.x + _x, 
-            		_r.y - pnt_locationOfImage.y + _y,
-            		_r.width + _r.x - pnt_locationOfImage.x + _x, 
-            		_r.height + _r.y - pnt_locationOfImage.y + _y, 
+            		locationX, 
+            		locationY, 
+            		_r.width - _r.x, _r.height - _r.y, 
             		rgbA,
             		1, 
-            		_r.height);
-            bi_section.setRGB(0, 0, _r.width, _r.height, rgbA, 1, _r.height);
+            		_r.height - _r.y);
+            bi_section.setRGB(0, 0, _r.width - _r.x, _r.height - _r.y, rgbA, 1, _r.height - _r.y);
             
+            Color clr = new Color(
+        			new Random().nextInt(255),
+        			new Random().nextInt(255),
+        			new Random().nextInt(255));
+            
+            for (int i = 0; i < bi_section.getWidth(); i ++) {
+            	for (int j = 0; j < bi_section.getHeight(); j ++) {
+//                	bi_section.setRGB(i, j, clr.getRGB());
+                }
+            }
+            
+            _g.getGraphics().drawImage(Utils.resizeImageQuick(
+                    (int) ((_r.width - _r.x) * cZoomFactorWidth),
+                    (int) ((_r.height - _r.y) * cZoomFactorHeight), 
+                    bi_section),
+                    (int) (nix), 
+                    (int) (niy), 
+                    (int) ((_r.width - _r.x) * cZoomFactorWidth),
+                    (int) ((_r.height - _r.y) * cZoomFactorHeight), null);
+                    
             System.out.println(_r.width + "height" + _r.height);
             */
             _g.getGraphics().drawImage(Utils.resizeImageQuick(

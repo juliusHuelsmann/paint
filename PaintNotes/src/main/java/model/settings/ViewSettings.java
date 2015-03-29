@@ -145,18 +145,13 @@ public final class ViewSettings {
     //sizes
     
     
-    private static Dimension standard_size_jframe_normalSize = 
-            new Dimension(
-            (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() 
-                    ) * 2/ 3, 
-            (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() 
-                    ) * 2 / 3),
-                    standard_size_jframe_fullscreen = 
-                    new Dimension(
-                    (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() 
-                            ), 
-                    (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() 
-                            ));;
+    private static Dimension 
+    standard_size_jframe_normalSize = new Dimension(
+    		(int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()) * 2/ 3, 
+    		(int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()) * 2 / 3),
+    standard_size_jframe_fullscreen = new Dimension(
+    		(int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() ), 
+    		(int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
 
 
     
@@ -201,11 +196,6 @@ public final class ViewSettings {
             TWENTY_FIFE * 2 + FIFE, 2  * TEN);
     
     /**
-     * The bounds of the TabbedPanel.
-     */
-    public static final Point VIEW_LOCATION_TB = new Point(2, 2);
-
-    /**
      * the width of the TabbedPane.
      */
     private static int view_widthTb = getSize_jframe().width - 2
@@ -245,11 +235,23 @@ public final class ViewSettings {
      */
     public static final int TABBED_PANE_TITLE_PROPORTION_WIDTH = 15,
            TABBED_PANE_TITLE_PROPORTION_HEIGHT = 20;
+
+    
+    /**
+     * Distance between items and window borders (for beeing able to move and resize).
+     */
+    public static final int DISTANCE_TO_WINDOW = 5;
+    /**
+	 * The bounds of the TabbedPanel.
+	 */
+	public static final Point VIEW_LOCATION_TB = new Point(DISTANCE_TO_WINDOW, DISTANCE_TO_WINDOW);
+
+
     /**
      * the bounds of the Page.
      */
     private static Rectangle view_bounds_page_open = new Rectangle(
-            1,  view_heightTB_visible 
+            VIEW_LOCATION_TB.x,  view_heightTB_visible 
             + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
             getSize_jframe().width - TWENTY_FIFE - TEN - 2, 
             
@@ -276,7 +278,7 @@ public final class ViewSettings {
             view_bounds_page_open);
 
 
-    /**
+	/**
      * size of item.
      */
     private static int itemWidth = getSize_jframe().width / (TWENTY_FIFE - 2 - 1), 
@@ -391,11 +393,15 @@ public final class ViewSettings {
                 2, h1, h2, h3);
 
          view_bounds_page_open = new Rectangle(
-                 1, 1 + view_heightTB_visible 
+                 VIEW_LOCATION_TB.x,  view_heightTB_visible 
                  + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
                  getSize_jframe().width - TWENTY_FIFE - TEN - 2, 
-                 getSize_jframe().height - getSize_jframe().height / FIFE 
-                 - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
+                 
+//                 getSize_jframe().height - getSize_jframe().height / FIFE 
+//                 - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
+         
+         		getSize_jframe().height - (view_heightTB_visible 
+                 + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y + VIEW_SIZE_SP));
                 //the last 25 is the size 
          view_bounds_page_closed = new Rectangle(
                  view_bounds_page_open.x, 

@@ -665,21 +665,27 @@ public final class Picture implements Serializable {
 		ls_poChronologic.toFirst(SecureList.ID_NO_PREDECESSOR, 
 				SecureList.ID_NO_PREDECESSOR);
 		int counter = 0;
-		while (!ls_poChronologic.isBehind() && !ls_poChronologic.isEmpty()) {
+		
+		try{
 
-			ls_poChronologic.getItem().paint(_bi, _final,
-					_bi, 
-//					_x, _y,
-//					_paintLocationX,
-//					_paintLocationY,
-					-_x + _xBi, -_y + _yBi,
-//					Page.getInstance().getJlbl_painting().getBi(),
-//					Page.getInstance().getJlbl_painting().getLocation().x,
-//					Page.getInstance().getJlbl_painting().getLocation().y,
-					r_selection);
-			counter++;
-			ls_poChronologic.next(SecureList.ID_NO_PREDECESSOR, 
-					SecureList.ID_NO_PREDECESSOR);
+			while (!ls_poChronologic.isBehind() && !ls_poChronologic.isEmpty()) {
+
+				ls_poChronologic.getItem().paint(_bi, _final,
+						_bi, 
+//						_x, _y,
+//						_paintLocationX,
+//						_paintLocationY,
+						-_x + _xBi, -_y + _yBi,
+//						Page.getInstance().getJlbl_painting().getBi(),
+//						Page.getInstance().getJlbl_painting().getLocation().x,
+//						Page.getInstance().getJlbl_painting().getLocation().y,
+						r_selection);
+				counter++;
+				ls_poChronologic.next(SecureList.ID_NO_PREDECESSOR, 
+						SecureList.ID_NO_PREDECESSOR);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 		//log repainting action in console.
 		if (counter > 0) {
@@ -2101,6 +2107,7 @@ public final class Picture implements Serializable {
 
 			//finish transaction and destroy list of selected items.
 			ls_po_sortedByX.finishTransaction(transaction);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

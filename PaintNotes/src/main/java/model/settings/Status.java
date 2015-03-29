@@ -486,6 +486,9 @@ public final class Status {
      */
     public static void setImageShowSize(final Dimension _imageShowSize) {
         Status.imageShowSize = _imageShowSize;
+        //frefresh sps due to the new size of the image.
+        controlPaint.getView().getPage().flip();
+        controlPaint.getView().getPage().refrehsSps();
     }
 
     /**

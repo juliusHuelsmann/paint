@@ -59,12 +59,7 @@ public final class CLook implements ActionListener {
 		        
 		        } else if (_event.getSource().equals(
 		                getLook().getJcb_nothing())) {
-		            backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
-		            getLook().getJcb_nothing().setSelected(true);
-		            getLook().getJcb_lines().setSelected(false);
-		            getLook().getJcb_raster().setSelected(false);
-		            Status.setIndexPageBackground(backgroundID);
-		        
+		        	setBackgroundNone();
 		        } else if (_event.getSource().equals(
 		                getLook().getJcb_margeBottom())) {
 		            
@@ -139,6 +134,34 @@ public final class CLook implements ActionListener {
 		        getControlPicture().refreshPaint();
 		        
 		    }
+	}
+	
+
+	
+	public void setBackgroundNone() {
+
+        int backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
+        getLook().getJcb_nothing().setSelected(true);
+        getLook().getJcb_lines().setSelected(false);
+        getLook().getJcb_raster().setSelected(false);
+        Status.setIndexPageBackground(backgroundID);
+        
+
+	}
+	
+
+	
+	public void setMargeNone() {
+
+        Status.setBorderRightPercent(0);
+        Status.setBorderLeftPercent(0);
+        Status.setBorderTopPercent(0);
+        Status.setBorderBottomPercent(0);
+        
+        getLook().getJcb_margeRight().setSelectedIndex(0);
+        getLook().getJcb_margeLeft().setSelectedIndex(0);
+        getLook().getJcb_margeTop().setSelectedIndex(0);
+        getLook().getJcb_margeBottom().setSelectedIndex(0);
 	}
 
 	/**

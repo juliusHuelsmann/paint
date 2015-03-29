@@ -117,9 +117,18 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
     /**
      * {@inheritDoc}
      */
-    @Override public final BufferedImage paint(final BufferedImage _bi, 
-            final boolean _final, final BufferedImage _g, final int _x,
-            final int _y, final Rectangle _r) {
+    @Override public final BufferedImage paint(
+    		
+    		
+    		final BufferedImage _bi, 
+            
+    		final boolean _final, 
+    		
+    		final BufferedImage _g, 
+    		
+    		final int _x, final int _y, 
+    		
+    		final Rectangle _r) {
 
         //if final only paint at BufferedImage
         //if not final only paint at graphics
@@ -146,7 +155,44 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             int y = (int) (pnt_locationOfImage.y * cZoomFactorHeight + _y);
             int width = bi_image.getWidth();
             int height = bi_image.getHeight();
-            _g.getGraphics().drawImage(Utils.resizeImage(
+            
+            //TODO maybe contain a scaledInstance for quick painting which is updated
+            // if painted and size changed.
+            
+            if (_r == null || _r.height <= 0 || _r.width <= 0) {
+            	return _bi;
+            }
+            
+            //fetch the area of the image that as to be painted
+            /*BufferedImage bi_section = new BufferedImage(
+            		_r.width, _r.height, 
+            		BufferedImage.TYPE_INT_ARGB);
+            
+            int[] rgbA = new int[_r.height * _r.width];
+
+
+            System.out.println("hallo hier bin ich sehr negativ" + _x + ".." + _y);
+            System.out.println(bi_image.getWidth() + ".." + bi_image.getHeight());
+            System.out.println((_r.x - pnt_locationOfImage.x)+ "\n" + 
+            		(_r.y - pnt_locationOfImage.y)+ "\n" + 
+            		(_r.width + _r.x - pnt_locationOfImage.x)+ "\n" + 
+            		(_r.height + _r.y - pnt_locationOfImage.y)+ "\n" + 
+            		rgbA+ "\n" + 
+            		1+ "\n" + 
+            		_r.height);
+            rgbA = bi_image.getRGB(
+            		_r.x - pnt_locationOfImage.x + _x, 
+            		_r.y - pnt_locationOfImage.y + _y,
+            		_r.width + _r.x - pnt_locationOfImage.x + _x, 
+            		_r.height + _r.y - pnt_locationOfImage.y + _y, 
+            		rgbA,
+            		1, 
+            		_r.height);
+            bi_section.setRGB(0, 0, _r.width, _r.height, rgbA, 1, _r.height);
+            
+            System.out.println(_r.width + "height" + _r.height);
+            */
+            _g.getGraphics().drawImage(Utils.resizeImageQuick(
                     (int) (width * cZoomFactorWidth),
                     (int) (height * cZoomFactorHeight), 
                     bi_image), 

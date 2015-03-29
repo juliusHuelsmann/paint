@@ -2100,7 +2100,7 @@ public final class Picture implements Serializable {
 					poi_current.getSnapshotBounds().x, transaction);
 
 			//finish transaction and destroy list of selected items.
-			ls_poSelected.finishTransaction(transaction);
+			ls_po_sortedByX.finishTransaction(transaction);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

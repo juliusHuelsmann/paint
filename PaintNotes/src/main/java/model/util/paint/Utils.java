@@ -200,7 +200,7 @@ public final class Utils {
     }
 
     
-    
+
     /**
      * resizes a BufferedImage (input BufferedImage, output BufferedImage).
      * 
@@ -215,6 +215,30 @@ public final class Utils {
         java.awt.Image scaledImage = 
                 _bi.getScaledInstance(_width, _height, 
                         java.awt.Image.SCALE_SMOOTH);
+        
+        BufferedImage outImg = new BufferedImage(_width,
+                _height, BufferedImage.TYPE_INT_ARGB);
+        
+        Graphics g = outImg.getGraphics();
+        g.drawImage(scaledImage, 0, 0, null);
+        g.dispose();
+        return outImg;
+    }
+
+    /**
+     * resizes a BufferedImage (input BufferedImage, output BufferedImage).
+     * 
+     * @param _width the width of the buffered image
+     * @param _height the height of the buffered image
+     * @param _bi the first buffered image
+     * @return the new bufferedImage.
+     */
+    public static BufferedImage resizeImageQuick(final int _width,
+            final int _height, final BufferedImage _bi) {
+        
+        java.awt.Image scaledImage = 
+                _bi.getScaledInstance(_width, _height, 
+                        java.awt.Image.SCALE_FAST);
         
         BufferedImage outImg = new BufferedImage(_width,
                 _height, BufferedImage.TYPE_INT_ARGB);
@@ -945,6 +969,7 @@ public final class Utils {
             final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {
+    	
 
         //the width and the height of the entire image, of which the parts
         //are painted.
@@ -969,6 +994,12 @@ public final class Utils {
         //                  |                       |
         //                  |                       |
         //                  |                       |
+
+        System.out.println("asdf" + Status.getRasterBorderFront());
+        System.out.println("asdfgh" + Status.getRasterBorderEnd());
+        System.out.println("..:" + Status.getImageShowSize().width + "..." + Status.getImageShowSize().height);
+    	if (Status.getRasterBorderFront() != 0 || Status.getRasterBorderEnd() != Status.getImageShowSize().width) {
+    	
         for (int x : new int[]{Status.getRasterBorderFront(), 
             width - Status.getRasterBorderEnd()}) {
             for (int y = 
@@ -1014,11 +1045,14 @@ public final class Utils {
                     }
                 } 
             }
-        }
+        }	
+    	}
         
         
         
 
+    	if (Status.getRasterBorderBottom() !=Status.getImageShowSize().height || Status.getRasterBorderTop() != 0) {
+    	
         //horizontal lines  _______________________
         //
         //
@@ -1055,6 +1089,7 @@ public final class Utils {
                  }
             }
         }
+    	}
         
         //paint the non image and the border of the page.
         if (width < _untilX || height < _untilY) {

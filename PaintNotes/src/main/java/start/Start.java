@@ -99,7 +99,8 @@ public final class Start {
 	        Status.getLogger().info("normal start: launch programm!\n\n");
 	        
 	        //call controller
-	        new ControlPaint();
+	        ControlPaint cp1 =  new ControlPaint();
+	        cp1.getcTabLook().setBackgroundNone();	 
 	        
 	        //set the initialization process terminated
             Status.increaseInitializationFinished();
@@ -127,10 +128,16 @@ public final class Start {
 //        				Exec=java -jar /home/juli/Software/file.jar %U
 //        				Gettext-Domain=java
         		
-        		JOptionPane.showMessageDialog(null, "Starting Paint with the following parameter:" + _args[0]);
+        		JOptionPane.showMessageDialog(
+        				null, 
+        				"Information message: \nA pre-release paint version has been started " +
+        				"with the following parameter:" + _args[0]);
 
     	        //call controller
-    	        new ControlPaint().getPicture().load(_args[0]);
+    	        ControlPaint cp =  new ControlPaint();
+    	        cp.getPicture().load(_args[0]);
+    	        cp.getcTabLook().setBackgroundNone();
+    	        cp.getcTabLook().setMargeNone();
     	        
     	        //set the initialization process terminated
                 Status.increaseInitializationFinished();

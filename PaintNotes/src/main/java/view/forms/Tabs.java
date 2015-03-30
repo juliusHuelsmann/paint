@@ -68,6 +68,10 @@ public final class Tabs extends VTabbedPane {
 
             tab_paint.applySize();
         }
+        if (tab_write != null) {
+        	
+        	tab_write.applySize();
+        }
     }
     
     public void initialize(View _view, ControlPaint _cp){

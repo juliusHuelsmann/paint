@@ -5,20 +5,11 @@ package control.util;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
 import java.io.Serializable;
-
-import javax.net.ssl.SSLEngineResult.Status;
-import javax.swing.ImageIcon;
-
-import model.settings.Constants;
 import model.settings.ViewSettings;
-import model.util.paint.Utils;
-
 import control.interfaces.ActivityListener;
 
 
@@ -151,13 +142,13 @@ MouseListener, Serializable {
 		byte cOperation = OPERATION_NO;
 		
 		//if the click is in the right area
-		if (_event.getX() >= 0 && _event.getX() <= marge) {
+		if (_event.getX() <= marge) {
 			cOperation = OPERATION_LEFT;
 		} else if (_event.getX() >= cmp_moved.getWidth() - marge) {
 			cOperation = OPERATION_RIGHT;
 		}
 	
-		if (_event.getY() >= 0 && _event.getY() <= marge) {
+		if (_event.getY() <= marge) {
 			
 			switch(cOperation){
 			case OPERATION_NO:

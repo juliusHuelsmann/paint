@@ -175,7 +175,9 @@ MouseMotionListener, MouseListener {
         pnt_start = new DPoint(_event.getLocationOnScreen());
         
         //nothing selected means resize whole image
-        if (r_selection == null) {
+        if (r_selection == null 
+        		|| cv.getPicture().getLs_poSelected() == null
+        		|| cv.getPicture().getLs_poSelected().isEmpty()) {
 
             dim_imageSizeOld = new Dimension(Status.getImageSize());
             factorW = 1.0 * Status.getImageSize().width 
@@ -183,6 +185,7 @@ MouseMotionListener, MouseListener {
             factorH = 1.0 * Status.getImageSize().height 
                     / Status.getImageShowSize().height;
             wholeImageSelected = true;
+            r_selection = null;
         } else {
             wholeImageSelected = false;
             pnt_rSelectionStart = new DPoint(r_selection.getLocation());
@@ -601,37 +604,41 @@ MouseMotionListener, MouseListener {
             pnt_size.setY(minSize);
         }
         
+        if (cv.getPicture().getLs_poSelected() != null 
+        		&& !cv.getPicture().getLs_poSelected().isEmpty()) {
 
-    	//start transaction and closed action.
-    	final int transaction = cv.getPicture().getLs_po_sortedByX()
-    			.startTransaction("stretch image", 
-    					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = cv.getPicture().getLs_po_sortedByX()
-    			.startClosedAction("stretch image", 
-    					SecureList.ID_NO_PREDECESSOR);
-        
-        cv.getPicture().getLs_poSelected().toFirst(
-        		transaction, closedAction);
-        while (!cv.getPicture().getLs_poSelected().isBehind()) {
-
-
-            cv.getPicture().getLs_poSelected().getItem().stretch(
-                    pnt_stretchFrom, pnt_totalStretch, pnt_size);
-            cv.getPicture().getLs_poSelected().next(
+        	//start transaction and closed action.
+        	final int transaction = cv.getPicture().getLs_poSelected()
+        			.startTransaction("stretch image", 
+        					SecureList.ID_NO_PREDECESSOR);
+        	final int closedAction = cv.getPicture().getLs_poSelected()
+        			.startClosedAction("stretch image", 
+        					SecureList.ID_NO_PREDECESSOR);
+            
+            cv.getPicture().getLs_poSelected().toFirst(
             		transaction, closedAction);
+            while (!cv.getPicture().getLs_poSelected().isBehind()) {
+
+
+                cv.getPicture().getLs_poSelected().getItem().stretch(
+                        pnt_stretchFrom, pnt_totalStretch, pnt_size);
+                cv.getPicture().getLs_poSelected().next(
+                		transaction, closedAction);
+            }
+
+        	//close transaction and closed action.
+        	cv.getPicture().getLs_poSelected().finishTransaction(
+        			transaction);
+        	cv.getPicture().getLs_poSelected().finishClosedAction(
+        			closedAction);
+            
+            //release selected and paint them
+            cv.getControlPic().releaseSelected();
+            cv.getPicture().paintSelected(getPage(),
+            		cv.getControlPic(),
+            		cv.getControlPaintSelection());        	
         }
 
-    	//close transaction and closed action.
-    	cv.getPicture().getLs_po_sortedByX().finishTransaction(
-    			transaction);
-    	cv.getPicture().getLs_po_sortedByX().finishClosedAction(
-    			closedAction);
-        
-        //release selected and paint them
-        cv.getControlPic().releaseSelected();
-        cv.getPicture().paintSelected(getPage(),
-        		cv.getControlPic(),
-        		cv.getControlPaintSelection());
     }
 
     /**

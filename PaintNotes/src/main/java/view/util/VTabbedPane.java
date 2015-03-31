@@ -390,6 +390,16 @@ public class VTabbedPane extends MPanel {
 	}
 	
 	
+	public void setTabbedPaneOpen(boolean _bool) {
+		
+		if (_bool){
+			openTabbedPane();
+		} else {
+			closeTabbedPane();
+		}
+	}
+	
+	
 	/**
 	 * close the tab.
 	 */

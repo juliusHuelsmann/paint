@@ -1,6 +1,7 @@
 package model.util;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.IllegalComponentStateException;
@@ -15,6 +16,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -22,6 +25,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
@@ -47,6 +52,52 @@ public final class Util {
      */
     private Util() { }
     
+    
+    
+    public static void handleException(
+    		final String _title,
+    		final String _additionalMessage,
+    		final Exception _e,
+    		final Component _cmpOwner) {
+
+
+		int result = JOptionPane.showConfirmDialog(
+				null, 
+				"An error occured while executing paint.\n" 
+				+ "This error will not stop the program from working properly.\n"
+				+ "\n"
+				+ "If you agree, the error message (which contains no "
+				+ "user-specific information\n"
+				+ "will be used for eliminating the bug.  \n"
+				+ "If the error is not caused by this program, please select \"don't aggree \""
+				+ "\n\nError message:\n"
+				+ _additionalMessage + ".\n"
+				+ "\n" 
+				+ "More detailed information:\n"
+				+ Util.stackTraceToString(_e),
+				_title,
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.ERROR_MESSAGE);
+		
+		if (result == JOptionPane.YES_OPTION) {
+			System.out.println("TODO: sending information");
+		} else {
+			System.out.println("TODO: not sending information");
+		}
+    }
+    
+    /**
+     * Writes a stack trace to string.
+     * 
+     * @param _t
+     * @return
+     */
+    public static String stackTraceToString(Exception _t) {
+    	StringWriter sw = new StringWriter();
+    	PrintWriter pw = new PrintWriter(sw);
+    	_t.printStackTrace(pw);
+    	return sw.toString(); 
+    }
 
     public static void print(Picture _pic){
 

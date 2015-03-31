@@ -130,8 +130,8 @@ public class ContorlPicture implements PaintListener {
 
 			
 			bi_background = new BufferedImage(
-					ViewSettings.getView_bounds_page().getSize().width,
-					ViewSettings.getView_bounds_page().getSize().height,
+					Math.max(ViewSettings.getView_bounds_page().getSize().width, 1),
+					Math.max(ViewSettings.getView_bounds_page().getSize().height, 1),
 					BufferedImage.TYPE_INT_ARGB);
 			
 			

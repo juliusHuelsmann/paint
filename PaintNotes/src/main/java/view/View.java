@@ -3,6 +3,7 @@ package view;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -188,7 +189,8 @@ import control.util.WindowMover;
 
         tabs.setVisible(true);
         page.setVisible(true);
-	
+        super.setResizable(true);
+
 	
 	
 	}
@@ -502,6 +504,11 @@ import control.util.WindowMover;
 	}
 
 
+	@Override
+	public void setLocation(int _x, int _y) {
+		System.out.println(_x + "d..d" + _y);
+		super.setLocation(_x, _y);
+	}
 
     
 	
@@ -558,6 +565,17 @@ import control.util.WindowMover;
         
         tabs.flip();
         jlbl_border.setBounds(0, 0, getWidth(), getHeight());
+	}
+	
+	
+	public void setSize(int _width, int _height) {
+		
+		ViewSettings.setSize_jframe(
+				new Dimension(_width, _height));
+		
+		//this is done because viewsettings deceides whether to accept _width and
+		//_height or not.
+		super.setSize(ViewSettings.getSize_jframe().width, ViewSettings.getSize_jframe().height);
 	}
 	
     

@@ -180,13 +180,19 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             // to the normal width, 2 * zoom-factor is added 
             // because if zoomed in, there are gaps between the painted
             // sub-images.
-            _r.width = Math.min(bi_image.getWidth() - locXPOI,
-            		_r.width + (int)  (2 * cZoomFactorWidth));
-            _r.height = Math.min(bi_image.getHeight() - locYPOI,
-            		_r.height + (int) (2 * cZoomFactorHeight));
+            _r.width = Math.min(
+//            		Math.min(
+            				bi_image.getWidth() - locXPOI,
+            				_r.width + (int)  (2 * cZoomFactorWidth));
+//            		_bi.getWidth() - locXPOI);
+            _r.height = Math.min(
+//            		Math.min(
+            				bi_image.getHeight() - locYPOI,
+            				_r.height + (int) (2 * cZoomFactorHeight));
+//            		_bi.getHeight() - locYPOI);
             
             
-            /*
+            /* 
              * now a sub-image containing the newly painted stuff is created
              * and filled with the image values
              */
@@ -241,6 +247,9 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
     @Override public final PaintObject[][] separate(final Rectangle _r) {
         
         if (isInSelectionImage(_r)) {
+        	
+        	
+        	deleteRectangle(_r, null);
 
             new Exception(getClass() + " not implemenented yet")
             .printStackTrace();
@@ -366,6 +375,11 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 			final Rectangle _r, 
 			final List<PaintObjectWriting> _ls_pow_outside) {
 
+		
+		//TODO: this is not adapted to the location of the POI
+		//usually, the location of the POI is (0,0) because
+		//tested by loading PNG or JPEG image.
+		
 		//eliminate the image values out of specified area by replacing
 		//them with (white) alpha values.
 		//

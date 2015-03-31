@@ -145,92 +145,89 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
                             0, bi_image.getWidth());
             
         } else {
-            
-            //print image to graphical user interface
+
+
+            // interrupt if the given values are illegal if the size of 
+        	// the area which is to be repainted is equal to zero.
+            if (_r == null || _r.height <= 0 || _r.width <= 0) {
+            	return _bi;
+            }
+
+        	
+        	//fetch the zoom factors for stretching the image if necessary.
             final double cZoomFactorWidth = 1.0 
                     * Status.getImageShowSize().width
                     / Status.getImageSize().width;
             final double cZoomFactorHeight = 1.0 
                     * Status.getImageShowSize().height
                     / Status.getImageSize().height;
-            int x = (int) (pnt_locationOfImage.x * cZoomFactorWidth + _x);
-            int y = (int) (pnt_locationOfImage.y * cZoomFactorHeight + _y);
-            int width = bi_image.getWidth();
-            int height = bi_image.getHeight();
-/*
-            int nix = (int) ((_r.x + _x) * cZoomFactorWidth );
-            int niy = (int) ((_r.y + _y) * cZoomFactorHeight );
-            //TODO maybe contain a scaledInstance for quick painting which is updated
-            // if painted and size changed.
             
-            if (_r == null || _r.height <= 0 || _r.width <= 0) {
-            	return _bi;
-            }
+            // these values contain the location of the selection inside 
+            // the picture
+            int locXPage = (int) ((_r.x - pnt_locationOfImage.x) * cZoomFactorWidth)  + _x ;
+            int locYPage = (int) ((_r.y - pnt_locationOfImage.y) * cZoomFactorHeight)+ _y ;
             
-            //fetch the area of the image that as to be painted
+            
+            // these values contain the location of the selection inside the
+            // current paint-object-image
+            int locXPOI = (int)(_r.x - pnt_locationOfImage.x);
+            int locYPOI = (int)(_r.y - pnt_locationOfImage.y);
+
+            // adapt the width of the selection to the size of the 
+            // paint-object-image.
+            // 
+            // TODO: Find a better solution?
+            // to the normal width, 2 * zoom-factor is added 
+            // because if zoomed in, there are gaps between the painted
+            // sub-images.
+            _r.width = Math.min(bi_image.getWidth() - locXPOI,
+            		_r.width + (int)  (2 * cZoomFactorWidth));
+            _r.height = Math.min(bi_image.getHeight() - locYPOI,
+            		_r.height + (int) (2 * cZoomFactorHeight));
+            
+            
+            /*
+             * now a sub-image containing the newly painted stuff is created
+             * and filled with the image values
+             */
+            
+            // create sub-BufferedImage for the selection and fill it with
+            // the pixel from image
             BufferedImage bi_section = new BufferedImage(
-            		(_r.width - _r.x), (_r.height - _r.y), 
+            		_r.width, _r.height, 
             		BufferedImage.TYPE_INT_ARGB);
             
-            int[] rgbA = new int[(_r.height - _r.y) * (_r.width - _r.x)];
-
-
-
-            
-            int locationX = (int)( _r.x - pnt_locationOfImage.x);
-            int locationY = (int)(_r.y - pnt_locationOfImage.y);
-            
-            System.out.println("plog");
-            System.out.println(pnt_locationOfImage);
-            
-            System.out.println(_x + "...." + _y);
-            System.out.println("\nImages:" + bi_image.getWidth() + ".." + bi_image.getHeight());
-            System.out.println(
-            		(locationX)+ "\n" + 
-            		(locationY)+ "\n" + 
-            		(_r.width  )+ "\n" + 
-            		(_r.height )+ "\n" + 
-            		_r.height);
+            // for filling the BufferedImage, the RGB-alpha values are written into
+            // an integer array
+            int[] rgbA = new int[_r.height * _r.width];
             rgbA = bi_image.getRGB(
-            		locationX, 
-            		locationY, 
-            		_r.width - _r.x, _r.height - _r.y, 
+            		locXPOI, locYPOI, 
+            		_r.width, _r.height, 
             		rgbA,
-            		1, 
-            		_r.height - _r.y);
-            bi_section.setRGB(0, 0, _r.width - _r.x, _r.height - _r.y, rgbA, 1, _r.height - _r.y);
+            		0, 
+            		_r.width);
             
-            Color clr = new Color(
-        			new Random().nextInt(255),
-        			new Random().nextInt(255),
-        			new Random().nextInt(255));
+            // write the RGB-Alpha values from the integer array to the 
+            // section-BufferedImage.
+            bi_section.setRGB(
+            		0, 0, 
+            		_r.width, 
+            		_r.height,
+            		rgbA, 0, _r.width);
             
-            for (int i = 0; i < bi_section.getWidth(); i ++) {
-            	for (int j = 0; j < bi_section.getHeight(); j ++) {
-//                	bi_section.setRGB(i, j, clr.getRGB());
-                }
-            }
-            
+            /*
+             * The Content of the BufferedImage is resized and afterwards printed
+             * into the BufferedImage that displays the currently visible section
+             * of the image.
+             */
             _g.getGraphics().drawImage(Utils.resizeImageQuick(
-                    (int) ((_r.width - _r.x) * cZoomFactorWidth),
-                    (int) ((_r.height - _r.y) * cZoomFactorHeight), 
+                    (int) ((_r.width) * cZoomFactorWidth),
+                    (int) ((_r.height) * cZoomFactorHeight), 
                     bi_section),
-                    (int) (nix), 
-                    (int) (niy), 
-                    (int) ((_r.width - _r.x) * cZoomFactorWidth),
-                    (int) ((_r.height - _r.y) * cZoomFactorHeight), null);
-                    
-            System.out.println(_r.width + "height" + _r.height);
-            */
-            _g.getGraphics().drawImage(Utils.resizeImageQuick(
-                    (int) (width * cZoomFactorWidth),
-                    (int) (height * cZoomFactorHeight), 
-                    bi_image), 
-                    (int) (x), 
-                    (int) (y), 
-                    (int) (width * cZoomFactorWidth),
-                    (int) (height * cZoomFactorHeight), null);
-            
+                    (int) (locXPage), 
+                    (int) (locYPage), 
+                    (int) ((_r.width ) * cZoomFactorWidth),
+                    (int) ((_r.height) * cZoomFactorHeight), null);
         }
         
         return bi_image;
@@ -369,7 +366,19 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 			final Rectangle _r, 
 			final List<PaintObjectWriting> _ls_pow_outside) {
 
-        new Exception("not implemented yet").printStackTrace();
+		//eliminate the image values out of specified area by replacing
+		//them with (white) alpha values.
+		//
+		//The white color is necessary because if the pipette tool is used
+		//the transparency color is to be fetched as white.
+		int[] newRGBA = new int[_r.width * _r.height];
+		int rgba = new Color(255, 255, 255, 0).getRGB();
+		for (int i = 0; i < newRGBA.length; i++) {
+			newRGBA[i] = rgba;
+		}
+		bi_image.setRGB(_r.x, _r.y, _r.width, _r.height, newRGBA, 0, _r.width);
+		
+		//return null because there is no new PaintObject created.
 		return null;
 	}
 

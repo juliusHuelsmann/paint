@@ -241,8 +241,10 @@ MouseListener, Serializable {
 
 				case OPERATION_NO:
 					
-					cmp_moved.setLocation(_event.getXOnScreen() - pnt_startPosition.x,
-							_event.getYOnScreen() - pnt_startPosition.y);
+					int newX = _event.getXOnScreen() - pnt_startPosition.x;
+					int newY = _event.getYOnScreen() - pnt_startPosition.y;
+					cmp_moved.setLocation(newX, newY);
+					System.out.println(newX + ".." + newY);
 					break;
 				case OPERATION_TOP:
 

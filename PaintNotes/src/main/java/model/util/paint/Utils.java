@@ -129,10 +129,12 @@ public final class Utils {
         BufferedImage bi;
         try {
             bi = ImageIO.read(inputFile);
-            java.awt.Image scaledImage = bi.getScaledInstance(_width,
-                    _height, java.awt.Image.SCALE_SMOOTH);
-            BufferedImage outImg = new BufferedImage(_width, 
-                    _height, BufferedImage.TYPE_INT_ARGB);
+            java.awt.Image scaledImage = bi.getScaledInstance(
+            		Math.max(_width, 1),
+                    Math.max(_height, 1), java.awt.Image.SCALE_SMOOTH);
+            BufferedImage outImg = new BufferedImage(
+            		Math.max(_width, 1),
+                    Math.max(_height, 1), BufferedImage.TYPE_INT_ARGB);
             
             
             Graphics g = outImg.getGraphics();

@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -192,12 +194,49 @@ import control.util.WindowMover;
         super.setResizable(true);
 
 	
-	
+
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void validate() {
+//		System.out.println("validate");
+		super.validate();
 	}
 	
-	
 
-    /**
+
+	@Override
+	public void setBounds(int _x, int _y, int _width, int _height) {
+//		System.out.println(_x + ".." + _y + ".." + _width + ".." + _height);
+		super.setBounds(_x, _y, _width, _height);
+	}
+
+	@Override
+	public void setBounds(Rectangle _r) {
+//		System.out.println(_r.x + ".." + _r.y + ".." + _r.width + ".." + _r.height);
+		super.setBounds(_r);
+	}
+    @Override
+	public void setLocation(int _x, int _y) {
+//		System.out.println(_x + "d..d" + _y);
+		super.setLocation(_x, _y);
+	}
+
+    @Override
+	public void setLocation(Point _pnt) {
+    	int x = _pnt.x;
+    	int y = _pnt.y;
+//		System.out.println(x + "d..d" + y);
+		super.setLocation(x, y);
+	}
+
+
+
+	/**
      * Background color fading in at startup.
      */
     private final Color clr_bg 
@@ -504,14 +543,6 @@ import control.util.WindowMover;
 	}
 
 
-	@Override
-	public void setLocation(int _x, int _y) {
-		System.out.println(_x + "d..d" + _y);
-		super.setLocation(_x, _y);
-	}
-
-    
-	
 	/**
 	 * apply the sizes of the items.
 	 */

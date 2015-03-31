@@ -17,6 +17,7 @@ import java.io.Serializable;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import control.ContorlPicture;
 import control.ControlPaintSelectin;
@@ -2109,7 +2110,13 @@ public final class Picture implements Serializable {
 			ls_po_sortedByX.finishTransaction(transaction);
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			Util.handleException(
+					"Error opening image: File not found", 
+					"Error opening image file " + _wsLoc 
+					+ ".\nThe input file can not be opened.",
+					e, null);
+			
+			
 		}
 
 

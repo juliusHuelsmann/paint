@@ -21,18 +21,31 @@ public final class ViewSettings {
 
     
     //constants that are used.
+	
     /**
      * constants.
      */
-    private static final int FIFE = 5, TEN = 10, TWENTY_FIFE = 25;
+    private static final int 
+    THREE = 3, FOUR = 4, FIVE = 5, SEVEN = 7, TEN = 10, TWENTY_FIFE = 25;
     
+
+    private final static int MIN_WIDTH_WINDOW = 500, MIN_HEIGHT_WINDOW = 300;
     
-    //class selection
+    /**
+	 * Distance between items and window borders (for being able to move and resize).
+	 */
+	public static final int DISTANCE_TO_WINDOW = FIVE;
+
+    /**
+     * the size of the scrollPanel.
+     */
+    public static final int VIEW_SIZE_SP = 30;
+	//class selection
 
     /**
      * The maximal zoom in and the maximal zoom out.
      */
-    public static final int MAX_ZOOM_IN = 7, MAX_ZOOM_OUT = 3;
+    public static final int MAX_ZOOM_IN = SEVEN, MAX_ZOOM_OUT = THREE;
     
     /*
      * general stuff.
@@ -82,8 +95,10 @@ public final class ViewSettings {
     /**
      * distances for items.
      */
-    private static int distanceAfterLine = 2 + 1, distanceBeforeLine = 2, 
-            distanceBetweenItems = 2 + 1;
+    private static int 
+    distanceAfterLine = THREE, 
+    distanceBeforeLine = 2, 
+    distanceBetweenItems = THREE;
     
     /**
      * array of colors of border in selection.
@@ -147,8 +162,13 @@ public final class ViewSettings {
     
     private static Dimension 
     standard_size_jframe_normalSize = new Dimension(
-    		(int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()) * 2/ 3, 
-    		(int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()) * 2 / 3),
+    		Math.max(
+    				(int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()) * 2/ 3, 
+    				MIN_WIDTH_WINDOW), 
+    		Math.max(
+    				(int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()) * 2 / 3,
+    				MIN_HEIGHT_WINDOW)),
+    				
     standard_size_jframe_fullscreen = new Dimension(
     		(int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() ), 
     		(int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
@@ -181,42 +201,25 @@ public final class ViewSettings {
 
 
     
-    /**
-     * The Bounds of the Exit button.
-     */
-    private static Rectangle view_bounds_jbtn_exit = new Rectangle(
-            getSize_jframe().width - TWENTY_FIFE * 2 - FIFE, 0, 
-            TWENTY_FIFE * 2 + FIFE, 2  * TEN);
 
-    /**
-     * The Bounds of the Exit button.
-     */
-    private static Rectangle view_bounds_jbtn_fullscreen = new Rectangle(
-            getView_bounds_jbtn_exit().x - getView_bounds_jbtn_exit().width, 0, 
-            TWENTY_FIFE * 2 + FIFE, 2  * TEN);
-    
     /**
      * the width of the TabbedPane.
      */
     private static int view_widthTb = getSize_jframe().width - 2
-            - ((2 * 2 * 2 * 2 + 1) * 2 + 1); //35
+            - DISTANCE_TO_WINDOW * 2 - VIEW_SIZE_SP;
 
     /**
      * the height of the TabbedPane.
      */
     private static int view_heightTB = getSize_jframe().height - 1;
 
-    /**
-     * the visible height of the TabbedPane.
-     */
-    private static int view_heightTB_visible = 
-            (int) (getSize_jframe().height / (2 + 2 + 1 / 2));
+
 
     /**
      * The size of the tabbedPane opener.
      */
     private static int view_heightTB_opener =
-            view_heightTB_visible / (2 + 1) / (2 + 1);
+            getView_heightTB_visible() / (2 + 1) / (2 + 1);
     /**
      * the bounds of the PaointObject.
      */
@@ -224,10 +227,6 @@ public final class ViewSettings {
             2, 180, 190, 560);
 
 
-    /**
-     * the size of the scrollPanel.
-     */
-    public static final int VIEW_SIZE_SP = 30;
 
     /**
      * The size of the title JButton getSize() / the size of title JButton
@@ -238,10 +237,6 @@ public final class ViewSettings {
 
     
     /**
-     * Distance between items and window borders (for beeing able to move and resize).
-     */
-    public static final int DISTANCE_TO_WINDOW = 5;
-    /**
 	 * The bounds of the TabbedPanel.
 	 */
 	public static final Point VIEW_LOCATION_TB = new Point(DISTANCE_TO_WINDOW, DISTANCE_TO_WINDOW);
@@ -251,14 +246,14 @@ public final class ViewSettings {
      * the bounds of the Page.
      */
     private static Rectangle view_bounds_page_open = new Rectangle(
-            VIEW_LOCATION_TB.x,  view_heightTB_visible 
+            VIEW_LOCATION_TB.x,  getView_heightTB_visible() 
             + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
             getSize_jframe().width - TWENTY_FIFE - TEN - 2, 
             
 //            getSize_jframe().height - getSize_jframe().height / FIFE 
 //            - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
     
-    		getSize_jframe().height - (view_heightTB_visible 
+    		getSize_jframe().height - (getView_heightTB_visible() 
             + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y + VIEW_SIZE_SP));
             //the last 25 is the size 
     /**
@@ -266,9 +261,9 @@ public final class ViewSettings {
      */
     private static Rectangle view_bounds_page_closed = new Rectangle(
             view_bounds_page_open.x, 
-            view_bounds_page_open.y - view_heightTB_visible, 
+            view_bounds_page_open.y - getView_heightTB_visible(), 
             view_bounds_page_open.width, 
-            view_bounds_page_open.height + view_heightTB_visible 
+            view_bounds_page_open.height + getView_heightTB_visible() 
             - TWENTY_FIFE);
     
     /**
@@ -278,11 +273,6 @@ public final class ViewSettings {
             view_bounds_page_open);
 
 
-	/**
-     * size of item.
-     */
-    private static int itemWidth = getSize_jframe().width / (TWENTY_FIFE - 2 - 1), 
-            itemHeight = getSize_jframe().height / (TEN + 2);
 
     /**
      * The size of the new - JPanel.
@@ -370,44 +360,34 @@ public final class ViewSettings {
         = new Point((getSize_jframe().width - getSizeMessage().width) / 2, 
                 getSize_jframe().height 
                 - getSizeMessage().height - 2 * 2 * 2 * 2 * 2);
-
-         view_bounds_jbtn_exit = new Rectangle(
-                getSize_jframe().width - TWENTY_FIFE * 2 - FIFE, 0, 
-                TWENTY_FIFE * 2 + FIFE, 2  * TEN);
-         view_bounds_jbtn_fullscreen = new Rectangle(
-                getView_bounds_jbtn_exit().x 
-                - getView_bounds_jbtn_exit().width, 0, 
-                TWENTY_FIFE * 2 + FIFE, 2  * TEN);
         
 
          view_widthTb = getSize_jframe().width - 2
                 - ((2 * 2 * 2 * 2 + 1) * 2 + 1); //35
          view_heightTB = getSize_jframe().height - 1;
-         view_heightTB_visible = 
-                (int) (getSize_jframe().height / (2 + 2 + 1 / 2));
 
          final int h1 = 180, h2 = 190, h3 = 560;
          view_heightTB_opener =
-                view_heightTB_visible / (2 + 1) / (2 + 1);
+                getView_heightTB_visible() / (2 + 1) / (2 + 1);
          view_bounds_po = new Rectangle(
                 2, h1, h2, h3);
 
          view_bounds_page_open = new Rectangle(
-                 VIEW_LOCATION_TB.x,  view_heightTB_visible 
+                 VIEW_LOCATION_TB.x,  getView_heightTB_visible() 
                  + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
                  getSize_jframe().width - TWENTY_FIFE - TEN - 2, 
                  
 //                 getSize_jframe().height - getSize_jframe().height / FIFE 
 //                 - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
          
-         		getSize_jframe().height - (view_heightTB_visible 
+         		getSize_jframe().height - (getView_heightTB_visible() 
                  + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y + VIEW_SIZE_SP));
                 //the last 25 is the size 
          view_bounds_page_closed = new Rectangle(
                  view_bounds_page_open.x, 
-                 view_bounds_page_open.y - view_heightTB_visible, 
+                 view_bounds_page_open.y - getView_heightTB_visible(), 
                  view_bounds_page_open.width, 
-                 view_bounds_page_open.height + view_heightTB_visible 
+                 view_bounds_page_open.height + getView_heightTB_visible() 
                  - TWENTY_FIFE);
         
          view_bounds_page = new Rectangle(
@@ -415,8 +395,6 @@ public final class ViewSettings {
 
          distanceAfterLine = 2 + 1; distanceBeforeLine = 2; 
                 distanceBetweenItems = 2 + 1; 
-                itemWidth = getSize_jframe().width / (TWENTY_FIFE - 2 - 1); 
-                itemHeight = getSize_jframe().height / (TEN + 2);
         
          itemMenu1Width 
         = (int) (ViewSettings.getItemWidth() * (1 + 1.0 / (2 + 2)));
@@ -470,7 +448,13 @@ public final class ViewSettings {
      */
     public static void setSize_jframe(final Dimension _size) {
         
-        standard_size_jframe_normalSize = _size;
+        standard_size_jframe_normalSize = new Dimension(
+        	    		Math.max(
+        	    				_size.width, 
+        	    				MIN_WIDTH_WINDOW), 
+        	    		Math.max(
+        	    				_size.height,
+        	    				MIN_HEIGHT_WINDOW));
         recalculate();
     }
 
@@ -551,51 +535,36 @@ public final class ViewSettings {
      * @return the view_heightTB_visible
      */
     public static int getView_heightTB_visible() {
-        return view_heightTB_visible;
+    	return Math.max(
+    			(int) (getSize_jframe().height / (FIVE)),
+    			
+    			//TODO: adapt window size
+        		120);
     }
 
 
-    /**
-     * @param _view_heightTB_visible the view_heightTB_visible to set
-     */
-    public static void setView_heightTB_visible(
-            final int _view_heightTB_visible) {
-        ViewSettings.view_heightTB_visible = _view_heightTB_visible;
-    }
 
 
     /**
      * @return the view_bounds_jbtn_fullscreen
      */
     public static Rectangle getView_bounds_jbtn_fullscreen() {
-        return view_bounds_jbtn_fullscreen;
+    	return new Rectangle(
+                getView_bounds_jbtn_exit().x - getView_bounds_jbtn_exit().width, 
+                getView_bounds_jbtn_exit().y, 
+                TWENTY_FIFE * 2 + FIVE, 2  * TEN);
     }
 
 
-    /**
-     * @param _view_bounds_jbtn_fullscreen the view_bounds_jbtn_fullscreen 
-     * to set
-     */
-    public static void setView_bounds_jbtn_fullscreen(
-            final Rectangle _view_bounds_jbtn_fullscreen) {
-        ViewSettings.view_bounds_jbtn_fullscreen = _view_bounds_jbtn_fullscreen;
-    }
 
 
     /**
      * @return the view_bounds_jbtn_exit
      */
     public static Rectangle getView_bounds_jbtn_exit() {
-        return view_bounds_jbtn_exit;
-    }
-
-
-    /**
-     * @param _view_bounds_jbtn_exit the view_bounds_jbtn_exit to set
-     */
-    public static void setView_bounds_jbtn_exit(
-            final Rectangle _view_bounds_jbtn_exit) {
-        ViewSettings.view_bounds_jbtn_exit = _view_bounds_jbtn_exit;
+        return new Rectangle(getSize_jframe().width - TWENTY_FIFE * 2 - FIVE - DISTANCE_TO_WINDOW, 
+                DISTANCE_TO_WINDOW, 
+                TWENTY_FIFE * 2 + FIVE, 2  * TEN);
     }
 
 
@@ -735,32 +704,23 @@ public final class ViewSettings {
      * @return the itemWidth
      */
     public static int getItemWidth() {
+    	int itemWidth = getSize_jframe().width / (TWENTY_FIFE - 2 - 1);
+    	itemWidth = getView_heightTB_visible() / 3;
         return itemWidth;
     }
 
-
-    /**
-     * @param _itemWidth the itemWidth to set
-     */
-    public static void setItemWidth(final int _itemWidth) {
-        ViewSettings.itemWidth = _itemWidth;
-    }
 
 
     /**
      * @return the itemHeight
      */
     public static int getItemHeight() {
+        int itemHeight = getSize_jframe().height / (TEN + 2);
+        itemHeight = getView_heightTB_visible() / 3;
         return itemHeight;
     }
 
 
-    /**
-     * @param _itemHeight the itemHeight to set
-     */
-    public static void setItemHeight(final int _itemHeight) {
-        ViewSettings.itemHeight = _itemHeight;
-    }
 
 
     /**

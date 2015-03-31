@@ -128,12 +128,22 @@ public final class Start {
 //        				Exec=java -jar /home/juli/Software/file.jar %U
 //        				Gettext-Domain=java
         		
+        		double time0 = System.currentTimeMillis();
+        		
         		JOptionPane.showMessageDialog(
         				null, 
-        				"Information message: \n\nA pre-release paint version has been started " +
-        				"with the following parameter:\n\t" + _args[0] 
-        						+ "\n\nThis program is developed and maintained by Julius Hülsmann "
-        						+ "\n(For more information visit https://github.com/juliusHuelsmann/paint)",
+        				"Information message: \n"
+        				+ "\n"
+        				+ "A pre-release paint version has been started "
+        				+ " with the following parameter:\n\t" 
+        				+ _args[0] 
+        				+ "\n"
+        				+ "\n"
+        				+ "This program is developed and maintained "
+        				+ "by Julius Hülsmann "
+        				+ "\n" 
+        				+ "(For more information visit "
+        				+ "https://github.com/juliusHuelsmann/paint)",
         				"PaintNotes",
         				JOptionPane.INFORMATION_MESSAGE);
 
@@ -142,12 +152,14 @@ public final class Start {
     	        cp.getPicture().load(_args[0]);
     	        cp.getcTabLook().setBackgroundNone();
     	        cp.getcTabLook().setMargeNone();
-    	        
+    	        cp.getView().getTabs().setTabbedPaneOpen(false);
     	        
     	        //set the initialization process terminated
                 Status.increaseInitializationFinished();
     	        
-        		
+
+        		double time1 = System.currentTimeMillis();
+        		Status.getLogger().warning("Took "+ (time1 - time0) + "ms for startup");
         		
         	} else {
 

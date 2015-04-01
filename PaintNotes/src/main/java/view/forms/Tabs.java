@@ -65,12 +65,38 @@ public final class Tabs extends VTabbedPane {
                 ViewSettings.getView_heightTB_visible());
         
         if (tab_paint != null) {
-
             tab_paint.applySize();
         }
+        
+        if (tab_print != null) {
+        	tab_print.applySize();
+        }
         if (tab_write != null) {
-        	
         	tab_write.applySize();
+        }
+        
+        if (tab_selection != null) {
+        	tab_selection.applySize();
+        }
+        
+        if (tab_export != null) {
+        	tab_export.applySize();
+        }
+        
+        if (tab_look != null) {
+        	tab_look.applySize();
+        }
+        
+        if (tab_pos != null) {
+        	tab_pos.applySize();
+        }
+        
+        if (tab_about != null) {
+        	tab_about.applySize();
+        }
+        
+        if (tab_insert != null) {
+        	tab_insert.applySize();
         }
     }
     

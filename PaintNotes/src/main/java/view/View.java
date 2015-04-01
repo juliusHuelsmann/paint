@@ -9,11 +9,9 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
@@ -28,8 +26,6 @@ import view.util.mega.MFrame;
 import view.util.mega.MLabel;
 import control.ControlPaint;
 import control.ControlView;
-import control.forms.CLoading;
-import control.util.MousePositionTracker;
 import control.util.WindowMover;
 
 

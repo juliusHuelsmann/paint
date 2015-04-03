@@ -87,6 +87,7 @@ public final class Tabs extends VTabbedPane {
         	tab_look.applySize();
         }
         
+        
         if (tab_pos != null) {
         	tab_pos.applySize();
         }

@@ -184,19 +184,20 @@ MenuListener {
             //initialize view class and log information on current 
             //initialization progress
             Status.getLogger().info("initialize view class and set visible.");
-          
+
             view = new View();
             view.initialize(this);
             view.setVisible(true);
-            cl = new CLoading(view.getLoading());
+
+//            cl = new CLoading(view.getLoading());
             
             
             //enable current operation
             view.getTabs().getTab_paint().getTb_color1().setActivated(true);
             view.getTabs().getTab_paint().getIt_stift1()
             .getTb_open().setActivated(true);
-           
-            
+
+
             /*
              * Initialize control
              */
@@ -207,6 +208,7 @@ MenuListener {
 
             Status.getLogger().info("initialization process completed.\n\n"
                     + "-------------------------------------------------\n");
+
         } else {
 
             //if not installed and no installation done print error and write

@@ -150,8 +150,8 @@ import control.util.WindowMover;
         super.add(jbtn_fullscreen);
 
         
-        loading = new Loading();
-        super.add(loading);
+//        loading = new Loading();
+//        super.add(loading);
         page = new Page(_cp);
         
         
@@ -187,9 +187,6 @@ import control.util.WindowMover;
 
         tabs.setVisible(true);
         page.setVisible(true);
-        super.setResizable(true);
-
-	
 
 	}
 
@@ -548,8 +545,11 @@ import control.util.WindowMover;
         super.setSize(ViewSettings.getSizeJFrame());
 
 
-        loading.setSize(getWidth() / 3, getHeight() / 3);
-        loading.setLocation(getWidth() /3, getHeight() / 3);
+        if (loading != null) {
+
+            loading.setSize(getWidth() / 3, getHeight() / 3);
+            loading.setLocation(getWidth() /3, getHeight() / 3);
+        }
         
         //initialize tabs
         Status.getLogger().info("   initialize Tabs\n");

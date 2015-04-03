@@ -145,7 +145,7 @@ public final class CLook implements ActionListener {
         getLook().getJcb_lines().setSelected(false);
         getLook().getJcb_raster().setSelected(false);
         Status.setIndexPageBackground(backgroundID);
-        
+
 
 	}
 	

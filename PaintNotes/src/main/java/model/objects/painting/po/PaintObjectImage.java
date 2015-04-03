@@ -227,13 +227,13 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
              * of the image.
              */
             _g.getGraphics().drawImage(Utils.resizeImageQuick(
-                    (int) ((_r.width) * cZoomFactorWidth),
-                    (int) ((_r.height) * cZoomFactorHeight), 
+                    (int) Math.max(1, (_r.width) * cZoomFactorWidth),
+                    (int) Math.max(1, (_r.height) * cZoomFactorHeight), 
                     bi_section),
                     (int) (locXPage), 
                     (int) (locYPage), 
-                    (int) ((_r.width ) * cZoomFactorWidth),
-                    (int) ((_r.height) * cZoomFactorHeight), null);
+                    (int) Math.max(1, (_r.width ) * cZoomFactorWidth),
+                    (int) Math.max(1, ((_r.height) * cZoomFactorHeight)), null);
         }
         
         return bi_image;

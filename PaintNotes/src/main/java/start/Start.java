@@ -100,7 +100,7 @@ public final class Start {
 	        
 	        //call controller
 	        ControlPaint cp1 =  new ControlPaint();
-	        cp1.getcTabLook().setBackgroundNone();	 
+	        cp1.getcTabLook().setBackgroundNone();	
 	        
 	        //set the initialization process terminated
             Status.increaseInitializationFinished();

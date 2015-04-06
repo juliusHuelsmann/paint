@@ -5,4 +5,9 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>PaintNotes</name>
   <description>Paint program for taking notes</description>
+  <url>http://juliushuelsmann.github.io/paint/</url>
+  <organization>
+  	<name>Julius Hülsmann</name>
+  	<url>https://github.com/juliusHuelsmann/</url>
+  </organization>
 </project>

@@ -178,7 +178,6 @@ public final class Debug extends Tab implements Observer {
 
 
 		i1b_console = new Item1Button(null);
-
 		i1b_console.setLocation(ViewSettings.getDistanceBetweenItems(), 
         		ViewSettings.getDistanceBetweenItems());
 		i1b_console.setBorder(false);

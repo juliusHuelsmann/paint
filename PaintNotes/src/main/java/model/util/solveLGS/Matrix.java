@@ -99,7 +99,10 @@ public class Matrix {
         
         //check whether the matrix is quadratic. Whether its determinant is non 
         //- zero will be checked on the fly during the calculation.
-        if (content.length + 1 != content[0].length) {
+        if (content == null || content.length == 0) {
+        	 return null;
+        	 
+        } else if (content.length + 1 != content[0].length) {
             Status.getLogger().severe("unable to solve matrix: not quadratic!");
             return null;
         } 

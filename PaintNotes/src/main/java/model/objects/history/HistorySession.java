@@ -261,7 +261,8 @@ public class HistorySession implements Serializable {
 	 */
 	public final void applyPrevious() {
 		
-		ls_history.previous(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
+		ls_history.previous(SecureList.ID_NO_PREDECESSOR,
+				SecureList.ID_NO_PREDECESSOR);
 		if (!ls_history.isEmpty()
 				&& !ls_history.isInFrontOf()) {
 
@@ -275,13 +276,17 @@ public class HistorySession implements Serializable {
 	 */
 	public final void applyNext() {
 		
-		if (ls_history.isInFrontOf())
-			ls_history.next(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
+		if (ls_history.isInFrontOf()) {
+			ls_history.next(SecureList.ID_NO_PREDECESSOR,
+					SecureList.ID_NO_PREDECESSOR);
+		}
 		
 		if (!ls_history.isEmpty() && !ls_history.isBehind()) {
 
 			ls_history.getItem().applyNext();
-			ls_history.next(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);;
+			ls_history.next(
+					SecureList.ID_NO_PREDECESSOR, 
+					SecureList.ID_NO_PREDECESSOR);
 		}
 	}
 
@@ -290,17 +295,17 @@ public class HistorySession implements Serializable {
 	/**
 	 * @return the picture
 	 */
-	public Picture getPicture() {
+	public final Picture getPicture() {
 		return picture;
 	}
 
 
 
 	/**
-	 * @param picture the picture to set
+	 * @param _picture the picture to set
 	 */
-	public void setPicture(Picture picture) {
-		this.picture = picture;
+	public final void setPicture(final Picture _picture) {
+		this.picture = _picture;
 	}
 }
 

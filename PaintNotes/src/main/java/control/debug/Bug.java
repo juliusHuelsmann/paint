@@ -61,7 +61,8 @@ public final class Bug {
 
 				cp.getPicture().changePen(new Pencil(
 						Constants.PEN_ID_LINES, 1, Color.blue));
-				cp.getPicture().addPaintObject(cp.getView().getTabs().getTab_insert());
+				cp.getPicture().addPaintObject(
+						cp.getView().getTabs().getTab_insert());
 
 				DPoint p = new DPoint();
 				while (!ls_strg.isBehind() 
@@ -80,7 +81,8 @@ public final class Bug {
 						p = isPoint(ls_strg.getItem());
 						if (p != null) {
 
-							cp.getPicture().changePaintObject(p, cp.getView().getPage(), cp.getControlPic());
+							cp.getPicture().changePaintObject(
+									p, cp.getView().getPage(), cp.getControlPic());
 						} else {
 							ls_strg.previous();
 						}

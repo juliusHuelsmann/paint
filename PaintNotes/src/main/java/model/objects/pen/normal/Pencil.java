@@ -353,10 +353,10 @@ public class Pencil extends Pen {
            blue = maxRBG;
        }
        
-       int abstand = Math.max(Math.abs(_i)* 2 + Math.abs(_j), 1);
-       red = 255 - (255 - red) / abstand;
-       green = 255 - (255 - green) / abstand;
-       blue = 255 - (255 - blue) / abstand;
+       int abstand = Math.max(Math.abs(_i) * 2 + Math.abs(_j), 1);
+       red = maxRBG - (maxRBG - red) / abstand;
+       green = maxRBG - (maxRBG - green) / abstand;
+       blue = maxRBG - (maxRBG - blue) / abstand;
        
        
        final int alpha = 175;
@@ -391,6 +391,7 @@ public class Pencil extends Pen {
         //the (inverted) colors
         Color clr_new0;
         final int maxRBG = 255;
+		final int tripelAmout = 3;
         final int divisor = 1;
         
         //use different functions depending on whether the 
@@ -442,7 +443,7 @@ public class Pencil extends Pen {
 
                 clr_new0 = new Color(
              		   v * getClr_foreground().getRed() / sum / divisor, 
-             		   (v + 1) * getClr_foreground().getGreen() / sum / divisor, 
+             		   (v + 1) * getClr_foreground().getGreen() / sum / divisor,
              		   (v + 2) * getClr_foreground().getBlue() / sum / divisor,
              		  alphaInside);
             } else {
@@ -459,10 +460,13 @@ public class Pencil extends Pen {
 
         
         
-        final int valueOld = (clr_old.getRed() + clr_old.getGreen() + clr_old.getBlue()) / 3;
-        final int valueNew = (getClr_foreground().getRed() + getClr_foreground().getGreen() + getClr_foreground().getBlue()) / 3;
-        
-        final int value = (valueOld * 1 + valueNew * 2) / 3;
+        final int valueOld = (clr_old.getRed()
+        		+ clr_old.getGreen() + clr_old.getBlue()) / tripelAmout;
+        final int valueNew = (getClr_foreground().getRed() 
+        		+ getClr_foreground().getGreen() 
+        		+ getClr_foreground().getBlue()) / tripelAmout;
+
+        final int value = (valueOld * 1 + valueNew * 2) / tripelAmout;
         
         //TODO generate the alpha value (new)
         final int alphaTotal = clr_old.getAlpha() + clr_new0.getAlpha();
@@ -477,21 +481,22 @@ public class Pencil extends Pen {
         		clr_old.getBlue() * clr_old.getAlpha() / alphaTotal
         		+ clr_new0.getBlue() * clr_new0.getAlpha() / alphaTotal,
         		
-        		Math.min(255,
-        				(2 * Math.max(clr_new0.getAlpha(),clr_old.getAlpha())
-        				 + 1 * Math.min(clr_new0.getAlpha(),clr_old.getAlpha())) / 3
+        		Math.min(maxRBG,
+        				(2 * Math.max(clr_new0.getAlpha(), clr_old.getAlpha())
+        				 + 1 * Math.min(clr_new0.getAlpha(), 
+        						 clr_old.getAlpha())) / tripelAmout
         				
         				));
         
         final int valueCalced = Math.max(
         		(clr_new.getRed() + clr_new.getGreen()
-        				+ clr_new.getBlue()) / 3, 1);
+        				+ clr_new.getBlue()) / tripelAmout, 1);
         
         
         Color clr_new_intensityAdapted = new Color(
-        		Math.min(clr_new.getRed() * value / valueCalced, 254),
-        		Math.min(clr_new.getGreen() * value / valueCalced, 254),
-        		Math.min(clr_new.getBlue() * value / valueCalced, 254),
+        		Math.min(clr_new.getRed() * value / valueCalced, maxRBG),
+        		Math.min(clr_new.getGreen() * value / valueCalced, maxRBG),
+        		Math.min(clr_new.getBlue() * value / valueCalced, maxRBG),
         		clr_new.getAlpha());
         
         

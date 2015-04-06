@@ -59,7 +59,7 @@ public final class Paint extends Tab {
 	/**
 	 * item for the second and the first pen.
 	 */		
-	private Item1Menu it_stift1, it_stift2,it_erase;
+	private Item1Menu it_stift1, it_stift2, it_erase;
 	
 	/**
 	 * buttons.
@@ -73,6 +73,10 @@ public final class Paint extends Tab {
 	 */
 	private Item1Menu it_selection;
 	
+	
+	/**
+	 * Button for erasing (that are contained by the erase menu).
+	 */
 	private Item1Button tb_eraseAll, tb_eraseDestroy;
 	
 	/**
@@ -130,7 +134,7 @@ public final class Paint extends Tab {
 	 * @return the x coordinate for following items.
 	 */
 	private int initializeClipboard(final int _x, final boolean _paint,
-			final ControlTabPainting cp, 
+			final ControlTabPainting _cp,
 			final CPaintStatus _controlPaintStatus) {
 
         if (_paint) {
@@ -154,7 +158,7 @@ public final class Paint extends Tab {
 
 	        //paste
 	        tb_paste.setBorder(false);
-	        tb_paste.addActionListener(cp);
+	        tb_paste.addActionListener(_cp);
 	        initializeTextButton(tb_paste,
 	                TextFactory.getInstance().getTextViewTb_paste(),
 	                Constants.VIEW_TB_PASTE_PATH, 0, _controlPaintStatus);
@@ -162,7 +166,7 @@ public final class Paint extends Tab {
 
 	        //copy
 	        tb_copy.setBorder(false);
-	        tb_copy.addActionListener(cp);
+	        tb_copy.addActionListener(_cp);
 	        initializeTextButton(tb_copy,
 	                TextFactory.getInstance().getTextViewTb_copy(),
 	                Constants.VIEW_TB_COPY_PATH, 0, _controlPaintStatus);
@@ -170,7 +174,7 @@ public final class Paint extends Tab {
 
 	        //cut
 	        tb_cut.setBorder(false);
-	        tb_cut.addActionListener(cp);
+	        tb_cut.addActionListener(_cp);
 	        initializeTextButton(tb_cut,
 	                TextFactory.getInstance().getTextViewTb_cut(),
 	                Constants.VIEW_TB_CUT_PATH, 0, _controlPaintStatus);
@@ -811,7 +815,7 @@ public final class Paint extends Tab {
 
 
 		
-		for (Pen pen_available : Status.getPen_available()){
+		for (Pen pen_available : Status.getPen_available()) {
 			
 			/*
 			 * The pen which is inserted into the first penMenu
@@ -1129,24 +1133,10 @@ public final class Paint extends Tab {
 	}
 
 	/**
-	 * @param tb_eraseAll the tb_eraseAll to set
-	 */
-	public void setTb_eraseAll(Item1Button tb_eraseAll) {
-		this.tb_eraseAll = tb_eraseAll;
-	}
-
-	/**
 	 * @return the tb_eraseDestroy
 	 */
 	public Item1Button getTb_eraseDestroy() {
 		return tb_eraseDestroy;
-	}
-
-	/**
-	 * @param tb_eraseDestroy the tb_eraseDestroy to set
-	 */
-	public void setTb_eraseDestroy(Item1Button tb_eraseDestroy) {
-		this.tb_eraseDestroy = tb_eraseDestroy;
 	}
 
 }

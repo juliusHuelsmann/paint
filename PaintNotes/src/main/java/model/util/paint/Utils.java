@@ -497,10 +497,10 @@ public final class Utils {
         final int fromY_raster = (int) (_fromY / Status.getRasterSize())
                 * Status.getRasterSize();
 
-        final int fromX_points = (int)(_fromX / distancePoints)
+        final int fromX_points = (int) (_fromX / distancePoints)
         		* distancePoints;
         
-        final int fromY_points = (int)(_fromY / distancePoints)
+        final int fromY_points = (int) (_fromY / distancePoints)
         		* distancePoints;
 
         final int untilX_raster = (int) (_untilX / Status.getRasterSize())
@@ -509,10 +509,10 @@ public final class Utils {
         final int untilY_raster = (int) (_untilY / Status.getRasterSize())
         		* Status.getRasterSize();
 
-        final int untilX_points = (int)(_untilX / distancePoints)
+        final int untilX_points = (int) (_untilX / distancePoints)
         		* distancePoints;
         
-        final int untilY_points = (int)(_untilY / distancePoints)
+        final int untilY_points = (int) (_untilY / distancePoints)
         		* distancePoints;
         
         
@@ -744,10 +744,10 @@ public final class Utils {
         final int fromY_raster = (int) (_fromY / Status.getRasterSize())
                 * Status.getRasterSize();
 
-        final int fromX_points = (int)(_fromX / distancePoints)
+        final int fromX_points = (int) (_fromX / distancePoints)
         		* distancePoints;
         
-        final int fromY_points = (int)(_fromY / distancePoints)
+        final int fromY_points = (int) (_fromY / distancePoints)
         		* distancePoints;
 
         final int untilX_raster = (int) (_untilX / Status.getRasterSize())
@@ -756,10 +756,10 @@ public final class Utils {
         final int untilY_raster = (int) (_untilY / Status.getRasterSize())
         		* Status.getRasterSize();
 
-        final int untilX_points = (int)(_untilX / distancePoints)
+        final int untilX_points = (int) (_untilX / distancePoints)
         		* distancePoints;
         
-        final int untilY_points = (int)(_untilY / distancePoints)
+        final int untilY_points = (int) (_untilY / distancePoints)
         		* distancePoints;
         
         

@@ -426,7 +426,7 @@ public abstract class Pen implements Serializable {
          * 		0:		inside rectangle
          */
         Point pnt_relativePositionLast;
-        if (_rVisibleScope == null){
+        if (_rVisibleScope == null) {
         	pnt_relativePositionLast = new Point(0, 0);
         } else {
         	pnt_relativePositionLast = isInRectanlge(pnt_previous, 
@@ -443,7 +443,7 @@ public abstract class Pen implements Serializable {
 
 
                 Point pnt_relativePositionCurrent;
-                if (_rVisibleScope == null){
+                if (_rVisibleScope == null) {
                 	pnt_relativePositionCurrent = new Point(0, 0);
                 } else {
                 	pnt_relativePositionCurrent = isInRectanlge(

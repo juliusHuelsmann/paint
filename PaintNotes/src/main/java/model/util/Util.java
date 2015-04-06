@@ -44,7 +44,12 @@ public final class Util {
     private Util() { }
     
 
-    public static void print(Picture _pic){
+    /**
+     * Function for printing image.
+     * 
+     * @param _pic instance of Picture that is printed.
+     */
+    public static void print(final Picture _pic) {
 
     	BufferedImage bi_pic = _pic.calculateImage();
   		JFrame jf = new JFrame();
@@ -53,7 +58,8 @@ public final class Util {
     			* bi_pic.getWidth()  / bi_pic.getHeight(),
     			(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight());
     	jf.setVisible(false);
-    	PrintJob pjob = Toolkit.getDefaultToolkit().getPrintJob(jf,"paintPrint",null);
+    	PrintJob pjob = Toolkit.getDefaultToolkit().getPrintJob(
+    			jf, "paintPrint", null);
     	if (pjob != null) {
     	      Graphics pg = pjob.getGraphics();
     	      if (pg != null) {
@@ -65,8 +71,21 @@ public final class Util {
     	    }
     	jf.dispose();
     }
+    
+    
+    /**
+     * Function for resizing a bufferedImage.
+     * 
+     * @param _bi 		the bufferedImage that is to be resized
+     * 
+     * @param _width 	its new width 
+     * 
+     * @param _height 	its new height
+     * 
+     * @return			the resized BufferedImage.
+     */
     public static BufferedImage resize(
-    		BufferedImage _bi, int _width, int _height) { 
+    		final BufferedImage _bi, final int _width, final int _height) { 
 	   
     	
     	Image img_scaled = _bi.getScaledInstance(
@@ -87,8 +106,20 @@ public final class Util {
 	    return bi;
 	}  
 
+    
+    /**
+     * Read an image from file and resize it afterwards.
+     * 
+     * @param _bi 		The image's path
+     * 
+     * @param _width	The new width of the image.
+     * 
+     * @param _height	The new height of the image.
+     * 
+     * @return			The resized BufferedImage.
+     */
     public static BufferedImage resize(
-    		String _bi, int _width, int _height) { 
+    		final String _bi, final int _width, final int _height) { 
 	   
     	BufferedImage img_scaled;
 		try {
@@ -329,15 +360,18 @@ public final class Util {
 
 //	            	if ( (_addX + x + y +  _addY) % 20 == 0) {
 	            	
-	            	try{
-	            		if ( (x + jlbl_stroke.getLocationOnScreen().x
+	            	try {
+	            		if ((x + jlbl_stroke.getLocationOnScreen().x
 		            			+ y + jlbl_stroke.getLocationOnScreen().y) 
 		            			% strokeDistance == 0) {
-
-		                	bi_stroke.setRGB(x, y, new Color(10,10,10, 10).getRGB());
+	            			final int clr = 10;
+		                	bi_stroke.setRGB(x, y, 
+		                			new Color(clr, clr, clr, clr).getRGB());
 		            	} else {
 
-		                	bi_stroke.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+	            			final int clr = 0;
+		                	bi_stroke.setRGB(x, y, 
+		                			new Color(clr, clr, clr, clr).getRGB());
 		            	}
 	            	} catch (IllegalComponentStateException e) {
 	            		x = bi_stroke.getWidth();
@@ -372,17 +406,22 @@ public final class Util {
 //	            	if ( (_addX + x + y +  _addY) % 20 == 0) {
 	            	
 	            	try {
-	            		if ( (x + jlbl_stroke.getLocationOnScreen().x
+	            		if ((x + jlbl_stroke.getLocationOnScreen().x
 		            			- y - jlbl_stroke.getLocationOnScreen().y) 
 		            			% strokeDistance == 0
 		            			||  (x + jlbl_stroke.getLocationOnScreen().x
-				            			+ y + jlbl_stroke.getLocationOnScreen().y) 
+				            			+ y 
+				            			+ jlbl_stroke.getLocationOnScreen().y) 
 				            			% strokeDistance == 0) {
 
-		                	bi_stroke.setRGB(x, y, new Color(10,10,10, 10).getRGB());
+	            			final int clr = 10;
+		                	bi_stroke.setRGB(x, y, 
+		                			new Color(clr, clr, clr, clr).getRGB());
 		            	} else {
 
-		                	bi_stroke.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+		            		final int clr = 0;
+		                	bi_stroke.setRGB(x, y, 
+		                			new Color(clr, clr, clr, clr).getRGB());
 		            	}
 	            	} catch (IllegalComponentStateException e) {
 	            		x = bi_stroke.getWidth();
@@ -447,18 +486,20 @@ public final class Util {
 
     /**
      * Apply stroke on background.
-     * @param jlbl_stroke the background carrying item.
+     * @param _jlbl_stroke the background carrying item.
      */
-	public static void getRoughStroke(JLabel jlbl_stroke) {
+	public static void getRoughStroke(final JLabel _jlbl_stroke) {
 		
 		
 		final int strokeDistance = 20;
-		if (jlbl_stroke.getWidth() > 0 
-				&& jlbl_stroke.getHeight() > 0
+		if (_jlbl_stroke.getWidth() > 0 
+				&& _jlbl_stroke.getHeight() > 0
 //				&& jlbl_stroke.isShowing()
 				) {
-			BufferedImage bi_stroke = new BufferedImage(jlbl_stroke.getWidth(), 
-	        		jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			BufferedImage bi_stroke = new BufferedImage(
+					_jlbl_stroke.getWidth(), 
+	        		_jlbl_stroke.getHeight(),
+	        		BufferedImage.TYPE_INT_ARGB);
 	        
 	        for (int x = 0; x < bi_stroke.getWidth(); x++) {
 
@@ -466,17 +507,18 @@ public final class Util {
 	            	
 
 //	            	if ( (_addX + x + y +  _addY) % 20 == 0) {
-	            	if ( (x + y) 
+	            	if ((x + y) 
 	            			% strokeDistance == 0) {
 
-	                	bi_stroke.setRGB(x, y, new Color(40,50,50, 90).getRGB());
+	                	bi_stroke.setRGB(x, y,
+	                			new Color(40, 50, 50, 90).getRGB());
 	            	} else {
 
 	                	bi_stroke.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
 	            	}
 	            }	
 	        }
-	        jlbl_stroke.setIcon(new ImageIcon(bi_stroke));
+	        _jlbl_stroke.setIcon(new ImageIcon(bi_stroke));
 		}
 		
 	}

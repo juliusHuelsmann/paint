@@ -39,7 +39,8 @@ public final class BufferedViewer extends JFrame {
      */
     private BufferedViewer() {
         super();
-        super.setSize(100,100);
+        final int size = 100;
+        super.setSize(size, size);
         
         jlbl_painting = new JLabel();
         jlbl_painting.setSize(getSize());
@@ -61,7 +62,11 @@ public final class BufferedViewer extends JFrame {
     }
 
     
-    static double timeLast = 0;
+    /**
+     * The last time.
+     */
+    private static double timeLast = 0;
+    
     /**
      * Show new bufferedImage.
      * @param _bi the bufferedImage.

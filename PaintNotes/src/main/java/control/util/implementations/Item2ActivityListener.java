@@ -13,7 +13,7 @@ import control.interfaces.ActivityListener;
  * @author juli
  *
  */
-public class Item2ActivityListener implements ActivityListener{
+public class Item2ActivityListener implements ActivityListener {
 
 	
 	/**

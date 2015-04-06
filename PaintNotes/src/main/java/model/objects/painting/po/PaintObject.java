@@ -276,16 +276,8 @@ public abstract class PaintObject implements Serializable, Cloneable {
 	/**
 	 * @return the picture
 	 */
-	public Picture getPicture() {
+	public final Picture getPicture() {
 		return picture;
-	}
-
-
-	/**
-	 * @param picture the picture to set
-	 */
-	public void setPicture(Picture picture) {
-		this.picture = picture;
 	}
 
 

@@ -283,7 +283,7 @@ public class ContorlPicture implements PaintListener {
 				-getPaintLabel().getLocation().x + _x,
 				-getPaintLabel().getLocation().y + _y,
 				-getPaintLabel().getLocation().x + _x + _width,
-				-getPaintLabel().getLocation().y + _y +_height, 
+				-getPaintLabel().getLocation().y + _y + _height, 
 				_x, _y);
 		getPage().getJlbl_background2().setIcon(
 				new ImageIcon(bi_background));

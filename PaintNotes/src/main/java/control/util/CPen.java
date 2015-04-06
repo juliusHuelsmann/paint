@@ -18,7 +18,7 @@ import control.ControlPaint;
 import control.tabs.CPaintStatus;
 import control.tabs.ControlTabPainting;
 
-public class CPen implements ChangeListener, MouseListener{
+public class CPen implements ChangeListener, MouseListener {
 
 
 	private ControlTabPainting cp;

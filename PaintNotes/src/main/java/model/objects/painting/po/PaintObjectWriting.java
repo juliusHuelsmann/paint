@@ -29,7 +29,7 @@ import model.util.solveLGS.Matrix;
  * @author Julius Huelsmann
  * @version %U%,%I%
  */
-public class PaintObjectWriting extends PaintObjectPen implements Cloneable{
+public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
 
 	/**
      * Default serial version UID for being able to identify the list's 
@@ -265,7 +265,7 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable{
                         true, null, 
 //                        Page.getInstance().getJlbl_painting().getLocation().x,
 //                        Page.getInstance().getJlbl_painting().getLocation().y,
-                        0,0,
+                        0, 0,
                         null)
                         .getSubimage(
                                 0, 0, 1, 1);

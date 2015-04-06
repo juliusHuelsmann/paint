@@ -70,6 +70,16 @@ public final class Selection extends Tab {
         
 	}
 	
+	
+	public void applySize() {
+		super.applySize();
+
+
+        int x = initCololrs(distance, false, null, null, null, null);
+        x = initPen(x, false, null);
+        initOthers(x, false, null, null);
+	}
+	
 	/**
 	 * 
      * @param _cPaint the ControlTabPainting instance
@@ -118,32 +128,50 @@ public final class Selection extends Tab {
 			final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus) {
 
-        //the first color for the first pen
-        tb_color = new Item1Button(null);
-        tb_color.setOpaque(true);
-//        tb_color.addMouseListener(CPaintStatus.getInstance());
-        tb_color.setBorder(BorderFactory.createCompoundBorder(
-                new LineBorder(Color.black), new LineBorder(Color.white)));
-        tb_color.setLocation(_x, ViewSettings.getDistanceBetweenItems());
-        tb_color.setSize(ViewSettings.getItemMenu1Width(), 
-                ViewSettings.getItemMenu1Height());
-        tb_color.setText("Farbe 1");
-        tb_color.setActivable(false);
-        super.add(tb_color);
+		if (_paint) {
+
+	        //the first color for the first pen
+	        tb_color = new Item1Button(null);
+	        tb_color.setOpaque(true);
+//	        tb_color.addMouseListener(CPaintStatus.getInstance());
+	        tb_color.setBorder(BorderFactory.createCompoundBorder(
+	                new LineBorder(Color.black), new LineBorder(Color.white)));
+		}
+
+	        tb_color.setLocation(_x, ViewSettings.getDistanceBetweenItems());
+	        tb_color.setSize(ViewSettings.getItemMenu1Width(), 
+	                ViewSettings.getItemMenu1Height());
+		if (_paint) {
+
+	        tb_color.setText("Farbe 1");
+	        tb_color.setActivable(false);
+	        super.add(tb_color);
+		}
     
     
         final int distanceBetweenColors = 2;
         int width = (2 + 2 + 1) * (2 + 2 + 1) - 2 - 2;
         int height = width + 2 + 1 + 2 * (2 + 1);
         int anzInR = 2 + 2 + 2 + 1;
-        jbtn_colors = new MButton[anzInR * (2 + 2)];
+
+		if (_paint) {
+
+			jbtn_colors = new MButton[anzInR * (2 + 2)];
+		}
         for (int i = 0; i < jbtn_colors.length; i++) {
+
+    		if (_paint) {
+    	
             jbtn_colors[i] = new MButton();
+    		}
             jbtn_colors[i].setBounds(tb_color.getX() + tb_color.getWidth() 
                     + distanceBetweenColors + (i % anzInR) 
                     * (width + distanceBetweenColors), 
                     distanceBetweenColors + (i / anzInR)
                     * (height + distanceBetweenColors), width, height);
+
+    		if (_paint) {
+
             jbtn_colors[i].setOpaque(true);
             jbtn_colors[i].addActionListener(_cTabSelection);
             jbtn_colors[i].addMouseListener(_controlPaintStatus);
@@ -151,7 +179,11 @@ public final class Selection extends Tab {
             jbtn_colors[i].setBorder(BorderFactory.createCompoundBorder(
                     new LineBorder(Color.black), new LineBorder(Color.white)));
             super.add(jbtn_colors[i]);
+    		}
         }
+
+		if (_paint) {
+
         int i = 0;
         final int three = 3;
         final Color 
@@ -235,23 +267,40 @@ public final class Selection extends Tab {
         jbtn_colors[i + anzInR * 1].setBackground(c7n1);
         jbtn_colors[i + anzInR * 2].setBackground(c7n2);
         jbtn_colors[i + anzInR * three].setBackground(c7n3);
-    
+		}
+		
+
+		if (_paint) {
+
         //
         it_color = new Item1Menu(true);
         it_color.setMenuListener(_ml);
         it_color.addMouseListener(_controlPaintStatus);
+		}
         it_color.setSize(ViewSettings.getSIZE_PNL_CLR());
+
+		if (_paint) {
+
         it_color.setBorder(false);
         it_color.setText("+ Farben");
+		}
         it_color.setLocation(jbtn_colors[jbtn_colors.length - 1].getX() 
                 + ViewSettings.getDistanceBetweenItems() 
                 + jbtn_colors[jbtn_colors.length - 1].getWidth(), 
                 ViewSettings.getDistanceBetweenItems());
+
+		if (_paint) {
+
         it_color.getMPanel().add(new VColorPanel(jbtn_colors, _ml,
         		_controlPaintStatus));
         it_color.setBorder(false);
+		}
         it_color.setIcon("icon/palette.png");
+
+		if (_paint) {
+
         super.add(it_color);
+		}
         
         int xLocationSeparation = it_color.getWidth() + it_color.getX() 
                 + ViewSettings.getDistanceBeforeLine();
@@ -275,11 +324,16 @@ public final class Selection extends Tab {
 	 */
 	private int initPen(final int _x, final boolean _paint,
 			final CTabSelection _cTabSelection) {
-	    
+
+		if (_paint) {
+
         jcb_points = new JCheckBox("points");
         jcb_points.setSelected(true);
         jcb_points.setOpaque(false);
+		}
         jcb_points.setBounds(_x, distance, twoHundred, heightLabel);
+		if (_paint) {
+
         jcb_points.setVerticalAlignment(SwingConstants.TOP);
         jcb_points.setFocusable(false);
         jcb_points.addActionListener(_cTabSelection);
@@ -289,8 +343,12 @@ public final class Selection extends Tab {
         jcb_line.setVerticalAlignment(SwingConstants.TOP);
         jcb_line.setFocusable(false);
         jcb_line.setOpaque(false);
+		}
         jcb_line.setBounds(_x, jcb_points.getHeight() + jcb_points.getY() 
                 + distance, twoHundred, heightLabel);
+
+		if (_paint) {
+
         jcb_line.addActionListener(_cTabSelection);
         super.add(jcb_line);
     
@@ -298,14 +356,20 @@ public final class Selection extends Tab {
         jcb_maths.setFocusable(false);
         jcb_maths.setOpaque(false);
         jcb_maths.setVerticalAlignment(SwingConstants.TOP);
+		}
+
         jcb_maths.setBounds(_x, jcb_line.getHeight() + jcb_line.getY() 
                 + distance, twoHundred, heightLabel);
+
+		if (_paint) {
+
         jcb_maths.addActionListener(_cTabSelection);
         super.add(jcb_maths);
         
         //deactivate the items because at the beginning there is no item 
         //selected.
         _cTabSelection.deactivateOp();
+		}
     
 
         int xLocationSeparation = jcb_maths.getWidth() + jcb_maths.getX() 
@@ -315,8 +379,9 @@ public final class Selection extends Tab {
         return xLocationSeparation + ViewSettings.getDistanceBetweenItems();
         
 	}
-	
-	
+	private Item1Button tb_changePen;
+	private Item1Button tb;
+	private Item1Menu it_stift1;
 	/**
 	 * initialize other items.
 	 * @param _x the x coordinate
@@ -330,11 +395,15 @@ public final class Selection extends Tab {
 	private void initOthers(final int _x, final boolean _paint,
 			final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus) {
+		if (_paint) {
 
-        Item1Button tb = new Item1Button(null);
-        tb.setOpaque(true);
+	        tb = new Item1Button(null);
+	        tb.setOpaque(true);
+		}
         tb.setSize(htf, htf);
         tb.setLocation(_x + distance, distance);
+		if (_paint) {
+
         tb.setText("Groesse aendern");
         tb.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
@@ -343,35 +412,46 @@ public final class Selection extends Tab {
         tb.setIcon("icon/tabs/write/write.png");
         super.add(tb);
 
-        Item1Button tb_changePen = new Item1Button(null);
+        tb_changePen = new Item1Button(null);
         tb_changePen.setOpaque(true);
+		}
+		
         tb_changePen.setSize(htf, htf);
         tb_changePen.setLocation(tb.getX() + tb.getWidth() + distance, 
                 tb.getY());
+		if (_paint) {
+
+        
         tb_changePen.setText("Stift aendern");
         tb_changePen.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb_changePen.setActivable(false);
+		}
         tb_changePen.setIcon("icon/tabs/write/write.png");
+		if (_paint) {
+
         super.add(tb_changePen);
 
         //pen 1
-        Item1Menu it_stift1 = new Item1Menu(false);
+        it_stift1 = new Item1Menu(false);
         it_stift1.setMenuListener(_ml);
         it_stift1.addMouseListener(_controlPaintStatus);
         it_stift1.setBorder(null);
         it_stift1.setBorder(false);
         it_stift1.setText("Drehen/Spiegeln");
+		}
         it_stift1.setLocation(tb_changePen.getX() 
                 + tb_changePen.getWidth() + distance, 
                 tb_changePen.getY());
         it_stift1.setSize(twoHundred, twoHundred + twoHundred / 2);
+		if (_paint) {
+
         it_stift1.setActivable();
         it_stift1.setItemsInRow((byte) 1);
         it_stift1.setBorder(false);
         super.add(it_stift1);
-
+		}
         
 
         int xLocationSeparation = it_stift1.getWidth() + it_stift1.getX()

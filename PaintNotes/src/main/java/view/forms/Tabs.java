@@ -56,16 +56,58 @@ public final class Tabs extends VTabbedPane {
     	super(_view);
     }
     
-    public void initialize(View _view, ControlPaint _cp) {
+    
+    public void reApplySize() {
+
+        super.setSize(
+                ViewSettings.getView_widthTb(), 
+                ViewSettings.getView_heightTB(),
+                ViewSettings.getView_heightTB_visible());
+        
+        if (tab_paint != null) {
+            tab_paint.applySize();
+        }
+        
+        if (tab_print != null) {
+        	tab_print.applySize();
+        }
+        if (tab_write != null) {
+        	tab_write.applySize();
+        }
+        
+        if (tab_selection != null) {
+        	tab_selection.applySize();
+        }
+        
+        if (tab_export != null) {
+        	tab_export.applySize();
+        }
+        
+        if (tab_look != null) {
+        	tab_look.applySize();
+        }
+        
+        
+        if (tab_pos != null) {
+        	tab_pos.applySize();
+        }
+        
+        if (tab_about != null) {
+        	tab_about.applySize();
+        }
+        
+        if (tab_insert != null) {
+        	tab_insert.applySize();
+        }
+    }
+    
+    public void initialize(View _view, ControlPaint _cp){
     	super.setTabbedListener(_cp.getcTabs());
 
 
         
         //TabbedPane for different pages
-        super.setSize(
-                ViewSettings.getView_widthTb(), 
-                ViewSettings.getView_heightTB(),
-                ViewSettings.getView_heightTB_visible());
+    	reApplySize();
         super.setOpaque(true);
         super.setVisible(false);
         super.setFocusable(false);
@@ -121,7 +163,8 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Export");
-        tab_export = new Export(_cp.getcTabExport());
+        tab_export = new Export();
+        tab_export.initialize(_cp.getcTabExport());
         super.addToTab(tabNumber, tab_export);
         tabNumber++;
         

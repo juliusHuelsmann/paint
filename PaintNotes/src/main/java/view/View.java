@@ -3,19 +3,21 @@ package view;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-
+import java.awt.Point;
+import java.awt.Rectangle;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
+import view.forms.Loading;
 import view.forms.Message;
 import view.forms.Page;
 import view.forms.Tabs;
@@ -24,7 +26,7 @@ import view.util.mega.MFrame;
 import view.util.mega.MLabel;
 import control.ControlPaint;
 import control.ControlView;
-import control.util.MousePositionTracker;
+import control.util.WindowMover;
 
 
 /**
@@ -47,6 +49,7 @@ import control.util.MousePositionTracker;
      */
     private final int dsgn_maxFadeIn = 150, dsgn_max_moveTitle = 100;
 	
+    
 	/**
 	 * JLabel which contains the program title (for start fade in) and JLabel
 	 * for painting border of JFrame if non-fullscreen mode is enabled.
@@ -59,6 +62,7 @@ import control.util.MousePositionTracker;
 	 */
 	private Tabs tabs;
 	
+	private Loading loading;
 	/**
 	 * The Page.
 	 */
@@ -94,6 +98,12 @@ import control.util.MousePositionTracker;
         super.add(jlbl_backgroundStroke);
 
 
+        jlbl_border = new MLabel();
+        jlbl_border.setOpaque(false);
+        jlbl_border.setBorder(BorderFactory.createLineBorder(Color.gray));
+        jlbl_border.setFocusable(false);
+        super.add(jlbl_border);
+        
         Thread t = null;
         if (ViewSettings.isFullscreen()) {
 
@@ -105,17 +115,19 @@ import control.util.MousePositionTracker;
             t =  fadeIn();
 
         } else {
-            MousePositionTracker mpt = new MousePositionTracker(this);
-            super.addMouseListener(mpt);
-            super.addMouseMotionListener(mpt);
+//            MousePositionTracker mpt = new MousePositionTracker(this);
+//            super.addMouseListener(mpt);
+//            super.addMouseMotionListener(mpt);
+
+            WindowMover wmv = new WindowMover(this);
+            wmv.setActivityListener(cv);
+            super.addMouseListener(wmv);
+            super.addMouseMotionListener(wmv);
+            
         }
 
         
-        jlbl_border = new MLabel();
-        jlbl_border.setOpaque(false);
-        jlbl_border.setBorder(BorderFactory.createLineBorder(Color.gray));
-        jlbl_border.setFocusable(false);
-        super.add(jlbl_border);
+
         
         //exit
         jbtn_exit = new MButton();
@@ -138,20 +150,25 @@ import control.util.MousePositionTracker;
         super.add(jbtn_fullscreen);
 
         
-        
+//        loading = new Loading();
+//        super.add(loading);
         page = new Page(_cp);
         
         
         tabs = new Tabs(this);
         tabs.initialize(this, _cp);
         
+
         super.remove(jlbl_backgroundStroke);
-        if (ViewSettings.isFullscreen()) {
+        if (t != null) {
 
-            //fade out
-            fadeOut(t);
+            if (ViewSettings.isFullscreen()) {
+
+                //fade out
+                fadeOut(t);
+            }
+
         }
-
         //set some things visible and repaint the whole window.
         flip();
         repaint();
@@ -170,14 +187,49 @@ import control.util.MousePositionTracker;
 
         tabs.setVisible(true);
         page.setVisible(true);
-	
-	
-	
+
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void validate() {
+//		System.out.println("validate");
+		super.validate();
 	}
 	
-	
 
-    /**
+
+	@Override
+	public void setBounds(int _x, int _y, int _width, int _height) {
+//		System.out.println(_x + ".." + _y + ".." + _width + ".." + _height);
+		super.setBounds(_x, _y, _width, _height);
+	}
+
+	@Override
+	public void setBounds(Rectangle _r) {
+//		System.out.println(_r.x + ".." + _r.y + ".." + _r.width + ".." + _r.height);
+		super.setBounds(_r);
+	}
+    @Override
+	public void setLocation(int _x, int _y) {
+//		System.out.println(_x + "d..d" + _y);
+		super.setLocation(_x, _y);
+	}
+
+    @Override
+	public void setLocation(Point _pnt) {
+    	int x = _pnt.x;
+    	int y = _pnt.y;
+//		System.out.println(x + "d..d" + y);
+		super.setLocation(x, y);
+	}
+
+
+
+	/**
      * Background color fading in at startup.
      */
     private final Color clr_bg 
@@ -212,6 +264,12 @@ import control.util.MousePositionTracker;
 	     */
         final int maxLoop = 200;
         
+        
+        /**
+         * Whether to show animation or not.
+         */
+        final boolean fade = false;
+        
         /**
          * The maximum mount of movements the JLabel performs.
          */
@@ -222,6 +280,10 @@ import control.util.MousePositionTracker;
          */
         final int movementEnforce = 60;
         
+        if (!fade) {
+
+        	return null;
+        }
         //initialize the JLabel and set view visible
         jlbl_title = new MLabel("Paint!");
         jlbl_title.setBounds(title_start_x, title_start_y,
@@ -259,39 +321,40 @@ import control.util.MousePositionTracker;
                 getContentPane().setBackground(clr_bg);
         	}
         };
+
         t_waitFor.start();
         
         //move JLabel into the graphical user interface.
         for (int i = 0; i < dsgn_max_moveTitle; i++) {
-                    jlbl_title.setBounds((int) (title_start_x 
-                            + (getWidth() + title_start_width) / 2 * ((i))
-                            / dsgn_max_moveTitle),
-                            title_start_y,
-                            title_start_width, title_start_height);
-                    try {
-                        Thread.sleep(2);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+        	jlbl_title.setBounds((int) (title_start_x 
+        			+ (getWidth() + title_start_width) / 2 * ((i))
+        			/ dsgn_max_moveTitle),
+        			title_start_y,
+        			title_start_width, title_start_height);
+        	try {
+        		Thread.sleep(2);
+        	} catch (InterruptedException e) {
+        		e.printStackTrace();
+        	}
+        }
                 
-                /**
-                 * The last position of the title-JLabel. Used for 
-                 */
-                int lastPosition = -1;
+        /**
+         * The last position of the title-JLabel. Used for 
+         */
+        int lastPosition = -1;
 
-                //let JLabel swing.
-                for (int anzSteps = 1; 
-                        anzSteps <= maxAmountMovement; 
-                        anzSteps++) {
+        //let JLabel swing.
+        for (int anzSteps = 1; 
+        		anzSteps <= maxAmountMovement; 
+        		anzSteps++) {
                     
-                    for (int i = 0; i < maxLoop; i++) {
+        	for (int i = 0; i < maxLoop; i++) {
     
-                        lastPosition = 
-                                (int) ((getWidth() - title_start_width) / 2 
-                                + (movementEnforce / anzSteps 
-                                        / Math.sqrt(anzSteps) 
-                                        * maxAmountMovement 
+        		lastPosition = 
+        				(int) ((getWidth() - title_start_width) / 2 
+        						+ (movementEnforce / anzSteps 
+        								/ Math.sqrt(anzSteps) 
+        								* maxAmountMovement 
                                         * Math.sqrt(maxAmountMovement))
                                         * Math.sin(2 * Math.PI * i / maxLoop));
                          
@@ -385,13 +448,14 @@ import control.util.MousePositionTracker;
 			    }
 		        jlbl_title.setVisible(false);
 		        getContentPane().setBackground(Color.white);
+		        requestFocus();
 			}
 		} .start();
 	    
         
 	}
 	
-	
+
 	
 	/**
 	 * set FullscreenMode.
@@ -431,11 +495,47 @@ import control.util.MousePositionTracker;
         device.setFullScreenWindow(this);
         setVisible(false);
 	}
-
-
-
-    
 	
+	/**
+	 * set FullscreenMode.
+	 */
+	public void setNotFullscreen() {
+
+		//initialize instances
+        GraphicsEnvironment ge 
+        = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice device 
+        = ge.getDefaultScreenDevice();
+ 
+        //if fullScreen modus is supported
+        if (device.isFullScreenSupported()) {
+            if (!isUndecorated()) {
+
+                setUndecorated(true);
+            }
+            device.setFullScreenWindow(null);
+        } else {
+            device.setFullScreenWindow(null);
+        }
+        
+        repaint();
+        setVisible(false);
+        dispose();
+        setUndecorated(false);
+        repaint();
+    
+        if (isDisplayable()) {
+            setVisible(false);
+            dispose();
+        }
+        setUndecorated(true);
+        repaint();
+        
+        device.setFullScreenWindow(null);
+        setVisible(false);
+	}
+
+
 	/**
 	 * apply the sizes of the items.
 	 */
@@ -444,7 +544,12 @@ import control.util.MousePositionTracker;
 	    //set gui bounds
         super.setSize(ViewSettings.getSizeJFrame());
 
-        
+
+        if (loading != null) {
+
+            loading.setSize(getWidth() / 3, getHeight() / 3);
+            loading.setLocation(getWidth() /3, getHeight() / 3);
+        }
         
         //initialize tabs
         Status.getLogger().info("   initialize Tabs\n");
@@ -489,6 +594,17 @@ import control.util.MousePositionTracker;
         jlbl_border.setBounds(0, 0, getWidth(), getHeight());
 	}
 	
+	
+	public void setSize(int _width, int _height) {
+		
+		ViewSettings.setSize_jframe(
+				new Dimension(_width, _height));
+		
+		//this is done because viewsettings deceides whether to accept _width and
+		//_height or not.
+		super.setSize(ViewSettings.getSize_jframe().width, ViewSettings.getSize_jframe().height);
+	}
+	
     
     /*
      * getter methods
@@ -522,6 +638,14 @@ import control.util.MousePositionTracker;
 	 */
 	public Tabs getTabs() {
 		return tabs;
+	}
+
+	public Loading getLoading() {
+		return loading;
+	}
+
+	public void setLoading(Loading loading) {
+		this.loading = loading;
 	}
 
 }

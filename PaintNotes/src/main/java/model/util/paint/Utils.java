@@ -11,8 +11,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import model.objects.painting.PaintBI;
 import model.settings.Constants;
+import model.settings.Settings;
 import model.settings.Status;
 import model.settings.ViewSettings;
+import model.util.Util;
 
 /**
  * Class which contains utility methods.
@@ -127,10 +129,12 @@ public final class Utils {
         BufferedImage bi;
         try {
             bi = ImageIO.read(inputFile);
-            java.awt.Image scaledImage = bi.getScaledInstance(_width,
-                    _height, java.awt.Image.SCALE_SMOOTH);
-            BufferedImage outImg = new BufferedImage(_width, 
-                    _height, BufferedImage.TYPE_INT_ARGB);
+            java.awt.Image scaledImage = bi.getScaledInstance(
+            		Math.max(_width, 1),
+                    Math.max(_height, 1), java.awt.Image.SCALE_SMOOTH);
+            BufferedImage outImg = new BufferedImage(
+            		Math.max(_width, 1),
+                    Math.max(_height, 1), BufferedImage.TYPE_INT_ARGB);
             
             
             Graphics g = outImg.getGraphics();
@@ -138,8 +142,17 @@ public final class Utils {
             g.dispose();
             return outImg;
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+        	
+        	if (!_path.contains(Settings.ALTERNATIVE_FILE_START)) {
+        		Status.getLogger().severe("other location used for loading images. May be due to an error.");
+        		return normalResizeImage(_width, _height, Settings.ALTERNATIVE_FILE_START + _path);
+        	} else {
+
+        		System.out.println(_path);
+                e.printStackTrace();
+                return null;
+        	}
+        	
         }
     }
     
@@ -189,7 +202,7 @@ public final class Utils {
     }
 
     
-    
+
     /**
      * resizes a BufferedImage (input BufferedImage, output BufferedImage).
      * 
@@ -204,6 +217,30 @@ public final class Utils {
         java.awt.Image scaledImage = 
                 _bi.getScaledInstance(_width, _height, 
                         java.awt.Image.SCALE_SMOOTH);
+        
+        BufferedImage outImg = new BufferedImage(_width,
+                _height, BufferedImage.TYPE_INT_ARGB);
+        
+        Graphics g = outImg.getGraphics();
+        g.drawImage(scaledImage, 0, 0, null);
+        g.dispose();
+        return outImg;
+    }
+
+    /**
+     * resizes a BufferedImage (input BufferedImage, output BufferedImage).
+     * 
+     * @param _width the width of the buffered image
+     * @param _height the height of the buffered image
+     * @param _bi the first buffered image
+     * @return the new bufferedImage.
+     */
+    public static BufferedImage resizeImageQuick(final int _width,
+            final int _height, final BufferedImage _bi) {
+        
+        java.awt.Image scaledImage = 
+                _bi.getScaledInstance(_width, _height, 
+                        java.awt.Image.SCALE_FAST);
         
         BufferedImage outImg = new BufferedImage(_width,
                 _height, BufferedImage.TYPE_INT_ARGB);
@@ -934,6 +971,7 @@ public final class Utils {
             final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {
+    	
 
         //the width and the height of the entire image, of which the parts
         //are painted.
@@ -958,6 +996,9 @@ public final class Utils {
         //                  |                       |
         //                  |                       |
         //                  |                       |
+
+    	if (Status.getRasterBorderFront() != 0 || Status.getBorderRightPercentShow() != 0) {
+    	
         for (int x : new int[]{Status.getRasterBorderFront(), 
             width - Status.getRasterBorderEnd()}) {
             for (int y = 
@@ -1003,11 +1044,14 @@ public final class Utils {
                     }
                 } 
             }
-        }
+        }	
+    	}
         
         
         
 
+    	if (Status.getBorderBottomPercentShow() !=0 || Status.getRasterBorderTop() != 0) {
+    	
         //horizontal lines  _______________________
         //
         //
@@ -1044,6 +1088,7 @@ public final class Utils {
                  }
             }
         }
+    	}
         
         //paint the non image and the border of the page.
         if (width < _untilX || height < _untilY) {

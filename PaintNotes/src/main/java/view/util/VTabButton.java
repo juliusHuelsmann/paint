@@ -80,7 +80,7 @@ public class VTabButton extends MPanel {
 	 */
 	public final void stroke() {
 		jlbl_stroke.setVisible(true);
-		Util.getStroke(jlbl_stroke, 0, 0);
+		Util.getStroke(jlbl_stroke);
 	}
 	
 	

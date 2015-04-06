@@ -3,6 +3,9 @@ package start;
 
 //import declarations
 import java.io.File;
+
+import javax.swing.JOptionPane;
+
 import model.objects.painting.Picture;
 import model.settings.Status;
 import control.ControlPaint;
@@ -96,7 +99,8 @@ public final class Start {
 	        Status.getLogger().info("normal start: launch programm!\n\n");
 	        
 	        //call controller
-	        new ControlPaint();
+	        ControlPaint cp1 =  new ControlPaint();
+	        cp1.getcTabLook().setBackgroundNone();	
 	        
 	        //set the initialization process terminated
             Status.increaseInitializationFinished();
@@ -106,17 +110,75 @@ public final class Start {
 	    //one or more inputs: change folder
         default:
 
-            //print case message
-            Status.getLogger().info("start with parameters; alter images!\n\n");
-            
-            //go through array of Strings
-            for (int currPath = 0; currPath < _args.length; currPath++) {
-                changeFolder(_args[currPath]);
-            }
+        	
+        	boolean newStart = true;
+        	if (newStart) {
+        		
+//        		TODO: automatically create in installation process:
+//        		in /usr/share/contractor/paint.contract
+//        		
+//        		Afterwards chmod a+x .../paint.contract
+//        		
+//        		the file content:
+//        		[Contractor Entry]
+//        		Name=Paint
+//        				Icon=gksu-root-terminal
+//        				Description=Open paint
+//        				MimeType=image/png;image/jpg;
+//        				Exec=java -jar /home/juli/Software/file.jar %U
+//        				Gettext-Domain=java
+        		
+        		double time0 = System.currentTimeMillis();
+        		
+        		JOptionPane.showMessageDialog(
+        				null, 
+        				"Information message: \n"
+        				+ "\n"
+        				+ "A pre-release paint version has been started "
+        				+ " with the following parameter:\n\t" 
+        				+ _args[0] 
+        				+ "\n"
+        				+ "\n"
+        				+ "This program is developed and maintained "
+        				+ "by Julius Hülsmann "
+        				+ "\n" 
+        				+ "(For more information visit "
+        				+ "https://github.com/juliusHuelsmann/paint)",
+        				"PaintNotes",
+        				JOptionPane.INFORMATION_MESSAGE);
 
-	        //set the initialization process terminated
-            Status.increaseInitializationFinished();
-            
+    	        //call controller
+    	        ControlPaint cp =  new ControlPaint();
+    	        cp.getPicture().load(_args[0]);
+    	        cp.getcTabLook().setBackgroundNone();
+    	        cp.getcTabLook().setMargeNone();
+    	        cp.getView().getTabs().setTabbedPaneOpen(false);
+    	        
+    	        //set the initialization process terminated
+                Status.increaseInitializationFinished();
+    	        
+
+        		double time1 = System.currentTimeMillis();
+        		Status.getLogger().warning("Took "+ (time1 - time0) + "ms for startup");
+        		
+        	} else {
+
+            	//print case message
+                Status.getLogger().info("start with parameters; alter images!\n\n");
+                
+                //go through array of Strings
+                for (int currPath = 0; currPath < _args.length; currPath++) {
+                    changeFolder(_args[currPath]);
+                }
+
+    	        //set the initialization process terminated
+                Status.increaseInitializationFinished();
+                
+        	}
+        	
+        	
+        	
+        	
             break;
 	    }
 	}

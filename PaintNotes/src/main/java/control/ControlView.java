@@ -5,10 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import control.interfaces.ActivityListener;
 import control.tabs.ControlTabPainting;
 import model.settings.Constants;
 import model.settings.Status;
@@ -25,7 +27,7 @@ import view.View;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class ControlView implements ActionListener, MouseListener {
+public class ControlView implements ActionListener, ActivityListener, MouseListener {
 
 	
 	/**
@@ -233,18 +235,48 @@ public class ControlView implements ActionListener, MouseListener {
         		//compute the new size of the 
         		ViewSettings.setSize_jframe(
         				ViewSettings.getSizeViewFullscreen());
+              	view.setFullscreen();
           } else {
 
         	  //if the new window state is not fullscreen, apply custom size
         	  //of JFrame.
         	  ViewSettings.setSize_jframe(
         			  ViewSettings.getSizeViewWindow());
+      		view.setNotFullscreen();
           }
-          
-          view.flip();
-          view.repaint();
-          view.getTabs().repaint();
-          view.getTabs().openTab(0);
+        	sizeChanged();
+        
         } 
+	}
+
+	private void sizeChanged() {
+
+        view.setVisible(true);
+      view.flip();
+      view.repaint();
+      view.getTabs().flipSons();
+      view.getTabs().flip();
+      view.getTabs().openTab(0);
+      view.getTabs().reApplySize();
+      view.getTabs().repaint();
+
+
+      ctp.getControlPaint().getControlPic().setBi_background(new BufferedImage(
+				Math.max(ViewSettings.getView_bounds_page().getSize().width, 1),
+				Math.max(ViewSettings.getView_bounds_page().getSize().height, 1),
+				BufferedImage.TYPE_INT_ARGB));
+		ctp.getControlPaint().getControlPic().setBi(new BufferedImage(
+				Math.max(ViewSettings.getView_bounds_page().getSize().width, 1),
+				Math.max(ViewSettings.getView_bounds_page().getSize().height, 1),
+				BufferedImage.TYPE_INT_ARGB));
+      view.getPage().setSize(
+        		(int) ViewSettings.getView_bounds_page().getWidth(),
+                (int) ViewSettings.getView_bounds_page().getHeight());
+	}
+
+	public void activityOccurred(MouseEvent _event) {
+
+		ViewSettings.setSize_jframe(view.getSize());
+		sizeChanged();
 	}
 }

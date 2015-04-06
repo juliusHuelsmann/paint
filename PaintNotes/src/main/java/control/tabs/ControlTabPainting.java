@@ -510,7 +510,8 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
                     controlPaint.getPicture().loadPicture(file.getAbsolutePath());
                     Status.setUncommittedChanges(false);
                     getControlPicture().refreshPaint();
-                } else if (file.getName().toLowerCase().endsWith(".png")) {
+                } else if (file.getName().toLowerCase().endsWith(".png")
+                		|| file.getName().toLowerCase().endsWith(".jpg")) {
                     
                     try {
                         BufferedImage bi_imageBG = ImageIO.read(file);
@@ -880,6 +881,16 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+
+	public ControlPaint getControlPaint() {
+		return controlPaint;
+	}
+
+
+	public void setControlPaint(ControlPaint controlPaint) {
+		this.controlPaint = controlPaint;
 	}
 
 }

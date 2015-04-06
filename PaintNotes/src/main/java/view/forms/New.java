@@ -1,10 +1,13 @@
 package view.forms;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
@@ -220,6 +223,12 @@ public final class New extends MPanel {
         //hide the custom information and set the Border invisible because the 
         //start configuration is to enable din a4
         hideCustomInformation();
+
+        
+        //set size of stroke - JLabel
+        jlbl_stroke.setSize(getSize());
+        
+        //enable default values
         i1b_a4.setActivated(true);
         jlbl_bg1.setVisible(false);
     }
@@ -249,6 +258,8 @@ public final class New extends MPanel {
         jlbl_bg1.setOpaque(false);
         jpnl_stuff.add(jlbl_bg1);
 
+        
+        
         i1b_a5 = new Item1Button(null);
         i1b_a5.setImageHeight(i1b_a4.getImageHeight() / 2);
         i1b_a5.setImageWidth(i1b_a4.getImageWidth());
@@ -264,6 +275,8 @@ public final class New extends MPanel {
         jlbl_bg2.setOpaque(false);
         jpnl_stuff.add(jlbl_bg2);
         
+        
+        
         i1b_a6 = new Item1Button(null);
         i1b_a6.setImageHeight(i1b_a5.getImageHeight());
         i1b_a6.setImageWidth(i1b_a5.getImageWidth() / 2);
@@ -278,6 +291,8 @@ public final class New extends MPanel {
         jlbl_bg3.setBorder(new LineBorder(Color.gray));
         jlbl_bg3.setOpaque(false);
         jpnl_stuff.add(jlbl_bg3);
+        
+        
         
         i1b_a7 = new Item1Button(null);
         i1b_a7.setImageHeight(i1b_a6.getImageHeight() / 2);
@@ -295,8 +310,8 @@ public final class New extends MPanel {
         jpnl_stuff.add(jlbl_bg4);
         
         i1b_custom = new Item1Button(null);
-        i1b_custom.setImageHeight(i1b_a6.getImageHeight() / 2);
-        i1b_custom.setImageWidth(i1b_a6.getImageWidth());
+        i1b_custom.setImageHeight(i1b_a4.getImageHeight());
+        i1b_custom.setImageWidth(i1b_a4.getImageHeight());
         initialize(i1b_custom, "Custom ", 
                 0, i1b_a7.getHeight() + i1b_a7.getY() + distanceBetweenItems);
 
@@ -477,9 +492,11 @@ public final class New extends MPanel {
         _i1b.setOpaque(true);
         _i1b.setBackground(Color.white);
         _i1b.setBorder(BorderFactory.createCompoundBorder(
-                new LineBorder(Color.black), new LineBorder(Color.lightGray)));
+                new LineBorder(Color.black),
+                new LineBorder(Color.lightGray)));
+
         _i1b.setText(_text);
-        
+        _i1b.enableText();
         _i1b.setSize((ViewSettings.getView_size_new().width - (2 + 1) 
         		* distanceBetweenItems) / 2, 
                 heightImageButton);
@@ -489,9 +506,9 @@ public final class New extends MPanel {
                 _plusYLocation);
         _i1b.setIconLabelY((_i1b.getHeight() 
                 - _i1b.getImageHeight()) / 2);
+        _i1b.setIconLabelX(3);
         _i1b.setBorder(true);
-        
-        jlbl_stroke.setSize(getSize());
+
         jpnl_stuff.add(_i1b);
     }
     
@@ -527,16 +544,70 @@ public final class New extends MPanel {
     }
 
     
+    public static void main(String[]args){
+
+		
+		
+		JFrame jf = new JFrame() {
+			
+			Component vsp;
+
+			public Component add(Component _c) {
+				vsp = _c;
+				return super.add(_c);
+			}
+			
+			public void setSize(int _x, int _y) {
+				if (vsp != null) {
+
+//					vsp.setSize(_x, _y);
+				}
+				super.setSize(_x, _y);
+			}
+			
+			public void validate() {
+				super.validate();
+				if (vsp != null) {
+
+//					vsp.setSize(getWidth(), getHeight());
+				}
+			}
+		};
+
+		jf.setSize(ViewSettings.getView_size_new());
+		jf.setLocationRelativeTo(null);
+		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jf.setVisible(true);
+		jf.setLayout(null);
+		jf.setResizable(true);
+
+		final New vsp = new New(null);;
+		vsp.setVisible(true);
+		
+		jf.add(vsp);
+		vsp.setLocation(0,0);
+	
+    }
+
+    private BufferedImage bi;
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setLocation(final int _x, final int _y) {
+    public synchronized void setLocation(final int _x, final int _y) {
+
+    	int dX = _x - getX();
+    	int dY = _y - getY();
     	
     	super.setLocation(_x, _y);
     	if (jlbl_stroke != null) {
 
-    		Util.getStroke(jlbl_stroke, 0, 0);
+    		if (bi == null) {
+    			bi = Util.getStroke(jlbl_stroke);
+    		} else {
+    			bi = Util.getStrokeMove(bi, jlbl_stroke, dX, dY);
+    		}
+    		
     		
     	}
     	

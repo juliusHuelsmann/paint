@@ -12,6 +12,7 @@ import java.util.logging.Level;
 
 import javax.swing.ImageIcon;
 
+import control.forms.CLoading;
 import control.forms.CNew;
 import control.interfaces.MenuListener;
 import control.tabs.CAbout;
@@ -64,7 +65,7 @@ MenuListener {
 	 */
 	private View view;
 	
-	
+	private CLoading cl;
 	/**
 	 * Central model class.
 	 */
@@ -183,17 +184,20 @@ MenuListener {
             //initialize view class and log information on current 
             //initialization progress
             Status.getLogger().info("initialize view class and set visible.");
+
             view = new View();
             view.initialize(this);
             view.setVisible(true);
+
+//            cl = new CLoading(view.getLoading());
             
             
             //enable current operation
             view.getTabs().getTab_paint().getTb_color1().setActivated(true);
             view.getTabs().getTab_paint().getIt_stift1()
             .getTb_open().setActivated(true);
-           
-            
+
+
             /*
              * Initialize control
              */
@@ -204,6 +208,7 @@ MenuListener {
 
             Status.getLogger().info("initialization process completed.\n\n"
                     + "-------------------------------------------------\n");
+
         } else {
 
             //if not installed and no installation done print error and write
@@ -2444,6 +2449,20 @@ MenuListener {
 	 */
 	public final CAbout getcTabAbout() {
 		return cTabAbout;
+	}
+
+
+
+
+	public Project getProject() {
+		return project;
+	}
+
+
+
+
+	public void setProject(Project project) {
+		this.project = project;
 	}
     
 }

@@ -390,6 +390,16 @@ public class VTabbedPane extends MPanel {
 	}
 	
 	
+	public void setTabbedPaneOpen(boolean _bool) {
+		
+		if (_bool){
+			openTabbedPane();
+		} else {
+			closeTabbedPane();
+		}
+	}
+	
+	
 	/**
 	 * close the tab.
 	 */
@@ -833,8 +843,7 @@ public class VTabbedPane extends MPanel {
     public final void stroke() {
 
     	jbtn_stuffHeadline[getOpenTab()].stroke();
-        Util.getStroke(jlbl_stroke, jlbl_stroke.getX() + super.getX(), 
-        		jlbl_stroke.getY() + super.getY());
+        Util.getStroke(jlbl_stroke );
 
         Util.getStrokeRec(jlbl_close, 0, 0);
     
@@ -928,6 +937,32 @@ public class VTabbedPane extends MPanel {
                             titleY);
                 }
 	            jpnl_stuff[index].setLocation(0, titleHeight + titleY);
+	        }
+
+	}
+
+
+    /**
+     * set size and location of contents depending on the current
+     * rotation given in parameter.
+     * 
+     */
+    public final void flipSons() {
+
+    	
+    	flip();
+            
+
+            //set size and location of headlines and tabs.
+	        for (int index = 0; jbtn_stuffHeadline != null 
+	                && index < jbtn_stuffHeadline.length; index++) {
+	            
+	        	for (Component k : jpnl_stuff[index].getComponents()) {
+	        		if (k instanceof Tab) {
+	        			((Tab) k).setSize(k.getWidth(), k.getHeight());
+	        		}
+	        		
+	        	}
 	        }
 
 	}

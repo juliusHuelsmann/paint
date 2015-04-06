@@ -32,7 +32,13 @@ public class Item1Button extends MPanel {
 	 * wrapper button which delivers this TextButton to the ActionListener.
 	 */
 	private VButtonWrapper jbtn_touch;
-	
+
+	/**
+	 * TextEnabled contains whether to paint text if image is displayed.
+	 * Otherwise (imageWidth == -1 || imageHeight == -1) text is painted
+	 * even though textEnabled == false.
+	 */
+	private boolean textEnabled = false;
 	/**
 	 * JLabel for text.
 	 */
@@ -301,13 +307,20 @@ public class Item1Button extends MPanel {
 		flip();
 	}
 	
-	
+
 	/**
 	 * set the y coordinate of Item1Button-Icon JLabel.
 	 * @param _y the new coordinate
 	 */
 	public final void setIconLabelY(final int _y) {
 	    jlbl_color.setLocation(jlbl_color.getX(), _y);
+	}
+	/**
+	 * set the y coordinate of Item1Button-Icon JLabel.
+	 * @param _y the new coordinate
+	 */
+	public final void setIconLabelX(final int _x) {
+	    jlbl_color.setLocation(_x, jlbl_color.getY());
 	}
 	
 	/**
@@ -319,16 +332,26 @@ public class Item1Button extends MPanel {
 	    final int colorSize = 30;
 	    
 
-	        jlbl_title.setFont(ViewSettings.GENERAL_FONT_ITEM1_BUTTON);
-	        //set size of color - and title JLabel
-	        if (imageWidth == -1 || imageHeight == -1) {
-	            jlbl_color.setBounds(distance * (2 + 1), distance, 
-	                    getWidth() - colorSize, getWidth() - colorSize);
+	    jlbl_title.setFont(ViewSettings.GENERAL_FONT_ITEM1_BUTTON);
+	    //set size of color - and title JLabel
+	    if (imageWidth == -1 || imageHeight == -1) {
+	    	jlbl_color.setBounds(distance * (2 + 1), distance, 
+	    			getWidth() - colorSize, getWidth() - colorSize);
 
-	            jlbl_title.setBounds(0, jlbl_color.getHeight() 
-	                    + jlbl_color.getY(), getWidth(), getHeight() 
-	                    - jlbl_color.getHeight() - jlbl_color.getY());
-	    }  
+	    	jlbl_title.setBounds(0, jlbl_color.getHeight() 
+	    			+ jlbl_color.getY(), getWidth(), getHeight() 
+	    			- jlbl_color.getHeight() - jlbl_color.getY());
+	    } else if (textEnabled) {
+
+	    	jlbl_title.setBounds(0, (jlbl_color.getHeight() 
+	    			+ jlbl_color.getY()) / 2, getWidth(), getHeight() 
+	    			- jlbl_color.getHeight() - jlbl_color.getY());
+	    }
+	}
+	
+	
+	public void enableText() {
+		textEnabled = true;
 	}
 	
 	/**
@@ -439,7 +462,6 @@ public class Item1Button extends MPanel {
      * Apply stroke.
      */
 	public final synchronized void stroke() {
-        Util.getStroke(jlbl_stroke, jlbl_stroke.getX() + super.getX(),
-        		jlbl_stroke.getY() + super.getY()); 
+        Util.getStroke(jlbl_stroke); 
 	}
 }

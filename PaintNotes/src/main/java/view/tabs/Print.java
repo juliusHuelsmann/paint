@@ -3,13 +3,11 @@ package view.tabs;
 
 //import declarations
 import java.awt.Color;
-
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.border.LineBorder;
-
 import model.settings.Constants;
 import model.settings.ViewSettings;
-import control.tabs.CPrint;
 import view.util.Item1Button;
 
 
@@ -31,27 +29,64 @@ public final class Print extends Tab {
 	  * Constructor: initializes view.
 	  * @param _cp the control paint.
 	  */
-	public Print(final CPrint _cp) {
+	public Print(final ActionListener _cp) {
 		super(0);
 		super.setOpaque(false);
 		super.setLayout(null);
-		
 
-        //cut
-        tb_print = new Item1Button(null);
+		//initialize the first tab.
+		initialize00(_cp, true);
+	}
+	
+	
+	
+	@Override
+	public void applySize() {
+		super.applySize();
+		initialize00(null, false);
+	}
+	
+	/**
+	 * Initialize function which can also be used for dynamic resize operation.
+	 * 
+	 * 
+	 * @param _cp 		instance of the ActionListener - controller class
+	 * 					which is only necessary at first initialization
+	 * 					(if the second parameter (_print) is true)
+	 * 
+	 * @param _print	whether to insert the elements or not. Should be only
+	 * 					true in first initialization.
+	 */
+	private void initialize00(
+			final ActionListener _cp,
+			final boolean _print) {
+
+		
+		if (_print) {
+
+	        //cut
+	        tb_print = new Item1Button(null);
+		}
 
         tb_print.setSize(ViewSettings.getItemMenu1Width(), 
                 ViewSettings.getItemMenu1Height());
         tb_print.setLocation(ViewSettings.getDistanceBetweenItems(), 
         		ViewSettings.getDistanceBetweenItems());
-        tb_print.setBorder(false);
-        tb_print.addActionListener(_cp);
+        
+        if (_print) {
+
+            tb_print.setBorder(false);
+            tb_print.addActionListener(_cp);
+        }
         initializeTextButtonOhneAdd(tb_print,
                 "Druckauftrag",
                 Constants.VIEW_TB_NEW_PATH);
-        tb_print.setActivable(false);
-        super.add(tb_print);
+        
+        if (_print) {
 
+            tb_print.setActivable(false);
+            super.add(tb_print);
+        }
 	}
     
     /**

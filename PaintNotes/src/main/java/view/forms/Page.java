@@ -102,8 +102,9 @@ import view.util.mega.MButton;
 	/**
 	 * initializes graphical user interface components
      * and thus creates view. Called directly after creation.
+     * @param _controlPaint the basic controller class.
 	 */
-	private void initialize(final ControlPaint controlPaint) {
+	private void initialize(final ControlPaint _controlPaint) {
 
         //alter settings
         super.setOpaque(true);
@@ -122,11 +123,11 @@ import view.util.mega.MButton;
         super.setVisible(false);
 
         //form for creating new page.
-        jpnl_new = new New(controlPaint.getControlnew());
+        jpnl_new = new New(_controlPaint.getControlnew());
         super.add(jpnl_new);
         super.add(Console.getInstance());
         
-        quickAccess = new QuickAccess(controlPaint.getControlQuickAccess());
+        quickAccess = new QuickAccess(_controlPaint.getControlQuickAccess());
         super.add(quickAccess);
         
         //initialize JPanel jpnl_toMove
@@ -142,12 +143,12 @@ import view.util.mega.MButton;
 
         //ScrollPanel for up and down
         sp_ub = new VScrollPane(jpnl_toMove, this, true);
-        sp_ub.setActivityListener(controlPaint.getUtilityControlScrollPane());
-        controlPaint.getView().add(sp_ub);
+        sp_ub.setActivityListener(_controlPaint.getUtilityControlScrollPane());
+        _controlPaint.getView().add(sp_ub);
 
         sp_lr = new VScrollPane(jpnl_toMove, this, false);
-        sp_lr.setActivityListener(controlPaint.getUtilityControlScrollPane());
-        controlPaint.getView().add(sp_lr);
+        sp_lr.setActivityListener(_controlPaint.getUtilityControlScrollPane());
+        _controlPaint.getView().add(sp_lr);
         
         jlbl_resizeSelectionSize = new MLabel();
         jlbl_resizeSelectionSize.setOpaque(true);
@@ -178,9 +179,9 @@ import view.util.mega.MButton;
                 jbtn_resize[x][y].setBackground(Color.white);
                 jbtn_resize[x][y].setOpaque(true);
                 jbtn_resize[x][y].addMouseMotionListener(
-                		controlPaint.getControlPaintSelection());
+                		_controlPaint.getControlPaintSelection());
                 jbtn_resize[x][y].addMouseListener(
-                		controlPaint.getControlPaintSelection());
+                		_controlPaint.getControlPaintSelection());
              //   jbtn_resize[x][y].addMouseListener(controlPaint);
                 super.add(jbtn_resize[x][y]);
             }
@@ -224,9 +225,9 @@ import view.util.mega.MButton;
         jlbl_painting = new PaintLabel(jpnl_toMove);
         jlbl_painting.setFocusable(false);
         jlbl_painting.setBorder(null);
-        jlbl_painting.addMouseMotionListener(controlPaint);
-        jlbl_painting.addMouseListener(controlPaint);
-        jlbl_painting.setPaintListener(controlPaint.getControlPic());
+        jlbl_painting.addMouseMotionListener(_controlPaint);
+        jlbl_painting.addMouseListener(_controlPaint);
+        jlbl_painting.setPaintListener(_controlPaint.getControlPic());
         jlbl_painting.setOpaque(false);
         super.add(jlbl_painting);
 
@@ -407,30 +408,28 @@ import view.util.mega.MButton;
 
 
 	/**
-	 * @param jpnl_new the jpnl_new to set
+	 * @param _jpnl_new the jpnl_new to set
 	 */
-	public void setJpnl_new(New jpnl_new) {
-		this.jpnl_new = jpnl_new;
+	public void setJpnl_new(final New _jpnl_new) {
+		this.jpnl_new = _jpnl_new;
 	}
 
 
+	/**
+	 * simple getter method.
+	 * @return the QuickAccess
+	 */
 	public QuickAccess getQuickAccess() {
 		return quickAccess;
 	}
 
 
-	public void setQuickAccess(QuickAccess quickAccess) {
-		this.quickAccess = quickAccess;
-	}
-
-
+	/**
+	 * simple getter method.
+	 * @return the MPanel
+	 */
 	public MPanel getJpnl_toMove() {
 		return jpnl_toMove;
-	}
-
-
-	public void setJpnl_toMove(MPanel jpnl_toMove) {
-		this.jpnl_toMove = jpnl_toMove;
 	}
 }
 

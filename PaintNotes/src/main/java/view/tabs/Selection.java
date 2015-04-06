@@ -80,7 +80,7 @@ public final class Selection extends Tab {
 			final ControlTabPainting _cPaint, 
 			final CTabSelection _cts,
 			final MenuListener _ml,
-			final CPaintStatus _controlPaintStatus){
+			final CPaintStatus _controlPaintStatus) {
 
         int x = initCololrs(distance, true, _cPaint, _cts, _ml, 
         		_controlPaintStatus);

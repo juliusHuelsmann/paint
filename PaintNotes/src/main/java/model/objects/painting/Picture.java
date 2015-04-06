@@ -316,7 +316,7 @@ public final class Picture implements Serializable {
 			addPaintObject(new PORectangle(currentId, pen_current, this));
 			break;
 		case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
-			addPaintObject(new POTriangle(currentId, pen_current,this));
+			addPaintObject(new POTriangle(currentId, pen_current, this));
 			break;
 
 		case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
@@ -1819,7 +1819,7 @@ public final class Picture implements Serializable {
 	 */
 	public boolean paintSelectedInline(
 			ControlPaintSelectin _controlPaintSelection,
-			final Page page,
+			final Page _page,
 			final ContorlPicture _controlPic) {
 
 		// it occurred that the start point equal to 0. Why?
@@ -1828,8 +1828,10 @@ public final class Picture implements Serializable {
 			px = 0;
 			py = 0;
 		} else {
-			px = (int) (_controlPaintSelection.getPnt_start().getX() - page.getJlbl_painting().getLocation().getX());
-			py = (int) (_controlPaintSelection.getPnt_start().getY() - page.getJlbl_painting().getLocation().getY());
+			px = (int) (_controlPaintSelection.getPnt_start().getX() 
+					- _page.getJlbl_painting().getLocation().getX());
+			py = (int) (_controlPaintSelection.getPnt_start().getY()
+					- _page.getJlbl_painting().getLocation().getY());
 
 		}
 		
@@ -1837,7 +1839,7 @@ public final class Picture implements Serializable {
 		//reset the point which shaves the shift of the selection
 		//because now the shift that has been done is applied.
 		_controlPaintSelection.resetPntStartLocationLabel();
-		page.getJlbl_selectionPainting().setLocation(0,0);
+		_page.getJlbl_selectionPainting().setLocation(0, 0);
 		
 		
 
@@ -1883,9 +1885,9 @@ public final class Picture implements Serializable {
 						verbufft2,
 						false,
 						verbufft,
-						page.getJlbl_painting().getLocation().x
+						_page.getJlbl_painting().getLocation().x
 								- px,
-								page.getJlbl_painting().getLocation().y
+								_page.getJlbl_painting().getLocation().y
 								- py, null);
 
 				if (ls_poSelected.getItem() instanceof PaintObjectWriting) {
@@ -1904,7 +1906,7 @@ public final class Picture implements Serializable {
     	getLs_po_sortedByX().finishClosedAction(
     			closedAction);
 		
-		page.getJlbl_selectionPainting()
+		_page.getJlbl_selectionPainting()
 				.setIcon(new ImageIcon(verbufft));
 
 		if (r_max != null) {
@@ -1922,14 +1924,14 @@ public final class Picture implements Serializable {
 			realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
 			realRect.height = (int) (1.0 * realRect.height / cZoomFactorHeight);
 
-			realRect.x += page.getJlbl_painting().getLocation().x;
-			realRect.y += page.getJlbl_painting().getLocation().y;
+			realRect.x += _page.getJlbl_painting().getLocation().x;
+			realRect.y += _page.getJlbl_painting().getLocation().y;
 
 			_controlPic
 					.refreshRectangle(realRect.x, realRect.y, realRect.width,
 							realRect.height);
 			_controlPaintSelection.setR_selection(realRect,
-					page.getJlbl_painting().getLocation());
+					_page.getJlbl_painting().getLocation());
 			_controlPic
 					.paintEntireSelectionRect(realRect);
 			return true;
@@ -2205,10 +2207,10 @@ public final class Picture implements Serializable {
 	}
 
 	/**
-	 * @param history the history to set
+	 * @param _history the history to set
 	 */
-	public void setHistory(HistorySession history) {
-		this.history = history;
+	public void setHistory(final HistorySession _history) {
+		this.history = _history;
 	}
 
 }

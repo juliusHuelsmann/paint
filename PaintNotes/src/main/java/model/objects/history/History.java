@@ -18,13 +18,18 @@ public final class History extends Observable {
     /**
      * the list of history items.
      */
-    private static List<String> ls_history;
+    private static List<String> lsHistory;
     
+    /**
+     * The Picture.
+     */
     private Picture pic;
+    
     /**
      * Utility class constructor.
+     * @param _pic the picture.
      */
-    public History(Picture _pic) {
+    public History(final Picture _pic) {
     	this.pic = _pic;
     }
 
@@ -33,7 +38,7 @@ public final class History extends Observable {
      * @param _hist the history to add
      */
     public void addHistory(final String _hist) {
-        ls_history.insertAtTheEnd(_hist);
+        lsHistory.insertAtTheEnd(_hist);
         
         setChanged();
         notifyObservers("add " + _hist);
@@ -45,8 +50,8 @@ public final class History extends Observable {
      * @param _hist the history to be removed
      */
     public void removeHistory(final String _hist) {
-        if (ls_history.find(_hist)) {
-            ls_history.remove();
+        if (lsHistory.find(_hist)) {
+            lsHistory.remove();
         } else {
             Status.getLogger().warning("History" + "error");
         }

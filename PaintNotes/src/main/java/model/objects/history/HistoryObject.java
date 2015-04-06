@@ -319,9 +319,10 @@ public class HistoryObject implements Serializable {
 	public boolean findInList(
 			
 			final SecureListSort<PaintObject> _sl, 
-			final int _transactionID, final int _closedActionID, final int _elementid) {
+			final int _transactionID, final int _closedActionID, 
+			final int _elementid) {
 		_sl.toFirst(_transactionID, _closedActionID);
-		while(
+		while (
 				!_sl.isEmpty()
 				&& !_sl.isBehind()) {
 			if (_sl.getItem().getElementId() == _elementid) {

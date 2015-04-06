@@ -9,14 +9,33 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class TestEvent extends JFrame implements MouseListener, MouseMotionListener,  ActionListener {
 
+/**
+ * Test class for getting the right order of elements and for gathering the 
+ * different touch options.
+ * 
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
+@SuppressWarnings("serial")
+public class TestEvent extends JFrame implements MouseListener, 
+MouseMotionListener,  ActionListener {
+
+	/**
+	 * The JButton.
+	 */
 	private JButton jbtn;
 	
+	
+	/**
+	 * Constructror.
+	 */
 	public TestEvent() {
+		
 		super();
+		final int size = 700;
 		super.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		super.setSize(700, 700);
+		super.setSize(size, size);
 		super.setLocationRelativeTo(null);
 		
 		jbtn = new JButton();
@@ -31,45 +50,72 @@ public class TestEvent extends JFrame implements MouseListener, MouseMotionListe
 		super.setVisible(true);
 	}
 	
-	public void actionPerformed(ActionEvent arg0) {
-		System.out.println(arg0);
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void actionPerformed(final ActionEvent _event) {
+		System.out.println(_event);
 	}
 
-	public void mouseClicked(MouseEvent arg0) {
-
-		System.out.println(arg0);		
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void mouseClicked(final MouseEvent _event) {
+		System.out.println(_event);
 	}
 
-	public void mouseEntered(MouseEvent arg0) {
-
-		System.out.println(arg0);		
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void mouseEntered(final MouseEvent _event) {
+		System.out.println(_event);
 	}
 
-	public void mouseExited(MouseEvent arg0) {
-
-		System.out.println(arg0);		
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void mouseExited(final MouseEvent _event) {
+		System.out.println(_event);
 	}
 
-	public void mousePressed(MouseEvent arg0) {
-
-		System.out.println(arg0);
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void mousePressed(final MouseEvent _event) {
+		System.out.println(_event);
 	}
 
-	public void mouseReleased(MouseEvent arg0) {
+	/**
+	 * {@inheritDoc}
+	 */
 
-		System.out.println(arg0);		
+	public final void mouseReleased(final MouseEvent _event) {
+		System.out.println(_event);
 	}
 
-	public void mouseDragged(MouseEvent arg0) {
+	/**
+	 * {@inheritDoc}
+	 */
 
-		System.out.println(arg0);		
+	public final void mouseDragged(final MouseEvent _event) {
+		System.out.println(_event);
+		}
+
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public void mouseMoved(final MouseEvent _event) {
+
 	}
-
-	public void mouseMoved(MouseEvent arg0) {
-
-	}
-	public static void main(String[]args){
+	
+	/**
+	 * main method.
+	 * @param _args the arguments.
+	 */
+	public static void main(final String[] _args) {
 		new TestEvent();
 	}
+
 
 }

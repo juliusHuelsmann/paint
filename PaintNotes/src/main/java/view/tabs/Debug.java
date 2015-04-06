@@ -308,7 +308,8 @@ public final class Debug extends Tab implements Observer {
 		        heightNewComponent));
 		
 		
-		i1b_console.setLocation(jpnl_container.getX() + jpnl_container.getWidth() + 5,5);
+		i1b_console.setLocation(jpnl_container.getX() 
+				+ jpnl_container.getWidth() + 5, 5);
 		i1b_console.setSize(ViewSettings.getItemMenu1Width(), 
                 ViewSettings.getItemMenu1Height());
 
@@ -432,9 +433,9 @@ public final class Debug extends Tab implements Observer {
 
 
 	/**
-	 * @param i1b_console the i1b_console to set
+	 * @param _i1b_console the i1b_console to set
 	 */
-	public void setI1b_console(Item1Button i1b_console) {
-		this.i1b_console = i1b_console;
+	public void setI1b_console(final Item1Button _i1b_console) {
+		this.i1b_console = _i1b_console;
 	}
 }

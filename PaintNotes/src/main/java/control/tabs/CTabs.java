@@ -15,7 +15,7 @@ import control.interfaces.TabbedListener;
  * @version %I%, %U%
  *
  */
-public class CTabs implements TabbedListener{
+public class CTabs implements TabbedListener {
 
 	
 	/**

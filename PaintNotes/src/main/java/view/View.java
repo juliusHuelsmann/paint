@@ -3,15 +3,22 @@ package view;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Panel;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Window;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
@@ -187,6 +194,7 @@ import control.util.WindowMover;
 
         tabs.setVisible(true);
         page.setVisible(true);
+        performCheckComponents();
 
 	}
 
@@ -631,7 +639,46 @@ import control.util.WindowMover;
 		return page;
 	}
 
+	public void performCheckComponents() {
+		System.out.println("Checking components @root:");
+		checkComponents(this, "");
+	}
 
+	public void checkComponents(Component _c, String _print) {
+		
+		if (_c instanceof JPanel ) {
+			for (Component x : ((JPanel)_c).getComponents()) {
+
+				checkComponents(x, _print + "jp\t");
+			}
+		} else if (_c instanceof JFrame) {
+
+			for (Component x : ((JFrame)_c).getContentPane().getComponents()) {
+
+				checkComponents(x, _print + "jf\t");
+			}
+			
+		} else if (_c instanceof Panel) {
+
+			for (Component x : ((Panel)_c).getComponents()) {
+
+				checkComponents(x, _print + "p\t");
+			}
+			
+		} else if (_c instanceof Window) {
+
+			for (Component x : ((Window)_c).getComponents()) {
+
+				checkComponents(x, _print +  "w\t");
+			}
+
+		} 
+		if (_c.getWidth() <= 0 || _c.getHeight() <= 0)
+			System.err.println(_print + _c.getSize() + _c.getClass());
+//		else
+//			System.out.println(_print + _c.getSize() + _c.getClass());
+		
+	}
 
 	/**
 	 * @return the tabs

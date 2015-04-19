@@ -191,6 +191,12 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             				_r.height + (int) (2 * cZoomFactorHeight));
 //            		_bi.getHeight() - locYPOI);
             
+            // interrupt if the given values are illegal if the size of 
+        	// the area which is to be repainted is equal to zero.
+            if (_r == null || _r.height <= 0 || _r.width <= 0) {
+            	return _bi;
+            }
+
             
             /* 
              * now a sub-image containing the newly painted stuff is created

@@ -34,7 +34,7 @@ public final class About extends Tab {
 		super.setOpaque(false);
 
 		jta_about = new JTextArea("Paint Program maintained by "
-				+ "Julius HÃ¼lsmann.\n\n"
+				+ "Julius Hülsmann.\n\n"
 				+ "Visit https://github.com/juliusHuelsmann/paint");
 		jta_about.setFocusable(false);
 		jta_about.setBorder(null);

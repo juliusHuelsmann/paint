@@ -556,7 +556,6 @@ import control.util.WindowMover;
 	    //set gui bounds
         super.setSize(ViewSettings.getSizeJFrame());
 
-
         if (loading != null) {
 
             loading.setSize(getWidth() / 3, getHeight() / 3);

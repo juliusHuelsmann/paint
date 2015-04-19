@@ -283,7 +283,7 @@ public final class Utils {
                     _graphiX, _graphiY);
 
         case Constants.CONTROL_PAGE_BACKGROUND_NONE:
-            return printWhiteBackground(_f, _fromX, _fromY, _untilX, _untilY, 
+            return getWhiteBackground(_f, _fromX, _fromY, _untilX, _untilY, 
                     _graphiX, _graphiY);
             
         case Constants.CONTROL_PAGE_BACKGROUND_RASTAR:
@@ -344,7 +344,7 @@ public final class Utils {
             break;
 
         case Constants.CONTROL_PAGE_BACKGROUND_NONE:
-            bi = printWhiteBackground(_f, _fromX, _fromY, _untilX, _untilY, 
+            bi = getWhiteBackground(_f, _fromX, _fromY, _untilX, _untilY, 
                     _graphiX, _graphiY);
             break;
             
@@ -456,6 +456,279 @@ public final class Utils {
         return getRastarImage(_g, fromX, fromY, untilX, untilY, 0, 0);
         
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    /**
+     * return part of the raster image.
+     * 
+     * @param _f the bufferedImage
+     * 
+     * @param _fromX the start point
+     * @param _fromY the start point
+     * @param _untilX the end point
+     * @param _untilY the end point
+     * 
+     * @param _graphiX the location at the component where the painting 
+     *                  process starts.
+     * @param _graphiY the location at the component where the painting 
+     *                  process starts.
+     *                  
+     * @return the transformed BufferedImage
+     */
+    private static synchronized BufferedImage getWhiteBackground(
+            final BufferedImage _f, final int _fromX, 
+            final int _fromY, final int _untilX, final int _untilY, 
+            final int _graphiX, final int _graphiY) {
+        
+        //the width and the height of the entire image, of which the parts
+        //are painted.
+        int width  = Status.getImageShowSize().width;
+        int height = Status.getImageShowSize().height;
+
+        //the merge of the page which is not filled with raster but entirely
+        //white. distancePoints is not the right expression. distance between 
+        //points = distancePoints - 1
+        final int distancePoints;
+        if (Status.getRasterSize() <= (2 + 2 + 1) * 2) {
+           distancePoints = 2 + 1;
+        } else {
+           distancePoints = 2 + 1;
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        //calculate the border pixel location adapted to the size of the
+        //raster
+        final int topBorder = 
+        		(int) (Status.getRasterBorderTop() / Status.getRasterSize())
+        		* Status.getRasterSize();
+        
+        final int bottomBorder = 
+        		(int) ((height - Status.getRasterBorderBottom())
+        				/ Status.getRasterSize())
+        				* Status.getRasterSize();
+
+        final int leftBorder = 
+        		(int) (Status.getRasterBorderFront() / Status.getRasterSize())
+        		* Status.getRasterSize();
+        
+        final int rightBorder = 
+        		(int) ((width - Status.getRasterBorderEnd())
+        				/ Status.getRasterSize())
+        				* Status.getRasterSize();
+
+        final int fromX_raster = (int) (_fromX / Status.getRasterSize())
+                * Status.getRasterSize();
+
+        final int fromY_raster = (int) (_fromY / Status.getRasterSize())
+                * Status.getRasterSize();
+
+        final int fromX_points = (int) (_fromX / distancePoints)
+        		* distancePoints;
+        
+        final int fromY_points = (int) (_fromY / distancePoints)
+        		* distancePoints;
+
+        final int untilX_raster = (int) (_untilX / Status.getRasterSize())
+        		* Status.getRasterSize();
+
+        final int untilY_raster = (int) (_untilY / Status.getRasterSize())
+        		* Status.getRasterSize();
+
+        final int untilX_points = (int) (_untilX / distancePoints)
+        		* distancePoints;
+        
+        final int untilY_points = (int) (_untilY / distancePoints)
+        		* distancePoints;
+        
+        
+        
+        //vertical lines    |  |  |  |  |  |  |  |  |
+        //                  |  |  |  |  |  |  |  |  |
+        for (int x = 
+                //either the starting coordinate (_fromX) matched at the
+                //raster size or the merge front if 
+                Math.max(
+                		
+                		//the first (black) line
+                		leftBorder, 
+                		
+                		//the coordinates of the section of the raster that
+                		//is printed.
+                		fromX_raster);
+        		
+        		
+                //coordinate smaller than the last merge or the until x
+                //value
+                x <= Math.min(
+                		
+                		//the last (black) line
+                		rightBorder, 
+                		
+                		//the last position in image
+                		untilX_raster);
+        		
+        		
+                //proceeds in size steps
+                x += Status.getRasterSize()) {
+
+            
+            for (int y = 
+                    //the fromX (the window from x)
+                    Math.max(
+                    		
+                    		
+                    		//the first point beneath the first (black) line
+                    		((int) (topBorder / distancePoints) + 1)
+                    		* distancePoints , 
+                    
+                    		//the first position in image
+                    		fromY_points);
+            		
+            		
+            		//either the height merge (the height minus the height
+                    //modulo the distance of the different points or until 
+                    //x coordinate
+                    y <= Math.min(
+                    		
+                    		//the last (black) line
+                    		bottomBorder, 
+                    		
+                    		//the last position in image
+                    		untilY_points); 
+
+                    //proceeds with the speed of distancePoints
+                    y += distancePoints) {
+
+                //calculate the values of the coordinates which are painted 
+                //at the graphics.
+                final int coordinateX = x - _fromX + _graphiX;
+                final int coordinateY = y - _fromY + _graphiY;
+                
+                if (coordinateX >= 0 && coordinateY >= 0
+                		&& coordinateX < _f.getWidth()
+                		&& coordinateY < _f.getHeight()) {
+                	
+                	
+                    
+                    //if the loop has reached the last values paint a line.
+                    if (x == leftBorder || x == rightBorder) {
+
+                  	  //paint the point
+                      PaintBI.paintScilentPoint(_f, coordinateX, coordinateY,
+                     		RASTAR_COLOR.getRGB());
+                    	if (coordinateY + 1 < height) {
+                    		PaintBI.paintScilentPoint(_f, coordinateX, 
+                    				coordinateY + 1, RASTAR_COLOR.getRGB());
+                    	}	
+                    	if (coordinateY + 2 < height) {
+                    		PaintBI.paintScilentPoint(_f, coordinateX, 
+                    				coordinateY + 2, RASTAR_COLOR.getRGB());
+                    	}	
+                    }
+                }
+            }
+        }
+        //horizontal lines  _______________________
+        //                  _______________________
+        //                  _______________________
+        //                  _______________________
+        for (int y = Math.max(
+
+        		topBorder,  
+               
+        		
+        		fromY_raster);
+
+                y <= Math.min(
+                		
+                		bottomBorder,
+                		
+                		untilY_raster); 
+
+        		y += Status.getRasterSize()) {
+            
+            for (int x =  Math.max(
+            		
+            		
+              		((int) (leftBorder / distancePoints) + 1)
+              			* distancePoints, 
+            		
+              		fromX_points);
+            		
+                    x <= Math.min(
+                    		
+                    		rightBorder, 
+                    		untilX_points); 
+            		
+                    x += distancePoints) {
+
+                //calculate correct coordinate values for the graphics
+                final int newX = x - _fromX + _graphiX;
+                final int newY = y - _fromY + _graphiY;
+
+                
+                if (newX >= 0 && newY >= 0
+                		&& newX < _f.getWidth() && newY < _f.getHeight()) {
+                	
+                	
+                      //if the loop has reached the last values paint a line.
+                      if (y == topBorder || y == bottomBorder) {
+
+                     	 PaintBI.paintScilentPoint(
+                                 _f, newX, newY, RASTAR_COLOR.getRGB());
+                           if (newX + 1 < height) {
+                               PaintBI.paintScilentPoint(
+                                       _f, newX + 1, newY, RASTAR_COLOR.getRGB());
+                           }
+                           if (newX + 2 < height) {
+                               PaintBI.paintScilentPoint(
+                                       _f, newX + 2, newY, RASTAR_COLOR.getRGB());
+                           }
+                      }
+                }
+            }
+        }
+        
+        //paint the non image and the border of the page.
+        if (width < _untilX || height < _untilY) {
+            paintNonImage(_f, _untilX, _untilY, width, height);
+        }
+        return _f;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     /**
      * return part of the raster image.
@@ -949,6 +1222,7 @@ public final class Utils {
         }
         return _f;
     }
+
     
     /**
      * Print the white empty Background.
@@ -967,7 +1241,7 @@ public final class Utils {
      *                  
      * @return the transformed BufferedImage
      */
-    private static BufferedImage printWhiteBackground(
+    private static BufferedImage printWhiteBackgroundOld(
             final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {

@@ -5,11 +5,14 @@ package view.util;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import start.test.BufferedViewer;
 import view.util.mega.MButton;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
@@ -291,31 +294,27 @@ import control.util.CColorPanel;
         /**
          * first and second colorPanels
          */
-        final Item1Menu it_color1, it_color2;
         final byte itemsInRow = (byte) 32;
         final int abstand = 8, abstand2 = 8, maxRGB = 255, komisch = 10, 
                 heightPanel = 70, yThing2 = 73;
         final Dimension dim_it_color = new Dimension(_width, _height / 2 
                 - komisch);
         
-        //initialize them
-        it_color1 = new Item1Menu(false);
-        it_color1.setMenuListener(_ml);
-        it_color1.addMouseListener(_controlPaintStatus);
-        it_color1.setOrderHeight(true);
-        it_color1.setSize(new Dimension(1, heightPanel));
-        it_color1.setItemsInRow(itemsInRow);
         
-        it_color2 = new Item1Menu(false);
-        it_color2.setOrderHeight(true);
-        it_color2.setMenuListener(_ml);
-        it_color2.addMouseListener(_controlPaintStatus);
-        it_color2.setSize(new Dimension(1, heightPanel));
-        it_color2.setItemsInRow(itemsInRow);
 
+
+        MLabel jlbl_pickColor = new MLabel();
+        //width = #px * #differentFields * #sizePX / #distance
+        int newWidth = 256 * 4 * 2/ abstand2;
+        BufferedImage bi = new BufferedImage(
+        		newWidth,
+        		itemsInRow * 4, 
+        		BufferedImage.TYPE_INT_RGB);
+        jlbl_pickColor.setSize(bi.getWidth(), bi.getHeight());
         /*
          * gray (to red)
          */
+        int currentItem = 0;
         for (int gb = maxRGB; gb >= 0; gb -= abstand2) {
             for (int r = maxRGB; r >= 0; r -= abstand) {
 
@@ -324,8 +323,13 @@ import control.util.CColorPanel;
                 if (tempGb > r) {
                     tempGb = r;
                 }
-                //insert color to panel
-                insertPanel(it_color1, new Color(r, tempGb, tempGb));
+                int y = (currentItem % itemsInRow) * 2;
+                int x = (int)(currentItem / itemsInRow) * 2;
+                bi.setRGB(x, y, new Color(r, tempGb, tempGb).getRGB());
+                bi.setRGB(x, y + 1, new Color(r, tempGb, tempGb).getRGB());
+                bi.setRGB(x + 1, y, new Color(r, tempGb, tempGb).getRGB());
+                bi.setRGB(x + 1, y + 1, new Color(r, tempGb, tempGb).getRGB());
+                currentItem++;
             }
         }   
         /*
@@ -339,8 +343,14 @@ import control.util.CColorPanel;
                 if (tempGb > r) {
                     tempGb = r;   
                 }
-                //insert color to panel
-                insertPanel(it_color1, new Color(r, tempGb, 0));
+                int rgb = new Color(r, tempGb, 0).getRGB();
+                int y = (currentItem % itemsInRow) * 2;
+                int x = (int)(currentItem / itemsInRow) * 2;
+                bi.setRGB(x, y, rgb);
+                bi.setRGB(x, y + 1, rgb);
+                bi.setRGB(x + 1, y, rgb);
+                bi.setRGB(x + 1, y + 1, rgb);
+                currentItem++;
             }
         }   
         for (int i = maxRGB; i >= 0; i -= abstand2) {
@@ -351,8 +361,15 @@ import control.util.CColorPanel;
                 if (tempi > r) {
                     tempi = r;
                 }
-                //insert color to panel
-                insertPanel(it_color1, new Color(tempi, r, 0));
+
+                int rgb = new Color(tempi, r, 0).getRGB();
+                int y = (currentItem % itemsInRow) * 2;
+                int x = (int)(currentItem / itemsInRow) * 2;
+                bi.setRGB(x, y, rgb);
+                bi.setRGB(x, y + 1, rgb);
+                bi.setRGB(x + 1, y, rgb);
+                bi.setRGB(x + 1, y + 1, rgb);
+                currentItem++;
             }
         }
         
@@ -367,10 +384,18 @@ import control.util.CColorPanel;
                 if (tempGb > r) {
                     tempGb = r;
                 }
-                //insert color to panel
-                insertPanel(it_color1, new Color(0, r, tempGb));
+
+                int rgb = new Color(0, r, tempGb).getRGB();
+                int y = (currentItem % itemsInRow) * 2;
+                int x = (int)(currentItem / itemsInRow) * 2;
+                bi.setRGB(x, y, rgb);
+                bi.setRGB(x, y + 1, rgb);
+                bi.setRGB(x + 1, y, rgb);
+                bi.setRGB(x + 1, y + 1, rgb);
+                currentItem++;
             }
         }   
+        currentItem = 0;
         for (int blue = 0; blue <= maxRGB; blue += abstand2) {
             for (int r = 0; r <= maxRGB; r += abstand) {
 
@@ -379,8 +404,15 @@ import control.util.CColorPanel;
                 if (tempGb > r) {
                     tempGb = r;
                 }
+                int rgb = new Color(0, r, tempGb).getRGB();
+                int y = (itemsInRow + currentItem % itemsInRow) * 2;
+                int x = (int)(currentItem / itemsInRow) * 2;
+                bi.setRGB(x, y, rgb);
+                bi.setRGB(x, y + 1, rgb);
+                bi.setRGB(x + 1, y, rgb);
+                bi.setRGB(x + 1, y + 1, rgb);
+                currentItem++;
                 //insert color to panel
-                insertPanel(it_color2, new Color(0, r, tempGb));
             }
         }   
         for (int i = maxRGB; i >= 0; i -= abstand2) {
@@ -391,8 +423,15 @@ import control.util.CColorPanel;
                 if (tempi > r) {
                     tempi = r;
                 }
+                int rgb = new Color(0, tempi, r).getRGB();
+                int y = (itemsInRow + currentItem % itemsInRow) * 2;
+                int x = (int)(currentItem / itemsInRow) * 2;
+                bi.setRGB(x, y, rgb);
+                bi.setRGB(x, y + 1, rgb);
+                bi.setRGB(x + 1, y, rgb);
+                bi.setRGB(x + 1, y + 1, rgb);
+                currentItem++;
                 //insert color to panel
-                insertPanel(it_color2, new Color(0, tempi, r));
             }
         }
         /*
@@ -406,8 +445,14 @@ import control.util.CColorPanel;
                 if (tempGb > r) {
                     tempGb = r;
                 }
-                //insert color to panel
-                insertPanel(it_color2, new Color(tempGb, 0, r));
+                int rgb = new Color(tempGb, 0, r).getRGB();
+                int y = (itemsInRow + currentItem % itemsInRow) * 2;
+                int x = (int)(currentItem / itemsInRow) * 2;
+                bi.setRGB(x, y, rgb);
+                bi.setRGB(x, y + 1, rgb);
+                bi.setRGB(x + 1, y, rgb);
+                bi.setRGB(x + 1, y + 1, rgb);
+                currentItem++;
             }
         }   
         for (int i = maxRGB; i >= 0; i -= abstand2) {
@@ -418,23 +463,28 @@ import control.util.CColorPanel;
                 if (tempi > r) {
                     tempi = r;
                 }
-                //insert color to panel
-                insertPanel(it_color2, new Color(r, 0, tempi));
+                int rgb = new Color(r, 0, tempi).getRGB();
+                int y = (itemsInRow + currentItem % itemsInRow) * 2;
+                int x = (int)(currentItem / itemsInRow) * 2;
+                bi.setRGB(x, y, rgb);
+                bi.setRGB(x, y + 1, rgb);
+                bi.setRGB(x + 1, y, rgb);
+                bi.setRGB(x + 1, y + 1, rgb);
+                currentItem++;
             }
         }
 
-        it_color1.getMPanel().setVisible(true);
-        it_color1.getMPanel().setLocation(distanceItems, distanceItems);
-        it_color1.getMPanel().setSize(dim_it_color);
-
-        it_color2.getMPanel().setVisible(true);
-        it_color2.getMPanel().setLocation(it_color1.getMPanel().getX(),
-                yThing2);
-        it_color2.getMPanel().setSize(dim_it_color);
-        super.add(it_color2.getMPanel());
-        super.add(it_color1.getMPanel());
+        //set the bufferedimage inside the controller class and add
+        // listener to the JLabel for being able to pick colors
+        control.setBufferedImage(bi);
+        jlbl_pickColor.addMouseListener(control);
+        jlbl_pickColor.addMouseMotionListener(control);
         
-        return it_color1.getMPanel().getHeight();
+        jlbl_pickColor.setLocation(distanceItems, distanceItems);
+        jlbl_pickColor.setIcon(new ImageIcon(bi));
+        super.add(jlbl_pickColor);
+
+        return jlbl_pickColor.getHeight();
 	}
 
 	

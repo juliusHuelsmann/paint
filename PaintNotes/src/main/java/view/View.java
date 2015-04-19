@@ -23,6 +23,7 @@ import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.Util;
+import model.util.debugTools.DebugUtil;
 import model.util.paint.Utils;
 import view.forms.Loading;
 import view.forms.Message;
@@ -189,12 +190,13 @@ import control.util.WindowMover;
          */
         super.add(new Message());
         
-        super.add(tabs);
+        super.add(tabs);// 17121
         super.add(page);
 
         tabs.setVisible(true);
         page.setVisible(true);
-        performCheckComponents();
+        DebugUtil.performCheckComponents(
+        		 this, DebugUtil.CHECK_OP_IMAGE);
 
 	}
 
@@ -637,47 +639,6 @@ import control.util.WindowMover;
 	 */
 	public Page getPage() {
 		return page;
-	}
-
-	public void performCheckComponents() {
-		System.out.println("Checking components @root:");
-		checkComponents(this, "");
-	}
-
-	public void checkComponents(Component _c, String _print) {
-		
-		if (_c instanceof JPanel ) {
-			for (Component x : ((JPanel)_c).getComponents()) {
-
-				checkComponents(x, _print + "jp\t");
-			}
-		} else if (_c instanceof JFrame) {
-
-			for (Component x : ((JFrame)_c).getContentPane().getComponents()) {
-
-				checkComponents(x, _print + "jf\t");
-			}
-			
-		} else if (_c instanceof Panel) {
-
-			for (Component x : ((Panel)_c).getComponents()) {
-
-				checkComponents(x, _print + "p\t");
-			}
-			
-		} else if (_c instanceof Window) {
-
-			for (Component x : ((Window)_c).getComponents()) {
-
-				checkComponents(x, _print +  "w\t");
-			}
-
-		} 
-		if (_c.getWidth() <= 0 || _c.getHeight() <= 0)
-			System.err.println(_print + _c.getSize() + _c.getClass());
-//		else
-//			System.out.println(_print + _c.getSize() + _c.getClass());
-		
 	}
 
 	/**

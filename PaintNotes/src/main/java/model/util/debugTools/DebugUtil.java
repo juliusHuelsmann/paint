@@ -3,6 +3,8 @@ package model.util.debugTools;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Panel;
 import java.awt.Rectangle;
 import java.awt.Window;
@@ -24,7 +26,7 @@ public class DebugUtil {
     CHECK_OP_CONSOLE = 0,
     CHECK_OP_IMAGE = 1;
     
-    public final static Dimension d_item = new Dimension(20, 5);
+    public final static Dimension d_item = new Dimension(70, 10);
     public final static Dimension d_distance = new Dimension(12, 2);
     /*
      * Starts a size-component-check and prints an image
@@ -54,7 +56,6 @@ public class DebugUtil {
 					itemsCols * (d_item.width + d_distance.width), 
 					itemsRows * (d_item.height + d_distance.height), 
 					BufferedImage.TYPE_INT_RGB);
-
 			for (int w = 0; w < bi_analyze.getWidth(); w++) {
 				for (int h = 0; h < bi_analyze.getHeight(); h++) {
 					bi_analyze.setRGB(w, h, Color.white.getRGB());
@@ -62,16 +63,23 @@ public class DebugUtil {
 			}
 			
 			
+			//for being able to both count the current entry and to
+			//return the BufferedImage by the function, it is necessary
+			//to use a class variable for counting the current entry
 			currentEntry = 0;
-			checkComponents(
-					_rootComponent,  0, bi_analyze);
+			
+			//check components will call itself recursively and
+			//check all components that are added by the root components
+			//or its children.
+			checkComponents(_rootComponent,  0, bi_analyze);
+			
+			//write image to hard drive
 			try {
 				ImageIO.write(bi_analyze, "png", new File(outputPath));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		
-			System.out.println(pnt_result);
 			break;
 		}
 	}
@@ -195,25 +203,42 @@ public class DebugUtil {
 		//save given values.
 		BufferedImage bi_ret = _bi;
 
-		int rgb = new Color(255, 120, 0).getRGB();
-		for (int cp = 0; cp < d_item.width; cp++) {
-			for (int rp = 0; rp < d_item.height; rp++) {
+		Color clr_correct = new Color(130, 131, 133);
+		Color clr_error = new Color(255, 120, 120);
 
-				int adjC = cp + _currentColumn * (d_item.width + d_distance.width);
-				int adjR = rp + currentEntry * (d_item.height + d_distance.height);
-					bi_ret.setRGB(
-							adjC, 
-							adjR, rgb);
-			}
+
+		int adjC = 0 + _currentColumn * (d_item.width + d_distance.width);
+		int adjR = 0 + currentEntry * (d_item.height + d_distance.height);
+		
+		Graphics g = bi_ret.getGraphics();
+
+
+		if (_c.getWidth() <= 0 || _c.getHeight() <= 0) {
+
+			g.setColor(clr_error);
+		} else {
+
+			g.setColor(clr_correct);
 		}
+
+		g.drawRect(adjC, adjR, d_item.width, d_item.height);
+		g.setFont(new Font("", Font.PLAIN, 10));
+		g.drawString(_c.getClass().getSimpleName(), adjC, 
+				adjR + d_item.height);
+
+			
+			
 		currentEntry++;
 		
 		if (_c instanceof JPanel ) {
 			for (Component x : ((JPanel)_c).getComponents()) {
-				
+
+				final int vorher = currentEntry + 1;
+				currentEntry--;
 				bi_ret = checkComponents(
 						x, _currentColumn + 1,
 						_bi);
+				currentEntry = Math.max(vorher, currentEntry);
 				
 			}
 
@@ -221,9 +246,12 @@ public class DebugUtil {
 
 			for (Component x : ((JFrame)_c).getContentPane().getComponents()) {
 
+				final int vorher = currentEntry + 1;
+				currentEntry--;
 				bi_ret = checkComponents(
 						x, _currentColumn + 1,
 						_bi);
+				currentEntry = Math.max(vorher, currentEntry);
 				
 			}
 			
@@ -232,18 +260,24 @@ public class DebugUtil {
 			for (Component x : ((Panel)_c).getComponents()) {
 
 
-				bi_ret  = checkComponents(
+				final int vorher = currentEntry + 1;
+				currentEntry--;
+				bi_ret = checkComponents(
 						x, _currentColumn + 1,
 						_bi);
+				currentEntry = Math.max(vorher, currentEntry);
 			}
 			
 		} else if (_c instanceof Window) {
 
 			for (Component x : ((Window)_c).getComponents()) {
 
+				final int vorher = currentEntry + 1;
+				currentEntry--;
 				bi_ret = checkComponents(
 						x, _currentColumn + 1,
 						_bi);
+				currentEntry = Math.max(vorher, currentEntry);
 				
 			}
 		} 

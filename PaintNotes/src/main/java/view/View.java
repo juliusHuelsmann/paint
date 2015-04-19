@@ -195,8 +195,10 @@ import control.util.WindowMover;
 
         tabs.setVisible(true);
         page.setVisible(true);
-        DebugUtil.performCheckComponents(
-        		 this, DebugUtil.CHECK_OP_IMAGE);
+        //debug for testing view components.
+        //writes analyse file to analyse.png
+//        DebugUtil.performCheckComponents(
+//        		 this, DebugUtil.CHECK_OP_IMAGE);
 
 	}
 

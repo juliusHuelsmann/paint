@@ -120,23 +120,25 @@ public class BorderThread extends Thread {
         BufferedImage bi_neutral = Util.getEmptyBISelection();
         
         //perform border movement 
-        while (!isInterrupted()) {
-
-            if (operationRectangle) {
-
-                sleepTime = sleepTimeRectangle;
-                indexStep = paintRectangleStep(sizeBB, indexStep, bi_neutral);
-            } else {
-                sleepTime = sleepTimeLine;
-                paintLineStep(indexStep);
-                indexStep++;
-            }
-            
-            try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                interrupt();
-            }
+        if (!(System.getProperties().getProperty("os.name").contains("Windows"))) {
+	        while (!isInterrupted()) {
+	
+	            if (operationRectangle) {
+	
+	                sleepTime = sleepTimeRectangle;
+	                indexStep = paintRectangleStep(sizeBB, indexStep, bi_neutral);
+	            } else {
+	                sleepTime = sleepTimeLine;
+	                paintLineStep(indexStep);
+	                indexStep++;
+	            }
+	            
+	            try {
+	                Thread.sleep(sleepTime);
+	            } catch (InterruptedException e) {
+	                interrupt();
+	            }
+	        }
         }
     }
     

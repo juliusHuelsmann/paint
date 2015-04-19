@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.border.LineBorder;
@@ -35,10 +36,6 @@ MouseMotionListener {
 	 */
 	private int selectedPosition;
 	
-	/**
-	 * set pressed.
-	 */
-	private boolean pressed = false;
 	
 	/**
 	 * Constructor saves the ColorPanel.
@@ -67,23 +64,19 @@ MouseMotionListener {
 	 */
 	public final void mouseDragged(final MouseEvent _event) {
 		cp.repaint();
+		updateColor(_event);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
-	public final void mouseReleased(final MouseEvent _event) {
-		pressed = false;
-	}
+	public final void mouseReleased(final MouseEvent _event) { }
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public final void mousePressed(final MouseEvent _event) {
 		
-		//set pressed
-		pressed = true;
-
 		//update color
 		updateColor(_event);
 	}
@@ -98,13 +91,7 @@ MouseMotionListener {
 	/**
 	 * {@inheritDoc}
 	 */
-	public final void mouseEntered(final MouseEvent _event) {
-
-	    if (pressed) {
-			//update color
-			updateColor(_event);
-		}
-	}
+	public final void mouseEntered(final MouseEvent _event) { }
 	
 	/**
 	 * {@inheritDoc}
@@ -196,8 +183,9 @@ MouseMotionListener {
 		try {
 			
 			//fetch color 
-			Color clr_background = ((MPanel) _event.getSource())
-			        .getBackground();
+			
+			int rgb = bi_colors.getRGB(_event.getX(), _event.getY());
+			Color clr_background = new Color(rgb);
 
 			//update the displayed selected color
 			cp.getJlbl_selectedColor().setBackground(clr_background);
@@ -224,18 +212,12 @@ MouseMotionListener {
 	
 
 
-    /**
-     * @return the pressed
-     */
-    public final boolean isPressed() {
-        return pressed;
-    }
-
 
     /**
-     * @param _pressed the pressed to set
+     * The bufferedImage which contains the colors.
      */
-    public final void setPressed(final boolean _pressed) {
-        this.pressed = _pressed;
-    }
+    private BufferedImage bi_colors;
+	public void setBufferedImage(final BufferedImage _bi) {
+		this.bi_colors = _bi;
+	}
 }

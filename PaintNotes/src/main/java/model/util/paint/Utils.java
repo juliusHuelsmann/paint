@@ -14,7 +14,6 @@ import model.settings.Constants;
 import model.settings.Settings;
 import model.settings.Status;
 import model.settings.ViewSettings;
-import model.util.Util;
 
 /**
  * Class which contains utility methods.

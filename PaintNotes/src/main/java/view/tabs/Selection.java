@@ -12,10 +12,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import model.settings.ViewSettings;
+import control.forms.CPaintStatus;
 import control.interfaces.MenuListener;
-import control.tabs.CPaintStatus;
 import control.tabs.CTabSelection;
-import control.tabs.ControlTabPainting;
+import control.tabs.CTabPainting;
 import view.util.Item1Menu;
 import view.util.Item1Button;
 import view.util.VColorPanel;
@@ -87,7 +87,7 @@ public final class Selection extends Tab {
      * @param _ml the MenuListener instance
 	 */
 	public void initialize(
-			final ControlTabPainting _cPaint, 
+			final CTabPainting _cPaint, 
 			final CTabSelection _cts,
 			final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus) {

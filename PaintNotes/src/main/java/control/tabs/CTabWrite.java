@@ -20,7 +20,7 @@ import model.settings.Status;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class CWrite implements ActionListener {
+public final class CTabWrite implements ActionListener {
 
     /*
      * Identifiers
@@ -79,7 +79,7 @@ public final class CWrite implements ActionListener {
     /**
      * Empty utility class constructor.
      */
-    public CWrite(ControlPaint _cp) { 
+    public CTabWrite(ControlPaint _cp) { 
     	this.cp = _cp;
     }
 

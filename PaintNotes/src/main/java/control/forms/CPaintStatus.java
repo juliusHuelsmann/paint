@@ -1,5 +1,5 @@
 //package declaration
-package control.tabs;
+package control.forms;
 
 //import declarations
 import java.awt.Color;

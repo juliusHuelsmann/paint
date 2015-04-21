@@ -8,7 +8,7 @@ import view.util.mega.MLabel;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
-import control.tabs.CLook;
+import control.tabs.CTabLook;
 
 
 /**
@@ -56,7 +56,7 @@ public final class Look extends Tab {
     /**
      * Empty utility class constructor.
      */
-    public Look(final CLook _clook) { 
+    public Look(final CTabLook _clook) { 
         super(2);
         //initialize JPanel and alter settings
         super.setOpaque(false);
@@ -81,7 +81,7 @@ public final class Look extends Tab {
      * @param _x the x start coordinate
      * @return the x coordinate of the separation element.
      */
-    private int initializeFirstColumn(final int _x, final CLook _clook) {
+    private int initializeFirstColumn(final int _x, final CTabLook _clook) {
 
         jlbl_backgroundTitle = new MLabel("Background:");
         jlbl_backgroundTitle.setBounds(ViewSettings.getDistanceBetweenItems(),
@@ -303,7 +303,7 @@ public final class Look extends Tab {
      * @param _x the start x coorindate.
      * @return the x location of the separation element
      */
-    private int initializeSecondColumn(final int _x, final CLook _clook) {
+    private int initializeSecondColumn(final int _x, final CTabLook _clook) {
 
         /*
          * Alpha

@@ -15,7 +15,7 @@ import model.objects.PictureOverview;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
-import control.tabs.CPaintObjects;
+import control.tabs.CTabDebug;
 import view.util.VScrollPane;
 import view.util.Item1Button;
 import view.util.mega.MLabel;
@@ -94,7 +94,7 @@ public final class Debug extends Tab implements Observer {
 
     //value for functionality of adding something
     
-	private CPaintObjects cps;
+	private CTabDebug cps;
 	
 	
 	/**
@@ -106,7 +106,7 @@ public final class Debug extends Tab implements Observer {
 	 * Constructor: initialize instances of Components and add special 
 	 * MouseMotionListener.
 	 */
-	public Debug(CPaintObjects _cps) {
+	public Debug(CTabDebug _cps) {
 		
 		//initialize JPanel and alter settings
 		super(0);

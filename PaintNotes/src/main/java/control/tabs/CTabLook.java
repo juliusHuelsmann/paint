@@ -17,7 +17,7 @@ import model.settings.Status;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class CLook implements ActionListener {
+public final class CTabLook implements ActionListener {
 
 	
 	/**
@@ -31,7 +31,7 @@ public final class CLook implements ActionListener {
      * 
      * @param _cp 	instance of the root-controller class.
      */
-    public CLook(final ControlPaint _cp) { 
+    public CTabLook(final ControlPaint _cp) { 
     	this.cp = _cp;
     }
 

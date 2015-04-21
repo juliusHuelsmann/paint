@@ -30,7 +30,7 @@ import view.util.Item1Button;
  * @author Julius Huelsmann
  * @version %I%,%U%
  */
-public final class CPaintObjects implements ActionListener {
+public final class CTabDebug implements ActionListener {
 
 
     /**
@@ -50,7 +50,7 @@ public final class CPaintObjects implements ActionListener {
      * Private utility class constructor.
      * @param _cp	instance of the root-controller-class
      */
-    public CPaintObjects(final ControlPaint _cp) {
+    public CTabDebug(final ControlPaint _cp) {
     	this.cp = _cp;
     }
     
@@ -155,7 +155,7 @@ public final class CPaintObjects implements ActionListener {
         jbtn_new.setImageHeight(itemSize);
         jbtn_new.setBackground(Color.pink);
         jbtn_new.setBorder(true);
-        jbtn_new.addActionListener(new CPaintObjects(cp));
+        jbtn_new.addActionListener(new CTabDebug(cp));
         jbtn_new.setText("ID " + _pov.getCurrentPO().getElementId());
         getPaintObjects().add(jbtn_new);
         jbtn_new.setIcon((_pov.getCurrentPO().getSnapshot()));

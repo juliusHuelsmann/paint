@@ -15,13 +15,13 @@ import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.Status;
 import control.ControlPaint;
-import control.tabs.CPaintStatus;
-import control.tabs.ControlTabPainting;
+import control.forms.CPaintStatus;
+import control.tabs.CTabPainting;
 
 public class CPen implements ChangeListener, MouseListener {
 
 
-	private ControlTabPainting cp;
+	private CTabPainting cp;
 	private Item1PenSelection i1ps;
 
 	/**
@@ -40,7 +40,7 @@ public class CPen implements ChangeListener, MouseListener {
 	
 	public CPen(
 			final ControlPaint _controlPaint,
-			final ControlTabPainting _cp, 
+			final CTabPainting _cp, 
 			final Item1PenSelection _i1ps,
 			final Item1Menu _i1m_toSet,
 			final Pen _pen,
@@ -74,7 +74,7 @@ public class CPen implements ChangeListener, MouseListener {
 
 			i1m_toSet.setIcon(i1ps.getImagePath());
 	            
-	        ControlTabPainting.applyFocus(i1ps);
+	        CTabPainting.applyFocus(i1ps);
 		}
 	}
 	
@@ -103,7 +103,7 @@ public class CPen implements ChangeListener, MouseListener {
     		/*
              * the different pens in open pen menu
              */
-            if (ControlTabPainting.isAStiftAuswahl((_event.getSource()))) {
+            if (CTabPainting.isAStiftAuswahl((_event.getSource()))) {
                 Item1PenSelection sa = (Item1PenSelection) ((VButtonWrapper) 
                         _event.getSource()).wrapObject();
                 
@@ -136,7 +136,7 @@ public class CPen implements ChangeListener, MouseListener {
                     paint.getTb_color2()
                     .setActivated(true);
                 }
-                ControlTabPainting.applyFocus(sa);
+                CTabPainting.applyFocus(sa);
                 controlPaint.getPicture().userSetPen(pen, penSelection);
                 CItem.getInstance().reset();
                 

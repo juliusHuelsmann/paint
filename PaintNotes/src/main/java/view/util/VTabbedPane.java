@@ -767,11 +767,21 @@ public class VTabbedPane extends MPanel {
                                 + cEndLocation - cStartLocation,
                                 jpnl_stuff[i].getY());
                     }
+
+                	//TODO: das hier suche ich warhscheinlich.
                     setSize(getWidth(), oldHeight);
                     stroke();
-                    jpnl_stuff[openTab].repaint();
-
                     jpnl_contains.setComponentZOrder(jpnl_stuff[openTab], 1);
+
+                    Status.getLogger().severe("hier bin ich "
+                    		+ "(der ehemalige windows fehler,"
+                    		+ " der nun auskommentiert ist.)");
+                    //TODO: Windows Fehler 1 (solvedAtWindows)
+                    //TODO: in combination mit dem repaint. das
+                    //repaint hier zerstoert die anzeige.
+                    //das wird weggenommen. warum auch immer.
+                    //                    jpnl_stuff[openTab].repaint();
+
                 }
 
             } .start();

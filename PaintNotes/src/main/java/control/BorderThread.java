@@ -75,16 +75,20 @@ public class BorderThread extends Thread {
      * Constructor: save instance of PaintLabel and Rectangle.
      * 
      * which operation to take
-     * @param _operationRectangle whether to paint a rectangle or a closed line
+     * @param _operationRectangle 	whether to paint a rectangle or a closed 
+     * 								line
      * 
      * rectangle operation values:
-     * @param _r the rectangle which is to be painted.
+     * @param _r 					the rectangle which is to be painted.
      * 
      * line operation values:
-     * @param _po the current PaintObject used for line operation
-     * @param _pen the current Pen used for line operation
+     * @param _po 					the current PaintObject used for line 
+     * 								operation
+     * @param _pen 					the current Pen used for line operation
      * 
-     * @param _tab the Tab for refreshing
+     * @param _tab 					the Tab for refreshing
+     * 
+     * @param _page					the page.
      */
     public BorderThread(final Rectangle _r, 
             final boolean _operationRectangle, final PaintObject _po,
@@ -120,13 +124,15 @@ public class BorderThread extends Thread {
         BufferedImage bi_neutral = Util.getEmptyBISelection();
         
         //perform border movement 
-        if (!(System.getProperties().getProperty("os.name").contains("Windows"))) {
+        if (!(System.getProperties().getProperty("os.name")
+        		.contains("Windows"))) {
 	        while (!isInterrupted()) {
 	
 	            if (operationRectangle) {
 	
 	                sleepTime = sleepTimeRectangle;
-	                indexStep = paintRectangleStep(sizeBB, indexStep, bi_neutral);
+	                indexStep = paintRectangleStep(
+	                		sizeBB, indexStep, bi_neutral);
 	            } else {
 	                sleepTime = sleepTimeLine;
 	                paintLineStep(indexStep);

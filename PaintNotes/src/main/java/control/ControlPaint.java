@@ -214,17 +214,22 @@ MenuListener {
 	
 	
 	
-	
-	
-	
+	/*
+	 * Model classes:
+	 */
 	
 	
 	/**
-	 * 
+	 * The class project is the root model class which contains
+	 * all the essential model classes.
 	 */
 	private Project project;
 
 	
+	
+	/*
+	 * Computation values.
+	 */
 	
     //TODO: quadratic? movement function which interpolates a time interval
     //of x milliseconds. Computation possible. Speed? Maybe other solutions?
@@ -249,6 +254,25 @@ MenuListener {
      */
     private Thread thrd_move;
 
+    /*
+     * Values that are necessary for the preprint.
+     */
+    
+    /**
+     * The BufferedImage which contains the preprint of a pen.
+     * Is saved because in this way it is much quicker to display
+     * a preprint and to remove the old one.
+     */
+    private BufferedImage bi_preprint;
+    
+    
+    /**
+     * This point saves the location of the last preprint relative
+     * to the borders of the currently displayed picture scope.
+     * 
+     * Is null if there currently is no displayed preprint.
+     */
+    private Rectangle rect_preprintBounds;
 	
 	/**
 	 * Constructor of the main controller class.
@@ -293,6 +317,9 @@ MenuListener {
             
             utilityControlItem2 = new CTabInsert(this);
             cTabs = new CTabs(this);
+            
+            //initialize the preprint image.
+            bi_preprint = Util.getEmptyBISelection();
 
             //initialize view class and log information on current 
             //initialization progress
@@ -383,9 +410,10 @@ MenuListener {
 		            	//the menu.
 		            	if (!getTabs().isMenuOpen()) {
 
-			            	BufferedImage bi = Util.getEmptyBISelection();
-			            	getPage().getJlbl_selectionBG().setIcon(
-			            			new ImageIcon(bi));
+		            		removePreprint();
+//			            	BufferedImage bi = Util.getEmptyBISelection();
+//			            	getPage().getJlbl_selectionBG().setIcon(
+//			            			new ImageIcon(bi));
 			            	break;
 		            	}
 	                default:
@@ -868,22 +896,17 @@ MenuListener {
 
                     if (Status.isNormalRotation()) {
 
-                        project.getPicture().getPen_current().preprint(
-                                _event.getX(), _event.getY(),
-                                Util.getEmptyBISelection(),
-                                getPage().getJlbl_selectionBG());
-
+                        performPreprint(_event.getX(), _event.getY());
+                        
                     } else {
 
-                        project.getPicture().getPen_current().preprint(
-                        		getPage().getJlbl_painting()
-                        		.getWidth() 
-                                - _event.getX(), 
-                                getPage().getJlbl_painting()
-                                .getHeight() 
-                                - _event.getY(),
-                                Util.getEmptyBISelection(),
-                                getPage().getJlbl_selectionBG());
+
+                        performPreprint(
+                        		getPage().getJlbl_painting().getWidth() 
+                        		- _event.getX(), 
+                                getPage().getJlbl_painting().getHeight() 
+                                - _event.getY());
+
                     }
             	}
                 break;
@@ -2390,6 +2413,175 @@ MenuListener {
     	}		
 	}
 
+	
+	private void removePreprint() {
+
+
+		//if the bounds of the preprint is not equal to null
+		//the preprint exists
+        if (rect_preprintBounds != null) {
+        	
+        	//fetch the color which is written into the position
+        	//where the preprint has been.
+        	final int rgbWhiteAlpha = new Color(
+        			255, 255, 255, 0).getRGB();
+//        			255, 0, 0).getRGB();
+        	
+        	//write the preprint to the rgb.
+        	for (int w = 0; w < rect_preprintBounds.width;
+        			w++) {
+        		for (int h = 0; h < rect_preprintBounds.height; 
+            			h++) {
+
+        			int shiftedX = rect_preprintBounds.x + w;
+        			int shiftedY = rect_preprintBounds.y + h;
+
+        			
+        			//if the values are legal:
+        			if (
+        					shiftedX >= 0
+        					&& shiftedX < bi_preprint.getWidth()
+        					&& shiftedY >= 0
+        					&& shiftedY < bi_preprint.getHeight()) {
+
+                    	bi_preprint.setRGB(
+                    			shiftedX, 
+                    			shiftedY,
+                    			rgbWhiteAlpha);
+        			} else {
+        				
+        				//problem specification is printed in each case.
+        				final String problemSpecification = "\n"
+        						+ "bounds: " + rect_preprintBounds
+        						+ "imagesize" + bi_preprint.getWidth() 
+        						+ ".." + bi_preprint.getHeight();
+
+            			if (shiftedX < 0) {
+            				Status.getLogger().info(
+            						"preprint location wrong: x < 0"
+            						+ problemSpecification);
+            			}
+
+            			if (shiftedX >= bi_preprint.getWidth()) {
+            				Status.getLogger().info(
+            						"preprint location wrong: x >= "
+            						+ "bi_preprint.getWidth()"
+            						+ problemSpecification);
+            			}
+
+            			if (shiftedY < 0) {
+            				Status.getLogger().info(
+            						"preprint location wrong: y < 0"
+            						+ problemSpecification);
+            			}
+
+            			if (shiftedY >= bi_preprint.getHeight()) {
+            				Status.getLogger().info(
+            						"preprint location wrong: y >= "
+            						+ "bi_preprint.getHeight()"
+            						+ problemSpecification);
+            			}
+        			}
+				}
+			}
+        	rect_preprintBounds = null;
+        } 
+	}
+	
+	private void performPreprint(final int _x, final int _y) {
+
+		//call remove preprint which removes a preprint if it exists
+		
+		removePreprint();
+        
+        /*
+         * Perform preprinting and update values.
+         */
+        
+        // perform the preprinting
+        project.getPicture().getPen_current().preprint(
+                _x, _y,
+                bi_preprint,
+                getPage().getJlbl_selectionBG());
+        
+        
+        //zoom factor
+        double zoomFactorX = Status.getImageShowSize().width
+                / Status.getImageSize().width, 
+                zoomFactorY = Status.getImageShowSize().height
+                        / Status.getImageSize().height; 
+        
+        //fetch the preprintSize and divide it by two.
+        int preprintX =
+        		Math.max(
+        				(int) Math.ceil(
+        						project.getPicture().getPen_current()
+        						.getThickness()  * zoomFactorX / 2),
+        						1);
+        int preprintY =
+        		Math.max(
+        				(int) Math.ceil(
+        						project.getPicture().getPen_current()
+        						.getThickness()  * zoomFactorY / 2),
+        						1);
+        
+        int recX = _x - preprintX * 2;
+        int recY = _y - preprintY * 2;
+        int recWidth = preprintX * 4;
+        int recHeight = preprintY * 4;
+        rect_preprintBounds = new Rectangle(0, 0, 0, 0);
+        
+        // if the rectangle is outside the legal scope set its bounds
+        // to null.
+        if (
+        		recX < 0
+				&& recX + recWidth < 0) {
+        	rect_preprintBounds = null;
+        	
+        } else if (recX < 0) {
+        	//here, recWidth \geq \|recX\|; thus the new recWidth is greater
+        	//or equal to zero.
+        	recWidth = recX + recWidth;
+        	recX = 0;
+        }
+        
+        if ( recX >= bi_preprint.getWidth()) {
+        	rect_preprintBounds = null;
+        } else if (recX + recWidth >= bi_preprint.getWidth()) {
+        	recWidth = bi_preprint.getWidth() - recX;
+        	if (recWidth <= 0) {
+        		rect_preprintBounds = null;
+        	}
+        }
+        if (
+        		recY < 0
+				&& recY + recHeight < 0) {
+        	rect_preprintBounds = null;
+        	
+        } else if (recY < 0) {
+        	//here, recWidth \geq \|recX\|; thus the new recWidth is greater
+        	//or equal to zero.
+        	recHeight = recY + recHeight;
+        	recY = 0;
+        }
+        
+        if ( recY >= bi_preprint.getHeight()) {
+        	rect_preprintBounds = null;
+        } else if (recY + recHeight >= bi_preprint.getHeight()) {
+        	recHeight = bi_preprint.getHeight() - recY;
+        	if (recHeight <= 0) {
+        		rect_preprintBounds = null;
+        	}
+        }
+
+        //this is only equal to null if the rectangle is outside the legal 
+        //scope.
+        if (rect_preprintBounds != null) {
+            rect_preprintBounds = new Rectangle(
+        			recX, recY, recWidth, recHeight);
+        }
+
+	}
 
 
 	/**

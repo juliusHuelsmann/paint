@@ -66,13 +66,9 @@ public class ContorlPicture implements PaintListener {
 	}
 
 	
-
-	private MPanel getJPnlToMove() {
-		return cp.getView().getPage().getJpnl_toMove();
-	}
-	private PaintLabel getPaintLabel() {
-		return cp.getView().getPage().getJlbl_painting();
-	}
+	
+	
+	
 	/**
 	 * Refresh the entire image.
 	 */
@@ -758,6 +754,100 @@ public class ContorlPicture implements PaintListener {
 		
 	}
 
+	
+	
+	/*
+	 * error - checked getter methods.
+	 */
+
+
+	/**
+	 * Method for getting the view component which is error-checked.
+	 * @return the MPanel jpnlToMove.
+	 */
+	private MPanel getJPnlToMove() {
+		if (cp != null) {
+			if (cp.getView() != null) {
+				if (cp.getView().getPage() != null) {
+					if (cp.getView().getPage().getJpnl_toMove() != null) {
+
+						return cp.getView().getPage().getJpnl_toMove();
+					} else {
+						Status.getLogger().severe(
+								"error: cp.getView().getPage().getJpnl_toMove() "
+								+ "is null");
+					} 
+				} else {
+
+					Status.getLogger().severe(
+							"error: cp.getView().getPage() "
+							+ "is null");
+				}
+			} else {
+
+				Status.getLogger().severe(
+						"error: cp.getView() "
+						+ "is null");
+			}
+		} else {
+
+			Status.getLogger().severe(
+					"error: cp "
+					+ "is null");
+		}
+		return null;
+	}
+
+	/**
+	 * Method for getting the view component which is error-checked.
+	 * @return the MPanel jpnlToMove.
+	 */
+	private PaintLabel getPaintLabel() {
+		if (cp != null) {
+			if (cp.getView() != null) {
+				if (cp.getView().getPage() != null) {
+					if (cp.getView().getPage().getJlbl_painting() != null) {
+
+						return cp.getView().getPage().getJlbl_painting();
+					} else {
+						Status.getLogger().severe(
+								"error: cp.getView().getPage()"
+								+ ".getJlbl_painting() "
+								+ "is null");
+					} 
+				} else {
+
+					Status.getLogger().severe(
+							"error: cp.getView().getPage() "
+							+ "is null");
+				}
+			} else {
+
+				Status.getLogger().severe(
+						"error: cp.getView() "
+						+ "is null");
+			}
+		} else {
+
+			Status.getLogger().severe(
+					"error: cp "
+					+ "is null");
+		}
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * {@inheritDoc}

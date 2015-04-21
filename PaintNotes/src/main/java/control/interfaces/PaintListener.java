@@ -12,9 +12,12 @@ public interface PaintListener {
 	 * size change listener called before the size has changed externally.
 	 * Contains the new location in passed MouseEvent.
 	 * 
-	 * @param _ev 
+	 * @param _evNew
 	 * 				the passed MouseEvent which contains the new location of 
-	 * 				PaintLabel.
+	 * 				the PaintLabel.
+	 * @param _evOld
+	 * 				the passed MouseEvent which contains the previous location 
+	 * 				of the PaintLabel.
 	 */
 	void beforeLocationChange(final MoveEvent _evNew, final MoveEvent _evOld);
 
@@ -74,8 +77,11 @@ public interface PaintListener {
 	 * bounds change listener called after  bounds have changed externally.
 	 * Contains the old bounds in passed MouseEvent.
 	 * 
-	 * @param _ev 
-	 * 				the passed MouseEvent which contains the old bounds of 
+	 * @param _evLoc
+	 * 				the passed MouseEvent which contains the new location of 
+	 * 				PaintLabel.
+	 * @param _evSiz
+	 * 				the passed MouseEvent which contains the new size of 
 	 * 				PaintLabel.
 	 */
 	void afterExternalBoundsChange(final MoveEvent _evLoc, 

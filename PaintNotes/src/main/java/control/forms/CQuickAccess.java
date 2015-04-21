@@ -1,4 +1,4 @@
-package control.tabs;
+package control.forms;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

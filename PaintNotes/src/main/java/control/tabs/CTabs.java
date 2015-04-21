@@ -4,13 +4,15 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import view.forms.Page;
 import model.settings.ViewSettings;
-import control.ContorlPicture;
 import control.ControlPaint;
 import control.interfaces.MoveEvent;
 import control.interfaces.TabbedListener;
 
 /**
- * Controller class for Tabs.
+ * Controller class for Tabs. Deals with the opening and the closing
+ * of the entire tab pane (not opening another tab).
+ * 
+ * 
  * @author Julius Huelsmann
  * @version %I%, %U%
  *
@@ -24,16 +26,21 @@ public class CTabs implements TabbedListener {
 	private ControlPaint cp;
 	
 	/**
+	 * Constructor: saves the instance of the main controller
+	 * 				class which offers accessibility to other
+	 * 				controller, model and view classes.
 	 * 
+	 * @param _cp 	instance of the main controller class which
+	 * 				is saved
 	 */
 	public CTabs(final ControlPaint _cp) {
 		this.cp = _cp;
 	}
 	
-	private ContorlPicture getControlPic() {
-		return cp.getControlPic();
-	}
-	
+
+	/**
+	 * 
+	 */
 	public void closeListener() {
 		
 		double timetoclose0 = System.currentTimeMillis();
@@ -69,17 +76,31 @@ public class CTabs implements TabbedListener {
         
        //time used ca. 0.8 sec
 
+        
+        // output
 		double timetoclose1 = System.currentTimeMillis();
+		final int divisorToSeconds = 100;
 		System.out.println(getClass() 
-				+ "time passed" + (timetoclose1 - timetoclose0) / 100);
+				+ "time passed" + (timetoclose1 - timetoclose0) 
+				/ divisorToSeconds);
 	}
 
-	public void moveListener(MoveEvent _event) {
-
-        cp.getView().getPage().setLocation(_event.getPnt_bottomLocation());
+	
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void moveListener(final MoveEvent _event) {
+        cp.getView().getPage().setLocation(
+        		_event.getPnt_bottomLocation());
 	}
 
-	public void openListener() {
+	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void openListener() {
 
 		Page page = cp.getView().getPage();
 

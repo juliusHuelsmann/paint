@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import control.interfaces.ActivityListener;
-import control.tabs.ControlTabPainting;
+import control.tabs.CTabPainting;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.TextFactory;
@@ -39,7 +39,7 @@ public class ControlView implements ActionListener, ActivityListener, MouseListe
 	/**
 	 * Instance of the controller class controlTabPainting.
 	 */
-	private ControlTabPainting ctp;
+	private CTabPainting ctp;
 	
 	
 	
@@ -48,7 +48,7 @@ public class ControlView implements ActionListener, ActivityListener, MouseListe
 	 * @param _view instance of view
 	 * @param _ctp instance of ControlTabPainting
 	 */
-	public ControlView(final View _view, final ControlTabPainting _ctp) {
+	public ControlView(final View _view, final CTabPainting _ctp) {
 		
 		this.view = _view;
 		this.ctp = _ctp;

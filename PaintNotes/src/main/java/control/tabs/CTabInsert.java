@@ -1,4 +1,4 @@
-package control.util.implementations;
+package control.tabs;
 
 import java.awt.event.MouseEvent;
 
@@ -13,8 +13,9 @@ import control.interfaces.ActivityListener;
  * @author juli
  *
  */
-public class Item2ActivityListener implements ActivityListener {
+public class CTabInsert implements ActivityListener {
 
+	//TODO: isnt it possible to move the entire content the insert-tab -listener?
 	
 	/**
 	 * 
@@ -26,7 +27,7 @@ public class Item2ActivityListener implements ActivityListener {
 	 * 
 	 * @param _cp
 	 */
-	public Item2ActivityListener(final ControlPaint _cp) {
+	public CTabInsert(final ControlPaint _cp) {
 		this.cp = _cp;
 	}
 	
@@ -39,8 +40,8 @@ public class Item2ActivityListener implements ActivityListener {
         if (_event.getSource() instanceof Item2) {
 
             Item2 i2 = (Item2) _event.getSource();
-    		cp.getView().getTabs().getTab_insert().getTb_selected().setIcon(
-    				i2.getIconPath());
+    		cp.getView().getTabs().getTab_insert().getTb_selected()
+    		.setIcon(i2.getIconPath());
     		cp.getView().getTabs().getTab_insert().getTb_selected().setText(
     				i2.getTitle());
         } else {

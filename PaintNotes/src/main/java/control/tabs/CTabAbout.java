@@ -26,7 +26,7 @@ import control.ControlPaint;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class CAbout implements ActionListener {
+public class CTabAbout implements ActionListener {
 
 	
 	/**
@@ -60,7 +60,7 @@ public class CAbout implements ActionListener {
 	 * 
 	 * @param _cp	instance of the root controller class which is saved.
 	 */
-	public CAbout(final ControlPaint _cp) {
+	public CTabAbout(final ControlPaint _cp) {
 		this.cp = _cp;
 	}
 	

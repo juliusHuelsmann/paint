@@ -15,7 +15,7 @@ import model.settings.Status;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class CExport implements ActionListener {
+public final class CTabExport implements ActionListener {
 
 	/**
 	 * An instance of the root - controller - class for fetching the instances
@@ -28,7 +28,7 @@ public final class CExport implements ActionListener {
      * @param _cp	an instance of the root-controller-class out of which the
      * 				instances of important classes can be fetched.
      */
-    public CExport(final ControlPaint _cp) {
+    public CTabExport(final ControlPaint _cp) {
     	this.cp = _cp;
     }
 

@@ -20,7 +20,7 @@ public final class Zoom {
     /**
      * Initialize instance.
      */
-    public Zoom(ContorlPicture _cp) { 
+    public Zoom(final ContorlPicture _cp) { 
     	this.controlPicture = _cp;
     }
     
@@ -49,6 +49,7 @@ public final class Zoom {
      * .
      * @param _x the x coordinate
      * @param _y the y coordinate.
+     * @param _page
      */
     public synchronized void setLocation(final int _x, final int _y,
     		final Page _page) {

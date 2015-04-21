@@ -8,7 +8,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import control.ControlPaint;
-import control.tabs.CPaintStatus;
+import control.forms.CPaintStatus;
 import model.settings.ViewSettings;
 import view.util.Item2;
 import view.util.Item2Menu;

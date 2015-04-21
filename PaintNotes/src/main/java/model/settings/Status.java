@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import control.ControlPaint;
-import control.tabs.CWrite;
+import control.tabs.CTabWrite;
 import view.View;
 import view.forms.Page;
 import model.objects.painting.PaintBI;
@@ -32,7 +32,7 @@ public final class Status {
 	private static Picture picture;
 	
 
-	private static CWrite getControlTabWrite() {
+	private static CTabWrite getControlTabWrite() {
 		return controlPaint.getcTabWrite();
 	}
 	private static Page getPage() {

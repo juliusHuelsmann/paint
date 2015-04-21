@@ -41,7 +41,7 @@ import view.util.VButtonWrapper;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class ControlTabPainting implements ActionListener, MouseListener {
+public final class CTabPainting implements ActionListener, MouseListener {
 
 
 	/**
@@ -59,7 +59,7 @@ public final class ControlTabPainting implements ActionListener, MouseListener {
      * empty utility class Constructor.
      * @param _cp the instance of ControlPaint
      */
-    public ControlTabPainting(final ControlPaint  _cp) {
+    public CTabPainting(final ControlPaint  _cp) {
 
     	this.controlPaint = _cp;
         // initialize and start action

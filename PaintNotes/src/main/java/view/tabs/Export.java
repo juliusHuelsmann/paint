@@ -8,7 +8,7 @@ import view.util.mega.MLabel;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
-import control.tabs.CExport;
+import control.tabs.CTabExport;
 
 
 /**
@@ -90,7 +90,7 @@ public final class Export extends Tab {
     /**
      * Initializes the content for the background.
      */
-    public void initialize(CExport _cex) {
+    public void initialize(CTabExport _cex) {
 
         //initialize the content for the background
         initializeColumn1(_cex);    	
@@ -100,7 +100,7 @@ public final class Export extends Tab {
     /**
      * Initialize the first column.
      */
-    private void initializeColumn1(CExport _cex) {
+    private void initializeColumn1(CTabExport _cex) {
         
         //initialize the first part of the first column containing the 
         //possibility to choose an image background for the export and
@@ -134,7 +134,7 @@ public final class Export extends Tab {
      * possibility to choose an image background for the export and
      * to set its border sizes.
      */
-    private void initializeColumn1BG(CExport _cex) {
+    private void initializeColumn1BG(CTabExport _cex) {
 
         jlbl_backgroundTitle = new MLabel("Background:");
         jlbl_backgroundTitle.setBounds(ViewSettings.getDistanceBetweenItems(),
@@ -275,7 +275,7 @@ public final class Export extends Tab {
      * the components for changing the displaying of alpha values.
      * Choices: Save pure alpha as alpha value or save it as white pixel.
      */
-    private void initializeColumn1Alpha(CExport _cex) {
+    private void initializeColumn1Alpha(CTabExport _cex) {
 
         /*
          * Alpha
@@ -319,7 +319,7 @@ public final class Export extends Tab {
      * Initializes the second part of the first column which contains
      * the components for changing the export format of the image.
      */
-    private void initializeColumn1SaveOptions(CExport _cex) {
+    private void initializeColumn1SaveOptions(CTabExport _cex) {
 
         /*
          * Alpha

@@ -30,7 +30,7 @@ import model.settings.Status;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class DebugUtil {
+public final class DebugUtil {
     
     /*
      * Utility tests for checking whether program works properly.
@@ -51,14 +51,32 @@ public class DebugUtil {
      * The dimension of one item in the picture (only necessary if the specified
      * operation is the CHECK_OP_IMAGE operation).
      */
-    public static final Dimension d_item = new Dimension(70, 10);
+    public static final Dimension D_ITEM = new Dimension(70, 10);
     
     /**
      * The distance of two items in the picture (only necessary if the specified
      * operation is the CHECK_OP_IMAGE operation).
      */
-    public static final Dimension d_distance = new Dimension(12, 2);
-   
+    public static final Dimension D_DISTANCE = new Dimension(12, 2);
+
+    
+    /**
+     * Colors for displaying view.
+     */
+    private static final Color CLR_CORRECT = new Color(130, 131, 133), 
+    		CLR_ERROR = new Color(255, 120, 120);
+	
+	/**
+	 * Font which is used for printing names inside the return image of
+	 * function printImageFormComponents().
+	 */
+    private static final Font FONT_IMAGE = new Font("", Font.PLAIN, 10);
+    
+    /**
+     * Empty utility class constructor.
+     */
+    private DebugUtil() { }
+    
     
     /**
      * Starts a size-component-check and prints an image.
@@ -87,8 +105,8 @@ public class DebugUtil {
 			
 			//create image and fill it with background color
 			BufferedImage bi_analyze = new BufferedImage(
-					itemsCols * (d_item.width + d_distance.width), 
-					itemsRows * (d_item.height + d_distance.height), 
+					itemsCols * (D_ITEM.width + D_DISTANCE.width), 
+					itemsRows * (D_ITEM.height + D_DISTANCE.height), 
 					BufferedImage.TYPE_INT_RGB);
 			for (int w = 0; w < bi_analyze.getWidth(); w++) {
 				for (int h = 0; h < bi_analyze.getHeight(); h++) {
@@ -105,7 +123,7 @@ public class DebugUtil {
 			//check components will call itself recursively and
 			//check all components that are added by the root components
 			//or its children.
-			checkComponents(_rootComponent,  0, bi_analyze);
+			printImageFromComponents(_rootComponent,  0, bi_analyze);
 			
 			//write image to hard drive
 			try {
@@ -126,15 +144,18 @@ public class DebugUtil {
 	
 	
 	/**
+	 * Check the components.
+	 * Recursive method which returns the total amount of rows and columns.
 	 * 
-	 * @param _c
-	 * @param _print
-	 * @param _currentColumn
-	 * @param _currentRow
-	 * @return
+	 * @param _rootComponent 	the root component
+	 * @param _print			whether to print the result or not
+	 * @param _currentColumn	the current column number
+	 * @param _currentRow		the current row number
+	 * @return					the total amount of rows and columns of the
+	 * 							current graphical-user-interface-configuration
 	 */
 	private static Rectangle checkComponents(
-			final Component _c, 
+			final Component _rootComponent, 
 			final String _print,
 			final int _currentColumn,
 			final int _currentRow) {
@@ -149,14 +170,14 @@ public class DebugUtil {
 		
 
 
-		if (_c.getWidth() <= 0 || _c.getHeight() <= 0)
+		if (_rootComponent.getWidth() <= 0 || _rootComponent.getHeight() <= 0) {
 			System.err.println(_print 
-					+ _c.getClass().getSimpleName()
-					+ _c.getSize()
+					+ _rootComponent.getClass().getSimpleName()
+					+ _rootComponent.getSize()
 					);
-		else {
+		} else {
 			System.out.println(_print 
-					+ _c.getClass().getSimpleName()
+					+ _rootComponent.getClass().getSimpleName()
 //					+ _c.getSize() 
 					);
 		}
@@ -165,8 +186,8 @@ public class DebugUtil {
 		
 		
 		
-		if (_c instanceof JPanel ) {
-			for (Component x : ((JPanel)_c).getComponents()) {
+		if (_rootComponent instanceof JPanel) {
+			for (Component x : ((JPanel) _rootComponent).getComponents()) {
 				
 				Rectangle pnt_recursiv = checkComponents(
 						x, _print + "\t", depth + 1, 1);
@@ -176,22 +197,10 @@ public class DebugUtil {
 				maxDepth = Math.max(maxDepth, pnt_recursiv.width);
 			}
 
-		} else if (_c instanceof JFrame) {
+		} else if (_rootComponent instanceof JFrame) {
 
-			for (Component x : ((JFrame)_c).getContentPane().getComponents()) {
-
-
-				Rectangle pnt_recursiv = checkComponents(
-						x, _print + "\t", depth + 1, 1);
-
-				//update max depth
-				amount += pnt_recursiv.y;
-				maxDepth = Math.max(maxDepth, pnt_recursiv.width);
-			}
-			
-		} else if (_c instanceof Panel) {
-
-			for (Component x : ((Panel)_c).getComponents()) {
+			for (Component x : ((JFrame) _rootComponent).getContentPane()
+					.getComponents()) {
 
 
 				Rectangle pnt_recursiv = checkComponents(
@@ -202,9 +211,22 @@ public class DebugUtil {
 				maxDepth = Math.max(maxDepth, pnt_recursiv.width);
 			}
 			
-		} else if (_c instanceof Window) {
+		} else if (_rootComponent instanceof Panel) {
 
-			for (Component x : ((Window)_c).getComponents()) {
+			for (Component x : ((Panel) _rootComponent).getComponents()) {
+
+
+				Rectangle pnt_recursiv = checkComponents(
+						x, _print + "\t", depth + 1, 1);
+
+				//update max depth
+				amount += pnt_recursiv.y;
+				maxDepth = Math.max(maxDepth, pnt_recursiv.width);
+			}
+			
+		} else if (_rootComponent instanceof Window) {
+
+			for (Component x : ((Window) _rootComponent).getComponents()) {
 
 
 				Rectangle pnt_recursiv = checkComponents(
@@ -222,18 +244,28 @@ public class DebugUtil {
 		return pnt_res;
 	}
 
+	
+	/**
+	 * Current entry (has to be outside the function because 
+	 * it is only allowed to have one return value. Thus either
+	 * the BufferedImage or the currentEntry have to be externalized.
+	 */
 	private static int currentEntry = 1;
 
 	/**
+	 * Print image from components.
+	 * Recursive method.
 	 * 
-	 * @param _c
-	 * @param _print
-	 * @param _currentColumn
-	 * @param _currentRow
-	 * @return
+	 * @param _rootComponent 	the root component
+	 * @param _currentColumn	the column of the current item
+	 * @param _bi				the bufferedImage which is altered and 
+	 * 							afterwards returned
+	 * 							
+	 * @return					the BufferedImage which displays the complete
+	 * 							graphical user interface landscape.
 	 */
-	private static BufferedImage checkComponents(
-			final Component _c, 
+	private static BufferedImage printImageFromComponents(
+			final Component _rootComponent, 
 			final int _currentColumn,
 			final BufferedImage _bi) {
 		
@@ -241,78 +273,77 @@ public class DebugUtil {
 		//save given values.
 		BufferedImage bi_ret = _bi;
 
-		Color clr_correct = new Color(130, 131, 133);
-		Color clr_error = new Color(255, 120, 120);
 
 
-		int adjC = 0 + _currentColumn * (d_item.width + d_distance.width);
-		int adjR = 0 + currentEntry * (d_item.height + d_distance.height);
+		int adjC = 0 + _currentColumn * (D_ITEM.width + D_DISTANCE.width);
+		int adjR = 0 + currentEntry * (D_ITEM.height + D_DISTANCE.height);
 		
 		Graphics g = bi_ret.getGraphics();
 
 
-		if (_c.getWidth() <= 0 || _c.getHeight() <= 0) {
+		if (_rootComponent.getWidth() <= 0 || _rootComponent.getHeight() <= 0) {
 
-			g.setColor(clr_error);
+			g.setColor(CLR_ERROR);
 		} else {
 
-			g.setColor(clr_correct);
+			g.setColor(CLR_CORRECT);
 		}
 
-		g.drawRect(adjC, adjR, d_item.width, d_item.height);
-		g.setFont(new Font("", Font.PLAIN, 10));
-		g.drawString(_c.getClass().getSimpleName(), adjC, 
-				adjR + d_item.height);
+		g.drawRect(adjC, adjR, D_ITEM.width, D_ITEM.height);
+		g.setFont(FONT_IMAGE);
+		g.drawString(_rootComponent.getClass().getSimpleName(), adjC, 
+				adjR + D_ITEM.height);
 
 			
 			
 		currentEntry++;
 		
-		if (_c instanceof JPanel ) {
-			for (Component x : ((JPanel)_c).getComponents()) {
+		if (_rootComponent instanceof JPanel) {
+			for (Component x : ((JPanel) _rootComponent).getComponents()) {
 
 				final int vorher = currentEntry + 1;
 				currentEntry--;
-				bi_ret = checkComponents(
+				bi_ret = printImageFromComponents(
 						x, _currentColumn + 1,
 						_bi);
 				currentEntry = Math.max(vorher, currentEntry);
 				
 			}
 
-		} else if (_c instanceof JFrame) {
+		} else if (_rootComponent instanceof JFrame) {
 
-			for (Component x : ((JFrame)_c).getContentPane().getComponents()) {
+			for (Component x : ((JFrame) _rootComponent)
+					.getContentPane().getComponents()) {
 
 				final int vorher = currentEntry + 1;
 				currentEntry--;
-				bi_ret = checkComponents(
+				bi_ret = printImageFromComponents(
 						x, _currentColumn + 1,
 						_bi);
 				currentEntry = Math.max(vorher, currentEntry);
 				
 			}
 			
-		} else if (_c instanceof Panel) {
+		} else if (_rootComponent instanceof Panel) {
 
-			for (Component x : ((Panel)_c).getComponents()) {
+			for (Component x : ((Panel) _rootComponent).getComponents()) {
 
 
 				final int vorher = currentEntry + 1;
 				currentEntry--;
-				bi_ret = checkComponents(
+				bi_ret = printImageFromComponents(
 						x, _currentColumn + 1,
 						_bi);
 				currentEntry = Math.max(vorher, currentEntry);
 			}
 			
-		} else if (_c instanceof Window) {
+		} else if (_rootComponent instanceof Window) {
 
-			for (Component x : ((Window)_c).getComponents()) {
+			for (Component x : ((Window) _rootComponent).getComponents()) {
 
 				final int vorher = currentEntry + 1;
 				currentEntry--;
-				bi_ret = checkComponents(
+				bi_ret = printImageFromComponents(
 						x, _currentColumn + 1,
 						_bi);
 				currentEntry = Math.max(vorher, currentEntry);

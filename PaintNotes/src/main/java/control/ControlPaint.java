@@ -364,52 +364,76 @@ MenuListener {
 
             case Constants.CONTROL_PAINTING_INDEX_ERASE:
             	
-            	mr_erase(_event.getPoint());
-            	final boolean oldStuff = false;
-            	if (oldStuff) {
-            		/*
-                	 * Initialize the field for erasing. 
-                	 * Therefore calculate the 
-                	 * dimension of the array first.
-                	 */
-                	final int width = 
-                	Math.min(
-                			
-                			//The theoretically displayed width of the image
-                			//if the image would not terminate somewhere
-                			//on screen.
-                			getPage().getJlbl_painting().getWidth()
-                			* Status.getImageSize().width
-                			/ Status.getImageShowSize().width
-                			/ Status.getEraseRadius(),
-                			
-                			//the maximal displayed image size adapted to the
-                			//erase radius.
-                			Status.getImageSize().width
-                			/ Status.getEraseRadius());
-                	
-                	final int height = 
-                	Math.min(
-                			
-                			//The theoretically displayed height of the image
-                			//if the image would not terminate somewhere
-                			//on screen.
-                			getPage().getJlbl_painting().getHeight()
-                			* Status.getImageSize().height
-                			/ Status.getImageShowSize().height
-                			/ Status.getEraseRadius(),
+            	final boolean rectangleOperation = true;
+            	
+            	if (!rectangleOperation) {
+//            		mr_eraseNew();
+            		mr_erase(_event.getPoint());
+                				
+                					
+                	//(_event.getPoint());
+                	if (field_erase != null) {
 
-                			//the maximal displayed image size adapted to the
-                			//erase radius.
-                			Status.getImageSize().height 
-                			/ Status.getEraseRadius());
-                	
-                	//initialize the field.
-                	field_erase = new byte[width][height];
+                		final double factorWidth = 
+                				1.0 * Math.min(
+                						
+                						//the value if the border of the picture
+                						//is not displayed (because not enough
+                						//zoom out)
+                						1.0 * Status.getImageSize().width
+                						/ Status.getImageShowSize().width
+                						/ Status.getEraseRadius(),
+
+                						//value if border is visible on screen; 
+                						//zoomed out
+                						1.0 * Status.getImageSize().width
+                						/ getPage().getJlbl_painting()
+                						.getWidth()
+                						/ Status.getEraseRadius());
+                		final double factorHeight = 
+                				1.0 * Math.min(
+                						
+                						//the value if the border of the picture
+                						//is not displayed (because not enough
+                						//zoom out)
+                						1.0 * Status.getImageSize().height
+                						/ Status.getImageShowSize().height
+                						/ Status.getEraseRadius(),
+
+                						//value if border is visible on screen; 
+                						//zoomed out
+                						1.0 * Status.getImageSize().height
+                						/ getPage().getJlbl_painting()
+                						.getHeight()
+                						/ Status.getEraseRadius());
+                		
+                		field_erase [(int) (_event.getPoint().x * factorWidth)]
+                					[(int) (_event.getPoint().y * factorHeight)]
+                							= PaintBI.FREE;
+
+                		final int displayHeight = Status.getEraseRadius()
+                				* Status.getImageShowSize().height
+                				/ Status.getImageSize().height;
+                		final int displayWidth = Status.getEraseRadius()
+                				* Status.getImageShowSize().width
+                				/ Status.getImageSize().width;
+                		
+                		controlPic.clrRectangle(
+                        		_event.getX() - displayWidth / 2, 
+                        		_event.getY() - displayHeight / 2, 
+                        		displayWidth,
+                        		displayHeight);
+                	}
             	}
             	
+            	Point p = new Point(
+            			(int) (_event.getPoint().x - getPage()
+            					.getJlbl_painting().getLocation().getX()),
+                    	(int) (_event.getPoint().y - getPage()
+                    			.getJlbl_painting().getLocation().getY()));
+            	mr_erase(p);
+                break;
             	
-            	break;
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
 
                 picture.abortPaintObject(controlPic);

@@ -12,7 +12,7 @@ import control.ControlPaint;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class CPrint implements ActionListener {
+public class CTabPrint implements ActionListener {
 
 
 	/**
@@ -25,7 +25,7 @@ public class CPrint implements ActionListener {
 	 * Constructor: save main controller.
 	 * @param _cp instance of main controller 
 	 */
-	public CPrint(final ControlPaint _cp) {
+	public CTabPrint(final ControlPaint _cp) {
 		this.cp = _cp;
 	}
 	

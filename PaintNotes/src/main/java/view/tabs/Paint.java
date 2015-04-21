@@ -4,19 +4,21 @@ package view.tabs;
 //import declarations
 import java.awt.Color;
 import java.awt.Dimension;
+
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
 import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import control.ControlPaint;
+import control.forms.CPaintStatus;
 import control.interfaces.MenuListener;
-import control.tabs.CPaintStatus;
-import control.tabs.ControlTabPainting;
+import control.tabs.CTabPainting;
 import control.util.CPaintSelection;
 import control.util.CPen;
 import view.util.Item1Menu;
@@ -88,7 +90,7 @@ public final class Paint extends Tab {
 	 * Constructor of Paint.
 	 */
 	public Paint(final ControlPaint _controlPaint,
-			final ControlTabPainting _paint, final MenuListener _ml,
+			final CTabPainting _paint, final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus) {
 
 		//initialize JPanel and alter settings
@@ -148,7 +150,7 @@ public final class Paint extends Tab {
 	 * @return the x coordinate for following items.
 	 */
 	private int initializeClipboard(final int _x, final boolean _paint,
-			final ControlTabPainting _cp,
+			final CTabPainting _cp,
 			final CPaintStatus _controlPaintStatus) {
 
         if (_paint) {
@@ -232,7 +234,7 @@ public final class Paint extends Tab {
 	 * @return the new x coordinate
 	 */
 	private int initializeHistory(final int _x, final boolean _paint,
-			final ControlTabPainting _ctp,
+			final CTabPainting _ctp,
 			final CPaintStatus _controlPaintStatus) {
 
 	    if (_paint) {
@@ -309,7 +311,7 @@ public final class Paint extends Tab {
 	private int initializePagePens(
 			final ControlPaint _controlPaint, 
 			final int _x, final boolean _paint,
-			final ControlTabPainting _cp,
+			final CTabPainting _cp,
 			final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus) {
         final Dimension sizeIT = new Dimension(550, 550);
@@ -517,7 +519,7 @@ public final class Paint extends Tab {
 	 * @return the new position.
 	 */
     private int initializePageColors(final int _x, final boolean _paint, 
-    		final ControlTabPainting _cPaint,
+    		final CTabPainting _cPaint,
     		final MenuListener _ml,
     		final CPaintStatus _controlPaintStatus) {
     	
@@ -711,7 +713,7 @@ public final class Paint extends Tab {
      * @return the new x coordinate
 	 */
 	private int initializeZoom(final int _x, final boolean _paint, 
-			final ControlTabPainting _controlTabPaint,
+			final CTabPainting _controlTabPaint,
 			final CPaintStatus _controlPaintStatus) {
 
 		
@@ -764,7 +766,7 @@ public final class Paint extends Tab {
      * @return the new x coordinate
 	 */
 	private int initializeFileOperations(final int _x, final boolean _paint,
-			final ControlTabPainting _controlTabPaint, 
+			final CTabPainting _controlTabPaint, 
 			final CPaintStatus _controlPaintStatus) {
 
 		
@@ -874,7 +876,7 @@ public final class Paint extends Tab {
 	 * add pens .
 	 */
 	private void addPens(final ControlPaint _controlPaint, 
-			final ControlTabPainting _cp,
+			final CTabPainting _cp,
 			final CPaintStatus _controlPaintStatus) {
 
 

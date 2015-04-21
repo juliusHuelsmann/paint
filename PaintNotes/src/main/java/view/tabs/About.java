@@ -3,7 +3,7 @@ package view.tabs;
 
 //import declarations
 import javax.swing.JTextArea;
-import control.tabs.CAbout;
+import control.tabs.CTabAbout;
 import view.util.Item1Button;
 import model.settings.Constants;
 import model.settings.ViewSettings;
@@ -26,7 +26,7 @@ public final class About extends Tab {
 	 * MouseMotionListener.
 	 * @param _controlTabAbout instance of controller class for this view item
 	 */
-	public About(final CAbout _controlTabAbout) {
+	public About(final CTabAbout _controlTabAbout) {
 		
 		//initialize JPanel and alter settings
 		super(0);
@@ -34,7 +34,7 @@ public final class About extends Tab {
 		super.setOpaque(false);
 
 		jta_about = new JTextArea("Paint Program maintained by "
-				+ "Julius Hülsmann.\n\n"
+				+ "Julius Hï¿½lsmann.\n\n"
 				+ "Visit https://github.com/juliusHuelsmann/paint");
 		jta_about.setFocusable(false);
 		jta_about.setBorder(null);

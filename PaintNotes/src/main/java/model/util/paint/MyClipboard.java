@@ -103,11 +103,12 @@ public final class MyClipboard implements ClipboardOwner {
     
     /**
      * copy po writing.
+     * @param _picture the picture.
      * @param _lsPoSelected the poWriting
      * @param _i its image.
      */
     public void copyPaintObjects(
-    		Picture _picture,
+    		final Picture _picture,
     		final SecureList<PaintObject> _lsPoSelected, 
             final Image _i) {
 
@@ -130,7 +131,8 @@ public final class MyClipboard implements ClipboardOwner {
             PaintObject po = _lsPoSelected.getItem();
             if (po instanceof PaintObjectImage) {
                 PaintObjectImage poi = (PaintObjectImage) po;
-                PaintObjectImage poi_new = _picture.createPOI(poi.getSnapshot());
+                PaintObjectImage poi_new = _picture.createPOI(
+                		poi.getSnapshot());
 
                 ls_new.insertBehind(poi_new);
                 

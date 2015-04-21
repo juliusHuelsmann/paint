@@ -144,8 +144,12 @@ public final class Utils {
         } catch (IOException e) {
         	
         	if (!_path.contains(Settings.ALTERNATIVE_FILE_START)) {
-        		Status.getLogger().severe("other location used for loading images. May be due to an error.");
-        		return normalResizeImage(_width, _height, Settings.ALTERNATIVE_FILE_START + _path);
+        		Status.getLogger().severe(
+        				"other location used for loading images."
+        				+ " May be due to an error.");
+        		return normalResizeImage(
+        				_width, _height, 
+        				Settings.ALTERNATIVE_FILE_START + _path);
         	} else {
 
         		System.out.println(_path);
@@ -443,8 +447,10 @@ public final class Utils {
      * @return _g
      */
     public static BufferedImage getRastarImage(final BufferedImage _g,
-    		final int _x_paintingLocation, final int _y_paintingLocation,
-    		final int _width_page, final int _height_page) {
+    		final int _x_paintingLocation, 
+    		final int _y_paintingLocation,
+    		final int _width_page, 
+    		final int _height_page) {
         
         //the start and end values of the image rectangle which has
         //to be printed.
@@ -506,14 +512,6 @@ public final class Utils {
         } else {
            distancePoints = 2 + 1;
         }
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         

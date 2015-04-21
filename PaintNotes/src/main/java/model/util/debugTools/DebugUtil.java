@@ -16,21 +16,55 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import model.settings.Status;
+
+
+
+/**
+ * Utility class for debug purpose.
+ * Contains the method for performing a graphical-user-interface-elements-check
+ * on the code. 
+ * This revealed the solution of an error (comparison method violates general 
+ * constraints) which was thrown only by the official java runtime environment.
+ * 
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
 public class DebugUtil {
     
     /*
      * Utility tests for checking whether program works properly.
      */
 
+	
+	/**
+	 * Debug values which indicate whether the check - method displays the
+	 * results of the check inside the console or whether an image is painted
+	 * that displays the element - tree.
+	 */
     public static final byte 
     CHECK_OP_CONSOLE = 0,
     CHECK_OP_IMAGE = 1;
     
-    public final static Dimension d_item = new Dimension(70, 10);
-    public final static Dimension d_distance = new Dimension(12, 2);
-    /*
-     * Starts a size-component-check and prints an image
-     * @param _rootComponent
+    
+    /**
+     * The dimension of one item in the picture (only necessary if the specified
+     * operation is the CHECK_OP_IMAGE operation).
+     */
+    public static final Dimension d_item = new Dimension(70, 10);
+    
+    /**
+     * The distance of two items in the picture (only necessary if the specified
+     * operation is the CHECK_OP_IMAGE operation).
+     */
+    public static final Dimension d_distance = new Dimension(12, 2);
+   
+    
+    /**
+     * Starts a size-component-check and prints an image.
+     * @param _rootComponent	the root component (the first level which 
+     * 							contains all the sub-elements).
+     * @param _operation 		the currently specified operation
      */
 	public static void performCheckComponents(
 			final Component _rootComponent,
@@ -80,6 +114,10 @@ public class DebugUtil {
 				e.printStackTrace();
 			}
 		
+			break;
+		default:
+			Status.getLogger().warning("Debug tool: unknown debug operator:"
+					+ _operation);
 			break;
 		}
 	}

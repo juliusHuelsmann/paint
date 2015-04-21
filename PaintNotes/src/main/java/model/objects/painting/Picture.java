@@ -584,9 +584,18 @@ public final class Picture implements Serializable {
 		/**
 		 * Stretch factor by width and height.
 		 */
-		final double factorW = 1.0 * Status.getImageSize().width
-				/ Status.getImageShowSize().width, factorH = 1.0
-				* Status.getImageSize().width / Status.getImageShowSize().width;
+		final double factorW, factorH;
+		if (_final) {
+			factorW = 1;
+			factorH = 1;
+		} else {
+			factorW = 1.0 * Status.getImageSize().width
+					/ Status.getImageShowSize().width;
+			factorH = 1.0 * Status.getImageSize().width 
+					/ Status.getImageShowSize().width;
+
+		}
+		
 		/**
 		 * The location of the page end needed for checking roughly whether a
 		 * paintObject may be inside the repaint rectangle.

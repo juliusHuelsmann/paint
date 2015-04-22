@@ -126,8 +126,12 @@ public class ContorlPicture implements PaintListener {
 
 			
 			bi_background = new BufferedImage(
-					Math.max(ViewSettings.getView_bounds_page().getSize().width, 1),
-					Math.max(ViewSettings.getView_bounds_page().getSize().height, 1),
+					Math.max(
+							ViewSettings.getView_bounds_page().getSize().width,
+							1),
+					Math.max(
+							ViewSettings.getView_bounds_page().getSize().height,
+							1),
 					BufferedImage.TYPE_INT_ARGB);
 			
 			
@@ -139,8 +143,10 @@ public class ContorlPicture implements PaintListener {
 					bi_background, 
 					-getPaintLabel().getLocation().x, 
 					-getPaintLabel().getLocation().y, 
-					-getPaintLabel().getLocation().x + getPaintLabel().getWidth(), 
-					-getPaintLabel().getLocation().y + getPaintLabel().getHeight(),
+					-getPaintLabel().getLocation().x
+					+ getPaintLabel().getWidth(), 
+					-getPaintLabel().getLocation().y 
+					+ getPaintLabel().getHeight(),
 					0, 0);
 			getPage().getJlbl_background2().setIcon(
 					new ImageIcon(bi_background));  

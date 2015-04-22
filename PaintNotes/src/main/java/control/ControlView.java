@@ -274,7 +274,7 @@ public class ControlView implements ActionListener, ActivityListener, MouseListe
                 (int) ViewSettings.getView_bounds_page().getHeight());
 	}
 
-	public void activityOccurred(MouseEvent _event) {
+	public void activityOccurred(final MouseEvent _event) {
 
 		ViewSettings.setSize_jframe(view.getSize());
 		sizeChanged();

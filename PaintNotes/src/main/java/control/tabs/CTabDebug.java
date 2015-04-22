@@ -91,8 +91,10 @@ public final class CTabDebug implements ActionListener {
     	                			cp.getControlPaintSelection(),
     	                			cp.getcTabSelection(),
     	                			cp.getView().getTabs().getTab_debug(),
-    	                			cp.getView().getPage().getJlbl_painting().getLocation().x,
-    	                			cp.getView().getPage().getJlbl_painting().getLocation().y);
+    	                			cp.getView().getPage().getJlbl_painting()
+    	                			.getLocation().x,
+    	                			cp.getView().getPage().getJlbl_painting()
+    	                			.getLocation().y);
     	                    getControlPicture().releaseSelected();
 
 
@@ -100,12 +102,15 @@ public final class CTabDebug implements ActionListener {
     	                    Status.setIndexOperation(
     	                            Constants.CONTROL_PAINTING_INDEX_MOVE);
     	                    
-    	                    //decativate other menuitems and activate the current one
+    	                    //decativate other menuitems and activate the 
+    	                    //current one
     	                    //(move)
     	                    cp.getPicture().createSelected();
     	                    getPaintObjects().deactivate();
-    	                    cp.getPicture().insertIntoSelected(po_cu, cp.getView().getTabs().getTab_debug());
-    	                    new PictureOverview(getPaintObjects()).remove(po_cu);
+    	                    cp.getPicture().insertIntoSelected(po_cu, 
+    	                    		cp.getView().getTabs().getTab_debug());
+    	                    new PictureOverview(getPaintObjects()).remove(
+    	                    		po_cu);
     	                    cp.getPicture().getLs_po_sortedByX().remove(
     	                    		SecureList.ID_NO_PREDECESSOR);
     	                    

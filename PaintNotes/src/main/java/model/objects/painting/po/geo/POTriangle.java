@@ -64,7 +64,8 @@ public class POTriangle extends POInsertion {
 	 * @param _elementId the id of the element.
 	 * @param _pen the pen which is painted
 	 */
-	public POTriangle(final int _elementId, final Pen _pen, final Picture _pic) {
+	public POTriangle(final int _elementId, final Pen _pen, 
+			final Picture _pic) {
 		
 	    //call super constructor
 	    super(_elementId, _pen, _pic);

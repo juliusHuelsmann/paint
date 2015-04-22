@@ -3,27 +3,18 @@ package view;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Panel;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Window;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.Util;
-import model.util.debugTools.DebugUtil;
 import model.util.paint.Utils;
 import view.forms.Loading;
 import view.forms.Message;
@@ -190,7 +181,7 @@ import control.util.WindowMover;
          */
         super.add(new Message());
         
-        super.add(tabs);// 17121
+        super.add(tabs);
         super.add(page);
 
         tabs.setVisible(true);
@@ -214,25 +205,9 @@ import control.util.WindowMover;
 	
 
 
-	@Override
-	public void setBounds(int _x, int _y, int _width, int _height) {
-//		System.out.println(_x + ".." + _y + ".." + _width + ".." + _height);
-		super.setBounds(_x, _y, _width, _height);
-	}
-
-	@Override
-	public void setBounds(Rectangle _r) {
-//		System.out.println(_r.x + ".." + _r.y + ".." + _r.width + ".." + _r.height);
-		super.setBounds(_r);
-	}
-    @Override
-	public void setLocation(int _x, int _y) {
-//		System.out.println(_x + "d..d" + _y);
-		super.setLocation(_x, _y);
-	}
 
     @Override
-	public void setLocation(Point _pnt) {
+	public void setLocation(final Point _pnt) {
     	int x = _pnt.x;
     	int y = _pnt.y;
 //		System.out.println(x + "d..d" + y);
@@ -559,7 +534,7 @@ import control.util.WindowMover;
         if (loading != null) {
 
             loading.setSize(getWidth() / 3, getHeight() / 3);
-            loading.setLocation(getWidth() /3, getHeight() / 3);
+            loading.setLocation(getWidth() / 3, getHeight() / 3);
         }
         
         //initialize tabs
@@ -606,14 +581,21 @@ import control.util.WindowMover;
 	}
 	
 	
-	public void setSize(int _width, int _height) {
+	/**
+	 * Method for setting size of view and its content.
+	 * 
+	 * @param _width the widht
+	 * @param _height the height
+	 */
+	public void setSize(final int _width, final int _height) {
 		
 		ViewSettings.setSize_jframe(
 				new Dimension(_width, _height));
 		
-		//this is done because viewsettings deceides whether to accept _width and
+		//this is done because viewSettings decides whether to accept _width and
 		//_height or not.
-		super.setSize(ViewSettings.getSize_jframe().width, ViewSettings.getSize_jframe().height);
+		super.setSize(ViewSettings.getSize_jframe().width, 
+				ViewSettings.getSize_jframe().height);
 	}
 	
     
@@ -649,12 +631,12 @@ import control.util.WindowMover;
 		return tabs;
 	}
 
+	
+	/**
+	 * @return the Loading.
+	 */
 	public Loading getLoading() {
 		return loading;
-	}
-
-	public void setLoading(Loading loading) {
-		this.loading = loading;
 	}
 
 }

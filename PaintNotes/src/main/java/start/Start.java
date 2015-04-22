@@ -159,12 +159,14 @@ public final class Start {
     	        
 
         		double time1 = System.currentTimeMillis();
-        		Status.getLogger().warning("Took "+ (time1 - time0) + "ms for startup");
+        		Status.getLogger().warning("Took " 
+        		+ (time1 - time0) + "ms for startup");
         		
         	} else {
 
             	//print case message
-                Status.getLogger().info("start with parameters; alter images!\n\n");
+                Status.getLogger().info(
+                		"start with parameters; alter images!\n\n");
                 
                 //go through array of Strings
                 for (int currPath = 0; currPath < _args.length; currPath++) {

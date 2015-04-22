@@ -299,7 +299,7 @@ import view.util.mega.MButton;
 				- ViewSettings.VIEW_SIZE_SP
 				- ViewSettings.DISTANCE_TO_WINDOW);
         sp_lr.setSize(ViewSettings.getSizeJFrame().width
-        		+ sp_ub.getWidth() * 1- ViewSettings.DISTANCE_TO_WINDOW * 2, 
+        		+ sp_ub.getWidth() * 1 - ViewSettings.DISTANCE_TO_WINDOW * 2, 
                 ViewSettings.VIEW_SIZE_SP
                 - ViewSettings.DISTANCE_TO_WINDOW);
 
@@ -320,8 +320,10 @@ import view.util.mega.MButton;
         		(int) jlbl_painting.getLocation().getY(), 
         		getWidth() - 1, getHeight() - 1);
 		sp_ub.setLocation(ViewSettings.getSizeJFrame().width 
-				- sp_ub.getWidth() - ViewSettings.DISTANCE_TO_WINDOW, ViewSettings.VIEW_SIZE_SP);
-		sp_lr.setLocation(ViewSettings.DISTANCE_TO_WINDOW, ViewSettings.getSizeJFrame().height 
+				- sp_ub.getWidth() - ViewSettings.DISTANCE_TO_WINDOW,
+				ViewSettings.VIEW_SIZE_SP);
+		sp_lr.setLocation(ViewSettings.DISTANCE_TO_WINDOW, 
+				ViewSettings.getSizeJFrame().height 
 				- sp_lr.getHeight() - ViewSettings.DISTANCE_TO_WINDOW);
             	
 

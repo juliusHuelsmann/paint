@@ -33,7 +33,12 @@ import view.tabs.Paint;
  */
 public final class CPaintStatus implements MouseListener {
 	
+	
+	/**
+	 * instance of the Paint controller class.
+	 */
 	private ControlPaint controlPaint;
+	
 	/**
 	 * Constructor: initializes startPerfrom (which indicates the listeners 
 	 * to not perform an action until necessary variables have been set.
@@ -400,8 +405,10 @@ public final class CPaintStatus implements MouseListener {
                     			controlPaint.getControlPaintSelection(),
                     			controlPaint.getcTabSelection(),
                     			controlPaint.getView().getTabs().getTab_debug(),
-                    			controlPaint.getView().getPage().getJlbl_painting().getLocation().x,
-                    			controlPaint.getView().getPage().getJlbl_painting().getLocation().y);
+                    			controlPaint.getView().getPage()
+                    			.getJlbl_painting().getLocation().x,
+                    			controlPaint.getView().getPage()
+                    			.getJlbl_painting().getLocation().y);
                         getControlPicture().releaseSelected();
                         getPage().removeButtons();
                     }
@@ -500,7 +507,8 @@ public final class CPaintStatus implements MouseListener {
                         	for (int x = 0; x < bi_erase.getWidth(); x++) {
                             
                         		if (y == 0 || y == bi_erase.getHeight() - 1
-                        				|| x == 0 || x == bi_erase.getWidth() - 1) {
+                        				|| x == 0 
+                        				|| x == bi_erase.getWidth() - 1) {
                             		bi_erase.setRGB(x, y, Color.black.getRGB());
                         		} else {
 

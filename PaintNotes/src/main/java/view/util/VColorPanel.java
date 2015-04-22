@@ -11,8 +11,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
-
-import start.test.BufferedViewer;
 import view.util.mega.MButton;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
@@ -305,10 +303,10 @@ import control.util.CColorPanel;
 
         MLabel jlbl_pickColor = new MLabel();
         //width = #px * #differentFields * #sizePX / #distance
-        int newWidth = 256 * 4 * 2/ abstand2;
+        int newWidth = 256 * 4 * 2 / abstand2;
         BufferedImage bi = new BufferedImage(
         		newWidth,
-        		itemsInRow * 4, 
+        		itemsInRow * 4,
         		BufferedImage.TYPE_INT_RGB);
         jlbl_pickColor.setSize(bi.getWidth(), bi.getHeight());
         /*
@@ -324,7 +322,7 @@ import control.util.CColorPanel;
                     tempGb = r;
                 }
                 int y = (currentItem % itemsInRow) * 2;
-                int x = (int)(currentItem / itemsInRow) * 2;
+                int x = (int) (currentItem / itemsInRow) * 2;
                 bi.setRGB(x, y, new Color(r, tempGb, tempGb).getRGB());
                 bi.setRGB(x, y + 1, new Color(r, tempGb, tempGb).getRGB());
                 bi.setRGB(x + 1, y, new Color(r, tempGb, tempGb).getRGB());
@@ -345,7 +343,7 @@ import control.util.CColorPanel;
                 }
                 int rgb = new Color(r, tempGb, 0).getRGB();
                 int y = (currentItem % itemsInRow) * 2;
-                int x = (int)(currentItem / itemsInRow) * 2;
+                int x = (int) (currentItem / itemsInRow) * 2;
                 bi.setRGB(x, y, rgb);
                 bi.setRGB(x, y + 1, rgb);
                 bi.setRGB(x + 1, y, rgb);
@@ -364,7 +362,7 @@ import control.util.CColorPanel;
 
                 int rgb = new Color(tempi, r, 0).getRGB();
                 int y = (currentItem % itemsInRow) * 2;
-                int x = (int)(currentItem / itemsInRow) * 2;
+                int x = (int) (currentItem / itemsInRow) * 2;
                 bi.setRGB(x, y, rgb);
                 bi.setRGB(x, y + 1, rgb);
                 bi.setRGB(x + 1, y, rgb);
@@ -387,7 +385,7 @@ import control.util.CColorPanel;
 
                 int rgb = new Color(0, r, tempGb).getRGB();
                 int y = (currentItem % itemsInRow) * 2;
-                int x = (int)(currentItem / itemsInRow) * 2;
+                int x = (int) (currentItem / itemsInRow) * 2;
                 bi.setRGB(x, y, rgb);
                 bi.setRGB(x, y + 1, rgb);
                 bi.setRGB(x + 1, y, rgb);
@@ -406,7 +404,7 @@ import control.util.CColorPanel;
                 }
                 int rgb = new Color(0, r, tempGb).getRGB();
                 int y = (itemsInRow + currentItem % itemsInRow) * 2;
-                int x = (int)(currentItem / itemsInRow) * 2;
+                int x = (int) (currentItem / itemsInRow) * 2;
                 bi.setRGB(x, y, rgb);
                 bi.setRGB(x, y + 1, rgb);
                 bi.setRGB(x + 1, y, rgb);
@@ -425,7 +423,7 @@ import control.util.CColorPanel;
                 }
                 int rgb = new Color(0, tempi, r).getRGB();
                 int y = (itemsInRow + currentItem % itemsInRow) * 2;
-                int x = (int)(currentItem / itemsInRow) * 2;
+                int x = (int) (currentItem / itemsInRow) * 2;
                 bi.setRGB(x, y, rgb);
                 bi.setRGB(x, y + 1, rgb);
                 bi.setRGB(x + 1, y, rgb);
@@ -447,7 +445,7 @@ import control.util.CColorPanel;
                 }
                 int rgb = new Color(tempGb, 0, r).getRGB();
                 int y = (itemsInRow + currentItem % itemsInRow) * 2;
-                int x = (int)(currentItem / itemsInRow) * 2;
+                int x = (int) (currentItem / itemsInRow) * 2;
                 bi.setRGB(x, y, rgb);
                 bi.setRGB(x, y + 1, rgb);
                 bi.setRGB(x + 1, y, rgb);
@@ -465,7 +463,7 @@ import control.util.CColorPanel;
                 }
                 int rgb = new Color(r, 0, tempi).getRGB();
                 int y = (itemsInRow + currentItem % itemsInRow) * 2;
-                int x = (int)(currentItem / itemsInRow) * 2;
+                int x = (int) (currentItem / itemsInRow) * 2;
                 bi.setRGB(x, y, rgb);
                 bi.setRGB(x, y + 1, rgb);
                 bi.setRGB(x + 1, y, rgb);

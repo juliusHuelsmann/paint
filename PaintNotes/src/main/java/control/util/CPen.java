@@ -55,7 +55,11 @@ public class CPen implements ChangeListener, MouseListener {
 		this.cps = _cps;
 	}
 
-	public void stateChanged(final ChangeEvent _event) {
+	
+	/**
+	 * 
+	 */
+	public final void stateChanged(final ChangeEvent _event) {
 
 		if (_event.getSource() instanceof JSlider) {
 
@@ -108,8 +112,8 @@ public class CPen implements ChangeListener, MouseListener {
                         _event.getSource()).wrapObject();
                 
                 //set the image of the current pen, close the menu and
-                //reset the last open menu; thus no menu has to be closed the next
-                //time another menu is opened
+                //reset the last open menu; thus no menu has to be closed the 
+                //next time another menu is opened
                 if (sa.getPenSelection() == 1) {
                     
                     paint.getIt_stift1().setIcon(sa.getImagePath());

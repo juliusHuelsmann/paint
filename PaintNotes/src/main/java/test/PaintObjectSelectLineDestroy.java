@@ -1716,7 +1716,8 @@ public class PaintObjectSelectLineDestroy extends TestCase {
   	+ "			     *	\n"
   	+ "			     1 \n\n");
   	r = new Rectangle(C50, C50, C10, C10);
-  	PaintObjectWriting pow = new PaintObjectWriting(null, 0, new Pencil(1, 1, Color.black));
+  	PaintObjectWriting pow = new PaintObjectWriting(null, 0, 
+  			new Pencil(1, 1, Color.black));
   	pow.addPoint(new DPoint(C55, C65));
   	pow.addPoint(new DPoint(C55, C49));
   	result = pow.separate(r);

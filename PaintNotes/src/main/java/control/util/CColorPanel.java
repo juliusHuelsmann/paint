@@ -15,7 +15,6 @@ import javax.swing.border.LineBorder;
 
 import model.settings.Error;
 import view.util.VColorPanel;
-import view.util.mega.MPanel;
 
 /**
  * singleton class which handles the ActionEvents of ColorPanel.
@@ -217,7 +216,11 @@ MouseMotionListener {
      * The bufferedImage which contains the colors.
      */
     private BufferedImage bi_colors;
-	public void setBufferedImage(final BufferedImage _bi) {
+    
+    /**
+     * @param _bi the BufferedImage to set.
+     */
+	public final void setBufferedImage(final BufferedImage _bi) {
 		this.bi_colors = _bi;
 	}
 }

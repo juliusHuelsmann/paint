@@ -2,38 +2,28 @@ package model.util;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.IllegalComponentStateException;
 import java.awt.Image;
-import java.awt.Panel;
 import java.awt.Point;
 import java.awt.PrintJob;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.Savepoint;
-import java.util.Random;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
@@ -50,7 +40,7 @@ import model.util.adt.list.List;
  */
 public final class Util {
 
-	public static String EXECUTION_SUCCESS = "Success",
+	public static final String EXECUTION_SUCCESS = "Success",
 			EXECUTION_FAILED = "Failure";
 	
     
@@ -71,12 +61,13 @@ public final class Util {
 		int result = JOptionPane.showConfirmDialog(
 				null, 
 				"An error occured while executing paint.\n" 
-				+ "This error will not stop the program from working properly.\n"
-				+ "\n"
+				+ "This error will not stop the program from working properly."
+				+ "\n\n"
 				+ "If you agree, the error message (which contains no "
 				+ "user-specific information\n"
 				+ "will be used for eliminating the bug.  \n"
-				+ "If the error is not caused by this program, please select \"don't aggree \""
+				+ "If the error is not caused by this program, please select "
+				+ "\"don't aggree \""
 				+ "\n\nError message:\n"
 				+ _additionalMessage + ".\n"
 				+ "\n" 
@@ -96,10 +87,10 @@ public final class Util {
     /**
      * Writes a stack trace to string.
      * 
-     * @param _t
-     * @return
+     * @param _t the exception
+     * @return the stackTrace.
      */
-    public static String stackTraceToString(Exception _t) {
+    public static String stackTraceToString(final Exception _t) {
     	StringWriter sw = new StringWriter();
     	PrintWriter pw = new PrintWriter(sw);
     	_t.printStackTrace(pw);
@@ -172,8 +163,6 @@ public final class Util {
     /**
      * Read an image from file and resize it afterwards.
      * 
-     * @param _bi 		The image's path
-     * 
      * @param _width	The new width of the image.
      * 
      * @param _height	The new height of the image.
@@ -181,7 +170,7 @@ public final class Util {
      * @return			The resized BufferedImage.
      */
     public static BufferedImage resize(
-    		String _path, int _width, int _height) { 
+    		final String _path, final int _width, final int _height) { 
 	   
     	BufferedImage img_scaled;
 		try {
@@ -190,8 +179,10 @@ public final class Util {
 		} catch (IOException e) {
 
         	if (!_path.contains(Settings.ALTERNATIVE_FILE_START)) {
-        		Status.getLogger().severe("other location used for loading images. May be due to an error.");
-        		return resize(Settings.ALTERNATIVE_FILE_START + _path, _width, _height);
+        		Status.getLogger().severe("other location used for "
+        				+ "loading images. May be due to an error.");
+        		return resize(Settings.ALTERNATIVE_FILE_START + _path, 
+        				_width, _height);
         	} else {
 
         		System.out.println(_path);
@@ -255,7 +246,7 @@ public final class Util {
      * @param _path the path of the text file
      * @return list of lines in text file
      */
-    public static List<String> loadTextFile(String _path) {
+    public static List<String> loadTextFile(final String _path) {
 
     	List<String> ls_strings = new List<String>();
         try {
@@ -409,18 +400,19 @@ public final class Util {
 
     /**
      * Apply stroke on background.
-     * @param jlbl_stroke the background carrying item.
+     * @param _jlbl_stroke the background carrying item.
+     * @return the stroked image.
      */
-	public static BufferedImage getStroke(JLabel jlbl_stroke) {
+	public static BufferedImage getStroke(final JLabel _jlbl_stroke) {
 		
 		
 		final int strokeDistance = 10;
-		if (jlbl_stroke.getWidth() > 0 
-				&& jlbl_stroke.getHeight() > 0
+		if (_jlbl_stroke.getWidth() > 0 
+				&& _jlbl_stroke.getHeight() > 0
 //				&& jlbl_stroke.isShowing()
 				) {
-			BufferedImage bi_stroke = new BufferedImage(jlbl_stroke.getWidth(), 
-	        		jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			BufferedImage bi_stroke = new BufferedImage(_jlbl_stroke.getWidth(),
+	        		_jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	        
 	        for (int x = 0; x < bi_stroke.getWidth(); x++) {
 
@@ -430,8 +422,8 @@ public final class Util {
 //	            	if ( (_addX + x + y +  _addY) % 20 == 0) {
 	            	
 	            	try {
-	            		if ((x + jlbl_stroke.getLocationOnScreen().x
-		            			+ y + jlbl_stroke.getLocationOnScreen().y) 
+	            		if ((x + _jlbl_stroke.getLocationOnScreen().x
+		            			+ y + _jlbl_stroke.getLocationOnScreen().y) 
 		            			% strokeDistance == 0) {
 	            			final int clr = 10;
 		                	bi_stroke.setRGB(x, y, 
@@ -449,7 +441,7 @@ public final class Util {
 	            
 	            }	
 	        }
-	        jlbl_stroke.setIcon(new ImageIcon(bi_stroke));
+	        _jlbl_stroke.setIcon(new ImageIcon(bi_stroke));
 			return bi_stroke;
 		}
 		return null;
@@ -465,12 +457,15 @@ public final class Util {
 	
 	  /**
      * Apply stroke on background.
-     * @param jlbl_stroke the background carrying item.
+     * @param _jlbl_stroke the background carrying item.
+     * @return the stroked image.
      */
-	public static BufferedImage getStrokeMove(BufferedImage _bi, JLabel jlbl_stroke, int _dX, int _dY) {
+	public static BufferedImage getStrokeMove(
+			final BufferedImage _bi, final JLabel _jlbl_stroke, 
+			final int _dX, final int _dY) {
 		
-		if (_dY >= _bi.getHeight() || _dX >= _bi.getWidth()){
-			return getStroke(jlbl_stroke);
+		if (_dY >= _bi.getHeight() || _dX >= _bi.getWidth()) {
+			return getStroke(_jlbl_stroke);
 		} 
 		
 		
@@ -479,10 +474,10 @@ public final class Util {
 				&& _bi.getHeight() > 0) {
 			
 
-			if (Math.abs(_dX) > _bi.getWidth() / 2 || Math.abs(_dY) > _bi.getHeight() / 2) {
+			if (Math.abs(_dX) > _bi.getWidth() / 2
+					|| Math.abs(_dY) > _bi.getHeight() / 2) {
 
-				_bi = getStroke(jlbl_stroke);
-				return _bi;
+				return getStroke(_jlbl_stroke);
 			} else {
 				Rectangle rec_maintainStart = new Rectangle();
 				Rectangle rec_maintainDest = new Rectangle();
@@ -537,24 +532,38 @@ public final class Util {
 				rec_maintainStart.height = rec_maintainDest.height;
 
 		        
-				int[] bt = new int[rec_maintainDest.width * rec_maintainDest.height];
-				bt = _bi.getRGB(rec_maintainStart.x, rec_maintainStart.y, rec_maintainStart.width, rec_maintainStart.height, bt, 1, rec_maintainStart.width - 1);
+				int[] bt = new int[rec_maintainDest.width 
+				                   * rec_maintainDest.height];
+				bt = _bi.getRGB(rec_maintainStart.x, rec_maintainStart.y, 
+						rec_maintainStart.width, rec_maintainStart.height, 
+						bt, 1, rec_maintainStart.width - 1);
 				
-				_bi.setRGB(rec_maintainDest.x, rec_maintainDest.y,rec_maintainDest.width, rec_maintainDest.height, bt, 1, rec_maintainDest.width - 1);
+				_bi.setRGB(rec_maintainDest.x,
+						rec_maintainDest.y,
+						rec_maintainDest.width, 
+						rec_maintainDest.height, 
+						bt, 
+						1, 
+						rec_maintainDest.width - 1);
 
 
 		        for (int x = rec_new1.x; x < rec_new1.x + rec_new1.width; x++) {
-		            for (int y = rec_new1.y; y < rec_new1.y + rec_new1.height; y++) {
+		            for (int y = rec_new1.y;
+		            		y < rec_new1.y + rec_new1.height; y++) {
 		            	
-		            	try{
-		            		if ( (x + jlbl_stroke.getLocationOnScreen().x
-			            			+ y + jlbl_stroke.getLocationOnScreen().y) 
+		            	try {
+		            		if ((x + _jlbl_stroke.getLocationOnScreen().x
+			            			+ y + _jlbl_stroke.getLocationOnScreen().y) 
 			            			% strokeDistance == 0) {
 
-		            			_bi.setRGB(x, y, new Color(10,10,10, 10).getRGB());
+		            			final int rgba = 10;
+		            			_bi.setRGB(x, y, 
+		            					new Color(rgba, rgba, rgba, 
+		            							rgba).getRGB());
 			            	} else {
 
-			            		_bi.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+			            		_bi.setRGB(x, y, 
+			            				new Color(0, 0, 0, 0).getRGB());
 			            	}
 		            	} catch (IllegalComponentStateException e) {
 		            		
@@ -565,17 +574,22 @@ public final class Util {
 		            }	
 		        }
 		        for (int x = rec_new2.x; x < rec_new2.x + rec_new2.width; x++) {
-		            for (int y = rec_new2.y; y < rec_new2.y + rec_new2.height; y++) {
+		            for (int y = rec_new2.y;
+		            		y < rec_new2.y + rec_new2.height; y++) {
 		            	
-		            	try{
-		            		if ( (x + jlbl_stroke.getLocationOnScreen().x
-			            			+ y + jlbl_stroke.getLocationOnScreen().y) 
+		            	try {
+		            		if ((x + _jlbl_stroke.getLocationOnScreen().x
+			            			+ y + _jlbl_stroke.getLocationOnScreen().y) 
 			            			% strokeDistance == 0) {
 
-		            			_bi.setRGB(x, y, new Color(10,10,10, 10).getRGB());
+		            			final int colorRGB = 10;
+		            			_bi.setRGB(x, y, new Color(colorRGB, colorRGB,
+		            					colorRGB, colorRGB)
+		            			.getRGB());
 			            	} else {
 
-			            		_bi.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());
+			            		_bi.setRGB(x, y, 
+			            				new Color(0, 0, 0, 0).getRGB());
 			            	}
 		            	} catch (IllegalComponentStateException e) {
 		            		
@@ -585,11 +599,11 @@ public final class Util {
 		            	}
 		            }	
 		        }
-		        jlbl_stroke.setIcon(new ImageIcon(_bi));
+		        _jlbl_stroke.setIcon(new ImageIcon(_bi));
 		        return _bi;
 			}
 		}
-		return getStroke(jlbl_stroke);
+		return getStroke(_jlbl_stroke);
 	}   
 	
 	
@@ -605,18 +619,24 @@ public final class Util {
 	
 	/**
      * Apply stroke on background.
-     * @param jlbl_stroke the background carrying item.
+     * @param _jlbl_stroke the background carrying item.
+     * @param _addX
+     * @param _addY
      */
-	public static void getStrokeRec(JLabel jlbl_stroke, int _addX, int _addY) {
+	public static void getStrokeRec(
+			final JLabel _jlbl_stroke, 
+			final int _addX,
+			final int _addY) {
 		
 		
 		final int strokeDistance = 10;
-		if (jlbl_stroke.getWidth() > 0 
-				&& jlbl_stroke.getHeight() > 0
+		if (_jlbl_stroke.getWidth() > 0 
+				&& _jlbl_stroke.getHeight() > 0
 //				&& jlbl_stroke.isShowing()
 				) {
-			BufferedImage bi_stroke = new BufferedImage(jlbl_stroke.getWidth(), 
-	        		jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			BufferedImage bi_stroke = new BufferedImage(
+					_jlbl_stroke.getWidth(),
+	        		_jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	        
 	        for (int x = 0; x < bi_stroke.getWidth(); x++) {
 
@@ -626,12 +646,12 @@ public final class Util {
 //	            	if ( (_addX + x + y +  _addY) % 20 == 0) {
 	            	
 	            	try {
-	            		if ((x + jlbl_stroke.getLocationOnScreen().x
-		            			- y - jlbl_stroke.getLocationOnScreen().y) 
+	            		if ((x + _jlbl_stroke.getLocationOnScreen().x
+		            			- y - _jlbl_stroke.getLocationOnScreen().y) 
 		            			% strokeDistance == 0
-		            			||  (x + jlbl_stroke.getLocationOnScreen().x
+		            			||  (x + _jlbl_stroke.getLocationOnScreen().x
 				            			+ y 
-				            			+ jlbl_stroke.getLocationOnScreen().y) 
+				            			+ _jlbl_stroke.getLocationOnScreen().y) 
 				            			% strokeDistance == 0) {
 
 	            			final int clr = 10;
@@ -650,7 +670,7 @@ public final class Util {
 	            
 	            }	
 	        }
-	        jlbl_stroke.setIcon(new ImageIcon(bi_stroke));
+	        _jlbl_stroke.setIcon(new ImageIcon(bi_stroke));
 		}
 		
 	}
@@ -658,17 +678,18 @@ public final class Util {
 	
 	/**
      * Apply stroke on background.
-     * @param jlbl_stroke the background carrying item.
+     * @param _jlbl_stroke the background carrying item.
      */
-	public static void getScrollStroke(JButton jlbl_stroke) {
+	public static void getScrollStroke(final JButton _jlbl_stroke) {
 		
 		
 		final int strokeDistance = 10;
-		if (jlbl_stroke.getWidth() > 0 
-				&& jlbl_stroke.getHeight() > 0
+		if (_jlbl_stroke.getWidth() > 0 
+				&& _jlbl_stroke.getHeight() > 0
 				) {
-			BufferedImage bi_stroke = new BufferedImage(jlbl_stroke.getWidth(), 
-	        		jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			BufferedImage bi_stroke = new BufferedImage(
+					_jlbl_stroke.getWidth(), 
+	        		_jlbl_stroke.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	        
 	        for (int x = 0; x < bi_stroke.getWidth(); x++) {
 
@@ -678,19 +699,21 @@ public final class Util {
 	            	
 	            	try {
 	            		if (
-	            				(x + jlbl_stroke.getLocationOnScreen().x
-		            			- y - jlbl_stroke.getLocationOnScreen().y) 
+	            				(x + _jlbl_stroke.getLocationOnScreen().x
+		            			- y - _jlbl_stroke.getLocationOnScreen().y) 
 		            			% strokeDistance == 0
 //		            			||  (x + jlbl_stroke.getLocationOnScreen().x
-//				            			+ y + jlbl_stroke.getLocationOnScreen().y) 
+//				            		+ y + jlbl_stroke.getLocationOnScreen().y) 
 //				            			% strokeDistance == 0
 				            			) {
 
 		                	bi_stroke.setRGB(x, y, Color.lightGray.getRGB());
 		            	} else {
 
+		            		final int rb = 255;
+		            		final int g = 250;
 		                	bi_stroke.setRGB(
-		                			x, y, new Color(255, 250, 255).getRGB());
+		                			x, y, new Color(rb, g, rb).getRGB());
 		            	}
 	            	} catch (IllegalComponentStateException e) {
 	            		x = bi_stroke.getWidth();
@@ -699,7 +722,7 @@ public final class Util {
 	            
 	            }	
 	        }
-	        jlbl_stroke.setIcon(new ImageIcon(bi_stroke));
+	        _jlbl_stroke.setIcon(new ImageIcon(bi_stroke));
 		}
 		
 	}
@@ -730,8 +753,9 @@ public final class Util {
 	            	if ((x + y) 
 	            			% strokeDistance == 0) {
 
+	            		final int r = 40, g = 50, alpha = 90;
 	                	bi_stroke.setRGB(x, y,
-	                			new Color(40, 50, 50, 90).getRGB());
+	                			new Color(r, g, g, alpha).getRGB());
 	            	} else {
 
 	                	bi_stroke.setRGB(x, y, new Color(0, 0, 0, 0).getRGB());

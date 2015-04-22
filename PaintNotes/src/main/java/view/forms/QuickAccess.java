@@ -38,7 +38,7 @@ public class QuickAccess extends MPanel {
 	/**
 	 * Constructor: initializes the graphical user interface.
 	 */
-	public QuickAccess(MouseListener _controlQuickAccess) {
+	public QuickAccess(final MouseListener _controlQuickAccess) {
 
 		super();
 		super.setLayout(null);
@@ -134,7 +134,7 @@ public class QuickAccess extends MPanel {
 	/**
 	 * Paint components' background.
 	 */
-	private final void drawCircle() {
+	private void drawCircle() {
 
 		// the bufferedImage for the center circle.
 		BufferedImage bi = new BufferedImage(jlbl_background.getWidth(),
@@ -266,19 +266,15 @@ public class QuickAccess extends MPanel {
 								if (h < bi.getWidth() - w) {
 
 									// left
-									bi.setRGB(
-											w,
-											h,
-											ViewSettings.GENERAL_CLR_BACKGROUND_DARK
-													.getRGB());
+									bi.setRGB(w, h, ViewSettings
+											.GENERAL_CLR_BACKGROUND_DARK
+											.getRGB());
 								} else {
 
 									// bottom
-									bi.setRGB(
-											w,
-											h,
-											ViewSettings.GENERAL_CLR_BACKGROUND_DARK
-													.getRGB());
+									bi.setRGB(w, h, ViewSettings
+											.GENERAL_CLR_BACKGROUND_DARK
+											.getRGB());
 								}
 							} else if (w > bi.getWidth() - h) {
 
@@ -299,9 +295,9 @@ public class QuickAccess extends MPanel {
 			}
 		}
 
-		for (double Xh = 0; Xh < bi.getWidth(); Xh += 0.01) {
+		for (double xxh = 0; xxh < bi.getWidth(); xxh += 0.01) {
 
-			double myY = 1.0 * (bi.getHeight() / 2 - Xh);
+			double myY = 1.0 * (bi.getHeight() / 2 - xxh);
 			// double myXold = 1.0 * (bi.getWidth() / 2 - w);
 			// (bi.getWidth() / 2 - w) = sqrt(y² - (bi.getwi / 2)²)
 			// w = sqrt(y² - (bi.getwi / 2)²) - bi.getwi / 2
@@ -333,10 +329,10 @@ public class QuickAccess extends MPanel {
 						ViewSettings.GENERAL_CLR_BORDER.getRGB());
 		}
 
-		for (double Xh = 0; Xh < bi.getWidth(); Xh += 0.1) {
+		for (double xxh = 0; xxh < bi.getWidth(); xxh += 0.1) {
 
 			double rad2 = bi.getWidth() / 2 - 20;
-			double myY = 1.0 * (bi.getHeight() / 2 - Xh);
+			double myY = 1.0 * (bi.getHeight() / 2 - xxh);
 			double myX1 = Math.sqrt(Math.abs(myY * myY - Math.pow(rad2, 2)
 					- bi.getWidth() / 2));
 

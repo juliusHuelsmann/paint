@@ -62,15 +62,29 @@ public class Item1PenSelection extends MPanel {
 	private String imagePath;
 	
 	
+	/**
+	 * The selected pen id.
+	 */
 	private int pen_selection;
 	
-	public int getPenSelection() {
+	
+	/**
+	 * @return the pen_selection.
+	 */
+	public final int getPenSelection() {
 		return pen_selection;
 	}
 	
+	/**
+	 * The pen.
+	 */
 	private Pen pen;
 	
-	public Pen getPen() {
+
+	/**
+	 * @return the pen.
+	 */
+	public final Pen getPen() {
 		return pen;
 	}
 	/**

@@ -89,8 +89,9 @@ public final class Export extends Tab {
     
     /**
      * Initializes the content for the background.
+     * @param _cex the controller class of the export-tab.
      */
-    public void initialize(CTabExport _cex) {
+    public void initialize(final CTabExport _cex) {
 
         //initialize the content for the background
         initializeColumn1(_cex);    	
@@ -99,8 +100,9 @@ public final class Export extends Tab {
 
     /**
      * Initialize the first column.
+     * @param _cex the controller class of the export-tab.
      */
-    private void initializeColumn1(CTabExport _cex) {
+    private void initializeColumn1(final CTabExport _cex) {
         
         //initialize the first part of the first column containing the 
         //possibility to choose an image background for the export and
@@ -133,8 +135,9 @@ public final class Export extends Tab {
      * Initialize the first part of the first column containing the 
      * possibility to choose an image background for the export and
      * to set its border sizes.
+     * @param _cex the controller class of the export-tab.
      */
-    private void initializeColumn1BG(CTabExport _cex) {
+    private void initializeColumn1BG(final CTabExport _cex) {
 
         jlbl_backgroundTitle = new MLabel("Background:");
         jlbl_backgroundTitle.setBounds(ViewSettings.getDistanceBetweenItems(),
@@ -274,8 +277,9 @@ public final class Export extends Tab {
      * Initializes the second part of the first column which contains
      * the components for changing the displaying of alpha values.
      * Choices: Save pure alpha as alpha value or save it as white pixel.
+     * @param _cex the controller class of the export-tab.
      */
-    private void initializeColumn1Alpha(CTabExport _cex) {
+    private void initializeColumn1Alpha(final CTabExport _cex) {
 
         /*
          * Alpha
@@ -318,8 +322,9 @@ public final class Export extends Tab {
     /**
      * Initializes the second part of the first column which contains
      * the components for changing the export format of the image.
+     * @param _cex the controller class of the export-tab.
      */
-    private void initializeColumn1SaveOptions(CTabExport _cex) {
+    private void initializeColumn1SaveOptions(final CTabExport _cex) {
 
         /*
          * Alpha

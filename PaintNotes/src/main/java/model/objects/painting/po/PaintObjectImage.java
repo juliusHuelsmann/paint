@@ -6,8 +6,6 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.Random;
-
 import model.objects.painting.Picture;
 import model.settings.Error;
 import model.settings.Status;
@@ -51,7 +49,8 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
      * @param _elementId the id of the element
      * @param _bi the bufferedImage which is displayed.
      */
-    public PaintObjectImage(final int _elementId, final BufferedImage _bi, Picture _picture) {
+    public PaintObjectImage(final int _elementId, final BufferedImage _bi, 
+    		final Picture _picture) {
         super(_picture, _elementId);
         this.bi_image = _bi;
         this.pnt_locationOfImage = new Point(0, 0);
@@ -164,14 +163,16 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             
             // these values contain the location of the selection inside 
             // the picture
-            int locXPage = (int) ((_r.x - pnt_locationOfImage.x) * cZoomFactorWidth)  + _x ;
-            int locYPage = (int) ((_r.y - pnt_locationOfImage.y) * cZoomFactorHeight)+ _y ;
+            int locXPage = (int) ((_r.x - pnt_locationOfImage.x) 
+            		* cZoomFactorWidth) + _x;
+            int locYPage = (int) ((_r.y - pnt_locationOfImage.y)
+            		* cZoomFactorHeight) + _y;
             
             
             // these values contain the location of the selection inside the
             // current paint-object-image
-            int locXPOI = (int)(_r.x - pnt_locationOfImage.x);
-            int locYPOI = (int)(_r.y - pnt_locationOfImage.y);
+            int locXPOI = (int) (_r.x - pnt_locationOfImage.x);
+            int locYPOI = (int) (_r.y - pnt_locationOfImage.y);
 
             // adapt the width of the selection to the size of the 
             // paint-object-image.
@@ -209,8 +210,8 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             		_r.width, _r.height, 
             		BufferedImage.TYPE_INT_ARGB);
             
-            // for filling the BufferedImage, the RGB-alpha values are written into
-            // an integer array
+            // for filling the BufferedImage, the RGB-alpha values are written 
+            // into an integer array
             int[] rgbA = new int[_r.height * _r.width];
             rgbA = bi_image.getRGB(
             		locXPOI, locYPOI, 
@@ -228,9 +229,9 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             		rgbA, 0, _r.width);
             
             /*
-             * The Content of the BufferedImage is resized and afterwards printed
-             * into the BufferedImage that displays the currently visible section
-             * of the image.
+             * The Content of the BufferedImage is resized and afterwards 
+             * printed into the BufferedImage that displays the currently 
+             * visible section of the image.
              */
             _g.getGraphics().drawImage(Utils.resizeImageQuick(
                     (int) Math.max(1, (_r.width) * cZoomFactorWidth),
@@ -238,7 +239,7 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
                     bi_section),
                     (int) (locXPage), 
                     (int) (locYPage), 
-                    (int) Math.max(1, (_r.width ) * cZoomFactorWidth),
+                    (int) Math.max(1, (_r.width) * cZoomFactorWidth),
                     (int) Math.max(1, ((_r.height) * cZoomFactorHeight)), null);
         }
         

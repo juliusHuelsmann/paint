@@ -15,7 +15,8 @@ import control.interfaces.ActivityListener;
  */
 public class CTabInsert implements ActivityListener {
 
-	//TODO: isnt it possible to move the entire content the insert-tab -listener?
+	//TODO: isnt it possible to move the entire content the insert-tab -
+	//listener?
 	
 	/**
 	 * 
@@ -35,7 +36,7 @@ public class CTabInsert implements ActivityListener {
 	/**
 	 * 
 	 */
-	public void activityOccurred(final MouseEvent _event) {
+	public final void activityOccurred(final MouseEvent _event) {
 
         if (_event.getSource() instanceof Item2) {
 

@@ -106,7 +106,7 @@ public final class Debug extends Tab implements Observer {
 	 * Constructor: initialize instances of Components and add special 
 	 * MouseMotionListener.
 	 */
-	public Debug(CTabDebug _cps) {
+	public Debug(final CTabDebug _cps) {
 		
 		//initialize JPanel and alter settings
 		super(0);

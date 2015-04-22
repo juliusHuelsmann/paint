@@ -244,17 +244,14 @@ public abstract class PaintObject implements Serializable, Cloneable {
     
     
     /**
-     * 
+     * Clone this paint object.
+     * @return the cloned object
      */
-    public PaintObject clone() {
-    	
-    	
-    	
+    public final PaintObject clone() {
     	
     	try {
 			return (PaintObject) super.clone();
 		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

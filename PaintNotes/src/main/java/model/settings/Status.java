@@ -49,7 +49,13 @@ public final class Status {
 	private static int eraseIndex = ERASE_ALL;
 
 	
-	public static void setControlPaint(ControlPaint _controlPaint) {
+	
+	/**
+	 * Setter method for control paint.
+	 * @param _controlPaint the control paint.
+	 */
+	public static void setControlPaint(
+			final ControlPaint _controlPaint) {
 		if (_controlPaint != null) {
 
 			controlPaint = _controlPaint;
@@ -69,7 +75,12 @@ public final class Status {
 		}
 	}
 	
-	public static void setPicture(Picture _picture) {
+	
+	/**
+	 * setter method for model class picture.
+	 * @param _picture the picture.
+	 */
+	public static void setPicture(final Picture _picture) {
 		if (_picture != null) {
 
 			picture = _picture;
@@ -869,10 +880,10 @@ public final class Status {
 
 
 	/**
-	 * @param eraseRadius the eraseRadius to set
+	 * @param _eraseRadius the eraseRadius to set
 	 */
-	public static void setEraseRadius(int eraseRadius) {
-		Status.eraseRadius = eraseRadius;
+	public static void setEraseRadius(final int _eraseRadius) {
+		Status.eraseRadius = _eraseRadius;
 	}
 
 
@@ -899,7 +910,12 @@ public final class Status {
 	public static synchronized void increaseInitializationFinished() {
 		initializationFinished++;
 	}
-	public static void showMessageDialog(String _message) {
+	
+	/**
+	 * Method for showing dialog.
+	 * @param _message the text message
+	 */
+	public static void showMessageDialog(final String _message) {
 		JOptionPane.showMessageDialog(getView(), _message);
 	}
 	/**
@@ -909,22 +925,35 @@ public final class Status {
 		return eraseIndex;
 	}
 	/**
-	 * @param eraseIndex the eraseIndex to set
+	 * @param _eraseIndex the eraseIndex to set
 	 */
-	public static void setEraseIndex(int eraseIndex) {
-		Status.eraseIndex = eraseIndex;
+	public static void setEraseIndex(final int _eraseIndex) {
+		Status.eraseIndex = _eraseIndex;
 	}
+	
+	
+	/**
+	 * 
+	 * @return the borderRightPercentShow
+	 */
 	public static int getBorderRightPercentShow() {
 		return borderRightPercentShow;
 	}
-	public static void setBorderRightPercentShow(int borderRightPercentShow) {
-		Status.borderRightPercentShow = borderRightPercentShow;
+	
+	/**
+	 * 
+	 * @param _borderRightPercentShow
+	 */
+	public static void setBorderRightPercentShow(
+			final int _borderRightPercentShow) {
+		Status.borderRightPercentShow = _borderRightPercentShow;
 	}
+	
+	/**
+	 * @return the border bottom percent show
+	 */
 	public static int getBorderBottomPercentShow() {
 		return borderBottomPercentShow;
-	}
-	public static void setBorderBottomPercentShow(int borderBottomPercentShow) {
-		Status.borderBottomPercentShow = borderBottomPercentShow;
 	}
 
 }

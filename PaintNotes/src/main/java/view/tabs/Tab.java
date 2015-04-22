@@ -47,6 +47,10 @@ public abstract class Tab extends MPanel {
                 ViewSettings.getView_heightTab());
     }
     
+    
+    /**
+     * call the apply size method.
+     */
     public void applySize() {
     	this.applyMySize();
     }

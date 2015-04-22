@@ -146,7 +146,7 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
 	 * @param _pen the pen which is painted
 	 */
 	public PaintObjectWriting(
-			Picture _pic, final int _elementId, final Pen _pen) {
+			final Picture _pic, final int _elementId, final Pen _pen) {
 		
 	    //call super constructor
 	    super(_elementId, _pen, _pic);
@@ -528,7 +528,7 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
      * 				inside this method (for not double - adding something).
 	 * 
      */
-    public PaintObjectWriting checkPointLink(
+    public final PaintObjectWriting checkPointLink(
     		
     		//the first and the second point between which the selection is
     		//checked
@@ -1032,10 +1032,13 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
     		pow_current = checkPointLink(
     				new DPoint(
     						1.00 * pnt_predecessor.getX() * _pnt_stretch.getX(),
-    						1.00 * pnt_predecessor.getY() * _pnt_stretch.getY()),
+    						1.00 * pnt_predecessor.getY() 
+    						* _pnt_stretch.getY()),
     				new DPoint(
-    						1.00 * ls_point.getItem().getX() * _pnt_stretch.getX(),
-    						1.00 * ls_point.getItem().getY() * _pnt_stretch.getY()),
+    						1.00 * ls_point.getItem().getX()
+    						* _pnt_stretch.getX(),
+    						1.00 * ls_point.getItem().getY() 
+    						* _pnt_stretch.getY()),
     				_r, 
     				_pnt_shiftRectangle, 
     				null, _ls_pow_outside, pow_current);
@@ -1059,8 +1062,10 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
 			List<DPoint> ls = _ls_pow_outside.getItem().getPoints();
 			ls.toFirst();
 			while (!ls.isBehind()) {
-				ls.getItem().setX(1.0 * ls.getItem().getX() / _pnt_stretch.getX());
-				ls.getItem().setY(1.0 * ls.getItem().getY() / _pnt_stretch.getY());
+				ls.getItem().setX(1.0 * ls.getItem().getX() 
+						/ _pnt_stretch.getX());
+				ls.getItem().setY(1.0 * ls.getItem().getY()
+						/ _pnt_stretch.getY());
 				ls.next();
 			}
 			_ls_pow_outside.next();
@@ -1351,7 +1356,7 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
 //        ls_point.toFirst();
 //        DPoint pnt_pred = ls_point.getItem();
 //
-//        //check whether the first point is inside the rectangle and initialize 
+        //check whether the first point is inside the rectangle and initialize 
 //        //a new PaintObject which will contain the first section of the old 
 //        //one
 //        boolean lInside = isInSelectionPoint(
@@ -1374,7 +1379,8 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
 //            } else if (cInside) {
 //                
 //                //calculate borderDPoint
-//                DPoint pnt_border = findIntersection(pnt_pred, pnt_current, _r, 
+//                DPoint pnt_border = findIntersection(
+//    						pnt_pred, pnt_current, _r, 
 //                        _xShift, _yShift);
 //
 //                //add the borderDPoint to the last PaintObject and insert 
@@ -1389,7 +1395,8 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
 //                
 //                //crate new PaintObject and add the borderDPoint to the 
 //                //new PaintObject
-//                pow_current = new PaintObjectWriting(getElementId(), getPen());
+//                pow_current = new PaintObjectWriting(
+//    						getElementId(), getPen());
 //                if (pnt_border != null) {
 //                    pow_current.addPoint(new DPoint(pnt_border));
 //                }
@@ -1439,11 +1446,13 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
 //                
 //
 //                DPoint pnt_border1 = findIntersection(pnt_pred, new DPoint(
-//                        pnt_current.getX() - pnt_pred.getX(), pnt_current.getY() - pnt_pred.getY()),
+//                        pnt_current.getX() - pnt_pred.getX(), 
+//    						pnt_current.getY() - pnt_pred.getY()),
 //                        _r, 
 //                        _xShift, _yShift);
 //                DPoint pnt_border2 = findIntersection(new DPoint(
-//                        pnt_current.getX() - pnt_pred.getX(), pnt_current.getY() - pnt_pred.getY()), pnt_pred,
+//                        pnt_current.getX() - pnt_pred.getX(), 
+//    						pnt_current.getY() - pnt_pred.getY()), pnt_pred,
 //                        _r, 
 //                        _xShift, _yShift);
 //                
@@ -1871,7 +1880,8 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
      * @param _p theDPoint which is to be printed
      * @param _c the color in which the point is to be printed.
      */
-    public static void verifyPnt(final BufferedImage _bi, final DPoint _p, final Color _c) {
+    public static void verifyPnt(final BufferedImage _bi, 
+    		final DPoint _p, final Color _c) {
 
         new Thread() {
             public void run() {

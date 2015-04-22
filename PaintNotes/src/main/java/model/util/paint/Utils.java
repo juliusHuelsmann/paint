@@ -700,11 +700,13 @@ public final class Utils {
                                  _f, newX, newY, RASTAR_COLOR.getRGB());
                            if (newX + 1 < height) {
                                PaintBI.paintScilentPoint(
-                                       _f, newX + 1, newY, RASTAR_COLOR.getRGB());
+                                       _f, newX + 1, newY, 
+                                       RASTAR_COLOR.getRGB());
                            }
                            if (newX + 2 < height) {
                                PaintBI.paintScilentPoint(
-                                       _f, newX + 2, newY, RASTAR_COLOR.getRGB());
+                                       _f, newX + 2, newY,
+                                       RASTAR_COLOR.getRGB());
                            }
                       }
                 }
@@ -960,11 +962,13 @@ public final class Utils {
                            
                            if (newX + 1 < height) {
                                PaintBI.paintScilentPoint(
-                                       _f, newX + 1, newY, RASTAR_COLOR.getRGB());
+                                       _f, newX + 1, newY, RASTAR_COLOR
+                                       .getRGB());
                            }
                            if (newX + 2 < height) {
                                PaintBI.paintScilentPoint(
-                                       _f, newX + 2, newY, RASTAR_COLOR.getRGB());
+                                       _f, newX + 2, newY, RASTAR_COLOR
+                                       .getRGB());
                            }
                       }
                 }
@@ -1202,11 +1206,13 @@ public final class Utils {
                            
                            if (newX + 1 < height) {
                                PaintBI.paintScilentPoint(
-                                       _f, newX + 1, newY, RASTAR_COLOR.getRGB());
+                                       _f, newX + 1, newY, RASTAR_COLOR
+                                       .getRGB());
                            }
                            if (newX + 2 < height) {
                                PaintBI.paintScilentPoint(
-                                       _f, newX + 2, newY, RASTAR_COLOR.getRGB());
+                                       _f, newX + 2, newY, RASTAR_COLOR
+                                       .getRGB());
                            }
                       }
                 }
@@ -1268,7 +1274,8 @@ public final class Utils {
         //                  |                       |
         //                  |                       |
 
-    	if (Status.getRasterBorderFront() != 0 || Status.getBorderRightPercentShow() != 0) {
+    	if (Status.getRasterBorderFront() != 0 
+    			|| Status.getBorderRightPercentShow() != 0) {
     	
         for (int x : new int[]{Status.getRasterBorderFront(), 
             width - Status.getRasterBorderEnd()}) {
@@ -1321,7 +1328,8 @@ public final class Utils {
         
         
 
-    	if (Status.getBorderBottomPercentShow() !=0 || Status.getRasterBorderTop() != 0) {
+    	if (Status.getBorderBottomPercentShow() != 0 
+    			|| Status.getRasterBorderTop() != 0) {
     	
         //horizontal lines  _______________________
         //

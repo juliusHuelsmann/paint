@@ -101,7 +101,8 @@ public final class Paint extends Tab {
 		
 		int x = initializeClipboard(0, true, _paint, _controlPaintStatus);
         x = initializeHistory(x, true, _paint, _controlPaintStatus);
-		x = initializePagePens(_controlPaint, x, true, _paint, _ml, _controlPaintStatus);
+		x = initializePagePens(_controlPaint, x, true, _paint, _ml, 
+				_controlPaintStatus);
         x = initializePageColors(x, true, _paint, _ml, _controlPaintStatus);
 		x = initializeZoom(x, true, _paint, _controlPaintStatus);
         x = initializeFileOperations(x, true, _paint, _controlPaintStatus);
@@ -317,7 +318,8 @@ public final class Paint extends Tab {
         final Dimension sizeIT = new Dimension(550, 550);
         final Dimension sizeIT_selection = new Dimension(350, 280);
 //      = new Dimension(350, 270);//for my laptop
-        final Dimension sizeIT_erasae = new Dimension(tb_copy.getWidth() * 2, tb_copy.getHeight() * 2 + 5);
+        final Dimension sizeIT_erasae = new Dimension(tb_copy.getWidth() 
+        		* 2, tb_copy.getHeight() * 2 + 5);
 
         final int sizeHeight = 110;
         if (_paint) {
@@ -469,13 +471,15 @@ public final class Paint extends Tab {
         }
         it_selection.setIcon(Constants.VIEW_TB_SELECT_LINE_PATH);
         initializeTextButtonOhneAdd(tb_selectionLine,
-                "line", Constants.VIEW_TB_SELECT_LINE_PATH, _controlPaintStatus);
+                "line", Constants.VIEW_TB_SELECT_LINE_PATH, 
+                _controlPaintStatus);
         initializeTextButtonOhneAdd(tb_selectionCurve, "curve",
                 Constants.VIEW_TB_SELECT_CURVE_PATH, _controlPaintStatus);
         initializeTextButtonOhneAdd(tb_selectionMagic, "magic",
                 Constants.VIEW_TB_SELECT_MAGIC_PATH, _controlPaintStatus);
         initializeTextButtonOhneAdd(tb_eraseAll,
-                "entire PO", Constants.VIEW_TB_PIPETTE_PATH, _controlPaintStatus);
+                "entire PO", Constants.VIEW_TB_PIPETTE_PATH,
+                _controlPaintStatus);
         initializeTextButtonOhneAdd(tb_eraseDestroy,
                 "destroy", Constants.VIEW_TB_PIPETTE_PATH, _controlPaintStatus);
         initializeTextButton(tb_pipette, "pipette",
@@ -567,7 +571,7 @@ public final class Paint extends Tab {
     	
     	for (int i = 0; i < jbtn_colors.length; i++) {
     		
-    		if (_paint ) {
+    		if (_paint) {
     			jbtn_colors[i] = new MButton();
     		}
     		
@@ -584,7 +588,8 @@ public final class Paint extends Tab {
         		        _controlPaintStatus);
         		jbtn_colors[i].addMouseListener(_cPaint);
         		jbtn_colors[i].setBorder(BorderFactory.createCompoundBorder(
-        		        new LineBorder(Color.black), new LineBorder(Color.white)));
+        		        new LineBorder(Color.black),
+        		        new LineBorder(Color.white)));
         		super.add(jbtn_colors[i]);
         	}
     	}
@@ -745,10 +750,12 @@ public final class Paint extends Tab {
 
 			initializeTextButton(tb_zoomIn,
 					TextFactory.getInstance().getTextViewTb_zoomIn(),
-					Constants.VIEW_TB_ZOOM_IN_PATH, 0, _controlPaintStatus, _paint);
+					Constants.VIEW_TB_ZOOM_IN_PATH, 0, _controlPaintStatus, 
+					_paint);
 			initializeTextButton(tb_zoomOut,
 					TextFactory.getInstance().getTextViewTb_zoomOut(),
-					Constants.VIEW_TB_ZOOM_OUT_PATH, 0, _controlPaintStatus, _paint);
+					Constants.VIEW_TB_ZOOM_OUT_PATH, 0, _controlPaintStatus, 
+					_paint);
 		
 		int xLocationSeparation = tb_zoomIn.getWidth() + tb_zoomIn.getX() 
                 + ViewSettings.getDistanceBeforeLine();
@@ -942,7 +949,8 @@ public final class Paint extends Tab {
         
     	if (_paint) {
 
-    	       initializeTextButtonOhneAdd(_tb, _text, _path, _controlPaintStatus);
+    	       initializeTextButtonOhneAdd(_tb, _text, _path, 
+    	    		   _controlPaintStatus);
     	        super.add(_tb);
     	} else {
 

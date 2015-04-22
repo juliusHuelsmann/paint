@@ -49,7 +49,8 @@ public class POCurve extends PaintObjectWriting {
 	 * @param _pen the pen which is painted
 	 * @param _casus whether to paint mathematical2 or mathematical3.
 	 */
-	public POCurve(final int _elementId, final Pen _pen, final int _casus, final Picture _pic) {
+	public POCurve(final int _elementId, final Pen _pen, 
+			final int _casus, final Picture _pic) {
 		
 	    //call super constructor
 	    super(_pic, _casus, _pen);

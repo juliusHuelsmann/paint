@@ -69,6 +69,10 @@ public final class CTabPainting implements ActionListener, MouseListener {
     }
 
     
+    /**
+     * Error-checked getter method.
+     * @return the controlPicture.
+     */
     private ContorlPicture getControlPicture() {
     	return controlPaint.getControlPic();
     }
@@ -294,8 +298,10 @@ public final class CTabPainting implements ActionListener, MouseListener {
     			controlPaint.getControlPaintSelection(),
     			controlPaint.getcTabSelection(),
     			controlPaint.getView().getTabs().getTab_debug(),
-    			controlPaint.getView().getPage().getJlbl_painting().getLocation().x,
-    			controlPaint.getView().getPage().getJlbl_painting().getLocation().y);
+    			controlPaint.getView().getPage().getJlbl_painting()
+    			.getLocation().x,
+    			controlPaint.getView().getPage().getJlbl_painting()
+    			.getLocation().y);
         controlPaint.getPicture().createSelected();
         
         Object o = MyClipboard.getInstance().paste();
@@ -303,10 +309,12 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
             PaintObjectImage poi = controlPaint.getPicture().createPOI(
                     (BufferedImage) o);
-            controlPaint.getPicture().insertIntoSelected(poi, controlPaint.getView().getTabs().getTab_debug());
+            controlPaint.getPicture().insertIntoSelected(
+            		poi, controlPaint.getView().getTabs().getTab_debug());
 
             //finish insertion into selected.
-            controlPaint.getPicture().finishSelection(controlPaint.getcTabSelection());
+            controlPaint.getPicture().finishSelection(
+            		controlPaint.getcTabSelection());
             
             controlPaint.getPicture().paintSelected(getPage(),
         			controlPaint.getControlPic(),
@@ -323,12 +331,15 @@ public final class CTabPainting implements ActionListener, MouseListener {
                 PaintObject po = ls.getItem();
                 if (po instanceof PaintObjectImage) {
                     PaintObjectImage poi = (PaintObjectImage) po;
-                    PaintObjectImage poi_new = controlPaint.getPicture().createPOI(
-                    		poi.getSnapshot());
-                    controlPaint.getPicture().insertIntoSelected(poi_new, controlPaint.getView().getTabs().getTab_debug());
+                    PaintObjectImage poi_new = controlPaint.getPicture()
+                    		.createPOI(poi.getSnapshot());
+                    controlPaint.getPicture().insertIntoSelected(
+                    		poi_new, controlPaint.getView().getTabs()
+                    		.getTab_debug());
 
                     //finish insertion into selected.
-                    controlPaint.getPicture().finishSelection(controlPaint.getcTabSelection());
+                    controlPaint.getPicture().finishSelection(
+                    		controlPaint.getcTabSelection());
                     
                 } else if (po instanceof PaintObjectWriting) {
                     PaintObjectWriting pow = (PaintObjectWriting) po;
@@ -342,10 +353,12 @@ public final class CTabPainting implements ActionListener, MouseListener {
                                 pow.getPoints().getItem()));
                         pow.getPoints().next();
                     }
-                    controlPaint.getPicture().insertIntoSelected(pow_new, controlPaint.getView().getTabs().getTab_debug());
+                    controlPaint.getPicture().insertIntoSelected(pow_new, 
+                    		controlPaint.getView().getTabs().getTab_debug());
 
                     //finish insertion into selected.
-                    controlPaint.getPicture().finishSelection(controlPaint.getcTabSelection());
+                    controlPaint.getPicture().finishSelection(
+                    		controlPaint.getcTabSelection());
                 
                 } else  if (po != null) {
                     Status.getLogger().warning("unknown kind of "
@@ -356,16 +369,20 @@ public final class CTabPainting implements ActionListener, MouseListener {
             
         } else if (o instanceof PaintObjectWriting) {
             controlPaint.getPicture().insertIntoSelected(
-                    (PaintObjectWriting) o, controlPaint.getView().getTabs().getTab_debug());
+                    (PaintObjectWriting) o, 
+                    controlPaint.getView().getTabs().getTab_debug());
 
             //finish insertion into selected.
-            controlPaint.getPicture().finishSelection(controlPaint.getcTabSelection());
+            controlPaint.getPicture().finishSelection(
+            		controlPaint.getcTabSelection());
         } else if (o instanceof PaintObjectImage) {
             controlPaint.getPicture().insertIntoSelected(
-                    (PaintObjectImage) o, controlPaint.getView().getTabs().getTab_debug());
+                    (PaintObjectImage) o, 
+                    controlPaint.getView().getTabs().getTab_debug());
 
             //finish insertion into selected.
-            controlPaint.getPicture().finishSelection(controlPaint.getcTabSelection());
+            controlPaint.getPicture().finishSelection(
+            		controlPaint.getcTabSelection());
             new Exception("hier").printStackTrace();
         } else {
             Status.getLogger().warning("unknown return type of clipboard");
@@ -507,7 +524,8 @@ public final class CTabPainting implements ActionListener, MouseListener {
                 File file = jfc.getSelectedFile();
 
                 if (file.getName().toLowerCase().endsWith(".pic")) {
-                    controlPaint.getPicture().loadPicture(file.getAbsolutePath());
+                    controlPaint.getPicture().loadPicture(
+                    		file.getAbsolutePath());
                     Status.setUncommittedChanges(false);
                     getControlPicture().refreshPaint();
                 } else if (file.getName().toLowerCase().endsWith(".png")
@@ -520,7 +538,8 @@ public final class CTabPainting implements ActionListener, MouseListener {
                                 bi_imageBG.getHeight()));
                         Status.setImageShowSize(Status.getImageSize());
                         controlPaint.getPicture().emptyImage();
-                        controlPaint.getPicture().addPaintObjectImage(bi_imageBG);
+                        controlPaint.getPicture().addPaintObjectImage(
+                        		bi_imageBG);
                         getControlPicture().refreshPaint();
                         
                     } catch (IOException e) {
@@ -634,7 +653,8 @@ public final class CTabPainting implements ActionListener, MouseListener {
             oldLocation.x = Math.max(oldLocation.x,
             		-(Status.getImageShowSize().width - getPage().getWidth()));
             oldLocation.y = Math.max(oldLocation.y,
-                    -(Status.getImageShowSize().height - getPage().getHeight()));
+                    -(Status.getImageShowSize().height 
+                    		- getPage().getHeight()));
             
             
             
@@ -666,8 +686,10 @@ public final class CTabPainting implements ActionListener, MouseListener {
             			controlPaint.getControlPaintSelection(),
             			controlPaint.getcTabSelection(),
             			controlPaint.getView().getTabs().getTab_debug(),
-            			controlPaint.getView().getPage().getJlbl_painting().getLocation().x,
-            			controlPaint.getView().getPage().getJlbl_painting().getLocation().y);
+            			controlPaint.getView().getPage().getJlbl_painting()
+            			.getLocation().x,
+            			controlPaint.getView().getPage().getJlbl_painting()
+            			.getLocation().y);
             }
             updateResizeLocation();
         } else {
@@ -749,8 +771,8 @@ public final class CTabPainting implements ActionListener, MouseListener {
 		                                new LineBorder(Color.black),
 		                                new LineBorder(Color.black)));
 		                
-		                //return because only one item is performing action at one 
-		                //time
+		                //return because only one item is performing action 
+		                //at one time
 		                return;
 		            }
 		        }
@@ -884,13 +906,19 @@ public final class CTabPainting implements ActionListener, MouseListener {
 	}
 
 
+	/**
+	 * @return the controlPaint
+	 */
 	public ControlPaint getControlPaint() {
 		return controlPaint;
 	}
 
 
-	public void setControlPaint(ControlPaint controlPaint) {
-		this.controlPaint = controlPaint;
+	/**
+	 * @param _controlPaint to set.
+	 */
+	public void setControlPaint(final ControlPaint _controlPaint) {
+		this.controlPaint = _controlPaint;
 	}
 
 }

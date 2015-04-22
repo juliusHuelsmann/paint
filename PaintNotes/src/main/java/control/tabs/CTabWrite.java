@@ -79,7 +79,7 @@ public final class CTabWrite implements ActionListener {
     /**
      * Empty utility class constructor.
      */
-    public CTabWrite(ControlPaint _cp) { 
+    public CTabWrite(final ControlPaint _cp) { 
     	this.cp = _cp;
     }
 

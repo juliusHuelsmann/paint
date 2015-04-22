@@ -309,15 +309,16 @@ public class HistoryObject implements Serializable {
 
 	
 	
-	public boolean findInList(final int _transactionID, final int _closedActionID, final int _elementid) {
+	public final boolean findInList(
+			final int _transactionID, final int _closedActionID, 
+			final int _elementid) {
 
 		return findInList(session.getPicture().getLs_po_sortedByX(),
 				_transactionID, _closedActionID, _elementid);
 	}
 	
 	
-	public boolean findInList(
-			
+	public final  boolean findInList(
 			final SecureListSort<PaintObject> _sl, 
 			final int _transactionID, final int _closedActionID, 
 			final int _elementid) {
@@ -423,7 +424,8 @@ public class HistoryObject implements Serializable {
 				} else {
 
 					//search the element which is to be removed
-					boolean found = findInList(transactionID, SecureList.ID_NO_PREDECESSOR, po_orig.getElementId());
+					boolean found = findInList(transactionID, SecureList
+							.ID_NO_PREDECESSOR, po_orig.getElementId());
 
 					//if the element was found, remove it.
 					if (found) {
@@ -447,8 +449,10 @@ public class HistoryObject implements Serializable {
 				}
 				
 				//proceed
-				ls_orig.next(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
-				ls_moved.next(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
+				ls_orig.next(SecureList.ID_NO_PREDECESSOR, 
+						SecureList.ID_NO_PREDECESSOR);
+				ls_moved.next(SecureList.ID_NO_PREDECESSOR, 
+						SecureList.ID_NO_PREDECESSOR);
 			}
 			
 			if (ls_moved.isBehind() != ls_orig.isBehind()) {

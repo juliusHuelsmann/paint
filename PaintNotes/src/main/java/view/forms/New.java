@@ -1,7 +1,6 @@
 package view.forms;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -121,15 +120,21 @@ public final class New extends MPanel {
     / amount - distanceBetweenItems,
     distanceTop = heightImageButton + 2 * distanceBetweenItems,
     buttonHeight = 20;
-    
+
+    /**
+     * The background - BufferedImage which displays the stroke.
+     */
+    private BufferedImage bi;
     
     /**
      * Controller class of New.
      */
     
     private CNew c_new;
+    
     /**
-     * Empty utility class Constructor.
+     * Constructor.
+     * @param _cn instance of the controller class for new.
      */
     public New(final CNew _cn) { 
     	this.c_new = _cn;
@@ -506,7 +511,7 @@ public final class New extends MPanel {
                 _plusYLocation);
         _i1b.setIconLabelY((_i1b.getHeight() 
                 - _i1b.getImageHeight()) / 2);
-        _i1b.setIconLabelX(3);
+        _i1b.setIconLabelX(2 + 1);
         _i1b.setBorder(true);
 
         jpnl_stuff.add(_i1b);
@@ -544,36 +549,16 @@ public final class New extends MPanel {
     }
 
     
-    public static void main(String[]args){
+    
+    /**
+     * Main method.
+     * @param _args the arguments.
+     */
+    public static void main(final String[] _args) {
 
 		
 		
-		JFrame jf = new JFrame() {
-			
-			Component vsp;
-
-			public Component add(Component _c) {
-				vsp = _c;
-				return super.add(_c);
-			}
-			
-			public void setSize(int _x, int _y) {
-				if (vsp != null) {
-
-//					vsp.setSize(_x, _y);
-				}
-				super.setSize(_x, _y);
-			}
-			
-			public void validate() {
-				super.validate();
-				if (vsp != null) {
-
-//					vsp.setSize(getWidth(), getHeight());
-				}
-			}
-		};
-
+		JFrame jf = new JFrame();
 		jf.setSize(ViewSettings.getView_size_new());
 		jf.setLocationRelativeTo(null);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -581,15 +566,15 @@ public final class New extends MPanel {
 		jf.setLayout(null);
 		jf.setResizable(true);
 
-		final New vsp = new New(null);;
+		final New vsp = new New(null);
 		vsp.setVisible(true);
 		
 		jf.add(vsp);
-		vsp.setLocation(0,0);
+		vsp.setLocation(0, 0);
 	
     }
 
-    private BufferedImage bi;
+    
     /**
      * {@inheritDoc}
      */

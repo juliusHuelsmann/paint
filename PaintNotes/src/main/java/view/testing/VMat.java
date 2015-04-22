@@ -4,62 +4,81 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import view.util.VScrollPane;
 
+/**
+ * 
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
+@SuppressWarnings("serial")
 public class VMat extends JPanel {
 
+	
+	/**
+	 * 
+	 */
 	private JTextField[][] jlbl_matrix;
+	
+	/**
+	 * 
+	 */
 	private JTextField jlbl_amountRows, jlbl_amountCols;
 	
+	
+	/**
+	 * 
+	 */
 	private JButton jbtn_spline;
 	
-	
+	/**
+	 * 
+	 */
 	private final int addY = 50;
 	
+	/**
+	 * 
+	 */
 	private KeyListener kl = new KeyListener() {
 		
-		public void keyTyped(KeyEvent _event) {
-			System.out.println("t2");
-				
-//			}
+		public void keyTyped(final KeyEvent _event) { }
 		
-			
-		}
-		
-		public void keyReleased(KeyEvent _event) {
+		public void keyReleased(final KeyEvent _event) {
 
 //			if (_event.getSource().equals(jlbl_amountRows)) {
 				int rows = 0;
 				int cols = 0;
 				
-				try{
+				try {
 					rows = Integer.parseInt(jlbl_amountRows.getText());
 					cols = Integer.parseInt(jlbl_amountCols.getText());
-				}catch(Exception e) {
-					
+				} catch (Exception e) {
+					//do nothing.
+					cols = 0;
 				}
-				if (cols > 0 && rows > 0)
-				initializeJLabel(cols, rows);
+				if (cols > 0 && rows > 0) {
+					initializeJLabel(cols, rows);
+				}
 				repaint();
-			System.out.println("rl");
-			
 		}
 		
-		public void keyPressed(KeyEvent _event) {
-			System.out.println("t");
-		}
+		public void keyPressed(final KeyEvent _event) { }
 	};
 	
-	private void initializeJLabel( int _h, int _w) {
+	
+	/**
+	 * 
+	 * @param _h
+	 * @param _w
+	 */
+	private void initializeJLabel(final int _h, final int _w) {
 		//rm old
 
-		for (int wid = 0; jlbl_matrix != null && wid < jlbl_matrix.length; wid++) {
+		for (int wid = 0; jlbl_matrix != null
+				&& wid < jlbl_matrix.length; wid++) {
 			for (int heig = 0; heig < jlbl_matrix[wid].length; heig++) {
 				remove(jlbl_matrix[wid][heig]);
 			}
@@ -70,13 +89,21 @@ public class VMat extends JPanel {
 			for (int heig = 0; heig < _w; heig++) {
 				jlbl_matrix[wid][heig] = new JTextField();
 				double itW = 1.0 * (getWidth()) / _w;
-				double itH = 1.0 * (getHeight() - jlbl_amountCols.getHeight() - jlbl_amountCols.getY()- 50) / _h;
-				jlbl_matrix[wid][heig].setBounds((int)(heig * itW) ,(int) (wid * itH+ jlbl_amountCols.getHeight() +jlbl_amountCols.getY() + 5), (int)(itW), (int)itH);
+				double itH = 1.0 * (getHeight() - jlbl_amountCols.getHeight() 
+						- jlbl_amountCols.getY() - 50) / _h;
+				jlbl_matrix[wid][heig].setBounds((int) (heig * itW),
+						(int) (wid * itH + jlbl_amountCols.getHeight() 
+								+ jlbl_amountCols.getY() + 5),
+								(int) (itW), (int) itH);
 				super.add(jlbl_matrix[wid][heig]);
 			}
 		}
 	}
 	
+	
+	/**
+	 * 
+	 */
 	private void resetSize() {
 
 		if (jlbl_matrix != null) {
@@ -84,8 +111,13 @@ public class VMat extends JPanel {
 			for (int heig = 0; heig < jlbl_matrix.length; heig++) {
 				for (int widt = 0; widt < jlbl_matrix[heig].length; widt++) {
 					double itW = 1.0 * (getWidth()) / jlbl_matrix[widt].length;
-					double itH = 1.0 * (getHeight() - jlbl_amountCols.getHeight() - jlbl_amountCols.getY()- 50) / jlbl_matrix.length;
-					jlbl_matrix[widt][heig].setBounds((int)(heig * itW) ,(int) (widt * itH+ jlbl_amountCols.getHeight() +jlbl_amountCols.getY() + 5), (int)(itW), (int)itH);
+					double itH = 1.0 * (getHeight() 
+							- jlbl_amountCols.getHeight()
+							- jlbl_amountCols.getY() - 50) / jlbl_matrix.length;
+					jlbl_matrix[widt][heig].setBounds((int) (heig * itW),
+							(int) (widt * itH + jlbl_amountCols.getHeight() 
+									+ jlbl_amountCols.getY() + 5), 
+									(int) (itW), (int) itH);
 					super.add(jlbl_matrix[widt][heig]);
 				}
 			}
@@ -109,27 +141,27 @@ public class VMat extends JPanel {
 	}
 	
 
-	public VMat(double[][] _vals) {
+	public VMat(final double[][] _vals) {
 		super();
 		super.setLayout(null);
 		super.setSize(300, 300);
 
-		int _height = _vals.length;
-		int _width = _vals[0].length;
+		int height = _vals.length;
+		int width = _vals[0].length;
 		
-		jlbl_amountCols = new JTextField(_width);
+		jlbl_amountCols = new JTextField(width);
 		jlbl_amountCols.setBounds(0 * getWidth() / 2, 5, getWidth() / 2, 20);
 		jlbl_amountCols.setEditable(false);
 		super.add(jlbl_amountCols);
 		
-		jlbl_amountRows = new JTextField(_height);
+		jlbl_amountRows = new JTextField(height);
 		jlbl_amountRows.setBounds(1 * getWidth() / 2, 5, getWidth() / 2, 20);
 		jlbl_amountCols.setEditable(false);
 		super.add(jlbl_amountRows);
-		initializeJLabel( _width,  _height);
+		initializeJLabel( width,  height);
 		
-		for(int i = 0; i < _width; i ++) {
-			for(int j = 0; j < _height; j ++) {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
 				jlbl_matrix[i][j].setEditable(false);
 				jlbl_matrix[i][j].setText("" + _vals[j][i]);
 				
@@ -138,19 +170,34 @@ public class VMat extends JPanel {
 	}
 	
 	
-	public void setSize(int _x, int _y) {
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void setSize(final int _x, final int _y) {
 		super.setSize(_x, _y);
-		jlbl_amountCols.setBounds(0 * getWidth() / 2, 5, getWidth() / 2, 20);
-		jlbl_amountRows.setBounds(1 * getWidth() / 2, 5, getWidth() / 2, 20);
+		jlbl_amountCols.setBounds(0 * getWidth() / 2, 
+				5, getWidth() / 2, 20);
+		jlbl_amountRows.setBounds(1 * getWidth() / 2, 
+				5, getWidth() / 2, 20);
 		resetSize();
 	}
 	
-	public static void main(String[]args) {
+	
+	/**
+	 * the main function.
+	 * @param _args the arguments
+	 */
+	public static final void main(final String[] _args) {
 		
+		final int viewSize = 300;
 		
 		final VMat vsp = new VMat();
+		
+		@SuppressWarnings("serial")
 		JFrame jf = new JFrame() {
-			public void setSize(int _x, int _y) {
+
+			public void setSize(final int _x, final int _y) {
 				vsp.setSize(_x, _y);
 				super.setSize(_x, _y);
 			}
@@ -160,7 +207,7 @@ public class VMat extends JPanel {
 				vsp.setSize(getWidth(), getHeight());
 			}
 		};
-		jf.setSize(300, 300);
+		jf.setSize(viewSize, viewSize);
 		jf.setLocationRelativeTo(null);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jf.setVisible(true);

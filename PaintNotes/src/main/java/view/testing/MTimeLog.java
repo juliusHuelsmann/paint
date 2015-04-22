@@ -25,23 +25,28 @@ public class MTimeLog implements Serializable {
 	
 	/**
 	 * Returns an array of the titles of the list items that are added.
-	 * @return
+	 * @return the titles for the table.
 	 */
-	public String[] getTitles() {
-		ls_timeItems.toFirst(SecureListSort.ID_NO_PREDECESSOR, SecureListSort.ID_NO_PREDECESSOR);
+	public final String[] getTitles() {
+		ls_timeItems.toFirst(
+				SecureListSort.ID_NO_PREDECESSOR,
+				SecureListSort.ID_NO_PREDECESSOR);
 		int length = 0;
 		while (!ls_timeItems.isBehind() && !ls_timeItems.isEmpty()) {
 			
 			length++;
-			ls_timeItems.next(SecureListSort.ID_NO_PREDECESSOR, SecureListSort.ID_NO_PREDECESSOR);
+			ls_timeItems.next(SecureListSort.ID_NO_PREDECESSOR, 
+					SecureListSort.ID_NO_PREDECESSOR);
 		}
 		
 		int index = 0;
 		String[] strg_title = new String[length];
-		ls_timeItems.toFirst(SecureListSort.ID_NO_PREDECESSOR, SecureListSort.ID_NO_PREDECESSOR);
+		ls_timeItems.toFirst(SecureListSort.ID_NO_PREDECESSOR,
+				SecureListSort.ID_NO_PREDECESSOR);
 		while (!ls_timeItems.isBehind() && !ls_timeItems.isEmpty()) {
 			strg_title[index] = ls_timeItems.getItem().getStrg_title();
-			ls_timeItems.next(SecureListSort.ID_NO_PREDECESSOR, SecureListSort.ID_NO_PREDECESSOR);
+			ls_timeItems.next(SecureListSort.ID_NO_PREDECESSOR, 
+					SecureListSort.ID_NO_PREDECESSOR);
 			index++;
 		}
 		
@@ -52,32 +57,37 @@ public class MTimeLog implements Serializable {
 	
 	/**
 	 * Returns an array of the titles of the list items that are added.
-	 * @return
+	 * @return the table.
 	 */
-	public String[][] getTable() {
-		ls_timeItems.toFirst(SecureListSort.ID_NO_PREDECESSOR, SecureListSort.ID_NO_PREDECESSOR);
+	public final String[][] getTable() {
+		ls_timeItems.toFirst(SecureListSort.ID_NO_PREDECESSOR, 
+				SecureListSort.ID_NO_PREDECESSOR);
 		int length = 0;
 		while (!ls_timeItems.isBehind() && !ls_timeItems.isEmpty()) {
 			
 			length++;
-			ls_timeItems.next(SecureListSort.ID_NO_PREDECESSOR, SecureListSort.ID_NO_PREDECESSOR);
+			ls_timeItems.next(SecureListSort.ID_NO_PREDECESSOR,
+					SecureListSort.ID_NO_PREDECESSOR);
 		}
 		
 		int index = 0;
-		String[][] strg_title = new String[length][3];
-		ls_timeItems.toFirst(SecureListSort.ID_NO_PREDECESSOR, SecureListSort.ID_NO_PREDECESSOR);
+		String[][] strg_title = new String[length][2 + 1];
+		ls_timeItems.toFirst(SecureListSort.ID_NO_PREDECESSOR,
+				SecureListSort.ID_NO_PREDECESSOR);
 		while (!ls_timeItems.isBehind() && !ls_timeItems.isEmpty()) {
 			strg_title[index][0] = "" + ls_timeItems.getItem().getIdentifier();
 			strg_title[index][1] = ls_timeItems.getItem().getStrg_title();
 
-			int days = (int)(ls_timeItems.getItem().getTime() / 60 / 60 / 24);
-			int hour = ((int)(ls_timeItems.getItem().getTime() / 60 / 60) % 24);
+			int days = (int) (ls_timeItems.getItem().getTime() / 60 / 60 / 24);
+			int hour = ((int) (ls_timeItems.getItem().getTime() / 60 / 60) 
+					% 24);
 			int min =  ((int) (ls_timeItems.getItem().getTime() / 60)) % 60;
 			int sec =  ls_timeItems.getItem().getTime() % 60;
 			
 			String myTime = "";
 			if (days != 0) {
-				myTime = days + "Days, " + hour + "Hours, " + min + "min, " + sec + "sec";
+				myTime = days + "Days, " + hour + "Hours, " + min 
+						+ "min, " + sec + "sec";
 			} else if (hour != 0) {
 				myTime = hour + "Hours, " + min + "min, " + sec + "sec";
 				
@@ -92,7 +102,8 @@ public class MTimeLog implements Serializable {
 				
 					
 			strg_title[index][2] = "" + myTime;
-			ls_timeItems.next(SecureListSort.ID_NO_PREDECESSOR, SecureListSort.ID_NO_PREDECESSOR);
+			ls_timeItems.next(SecureListSort.ID_NO_PREDECESSOR, 
+					SecureListSort.ID_NO_PREDECESSOR);
 			index++;
 		}
 		
@@ -101,14 +112,17 @@ public class MTimeLog implements Serializable {
 	
 	
 
-	public void addTimeItem(String _title) {
+	public final void addTimeItem(final String _title) {
 		MTime mt = new MTime(_title);
-		ls_timeItems.insertSorted(mt, mt.getIdentifier(), SecureListSort.ID_NO_PREDECESSOR);
+		ls_timeItems.insertSorted(mt, mt.getIdentifier(),
+				SecureListSort.ID_NO_PREDECESSOR);
 	}
 	
-	public MTime getPerIndex(int _index) {
-		ls_timeItems.findSorted(_index, SecureListSort.ID_NO_PREDECESSOR, SecureListSort.ID_NO_PREDECESSOR);
-		ls_timeItems.previous(SecureListSort.ID_NO_PREDECESSOR, SecureListSort.ID_NO_PREDECESSOR);
+	public final MTime getPerIndex(final int _index) {
+		ls_timeItems.findSorted(_index, SecureListSort.ID_NO_PREDECESSOR,
+				SecureListSort.ID_NO_PREDECESSOR);
+		ls_timeItems.previous(SecureListSort.ID_NO_PREDECESSOR,
+				SecureListSort.ID_NO_PREDECESSOR);
 		MTime found = ls_timeItems.getItem();
 		if (found.getIdentifier() != _index) {
 			System.err.println("Fatal error");
@@ -118,7 +132,7 @@ public class MTimeLog implements Serializable {
 	}
 	
 	
-	public void save(String _loc) {
+	public final void save(final String _loc) {
 
 		try {
 			System.out.println(_loc);
@@ -134,12 +148,17 @@ public class MTimeLog implements Serializable {
 	}
 	
 	
-	public MTimeLog load(String _loc) {
+	
+	/**
+	 * 
+	 * @param _loc
+	 * @return the loaded MTimeLog.
+	 */
+	public final MTimeLog load(final String _loc) {
 
 		try {
 			FileInputStream fos = new FileInputStream(new File(_loc));
 			ObjectInputStream oos = new ObjectInputStream(fos);
-			@SuppressWarnings("unchecked")
 			MTimeLog p = 
 			(MTimeLog) oos.readObject();
 

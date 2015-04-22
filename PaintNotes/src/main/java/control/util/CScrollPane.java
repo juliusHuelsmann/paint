@@ -30,9 +30,19 @@ import view.util.VScrollPane;
 public class CScrollPane 
 implements MouseMotionListener, MouseListener, KeyListener {
 
+	
+	/**
+	 * The activity listener which can be added to the CScrollPane.
+	 */
 	private ActivityListener activityListener;
 	
-	public final void setActivityListener(final ActivityListener _activityListener) {
+	
+	/**
+	 * Set the activityListener.
+	 * @param _activityListener the activityListener
+	 */
+	public final void setActivityListener(
+			final ActivityListener _activityListener) {
 		this.activityListener = _activityListener;
 	}
     /**

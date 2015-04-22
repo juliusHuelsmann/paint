@@ -31,7 +31,7 @@ public final class CTabSelection implements ActionListener {
     /**
      * Empty utility class constructor.
      */
-    public CTabSelection(ControlPaint _selection) {
+    public CTabSelection(final ControlPaint _selection) {
     	this.cp = _selection;
     	
     }
@@ -90,9 +90,11 @@ public final class CTabSelection implements ActionListener {
         } else {
             for (int i = 0; i < getSelection().getJbtn_colors().length; i++) {
 
-                if (_event.getSource().equals(getSelection().getJbtn_colors()[i])) {
+                if (_event.getSource().equals(getSelection()
+                		.getJbtn_colors()[i])) {
                     
-                    this.selectionColor = getSelection().getJbtn_colors()[i].getBackground()
+                    this.selectionColor = getSelection()
+                    		.getJbtn_colors()[i].getBackground()
                             .getRGB();
                     setColor(cp, new Color(selectionColor));
                     getSelection().getTb_color().setBackground(
@@ -304,7 +306,8 @@ public final class CTabSelection implements ActionListener {
      * Set selected paintObject's color.
      * @param _clr the Color
      */
-    private static synchronized void setColor(final ControlPaint _cp, final Color _clr) {
+    private static synchronized void setColor(
+    		final ControlPaint _cp, final Color _clr) {
 
 
     	//start transaction and closed action.

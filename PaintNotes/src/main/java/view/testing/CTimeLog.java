@@ -7,19 +7,46 @@ import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+
+/**
+ * Controller class for small time-logging tool.
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
 public class CTimeLog implements ActionListener {
 	
+	
+	/**
+	 * 
+	 */
 	private MTimeLog model;
+	
+	/**
+	 * 
+	 */
 	private VTimeLog view;
 	
+	
+	/**
+	 * The Thread.
+	 */
 	private Thread t_time;
 	
-	public CTimeLog(VTimeLog _vlt) {
+	
+	/**
+	 * Constructor.
+	 * @param _vlt the view class for time-logging.
+	 */
+	public CTimeLog(final VTimeLog _vlt) {
 		this.view = _vlt;
 		this.model = new MTimeLog();
 	}
 	
-	public void actionPerformed(ActionEvent _event) {
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void actionPerformed(final ActionEvent _event) {
 
 		if (_event.getSource().equals(view.getJbtn_save())) {
 			
@@ -36,7 +63,8 @@ public class CTimeLog implements ActionListener {
 			JFileChooser jf = new JFileChooser();
 			int returnVal = jf.showOpenDialog(view);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				MTimeLog mtls = model.load(jf.getSelectedFile().getAbsolutePath());
+				MTimeLog mtls = model.load(
+						jf.getSelectedFile().getAbsolutePath());
 				if (mtls != null) {
 					model = mtls;
 					view.updateCombobox(model.getTitles());
@@ -45,15 +73,17 @@ public class CTimeLog implements ActionListener {
 			}
 			
 		} else if (_event.getSource().equals(view.getJbtn_addItem())) {
-			String s = JOptionPane.showInputDialog("Please insert the name of the new activity", "activity");
+			String s = JOptionPane.showInputDialog("Please insert the name "
+					+ "of the new activity", "activity");
 			model.addTimeItem(s);
 			view.updateCombobox(model.getTitles());
 			view.updateTable(model.getTable());
 		} else if (_event.getSource().equals(view.getJbtn_startLog())) {
 
-			String s = (String) view.getJcb_currentOperation().getSelectedItem();
+			String s = (String) view.getJcb_currentOperation()
+					.getSelectedItem();
 			int index = view.getJcb_currentOperation().getSelectedIndex();
-			if ( s == null) {
+			if (s == null) {
 				JOptionPane.showMessageDialog(view, "no activity selected.");
 				
 			} else {
@@ -69,12 +99,19 @@ public class CTimeLog implements ActionListener {
 							view.getJbtn_load().setEnabled(false);
 							view.getJbtn_save().setEnabled(false);
 							view.getJcb_currentOperation().setEnabled(false);
-							view.getJlbl_start().setText("Activity" + selectedMTime.getStrg_title() + ": Start: " + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds());
+							view.getJlbl_start().setText("Activity" 
+							+ selectedMTime.getStrg_title() + ": Start: " 
+									+ new Date().getHours() + ":"
+									+ new Date().getMinutes() + ":" 
+									+ new Date().getSeconds());
 							double startTime = System.currentTimeMillis();
-							while(!isInterrupted()) {
+							while (!isInterrupted()) {
 
-								int workingTime = (int) (System.currentTimeMillis() - startTime) / 1000;
-								view.getJlbl_time().setText("Time: " + workingTime);
+								int workingTime = (int) (System
+										.currentTimeMillis() - startTime) 
+										/ 1000;
+								view.getJlbl_time().setText("Time: " 
+										+ workingTime);
 								selectedMTime.setWorkingTime(workingTime);
 								try {
 									Thread.sleep(1000);

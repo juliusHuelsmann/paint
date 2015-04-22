@@ -116,8 +116,9 @@ public class VScrollPane extends MPanel {
 
 	
 	
-	public final void setActivityListener(final ActivityListener _activityListener) {
-		control.setActivityListener(_activityListener);;
+	public final void setActivityListener(
+			final ActivityListener _activityListener) {
+		control.setActivityListener(_activityListener);
 	}
 	
 	/**

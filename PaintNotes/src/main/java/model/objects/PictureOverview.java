@@ -90,7 +90,7 @@ public class PictureOverview extends Observable {
 	/**
 	 * Constructor: adds observer.
 	 */
-	public PictureOverview(Debug _po) {
+	public PictureOverview(final Debug _po) {
 		super.addObserver(_po);
 	}
 

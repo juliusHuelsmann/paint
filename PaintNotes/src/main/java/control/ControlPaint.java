@@ -1113,6 +1113,7 @@ MenuListener {
             break;
         case Constants.CONTROL_PAINTING_INDEX_MOVE:
 
+        	System.out.println("move");
             if (_event.getButton() == 1) {
 
                 final Point mmSP = pnt_movementSpeed;
@@ -1133,6 +1134,11 @@ MenuListener {
                 //release everything
                 if (project.getPicture().isSelected()) {
 
+                    //TODO: zum finden des windows fehler 2 ist es sinnvoll
+                	//hier einen breakpoint zu setzen, da der Fehler (auch)
+                	//auftritt, wenn ein selektiertes Objekt losgelassen wird.
+                	//anscheinend ist allerdings keiner der drei folgenden
+                	//befehle direkt daran schuld.
                     project.getPicture().releaseSelected(
                 			getControlPaintSelection(),
                 			getcTabSelection(),

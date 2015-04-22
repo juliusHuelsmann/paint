@@ -17,8 +17,6 @@ import java.io.Serializable;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
 import control.ContorlPicture;
 import control.ControlPaintSelectin;
 import control.tabs.CTabSelection;
@@ -135,7 +133,7 @@ public final class Picture implements Serializable {
 	 * creates a new instance of sorted PaintObject list and sets up the
 	 * currentID.
 	 */
-	public void initialize(HistorySession _history) {
+	public void initialize(final HistorySession _history) {
 		this.history = _history;
 		reload();
 	}
@@ -350,11 +348,13 @@ public final class Picture implements Serializable {
 				Message.showMessage(Message.MESSAGE_ID_INFO,
 						"enter valid column");
 			}
-			addPaintObject(new PODiagramm(currentId, pen_current, lines, rows, this));
+			addPaintObject(new PODiagramm(currentId, pen_current, lines, 
+					rows, this));
 			break;
 		case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
 		case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
-			addPaintObject(new PaintObjectWriting(this, currentId, pen_current));
+			addPaintObject(new PaintObjectWriting(this, currentId, 
+					pen_current));
 			break;
 		default:
 			Status.getLogger().warning("unknown index operation");
@@ -413,7 +413,8 @@ public final class Picture implements Serializable {
 	 * 
 	 * @return the RGB integer of the color at given coordinate.
 	 */
-	public int getColorPX(final int _pxX, final int _pxY, final BufferedImage _bi) {
+	public int getColorPX(final int _pxX, final int _pxY, 
+			final BufferedImage _bi) {
 		return _bi.getRGB(_pxX, _pxY);
 	}
 
@@ -454,11 +455,13 @@ public final class Picture implements Serializable {
 
 		// if the graphical user interface is not set up yet.
 		if (ret == null) {
-			return new BufferedImage(_width, _height, BufferedImage.TYPE_INT_ARGB);
+			return new BufferedImage(_width, _height,
+					BufferedImage.TYPE_INT_ARGB);
 		}
 		
 		
-		ret = repaintRectangle(_x, _y, _width, _height, _graphicX, _graphiY, ret, false);
+		ret = repaintRectangle(_x, _y, _width, _height, _graphicX,
+				_graphiY, ret, false);
 
 		return ret;
 	}
@@ -503,7 +506,8 @@ public final class Picture implements Serializable {
 		BufferedImage bi = _bi;
 		// alle die in Frage kommen neu laden.
 		if (ls_po_sortedByX == null || bi == null) {
-			bi = new BufferedImage(_width, _height, BufferedImage.TYPE_INT_ARGB);
+			bi = new BufferedImage(_width, _height, BufferedImage
+					.TYPE_INT_ARGB);
 //			return _bi;
 		}
 
@@ -676,9 +680,10 @@ public final class Picture implements Serializable {
 				SecureList.ID_NO_PREDECESSOR);
 		int counter = 0;
 		
-		try{
+		try {
 
-			while (!ls_poChronologic.isBehind() && !ls_poChronologic.isEmpty()) {
+			while (!ls_poChronologic.isBehind()
+					&& !ls_poChronologic.isEmpty()) {
 
 				ls_poChronologic.getItem().paint(_bi, _final,
 						_bi, 
@@ -694,7 +699,7 @@ public final class Picture implements Serializable {
 				ls_poChronologic.next(SecureList.ID_NO_PREDECESSOR, 
 						SecureList.ID_NO_PREDECESSOR);
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		//log repainting action in console.
@@ -792,7 +797,8 @@ public final class Picture implements Serializable {
 			if (po_current instanceof POCurve) {
 				bi_transformed = ((PaintObjectWriting) po_current).paint(
 						_cPicture.getBi(), false, _cPicture.getBi(), 
-						_page.getJlbl_painting().getLocation().x, _page.getJlbl_painting().getLocation().y,
+						_page.getJlbl_painting().getLocation().x, _page
+						.getJlbl_painting().getLocation().y,
 						null);
 			} else if (po_current instanceof PaintObjectWriting
 					&& !(po_current instanceof POCurve)) {
@@ -809,7 +815,8 @@ public final class Picture implements Serializable {
 								po_current.getSnapshotBounds().width,
 								po_current.getSnapshotBounds().height);
 
-				bi_transformed = po_current.paint(_cPicture.getBi(), false, _cPicture.getBi(), _page
+				bi_transformed = po_current.paint(_cPicture.getBi(), 
+						false, _cPicture.getBi(), _page
 						.getJlbl_painting().getLocation().x, _page
 						.getJlbl_painting().getLocation().y, null);
 			}
@@ -824,7 +831,8 @@ public final class Picture implements Serializable {
 	/**
 	 * @return the paintObject.
 	 */
-	public PaintObjectWriting abortPaintObject(ContorlPicture _controlPic) {
+	public PaintObjectWriting abortPaintObject(
+			final ContorlPicture _controlPic) {
 		PaintObjectWriting pow = null;
 		// PaintObjectWriting pow = new PaintObjectWriting(-1, pen_current);
 		// List<DPoint> ls_points = null;
@@ -847,6 +855,7 @@ public final class Picture implements Serializable {
 
 	/**
 	 * Finishes current PaintObject.
+	 * @param _po the debug view panel.
 	 */
 	public void finish(final Debug _po) {
 
@@ -860,7 +869,8 @@ public final class Picture implements Serializable {
 
 			//add a new history item that indicates an add operation.
 			history.addHistoryItem(
-					history.createAddItem(po_current.clone(), po_current.clone()));
+					history.createAddItem(po_current.clone(),
+							po_current.clone()));
 
 			// insert into sorted lists sorted by x and y positions.
 			final Rectangle b = po_current.getSnapshotBounds();
@@ -986,7 +996,8 @@ public final class Picture implements Serializable {
 
 			} else if (po instanceof PaintObjectImage) {
 				PaintObjectImage poi = (PaintObjectImage) po;
-				poi.paint(bi, false, bi, -_recSelection.x, -_recSelection.y, null);
+				poi.paint(bi, false, bi, -_recSelection.x, 
+						-_recSelection.y, null);
 
 			} else {
 				Status.getLogger().warning("unknown kind of PaintObject" + po);
@@ -1383,7 +1394,8 @@ public final class Picture implements Serializable {
 	 * objects and tell the paintObjects selection interface controller
 	 * the color and the pen.
 	 */
-	public synchronized void finishSelection(CTabSelection _ctabSelection) {
+	public synchronized void finishSelection(
+			final CTabSelection _ctabSelection) {
 
 		// deactivates to change operations of selected items
 		if (ls_poSelected == null) {
@@ -1432,11 +1444,14 @@ public final class Picture implements Serializable {
 		
 		if (_slpo != null) {
 
-			_slpo.toFirst(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
+			_slpo.toFirst(SecureList.ID_NO_PREDECESSOR, 
+					SecureList.ID_NO_PREDECESSOR);
 			while (!_slpo.isBehind() && !_slpo.isEmpty()) {
 				
-				sl_new.insertBehind(_slpo.getItem().clone(), SecureList.ID_NO_PREDECESSOR);
-				_slpo.next(SecureList.ID_NO_PREDECESSOR, SecureList.ID_NO_PREDECESSOR);
+				sl_new.insertBehind(_slpo.getItem().clone(), 
+						SecureList.ID_NO_PREDECESSOR);
+				_slpo.next(SecureList.ID_NO_PREDECESSOR,
+						SecureList.ID_NO_PREDECESSOR);
 			}
 		}
 		return sl_new;
@@ -1496,7 +1511,8 @@ public final class Picture implements Serializable {
 		}
 
 
-		SecureList<PaintObject> sl_newMoved = cloneSecureListPaintObject(ls_poSelected);
+		SecureList<PaintObject> sl_newMoved 
+		= cloneSecureListPaintObject(ls_poSelected);
 
 		history.addHistoryItem(history.createMoveItem(
 				sl_oldMove, sl_newMoved));
@@ -1567,7 +1583,8 @@ public final class Picture implements Serializable {
 	 * 
 	 * @return whether there is something to be painted or not.
 	 */
-	public boolean paintSelected(Page _page,
+	public boolean paintSelected(
+			final Page _page,
 			final ContorlPicture _cp,
 			final ControlPaintSelectin _cps) {
 
@@ -1732,7 +1749,8 @@ public final class Picture implements Serializable {
 	 * 
 	 * @return whether there is something to be painted or not.
 	 */
-	public boolean paintSelectedOld(Page _page,
+	public boolean paintSelectedOld(
+			final Page _page,
 			final ContorlPicture _cp,
 			final ControlPaintSelectin _cps) {
 
@@ -1834,7 +1852,7 @@ public final class Picture implements Serializable {
 	 * @return whether there is something to be painted or not.
 	 */
 	public boolean paintSelectedInline(
-			ControlPaintSelectin _controlPaintSelection,
+			final ControlPaintSelectin _controlPaintSelection,
 			final Page _page,
 			final ContorlPicture _controlPic) {
 
@@ -2041,7 +2059,7 @@ public final class Picture implements Serializable {
 	 */
 	public synchronized void deleteSelected(
 			final Debug _pos,
-			CTabSelection _cts) {
+			final CTabSelection _cts) {
 
 		if (ls_poSelected == null) {
 			Status.getLogger().info("o selected elements");

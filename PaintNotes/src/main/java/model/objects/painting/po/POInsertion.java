@@ -68,7 +68,8 @@ public abstract class POInsertion extends PaintObjectPen implements Cloneable {
 	 * @param _elementId the id of the element.
 	 * @param _pen the pen which is painted
 	 */
-	public POInsertion(final int _elementId, final Pen _pen, final Picture _picture) {
+	public POInsertion(final int _elementId, final Pen _pen, 
+			final Picture _picture) {
 		
 	    //call super constructor
 	    super(_elementId, _pen, _picture);

@@ -191,7 +191,8 @@ public class ContorlPicture implements PaintListener {
 		}
 
 		//initialize the thread and start it.
-		thrd_moveBorder = new BorderThread(_r, true, null, null, getTabs(), getPage());
+		thrd_moveBorder = new BorderThread(_r, true, null, null, 
+				getTabs(), getPage());
 		thrd_moveBorder.start();
 //		
 		//paint the background
@@ -317,15 +318,11 @@ public class ContorlPicture implements PaintListener {
 	 *            the width
 	 * @param _height
 	 *            the height
-	 * @param _graphicX
-	 *            the graphics x
-	 * @param _graphiY
-	 *            the graphics y.
 	 * @param _bi
 	 *            the BufferedImage
 	 * @return the graphics
 	 */
-	public synchronized BufferedImage emptyRect(
+	public final synchronized BufferedImage emptyRect(
 			final int _x, final int _y, 
 			final int _width, final int _height, final BufferedImage _bi) {
 
@@ -360,7 +357,8 @@ public class ContorlPicture implements PaintListener {
 			final int _width, final int _height) {
 
 		Status.getLogger().finest("clr PaintLabel. \nValues: "
-				+ "\n\tgetSize:\t" + getPaintLabel().getSize() + " vs. " + getJPnlToMove().getSize()
+				+ "\n\tgetSize:\t" + getPaintLabel().getSize() 
+				+ " vs. " + getJPnlToMove().getSize()
 				+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
 				+ " vs. " + getJPnlToMove().getLocation()
 				+ "\n\t" + "_x:\t\t" + _x
@@ -371,7 +369,8 @@ public class ContorlPicture implements PaintListener {
 		//paint the painted stuff at graphics
 		setBi(cp.getPicture().emptyRectangle(
 				-getPaintLabel().getLocation().x + _x, 
-				-getPaintLabel().getLocation().y + _y, _width, _height, _x, _y, getBi()));
+				-getPaintLabel().getLocation().y + _y, _width, 
+				_height, _x, _y, getBi()));
 
 		getPaintLabel().setIcon(new ImageIcon(getBi()));
 		
@@ -428,7 +427,7 @@ public class ContorlPicture implements PaintListener {
 	/**
 	 * Release selected items and add them to normal list.
 	 */
-	public void releaseSelected() {
+	public final void releaseSelected() {
 
 		for (int i = 0; i < getPage().getJbtn_resize().length; i++) {
 			for (int j = 0; j < getPage().getJbtn_resize()[i].length; j++) {
@@ -755,7 +754,8 @@ public class ContorlPicture implements PaintListener {
 	/**
 	 * {@inheritDoc}
 	 */
-	public final void beforeLocationChange(final MoveEvent _ev, final MoveEvent _evOld) {
+	public final void beforeLocationChange(final MoveEvent _ev, 
+			final MoveEvent _evOld) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -780,8 +780,8 @@ public class ContorlPicture implements PaintListener {
 						return cp.getView().getPage().getJpnl_toMove();
 					} else {
 						Status.getLogger().severe(
-								"error: cp.getView().getPage().getJpnl_toMove() "
-								+ "is null");
+								"error: cp.getView().getPage().getJpnl_toMove()"
+								+ " is null");
 					} 
 				} else {
 

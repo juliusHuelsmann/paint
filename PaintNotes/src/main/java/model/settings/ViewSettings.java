@@ -32,7 +32,8 @@ public final class ViewSettings {
     private final static int MIN_WIDTH_WINDOW = 500, MIN_HEIGHT_WINDOW = 300;
     
     /**
-	 * Distance between items and window borders (for being able to move and resize).
+	 * Distance between items and window borders (for being able to move and 
+	 * resize).
 	 */
 	public static final int DISTANCE_TO_WINDOW = FIVE;
 
@@ -163,14 +164,16 @@ public final class ViewSettings {
     private static Dimension 
     standard_size_jframe_normalSize = new Dimension(
     		Math.max(
-    				(int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()) * 2/ 3, 
+    				(int) (Toolkit.getDefaultToolkit().getScreenSize()
+    						.getWidth()) * 2 / 3, 
     				MIN_WIDTH_WINDOW), 
     		Math.max(
-    				(int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()) * 2 / 3,
+    				(int) (Toolkit.getDefaultToolkit().getScreenSize()
+    						.getHeight()) * 2 / 3,
     				MIN_HEIGHT_WINDOW)),
     				
     standard_size_jframe_fullscreen = new Dimension(
-    		(int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() ), 
+    		(int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()), 
     		(int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
 
 
@@ -197,7 +200,8 @@ public final class ViewSettings {
      */
     private static Point messageLocation
     = new Point((getSize_jframe().width - getSizeMessage().width) / 2, 
-            getSize_jframe().height - getSizeMessage().height - 2 * 2 * 2 * 2 * 2);
+            getSize_jframe().height - getSizeMessage().height 
+            - 2 * 2 * 2 * 2 * 2);
 
 
     
@@ -239,7 +243,8 @@ public final class ViewSettings {
     /**
 	 * The bounds of the TabbedPanel.
 	 */
-	public static final Point VIEW_LOCATION_TB = new Point(DISTANCE_TO_WINDOW, DISTANCE_TO_WINDOW);
+	public static final Point VIEW_LOCATION_TB = new Point(
+			DISTANCE_TO_WINDOW, DISTANCE_TO_WINDOW);
 
 
     /**
@@ -254,7 +259,8 @@ public final class ViewSettings {
 //            - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
     
     		getSize_jframe().height - (getView_heightTB_visible() 
-            + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y + VIEW_SIZE_SP));
+            + ViewSettings.getView_heightTB_opener() 
+            + VIEW_LOCATION_TB.y + VIEW_SIZE_SP));
             //the last 25 is the size 
     /**
      * the bounds of the Page.
@@ -285,7 +291,7 @@ public final class ViewSettings {
     	    (int) (
     	    		//the width
     	    		(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
-    	    	    / (2 + 2 + 2 )+ (2 + 2 + 2) * distanceBetweenItems
+    	    	    / (2 + 2 + 2) + (2 + 2 + 2) * distanceBetweenItems
     	    	    
     	    		/ Math.sqrt(2) + 2 * distanceBetweenItems));
 
@@ -381,7 +387,8 @@ public final class ViewSettings {
 //                 - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
          
          		getSize_jframe().height - (getView_heightTB_visible() 
-                 + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y + VIEW_SIZE_SP));
+                 + ViewSettings.getView_heightTB_opener() 
+                 + VIEW_LOCATION_TB.y + VIEW_SIZE_SP));
                 //the last 25 is the size 
          view_bounds_page_closed = new Rectangle(
                  view_bounds_page_open.x, 
@@ -550,7 +557,8 @@ public final class ViewSettings {
      */
     public static Rectangle getView_bounds_jbtn_fullscreen() {
     	return new Rectangle(
-                getView_bounds_jbtn_exit().x - getView_bounds_jbtn_exit().width, 
+                getView_bounds_jbtn_exit().x 
+                - getView_bounds_jbtn_exit().width, 
                 getView_bounds_jbtn_exit().y, 
                 TWENTY_FIFE * 2 + FIVE, 2  * TEN);
     }
@@ -562,7 +570,8 @@ public final class ViewSettings {
      * @return the view_bounds_jbtn_exit
      */
     public static Rectangle getView_bounds_jbtn_exit() {
-        return new Rectangle(getSize_jframe().width - TWENTY_FIFE * 2 - FIVE - DISTANCE_TO_WINDOW, 
+        return new Rectangle(getSize_jframe().width - TWENTY_FIFE * 2 
+        		- FIVE - DISTANCE_TO_WINDOW, 
                 DISTANCE_TO_WINDOW, 
                 TWENTY_FIFE * 2 + FIVE, 2  * TEN);
     }

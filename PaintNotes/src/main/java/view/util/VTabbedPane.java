@@ -390,9 +390,9 @@ public class VTabbedPane extends MPanel {
 	}
 	
 	
-	public void setTabbedPaneOpen(boolean _bool) {
+	public final void setTabbedPaneOpen(final boolean _bool) {
 		
-		if (_bool){
+		if (_bool) {
 			openTabbedPane();
 		} else {
 			closeTabbedPane();
@@ -853,7 +853,7 @@ public class VTabbedPane extends MPanel {
     public final void stroke() {
 
     	jbtn_stuffHeadline[getOpenTab()].stroke();
-        Util.getStroke(jlbl_stroke );
+        Util.getStroke(jlbl_stroke);
 
         Util.getStrokeRec(jlbl_close, 0, 0);
     

@@ -159,7 +159,8 @@ public abstract class PaintObjectPen extends PaintObject implements Cloneable {
 	 * @param _elementId the id of the element.
 	 * @param _pen the pen which is painted
 	 */
-	public PaintObjectPen(final int _elementId, final Pen _pen, final Picture _picture) {
+	public PaintObjectPen(final int _elementId, final Pen _pen, 
+			final Picture _picture) {
 		
 	    //call super constructor
 	    super(_picture, _elementId);

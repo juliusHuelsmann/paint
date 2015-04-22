@@ -41,7 +41,7 @@ public class CTabs implements TabbedListener {
 	/**
 	 * 
 	 */
-	public void closeListener() {
+	public final void closeListener() {
 		
 		double timetoclose0 = System.currentTimeMillis();
 		Page page = cp.getView().getPage();

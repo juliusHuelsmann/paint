@@ -24,9 +24,18 @@ import control.interfaces.ActivityListener;
 public class WindowMover extends MouseMotionAdapter implements 
 MouseListener, Serializable {
 	
+	
+	/**
+	 * The activityListener.
+	 */
 	private ActivityListener al;
 	
-	public void setActivityListener(ActivityListener _al) {
+	
+	/**
+	 * set an activity listener. 
+	 * @param _al the activityListener
+	 */
+	public final void setActivityListener(final ActivityListener _al) {
 		this.al = _al;
 	}
 	/**
@@ -99,43 +108,55 @@ MouseListener, Serializable {
 	/**
 	 * set the cursor.
 	 * 
-	 * @param _path the path of the cursor image.
-	 * @param _name the name of the cursor
 	 */
 	private void setCursor(final byte _operation) {
 
-		switch(_operation){
+		switch(_operation) {
 		case OPERATION_TOP:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.N_RESIZE_CURSOR));
 			break;
 		case OPERATION_TOP_RIGHT:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR));
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.NE_RESIZE_CURSOR));
 			break;
 		case OPERATION_RIGHT:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.E_RESIZE_CURSOR));
 			break;
 		case OPERATION_RIGHT_BOTTOM:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.SE_RESIZE_CURSOR));
 			break;
 		case OPERATION_BOTTOM:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.S_RESIZE_CURSOR));
 			break;
 		case OPERATION_BOTTOM_LEFT:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR));
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.SW_RESIZE_CURSOR));
 			break;
 		case OPERATION_LEFT:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.W_RESIZE_CURSOR));
 			break;
 		case OPERATION_LEFT_TOP:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR));
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.NW_RESIZE_CURSOR));
 			break;
 		default:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.DEFAULT_CURSOR));
 			break;
 		}
-			    
 	}
+
 	
+	/**
+	 * 
+	 * @param _event
+	 * @return
+	 */
 	private byte getOperation(final MouseEvent _event) {
 
 		//reset current operation
@@ -150,7 +171,7 @@ MouseListener, Serializable {
 	
 		if (_event.getY() <= marge) {
 			
-			switch(cOperation){
+			switch(cOperation) {
 			case OPERATION_NO:
 				cOperation = OPERATION_TOP;
 				break;
@@ -166,7 +187,7 @@ MouseListener, Serializable {
 			}
 		} else if (_event.getY() >= cmp_moved.getHeight() - marge) {
 			cOperation = OPERATION_BOTTOM;
-			switch(cOperation){
+			switch(cOperation) {
 			case OPERATION_NO:
 				cOperation = OPERATION_BOTTOM;
 				break;
@@ -202,7 +223,8 @@ MouseListener, Serializable {
 			
 			pnt_diff2 = 
 					new Point(_event.getXOnScreen(), _event.getYOnScreen());
-			pnt_origSize = new Point(cmp_moved.getWidth(), cmp_moved.getHeight());
+			pnt_origSize = new Point(cmp_moved.getWidth(), cmp_moved
+					.getHeight());
 			pnt_origLoc = new Point(cmp_moved.getX(), cmp_moved.getY());
 			pressed = true;
 
@@ -250,12 +272,14 @@ MouseListener, Serializable {
 
 					cmp_moved.setLocation(
 							(int) pnt_origLoc.getX(),
-							(int) (pnt_origLoc.getY() - pnt_diff2.getY() + _event.getYOnScreen())
+							(int) (pnt_origLoc.getY() 
+									- pnt_diff2.getY() + _event.getYOnScreen())
 							);
 					
 					cmp_moved.setSize(
 							(int) pnt_origSize.getX(),
-							(int) (pnt_origSize.getY() + pnt_diff2.getY() - _event.getYOnScreen())
+							(int) (pnt_origSize.getY() 
+									+ pnt_diff2.getY() - _event.getYOnScreen())
 							);
 					break;
 				case OPERATION_BOTTOM:
@@ -263,7 +287,8 @@ MouseListener, Serializable {
 					
 					cmp_moved.setSize(
 							(int) pnt_origSize.getX(),
-							(int) (pnt_origSize.getY() - pnt_diff2.getY() + _event.getYOnScreen())
+							(int) (pnt_origSize.getY() - pnt_diff2.getY() 
+									+ _event.getYOnScreen())
 							);
 					break;
 				case OPERATION_RIGHT:
@@ -271,18 +296,21 @@ MouseListener, Serializable {
 
 					
 					cmp_moved.setSize(
-							(int) (pnt_origSize.getX() - pnt_diff2.getX() + _event.getXOnScreen()),
+							(int) (pnt_origSize.getX() - pnt_diff2.getX() 
+									+ _event.getXOnScreen()),
 							(int) pnt_origSize.getY()
 							);
 					break;
 				case OPERATION_LEFT:
 					cmp_moved.setLocation(
-							(int) (pnt_origLoc.getX() - pnt_diff2.getX() + _event.getXOnScreen()),
+							(int) (pnt_origLoc.getX() - pnt_diff2.getX() 
+									+ _event.getXOnScreen()),
 							(int) pnt_origLoc.getY()
 							);
 					
 					cmp_moved.setSize(
-							(int) (pnt_origSize.getX() + pnt_diff2.getX() - _event.getXOnScreen()),
+							(int) (pnt_origSize.getX() + pnt_diff2.getX()
+									- _event.getXOnScreen()),
 							(int) pnt_origSize.getY()
 							);
 					break;
@@ -293,12 +321,14 @@ MouseListener, Serializable {
 					break;
 				case OPERATION_BOTTOM_LEFT:
 
-					cmp_moved.setSize(_event.getXOnScreen() - pnt_startPosition.x,
+					cmp_moved.setSize(_event.getXOnScreen() - pnt_startPosition
+							.x,
 							_event.getYOnScreen() - pnt_startPosition.y);
 					break;
 				case OPERATION_LEFT_TOP:
 
-					cmp_moved.setLocation(_event.getXOnScreen() - pnt_startPosition.x,
+					cmp_moved.setLocation(_event.getXOnScreen() 
+							- pnt_startPosition.x,
 							_event.getYOnScreen() - pnt_startPosition.y);
 					break;
 				default: break;

@@ -52,11 +52,15 @@ public final class Tabs extends VTabbedPane {
     /**
      * Empty utility class constructor.
      */
-    public Tabs(View _view) {
+    public Tabs(final View _view) {
     	super(_view);
     }
     
     
+    
+    /**
+     * 
+     */
     public void reApplySize() {
 
         super.setSize(
@@ -101,7 +105,8 @@ public final class Tabs extends VTabbedPane {
         }
     }
     
-    public void initialize(View _view, ControlPaint _cp){
+    public void initialize(
+    		final View _view, final ControlPaint _cp) {
     	super.setTabbedListener(_cp.getcTabs());
 
 
@@ -290,26 +295,10 @@ public final class Tabs extends VTabbedPane {
 
 
 	/**
-	 * @param tab_print the tab_print to set
-	 */
-	public void setTab_print(Print tab_print) {
-		this.tab_print = tab_print;
-	}
-
-
-	/**
 	 * @return the tab_write
 	 */
 	public Write getTab_write() {
 		return tab_write;
-	}
-
-
-	/**
-	 * @param tab_write the tab_write to set
-	 */
-	public void setTab_write(Write tab_write) {
-		this.tab_write = tab_write;
 	}
 
 
@@ -322,14 +311,6 @@ public final class Tabs extends VTabbedPane {
 
 
 	/**
-	 * @param tab_selection the tab_selection to set
-	 */
-	public void setTab_selection(Selection tab_selection) {
-		this.tab_selection = tab_selection;
-	}
-
-
-	/**
 	 * @return the tab_export
 	 */
 	public Export getTab_export() {
@@ -337,27 +318,12 @@ public final class Tabs extends VTabbedPane {
 	}
 
 
-	/**
-	 * @param tab_export the tab_export to set
-	 */
-	public void setTab_export(Export tab_export) {
-		this.tab_export = tab_export;
-	}
-
 
 	/**
 	 * @return the tab_look
 	 */
 	public Look getTab_look() {
 		return tab_look;
-	}
-
-
-	/**
-	 * @param tab_look the tab_look to set
-	 */
-	public void setTab_look(Look tab_look) {
-		this.tab_look = tab_look;
 	}
 
 
@@ -370,26 +336,10 @@ public final class Tabs extends VTabbedPane {
 
 
 	/**
-	 * @param tab_pos the tab_pos to set
-	 */
-	public void setTab_pos(Debug tab_pos) {
-		this.tab_pos = tab_pos;
-	}
-
-
-	/**
 	 * @return the tab_insert
 	 */
 	public Insert getTab_insert() {
 		return tab_insert;
-	}
-
-
-	/**
-	 * @param tab_insert the tab_insert to set
-	 */
-	public void setTab_insert(Insert tab_insert) {
-		this.tab_insert = tab_insert;
 	}
 
 	/**
@@ -397,12 +347,5 @@ public final class Tabs extends VTabbedPane {
 	 */
 	public About getTab_about() {
 		return tab_about;
-	}
-
-	/**
-	 * @param tab_about the tab_about to set
-	 */
-	public void setTab_about(About tab_about) {
-		this.tab_about = tab_about;
 	}
 }

@@ -34,7 +34,8 @@ public class Item2 extends MButton {
     
     
     
-    public void setItemActivityListener(ActivityListener _activityListener) {
+    public final void setItemActivityListener(
+    		final ActivityListener _activityListener) {
     	CItem2.getInstance().addItemActivityListener(_activityListener);
     }
     /**

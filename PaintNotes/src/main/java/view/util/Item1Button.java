@@ -316,8 +316,8 @@ public class Item1Button extends MPanel {
 	    jlbl_color.setLocation(jlbl_color.getX(), _y);
 	}
 	/**
-	 * set the y coordinate of Item1Button-Icon JLabel.
-	 * @param _y the new coordinate
+	 * set the x coordinate of Item1Button-Icon JLabel.
+	 * @param _x the new coordinate
 	 */
 	public final void setIconLabelX(final int _x) {
 	    jlbl_color.setLocation(_x, jlbl_color.getY());
@@ -350,7 +350,11 @@ public class Item1Button extends MPanel {
 	}
 	
 	
-	public void enableText() {
+	
+	/**
+	 * enable text.
+	 */
+	public final void enableText() {
 		textEnabled = true;
 	}
 	

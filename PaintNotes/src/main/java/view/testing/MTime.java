@@ -2,9 +2,20 @@ package view.testing;
 
 import java.io.Serializable;
 
+
+/**
+ * 
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
 public class MTime implements Serializable {
 
 	
+	/**
+	 * The default serial version.
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Title of the time item.
 	 */
@@ -44,7 +55,11 @@ public class MTime implements Serializable {
 	}
 	
 	
-	public synchronized void applyWorkingTime() {
+	
+	/**
+	 * 
+	 */
+	public final synchronized void applyWorkingTime() {
 		time += workingTime;
 		workingTime = 0;
 	}
@@ -64,39 +79,39 @@ public class MTime implements Serializable {
 	/**
 	 * @return the strg_title
 	 */
-	public String getStrg_title() {
+	public final String getStrg_title() {
 		return strg_title;
 	}
 
 
 	/**
-	 * @param strg_title the strg_title to set
+	 * @param _strg_title the strg_title to set
 	 */
-	public void setStrg_title(String strg_title) {
-		this.strg_title = strg_title;
+	public final void setStrg_title(final String _strg_title) {
+		this.strg_title = _strg_title;
 	}
 
 
 	/**
 	 * @return the time
 	 */
-	public int getTime() {
+	public final int getTime() {
 		return time;
 	}
 
 
 	/**
-	 * @param time the time to set
+	 * @param _time the time to set
 	 */
-	public void setTime(int time) {
-		this.time = time;
+	public final void setTime(final int _time) {
+		this.time = _time;
 	}
 
 
 	/**
 	 * @return the identifier
 	 */
-	public int getIdentifier() {
+	public final int getIdentifier() {
 		return identifier;
 	}
 
@@ -104,15 +119,15 @@ public class MTime implements Serializable {
 	/**
 	 * @return the workingTime
 	 */
-	public int getWorkingTime() {
+	public final int getWorkingTime() {
 		return workingTime;
 	}
 
 
 	/**
-	 * @param workingTime the workingTime to set
+	 * @param _workingTime the workingTime to set
 	 */
-	public void setWorkingTime(int workingTime) {
-		this.workingTime = workingTime;
+	public final void setWorkingTime(final int _workingTime) {
+		this.workingTime = _workingTime;
 	}
 }

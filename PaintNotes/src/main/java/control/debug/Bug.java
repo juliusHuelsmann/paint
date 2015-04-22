@@ -82,7 +82,8 @@ public final class Bug {
 						if (p != null) {
 
 							cp.getPicture().changePaintObject(
-									p, cp.getView().getPage(), cp.getControlPic());
+									p, cp.getView().getPage(),
+									cp.getControlPic());
 						} else {
 							ls_strg.previous();
 						}

@@ -63,7 +63,8 @@ public final class Insert extends Tab {
     /**
      * Empty utility class constructor.
      */
-	public Insert(CPaintStatus _cps, ControlPaint _cp) { 
+	public Insert(final CPaintStatus _cps, 
+			final ControlPaint _cp) { 
 	    super(2 + 2);
 
 
@@ -193,9 +194,10 @@ public final class Insert extends Tab {
 	 * Initialize geometric objects.
 	 * @param _x the start x coordinate
 	 */
-	private void initializeGeo(final int _x, 
-			ControlPaint _cp,
-			CPaintStatus _cps) {
+	private void initializeGeo(
+			final int _x, 
+			final ControlPaint _cp,
+			final CPaintStatus _cps) {
 
         ia_geo = new Item2Menu();
         ia_geo.setMenuListener(_cp);
@@ -275,14 +277,16 @@ public final class Insert extends Tab {
         i2_g_rectFilled.setIcon("icon/geoForm/rectangleFilled.png");
 
         i2_g_rect_roundFilled = new Item2();
-        i2_g_rect_roundFilled.setItemActivityListener(_cp.getUtilityControlItem2());
+        i2_g_rect_roundFilled.setItemActivityListener(
+        		_cp.getUtilityControlItem2());
         i2_g_rect_roundFilled.addMouseListener(_cps);
         i2_g_rect_roundFilled.setTitle("rectangle round filled");
         ia_geo.add(i2_g_rect_roundFilled);
         i2_g_rect_roundFilled.setIcon("icon/geoForm/rectangleRoundFilled.png");
         
         i2_g_triangleFilled = new Item2();
-        i2_g_triangleFilled.setItemActivityListener(_cp.getUtilityControlItem2());
+        i2_g_triangleFilled.setItemActivityListener(
+        		_cp.getUtilityControlItem2());
         i2_g_triangleFilled.addMouseListener(_cps);
         i2_g_triangleFilled.setTitle("triangle filled");
         ia_geo.add(i2_g_triangleFilled);

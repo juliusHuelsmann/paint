@@ -9,9 +9,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
-
-import javax.swing.ImageIcon;
-
 import control.forms.CLoading;
 import control.forms.CNew;
 import control.forms.CPaintStatus;
@@ -1143,8 +1140,10 @@ MenuListener {
                 			getControlPaintSelection(),
                 			getcTabSelection(),
                 			getView().getTabs().getTab_debug(),
-                			getView().getPage().getJlbl_painting().getLocation().x,
-                			getView().getPage().getJlbl_painting().getLocation().y);
+                			getView().getPage().getJlbl_painting()
+                			.getLocation().x,
+                			getView().getPage().getJlbl_painting()
+                			.getLocation().y);
                     controlPic.releaseSelected();
                     getPage().removeButtons();
                 }
@@ -1206,8 +1205,9 @@ MenuListener {
                     - getPage().getJlbl_painting()
                     .getWidth()));
             newY = Math.max(newY,
-                    -(Status.getImageShowSize().height - getPage().getJlbl_painting()
-                            .getHeight()));
+                    -(Status.getImageShowSize().height 
+                    		- getPage().getJlbl_painting()
+                    		.getHeight()));
             
             
             // not greater than 0
@@ -1299,12 +1299,14 @@ MenuListener {
             		field, new Point(xShift, yShift))) {
 
                 //move current item from normal list into selected list 
-                project.getPicture().insertIntoSelected(po_current, getView().getTabs().getTab_debug());
+                project.getPicture().insertIntoSelected(po_current,
+                		getView().getTabs().getTab_debug());
                 project.getPicture().getLs_po_sortedByX().remove(
                 		transaction);
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
-                 new PictureOverview(view.getTabs().getTab_debug()).remove(po_current);
+                 new PictureOverview(view.getTabs().getTab_debug()).remove(
+                		 po_current);
                 project.getPicture().getLs_po_sortedByX().toFirst(
                 		transaction, SecureList.ID_NO_PREDECESSOR);
             } else {
@@ -1422,7 +1424,8 @@ MenuListener {
 
                     PaintObject [][] separatedPO = po_current.separate(
                     		field, new Point(xShift, yShift));
-                    new PictureOverview(view.getTabs().getTab_debug()).remove(project.getPicture()
+                    new PictureOverview(view.getTabs().getTab_debug()).remove(
+                    		project.getPicture()
                             .getLs_po_sortedByX().getItem());
                     project.getPicture().getLs_po_sortedByX().remove(
                     		transaction);
@@ -1437,7 +1440,8 @@ MenuListener {
                             //insert the item into the sorted list.
                             separatedPO[1][current].recalculateSnapshotBounds();
                             project.getPicture().insertIntoSelected(
-                                    separatedPO[1][current], getView().getTabs().getTab_debug());
+                                    separatedPO[1][current], 
+                                    getView().getTabs().getTab_debug());
                         } else {
                             
                             Status.getLogger().warning("separated paintObject "
@@ -1457,8 +1461,9 @@ MenuListener {
                             separatedPO[0][current].recalculateSnapshotBounds();
                             ls_toInsert.insertBehind(separatedPO[0][current]);
     
-                             new PictureOverview(view.getTabs().getTab_debug()).add(
-                                    separatedPO[0][current]);
+                             new PictureOverview(
+                            		 view.getTabs().getTab_debug()).add(
+                            				 separatedPO[0][current]);
                         } else {
 
                             Status.getLogger().warning("separated paintObject "
@@ -1517,8 +1522,6 @@ MenuListener {
      * selection line.
      * 
      * @param _r_size the rectangle.
-     * @param _event
-     *            the mouseEvent.
      */
     private synchronized void mr_sel_line_complete(
             final Rectangle _r_size) {
@@ -1584,10 +1587,12 @@ MenuListener {
 
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
-                 new PictureOverview(view.getTabs().getTab_debug()).remove(po_current);
+                 new PictureOverview(view.getTabs().getTab_debug()).remove(
+                		 po_current);
                 
                 //move current item from normal list into selected list 
-                project.getPicture().insertIntoSelected(po_current, getView().getTabs().getTab_debug());
+                project.getPicture().insertIntoSelected(
+                		po_current, getView().getTabs().getTab_debug());
                              
                 project.getPicture().getLs_po_sortedByX().remove(
                 		transaction);
@@ -1647,7 +1652,7 @@ MenuListener {
      * 
      * @param _r_sizeField the rectangle
      */
-    public void mr_sel_line_destroy(final Rectangle _r_sizeField) {
+    public final void mr_sel_line_destroy(final Rectangle _r_sizeField) {
 
     	//start transaction 
     	final int transaction = project.getPicture().getLs_po_sortedByX()
@@ -1717,7 +1722,8 @@ MenuListener {
 //                    
 //                    PaintObject [][] separatedPO = 
 //                    Util.mergeDoubleArray(p, p2);
-                     new PictureOverview(view.getTabs().getTab_debug()).remove(project.getPicture()
+                     new PictureOverview(view.getTabs().getTab_debug()).remove(
+                    		 project.getPicture()
                             .getLs_po_sortedByX().getItem());
                     project.getPicture().getLs_po_sortedByX().remove(
                     		transaction);
@@ -1755,8 +1761,9 @@ MenuListener {
                             separatedPO[0][current].recalculateSnapshotBounds();
                             ls_toInsert.insertBehind(separatedPO[0][current]);
     
-                             new PictureOverview(view.getTabs().getTab_debug()).add(
-                                    separatedPO[0][current]);
+                             new PictureOverview(
+                            		 view.getTabs().getTab_debug()).add(
+                            				 separatedPO[0][current]);
                         } else {
 
                             Status.getLogger().warning("separated paintObject "
@@ -1824,7 +1831,7 @@ MenuListener {
      * Erase functionality at mouseReleased.
      * @param _p the Point.
      */
-    public synchronized void mr_erase(final Point _p) {
+    public final synchronized void mr_erase(final Point _p) {
 
     	
     	
@@ -1884,16 +1891,22 @@ MenuListener {
                         <= (r_sizeField.x + r_sizeField.width)) {
 
 
-                    //The y condition has to be in here because the items are just 
-                    //sorted by x coordinate; thus it is possible that one PaintObject 
-                    //is not suitable for the specified rectangle but some of its 
+                    //The y condition has to be in here 
+                	//because the items are just 
+                    //sorted by x coordinate; thus it is 
+                	//possible that one PaintObject 
+                    //is not suitable for the specified 
+                	//rectangle but some of its 
                     //predecessors in sorted list do.
                     if (po_current.isInSelectionImage(r_sizeField)) {
 
 
-                        //remove item out of PictureOverview and paint and refresh paint
-                        //otherwise it is not possible to select more than one item
-                         new PictureOverview(view.getTabs().getTab_debug()).remove(po_current);
+                        //remove item out of PictureOverview and 
+                    	//paint and refresh paint
+                        //otherwise it is not possible to select 
+                    	//more than one item
+                         new PictureOverview(view.getTabs()
+                        		 .getTab_debug()).remove(po_current);
                         
                         project.getPicture().getLs_po_sortedByX().remove(
                         		transaction);
@@ -1904,7 +1917,8 @@ MenuListener {
 
                     // update current values
                     currentX = po_current.getSnapshotBounds().x;
-                    po_current = project.getPicture().getLs_po_sortedByX().getItem();
+                    po_current = project.getPicture()
+                    		.getLs_po_sortedByX().getItem();
 
                 }
 
@@ -1923,7 +1937,8 @@ MenuListener {
             	
             	
             	
-            	project.getPicture().deleteSelected(getView().getTabs().getTab_debug(), cTabSelection);
+            	project.getPicture().deleteSelected(getView()
+            			.getTabs().getTab_debug(), cTabSelection);
             	break;
             case Status.ERASE_DESTROY:
 
@@ -1935,9 +1950,11 @@ MenuListener {
 	                    && currentX 
 	                    <= (r_sizeField.x + r_sizeField.width)) {
 	
-	                //The y condition has to be in here because the items are just 
+	                //The y condition has to be in here because the items 
+	            	//are just 
 	                //sorted by x coordinate; thus it is possible that one 
-	                //PaintObject is not suitable for the specified rectangle but 
+	                //PaintObject is not suitable for the specified 
+	            	//rectangle but 
 	                //some of its predecessors in sorted list do.
 	                if (po_current.isInSelectionImage(r_sizeField)) {
 	
@@ -1945,12 +1962,15 @@ MenuListener {
 	                    // selection list
 	
 	                	ls_separatedPO 
-	                	= po_current.deleteRectangle(r_sizeField, ls_separatedPO);
+	                	= po_current.deleteRectangle(
+	                			r_sizeField, ls_separatedPO);
 	                	if (ls_separatedPO != null) {
 	
 	                    	if (debug_update_paintObjects_view) {
 	
-	                            new PictureOverview(view.getTabs().getTab_debug()).remove(project.getPicture()
+	                            new PictureOverview(view.getTabs()
+	                            		.getTab_debug()).remove(
+	                            				project.getPicture()
 	                                    .getLs_po_sortedByX().getItem());
 	                    	}
 	                        project.getPicture().getLs_po_sortedByX().remove(
@@ -1980,16 +2000,20 @@ MenuListener {
 	                    if (ls_separatedPO.getItem() != null) {
 	                        //recalculate snapshot bounds for being able to
 	                        //insert the item into the sorted list.
-	                    	ls_separatedPO.getItem().recalculateSnapshotBounds();
+	                    	ls_separatedPO.getItem()
+	                    	.recalculateSnapshotBounds();
 	
-	                        project.getPicture().getLs_po_sortedByX().insertSorted(
+	                        project.getPicture().getLs_po_sortedByX()
+	                        .insertSorted(
 	                        		ls_separatedPO.getItem(), 
-	                        		ls_separatedPO.getItem().getSnapshotBounds().x,
+	                        		ls_separatedPO.getItem()
+	                        		.getSnapshotBounds().x,
 	                        		transaction);
 	
 	                    	if (debug_update_paintObjects_view) {
 	
-	                            new PictureOverview(view.getTabs().getTab_debug()).add(
+	                            new PictureOverview(
+	                            		view.getTabs().getTab_debug()).add(
 	                           		 ls_separatedPO.getItem());
 	                    	}
 	                    } else {
@@ -2017,6 +2041,8 @@ MenuListener {
 	            r_sizeField.height /= cZoomFactorHeight;
 	
 	        	break;
+			default:
+				break;
 	        }
         } else {
 
@@ -2040,7 +2066,7 @@ MenuListener {
     /**
      * Erase functionality at mouseReleased.
      */
-    public synchronized void mr_eraseNew() {
+    public final synchronized void mr_eraseNew() {
 
     	/**
     	 * Value for showing the new paintObjects in PaintObjectsView.
@@ -2103,7 +2129,8 @@ MenuListener {
                     .getItem();
             int currentX = po_current.getSnapshotBounds().x;
 
-            List<PaintObjectWriting> ls_separatedPO = new List<PaintObjectWriting>();
+            List<PaintObjectWriting> ls_separatedPO 
+            = new List<PaintObjectWriting>();
             
             // go through list. until either list is empty or it is
             // impossible for the paintSelection to paint inside the
@@ -2136,7 +2163,8 @@ MenuListener {
 
                     	if (debug_update_paintObjects_view) {
 
-                            new PictureOverview(view.getTabs().getTab_debug()).remove(project.getPicture()
+                            new PictureOverview(view.getTabs()
+                            		.getTab_debug()).remove(project.getPicture()
                                     .getLs_po_sortedByX().getItem());
                     	}
                         project.getPicture().getLs_po_sortedByX().remove(
@@ -2216,9 +2244,11 @@ MenuListener {
         int color = project.getPicture().getColorPX(_event.getX(), 
                 _event.getY(), getControlPic().getBi());
         if (_event.getButton() == 1) {
-        	view.getTabs().getTab_paint().getTb_color1().setBackground(new Color(color));
+        	view.getTabs().getTab_paint().getTb_color1().setBackground(
+        			new Color(color));
         } else {
-        	view.getTabs().getTab_paint().getTb_color2().setBackground(new Color(color));
+        	view.getTabs().getTab_paint().getTb_color2().setBackground(
+        			new Color(color));
         }
     }
     
@@ -2236,7 +2266,8 @@ MenuListener {
      * Initializes the movement thread.
      * @param _mmSP the movement speed
      */
-    public void mr_paint_initializeMovementThread(final Point _mmSP) {
+    public final void mr_paint_initializeMovementThread(
+    		final Point _mmSP) {
         thrd_move = new Thread() {
             @Override public void run() {
                 final int max = 25;

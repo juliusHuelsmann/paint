@@ -134,7 +134,8 @@ public class PenSelection extends Pen implements Serializable {
 	                    y1 = 0;
 	                }
 	                
-	                _bi.setRGB(x1, y1, ViewSettings.SELECTION_BORDER_CLR_BORDER[s]
+	                _bi.setRGB(x1, y1, 
+	                		ViewSettings.SELECTION_BORDER_CLR_BORDER[s]
 	                        .getRGB()); 
 	                currentBorderValue++;
 	            }

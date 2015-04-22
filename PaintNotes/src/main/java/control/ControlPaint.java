@@ -2494,6 +2494,12 @@ MenuListener {
         } 
 	}
 	
+	
+	/**
+	 * Perform a preprint of a point.
+	 * @param _x
+	 * @param _y
+	 */
 	private void performPreprint(final int _x, final int _y) {
 
 		//call remove preprint which removes a preprint if it exists
@@ -2533,8 +2539,8 @@ MenuListener {
         
         int recX = _x - preprintX * 2;
         int recY = _y - preprintY * 2;
-        int recWidth = preprintX * 4;
-        int recHeight = preprintY * 4;
+        int recWidth = preprintX * (2 + 2);
+        int recHeight = preprintY * (2 + 2);
         rect_preprintBounds = new Rectangle(0, 0, 0, 0);
         
         // if the rectangle is outside the legal scope set its bounds
@@ -2551,7 +2557,7 @@ MenuListener {
         	recX = 0;
         }
         
-        if ( recX >= bi_preprint.getWidth()) {
+        if (recX >= bi_preprint.getWidth()) {
         	rect_preprintBounds = null;
         } else if (recX + recWidth >= bi_preprint.getWidth()) {
         	recWidth = bi_preprint.getWidth() - recX;
@@ -2571,7 +2577,7 @@ MenuListener {
         	recY = 0;
         }
         
-        if ( recY >= bi_preprint.getHeight()) {
+        if (recY >= bi_preprint.getHeight()) {
         	rect_preprintBounds = null;
         } else if (recY + recHeight >= bi_preprint.getHeight()) {
         	recHeight = bi_preprint.getHeight() - recY;
@@ -2786,18 +2792,10 @@ MenuListener {
 		return cTabAbout;
 	}
 
-
-
-
-	public Project getProject() {
+	/**
+	 * @return the project
+	 */
+	public final Project getProject() {
 		return project;
 	}
-
-
-
-
-	public void setProject(Project project) {
-		this.project = project;
-	}
-    
 }

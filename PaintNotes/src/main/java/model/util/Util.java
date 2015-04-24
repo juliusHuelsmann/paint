@@ -536,14 +536,14 @@ public final class Util {
 				                   * rec_maintainDest.height];
 				bt = _bi.getRGB(rec_maintainStart.x, rec_maintainStart.y, 
 						rec_maintainStart.width, rec_maintainStart.height, 
-						bt, 1, rec_maintainStart.width - 1);
+						bt, 0, rec_maintainStart.width - 1);
 				
 				_bi.setRGB(rec_maintainDest.x,
 						rec_maintainDest.y,
 						rec_maintainDest.width, 
 						rec_maintainDest.height, 
 						bt, 
-						1, 
+						0, 
 						rec_maintainDest.width - 1);
 
 

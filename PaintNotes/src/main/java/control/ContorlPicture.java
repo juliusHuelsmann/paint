@@ -575,7 +575,7 @@ public class ContorlPicture implements PaintListener {
 							maintainWidth, 
 							maintainHeight, 
 							rgbArray, 0, maintainWidth);
-					
+
 					//write the maintained RGB array to shifted coordinates.
 					bi.setRGB(shiftedStartX, 
 							shiftedStartY, 

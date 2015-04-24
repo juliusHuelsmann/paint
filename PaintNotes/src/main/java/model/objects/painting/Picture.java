@@ -1121,12 +1121,43 @@ public final class Picture implements Serializable {
 		try {
 			FileOutputStream fos = new FileOutputStream(new File(_wsLoc));
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+			// store the content of the BufferedImages elsewhere and delete 
+			// it afterwards because it is not serializable. After saving 
+			// operation has been completed, the bufferedImages are 
+			// automatically loaded.
+			if (ls_po_sortedByX != null) {
+				ls_po_sortedByX.toFirst(SecureList.ID_NO_PREDECESSOR, 
+						SecureList.ID_NO_PREDECESSOR);
+				while (!ls_po_sortedByX.isBehind()) {
+					if (ls_po_sortedByX.getItem() instanceof PaintObjectImage) {
+						((PaintObjectImage) ls_po_sortedByX.getItem())
+						.prepareForSaving();
+					}
+					ls_po_sortedByX.next(SecureList.ID_NO_PREDECESSOR, 
+						SecureList.ID_NO_PREDECESSOR);
+				}
+			}
 			oos.writeObject(ls_po_sortedByX);
 			oos.flush();
 			oos.close();
 			fos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+
+		// re - load the bufferedImage to file (which is not serializable, thus
+		// it had to be packed for saving.
+		if (ls_po_sortedByX != null) {
+			ls_po_sortedByX.toFirst(SecureList.ID_NO_PREDECESSOR, 
+					SecureList.ID_NO_PREDECESSOR);
+			while (!ls_po_sortedByX.isBehind()) {
+				if (ls_po_sortedByX.getItem() instanceof PaintObjectImage) {
+					((PaintObjectImage) ls_po_sortedByX.getItem()).restore();
+				}
+				ls_po_sortedByX.next(SecureList.ID_NO_PREDECESSOR, 
+					SecureList.ID_NO_PREDECESSOR);
+			}
 		}
 	}
 
@@ -1152,6 +1183,23 @@ public final class Picture implements Serializable {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+
+		
+
+		// re - load the bufferedImage to file (which is not serializable, thus
+		// it had to be packed for saving.
+		if (ls_po_sortedByX != null) {
+			ls_po_sortedByX.toFirst(SecureList.ID_NO_PREDECESSOR, 
+					SecureList.ID_NO_PREDECESSOR);
+			while (!ls_po_sortedByX.isBehind()) {
+				if (ls_po_sortedByX.getItem() instanceof PaintObjectImage) {
+					((PaintObjectImage) ls_po_sortedByX.getItem()).restore();
+				}
+				ls_po_sortedByX.next(SecureList.ID_NO_PREDECESSOR, 
+					SecureList.ID_NO_PREDECESSOR);
+			}
+		}
+
 	}
 
 	/**

@@ -6,10 +6,12 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import model.objects.painting.Picture;
 import model.settings.Error;
 import model.settings.Status;
 import model.util.DPoint;
+import model.util.SerializBufferedImage;
 import model.util.adt.list.List;
 import model.util.paint.Utils;
 
@@ -34,7 +36,7 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
     /**
      * The BufferedImage.
      */
-    private BufferedImage bi_image;
+    private SerializBufferedImage bi_image;
     
     
     /**
@@ -48,11 +50,12 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
      * 
      * @param _elementId the id of the element
      * @param _bi the bufferedImage which is displayed.
+     * @param _picture the Picture which is saved.
      */
     public PaintObjectImage(final int _elementId, final BufferedImage _bi, 
     		final Picture _picture) {
         super(_picture, _elementId);
-        this.bi_image = _bi;
+        this.bi_image = new SerializBufferedImage(_bi);
         this.pnt_locationOfImage = new Point(0, 0);
     }
 
@@ -243,7 +246,7 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
                     (int) Math.max(1, ((_r.height) * cZoomFactorHeight)), null);
         }
         
-        return bi_image;
+        return bi_image.getContent();
     }
     
     
@@ -290,7 +293,7 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
      */
     @Override public final BufferedImage getSnapshot() {
 
-        return bi_image;
+        return bi_image.getContent();
     }
 
     
@@ -299,7 +302,12 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
      * @param _bi the BI
      */
     public final void setImage(final BufferedImage _bi) {
-        this.bi_image = _bi;
+    	if (bi_image != null) {
+
+            this.bi_image.setContent(_bi);
+    	} else {
+    		bi_image = new SerializBufferedImage(_bi);
+    	}
     }
 
     
@@ -353,9 +361,10 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
         final double cZoomFactorHeight = 1.0 
                 * Status.getImageSize().height
                 / Status.getImageShowSize().height;
-        bi_image = Utils.resizeImage(
+        bi_image.setContent(Utils.resizeImage(
                 (int) (_pnt_size.getX() * cZoomFactorWidth), 
-                (int) (_pnt_size.getY() * cZoomFactorHeight), bi_image);
+                (int) (_pnt_size.getY() * cZoomFactorHeight), 
+                bi_image.getContent()));
         pnt_locationOfImage = new Point(
                 (int) _pnt_from.getX(), (int) _pnt_from.getY());
         
@@ -393,11 +402,13 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 		//The white color is necessary because if the pipette tool is used
 		//the transparency color is to be fetched as white.
 		int[] newRGBA = new int[_r.width * _r.height];
-		int rgba = new Color(255, 255, 255, 0).getRGB();
+		final int maxRGB = 255;
+		int rgba = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
 		for (int i = 0; i < newRGBA.length; i++) {
 			newRGBA[i] = rgba;
 		}
-		bi_image.setRGB(_r.x, _r.y, _r.width, _r.height, newRGBA, 0, _r.width);
+		bi_image.getContent().setRGB(
+				_r.x, _r.y, _r.width, _r.height, newRGBA, 0, _r.width);
 		
 		//return null because there is no new PaintObject created.
 		return null;
@@ -413,6 +424,39 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 			final Point _pnt_shiftRectangle, 
 			final DPoint _pnt_stretch, 
 			final List<PaintObjectWriting> _l) {
+		
+		final int maxRGB = 255;
+		final int rgbAlpha = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
+		for (int xPx = _pnt_shiftRectangle.x; 
+				xPx < _r.length * _pnt_stretch.getX();
+				xPx++) {
+			for (int yPx = _pnt_shiftRectangle.x; 
+					yPx < _r.length * _pnt_stretch.getX();
+					yPx++) {
+				if (xPx >= 0 && xPx < bi_image.getWidth()
+						&& yPx >= 0 && yPx < bi_image.getHeight()) {
+
+					bi_image.getContent().setRGB(xPx, yPx, rgbAlpha);
+				} else {
+					
+					final String errorMsg = "POI: Delete curve error. "
+							+ "PX out of range";
+
+					if (xPx < 0) {
+
+						Status.getLogger().severe(errorMsg + "x < 0");
+					} else if (xPx >= bi_image.getWidth()) {
+
+						Status.getLogger().severe(errorMsg + "x >= widht");
+					} else if (yPx < 0) {
+
+						Status.getLogger().severe(errorMsg + "y < 0");
+					} else if (yPx >= bi_image.getHeight()) {
+						Status.getLogger().severe(errorMsg + "y >= heights");
+					}
+				}
+			}	
+		}
 
         new Exception("not implemented yet").printStackTrace();
         return null;
@@ -430,5 +474,22 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 
         new Exception("not implemented yet").printStackTrace();
 		return false;
+	}
+	
+	
+	/**
+	 * Because the BufferedImage is not serializable, it is necessary
+	 * to remove the BufferedImage for saving and to store its content outwards.
+	 */
+	public void prepareForSaving() {
+		bi_image.pack();
+	}
+	
+	
+	/**
+	 * Restore has to be done after saving.
+	 */
+	public void restore() {
+		bi_image.restore();
 	}
 }

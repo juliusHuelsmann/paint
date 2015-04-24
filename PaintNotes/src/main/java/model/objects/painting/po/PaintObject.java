@@ -104,13 +104,19 @@ public abstract class PaintObject implements Serializable, Cloneable {
             final DPoint _pnt_size);
     
 
+	/**
+	 * Instance of picture for being able to clone.
+	 */
     private Picture picture;
 
 	/**
 	 * Constructor creates new instance
 	 * of list.
 	 * 
-	 * @param _elementId the id of the element.
+	 * @param _elementId 	the id of the element.
+	 * @param _picture 		instance of a high model class for being able to 
+	 * 						create new PaintObjects.
+	 * 					
 	 */
 	public PaintObject(final Picture _picture, final int _elementId) {
 		

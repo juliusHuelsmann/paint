@@ -19,7 +19,7 @@ import model.util.adt.list.List;
  * 
  * The paint object takes care of painting the image both to the screen and
  * to the not resized BufferedImage which will be saved as an image (e.g. as
- * .PNG file).
+ * .PNG file).<br><br>
  * 
  * Implemented by PaintObjectImage and PaintObjectWriting.
  * 

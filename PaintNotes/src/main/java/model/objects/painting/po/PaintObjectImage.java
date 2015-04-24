@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
 import model.settings.Error;
 import model.settings.Status;
@@ -110,7 +111,7 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             
             //print error message and interrupt immediately
             Error.printError(getClass().getSimpleName(), "isInSelection", 
-                    "Error moving PaintObject into nirvana (the band) ",
+                    "Error moving PaintObject into nirvana (the band). ",
                     new Exception("exception"), 
                     Error.ERROR_MESSAGE_INTERRUPT);
         } else {
@@ -282,9 +283,52 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
     public final PaintObject[][] separate(
     		final byte[][] _r, final Point _pnt_selectionShift) {
 
-        new Exception(getClass() + " not implemenented yet")
-        .printStackTrace();
-        return null;
+    	final PaintObjectImage[][] p_ret = new PaintObjectImage[2][1];
+
+    	
+    	final PaintObjectImage poi_outside = getPicture().createPOI(
+    			bi_image.getContent());
+    	
+    	final BufferedImage bi_inside = new BufferedImage(
+    			_r.length,
+    			_r[0].length, BufferedImage.TYPE_INT_ARGB); 
+
+    	//alpha value
+    	final int alpha = new Color(255, 255, 255, 0).getRGB();
+
+    	// remove the separated stuff from the BufferedImage that is outside
+    	// and insert it into the new created BufferedImage.
+    	for (int i = 0; i < bi_inside.getWidth(); i++) {
+    		for (int j = 0; j < bi_inside.getHeight(); j++) {
+    			
+    			//if occupied
+    			if (_r[i][j] == PaintBI.OCCUPIED) {
+    				
+    				final int cX = i + _pnt_selectionShift.x, 
+    						cY = j + _pnt_selectionShift.y;
+    				
+    				if (cX >= 0 && cX < bi_image.getWidth()
+    						&& cY >= 0 && cY < bi_image.getHeight()) {
+
+						
+        				//set the RGB value to the new BufferedImage
+        				bi_inside.setRGB(i, j, 
+        						bi_image.getContent().getRGB(cX, cY));
+        				
+        				//remove the RGB value from old BufferedImage.
+        				bi_image.getContent().setRGB(cX, cY, alpha);
+    				}
+    			}
+        	}
+    	}
+    	
+    	
+    	final PaintObjectImage poi_inside = getPicture().createPOI(bi_inside);
+    	p_ret[0][0] = poi_outside;
+    	p_ret[1][0] = poi_inside;
+    	
+    	System.out.println("NEu in bielefeld.");
+        return p_ret;
     }
 
 
@@ -344,7 +388,66 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
      * {@inheritDoc}
      */
     @Override public final synchronized void recalculateSnapshotBounds() {
-        new Exception(getClass() + "not implemented yet").printStackTrace();
+    	
+    	//TODO: das sollte noch gemacht werden.
+    	//es muss darauf geachtt werden, dass, wenn das hier implementiert wird,
+    	//die implementation auch in dem sinne sinnvolls ist.
+    	//also nicht nur nach unten rechts schauen ob da alles mit alpha px voll
+    	//ist, sondern auch an allen anderen kanten schauen (OL, OR, UL)
+//    	final int maxRgb = 255;
+//    	final int alpha = new Color(maxRgb, maxRgb, maxRgb, 0).getRGB();
+//    	int checkedWidth = -1, checkedHeight = -1;
+//    	
+//    	for (int width = bi_image.getWidth(); width > 0; width--) {
+//    		for (int height = bi_image.getHeight(); height > 0; height--) {
+//    			
+//        		checkedWidth = width;
+//        		checkedHeight = height;
+//        		if (bi_image.getContent().getRGB(width, height) != alpha) {
+//        			
+//        			//interrupt loop
+//        			width = -1; 
+//        			height = -1;
+//        		}
+//        	}
+//    	}
+//    	
+//    	//here, the correct new width has been found.
+//    	
+//    	//if width is equal to 0, there is no image anymore.
+//    	if (checkedWidth == 0) {
+//    		bi_image = null;
+//    		pnt_locationOfImage = new Point(0, 0);
+//    		
+//    	} else {
+//
+//    		//otherwise done because then the height is found.
+//        	if (checkedHeight != bi_image.getHeight()) {
+//        		for (int height = bi_image.getHeight(); height > 0; height--) {
+//            		for (int width = bi_image.getWidth(); width > 0; width--) {
+//            			
+//                		checkedHeight = height;
+//                		if (bi_image.getContent().getRGB(width, height)
+//                				!= alpha) {
+//                			
+//                			//interrupt loop
+//                			width = -1; 
+//                			height = -1;
+//                		}
+//                	}
+//            	}
+//        	} 
+//        	
+//        	
+//        	if (checkedHeight != bi_image.getHeight()
+//        			|| checkedWidth != bi_image.getWidth()) {
+//        		
+//        	}
+//        	
+//    	}
+    	
+    	//found checkWidth 
+//        new Exception(getClass() + "not implemented yet").printStackTrace();
     }
 
 
@@ -378,7 +481,41 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
     public final boolean isInSelectionImage(
             final byte[][] _field, final Point _pnt_shiftRectangle) {
 
-        new Exception("not implemented yet").printStackTrace();
+    	final int maxRgb = 255;
+    	final int alpha = new Color(maxRgb, maxRgb, maxRgb, 0).getRGB();
+    	if (
+    			//check for x location
+    			_pnt_shiftRectangle.x 
+    			<= pnt_locationOfImage.x + bi_image.getWidth()
+    			&& _pnt_shiftRectangle.x + _field.length
+    			>= pnt_locationOfImage.x
+    			
+    			//check for y location
+    			&& _pnt_shiftRectangle.y
+    			<= pnt_locationOfImage.y + bi_image.getHeight()
+    			&& _pnt_shiftRectangle.y + _field[0].length
+    			>= pnt_locationOfImage.y) {
+    		
+        	for (int i = 0; i < _field.length; i++) {
+        		for (int j = 0; j < _field[i].length; j++) {
+        			
+        			//if occupied
+        			if (_field[i][j] == PaintBI.OCCUPIED) {
+        				
+        				final int cX = i + _pnt_shiftRectangle.x, 
+        						cY = j + _pnt_shiftRectangle.y;
+        				
+        				if (cX >= 0 && cX < bi_image.getWidth()
+        						&& cY >= 0 && cY < bi_image.getHeight()) {
+
+        					if (bi_image.getContent().getRGB(cX, cY) != alpha) {
+        						return true;
+        					}
+        				}
+        			}
+            	}
+        	}
+    	}
         return false;
     }
 
@@ -481,7 +618,7 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 	 * Because the BufferedImage is not serializable, it is necessary
 	 * to remove the BufferedImage for saving and to store its content outwards.
 	 */
-	public void prepareForSaving() {
+	public final void prepareForSaving() {
 		bi_image.pack();
 	}
 	
@@ -489,7 +626,7 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 	/**
 	 * Restore has to be done after saving.
 	 */
-	public void restore() {
+	public final void restore() {
 		bi_image.restore();
 	}
 }

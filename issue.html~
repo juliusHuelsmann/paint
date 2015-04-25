@@ -53,7 +53,7 @@
 				<div class="comment-form-fields">
 				<div class="comment-form-field comment-form-email">
 					
-					<div class="comment-form-input"><input value="bugReport@freenet.de" name="email" id="email"type="text"></div>
+					<div class="comment-form-input"><input value="bugReport@freenet.de" name="email" id="email" type="text"></div>
 				</div>
 				<div class="comment-form-field comment-form-author">
 					

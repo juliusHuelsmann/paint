@@ -46,8 +46,6 @@ public class TestWeb {
 		try {
 			
 			myEditorPane.setPage(pageName);
-			URL myURL = myEditorPane.getPage();
-//            myEditorPane.setPage("http://www.google.de");
         } catch (IOException ex) {
             // handle error
             ex.printStackTrace();

@@ -385,6 +385,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
             		controlPaint.getcTabSelection());
             new Exception("hier").printStackTrace();
         } else {
+        	System.out.println(o);
             Status.getLogger().warning("unknown return type of clipboard");
         }
         controlPaint.getPicture().paintSelected(getPage(),

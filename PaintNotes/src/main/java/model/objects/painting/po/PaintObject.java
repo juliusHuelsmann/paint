@@ -69,25 +69,6 @@ public abstract class PaintObject implements Serializable, Cloneable {
             final Point _pnt_shiftRectangle);
 
     
-    /**
-     * This method checks whether this paintObject is inside the given 
-     * selection rectangle _field which is stretched by point _pnt_location for
-     * saving computation resources. It checks every point in list of points
-     * 
-     * @param _field 
-     * 				the field
-     * 
-     * @param _pnt_shiftRectangle
-     * 				the shifting of the rectangle in x and y direction (or in 
-     * 				other words the location of the element _r [0][0] on screen)
-     * 
-     * @param _pnt_stretch
-     * 				how the field is stretched.
-     * 
-     * @return whether is in rectangle.
-     */
-	public abstract boolean isInSelectionImageStretched(byte[][] _field,
-			Point _pnt_shiftRectangle, final DPoint _pnt_stretch);
 	
 	
 	/**

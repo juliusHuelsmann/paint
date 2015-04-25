@@ -17,11 +17,10 @@ public class TestWeb {
 	public static void main(String[]args) {
 		
 		JFrame jf = new JFrame("hey");
-		jf.setSize(500, 500);
+		jf.setSize(100, 100);
 		jf.setVisible(true);
 		jf.setLocationRelativeTo(null);
 		
-		JScrollPane jsp = new JScrollPane();
 		
 		final JEditorPane myEditorPane = new JEditorPane();
 		myEditorPane.setEditable(false); // to allow it to generate HyperlinkEvents
@@ -43,7 +42,7 @@ public class TestWeb {
 		});
 		
 		final String pageName = (
-				"http://juliushuelsmann.github.io/paint/issue3.html");
+				"http://juliushuelsmann.github.io/paint/issue4.html");
 		try {
 			
 			myEditorPane.setPage(pageName);
@@ -53,15 +52,11 @@ public class TestWeb {
             // handle error
             ex.printStackTrace();
         }
-		myEditorPane.setSize(100, 100);
+		myEditorPane.setSize(50, 75);
 		myEditorPane.setVisible(true);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JScrollPane editorScrollPane = new JScrollPane(myEditorPane);
-		editorScrollPane.setVerticalScrollBarPolicy(
-		                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		editorScrollPane.setPreferredSize(new Dimension(250, 145));
-		editorScrollPane.setMinimumSize(new Dimension(10, 10));
-		jf.add(editorScrollPane);
+		jf.setLayout(null);
+		jf.add(myEditorPane);
 		jf.repaint();
 		
 		

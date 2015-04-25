@@ -42,11 +42,9 @@ public class TestWeb {
 		});
 		
 		final String pageName = (
-				"https://jhuelsmann.wordpress.com/issue-tracking/comment-page-1/");
+				"http://juliushuelsmann.github.io/paint/issue.html");
 		try {
 			
-			String url = "http://www.latijnengrieks.com/vertaling.php?id=5368";
-
 			myEditorPane.setPage(pageName);
 			URL myURL = myEditorPane.getPage();
 //            myEditorPane.setPage("http://www.google.de");

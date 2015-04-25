@@ -3,9 +3,12 @@ package model.objects.painting.po;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
+import start.test.BufferedViewer;
 
 import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
@@ -115,8 +118,10 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
                     new Exception("exception"), 
                     Error.ERROR_MESSAGE_INTERRUPT);
         } else {
+        	System.out.println("move from" + pnt_locationOfImage);
             this.pnt_locationOfImage.x += _p.x;
             this.pnt_locationOfImage.y += _p.y;
+            System.out.println("move to " + pnt_locationOfImage);
         }
     }
     /**
@@ -152,7 +157,16 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 
             // interrupt if the given values are illegal if the size of 
         	// the area which is to be repainted is equal to zero.
-            if (_r == null || _r.height <= 0 || _r.width <= 0) {
+        	final Rectangle r;
+        	if (_r == null) {
+        		r = new Rectangle(
+        				0, 0,
+        				bi_image.getWidth(), bi_image.getHeight());
+        	} else {
+        		r = _r;
+        	}
+        	
+            if (r == null || r.height <= 0 || r.width <= 0) {
             	return _bi;
             }
 
@@ -167,16 +181,20 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             
             // these values contain the location of the selection inside 
             // the picture
-            int locXPage = (int) ((_r.x - pnt_locationOfImage.x) 
+            int locXPage = (int) ((r.x + pnt_locationOfImage.x) 
             		* cZoomFactorWidth) + _x;
-            int locYPage = (int) ((_r.y - pnt_locationOfImage.y)
-            		* cZoomFactorHeight) + _y;
-            
+            int locYPage = ((int) ((r.y + pnt_locationOfImage.y)
+            		* cZoomFactorHeight)) + _y;
             
             // these values contain the location of the selection inside the
             // current paint-object-image
-            int locXPOI = (int) (_r.x - pnt_locationOfImage.x);
-            int locYPOI = (int) (_r.y - pnt_locationOfImage.y);
+            int locXPOI = (int) Math.max(+r.x - pnt_locationOfImage.x, 0);
+            int locYPOI = (int) Math.max(+r.y - pnt_locationOfImage.y, 0);
+            
+//            System.out.println("locxpoi:" + locXPOI +  "locypoi:" + locYPOI);
+//            System.out.println(
+//            		"betrx:\t"  + (int) Math.min(r.x - pnt_locationOfImage.x, 0)+
+//            		"betry:\t" +  (int) Math.min(r.y - pnt_locationOfImage.y, 0));
 
             // adapt the width of the selection to the size of the 
             // paint-object-image.
@@ -185,20 +203,21 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             // to the normal width, 2 * zoom-factor is added 
             // because if zoomed in, there are gaps between the painted
             // sub-images.
-            _r.width = Math.min(
+            r.width = Math.min(
 //            		Math.min(
             				bi_image.getWidth() - locXPOI,
-            				_r.width + (int)  (2 * cZoomFactorWidth));
+            				r.width + (int)  (2 * cZoomFactorWidth));
 //            		_bi.getWidth() - locXPOI);
-            _r.height = Math.min(
+            r.height = Math.min(
 //            		Math.min(
             				bi_image.getHeight() - locYPOI,
-            				_r.height + (int) (2 * cZoomFactorHeight));
+            				r.height + (int) (2 * cZoomFactorHeight));
 //            		_bi.getHeight() - locYPOI);
             
+//            System.out.println("RWDITH" + r.width + "\tRHEIGHT" + r.height);
             // interrupt if the given values are illegal if the size of 
         	// the area which is to be repainted is equal to zero.
-            if (_r == null || _r.height <= 0 || _r.width <= 0) {
+            if (r == null || r.height <= 0 || r.width <= 0) {
             	return _bi;
             }
 
@@ -211,40 +230,61 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             // create sub-BufferedImage for the selection and fill it with
             // the pixel from image
             BufferedImage bi_section = new BufferedImage(
-            		_r.width, _r.height, 
+            		r.width, r.height, 
             		BufferedImage.TYPE_INT_ARGB);
             
             // for filling the BufferedImage, the RGB-alpha values are written 
             // into an integer array
-            int[] rgbA = new int[_r.height * _r.width];
-            rgbA = bi_image.getRGB(
-            		locXPOI, locYPOI, 
-            		_r.width, _r.height, 
-            		rgbA,
-            		0, 
-            		_r.width);
+            int[] rgbA = new int[r.height * r.width];
+            if (
+            		locXPOI >= 0 
+            		&& locYPOI >= 0
+            		&& locXPOI + r.width <= bi_image.getWidth()
+            		&& locYPOI + r.height <= bi_image.getHeight()) {
+
+                rgbA = bi_image.getRGB(
+                		locXPOI, locYPOI, 
+                		r.width, r.height, 
+                		rgbA,
+                		0, 
+                		r.width);
+            } else {
+
+            	Status.getLogger().severe("fatal move error: \n" +
+            			"Section out of scope." +
+            			"x\t" + locXPOI + "\n"
+            			+ "y\t" + locYPOI + "\n"
+            			+ "x+w\t" + locXPOI + r.width + "\n"
+            			+ "y+h\t" + locYPOI + r.height + "\n"
+            			+ "\n@image\n"
+            			+ "width:\t" + bi_image.getWidth()
+            			+ "\nheight:\t" + bi_image.getHeight());
+            	return bi_image.getContent();
+            }
             
             // write the RGB-Alpha values from the integer array to the 
             // section-BufferedImage.
             bi_section.setRGB(
             		0, 0, 
-            		_r.width, 
-            		_r.height,
-            		rgbA, 0, _r.width);
+            		r.width, 
+            		r.height,
+            		rgbA, 0, r.width);
             
             /*
              * The Content of the BufferedImage is resized and afterwards 
              * printed into the BufferedImage that displays the currently 
              * visible section of the image.
              */
-            _g.getGraphics().drawImage(Utils.resizeImageQuick(
-                    (int) Math.max(1, (_r.width) * cZoomFactorWidth),
-                    (int) Math.max(1, (_r.height) * cZoomFactorHeight), 
+            final Graphics g = _g.getGraphics();
+            g.drawImage(Utils.resizeImageQuick(
+                    (int) Math.max(1, (r.width) * cZoomFactorWidth),
+                    (int) Math.max(1, (r.height) * cZoomFactorHeight), 
                     bi_section),
                     (int) (locXPage), 
                     (int) (locYPage), 
-                    (int) Math.max(1, (_r.width) * cZoomFactorWidth),
-                    (int) Math.max(1, ((_r.height) * cZoomFactorHeight)), null);
+                    (int) Math.max(1, (r.width) * cZoomFactorWidth),
+                    (int) Math.max(1, ((r.height) * cZoomFactorHeight)), null);
+            return _g;
         }
         
         return bi_image.getContent();
@@ -257,19 +297,55 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
      */
     @Override public final PaintObject[][] separate(final Rectangle _r) {
         
+    	final PaintObject[][] po_return = new PaintObject[2][1];
         if (isInSelectionImage(_r)) {
         	
         	
-        	deleteRectangle(_r, null);
+        	/*
+        	 * paint the section that is to be separated as white inside the image
+        	 * and generate a new POI into which the stuff out of the section is
+        	 * inserted.
+        	 * 
+        	 * Afterwards return the the two dimensional array which contains
+        	 * 	@[0]	the content that is outside the selection (the current POI inserted
+        	 * 			into a new POI because the current POI is removed by default because
+        	 * 			that makes more sense if is coped with POWs and all kind of paintObjects
+        	 * 			are treated in the same way for code-simplicity.
+        	 *  @[1]	the content that is inside the selection (the new created POI)
+        	 */
+        	
+    		//The white color is necessary because if the catch-color-tool is used,
+    		//the transparency color is to be fetched as white.
+    		int[] newRGBA = new int[_r.width * _r.height];
+    		final int maxRGB = 255;
+    		int rgba = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
+    		for (int i = 0; i < newRGBA.length; i++) {
+    			newRGBA[i] = rgba;
+    		}
+    		BufferedImage bi_new = new BufferedImage(
+    				_r.width, _r.height, BufferedImage.TYPE_INT_ARGB);
 
-            new Exception(getClass() + " not implemenented yet")
-            .printStackTrace();
-            return null;
+    		int[] content = new int[_r.width * _r.height];
+    		bi_image.getRGB(0, 0, bi_new.getWidth(), bi_new.getHeight(),
+    				content, 0, _r.width);
+    		bi_new.setRGB(0, 0, bi_new.getWidth(), bi_new.getHeight(),
+    				content, 0, _r.width);
+    		bi_image.getContent().setRGB(
+    				_r.x - pnt_locationOfImage.x, 
+    				_r.y - pnt_locationOfImage.y,
+    				_r.width, _r.height, newRGBA, 0, _r.width);
+    		
+    		//return null because there is no new PaintObject created.
+
+        	po_return[0][0] = getPicture().createPOI(bi_image.getContent());
+        	po_return[1][0] = getPicture().createPOI(bi_new);        	
+
+            return po_return;
         } else {
 
-            new Exception(getClass() + " not implemenented yet")
-            .printStackTrace();
-            return null;
+        	po_return[0][0] = getPicture().createPOI(bi_image.getContent());
+        	po_return[1]  = new PaintObject[0];
+            return po_return;
         }
     }
 
@@ -302,7 +378,7 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
     		for (int j = 0; j < bi_inside.getHeight(); j++) {
     			
     			//if occupied
-    			if (_r[i][j] == PaintBI.OCCUPIED) {
+    			if (_r[i][j] != PaintBI.BORDER) {
     				
     				final int cX = i + _pnt_selectionShift.x, 
     						cY = j + _pnt_selectionShift.y;
@@ -500,7 +576,7 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
         		for (int j = 0; j < _field[i].length; j++) {
         			
         			//if occupied
-        			if (_field[i][j] == PaintBI.OCCUPIED) {
+        			if (_field[i][j] != PaintBI.BORDER) {
         				
         				final int cX = i + _pnt_shiftRectangle.x, 
         						cY = j + _pnt_shiftRectangle.y;
@@ -529,14 +605,10 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 			final List<PaintObjectWriting> _ls_pow_outside) {
 
 		
-		//TODO: this is not adapted to the location of the POI
-		//usually, the location of the POI is (0,0) because
-		//tested by loading PNG or JPEG image.
-		
 		//eliminate the image values out of specified area by replacing
 		//them with (white) alpha values.
 		//
-		//The white color is necessary because if the pipette tool is used
+		//The white color is necessary because if the catch-color-tool is used,
 		//the transparency color is to be fetched as white.
 		int[] newRGBA = new int[_r.width * _r.height];
 		final int maxRGB = 255;
@@ -545,7 +617,9 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 			newRGBA[i] = rgba;
 		}
 		bi_image.getContent().setRGB(
-				_r.x, _r.y, _r.width, _r.height, newRGBA, 0, _r.width);
+				_r.x - pnt_locationOfImage.x, 
+				_r.y - pnt_locationOfImage.y,
+				_r.width, _r.height, newRGBA, 0, _r.width);
 		
 		//return null because there is no new PaintObject created.
 		return null;
@@ -562,6 +636,9 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 			final DPoint _pnt_stretch, 
 			final List<PaintObjectWriting> _l) {
 		
+		
+		//TODO: neither used nor tested
+		Status.getLogger().severe("not tested implementation yet");
 		final int maxRGB = 255;
 		final int rgbAlpha = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
 		for (int xPx = _pnt_shiftRectangle.x; 
@@ -595,23 +672,9 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 			}	
 		}
 
-        new Exception("not implemented yet").printStackTrace();
         return null;
 	}
 
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final boolean isInSelectionImageStretched(
-			final byte[][] _field,
-			final Point _pnt_shiftRectangle, 
-			final DPoint _pnt_stretch) {
-
-        new Exception("not implemented yet").printStackTrace();
-		return false;
-	}
 	
 	
 	/**

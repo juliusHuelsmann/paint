@@ -352,18 +352,6 @@ public abstract class POInsertion extends PaintObjectPen implements Cloneable {
     }
 
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final boolean isInSelectionImageStretched(
-			final byte[][] _field,
-			final Point _pnt_shiftRectangle, 
-			final DPoint _pnt_stretch) {
-
-        new Exception("not implemented yet").printStackTrace();
-		return false;
-	}
 
     /**
      * @return the pnt_first

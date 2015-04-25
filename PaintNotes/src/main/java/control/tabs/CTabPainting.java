@@ -22,6 +22,7 @@ import control.ControlPaint;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
 import model.objects.painting.po.PaintObjectWriting;
+import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.DPoint;
@@ -453,9 +454,11 @@ public final class CTabPainting implements ActionListener, MouseListener {
                 // edit file ending
                 if (!file.getName().toLowerCase().contains(".")) {
                     file = new File(file.getAbsolutePath() + ".pic");
-                } else if (!file.getName().toLowerCase().endsWith(".png")
+                } else if (
+                		!file.getName().toLowerCase().endsWith(".png")
                         && !file.getName().toLowerCase().endsWith(".pic")) {
 
+                	
                     JOptionPane.showMessageDialog(getView(),
                             "Select a .png or .pic file.", "Error",
                             JOptionPane.ERROR_MESSAGE);

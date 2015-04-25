@@ -162,7 +162,7 @@
 
 				<div class="comment-form-fields">
 				<div class="comment-form-field comment-form-email">
-					<label for="email" content="testing@gmail.com">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
+					<label for="email" content="testing@gmail.com">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span> sample@email.com </label>
 					<div class="comment-form-input"><input id="email" name="email" type="text" value="" /></div>
 				</div>
 				<div class="comment-form-field comment-form-author">
@@ -204,7 +204,7 @@
 				<input type="hidden" name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="" />
 				<input type="hidden" name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="" />
 				<input type="hidden" name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="" />
-				<p class="comment-form-posting-as pa-twitter"><strong></strong> You <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'twitter' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+				<p class="comment-form-posting-as pa-twitter"><strong></strong>  <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'twitter' );"></a><a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;"></span></p>
 			</div>
 	
 		</div>

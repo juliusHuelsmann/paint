@@ -28,6 +28,7 @@ import model.util.paint.Utils;
 public final class Status {
 
 	
+	
 	private static ControlPaint controlPaint;
 	private static Picture picture;
 	

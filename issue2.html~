@@ -455,7 +455,7 @@ var LoggedOutFollow = {"invalid_email":"Your subscription did not succeed, pleas
 <input type="hidden" name="hc_post_as" id="hc_post_as" value="guest" />
 
 <div class="comment-form-field comment-textarea">
-	<label for="comment" content="Bug:">Enter your comment here...</label>
+	<label for="comment" content="Bug:<br>">Enter your comment here...</label>
 	<div id="comment-form-comment"><textarea id="comment" name="comment" title="Enter your comment here..."></textarea></div>
 </div>
 

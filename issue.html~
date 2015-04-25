@@ -10,8 +10,8 @@
     <title>Paint</title>
   </head>
   
-  <iframe height="260" width="280" src="iframe.html"> 
-  <a href="http://43067.my-gaestebuch.de" target="_blank">Zu meinem G&auml;stebuch</a>
+  <iframe height="260" width="280" src="http://43067.my-gaestebuch.de"> 
+  <a href="http://43067.my-gaestebuch.de" target="_blank">Issuetracking</a>
 </iframe> 
 
 

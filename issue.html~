@@ -6,120 +6,12 @@
 
 
 
-
-
-
 <head>
   
   
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Issue-Tracking | jhuelsmann</title>
-<link rel="profile" href="http://gmpg.org/xfn/11">
-<link rel="pingback" href="https://jhuelsmann.wordpress.com/xmlrpc.php">
-
-<link rel="alternate" type="application/rss+xml" title="jhuelsmann » Feed" href="https://jhuelsmann.wordpress.com/feed/">
-<link rel="alternate" type="application/rss+xml" title="jhuelsmann » Comments Feed" href="https://jhuelsmann.wordpress.com/comments/feed/">
-<link rel="alternate" type="application/rss+xml" title="jhuelsmann » Issue-Tracking Comments Feed" href="https://jhuelsmann.wordpress.com/issue-tracking/feed/">
-<script type="text/javascript">
-/* <![CDATA[ */
-function addLoadEvent(func){var oldonload=window.onload;if(typeof window.onload!='function'){window.onload=func;}else{window.onload=function(){oldonload();func();}}}
-/* ]]> */
-</script>
-<link rel="stylesheet" id="all-css-0" href="https://s1.wp.com/wp-content/mu-plugins/smileyproject/smileyproject.css?m=1412325662g" type="text/css" media="all">
-<link rel="stylesheet" id="open-sans-css" href="//fonts.googleapis.com/css?family=Open+Sans%3A300italic%2C400italic%2C600italic%2C300%2C400%2C600&amp;subset=latin%2Clatin-ext&amp;ver=4.2-alpha-31564" type="text/css" media="all">
-<link rel="stylesheet" id="all-css-2" href="https://s1.wp.com/_static/??-eJyFUe1OwzAMfCEyMwQV/EA8S5Ia6jVOojrZ4O1xitZpmxT+Xc5354/AKRuKPtQRBbwIjFYm8inKjinulHmAW4kdtWScXa4k6ikYC3A1OdQvigJSnfiFciHNg88UQjr19FM64mJcdS5oKyk/Ae8nOAgUnXB26XsDvdBAc3NhydbPZn315NtyWveJzWXZ1UQQU1nvs4Femk8LKs/ZlqZgHMliQFZZz8Z5OLsanHTyf9pwi/zbbv2jK6ZZP/h9//z0Ngwvr4/7wy+KCLuS" type="text/css" media="all">
-<link rel="stylesheet" id="edin-pt-sans-css" href="//fonts.googleapis.com/css?family=PT+Sans%3A400%2C700%2C400italic%2C700italic&amp;subset=latin%2Clatin-ext" type="text/css" media="all">
-<link rel="stylesheet" id="edin-pt-serif-css" href="//fonts.googleapis.com/css?family=PT+Serif%3A400%2C700%2C400italic%2C700italic&amp;subset=latin%2Clatin-ext" type="text/css" media="all">
-<link rel="stylesheet" id="edin-pt-mono-css" href="//fonts.googleapis.com/css?family=PT+Mono&amp;subset=latin%2Clatin-ext" type="text/css" media="all">
-<link rel="stylesheet" id="all-css-8" href="https://s2.wp.com/_static/??-eJyFkMEOwiAQRH/IddWYVA/Gb6F1S2mAJbC18e+l1kOtES8wA2+yAzgGaNgLeUHpyFHCMNRIN+OxzecvlYFtk9IGF7AbINhBG59Qk6do8sUP+ZVdD0rysPSXyj1mEsbQsCs1Ise9mdcS5lnyAHVzxkOtItwP5WcyWG6UGPYfBlqrTCxFI9WWdZYaM7WwpZBwgkiBo0DL0a19KRo4ydwKU6fiNPe9//rl7ojacq3sBFzdZX88nM+7U1VV/RPygMx+" type="text/css" media="all">
-<link rel="stylesheet" id="print-css-8" href="https://s0.wp.com/wp-content/mu-plugins/global-print/global-print.css?m=1387483371g" type="text/css" media="print">
-<script type="text/javascript" src="https://s2.wp.com/_static/??-eJx9kNsOwjAIQH/Irl62hz0Yv2WrbGG2pRa6Rb/ePswYl2pCQggnwEEvQaE3Nl2B9ZTjniA+1lRNvNP/AOVwjJ1A5dC/YUNewIt2SQWbRvSsOfVsIgZBytVA1tKyxfPoQCwOmLsRCl1HPVpQiSFmwEu+aqAC922AfkYoLduIgoTO3FQExieUvDl8FH8/bKUu7nyo93V7atrmOL0ASSmFOw=="></script>
-<link rel="stylesheet" id="all-css-0" href="https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style.css?m=1377793621g" type="text/css" media="all">
-<!--[if lt IE 8]>
-<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563g&#038;ver=20110606' type='text/css' media='all' />
-<![endif]-->
-<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://jhuelsmann.wordpress.com/xmlrpc.php?rsd">
-<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml"> 
-<meta name="generator" content="WordPress.com">
-<link rel="canonical" href="https://jhuelsmann.wordpress.com/issue-tracking/comment-page-1/#comments">
-<link rel="shortlink" href="http://wp.me/P5ye00-5">
-<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=json&amp;url=https%3A%2F%2Fjhuelsmann.wordpress.com%2Fissue-tracking%2F&amp;for=wpcom-auto-discovery"><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=xml&amp;url=https%3A%2F%2Fjhuelsmann.wordpress.com%2Fissue-tracking%2F&amp;for=wpcom-auto-discovery">
-<!-- Jetpack Open Graph Tags -->
-<meta property="og:type" content="article">
-<meta property="og:title" content="Issue-Tracking">
-<meta property="og:url" content="https://jhuelsmann.wordpress.com/issue-tracking/">
-<meta property="og:description" content="Visit the post for more.">
-<meta property="article:published_time" content="2015-04-25T15:24:19+00:00">
-<meta property="article:modified_time" content="2015-04-25T15:24:19+00:00">
-<meta property="article:author" content="https://jhuelsmann.wordpress.com/author/jhuelsmann/">
-<meta property="og:site_name" content="jhuelsmann">
-<meta property="og:image" content="https://s0.wp.com/i/blank.jpg">
-<meta property="og:locale" content="en_US">
-<meta name="twitter:site" content="@wordpressdotcom">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:description" content="Visit the post for more.">
-<meta property="fb:app_id" content="249643311490">
-<meta property="article:publisher" content="https://www.facebook.com/WordPresscom">
-<link rel="shortcut icon" type="image/x-icon" href="https://s2.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
-<link rel="icon" type="image/x-icon" href="https://s2.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
-<link rel="apple-touch-icon-precomposed" href="https://s0.wp.com/i/webclip.png">
-<link rel="openid.server" href="https://jhuelsmann.wordpress.com/?openidserver=1">
-<link rel="openid.delegate" href="https://jhuelsmann.wordpress.com/">
-<link rel="search" type="application/opensearchdescription+xml" href="https://jhuelsmann.wordpress.com/osd.xml" title="jhuelsmann">
-<link rel="search" type="application/opensearchdescription+xml" href="http://wordpress.com/opensearch.xml" title="WordPress.com">
-	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
-		<style type="text/css">
-			.recentcomments a {
-				display: inline !important;
-				padding: 0 !important;
-				margin: 0 !important;
-			}
-
-			table.recentcommentsavatartop img.avatar, table.recentcommentsavatarend img.avatar {
-				border: 0px;
-				margin: 0;
-			}
-
-			table.recentcommentsavatartop a, table.recentcommentsavatarend a {
-				border: 0px !important;
-				background-color: transparent !important;
-			}
-
-			td.recentcommentsavatarend, td.recentcommentsavatartop {
-				padding: 0px 0px 1px 0px;
-				margin: 0px;
-			}
-
-			td.recentcommentstextend {
-				border: none !important;
-				padding: 0px 0px 2px 10px;
-			}
-
-			.rtl td.recentcommentstextend {
-				padding: 0px 10px 2px 0px;
-			}
-
-			td.recentcommentstexttop {
-				border: none;
-				padding: 0px 0px 0px 10px;
-			}
-
-			.rtl td.recentcommentstexttop {
-				padding: 0px 10px 0px 0px;
-			}
-		</style>
-		<style type="text/css" media="print">#wpadminbar { display:none; }</style>
-<style type="text/css" media="screen">
-	html { margin-top: 32px !important; }
-	* html body { margin-top: 32px !important; }
-	@media screen and ( max-width: 782px ) {
-		html { margin-top: 46px !important; }
-		* html body { margin-top: 46px !important; }
-	}
-</style>
-<meta name="application-name" content="jhuelsmann"><meta name="msapplication-window" content="width=device-width;height=device-height"><meta name="msapplication-tooltip" content="Author posts, manage comments, and manage jhuelsmann."><meta name="msapplication-task" content="name=Edit page;action-uri=https://jhuelsmann.wordpress.com/wp-admin/post.php?post=5&amp;action=edit;icon-uri=https://s0.wp.com/i/icons/page.ico"><meta name="msapplication-task" content="name=Write a post;action-uri=https://jhuelsmann.wordpress.com/wp-admin/post-new.php;icon-uri=https://s2.wp.com/i/icons/post.ico"><meta name="msapplication-task" content="name=Moderate comments;action-uri=https://jhuelsmann.wordpress.com/wp-admin/edit-comments.php?comment_status=moderated;icon-uri=https://s0.wp.com/i/icons/comment.ico"><meta name="msapplication-task" content="name=Upload new media;action-uri=https://jhuelsmann.wordpress.com/wp-admin/media-new.php;icon-uri=https://s2.wp.com/i/icons/media.ico"><meta name="msapplication-task" content="name=Blog stats;action-uri=https://jhuelsmann.wordpress.com/wp-admin/index.php?page=stats;icon-uri=https://s1.wp.com/i/icons/stats.ico"><meta name="title" content="Issue-Tracking | jhuelsmann on WordPress.com">
-<style type="text/css" id="syntaxhighlighteranchor"></style>
 <title>Paint</title></head>
 
     
@@ -165,134 +57,51 @@ function addLoadEvent(func){var oldonload=window.onload;if(typeof window.onload!
 <input name="hc_post_as" id="hc_post_as" value="guest" type="hidden">
 
 <div class="comment-form-field comment-textarea">
-	<label for="comment">Enter your comment here...</label>
+	<label for="comment">Bug report: Additional Comments</label>
 	<div id="comment-form-comment"><textarea id="comment" name="comment" title="Enter your comment here..."></textarea></div>
 </div>
 
 <div id="comment-form-identity">
 
 	<div id="comment-form-nascar">
-		<p>Fill in your details below or click an icon to log in:</p>
-		<ul>
-			<li class="selected" style="display:none;">
-				<a href="#comment-form-guest" id="postas-guest" title="Guest">
-					<span></span>
-				</a>
-			</li>
-			<li>
-				<a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
-					<span></span>
-				</a>
-			</li>
-			<li>
-				<a href="#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
-					<span></span>
-				</a>
-			</li>
-			<li>
-				<a href="#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
-					<span></span>
-				</a>
-			</li>
-			<li>
-			<iframe id="googleplus-sign-in" name="googleplus-sign-in" src="https://public-api.wordpress.com/connect/?googleplus-sign-in=https%3A%2F%2Fjhuelsmann.wordpress.com" scrolling="no" allowtransparency="true" seamless="seamless" width="24" frameborder="0" height="24"></iframe>
-			</li>
-		</ul>
+		
+		
 	</div>
 
 	<div id="comment-form-guest" class="comment-form-service selected">
 		<div class="comment-form-padder">
 			<div class="comment-form-avatar">
-<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="https://0.gravatar.com/avatar/35c8fdf792302c0704c08863fff50d1c?s=25&amp;d=identicon&amp;r=G" alt="Gravatar" class="no-grav" width="25">
+<a href="https://gravatar.com/site/signup/" target="_blank">				
 </a>			</div>
 
 				<div class="comment-form-fields">
 				<div class="comment-form-field comment-form-email">
-					<label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
-					<div class="comment-form-input"><input id="email" name="email" value="juli@freenet.de" type="email"></div>
+					
+					<div class="comment-form-input"><input value="bugReport@freenet.de" name="email" id="email" type="hidden"></div>
 				</div>
 				<div class="comment-form-field comment-form-author">
-					<label for="author">Name <span class="required">(required)</span></label>
-					<div class="comment-form-input"><input id="author" name="author" value="na" type="text"></div>
+					
+					<div class="comment-form-input"><input value="naja" id="author" name="author" type="hidden"></div>
 				</div>
 				<div class="comment-form-field comment-form-url">
-					<label for="url">Website</label>
-					<div class="comment-form-input"><input id="url" name="url" value="" type="text"></div>
+					
+					<div class="comment-form-input"></div>
 				</div>
 			</div>
 	
 		</div>
 	</div>
 
-	<div id="comment-form-wordpress" class="comment-form-service">
-		<div class="comment-form-padder">
-			<div class="comment-form-avatar">
-				<img src="https://0.gravatar.com/avatar/9d53b5d40a01cfd03757641831956185?s=25&amp;d=https%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D25%26amp%3Bd%3Didenticon%26amp%3Bforcedefault%3Dy%26amp%3Br%3DG&amp;r=G" alt="Gravatar" class="no-grav" width="25">
-			</div>
-
-				<div class="comment-form-fields">
-				<input name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="https://0.gravatar.com/avatar/9d53b5d40a01cfd03757641831956185?s=25&amp;d=https%3A%2F%2Fs2.wp.com%2Fwp-content%2Fmu-plugins%2Fhighlander-comments%2Fimages%2Fwplogo.png&amp;r=G" type="hidden">
-				<input name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="78130808" type="hidden">
-				<input name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="f44f9142dc480faf918619bd592f3c57333e64f7" type="hidden">
-				<p class="comment-form-posting-as pa-wordpress"><strong>jhuelsmann:</strong> You are commenting using your WordPress.com account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'wordpress' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
-			</div>
 	
-		</div>
-	</div>
 
-	<div id="comment-form-twitter" class="comment-form-service">
-		<div class="comment-form-padder">
-			<div class="comment-form-avatar">
-				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&amp;d=identicon&amp;forcedefault=y&amp;r=G" alt="Twitter picture" class="no-grav" width="25">
-			</div>
-
-				<div class="comment-form-fields">
-				<input name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="" type="hidden">
-				<input name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="" type="hidden">
-				<input name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="" type="hidden">
-				<p class="comment-form-posting-as pa-twitter"><strong></strong> You are commenting using your Twitter account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'twitter' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
-			</div>
 	
-		</div>
-	</div>
 
-	<div id="comment-form-facebook" class="comment-form-service">
-		<div class="comment-form-padder">
-			<div class="comment-form-avatar">
-				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&amp;d=identicon&amp;forcedefault=y&amp;r=G" alt="Facebook photo" class="no-grav" width="25">
-			</div>
-
-				<div class="comment-form-fields">
-				<input name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="" type="hidden">
-				<input name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="" type="hidden">
-				<input name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="" type="hidden">
-				<p class="comment-form-posting-as pa-facebook"><strong></strong> You are commenting using your Facebook account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'facebook' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
-			</div>
 	
-		</div>
-	</div>
 
-	<div id="comment-form-googleplus" class="comment-form-service">
-		<div class="comment-form-padder">
-			<div class="comment-form-avatar">
-				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&amp;d=identicon&amp;forcedefault=y&amp;r=G" alt="Google+ photo" class="no-grav" width="25">
-			</div>
-
-				<div class="comment-form-fields">
-				<input name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="" type="hidden">
-				<input name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="" type="hidden">
-				<input name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="" type="hidden">
-				<p class="comment-form-posting-as pa-googleplus"><strong></strong> You are commenting using your Google+ account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'googleplus' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
-			</div>
 	
-		</div>
-	</div>
 
 
-	<div id="comment-form-load-service" class="comment-form-service">
-		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
-		<p>Connecting to %s</p>
-	</div>
+	
 
 </div>
 
@@ -484,7 +293,7 @@ var HighlanderComments = {"loggingInText":"Logging In\u2026","submittingText":"P
 		});
 		</script>
 				<iframe src="https://widgets.wp.com/likes/master.html?ver=20141028#ver=20141028&amp;mp6=1" scrolling="no" id="likes-master" name="likes-master" style="display:none;"></iframe>
-		<div id="likes-other-gravatars"><div class="likes-text"><span>%d</span> bloggers like this:</div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
+		
 		<script type="text/javascript">
 		//<![CDATA[
 			var jetpackLikesWidgetQueue = [];
@@ -920,10 +729,12 @@ if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
 
   
 
+
+
+
+
+
+
+
 </body>
-
-
-
-
-
 </html>

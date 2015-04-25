@@ -6,9 +6,6 @@
 
 
 
-
-
-
 <head>
   
   
@@ -44,8 +41,7 @@
 			<main id="main" class="site-main" role="main">
 
 				
-					
-<!-- #post-## -->
+		
 
 					
 <div id="comments" class="comments-area">
@@ -60,134 +56,51 @@
 <input name="hc_post_as" id="hc_post_as" value="guest" type="hidden">
 
 <div class="comment-form-field comment-textarea">
-	<label for="comment">Enter your comment here...</label>
+	<label for="comment">Bug report: Additional Comments</label>
 	<div id="comment-form-comment"><textarea id="comment" name="comment" title="Enter your comment here..."></textarea></div>
 </div>
 
 <div id="comment-form-identity">
 
 	<div id="comment-form-nascar">
-		<p>Fill in your details below or click an icon to log in:</p>
-		<ul>
-			<li class="selected" style="display:none;">
-				<a href="#comment-form-guest" id="postas-guest" title="Guest">
-					<span></span>
-				</a>
-			</li>
-			<li>
-				<a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
-					<span></span>
-				</a>
-			</li>
-			<li>
-				<a href="#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
-					<span></span>
-				</a>
-			</li>
-			<li>
-				<a href="#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
-					<span></span>
-				</a>
-			</li>
-			<li>
-			<iframe id="googleplus-sign-in" name="googleplus-sign-in" src="https://public-api.wordpress.com/connect/?googleplus-sign-in=https%3A%2F%2Fjhuelsmann.wordpress.com" scrolling="no" allowtransparency="true" seamless="seamless" width="24" frameborder="0" height="24"></iframe>
-			</li>
-		</ul>
+		
+		
 	</div>
 
 	<div id="comment-form-guest" class="comment-form-service selected">
 		<div class="comment-form-padder">
 			<div class="comment-form-avatar">
-<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="https://0.gravatar.com/avatar/35c8fdf792302c0704c08863fff50d1c?s=25&amp;d=identicon&amp;r=G" alt="Gravatar" class="no-grav" width="25">
+<a href="https://gravatar.com/site/signup/" target="_blank">				
 </a>			</div>
 
 				<div class="comment-form-fields">
 				<div class="comment-form-field comment-form-email">
-					<label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
-					<div class="comment-form-input"><input id="email" name="email" value="juli@freenet.de" type="email"></div>
+					
+					<div class="comment-form-input"><input value="bugReport@freenet.de" name="email" id="email" type="hidden"></div>
 				</div>
 				<div class="comment-form-field comment-form-author">
-					<label for="author">Name <span class="required">(required)</span></label>
-					<div class="comment-form-input"><input id="author" name="author" value="na" type="text"></div>
+					
+					<div class="comment-form-input"><input value="naja" id="author" name="author" type="hidden"></div>
 				</div>
 				<div class="comment-form-field comment-form-url">
-					<label for="url">Website</label>
-					<div class="comment-form-input"><input id="url" name="url" value="" type="text"></div>
+					
+					<div class="comment-form-input"></div>
 				</div>
 			</div>
 	
 		</div>
 	</div>
 
-	<div id="comment-form-wordpress" class="comment-form-service">
-		<div class="comment-form-padder">
-			<div class="comment-form-avatar">
-				<img src="https://0.gravatar.com/avatar/9d53b5d40a01cfd03757641831956185?s=25&amp;d=https%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D25%26amp%3Bd%3Didenticon%26amp%3Bforcedefault%3Dy%26amp%3Br%3DG&amp;r=G" alt="Gravatar" class="no-grav" width="25">
-			</div>
-
-				<div class="comment-form-fields">
-				<input name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="https://0.gravatar.com/avatar/9d53b5d40a01cfd03757641831956185?s=25&amp;d=https%3A%2F%2Fs2.wp.com%2Fwp-content%2Fmu-plugins%2Fhighlander-comments%2Fimages%2Fwplogo.png&amp;r=G" type="hidden">
-				<input name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="78130808" type="hidden">
-				<input name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="f44f9142dc480faf918619bd592f3c57333e64f7" type="hidden">
-				<p class="comment-form-posting-as pa-wordpress"><strong>jhuelsmann:</strong> You are commenting using your WordPress.com account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'wordpress' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
-			</div>
 	
-		</div>
-	</div>
 
-	<div id="comment-form-twitter" class="comment-form-service">
-		<div class="comment-form-padder">
-			<div class="comment-form-avatar">
-				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&amp;d=identicon&amp;forcedefault=y&amp;r=G" alt="Twitter picture" class="no-grav" width="25">
-			</div>
-
-				<div class="comment-form-fields">
-				<input name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="" type="hidden">
-				<input name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="" type="hidden">
-				<input name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="" type="hidden">
-				<p class="comment-form-posting-as pa-twitter"><strong></strong> You are commenting using your Twitter account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'twitter' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
-			</div>
 	
-		</div>
-	</div>
 
-	<div id="comment-form-facebook" class="comment-form-service">
-		<div class="comment-form-padder">
-			<div class="comment-form-avatar">
-				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&amp;d=identicon&amp;forcedefault=y&amp;r=G" alt="Facebook photo" class="no-grav" width="25">
-			</div>
-
-				<div class="comment-form-fields">
-				<input name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="" type="hidden">
-				<input name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="" type="hidden">
-				<input name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="" type="hidden">
-				<p class="comment-form-posting-as pa-facebook"><strong></strong> You are commenting using your Facebook account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'facebook' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
-			</div>
 	
-		</div>
-	</div>
 
-	<div id="comment-form-googleplus" class="comment-form-service">
-		<div class="comment-form-padder">
-			<div class="comment-form-avatar">
-				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&amp;d=identicon&amp;forcedefault=y&amp;r=G" alt="Google+ photo" class="no-grav" width="25">
-			</div>
-
-				<div class="comment-form-fields">
-				<input name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="" type="hidden">
-				<input name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="" type="hidden">
-				<input name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="" type="hidden">
-				<p class="comment-form-posting-as pa-googleplus"><strong></strong> You are commenting using your Google+ account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'googleplus' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
-			</div>
 	
-		</div>
-	</div>
 
 
-	<div id="comment-form-load-service" class="comment-form-service">
-		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
-		<p>Connecting to %s</p>
-	</div>
+	
 
 </div>
 
@@ -379,7 +292,7 @@ var HighlanderComments = {"loggingInText":"Logging In\u2026","submittingText":"P
 		});
 		</script>
 				<iframe src="https://widgets.wp.com/likes/master.html?ver=20141028#ver=20141028&amp;mp6=1" scrolling="no" id="likes-master" name="likes-master" style="display:none;"></iframe>
-		<div id="likes-other-gravatars"><div class="likes-text"><span>%d</span> bloggers like this:</div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
+		
 		<script type="text/javascript">
 		//<![CDATA[
 			var jetpackLikesWidgetQueue = [];
@@ -815,10 +728,12 @@ if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
 
   
 
+
+
+
+
+
+
+
 </body>
-
-
-
-
-
 </html>

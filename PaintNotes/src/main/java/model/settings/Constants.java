@@ -190,6 +190,21 @@ public final class Constants {
 	 */
     public static final String[] SAVE_FORMATS =  ImageIO.getWriterFormatNames();
 	
+    
+    /**
+     * Checks whether a filename ends with a correct extension which contains 
+     * save format.
+     * @return
+     */
+    public static final boolean endsWithSaveFormat(final String _strgToTest) {
+    	for (String s : SAVE_FORMATS) {
+    		if (_strgToTest.contains(s)) {
+    			//TODO: thats not correct yet.
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 	
 	/**
 	 * Return the selection possibilities for border as a string with a 

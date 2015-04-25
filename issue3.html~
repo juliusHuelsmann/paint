@@ -194,7 +194,8 @@
 		</label>
 		
 		<div id="nameSrc" class="comment-form-input">
-		<!--	<input id="author" name="author" type="text" value="" /> 
+		<!--	
+			<input id="author" name="author" type="text" value="" /> 
 		-->
 		</div>
 	</div>

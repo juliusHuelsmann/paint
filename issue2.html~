@@ -10,7 +10,6 @@
 <link rel="alternate" type="application/rss+xml" title="jhuelsmann &raquo; Feed" href="https://jhuelsmann.wordpress.com/feed/" />
 <link rel="alternate" type="application/rss+xml" title="jhuelsmann &raquo; Comments Feed" href="https://jhuelsmann.wordpress.com/comments/feed/" />
 <link rel="alternate" type="application/rss+xml" title="jhuelsmann &raquo; Issue-Tracking Comments Feed" href="https://jhuelsmann.wordpress.com/issue-tracking/feed/" />
-<![endif]-->
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://jhuelsmann.wordpress.com/xmlrpc.php?rsd" />
 <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml" /> 
 <meta name="generator" content="WordPress.com" />

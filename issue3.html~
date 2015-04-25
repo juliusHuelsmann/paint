@@ -333,13 +333,13 @@ jQuery(document).ready( highlander_expando_javascript );
 		<aside id="search-3" class="widget widget_search"><form role="search" method="get" class="search-form" action="https://jhuelsmann.wordpress.com/">
 				<label>
 					<span class="screen-reader-text"></span>
-					<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" title="Search for:" />
+<!--					<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" title="Search for:" /> -->
 				</label>
 				<input type="submit" class="search-submit" value="Search" />
 			</form></aside>		<aside id="recent-posts-3" class="widget widget_recent_entries">		<h2 class="widget-title"></h2>		<ul>
 					
 				</ul>
-		</aside><aside id="recent-comments-3" class="widget widget_recent_comments"><h2 class="widget-title"> Comments</h2></aside><aside id="archives-3" class="widget widget_archive"><h2 class="widget-title"></h2>		<ul>
+		</aside><aside id="recent-comments-3" class="widget widget_recent_comments"></aside><aside id="archives-3" class="widget widget_archive"><h2 class="widget-title"></h2>		<ul>
 	
 		</ul>
 </aside><aside id="categories-3" class="widget widget_categories"><h2 class="widget-title"></h2>		<ul>

@@ -9,6 +9,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -93,6 +94,7 @@ public final class MyClipboard implements ClipboardOwner {
         TransferableImage trans = new TransferableImage(_i);
         Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
         c.setContents(trans, this);
+        
 
         //reset the last PaintObjectWriting if just an image is copied
         //in case of Writing copied, the pw is set after exporting Image;
@@ -167,13 +169,15 @@ public final class MyClipboard implements ClipboardOwner {
      * Paste.
      * @return the pasted image (if existing).
      */
-    public Object paste() {
+    @SuppressWarnings("restriction")
+	public Object paste() {
 
         //save the clipboard content.
         Object o = null;
         try {
             o = Toolkit.getDefaultToolkit()
                     .getSystemClipboard().getData(DataFlavor.imageFlavor);
+            
         } catch (HeadlessException e) {
             Status.getLogger().info("clipboard headless exception thrown");
         } catch (UnsupportedFlavorException e) {
@@ -184,20 +188,43 @@ public final class MyClipboard implements ClipboardOwner {
         
         if (own_clipboard && ls_po_selected != null) {
 
-            Status.getLogger().fine("list owned: " + own_clipboard 
+            Status.getLogger().warning("list owned: " + own_clipboard 
                     + ls_po_selected);
             return ls_po_selected;
         }
         if (o instanceof BufferedImage) {
-            Status.getLogger().fine("bi! owned: " + own_clipboard 
+            Status.getLogger().warning("bi! owned: " + own_clipboard 
                     + ls_po_selected);
             
             
         } else if (o instanceof String) {
-            Status.getLogger().fine("string! owned:" + own_clipboard);
+            Status.getLogger().warning("string! owned:" + own_clipboard );
         } else {
-            Status.getLogger().fine("nothing on clipboard! owned: "
-                    + own_clipboard);
+            Status.getLogger().warning("nothing on clipboard! owned: "
+                    + own_clipboard + "obj=" + o);
+            
+            if (o == null) {
+
+            	//TODO: the copy and pasting of java objects does not work.
+//                Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
+//                o =  c.getContents(this);
+//                if (o instanceof sun.awt.datatransfer.ClipboardTransferable) {
+//                	@SuppressWarnings("restriction")
+//					sun.awt.datatransfer.ClipboardTransferable d = ((sun.awt.datatransfer.ClipboardTransferable) o);
+//                	System.out.println(d);
+//                	try {
+//						System.out.println(d.getTransferData(null));
+//					} catch (UnsupportedFlavorException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					} catch (IOException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//                }
+//                
+//                System.out.println(o);
+            }
         }
 
         return o;
@@ -239,7 +266,7 @@ public final class MyClipboard implements ClipboardOwner {
      * @version %I%, %U%
      *
      */
-    private class TransferableImage implements Transferable {
+    private class TransferableImage implements Transferable, Serializable {
 
         
         /**
@@ -269,6 +296,8 @@ public final class MyClipboard implements ClipboardOwner {
          */
         public Object getTransferData(final DataFlavor _flavor)
         throws UnsupportedFlavorException, IOException {
+        	if (true)
+        		return i;
             if (_flavor.equals(DataFlavor.imageFlavor) && i != null) {
                 return i;
             } else {

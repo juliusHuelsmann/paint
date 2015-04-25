@@ -1081,7 +1081,6 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public final boolean isInSelectionImageStretched(
 			final byte[][] _field,
 			final Point _pnt_shiftRectangle, 

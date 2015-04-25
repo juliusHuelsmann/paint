@@ -2,6 +2,8 @@ package test;
 
 import java.awt.Dimension;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -39,10 +41,14 @@ public class TestWeb {
 		    }
 		});
 		
+		final String pageName = (
+				"https://jhuelsmann.wordpress.com/issue-tracking/comment-page-1/");
 		try {
-            myEditorPane.setPage("https://github.com/juliusHuelsmann" +
-            		"/paint/issues/new");
+			
+			String url = "http://www.latijnengrieks.com/vertaling.php?id=5368";
 
+			myEditorPane.setPage(pageName);
+			URL myURL = myEditorPane.getPage();
 //            myEditorPane.setPage("http://www.google.de");
         } catch (IOException ex) {
             // handle error

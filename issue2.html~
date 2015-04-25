@@ -10,26 +10,6 @@
 <link rel="alternate" type="application/rss+xml" title="jhuelsmann &raquo; Feed" href="https://jhuelsmann.wordpress.com/feed/" />
 <link rel="alternate" type="application/rss+xml" title="jhuelsmann &raquo; Comments Feed" href="https://jhuelsmann.wordpress.com/comments/feed/" />
 <link rel="alternate" type="application/rss+xml" title="jhuelsmann &raquo; Issue-Tracking Comments Feed" href="https://jhuelsmann.wordpress.com/issue-tracking/feed/" />
-<script type="text/javascript">
-/* <![CDATA[ */
-function addLoadEvent(func){var oldonload=window.onload;if(typeof window.onload!='function'){window.onload=func;}else{window.onload=function(){oldonload();func();}}}
-/* ]]> */
-</script>
-<link rel='stylesheet' id='all-css-0' href='https://s0.wp.com/_static/??-eJx9j9EOgjAMRX/IWQVj5MH4LTDqLKzrwkaIf+8mUUMwvLW39/S2MHmlxUV0EXhU3o6GXIDAZPHpB+lQx2W31yHs4D9mqccAHUZf6169u5W9sWJ+gBiDrYxR3cVamWCi1uBmhpYBk86+jtnB2FKNFjnZtjD25w+Vy0c6cH3bIobzyvkJSMalMqMETiIlOnyLPLjx9XgqLmVVHoqqewFNhoUP' type='text/css' media='all' />
-<link rel='stylesheet' id='edin-pt-sans-css'  href='//fonts.googleapis.com/css?family=PT+Sans%3A400%2C700%2C400italic%2C700italic&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
-<link rel='stylesheet' id='edin-pt-serif-css'  href='//fonts.googleapis.com/css?family=PT+Serif%3A400%2C700%2C400italic%2C700italic&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
-<link rel='stylesheet' id='edin-pt-mono-css'  href='//fonts.googleapis.com/css?family=PT+Mono&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
-<link rel='stylesheet' id='all-css-6' href='https://s1.wp.com/_static/??-eJyFj9EOwiAMRX9IrC4z6oPxWxh2jAUooSzL/l7mfJia4QvclnPbC4xBKPIJfYLUoUOGMDSAD+Ohzf2XysBeMe9gBbtBBDto4xk0eowmP2zIH+/3Ik6Txb9UzrGQYgyKXCkROurNcpaDk7CkZDLkPwrRWmliyRqxsaSz1JCpVVkyBeK0jAbuZJzN73vr810N2lIj7Qzc3e1YV+fLta4Op/4Jmm2lCw==' type='text/css' media='all' />
-<link rel='stylesheet' id='print-css-6' href='https://s0.wp.com/wp-content/mu-plugins/global-print/global-print.css?m=1387483371g' type='text/css' media='print' />
-<script type='text/javascript'>
-/* <![CDATA[ */
-var LoggedOutFollow = {"invalid_email":"Your subscription did not succeed, please try again with a valid email address."};
-/* ]]> */
-</script>
-<script type='text/javascript' src='https://s0.wp.com/_static/??-eJyFzl0KwjAMAOAL2XUbCr6IZ9lPVlLbpjbpip7eCvogDoVAQvIlRJeoMEwuz8Da1rhmSLdXaizv9C+gPJo0CDQewxtPFASCPK2nER2ozJAGU3v10EIbLhKLB+aKNqafL2FYEcpfZkHiMF1UAsb719XRkVHRZYOBda0NzJRFLeQcFV1wNiB15+xP3b5tD8eub3v7AEfxb6Q='></script>
-<link rel='stylesheet' id='all-css-0' href='https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style.css?m=1377793621g' type='text/css' media='all' />
-<!--[if lt IE 8]>
-<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563g&#038;ver=20110606' type='text/css' media='all' />
 <![endif]-->
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://jhuelsmann.wordpress.com/xmlrpc.php?rsd" />
 <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml" /> 
@@ -499,7 +479,7 @@ var LoggedOutFollow = {"invalid_email":"Your subscription did not succeed, pleas
 				<div class="comment-form-fields">
 				<div class="comment-form-field comment-form-email">
 					<label for="email" content="testing@gmail.com">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
-					<div class="comment-form-input"><input id="email" name="email" type="email" value="" /></div>
+					<div class="comment-form-input"><input id="email" name="email" type="text" value="" /></div>
 				</div>
 				<div class="comment-form-field comment-form-author">
 					<label for="author" content="julius">Name <span class="required">(required)</span></label>

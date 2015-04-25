@@ -255,7 +255,7 @@
 				<input type="hidden" name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="" />
 				<input type="hidden" name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="" />
 				<input type="hidden" name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="" />
-				<p class="comment-form-posting-as pa-facebook"><strong></strong> You are commenting using your Facebook account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'facebook' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+				<p class="comment-form-posting-as pa-facebook"><strong></strong> <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'facebook' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
 			</div>
 	
 		</div>
@@ -270,7 +270,7 @@
 				<input type="hidden" name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="" />
 				<input type="hidden" name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="" />
 				<input type="hidden" name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="" />
-				<p class="comment-form-posting-as pa-googleplus"><strong></strong> You are commenting using your Google+ account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'googleplus' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+				<p class="comment-form-posting-as pa-googleplus"><strong></strong> <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'googleplus' );"></a><a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;"></a></span></p>
 			</div>
 	
 		</div>
@@ -278,8 +278,8 @@
 
 
 	<div id="comment-form-load-service" class="comment-form-service">
-		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
-		<p>Connecting to %s</p>
+		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();"></a></div>
+		<p></p>
 	</div>
 
 </div>
@@ -332,8 +332,8 @@ jQuery(document).ready( highlander_expando_javascript );
 		<div id="secondary" class="widget-area" role="complementary">
 		<aside id="search-3" class="widget widget_search"><form role="search" method="get" class="search-form" action="https://jhuelsmann.wordpress.com/">
 				<label>
-					<span class="screen-reader-text">Search for:</span>
-					<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" title="Search for:" />
+					<span class="screen-reader-text"></span>
+<!--					<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" title="Search for:" /> -->
 				</label>
 				<input type="submit" class="search-submit" value="Search" />
 			</form></aside>		<aside id="recent-posts-3" class="widget widget_recent_entries">		<h2 class="widget-title"></h2>		<ul>

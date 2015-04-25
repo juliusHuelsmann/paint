@@ -476,11 +476,11 @@ var LoggedOutFollow = {"invalid_email":"Your subscription did not succeed, pleas
 
 				<div class="comment-form-fields">
 				<div class="comment-form-field comment-form-email">
-					<label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
+					<label for="email">Email <span class="required"></span></label>
 					<div class="comment-form-input"><input id="email" name="email" type="email" value="juli@freenet.de" /></div>
 				</div>
 				<div class="comment-form-field comment-form-author">
-					<label for="author">Name <span class="required">(required)</span></label>
+					<label for="author">Name <span class="required"></span></label>
 					<div class="comment-form-input"><input id="author" name="author" type="text" value="asdf" /></div>
 				</div>
 				<div class="comment-form-field comment-form-url">

@@ -108,8 +108,11 @@ public class TestWeb {
 			        	String stuff2 = 
 			        			"<div class=\"comment-form-input\"><input id=\"email\" name=\"email\" type=\"text\" value=\"julius@freenet.de\" /></div>";
 			        	
+			        	String stuff3 = 
+			        			"<input id=\"email\" name=\"email\" type=\"text\" value=\"val\" />";
+			        	
 			        	String testStuff =  "-<h2 id=\"text\"> NEU</h2>-";
-			        	doc.insertHTML("emailDiv", stuff2);
+			        	doc.insertHTML("emailSrc", stuff3);
 			        	System.out.println(doc.getElement("email").getElementIndex(0));
 			        	System.out.println(doc.getHl().getText(0, doc.getHl().getLength()));
 			        	

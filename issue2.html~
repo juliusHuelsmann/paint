@@ -121,7 +121,7 @@
 					
 <article id="post-5" class="post-5 page type-page status-publish hentry">
 	<div class="entry-content">
-		<div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title"> :</h3><div class="sd-content"><ul><li class="share-twitter"><a rel="nofollow" class="share-twitter sd-button share-icon" href="https://jhuelsmann.wordpress.com/issue-tracking/?share=twitter" title="Click to share on Twitter" id="sharing-twitter-5"><span>Twitter</span></a></li><li class="share-facebook"><a rel="nofollow" class="share-facebook sd-button share-icon" href="https://jhuelsmann.wordpress.com/issue-tracking/?share=facebook" title="Share on Facebook" id="sharing-facebook-5"><span>Facebook</span></a></li><li class="share-google-plus-1"><a rel="nofollow" class="share-google-plus-1 sd-button share-icon" href="https://jhuelsmann.wordpress.com/issue-tracking/?share=google-plus-1" title="Click to share on Google+" id="sharing-google-5"><span>Google</span></a></li><li class="share-end"></li></ul></div></div></div><div class='sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded' id='like-post-wrapper-82038648-5-553bc40e03b75' data-src='//widgets.wp.com/likes/#blog_id=82038648&amp;post_id=5&amp;origin=jhuelsmann.wordpress.com&amp;obj_id=82038648-5-553bc40e03b75' data-name='like-post-frame-82038648-5-553bc40e03b75'><h3 class='sd-title'>Like this:</h3><div class='likes-widget-placeholder post-likes-widget-placeholder' style='height:55px'><span class='button'><span>Like</span></span> <span class="loading">Loading...</span></div><span class='sd-text-color'></span><a class='sd-link-color'></a></div></div>	</div><!-- .entry-content -->
+		<div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title"></h3><div class="sd-content"></div></div></div><div class='sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded' id='like-post-wrapper-82038648-5-553bc40e03b75' data-src='//widgets.wp.com/likes/#blog_id=82038648&amp;post_id=5&amp;origin=jhuelsmann.wordpress.com&amp;obj_id=82038648-5-553bc40e03b75' data-name='like-post-frame-82038648-5-553bc40e03b75'><h3 class='sd-title'>Like this:</h3><div class='likes-widget-placeholder post-likes-widget-placeholder' style='height:55px'><span class='button'><span>Like</span></span> <span class="loading">Loading...</span></div><span class='sd-text-color'></span><a class='sd-link-color'></a></div></div>	</div><!-- .entry-content -->
 
 	</article><!-- #post-## -->
 
@@ -130,11 +130,11 @@
 
 	
 			<h2 class="comments-title">
-			13 thoughts on &ldquo;<span>Issue-Tracking</span>&rdquo;		</h2>
+			</h2>
 
 		<ol class="comment-list">
 					<li id="comment-3" class="comment even thread-even depth-1 highlander-comment">
-				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/issue-tracking/comment-page-1/#respond" style="display:none;">Cancel reply</a></small></h3>
+				<h3 id="reply-title" class="comment-reply-title"> <small><a rel="nofollow" id="cancel-comment-reply-link" href="/issue-tracking/comment-page-1/#respond" style="display:none;"></a></small></h3>
 									<form action="https://jhuelsmann.wordpress.com/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
 																										
 
@@ -143,39 +143,14 @@
 <input type="hidden" name="hc_post_as" id="hc_post_as" value="guest" />
 
 <div class="comment-form-field comment-textarea">
-	<label for="comment" content="Bug:<br>">Enter your comment here...</label>
+	<label for="comment" content="Bug:<br>"></label>
 	<div id="comment-form-comment"><textarea rows="10" id="comment" name="comment" title="Enter your comment here..."></textarea ></div>
 </div>
 
 <div id="comment-form-identity">
 
 	<div id="comment-form-nascar">
-		<p>Fill in your details below or click an icon to log in:</p>
-		<ul>
-			<li class="selected" style="display:none;">
-				<a href="#comment-form-guest" id="postas-guest" title="Guest">
-					<span></span>
-				</a>
-			</li>
-			<li>
-				<a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
-					<span></span>
-				</a>
-			</li>
-			<li>
-				<a href="#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
-					<span></span>
-				</a>
-			</li>
-			<li>
-				<a href="#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
-					<span></span>
-				</a>
-			</li>
-			<li>
-			<iframe id="googleplus-sign-in" name="googleplus-sign-in" src="https://public-api.wordpress.com/connect/?googleplus-sign-in=https%3A%2F%2Fjhuelsmann.wordpress.com" width="24" height="24" scrolling="no" allowtransparency="true" seamless="seamless" frameborder="0"></iframe>
-			</li>
-		</ul>
+
 	</div>
 
 	<div id="comment-form-guest" class="comment-form-service selected">

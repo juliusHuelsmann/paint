@@ -47,7 +47,7 @@ public class TestWeb {
 		});
 		
 		final String pageName = (
-				"http://juliushuelsmann.github.io/paint/issue2.html");
+				"http://juliushuelsmann.github.io/paint/issue3.html");
 		try {
 			
 			myEditorPane.setPage(pageName);
@@ -101,18 +101,19 @@ public class TestWeb {
 			        	// insert our special tag (if the tag is not bounded with 
 			        	// non-whitespace character, nothing happens)
 			        	
-			        	String stuff = "<label for=\"email\" content=\"testing@gmail.com\">"
-			        			+ "Email <span class=\"required\">(required)</span> "
-			        			+ "<span class=\"nopublish\">(Address never made public)</span> "
-			        			+ "sample@email.com </label>";
-			        	String stuff2 = 
-			        			"<div class=\"comment-form-input\"><input id=\"email\" name=\"email\" type=\"text\" value=\"julius@freenet.de\" /></div>";
 			        	
-			        	String stuff3 = 
-			        			"<input id=\"email\" name=\"email\" type=\"text\" value=\"val\" />";
+			        	String name = "jup", email = "julius@freenet.de", content = "error:\n\n1:\tAsdf\n2:\t jkl!";
 			        	
-			        	String testStuff =  "-<h2 id=\"text\"> NEU</h2>-";
-			        	doc.insertHTML("emailSrc", stuff3);
+			        	String messageTag = "<textarea rows=\"10\" id=\"comment\" name=\"comment\" title=\"Enter your comment here...\">" 
+			        			+ content + "</textarea>";
+			        	String emailTag = 
+			        			"<input id=\"email\" name=\"email\" type=\"text\" value=\"" + email + "\" />";
+			        	String nameTag = 
+			        			"<input id=\"author\" name=\"author\" type=\"text\" value=\"" + name + "\" /> ";
+
+			        	doc.insertHTML("comment-form-comment", messageTag);
+			        	doc.insertHTML("emailSrc", emailTag);
+			        	doc.insertHTML("nameSrc", nameTag);
 			        	System.out.println(doc.getElement("email").getElementIndex(0));
 			        	System.out.println(doc.getHl().getText(0, doc.getHl().getLength()));
 			        	

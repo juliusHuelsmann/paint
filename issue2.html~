@@ -302,7 +302,20 @@ jQuery(document).ready( highlander_expando_javascript );
 					<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" title="Search for:" />
 				</label>
 				<input type="submit" class="search-submit" value="Search" />
-			</form></aside>		<aside id="recent-posts-3" class="widget widget_recent_entries">		
+			</form></aside>		<aside id="recent-posts-3" class="widget widget_recent_entries">		<h2 class="widget-title"></h2>		<ul>
+					
+				</ul>
+		</aside><aside id="recent-comments-3" class="widget widget_recent_comments"><h2 class="widget-title">Recent Comments</h2></aside><aside id="archives-3" class="widget widget_archive"><h2 class="widget-title">Archives</h2>		<ul>
+	
+		</ul>
+</aside><aside id="categories-3" class="widget widget_categories"><h2 class="widget-title">Categories</h2>		<ul>
+
+		</ul>
+</aside><aside id="meta-3" class="widget widget_meta"><h2 class="widget-title">Meta</h2>			<ul>
+			<li><a href="https://en.wordpress.com/signup/?ref=wplogin">Register</a></li>			<li><a href="https://jhuelsmann.wordpress.com/wp-login.php">Log in</a></li>
+			<li><a href="https://jhuelsmann.wordpress.com/feed/">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://jhuelsmann.wordpress.com/comments/feed/">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+<li><a href="http://wordpress.com/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.com</a></li>			</ul>
 </aside>	</div><!-- #secondary -->
 	
 </div><!-- .content-wrapper -->

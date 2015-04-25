@@ -144,7 +144,13 @@
 
 <div class="comment-form-field comment-textarea">
 	<label for="comment" content="Bug:<br>"></label>
-	<div id="comment-form-comment"><textarea rows="10" id="comment" name="comment" title="Enter your comment here..."></textarea ></div>
+	<div id="comment-form-comment">
+	
+	<!--
+	<textarea rows="10" id="comment" name="comment" title="Enter your comment here..."></textarea >
+	
+	-->
+	</div>
 </div>
 
 <div id="comment-form-identity">
@@ -200,7 +206,7 @@
 		</div>
 	</div>
 	
-	<!-- not important -->
+	<!-- not important 
 	<div class="comment-form-field comment-form-url">
 		<label for="url">Website</label>
 		<div class="comment-form-input"><input id="url" name="url" type="text" value="" /></div>
@@ -208,7 +214,7 @@
 			</div>
 	
 		</div>
-	</div>
+	</div>-->
 
 	<div id="comment-form-wordpress" class="comment-form-service">
 		<div class="comment-form-padder">

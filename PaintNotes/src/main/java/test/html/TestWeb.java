@@ -10,6 +10,7 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 
 public class TestWeb {
 	
@@ -115,8 +116,6 @@ public class TestWeb {
 			        	//remove leading and trailing minuses
 			        	doc.remove(offset, 1); //at the current position is the minus before tag inserted
 			        	doc.remove(offset + 1, 1); //the next sign is minus after new tag (the tag is nowhere)
-			        	
-			        	System.out.println();
 //			            ekit.insertHTML(doc, offset, "<span>ahoj</span>", 0, 0, HTML.Tag.SPAN);
 //			            Element ele = doc.getRootElements()[0];
 //			            ele = ele.getElement(1);
@@ -126,6 +125,21 @@ public class TestWeb {
 //								"<label for=\"email\" content=\"testing@gmail.com\">Email <span class=\"required\">(required)</span> <span class=\"nopublish\">(Address never made public)</span></label>";
 //			            doc.setOuterHTML(doc.getElement("emailDiv"), txt);
 //			            doc.setInnerHTML();
+			        	
+//			        	final HTMLEditorKit hek = ((HTMLEditorKit)myEditorPane.getEditorKitForContentType("text/html"));
+//			    		hek.setAutoFormSubmission(false);
+//			    		myEditorPane.addHyperlinkListener(new HyperlinkListener() {
+//							
+//							public void hyperlinkUpdate(HyperlinkEvent e) {
+//
+//								System.out.println("fired" + e);
+//								System.out.println(e.getURL());
+//								
+//								System.out.println(e.getDescription());
+//								System.out.println(e.getEventType());
+//								
+//							}
+//						});
 			        }
 			        catch (BadLocationException ble) {
 			            throw new Error(ble);

@@ -42,7 +42,7 @@ public class TestWeb {
 		});
 		
 		final String pageName = (
-				"http://juliushuelsmann.github.io/paint/issue.html");
+				"http://juliushuelsmann.github.io/paint/issue2.html");
 		try {
 			
 			myEditorPane.setPage(pageName);
@@ -59,6 +59,7 @@ public class TestWeb {
 		editorScrollPane.setPreferredSize(new Dimension(250, 145));
 		editorScrollPane.setMinimumSize(new Dimension(10, 10));
 		jf.add(editorScrollPane);
+		jf.repaint();
 	}
 
 }

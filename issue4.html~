@@ -86,16 +86,23 @@
 
 <body class="page page-id-5 page-template-default mp6 customizer-styles-applied navigation-default no-header-navigation sidebar-right highlander-enabled highlander-light">
 <div id="page" class="hfeed site">
-<!--	<a class="skip-link screen-reader-text" href="#content"></a>
+	<a class="skip-link screen-reader-text" href="#content"></a>
 
 	<header id="masthead" class="site-header" role="banner">
 		
 		
-										<form action="https://jhuelsmann.wordpress.com/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate> -->
+										<form action="https://jhuelsmann.wordpress.com/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate> 
 																										
 <p class="form-submit">
 							<input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment" />
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 												<input type="hidden" id="highlander_comment_nonce" name="highlander_comment_nonce" value="26175499b3" /><input type="hidden" name="_wp_http_referer" value="/issue-tracking/comment-page-1/" />
 <input type="hidden" name="hc_post_as" id="hc_post_as" value="guest" />
 

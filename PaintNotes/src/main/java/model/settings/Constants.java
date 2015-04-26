@@ -25,7 +25,7 @@ public final class Constants {
 	 * URL of the page onto which the bug-reporting takes place.
 	 */
 	public static final String URL_BUG_PAGE 
-	= "http://juliushuelsmann.github.io/paint/issue4.html";
+	= "http://juliushuelsmann.github.io/paint/issue3.html";
 	
     /**
      * for class view.View.jbtn_exit.

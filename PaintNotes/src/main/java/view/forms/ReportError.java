@@ -41,25 +41,25 @@ public class ReportError extends JPanel {
 
 		super();
 		super.setLayout(null);
-		super.setSize(150, 75);
+		super.setSize(450, 975);
 		myEditorPane = new JEditorPane();
 		myEditorPane.setEditable(false);
-//		myEditorPane.addHyperlinkListener(new HyperlinkListener() {
-//			public void hyperlinkUpdate(HyperlinkEvent e) {
-//		        if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-//		            myEditorPane.setToolTipText(e.getDescription());
-//		        } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
-//		            myEditorPane.setToolTipText(null);
-//		        } else if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-//		            try {
-//		                myEditorPane.setPage(e.getURL());
-//		            } catch (IOException ex) {
-//		                ex.printStackTrace();
-//		            }
-//		        }
-//		    }
-//		});
-		myEditorPane.setSize(150, 75);
+		myEditorPane.addHyperlinkListener(new HyperlinkListener() {
+			public void hyperlinkUpdate(HyperlinkEvent e) {
+		        if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+		            myEditorPane.setToolTipText(e.getDescription());
+		        } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+		            myEditorPane.setToolTipText(null);
+		        } else if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+		            try {
+		                myEditorPane.setPage(e.getURL());
+		            } catch (IOException ex) {
+		                ex.printStackTrace();
+		            }
+		        }
+		    }
+		});
+		myEditorPane.setSize(getSize());
 		myEditorPane.setOpaque(false);
 		myEditorPane.setVisible(true);
 		super.add(myEditorPane);
@@ -95,7 +95,7 @@ public class ReportError extends JPanel {
 						
 						//sleep for a second.
 						try {
-							Thread.sleep(1000);
+							Thread.sleep(500);
 						} catch (InterruptedException e) {
 							//do nothing
 							Status.getLogger().severe("interrupted bug reporting.");
@@ -106,6 +106,7 @@ public class ReportError extends JPanel {
 					// element has been found. 
 					// otherwise give severe warning to console.
 					if (found) {
+						System.out.println("lodaa");
 
 						//if the element has been found, insert the error-elements.
 						load(_message);

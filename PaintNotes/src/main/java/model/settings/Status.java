@@ -5,7 +5,9 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
+
 import control.ControlPaint;
 import control.tabs.CTabWrite;
 import view.View;
@@ -27,6 +29,11 @@ import model.util.paint.Utils;
  */
 public final class Status {
 
+	
+	/**
+	 * Replaced by pen selection. 
+	 */
+	private static Pen pen_selectedReplaced;
 	
 	
 	private static ControlPaint controlPaint;
@@ -469,6 +476,7 @@ public final class Status {
     public static void setPenSelected1(final Pen _penSelected1) {
         Status.penSelected1 = _penSelected1;
         getControlTabWrite().penChanged();
+        picture.changePen(penSelected1);
     }
 
     /**
@@ -955,6 +963,18 @@ public final class Status {
 	 */
 	public static int getBorderBottomPercentShow() {
 		return borderBottomPercentShow;
+	}
+	/**
+	 * @return the pen_selectedReplaced
+	 */
+	public static Pen getPen_selectedReplaced() {
+		return pen_selectedReplaced;
+	}
+	/**
+	 * @param pen_selectedReplaced the pen_selectedReplaced to set
+	 */
+	public static void setPen_selectedReplaced(Pen pen_selectedReplaced) {
+		Status.pen_selectedReplaced = pen_selectedReplaced;
 	}
 
 }

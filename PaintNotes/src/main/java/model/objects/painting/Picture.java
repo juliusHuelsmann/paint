@@ -137,6 +137,7 @@ public final class Picture implements Serializable {
 		this.history = _history;
 		reload();
 	}
+	
 
 	/**
 	 * The reload method creates a new instance of sorted PaintObject list and

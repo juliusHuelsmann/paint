@@ -16,15 +16,25 @@ import view.forms.QuickAccess;
  */
 public class CQuickAccess implements ActionListener, MouseListener {
 
+	
+	/**
+	 * Instance of the root-controller class.
+	 */
 	private ControlPaint cp;
+	
+	/**
+	 * Error-checked function for getting the QuickAccess view class.
+	 * @return	instance of QuickAccess.
+	 */
 	private QuickAccess getQuickAccess() {
 		return cp.getView().getPage().getQuickAccess();
 	}
 	
 	
 	/**
+	 * Constructor: save instance of controlPaint.
 	 * 
-	 * @param _cp
+	 * @param _cp 	instance of ControlPaint.
 	 */
 	public CQuickAccess(final ControlPaint _cp) {
 		this.cp = _cp;

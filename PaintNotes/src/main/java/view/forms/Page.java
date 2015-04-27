@@ -91,8 +91,10 @@ import view.util.mega.MButton;
      * 
      */
     private QuickAccess quickAccess;
+    
 	/**
-	 * empty utility class constructor. 
+	 * Constructor which initializes the page with use of the ControlPaint.
+	 * @param _cv		the ControlPaint. 
 	 */
 	public Page(final ControlPaint _cv) {
 		initialize(_cv);

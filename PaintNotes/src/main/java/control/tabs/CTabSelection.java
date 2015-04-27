@@ -93,18 +93,21 @@ public final class CTabSelection implements ActionListener {
                 if (_event.getSource().equals(getSelection()
                 		.getJbtn_colors()[i])) {
                     
-                    this.selectionColor = getSelection()
-                    		.getJbtn_colors()[i].getBackground()
-                            .getRGB();
-                    setColor(cp, new Color(selectionColor));
-                    getSelection().getTb_color().setBackground(
-                            new Color(selectionColor));
+                	if (cp.getPicture().isSelected()) {
 
-                    cp.getPicture().paintSelectedInline(
-                			cp.getControlPaintSelection(),
-                			cp.getView().getPage(),
-                			cp.getControlPic());
-                    activateColor();
+                        this.selectionColor = getSelection()
+                        		.getJbtn_colors()[i].getBackground()
+                                .getRGB();
+                        setColor(cp, new Color(selectionColor));
+                        getSelection().getTb_color().setBackground(
+                                new Color(selectionColor));
+
+                        cp.getPicture().paintSelectedInline(
+                    			cp.getControlPaintSelection(),
+                    			cp.getView().getPage(),
+                    			cp.getControlPic());
+                        activateColor();
+                	}
                 }
             }
         }

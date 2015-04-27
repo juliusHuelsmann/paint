@@ -40,8 +40,8 @@ public final class CPaintStatus implements MouseListener {
 	private ControlPaint controlPaint;
 	
 	/**
-	 * Constructor: initializes startPerfrom (which indicates the listeners 
-	 * to not perform an action until necessary variables have been set.
+	 * Constructor: saves the control paint class.
+	 * @param _cp the root-controller class.
 	 */
 	public CPaintStatus(final ControlPaint _cp) { 
 		this.controlPaint = _cp;
@@ -49,23 +49,80 @@ public final class CPaintStatus implements MouseListener {
 	}
 
 
+	/**
+	 * Error-checked getter methods.
+	 * @return 	instance of view.
+	 */
 	private View getView() {
-		return controlPaint.getView();
+		
+		if (controlPaint != null) {
+			return controlPaint.getView();
+		} else {
+			Status.getLogger().severe("control Paint is null");
+		}
+		return null;
 	}
 
+	/**
+	 * error-checked getter method .
+	 * @return the page.
+	 */
 	private Page getPage() {
-		return controlPaint.getView().getPage();
+		if (getView() != null) {
+			return getView().getPage();
+		} else {
+			Status.getLogger().severe("controlPaint.getView() is null");
+		}
+		return null;
 	}
-    
-    
-	private Insert getInsert() {
-		return controlPaint.getView().getTabs().getTab_insert();
-	}
+
+	
+	/**
+	 * Error-checked getter method.
+	 * @return 	the tabs.
+	 */
 	private Tabs getTabs() {
-		return controlPaint.getView().getTabs();
+
+		if (getView() != null) {
+			return getView().getTabs();
+		} else {
+			Status.getLogger().severe("controlPaint.getView() is null");
+		}
+		return null;
 	}
+    
+	
+	/**
+	 * Error - checked getter method.
+	 * @return	the insert.
+	 */
+	private Insert getInsert() {
+
+
+		if (getTabs() != null) {
+			return getTabs().getTab_insert();
+		} else {
+			Status.getLogger().severe(
+					"controlPaint.getView().getTabs() is null");
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * Error-checked getter method.
+	 * @return	the picture controller class.
+	 */
 	private ContorlPicture getControlPicture() {
-		return controlPaint.getControlPic();
+		if (controlPaint != null) {
+
+			return controlPaint.getControlPic();	
+		} else {
+
+			Status.getLogger().severe(
+					"controlPaint is null");
+		}
+		return null;
 	}
     /**
      * Fetch the instance of tab paint.
@@ -364,8 +421,6 @@ public final class CPaintStatus implements MouseListener {
 	 */
 	public void mouseReleased(final MouseEvent _event) {
 
-
-
     	/**
     	 * Instance of paint fetched out of instance of the main controller
     	 * class.
@@ -373,170 +428,146 @@ public final class CPaintStatus implements MouseListener {
     	 * instance of Paint is null.
     	 */
     	final Paint paint = getTabPaint();
-
     	
     	//if the initialization process has terminated without errors
     	//the instance of Paint is not equal to null, thus it is possible to
     	//check the source of the ActionEvent.
     	if (paint != null) {
 
-    			
-    			//if previously zoomed remove zoom field.
-    			if (Status.getIndexOperation()
-    					== Constants.CONTROL_PAINTING_INDEX_ZOOM_IN) {
-
-    				getControlPicture().removeZoomBox();
-    			}
-    			
-    			
-    		    int operationID = getOperation(_event);
-    		    
-    		    //if operation id is valid; thus operation has been found
-    		    if (operationID != -1) {
-
-    		        //set operation and deactivate older operation Buttons
-                    Status.setIndexOperation(operationID);
-                    deactivate();
-                    
-                    if (controlPaint.getPicture().isSelected()) {
-
-                        //if there was selection before, release it to Picture
-                        controlPaint.getPicture().releaseSelected(
-                    			controlPaint.getControlPaintSelection(),
-                    			controlPaint.getcTabSelection(),
-                    			controlPaint.getView().getTabs().getTab_debug(),
-                    			controlPaint.getView().getPage()
-                    			.getJlbl_painting().getLocation().x,
-                    			controlPaint.getView().getPage()
-                    			.getJlbl_painting().getLocation().y);
-                        getControlPicture().releaseSelected();
-                        getPage().removeButtons();
-                    }
-                    
-                    
-
-                    switch (operationID) {
-                    /*
-                     * pens
-                     */
-                    case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
-                    case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
-                    case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
-                    case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
-                    case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
-                    case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
-                    case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
-                    case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
-                    case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
-                    case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
-//                        getInsert().getI2_g_line().
-                        break;
-                    case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
-
-                        //enable buttons
-                        paint.getIt_stift1().getTb_open()
-                        .setActivated(true);
-                        paint.getTb_color1().setActivated(true);
-                        controlPaint.getPicture().changePen(
-                        		Status.getPenSelected1());
-                        
-                        //set cursor
-                        setCursor(paint.getIt_stift1().getImagePath(),
-                                "p1");
-                        setCursor("cursor.png",
-                                "p1");
-                        break;
-                    case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
-
-                        //enable buttons
-                        paint.getIt_stift2().getTb_open()
-                        .setActivated(true);
-                        paint.getTb_color2().setActivated(true);
-                        controlPaint.getPicture().changePen(
-                        		Status.getPenSelected2());
-                        
-                        //set cursor
-                        setCursor(paint.getIt_stift2().getImagePath(),
-                                "p2");
-                        setCursor("cursor.png",
-                                "p1");
-                        break;
-                    case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
-                        getTabs().closeMenues();
-                        paint.getIt_selection().getTb_open()
-                            .setActivated(true);
-                        break;
-                    case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
-                        getTabs().closeMenues();
-                        paint.getIt_selection()
-                        .getTb_open().setActivated(true); 
-                        break;
-                    case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
-                        getTabs().closeMenues();
-                        paint.getIt_selection().getTb_open()
-                        .setActivated(true);
-                        break;	
-                    case Constants.CONTROL_PAINTING_INDEX_FILL:
-                        getTabs().closeMenues();
-                        paint.getTb_fill().setActivated(true);
-                        break;
-                    case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
-                        getTabs().closeMenues();
-                        paint.getTb_zoomIn().setActivated(true);
-                        break;
-
-                    case Constants.CONTROL_PAINTING_INDEX_PIPETTE:
-                        getTabs().closeMenues();
-                        paint.getTb_pipette().setActivated(true);
-                        break;
-                    case Constants.CONTROL_PAINTING_INDEX_MOVE:
-                        getTabs().closeMenues();
-                        paint.getTb_move().setActivated(true);
-                        break;
-                    case Constants.CONTROL_PAINTING_INDEX_ERASE:
-
-                        //enable buttons
-                        paint.getTb_erase().getTb_open()
-                        .setActivated(true);
-                    	
-                    	
-                        getTabs().closeMenues();
-                        paint.getTb_erase().getTb_open().setActivated(true);
-
-                        BufferedImage bi_erase = new BufferedImage(
-                        		Status.getEraseRadius() * 2,
-                        		Status.getEraseRadius() * 2, 
-                        		BufferedImage.TYPE_INT_RGB);
-                        for (int y = 0; y < bi_erase.getHeight(); y++) {
-                        	for (int x = 0; x < bi_erase.getWidth(); x++) {
-                            
-                        		if (y == 0 || y == bi_erase.getHeight() - 1
-                        				|| x == 0 
-                        				|| x == bi_erase.getWidth() - 1) {
-                            		bi_erase.setRGB(x, y, Color.black.getRGB());
-                        		} else {
-
-                            		bi_erase.setRGB(x, y, Color.white.getRGB());
-                        		}
-                            
-                        	
-                        	}
-                        	
-                        }
-                        
-                        setCursor(bi_erase, "p1");
-                        break;
-
-                    default:
-                        Status.getLogger().warning("falsche id");
-                        break;
-                    }
-    		    } else {
-
-
-    	            mouseReleasedColorChange(_event);
-    		    }
+    		//if previously zoomed remove zoom field.
+    		if (Status.getIndexOperation()
+    				== Constants.CONTROL_PAINTING_INDEX_ZOOM_IN) {
+    			getControlPicture().removeZoomBox();
     		}
+    			
+    			
+    		int operationID = getOperation(_event);
+    		    
+    		//if operation id is valid; thus operation has been found
+    		if (operationID != -1) {
+    			
+    			//set operation and deactivate older operation Buttons
+    			Status.setIndexOperation(operationID);
+    			deactivate();
+    			
+    			if (controlPaint.getPicture().isSelected()) {
+    				
+    				//if there was selection before, release it to Picture
+    				controlPaint.getPicture().releaseSelected(
+    						controlPaint.getControlPaintSelection(),
+    						controlPaint.getcTabSelection(),
+    						controlPaint.getView().getTabs().getTab_debug(),
+    						controlPaint.getView().getPage()
+    						.getJlbl_painting().getLocation().x,
+    						controlPaint.getView().getPage()
+    						.getJlbl_painting().getLocation().y);
+                        	getControlPicture().releaseSelected();
+                        	getPage().removeButtons();
+    			}	
+    			
+    			switch (operationID) {
+    			/*
+    			 * pens
+    			 */
+    			case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
+    			case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+    			case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
+    			case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+    			case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
+    			case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
+    			case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
+    			case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
+    			case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
+    			case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
+    				break;
+    			case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
+    				
+    				//enable buttons
+    				paint.getIt_stift1().getTb_open()
+    				.setActivated(true);
+    				paint.getTb_color1().setActivated(true);
+    				controlPaint.getPicture().changePen(
+    						Status.getPenSelected1());
+                        	
+    				//set cursor
+    				setCursor(paint.getIt_stift1().getImagePath(), "p1");
+    				setCursor("cursor.png", "p1");
+    				break;
+    			case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
+    				
+    				//enable buttons
+    				paint.getIt_stift2().getTb_open().setActivated(true);
+    				paint.getTb_color2().setActivated(true);
+    				controlPaint.getPicture().changePen(
+    						Status.getPenSelected2());
+                        	
+    				//set cursor
+    				setCursor(paint.getIt_stift2().getImagePath(), "p2");
+    				setCursor("cursor.png", "p1");
+    				break;
+    			case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
+    				getTabs().closeMenues();
+    				paint.getIt_selection().getTb_open().setActivated(true);
+    				break;
+    			case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
+    				getTabs().closeMenues();
+    				paint.getIt_selection().getTb_open().setActivated(true); 
+    				break;
+    			case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
+    				getTabs().closeMenues();
+    				paint.getIt_selection().getTb_open()
+    				.setActivated(true);
+    				break;	
+    			case Constants.CONTROL_PAINTING_INDEX_FILL:
+    				getTabs().closeMenues();
+    				paint.getTb_fill().setActivated(true);
+    				break;
+    			case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
+    				getTabs().closeMenues();
+    				paint.getTb_zoomIn().setActivated(true);
+    				break;
+    			case Constants.CONTROL_PAINTING_INDEX_PIPETTE:
+    				getTabs().closeMenues();
+    				paint.getTb_pipette().setActivated(true);
+    				break;
+    			case Constants.CONTROL_PAINTING_INDEX_MOVE:
+    				getTabs().closeMenues();
+    				paint.getTb_move().setActivated(true);
+    				break;
+    			case Constants.CONTROL_PAINTING_INDEX_ERASE:
+    				//enable buttons
+    				paint.getTb_erase().getTb_open().setActivated(true);
+    				
+    				getTabs().closeMenues();
+    				paint.getTb_erase().getTb_open().setActivated(true);
+    				
+    				BufferedImage bi_erase = new BufferedImage(
+    						Status.getEraseRadius() * 2,
+    						Status.getEraseRadius() * 2, 
+    						BufferedImage.TYPE_INT_RGB);
+    				for (int y = 0; y < bi_erase.getHeight(); y++) {
+    					for (int x = 0; x < bi_erase.getWidth(); x++) {
+    						
+    						if (y == 0 || y == bi_erase.getHeight() - 1
+    								|| x == 0 
+    								|| x == bi_erase.getWidth() - 1) {
+    							bi_erase.setRGB(x, y, Color.black.getRGB());
+    						} else {
+
+    							bi_erase.setRGB(x, y, Color.white.getRGB());
+    						}
+    					}
+    				}
+    				setCursor(bi_erase, "p1");
+    				break;
+    			default:
+    				Status.getLogger().warning("wrong identifier.");
+    				break;
+    			}
+    		} else {
+    			mouseReleasedColorChange(_event);
+    		}
+    	}
 	}
 	
 

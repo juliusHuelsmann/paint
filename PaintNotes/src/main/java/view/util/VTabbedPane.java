@@ -773,9 +773,9 @@ public class VTabbedPane extends MPanel {
                     stroke();
                     jpnl_contains.setComponentZOrder(jpnl_stuff[openTab], 1);
 
-                    Status.getLogger().severe("hier bin ich "
-                    		+ "(der ehemalige windows fehler,"
-                    		+ " der nun auskommentiert ist.)");
+//                    Status.getLogger().severe("hier bin ich "
+//                    		+ "(der ehemalige windows fehler,"
+//                    		+ " der nun auskommentiert ist.)");
                     //TODO: Windows Fehler 1 (solvedAtWindows)
                     //TODO: in combination mit dem repaint. das
                     //repaint hier zerstoert die anzeige.

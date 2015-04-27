@@ -1,9 +1,11 @@
 package view.forms;
 
 import java.awt.Color;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
+
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
@@ -13,6 +15,7 @@ import view.util.mega.MPanel;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
+@SuppressWarnings("serial")
 public class Loading extends MPanel {
 
 	
@@ -63,15 +66,15 @@ public class Loading extends MPanel {
 	public final void setSize(final int _width, final int _height) {
 		super.setSize(_width, _height);
 		iic = new ImageIcon[path.length];
-		for (int i = 0; i < iic.length; i++) {
-			try {
+//		for (int i = 0; i < iic.length; i++) {
+//			try {
 //				iic[i] = new ImageIcon(model.util.Util.resize(
 //						path[i], _width, _height));
-					
-			} catch (Exception e) {
+//					
+//			} catch (Exception e) {
 //				e.printStackTrace();
-			}
-		}
+//			}
+//		}
 	}
 
 

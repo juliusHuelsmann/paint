@@ -1,6 +1,7 @@
 package view.forms;
 
 import java.io.IOException;
+
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,8 +14,6 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import model.settings.Constants;
 import model.settings.Status;
-import model.settings.Version;
-
 import test.html.HtmlDoc;
 
 
@@ -41,18 +40,21 @@ public class ReportError extends JPanel {
 
 		super();
 		super.setLayout(null);
-		super.setSize(450, 975);
+		final int width = 450, height = 975;
+		super.setSize(width, height);
 		myEditorPane = new JEditorPane();
 		myEditorPane.setEditable(false);
 		myEditorPane.addHyperlinkListener(new HyperlinkListener() {
-			public void hyperlinkUpdate(HyperlinkEvent e) {
-		        if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-		            myEditorPane.setToolTipText(e.getDescription());
-		        } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+			public void hyperlinkUpdate(final HyperlinkEvent _e) {
+		        if (_e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+		            myEditorPane.setToolTipText(_e.getDescription());
+		        } else if (_e.getEventType() 
+		        		== HyperlinkEvent.EventType.EXITED) {
 		            myEditorPane.setToolTipText(null);
-		        } else if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+		        } else if (_e.getEventType() 
+		        		== HyperlinkEvent.EventType.ACTIVATED) {
 		            try {
-		                myEditorPane.setPage(e.getURL());
+		                myEditorPane.setPage(_e.getURL());
 		            } catch (IOException ex) {
 		                ex.printStackTrace();
 		            }
@@ -66,9 +68,19 @@ public class ReportError extends JPanel {
 		super.setVisible(false);
 	}
 	
+	
+	/**
+	 * The html document.
+	 */
 	private HtmlDoc doc;
 	
 	
+	
+	/**
+	 * Open report bug window with message in background inserted to HTML
+	 * page by using the function load().
+	 * @param _message	the message that is going to be reported.
+	 */
 	public void reportBug(final String _message) {
 
 		try {
@@ -81,7 +93,8 @@ public class ReportError extends JPanel {
 			new Thread() {
 				public void run() {
 					
-					doc = new HtmlDoc((HTMLDocument) myEditorPane.getDocument());
+					doc = new HtmlDoc(
+							(HTMLDocument) myEditorPane.getDocument());
 					
 					final int maxSeconds = 20;
 					boolean found = false;
@@ -95,35 +108,47 @@ public class ReportError extends JPanel {
 						
 						//sleep for a second.
 						try {
-							Thread.sleep(500);
+							final int speelpTime = 500;
+							Thread.sleep(speelpTime);
 						} catch (InterruptedException e) {
 							//do nothing
-							Status.getLogger().severe("interrupted bug reporting.");
+							Status.getLogger().severe(
+									"interrupted bug reporting.");
 						}
 					}
 					
-					// only continue if the page has been loaded (that means that the
+					// only continue if the page has been loaded 
+					//(that means that the
 					// element has been found. 
 					// otherwise give severe warning to console.
 					if (found) {
 						System.out.println("lodaa");
 
-						//if the element has been found, insert the error-elements.
+						//if the element has been found, insert the error-
+						//elements.
 						load(_message);
 					} else {
-						Status.getLogger().severe("Unable to communicate with" +
-								" the bug server.");
+						Status.getLogger().severe("Unable to communicate with"
+								+ " the bug server.");
 					}
 				}
 			} .start();
 			
         } catch (IOException ex) {
         	//do nothing.
-        	Status.getLogger().severe("io exception while trying to report bug...");
+        	Status.getLogger().severe("io exception while trying "
+        			+ "to report bug...");
         }
 	}
 	
-	private void load(String _message) {
+	
+	/**
+	 * Function for loading the page with a certain message.
+	 * 
+	 * @param _message the message.
+	 */
+	@SuppressWarnings("unused")
+	private void load(final String _message) {
 		
 		//load element and offset.
 		int offset = myEditorPane.getSelectionStart();
@@ -139,37 +164,43 @@ public class ReportError extends JPanel {
 					content = "indirect reply";
 			
 	        	
-	        	String messageTag = "<textarea rows=\"10\" id=\"comment\" name=\"comment\" title=\"Enter your comment here...\">" 
+	        	String messageTag = "<textarea rows=\"10\" id=\"comment\" "
+	        			+ "name=\"comment\" title=\"Enter your comment"
+	        			+ " here...\">" 
 	        			+ content + "</textarea>";
 	        	String emailTag = 
-	        			"<input id=\"email\" name=\"email\" type=\"text\" value=\"" + email + "\" />";
+	        			"<input id=\"email\" name=\"email\" type=\"text\""
+	        			+ " value=\"" + email + "\" />";
 	        	String nameTag = 
-	        			"<input id=\"author\" name=\"author\" type=\"text\" value=\"" + name + "\" /> ";
+	        			"<input id=\"author\" name=\"author\" type=\"text\" "
+	        			+ "value=\"" + name + "\" /> ";
 
 	        	doc.insertHTML("comment-form-comment", messageTag);
 	        	doc.insertHTML("emailSrc", emailTag);
 	        	doc.insertHTML("nameSrc", nameTag);
 	        	
 	        	//remove leading and trailing minuses
-//	        	doc.remove(offset, 1); //at the current position is the minus before tag inserted
-//	        	doc.remove(offset + 1, 1); //the next sign is minus after new tag (the tag is nowhere)
+//	        	doc.remove(offset, 1);
+	        	//at the current position is the minus before tag inserted
+//	        	doc.remove(offset + 1, 1); 
+	        	//the next sign is minus after new tag (the tag is nowhere)
 	        	
-	        	final HTMLEditorKit hek = ((HTMLEditorKit)myEditorPane.getEditorKitForContentType("text/html"));
+	        	final HTMLEditorKit hek = 
+	        			((HTMLEditorKit) myEditorPane
+	        					.getEditorKitForContentType("text/html"));
 	    		hek.setAutoFormSubmission(false);
 	    		myEditorPane.addHyperlinkListener(new HyperlinkListener() {
 					
-					public void hyperlinkUpdate(HyperlinkEvent e) {
+					public void hyperlinkUpdate(final HyperlinkEvent _e) {
 
 						setVisible(false);
 						myEditorPane.setVisible(false);
 						repaint();
 					}
 				});
-	        }
-	        catch (BadLocationException ble) {
+	        } catch (BadLocationException ble) {
 	            throw new Error(ble);
-	        }
-	        catch (IOException ioe) {
+	        } catch (IOException ioe) {
 	            throw new Error(ioe);
 	        }
 
@@ -177,10 +208,16 @@ public class ReportError extends JPanel {
 
 	}
 	
-	public static void main(String[]args) {
+	
+	/**
+	 * main function.
+	 * @param _args the arguments
+	 */
+	public static void main(final String[] _args) {
 		
 		JFrame jf = new JFrame("hey");
-		jf.setSize(300, 300);
+		final int defaultJFSize = 300;
+		jf.setSize(defaultJFSize, defaultJFSize);
 		jf.setVisible(true);
 		jf.setLocationRelativeTo(null);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -191,17 +228,26 @@ public class ReportError extends JPanel {
 		jf.repaint();
 	}
 	
-	public static void buildTree(String _t, Element ele) {
+	
+	
+	/**
+	 * Build a tree for the HTML elements of the page.
+	 * Implementation is recursive.
+	 * 
+	 * @param _t	text string for printing the hierarchy
+	 * @param _ele	the current root element
+	 */
+	public static void buildTree(final String _t, final Element _ele) {
 		
 		
 		String parentName = "";
-		if (ele.getParentElement() != null) {
+		if (_ele.getParentElement() != null) {
 
-			parentName = ele.getParentElement().getName();	
+			parentName = _ele.getParentElement().getName();	
 		}
-		System.out.println(_t + ele.getName() + "from " + parentName);
-		for (int i = 0; i < ele.getElementCount(); i++) {
-			buildTree(_t + "\t", ele.getElement(i));
+		System.out.println(_t + _ele.getName() + "from " + parentName);
+		for (int i = 0; i < _ele.getElementCount(); i++) {
+			buildTree(_t + "\t", _ele.getElement(i));
 		}
 		
 		

@@ -40,6 +40,11 @@ import model.util.adt.list.List;
  */
 public final class Util {
 
+	
+	/**
+	 * Constants that indicate whether an execution (of a command inside the
+	 * terminal) was successful or not.
+	 */
 	public static final String EXECUTION_SUCCESS = "Success",
 			EXECUTION_FAILED = "Failure";
 	
@@ -51,6 +56,17 @@ public final class Util {
     
     
     
+    /**
+     * Function for getting stack trace out of an exception and printiing a 
+     * message to the user.
+     * 
+     * @param _title				the title of the exception
+     * @param _additionalMessage	the additional message to the exception 
+     * 								message
+     * @param _e					the exception
+     * @param _cmpOwner				the view-owner of the component that
+     * 								caused the error.
+     */
     public static void handleException(
     		final String _title,
     		final String _additionalMessage,
@@ -620,7 +636,7 @@ public final class Util {
 	/**
      * Apply stroke on background.
      * @param _jlbl_stroke the background carrying item.
-     * @param _addX
+     * @param _addX	
      * @param _addY
      */
 	public static void getStrokeRec(

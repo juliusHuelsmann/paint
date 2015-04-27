@@ -938,7 +938,6 @@ public abstract class Pen implements Serializable {
                     paintLine(pnt_1, pnt_2, _bi, _final, _g, _p_shift);
                     return;
                 }
-                
 //                clr_foreground = Color.black;
 //                paintPoint(pnt_1, _bi);
 //                paintPoint(pnt_2, _bi);
@@ -948,8 +947,6 @@ public abstract class Pen implements Serializable {
                 while (!ls_newPoints.isBehind()) {
                     pnt_3 = ls_newPoints.getItem();
                     ls_allPoints.insertAtTheEnd(pnt_3);
-
-                    
                     //calculate 2 extra points and insert them at the right 
                     //position
                     Rectangle r = op_mathsGetNewPoints(

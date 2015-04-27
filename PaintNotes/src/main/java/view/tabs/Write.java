@@ -42,20 +42,29 @@ public final class Write extends Tab {
 		int x = initializePresettings(true, _cw);
 	}
 	
+	
+	/**
+	 * Apply size function which re-applies the size to the entire panel
+	 * and its content.
+	 */
 	public void applySize() {
 		super.applySize();
 		initializePresettings(false, null);
 	}
 	
+	
+	/**
+	 * Initialize the view settings.
+	 * 
+	 * @param _final	whether to print or whether only to re-apply size
+	 * @param _cw		the ActionListener
+	 * @return			the end x coordinate.
+	 */
 	private int initializePresettings(
 			final boolean _final, final ActionListener _cw) {
 
 		if (_final) {
 			/*
-	         * 
-	         * 
-	         * 
-	         * 
 	         * 
 	         */
 	        tb_pen_theorem = new Item1Button(null);
@@ -88,7 +97,6 @@ public final class Write extends Tab {
 	        tb_pen_example.addActionListener(_cw);
 	        super.add(tb_pen_example);
 
-
 	        tb_pen_comment = new Item1Button(null);
 	        tb_pen_comment.setOpaque(true);
 	        tb_pen_comment.setText("Bemerkung");
@@ -98,9 +106,6 @@ public final class Write extends Tab {
 	        tb_pen_comment.setActivable(true);
 	        tb_pen_comment.addActionListener(_cw);
 	        super.add(tb_pen_comment);
-
-			
-
 		} 
 
 		//thm
@@ -134,7 +139,6 @@ public final class Write extends Tab {
                 ViewSettings.getDistanceBetweenItems());
        
         //separator
-		
 		insertSectionStuff("pen settings content", 0, 
 				tb_pen_comment.getX() + tb_pen_comment.getWidth()
 				+ ViewSettings.getDistanceBeforeLine(), 0, _final);

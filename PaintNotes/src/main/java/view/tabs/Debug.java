@@ -94,6 +94,10 @@ public final class Debug extends Tab implements Observer {
 
     //value for functionality of adding something
     
+	
+	/**
+	 * The controller for the debug-tab.
+	 */
 	private CTabDebug cps;
 	
 	

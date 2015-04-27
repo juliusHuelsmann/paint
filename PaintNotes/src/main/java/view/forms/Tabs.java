@@ -33,15 +33,43 @@ public final class Tabs extends VTabbedPane {
      */
     private Paint tab_paint;
     
+    
+    /**
+     * Tab which contains the print items.
+     */
     private Print tab_print;
     
+    
+    /**
+     * Tab which contains writing presettings.
+     */
     private Write tab_write;
     
+    /**
+     * Tab for changing the current selection in some way.
+     */
     private Selection tab_selection;
     
+    /**
+     * Export tab. In here, the export settings of the page can be set.
+     * Does not change the way the page is displayed, that is done in view tab.
+     */
     private Export tab_export;
+    /**
+     * Tab in which the user is able to change the layout of the page as it is
+     * displayed. Does not change the export settings!
+     */
     private Look tab_look;
+    
+    /**
+     * Debug tab.
+     */
     private Debug tab_pos;
+    
+    /**
+     * Tab which contains the information on the program and the possibilty to
+     * update the program.
+     */
     private About tab_about;
     
     /**
@@ -105,6 +133,12 @@ public final class Tabs extends VTabbedPane {
         }
     }
     
+    
+    /**
+     * Initialize the contents of the Tab.
+     * @param _view	the main view class
+     * @param _cp	the main controller class
+     */
     public void initialize(
     		final View _view, final ControlPaint _cp) {
     	super.setTabbedListener(_cp.getcTabs());

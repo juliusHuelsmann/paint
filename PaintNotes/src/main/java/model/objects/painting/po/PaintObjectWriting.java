@@ -1689,7 +1689,6 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
         m.setValue(1, 2, _r.y + _r.height - _p.getY());
         String s4 = m.printMatrix();
         double [] factor4 = m.solve();
-
         //STEP 2
         SecureListSort<DPoint> ls = new SecureListSort<DPoint>();
         ls.setSortASC();
@@ -1702,8 +1701,7 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
             //check whether suitable.
             if (
                     _r.y + _r.height  - (int) intersection1.getY() < 0
-                    || _r.y - (int) intersection1.getY() > 0
-                    ) {
+                    || _r.y - (int) intersection1.getY() > 0) {
                 intersection1 = null;
             } else {
                 if (_sortAbs) {
@@ -1722,8 +1720,7 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
             //check whether suitable.
             if (
                     _r.x + _r.width  - (int) intersection2.getX() < 0
-                    || _r.x - (int) intersection2.getX() > 0
-                    ) {
+                    || _r.x - (int) intersection2.getX() > 0) {
                 intersection2 = null;
             } else {
                 if (_sortAbs) {

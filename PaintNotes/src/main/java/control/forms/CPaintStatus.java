@@ -437,6 +437,8 @@ public final class CPaintStatus implements MouseListener {
                         paint.getIt_stift1().getTb_open()
                         .setActivated(true);
                         paint.getTb_color1().setActivated(true);
+                        controlPaint.getPicture().changePen(
+                        		Status.getPenSelected1());
                         
                         //set cursor
                         setCursor(paint.getIt_stift1().getImagePath(),
@@ -450,6 +452,8 @@ public final class CPaintStatus implements MouseListener {
                         paint.getIt_stift2().getTb_open()
                         .setActivated(true);
                         paint.getTb_color2().setActivated(true);
+                        controlPaint.getPicture().changePen(
+                        		Status.getPenSelected2());
                         
                         //set cursor
                         setCursor(paint.getIt_stift2().getImagePath(),

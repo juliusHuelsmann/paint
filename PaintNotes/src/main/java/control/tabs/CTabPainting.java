@@ -12,15 +12,18 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
+
 import control.ContorlPicture;
 import control.ControlPaint;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
+import model.objects.painting.po.PaintObjectPen;
 import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Constants;
 import model.settings.Status;
@@ -327,9 +330,53 @@ public final class CTabPainting implements ActionListener, MouseListener {
             @SuppressWarnings("unchecked")
             List<PaintObject> ls = (List<PaintObject>) o;
             ls.toFirst();
+
             
+            /*
+             * Calculate the center of the entire selection
+             * because that center is to be placed at the image's center.
+             */
+            Point pnt_centerInImage  = new Point();
+            int amount = 0;
+            
+            //calculate the shift
+            while (!ls.isEmpty() && !ls.isBehind()) {
+            	int cX = ls.getItem().getSnapshotBounds().width / 2
+            			+ ls.getItem().getSnapshotBounds().x;
+            	int cY = ls.getItem().getSnapshotBounds().height / 2 
+            			+ ls.getItem().getSnapshotBounds().y;
+            	pnt_centerInImage.x += cX;
+            	pnt_centerInImage.y += cY;
+            	amount++;
+            	ls.next();
+            }
+            
+            //divide the sum of the image bounds by the total amount of items
+            pnt_centerInImage.x /= amount;
+            pnt_centerInImage.y /= amount;
+            
+            final double stretchWidth = 1.0 * Status.getImageSize().getWidth()
+            		/ Status.getImageShowSize().getWidth(),
+            		stretchHeight = 1.0 * Status.getImageSize().getHeight()
+            		/ Status.getImageShowSize().getHeight();
+            // calculate the wanted result for the center, thus the coordinates
+            // of the currently displayed image-scope's center.
+            Point pnt_wanted = new Point(
+            		(int) ((-getPage().getJlbl_painting().getLocation().getX()
+            				+ getPage().getJlbl_painting().getWidth() / 2)
+            				* stretchWidth),
+            		(int) ((-getPage().getJlbl_painting().getLocation().getY()
+            				+ getPage().getJlbl_painting().getHeight() / 2)
+            				* stretchHeight)
+            			);
+           Point pnt_move = new Point(
+        		   -pnt_centerInImage.x + pnt_wanted.x,
+        		   -pnt_centerInImage.y + pnt_wanted.y);
+            
+            ls.toFirst();
             while (!ls.isEmpty() && !ls.isBehind()) {
                 PaintObject po = ls.getItem();
+                
                 if (po instanceof PaintObjectImage) {
                     PaintObjectImage poi = (PaintObjectImage) po;
                     PaintObjectImage poi_new = controlPaint.getPicture()
@@ -357,9 +404,6 @@ public final class CTabPainting implements ActionListener, MouseListener {
                     controlPaint.getPicture().insertIntoSelected(pow_new, 
                     		controlPaint.getView().getTabs().getTab_debug());
 
-                    //finish insertion into selected.
-                    controlPaint.getPicture().finishSelection(
-                    		controlPaint.getcTabSelection());
                 
                 } else  if (po != null) {
                     Status.getLogger().warning("unknown kind of "
@@ -367,8 +411,15 @@ public final class CTabPainting implements ActionListener, MouseListener {
                 }
                 ls.next();
             }
+            //finish insertion into selected.
+            controlPaint.getPicture().finishSelection(
+            		controlPaint.getcTabSelection());
+            controlPaint.getPicture().moveSelected(pnt_move.x, pnt_move.y);
             
         } else if (o instanceof PaintObjectWriting) {
+        	
+        	//theoretically unused because everything is stored
+        	//inside lists.
             controlPaint.getPicture().insertIntoSelected(
                     (PaintObjectWriting) o, 
                     controlPaint.getView().getTabs().getTab_debug());
@@ -377,6 +428,9 @@ public final class CTabPainting implements ActionListener, MouseListener {
             controlPaint.getPicture().finishSelection(
             		controlPaint.getcTabSelection());
         } else if (o instanceof PaintObjectImage) {
+
+        	//theoretically unused because everything is stored
+        	//inside lists.
             controlPaint.getPicture().insertIntoSelected(
                     (PaintObjectImage) o, 
                     controlPaint.getView().getTabs().getTab_debug());
@@ -386,8 +440,8 @@ public final class CTabPainting implements ActionListener, MouseListener {
             		controlPaint.getcTabSelection());
             new Exception("hier").printStackTrace();
         } else {
-        	System.out.println(o);
-            Status.getLogger().warning("unknown return type of clipboard");
+            Status.getLogger().warning("unknown return type of clipboard"
+            		+ "\ncontent: " + o);
         }
         controlPaint.getPicture().paintSelected(getPage(),
     			controlPaint.getControlPic(),

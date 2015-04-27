@@ -1026,7 +1026,8 @@ public final class Picture implements Serializable {
 	 */
 	public void saveIMAGE(final String _wsLoc,
 			final int _x,
-			final int _y) {
+			final int _y,
+			final String _type) {
 
 		BufferedImage bi;
 		if (Status.isExportAlpha()) {
@@ -1043,8 +1044,15 @@ public final class Picture implements Serializable {
 				Status.getImageSize().height, -_x + 0, -_y + 0, bi, true);
 
 		try {
-			ImageIO.write(bi, Status.getSaveFormat(),
-					new File(_wsLoc + Status.getSaveFormat()));
+			if (_type == "") {
+
+				ImageIO.write(bi, Status.getSaveFormat(),
+						new File(_wsLoc + Status.getSaveFormat()));
+			} else {
+
+				ImageIO.write(bi, Status.getSaveFormat(),
+						new File(_wsLoc + _type));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

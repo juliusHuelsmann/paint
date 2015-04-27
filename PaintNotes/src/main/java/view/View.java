@@ -61,6 +61,10 @@ import control.util.WindowMover;
 	 */
 	private Tabs tabs;
 	
+	
+	/**
+	 * The loading view class.
+	 */
 	private Loading loading;
 	/**
 	 * The Page.
@@ -232,7 +236,6 @@ import control.util.WindowMover;
 	private Thread fadeIn() {
 
 	    //initialize final values
-	    
 	    /**
 	     * The bounds of the title at the beginning
 	     */
@@ -240,17 +243,14 @@ import control.util.WindowMover;
 	            title_start_height = 150,
 	            title_start_x = -350, 
 	            title_start_y = getHeight() / 2 - title_start_height / 2;
-	    
 	    /**
 	     * Size of the font.
 	     */
 	    final int font_size = 100;
-
 	    /**
 	     * The maximum amount of loops.
 	     */
         final int maxLoop = 200;
-        
         
         /**
          * Whether to show animation or not.
@@ -286,7 +286,6 @@ import control.util.WindowMover;
 
         		//fade in
                 for (int i = 0; i < dsgn_maxFadeIn; i++) {
-
                     getContentPane().setBackground(new Color(
                     		Color.white.getRed() - (Color.white.getRed() 
                     				- clr_bg.getRed()) * i / dsgn_maxFadeIn,
@@ -310,7 +309,6 @@ import control.util.WindowMover;
         };
 
         t_waitFor.start();
-        
         //move JLabel into the graphical user interface.
         for (int i = 0; i < dsgn_max_moveTitle; i++) {
         	jlbl_title.setBounds((int) (title_start_x 

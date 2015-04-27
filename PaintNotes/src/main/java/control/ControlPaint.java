@@ -1053,8 +1053,6 @@ MenuListener {
                 	controlPic.stopBorderThread();
                 	view.getPage().getJlbl_selectionBG().setIcon(
                 			new ImageIcon(Util.getEmptyBISelection()));
-
-                	
                     break;
                 default:
                     break;
@@ -1099,13 +1097,10 @@ MenuListener {
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ERASE:
-
 //        	mr_erase();
-        	
         	break;
 
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
-
             if (_event.getButton() == 1) {
                 project.getPicture().abortPaintObject(controlPic);
             }

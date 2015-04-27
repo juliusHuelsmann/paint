@@ -176,7 +176,7 @@ public final class Status {
     /**
      * The entire list of available pens.
      */
-    private static final Pen[] pen_available = new Pen[]{
+    private static final Pen[] PEN_AVAILABLE = new Pen[]{
     		new Pencil(Constants.PEN_ID_POINT, 2, Color.black),
             new Pencil(Constants.PEN_ID_LINES, 2, Color.black),
             new Pencil(Constants.PEN_ID_MATHS, 2, Color.black),
@@ -256,7 +256,7 @@ public final class Status {
      * This counter counts the amount of image points that are printed
      * to screen (just for debugging purpose).
      */
-    private static int counter_paintedPoints = 0;
+    private static int counterPaintedPoints = 0;
     
     /**
      * The path where to save the things.
@@ -269,7 +269,7 @@ public final class Status {
      * The BufferedImage which is shown for the transparency.
      * Is contained by a JLabel in background of the image.
      */
-    private static BufferedImage bi_transparency;
+    private static BufferedImage biTransparency;
     
     /**
      * The logger.
@@ -560,7 +560,7 @@ public final class Status {
      * @return the counter_paintedPoints
      */
     public static int getCounter_paintedPoints() {
-        return counter_paintedPoints;
+        return counterPaintedPoints;
     }
 
 
@@ -569,7 +569,7 @@ public final class Status {
      */
     public static void setCounter_paintedPoints(
             final int _counter_paintedPoints) {
-        Status.counter_paintedPoints = _counter_paintedPoints;
+        Status.counterPaintedPoints = _counter_paintedPoints;
     }
 
 
@@ -634,11 +634,11 @@ public final class Status {
      */
     public static BufferedImage getBi_transparency() {
         
-        if (bi_transparency == null) {
+        if (biTransparency == null) {
             
             setShowAlpha(showAlpha);
         }
-        return bi_transparency;
+        return biTransparency;
     }
 
 
@@ -820,7 +820,7 @@ public final class Status {
             final Color color1 = new Color(234, 239, 242);
             final Color color2 = new Color(250, 252, 255);
             
-            bi_transparency = Utils.paintRastarBlock(
+            biTransparency = Utils.paintRastarBlock(
                     new BufferedImage(
                             getPage().getJlbl_background().getWidth(), 
                             getPage().getJlbl_background()
@@ -835,13 +835,13 @@ public final class Status {
 
         } else {
             
-            bi_transparency =  
+            biTransparency =  
                     new BufferedImage(
                             getPage().getJlbl_background().getWidth(), 
                             getPage().getJlbl_background()
                             .getHeight(), 
                             BufferedImage.TYPE_INT_RGB);
-            PaintBI.fillRectangleQuick(bi_transparency, Color.white, 
+            PaintBI.fillRectangleQuick(biTransparency, Color.white, 
                     new Rectangle(0, 0, 
                             getPage().getJlbl_background().getWidth(), 
                             getPage().getJlbl_background()
@@ -900,7 +900,7 @@ public final class Status {
 	 * @return the pen_available
 	 */
 	public static Pen[] getPen_available() {
-		return pen_available;
+		return PEN_AVAILABLE;
 	}
 	
 

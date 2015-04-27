@@ -119,7 +119,10 @@ public final class New extends MPanel {
     heightImageButton = ViewSettings.getView_size_new().height
     / amount - distanceBetweenItems,
     distanceTop = heightImageButton + 2 * distanceBetweenItems,
-    buttonHeight = 20;
+    amountButtons = 12,
+    buttonHeight = (ViewSettings.getView_size_new().height - distanceTop
+    		- distanceBetweenItems)
+    		/ amountButtons;
 
     /**
      * The background - BufferedImage which displays the stroke.

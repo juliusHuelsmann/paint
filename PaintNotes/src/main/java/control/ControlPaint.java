@@ -2136,9 +2136,15 @@ MenuListener {
         if (_event.getButton() == 1) {
         	view.getTabs().getTab_paint().getTb_color1().setBackground(
         			new Color(color));
+            Pen pen = Status.getPenSelected1();
+            pen.setClr_foreground(new Color(color));
+            Status.setPenSelected1(pen);
         } else {
         	view.getTabs().getTab_paint().getTb_color2().setBackground(
         			new Color(color));
+            Pen pen = Status.getPenSelected2();
+            pen.setClr_foreground(new Color(color));
+            Status.setPenSelected2(pen);
         }
     }
     

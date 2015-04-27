@@ -37,6 +37,7 @@ public final class DebugUtil {
      */
 
 	
+	
 	/**
 	 * Debug values which indicate whether the check - method displays the
 	 * results of the check inside the console or whether an image is painted
@@ -84,7 +85,7 @@ public final class DebugUtil {
      * 							contains all the sub-elements).
      * @param _operation 		the currently specified operation
      */
-	public static void performCheckComponents(
+	public static void performCheckViewComponents(
 			final Component _rootComponent,
 			final byte _operation) {
 		

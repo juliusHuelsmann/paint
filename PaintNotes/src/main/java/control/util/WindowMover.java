@@ -53,19 +53,38 @@ MouseListener, Serializable {
 	 */
 	private Point pnt_startPosition, pnt_diff2, pnt_origSize, pnt_origLoc;
 
-	private byte currentOperation = -1;
+	
+	
+	/**
+	 * Bytes indicating the current operation.
+	 */
 	private final byte 
-	OPERATION_TOP = 0, 
-	OPERATION_TOP_RIGHT = 1, 
-	OPERATION_RIGHT = 2, 
-	OPERATION_RIGHT_BOTTOM = 3, 
-	OPERATION_BOTTOM = 4, 
-	OPERATION_BOTTOM_LEFT = 5, 
-	OPERATION_LEFT = 6, 
-	OPERATION_LEFT_TOP = 7,
-	OPERATION_NO = -1;
+	operationTop = 0, 
+	operationTopRight = 1, 
+	operationRight = 2, 
+	operationRightBottom = 3, 
+	operationBottom = 4, 
+	operationBottomLeft = 5, 
+	operationLeft = 6, 
+	operationLeftTop = 7,
+	operationNo = -1;
 
+	/**
+	 * The current operation indicated by the above-declared IDs.
+	 */
+	private byte currentOperation = operationNo;
+
+	
+	/**
+	 * Previous image identifier.
+	 */
+	private byte prevImage = operationNo;
+	
+	/**
+	 * Marge.
+	 */
 	private final int marge = 10;
+	
 	/**
 	 * Constructor saves component of which this class changes the location.
 	 * @param _view the component
@@ -87,7 +106,6 @@ MouseListener, Serializable {
 	 */
 	public final void mouseEntered(final MouseEvent _event) { }
 	
-	private byte prevImage = OPERATION_NO;
 	/**
 	 * {@inheritDoc}
 	 */
@@ -107,40 +125,40 @@ MouseListener, Serializable {
 
 	/**
 	 * set the cursor.
-	 * 
+	 * @param 	_operation the operation
 	 */
 	private void setCursor(final byte _operation) {
 
 		switch(_operation) {
-		case OPERATION_TOP:
+		case operationTop:
 		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
 		    		Cursor.N_RESIZE_CURSOR));
 			break;
-		case OPERATION_TOP_RIGHT:
+		case operationTopRight:
 		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
 		    		Cursor.NE_RESIZE_CURSOR));
 			break;
-		case OPERATION_RIGHT:
+		case operationRight:
 		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
 		    		Cursor.E_RESIZE_CURSOR));
 			break;
-		case OPERATION_RIGHT_BOTTOM:
+		case operationRightBottom:
 		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
 		    		Cursor.SE_RESIZE_CURSOR));
 			break;
-		case OPERATION_BOTTOM:
+		case operationBottom:
 		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
 		    		Cursor.S_RESIZE_CURSOR));
 			break;
-		case OPERATION_BOTTOM_LEFT:
+		case operationBottomLeft:
 		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
 		    		Cursor.SW_RESIZE_CURSOR));
 			break;
-		case OPERATION_LEFT:
+		case operationLeft:
 		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
 		    		Cursor.W_RESIZE_CURSOR));
 			break;
-		case OPERATION_LEFT_TOP:
+		case operationLeftTop:
 		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
 		    		Cursor.NW_RESIZE_CURSOR));
 			break;
@@ -154,51 +172,51 @@ MouseListener, Serializable {
 	
 	/**
 	 * 
-	 * @param _event
-	 * @return
+	 * @param _event the mouseEvent
+	 * @return the operation
 	 */
 	private byte getOperation(final MouseEvent _event) {
 
 		//reset current operation
-		byte cOperation = OPERATION_NO;
+		byte cOperation = operationNo;
 		
 		//if the click is in the right area
 		if (_event.getX() <= marge) {
-			cOperation = OPERATION_LEFT;
+			cOperation = operationLeft;
 		} else if (_event.getX() >= cmp_moved.getWidth() - marge) {
-			cOperation = OPERATION_RIGHT;
+			cOperation = operationRight;
 		}
 	
 		if (_event.getY() <= marge) {
 			
 			switch(cOperation) {
-			case OPERATION_NO:
-				cOperation = OPERATION_TOP;
+			case operationNo:
+				cOperation = operationTop;
 				break;
-			case OPERATION_LEFT:
-				cOperation = OPERATION_LEFT_TOP;
+			case operationLeft:
+				cOperation = operationLeftTop;
 				break;
-			case OPERATION_RIGHT:
-				cOperation = OPERATION_TOP_RIGHT;
+			case operationRight:
+				cOperation = operationTopRight;
 				break;
 			default:
-				cOperation = OPERATION_TOP;
+				cOperation = operationTop;
 				break;
 			}
 		} else if (_event.getY() >= cmp_moved.getHeight() - marge) {
-			cOperation = OPERATION_BOTTOM;
+			cOperation = operationBottom;
 			switch(cOperation) {
-			case OPERATION_NO:
-				cOperation = OPERATION_BOTTOM;
+			case operationNo:
+				cOperation = operationBottom;
 				break;
-			case OPERATION_LEFT:
-				cOperation = OPERATION_BOTTOM_LEFT;
+			case operationLeft:
+				cOperation = operationBottomLeft;
 				break;
-			case OPERATION_RIGHT:
-				cOperation = OPERATION_RIGHT_BOTTOM;
+			case operationRight:
+				cOperation = operationRightBottom;
 				break;
 			default:
-				cOperation = OPERATION_BOTTOM;
+				cOperation = operationBottom;
 				break;
 			}
 		}
@@ -209,6 +227,10 @@ MouseListener, Serializable {
 	 */
 	public final void mouseExited(final MouseEvent _event) { }
 
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	public final void mousePressed(final MouseEvent _event) {
 
 		if (!ViewSettings.isFullscreen()) {
@@ -242,7 +264,7 @@ MouseListener, Serializable {
 			pressed = false;
 			cmp_moved.repaint();
 
-			if (al != null && currentOperation != OPERATION_NO) {
+			if (al != null && currentOperation != operationNo) {
 				
 				al.activityOccurred(_event);
 			}
@@ -261,14 +283,14 @@ MouseListener, Serializable {
 			if (pressed) {
 				switch (currentOperation) {
 
-				case OPERATION_NO:
+				case operationNo:
 					
 					int newX = _event.getXOnScreen() - pnt_startPosition.x;
 					int newY = _event.getYOnScreen() - pnt_startPosition.y;
 					cmp_moved.setLocation(newX, newY);
 					System.out.println(newX + ".." + newY);
 					break;
-				case OPERATION_TOP:
+				case operationTop:
 
 					cmp_moved.setLocation(
 							(int) pnt_origLoc.getX(),
@@ -282,7 +304,7 @@ MouseListener, Serializable {
 									+ pnt_diff2.getY() - _event.getYOnScreen())
 							);
 					break;
-				case OPERATION_BOTTOM:
+				case operationBottom:
 
 					
 					cmp_moved.setSize(
@@ -291,7 +313,7 @@ MouseListener, Serializable {
 									+ _event.getYOnScreen())
 							);
 					break;
-				case OPERATION_RIGHT:
+				case operationRight:
 					
 
 					
@@ -301,7 +323,7 @@ MouseListener, Serializable {
 							(int) pnt_origSize.getY()
 							);
 					break;
-				case OPERATION_LEFT:
+				case operationLeft:
 					cmp_moved.setLocation(
 							(int) (pnt_origLoc.getX() - pnt_diff2.getX() 
 									+ _event.getXOnScreen()),
@@ -315,17 +337,17 @@ MouseListener, Serializable {
 							);
 					break;
 
-				case OPERATION_TOP_RIGHT:
+				case operationTopRight:
 					break;
-				case OPERATION_RIGHT_BOTTOM:
+				case operationRightBottom:
 					break;
-				case OPERATION_BOTTOM_LEFT:
+				case operationBottomLeft:
 
 					cmp_moved.setSize(_event.getXOnScreen() - pnt_startPosition
 							.x,
 							_event.getYOnScreen() - pnt_startPosition.y);
 					break;
-				case OPERATION_LEFT_TOP:
+				case operationLeftTop:
 
 					cmp_moved.setLocation(_event.getXOnScreen() 
 							- pnt_startPosition.x,

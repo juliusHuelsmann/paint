@@ -21,7 +21,7 @@ import control.ControlPaint;
  * Controller class for about - tab which contains information on the program 
  * and the web site which contains its different versions and a button for 
  * checking for updates.
- * The ladder functionality is executed by an instnace of this class.
+ * The ladder functionality is executed by an instance of this class.
  * 
  * @author Julius Huelsmann
  * @version %I%, %U%

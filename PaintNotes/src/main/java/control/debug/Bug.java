@@ -21,7 +21,9 @@ import model.util.adt.list.List;
  */
 public final class Bug {
 	
-	
+	/**
+	 * Paint control.
+	 */
 	private ControlPaint cp;
 	
 	/**

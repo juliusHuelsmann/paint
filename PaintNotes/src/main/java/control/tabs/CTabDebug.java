@@ -459,13 +459,38 @@ public final class CTabDebug implements ActionListener {
 	}
 
 
+    
+    /**
+     * Error-checked getter method.
+     * @return	instance of page.
+     */
 	private Page getPage() {
-		return cp.getView().getPage();
+		if (cp != null) {
+			if (cp.getView() != null) {
+				return cp.getView().getPage();
+			} else {
+				Status.getLogger().severe("cp.getView() is null");
+			}
+		} else {
+			Status.getLogger().severe("cp is null");
+		}
+		return null;
 	}
 
 
+	
+	/**
+	 * Error-checked getter method.
+	 * @return	instance of ControlPicture fetched from the main controller 
+	 * 			class
+	 */
 	private ContorlPicture getControlPicture() {
-		return cp.getControlPic();
+		if (cp != null) {
+			return cp.getControlPic();
+		} else {
+			Status.getLogger().severe("cp is null");
+		}
+		return null;
 	}
 
 

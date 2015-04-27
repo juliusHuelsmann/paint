@@ -200,16 +200,39 @@ public final class Constants {
     /**
      * Checks whether a filename ends with a correct extension which contains 
      * save format.
-     * @return
+     * @param 	_strgToTest the filename that is tested.
+     * @return 	whether a given file name ends with one of the legal formats.
      */
-    public static final boolean endsWithSaveFormat(final String _strgToTest) {
+    public static boolean endsWithSaveFormat(final String _strgToTest) {
     	for (String s : SAVE_FORMATS) {
-    		if (_strgToTest.contains(s)) {
-    			//TODO: thats not correct yet.
+    		if (_strgToTest.endsWith(s)) {
     			return true;
     		}
     	}
     	return false;
+    }
+    
+    
+    /**
+     * return the file extension of a file with specified _path.
+     * @param _path 	the file path.
+     * @return 			the file extension
+     */
+    public static String getFileExtension(final String _path) {
+    	if (_path.contains(".")) {
+    		String concat = "";
+    		for (int cPosition = _path.length() - 1; 
+    				cPosition >= 0; cPosition--) {
+    			if (_path.charAt(cPosition) == '.') {
+    				return concat;
+    			} else {
+    				concat = _path.charAt(cPosition)  + concat;
+    			}
+    		}
+    		return "";
+    	} else {
+    		return "";
+    	}
     }
 	
 	/**

@@ -436,6 +436,8 @@ public final class CTabPainting implements ActionListener, MouseListener {
      */
     public void mr_save() {
 
+    	final String fileEnding;
+    	
         // if not saved yet. Otherwise use the saved save path.
         if (Status.getSavePath() == null) {
 
@@ -453,17 +455,30 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
                 // edit file ending
                 if (!file.getName().toLowerCase().contains(".")) {
+                	fileEnding = Status.getSaveFormat();
                     file = new File(file.getAbsolutePath() + ".pic");
-                } else if (
-                		!file.getName().toLowerCase().endsWith(".png")
-                        && !file.getName().toLowerCase().endsWith(".pic")) {
-
+                } else if (!Constants.endsWithSaveFormat(file.getName())) {
+                	
+                	fileEnding = "";
+                	String formatList = "(";
+                	for (String format : Constants.SAVE_FORMATS) {
+                		formatList += format + ", ";
+                	}
+                	formatList = formatList.subSequence(0, 
+                			formatList.length() - 2) + ")";
                 	
                     JOptionPane.showMessageDialog(getView(),
-                            "Select a .png or .pic file.", "Error",
+                            "Error saving file:\nFile extension \"" 
+                    + Constants.getFileExtension(file.getName())
+                    + "\" not supported! Supported formats:\n\t"
+                    + formatList + ".", "Error",
                             JOptionPane.ERROR_MESSAGE);
                     mr_save();
                     return;
+                } else {
+
+                	fileEnding = "." 
+                	+ Constants.getFileExtension(file.getName());
                 }
 
                 // if file already exists
@@ -485,7 +500,11 @@ public final class CTabPainting implements ActionListener, MouseListener {
                     // overwrite
                 }
                 Status.setSavePath(file.getAbsolutePath());
+            } else {
+            	fileEnding = "";
             }
+        } else {
+        	fileEnding = "";
         }
 
         // generate path without the file ending.
@@ -498,7 +517,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
 //            controlPaint.getPicture().saveIMAGE(
 //            		firstPath, getPage().getJlbl_painting().getLocation().x,
 //            		getPage().getJlbl_painting().getLocation().y);
-            controlPaint.getPicture().saveIMAGE(firstPath, 0, 0);
+            controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
             controlPaint.getPicture().savePicture(firstPath + "pic");
 
 

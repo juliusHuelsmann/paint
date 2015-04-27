@@ -145,6 +145,7 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
             Status.setIndexPageBackground(backgroundID);
             cp.getPicture().reload();
             Status.setOpenProject(project);
+            cp.getView().getPage().getJpnl_new().setVisible(false);
             
             cp.getControlPic().refreshPaint();
         } else if (_event.getSource().equals(

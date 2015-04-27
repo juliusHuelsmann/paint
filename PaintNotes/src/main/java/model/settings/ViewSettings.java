@@ -209,25 +209,25 @@ public final class ViewSettings {
     /**
      * the width of the TabbedPane.
      */
-    private static int view_widthTb = getSize_jframe().width - 2
+    private static int viewWidthTb = getSize_jframe().width - 2
             - DISTANCE_TO_WINDOW * 2 - VIEW_SIZE_SP;
 
     /**
      * the height of the TabbedPane.
      */
-    private static int view_heightTB = getSize_jframe().height - 1;
+    private static int viewHeightTB = getSize_jframe().height - 1;
 
 
 
     /**
      * The size of the tabbedPane opener.
      */
-    private static int view_heightTB_opener =
+    private static int viewHeightTBOpener =
             getView_heightTB_visible() / (2 + 1) / (2 + 1);
     /**
      * the bounds of the PaointObject.
      */
-    private static Rectangle view_bounds_po = new Rectangle(
+    private static Rectangle viewBoundsPo = new Rectangle(
             2, 180, 190, 560);
 
 
@@ -250,7 +250,7 @@ public final class ViewSettings {
     /**
      * the bounds of the Page.
      */
-    private static Rectangle view_bounds_page_open = new Rectangle(
+    private static Rectangle viewBoundsPageOpen = new Rectangle(
             VIEW_LOCATION_TB.x,  getView_heightTB_visible() 
             + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
             getSize_jframe().width - TWENTY_FIFE - TEN - 2, 
@@ -266,26 +266,26 @@ public final class ViewSettings {
      * the bounds of the Page.
      */
     private static Rectangle view_bounds_page_closed = new Rectangle(
-            view_bounds_page_open.x, 
-            view_bounds_page_open.y - getView_heightTB_visible(), 
-            view_bounds_page_open.width, 
-            view_bounds_page_open.height + getView_heightTB_visible() 
+            viewBoundsPageOpen.x, 
+            viewBoundsPageOpen.y - getView_heightTB_visible(), 
+            viewBoundsPageOpen.width, 
+            viewBoundsPageOpen.height + getView_heightTB_visible() 
             - TWENTY_FIFE);
     
     /**
      * the bounds of the Page.
      */
     private static Rectangle view_bounds_page = new Rectangle(
-            view_bounds_page_open);
+            viewBoundsPageOpen);
 
 
 
     /**
      * The size of the new - JPanel.
      */
-    private static Dimension view_size_new = new Dimension(
+    private static Dimension viewSizeNew = new Dimension(
     		(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()
-    	    * (5) / (2 + 2 + 2) / 2 + (2 + 1) * distanceBetweenItems, 
+    	    * (2 + 2 + 1) / (2 + 2 + 2) / 2 + (2 + 1) * distanceBetweenItems, 
     	    
     	    
     	    (int) (
@@ -299,9 +299,9 @@ public final class ViewSettings {
     /**
      * The default location of the new - JPanel.
      */
-    private static Point view_location_new = new Point(
-    		(view_bounds_page.width - view_size_new.width) / 2, 
-    		(view_bounds_page.height - view_size_new.height) / 2);
+    private static Point viewLocationNew = new Point(
+    		(view_bounds_page.width - viewSizeNew.width) / 2, 
+    		(view_bounds_page.height - viewSizeNew.height) / 2);
     
     
     /**
@@ -368,17 +368,17 @@ public final class ViewSettings {
                 - getSizeMessage().height - 2 * 2 * 2 * 2 * 2);
         
 
-         view_widthTb = getSize_jframe().width - 2
+         viewWidthTb = getSize_jframe().width - 2
                 - ((2 * 2 * 2 * 2 + 1) * 2 + 1); //35
-         view_heightTB = getSize_jframe().height - 1;
+         viewHeightTB = getSize_jframe().height - 1;
 
          final int h1 = 180, h2 = 190, h3 = 560;
-         view_heightTB_opener =
+         viewHeightTBOpener =
                 getView_heightTB_visible() / (2 + 1) / (2 + 1);
-         view_bounds_po = new Rectangle(
+         viewBoundsPo = new Rectangle(
                 2, h1, h2, h3);
 
-         view_bounds_page_open = new Rectangle(
+         viewBoundsPageOpen = new Rectangle(
                  VIEW_LOCATION_TB.x,  getView_heightTB_visible() 
                  + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
                  getSize_jframe().width - TWENTY_FIFE - TEN - 2, 
@@ -391,14 +391,14 @@ public final class ViewSettings {
                  + VIEW_LOCATION_TB.y + VIEW_SIZE_SP));
                 //the last 25 is the size 
          view_bounds_page_closed = new Rectangle(
-                 view_bounds_page_open.x, 
-                 view_bounds_page_open.y - getView_heightTB_visible(), 
-                 view_bounds_page_open.width, 
-                 view_bounds_page_open.height + getView_heightTB_visible() 
+                 viewBoundsPageOpen.x, 
+                 viewBoundsPageOpen.y - getView_heightTB_visible(), 
+                 viewBoundsPageOpen.width, 
+                 viewBoundsPageOpen.height + getView_heightTB_visible() 
                  - TWENTY_FIFE);
         
          view_bounds_page = new Rectangle(
-                view_bounds_page_open);
+                viewBoundsPageOpen);
 
          distanceAfterLine = 2 + 1; distanceBeforeLine = 2; 
                 distanceBetweenItems = 2 + 1; 
@@ -502,7 +502,7 @@ public final class ViewSettings {
      * @return the viewWidthtb
      */
     public static int getViewWidthtb() {
-        return view_widthTb;
+        return viewWidthTb;
     }
 
 
@@ -510,7 +510,7 @@ public final class ViewSettings {
      * @return the view_widthTb
      */
     public static int getView_widthTb() {
-        return view_widthTb;
+        return viewWidthTb;
     }
 
 
@@ -518,7 +518,7 @@ public final class ViewSettings {
      * @param _view_widthTb the view_widthTb to set
      */
     public static void setView_widthTb(final int _view_widthTb) {
-        ViewSettings.view_widthTb = _view_widthTb;
+        ViewSettings.viewWidthTb = _view_widthTb;
     }
 
 
@@ -526,7 +526,7 @@ public final class ViewSettings {
      * @return the view_heightTB
      */
     public static int getView_heightTB() {
-        return view_heightTB;
+        return viewHeightTB;
     }
 
 
@@ -534,7 +534,7 @@ public final class ViewSettings {
      * @param _view_heightTB the view_heightTB to set
      */
     public static void setView_heightTB(final int _view_heightTB) {
-        ViewSettings.view_heightTB = _view_heightTB;
+        ViewSettings.viewHeightTB = _view_heightTB;
     }
 
 
@@ -581,7 +581,7 @@ public final class ViewSettings {
      * @return the view_heightTB_opener
      */
     public static int getView_heightTB_opener() {
-        return view_heightTB_opener;
+        return viewHeightTBOpener;
     }
 
 
@@ -590,7 +590,7 @@ public final class ViewSettings {
      */
     public static void setView_heightTB_opener(
             final int _view_heightTB_opener) {
-        ViewSettings.view_heightTB_opener = _view_heightTB_opener;
+        ViewSettings.viewHeightTBOpener = _view_heightTB_opener;
     }
 
 
@@ -598,7 +598,7 @@ public final class ViewSettings {
      * @return the view_bounds_po
      */
     public static Rectangle getView_bounds_po() {
-        return view_bounds_po;
+        return viewBoundsPo;
     }
 
 
@@ -606,7 +606,7 @@ public final class ViewSettings {
      * @param _view_bounds_po the view_bounds_po to set
      */
     public static void setView_bounds_po(final Rectangle _view_bounds_po) {
-        ViewSettings.view_bounds_po = _view_bounds_po;
+        ViewSettings.viewBoundsPo = _view_bounds_po;
     }
 
 
@@ -614,7 +614,7 @@ public final class ViewSettings {
      * @return the view_bounds_page_open
      */
     public static Rectangle getView_bounds_page_open() {
-        return view_bounds_page_open;
+        return viewBoundsPageOpen;
     }
 
 
@@ -623,7 +623,7 @@ public final class ViewSettings {
      */
     public static void setView_bounds_page_open(
             final Rectangle _view_bounds_page_open) {
-        ViewSettings.view_bounds_page_open = _view_bounds_page_open;
+        ViewSettings.viewBoundsPageOpen = _view_bounds_page_open;
     }
 
 
@@ -816,7 +816,7 @@ public final class ViewSettings {
 	 * @return the view_size_new
 	 */
 	public static Dimension getView_size_new() {
-		return view_size_new;
+		return viewSizeNew;
 	}
 
 
@@ -826,16 +826,21 @@ public final class ViewSettings {
 	 * @return the view_location_new
 	 */
 	public static Point getView_location_new() {
-		return view_location_new;
+		return viewLocationNew;
 	}
 
 
 
 
+
+	/**
+	 * @return the size of the JFrame.
+	 */
 	public static Dimension getSize_jframe() {
 		if (isFullscreen()) {
 			return standard_size_jframe_fullscreen;
-		} return standard_size_jframe_normalSize;
+		}
+		return standard_size_jframe_normalSize;
 	}
     
 }

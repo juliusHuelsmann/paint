@@ -71,6 +71,10 @@ public final class Selection extends Tab {
 	}
 	
 	
+	
+	/**
+	 * Apply size for the entire panel and its contents.
+	 */
 	public void applySize() {
 		super.applySize();
 
@@ -379,9 +383,18 @@ public final class Selection extends Tab {
         return xLocationSeparation + ViewSettings.getDistanceBetweenItems();
         
 	}
-	private Item1Button tb_changePen;
-	private Item1Button tb;
+	
+	/**
+	 * The Item1Button for chainging pen and.
+	 */
+	private Item1Button tb_changePen, tb;
+	
+	
+	/**
+	 * The item1Menu for the first pen.
+	 */
 	private Item1Menu it_stift1;
+	
 	/**
 	 * initialize other items.
 	 * @param _x the x coordinate

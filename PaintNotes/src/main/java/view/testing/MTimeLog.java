@@ -112,12 +112,23 @@ public class MTimeLog implements Serializable {
 	
 	
 
+	
+	/**
+	 * Add a new time-item.
+	 * @param _title	the title of the new time item.
+	 */
 	public final void addTimeItem(final String _title) {
 		MTime mt = new MTime(_title);
 		ls_timeItems.insertSorted(mt, mt.getIdentifier(),
 				SecureListSort.ID_NO_PREDECESSOR);
 	}
 	
+	
+	/**
+	 * Get time - entry identified by its index.
+	 * @param _index 	the index.
+	 * @return			the entry identified by the index. If not found null.
+	 */
 	public final MTime getPerIndex(final int _index) {
 		ls_timeItems.findSorted(_index, SecureListSort.ID_NO_PREDECESSOR,
 				SecureListSort.ID_NO_PREDECESSOR);
@@ -131,7 +142,11 @@ public class MTimeLog implements Serializable {
 		return found;
 	}
 	
-	
+
+	/**
+	 * Save the time log.
+	 * @param _loc	the location where to save.
+	 */
 	public final void save(final String _loc) {
 
 		try {

@@ -128,22 +128,15 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
      * {@inheritDoc}
      */
     @Override public final BufferedImage paint(
-    		
-    		
     		final BufferedImage _bi, 
-            
     		final boolean _final, 
-    		
     		final BufferedImage _g, 
-    		
     		final int _x, final int _y, 
-    		
     		final Rectangle _r) {
 
         //if final only paint at BufferedImage
         //if not final only paint at graphics
         if (_final) {
-            
             //print image to BufferedImage.
             int[] rgb = null;
             _bi.setRGB(pnt_locationOfImage.x + _x, pnt_locationOfImage.y + _y, 
@@ -151,7 +144,6 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
                     bi_image.getRGB(0, 0, bi_image.getWidth(), 
                             bi_image.getHeight(), rgb, 0, bi_image.getWidth()),
                             0, bi_image.getWidth());
-            
         } else {
 
 

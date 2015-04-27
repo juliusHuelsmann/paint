@@ -18,7 +18,15 @@ import model.settings.ViewSettings;
 @SuppressWarnings("serial")
 public final class About extends Tab {
 
+	
+	/**
+	 * JTextArea which contains information on the paint program.
+	 */
 	private JTextArea jta_about;
+	
+	/**
+	 * Button for checking for program updates.
+	 */
 	private Item1Button i1b_checkForUpdates;
 	
 	/**

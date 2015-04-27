@@ -296,7 +296,6 @@ public final class CTabPainting implements ActionListener, MouseListener {
      */
     public void mr_paste() {
 
-
     	getControlPicture().releaseSelected();
         controlPaint.getPicture().releaseSelected(
     			controlPaint.getControlPaintSelection(),
@@ -310,12 +309,10 @@ public final class CTabPainting implements ActionListener, MouseListener {
         
         Object o = MyClipboard.getInstance().paste();
         if (o instanceof BufferedImage) {
-
             PaintObjectImage poi = controlPaint.getPicture().createPOI(
                     (BufferedImage) o);
             controlPaint.getPicture().insertIntoSelected(
             		poi, controlPaint.getView().getTabs().getTab_debug());
-
             //finish insertion into selected.
             controlPaint.getPicture().finishSelection(
             		controlPaint.getcTabSelection());
@@ -324,14 +321,11 @@ public final class CTabPainting implements ActionListener, MouseListener {
         			controlPaint.getControlPic(),
         			controlPaint.getControlPaintSelection());
             getPage().getJlbl_background2().repaint();
-            
 
         } else if (o instanceof List) {
             @SuppressWarnings("unchecked")
             List<PaintObject> ls = (List<PaintObject>) o;
             ls.toFirst();
-
-            
             /*
              * Calculate the center of the entire selection
              * because that center is to be placed at the image's center.
@@ -448,7 +442,6 @@ public final class CTabPainting implements ActionListener, MouseListener {
     			controlPaint.getControlPaintSelection());
         getPage().getJlbl_background2().repaint();
         getControlPicture().refreshPaint();
-    
     }
 
     /**

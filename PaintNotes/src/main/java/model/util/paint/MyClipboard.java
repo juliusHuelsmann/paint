@@ -169,7 +169,6 @@ public final class MyClipboard implements ClipboardOwner {
      * Paste.
      * @return the pasted image (if existing).
      */
-    @SuppressWarnings("restriction")
 	public Object paste() {
 
         //save the clipboard content.
@@ -198,7 +197,7 @@ public final class MyClipboard implements ClipboardOwner {
             
             
         } else if (o instanceof String) {
-            Status.getLogger().warning("string! owned:" + own_clipboard );
+            Status.getLogger().warning("string! owned:" + own_clipboard);
         } else {
             Status.getLogger().warning("nothing on clipboard! owned: "
                     + own_clipboard + "obj=" + o);
@@ -206,11 +205,13 @@ public final class MyClipboard implements ClipboardOwner {
             if (o == null) {
 
             	//TODO: the copy and pasting of java objects does not work.
-//                Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
+//                Clipboard c = Toolkit.getDefaultToolkit()
+//            			.getSystemClipboard();
 //                o =  c.getContents(this);
 //                if (o instanceof sun.awt.datatransfer.ClipboardTransferable) {
 //                	@SuppressWarnings("restriction")
-//					sun.awt.datatransfer.ClipboardTransferable d = ((sun.awt.datatransfer.ClipboardTransferable) o);
+//					sun.awt.datatransfer.ClipboardTransferable d 
+//            		= ((sun.awt.datatransfer.ClipboardTransferable) o);
 //                	System.out.println(d);
 //                	try {
 //						System.out.println(d.getTransferData(null));
@@ -266,7 +267,8 @@ public final class MyClipboard implements ClipboardOwner {
      * @version %I%, %U%
      *
      */
-    private class TransferableImage implements Transferable, Serializable {
+    @SuppressWarnings("serial")
+	private class TransferableImage implements Transferable, Serializable {
 
         
         /**
@@ -296,8 +298,10 @@ public final class MyClipboard implements ClipboardOwner {
          */
         public Object getTransferData(final DataFlavor _flavor)
         throws UnsupportedFlavorException, IOException {
-        	if (true)
+        	final boolean tryVal = false;
+        	if (!tryVal) {
         		return i;
+        	}
             if (_flavor.equals(DataFlavor.imageFlavor) && i != null) {
                 return i;
             } else {

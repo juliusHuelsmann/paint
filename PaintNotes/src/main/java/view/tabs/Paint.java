@@ -128,7 +128,10 @@ public final class Paint extends Tab {
 		it_stift2.setIcon(Status.getPenSelected2().getIconPath());
 	}
 	
-	
+
+	/**
+	 * Apply size for the entire panel and its contents.
+	 */
 	public void applySize() {
 		super.applySize();
 		int x = initializeClipboard(0, false, null, null);

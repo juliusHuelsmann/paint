@@ -30,13 +30,10 @@ public class QuickAccess extends MPanel {
 	 */
 	private final int sizeItem = 40;
 
-	/**
-	 * 
-	 */
-	private static QuickAccess instance;
 
 	/**
 	 * Constructor: initializes the graphical user interface.
+	 * @param _controlQuickAccess the controller for the quick access class.
 	 */
 	public QuickAccess(final MouseListener _controlQuickAccess) {
 
@@ -295,7 +292,8 @@ public class QuickAccess extends MPanel {
 			}
 		}
 
-		for (double xxh = 0; xxh < bi.getWidth(); xxh += 0.01) {
+		final double exact = 0.01;
+		for (double xxh = 0; xxh < bi.getWidth(); xxh += exact) {
 
 			double myY = 1.0 * (bi.getHeight() / 2 - xxh);
 			// double myXold = 1.0 * (bi.getWidth() / 2 - w);
@@ -316,22 +314,24 @@ public class QuickAccess extends MPanel {
 				myY++;
 			}
 			if (myX1 >= 0 && myY >= 0 && myX1 < bi.getWidth()
-					&& myY < bi.getHeight())
+					&& myY < bi.getHeight()) {
 				bi.setRGB((int) myX1, (int) myY,
 						ViewSettings.GENERAL_CLR_BORDER.getRGB());
-
+			}
+			
 			myX1 += 1;
 			int myX2 = -(int) (myX1 - bi.getHeight());
 
 			if (myX2 >= 0 && myY >= 0 && myX2 < bi.getWidth()
-					&& myY < bi.getHeight())
+					&& myY < bi.getHeight()) {
 				bi.setRGB((int) myX2, (int) myY,
 						ViewSettings.GENERAL_CLR_BORDER.getRGB());
+			}
 		}
+		for (double xxh = 0; xxh < bi.getWidth(); xxh += exact) {
 
-		for (double xxh = 0; xxh < bi.getWidth(); xxh += 0.1) {
-
-			double rad2 = bi.getWidth() / 2 - 20;
+			final int distance = 20;
+			double rad2 = bi.getWidth() / 2 - distance;
 			double myY = 1.0 * (bi.getHeight() / 2 - xxh);
 			double myX1 = Math.sqrt(Math.abs(myY * myY - Math.pow(rad2, 2)
 					- bi.getWidth() / 2));
@@ -344,7 +344,7 @@ public class QuickAccess extends MPanel {
 			if (myX1 >= 0 && myY >= 0 && myX1 < bi.getWidth()
 					&& myY < bi.getHeight()) {
 
-				if (myY > 20 && myY < bi.getHeight() - 20) {
+				if (myY > distance && myY < bi.getHeight() - distance) {
 
 					bi.setRGB((int) myX1, (int) myY,
 							ViewSettings.GENERAL_CLR_BORDER.getRGB());
@@ -357,7 +357,7 @@ public class QuickAccess extends MPanel {
 			if (myX2 >= 0 && myY >= 0 && myX2 < bi.getWidth()
 					&& myY < bi.getHeight()) {
 
-				if (myY > 20 && myY < bi.getHeight() - 20) {
+				if (myY > distance && myY < bi.getHeight() - distance) {
 
 					bi.setRGB((int) myX2, (int) myY,
 							ViewSettings.GENERAL_CLR_BORDER.getRGB());

@@ -49,8 +49,7 @@ public final class Selection extends Tab {
     /**
      * integer values.
      */
-    private final int distance = 5, heightLabel = 20, htf = 135, 
-            twoHundred = 200;
+    private final int distance = 5, heightLabel = 20, hf = 150;
 
     /**
      * The JCheckBox for changing the pen.
@@ -86,9 +85,21 @@ public final class Selection extends Tab {
 	
 	/**
 	 * 
-     * @param _cPaint the ControlTabPainting instance
-     * @param _cts the CTabSelection instance
-     * @param _ml the MenuListener instance
+     * @param _cPaint 				instance of the controller class which 
+     * 								deals with painting / erasing / zooming
+     * 								at the picture.
+     * 
+     * @param _cts 					instance of the controller class of this
+     * 								very tab.
+     * 
+     * @param _ml 					instance of MenuListenern
+     * 
+     * @param _controlPaintStatus 	the controller class which copes with 
+     * 								the different paint status like:	
+     * 									(1) 	paint
+     * 									(2)		erase
+     * 									(3)		(...)
+     * 								etc.
 	 */
 	public void initialize(
 			final CTabPainting _cPaint, 
@@ -151,12 +162,14 @@ public final class Selection extends Tab {
 	        tb_color.setActivable(false);
 	        super.add(tb_color);
 		}
-    
-    
-        final int distanceBetweenColors = 2;
-        int width = (2 + 2 + 1) * (2 + 2 + 1) - 2 - 2;
-        int height = width + 2 + 1 + 2 * (2 + 1);
-        int anzInR = 2 + 2 + 2 + 1;
+
+    	final int distanceBetweenColors = 2;
+    	final int width = (2 + 2 + 1) * (2 + 2 + 1) - 2 - 2;
+    	final int amountOfItems = 4;
+    	final int height = ViewSettings.getItemMenu1Height() / amountOfItems
+    	        -  distanceBetweenColors;
+    	final int anzInR = 7;
+    	
 
 		if (_paint) {
 
@@ -169,10 +182,10 @@ public final class Selection extends Tab {
             jbtn_colors[i] = new MButton();
     		}
             jbtn_colors[i].setBounds(tb_color.getX() + tb_color.getWidth() 
-                    + distanceBetweenColors + (i % anzInR) 
-                    * (width + distanceBetweenColors), 
-                    distanceBetweenColors + (i / anzInR)
-                    * (height + distanceBetweenColors), width, height);
+    		        + distanceBetweenColors 
+    		        + (i % anzInR) * (width + distanceBetweenColors),
+    		        distanceBetweenColors + (i / anzInR) 
+    		        * (height + distanceBetweenColors), width, height);
 
     		if (_paint) {
 
@@ -295,15 +308,15 @@ public final class Selection extends Tab {
 
 		if (_paint) {
 
-        it_color.getMPanel().add(new VColorPanel(jbtn_colors, _ml,
-        		_controlPaintStatus));
-        it_color.setBorder(false);
+	        it_color.getMPanel().add(new VColorPanel(jbtn_colors, _ml,
+	        		_controlPaintStatus));
+	        it_color.setBorder(false);
 		}
         it_color.setIcon("icon/palette.png");
 
 		if (_paint) {
 
-        super.add(it_color);
+			super.add(it_color);
 		}
         
         int xLocationSeparation = it_color.getWidth() + it_color.getX() 
@@ -331,48 +344,48 @@ public final class Selection extends Tab {
 
 		if (_paint) {
 
-        jcb_points = new JCheckBox("points");
-        jcb_points.setSelected(true);
-        jcb_points.setOpaque(false);
+	        jcb_points = new JCheckBox("points");
+	        jcb_points.setSelected(true);
+	        jcb_points.setOpaque(false);
 		}
-        jcb_points.setBounds(_x, distance, twoHundred, heightLabel);
+        jcb_points.setBounds(_x, distance,  hf, heightLabel);
 		if (_paint) {
 
-        jcb_points.setVerticalAlignment(SwingConstants.TOP);
-        jcb_points.setFocusable(false);
-        jcb_points.addActionListener(_cTabSelection);
-        super.add(jcb_points);
-    
-        jcb_line = new JCheckBox("line");
-        jcb_line.setVerticalAlignment(SwingConstants.TOP);
-        jcb_line.setFocusable(false);
-        jcb_line.setOpaque(false);
+	        jcb_points.setVerticalAlignment(SwingConstants.TOP);
+	        jcb_points.setFocusable(false);
+	        jcb_points.addActionListener(_cTabSelection);
+	        super.add(jcb_points);
+	    
+	        jcb_line = new JCheckBox("line");
+	        jcb_line.setVerticalAlignment(SwingConstants.TOP);
+	        jcb_line.setFocusable(false);
+	        jcb_line.setOpaque(false);
 		}
         jcb_line.setBounds(_x, jcb_points.getHeight() + jcb_points.getY() 
-                + distance, twoHundred, heightLabel);
+                + distance,  hf, heightLabel);
 
 		if (_paint) {
-
-        jcb_line.addActionListener(_cTabSelection);
-        super.add(jcb_line);
-    
-        jcb_maths = new JCheckBox("maths");
-        jcb_maths.setFocusable(false);
-        jcb_maths.setOpaque(false);
-        jcb_maths.setVerticalAlignment(SwingConstants.TOP);
+	
+	        jcb_line.addActionListener(_cTabSelection);
+	        super.add(jcb_line);
+	    
+	        jcb_maths = new JCheckBox("maths");
+	        jcb_maths.setFocusable(false);
+	        jcb_maths.setOpaque(false);
+	        jcb_maths.setVerticalAlignment(SwingConstants.TOP);
 		}
 
         jcb_maths.setBounds(_x, jcb_line.getHeight() + jcb_line.getY() 
-                + distance, twoHundred, heightLabel);
+                + distance,  hf, heightLabel);
 
 		if (_paint) {
 
-        jcb_maths.addActionListener(_cTabSelection);
-        super.add(jcb_maths);
-        
-        //deactivate the items because at the beginning there is no item 
-        //selected.
-        _cTabSelection.deactivateOp();
+	        jcb_maths.addActionListener(_cTabSelection);
+	        super.add(jcb_maths);
+	        
+	        //deactivate the items because at the beginning there is no item 
+	        //selected.
+	        _cTabSelection.deactivateOp();
 		}
     
 
@@ -413,7 +426,8 @@ public final class Selection extends Tab {
 	        tb = new Item1Button(null);
 	        tb.setOpaque(true);
 		}
-        tb.setSize(htf, htf);
+        tb.setSize(ViewSettings.getItemMenu1Width(), 
+                ViewSettings.getItemMenu1Height());
         tb.setLocation(_x + distance, distance);
 		if (_paint) {
 
@@ -429,7 +443,8 @@ public final class Selection extends Tab {
         tb_changePen.setOpaque(true);
 		}
 		
-        tb_changePen.setSize(htf, htf);
+        tb_changePen.setSize(ViewSettings.getItemMenu1Width(), 
+                ViewSettings.getItemMenu1Height());
         tb_changePen.setLocation(tb.getX() + tb.getWidth() + distance, 
                 tb.getY());
 		if (_paint) {
@@ -457,7 +472,8 @@ public final class Selection extends Tab {
         it_stift1.setLocation(tb_changePen.getX() 
                 + tb_changePen.getWidth() + distance, 
                 tb_changePen.getY());
-        it_stift1.setSize(twoHundred, twoHundred + twoHundred / 2);
+        it_stift1.setSize(hf,  hf + hf);
+        it_stift1.removeScroll();
 		if (_paint) {
 
         it_stift1.setActivable();

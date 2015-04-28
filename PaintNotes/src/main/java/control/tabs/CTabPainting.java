@@ -320,7 +320,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
             controlPaint.getPicture().paintSelected(getPage(),
         			controlPaint.getControlPic(),
         			controlPaint.getControlPaintSelection());
-            getPage().getJlbl_background2().repaint();
+            getPage().getJlbl_backgroundStructure().repaint();
 
         } else if (o instanceof List) {
             @SuppressWarnings("unchecked")
@@ -440,7 +440,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
         controlPaint.getPicture().paintSelected(getPage(),
     			controlPaint.getControlPic(),
     			controlPaint.getControlPaintSelection());
-        getPage().getJlbl_background2().repaint();
+        getPage().getJlbl_backgroundStructure().repaint();
         getControlPicture().refreshPaint();
     }
 

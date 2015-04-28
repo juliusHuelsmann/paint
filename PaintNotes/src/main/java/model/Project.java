@@ -31,23 +31,27 @@ public class Project {
 	 */
 	private Picture picture;
 	
-	
-	
+
 	/**
 	 * Constructor of project: 
-	 * 		(1)	Initializes the sub-classes Picture and History.
-	 * 		(2) Save the model classes in the sub-model and status if 
-	 * 			necessary.
+	 * Initializes the sub-classes Picture and History.
 	 */
 	public Project() {
-		
+
 		//initialize picture and history
 		picture = new Picture();
 		history = new HistorySession(picture);
+	}
+
+	
+	/**
+	 * initialize the history of the picture.
+	 */
+	public final void initialize() {
 		
 		//set the Picture into Status and set history to the picture.
-        Status.setPicture(picture);
 		picture.initialize(history);
+	
 	}
 
 

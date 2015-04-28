@@ -278,6 +278,18 @@ MenuListener {
 	 * Constructor of the main controller class.
 	 */
 	public ControlPaint() {
+		
+		
+	}
+	
+
+	/**
+	 * Initializes controller class for being able to change settings 
+	 * inside the specified class even though the class has not been entirely
+	 * initialized.
+	 */
+	public final void initialize() {
+
 
 		
 
@@ -294,9 +306,11 @@ MenuListener {
             Status.getLogger().info("Installation found.");
             Status.getLogger().info("Initialize model class Page.\n");
 
-            project = new Project();
-            
             Status.setControlPaint(this);
+            project = new Project();
+            project.initialize();
+            
+            
 
             utilityControlScrollPane = new ScrollPaneActivityListener(this);
             //initialize the model class picture.
@@ -360,6 +374,7 @@ MenuListener {
         	//exit program
             System.exit(1);
         }
+	
 	
 	}
 	
@@ -1093,7 +1108,7 @@ MenuListener {
                 Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
                 cTabPaintStatus.deactivate();
                 view.getTabs().getTab_paint().getTb_move().setActivated(true);
-                getPage().getJlbl_background2().repaint();
+                getPage().getJlbl_backgroundStructure().repaint();
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ERASE:
@@ -1682,7 +1697,7 @@ MenuListener {
 //          controlPic.paintEntireSelectionRect(
 //                  _r_size);
         }
-        getPage().getJlbl_background2().repaint();
+        getPage().getJlbl_backgroundStructure().repaint();
         
 
     }
@@ -1872,7 +1887,7 @@ MenuListener {
                 _r_sizeField.width, _r_sizeField.height);
 
 
-        getPage().getJlbl_background2().repaint();
+        getPage().getJlbl_backgroundStructure().repaint();
 
     	//finish transaction
     	project.getPicture().getLs_po_sortedByX().finishTransaction(

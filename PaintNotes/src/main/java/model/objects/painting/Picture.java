@@ -1204,6 +1204,7 @@ public final class Picture implements Serializable {
 				if (ls_po_sortedByX.getItem() instanceof PaintObjectImage) {
 					((PaintObjectImage) ls_po_sortedByX.getItem()).restore();
 				}
+				ls_po_sortedByX.getItem().setPicture(this);
 				ls_po_sortedByX.next(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
 			}

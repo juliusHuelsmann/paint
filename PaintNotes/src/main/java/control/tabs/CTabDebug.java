@@ -130,7 +130,7 @@ public final class CTabDebug implements ActionListener {
     	    			cp.getControlPaintSelection());
     	        getControlPicture().refreshPaint();
     	        getPaintObjects().repaint();
-    	        getPage().getJlbl_background2().repaint();
+    	        getPage().getJlbl_backgroundStructure().repaint();
     	}
        
        

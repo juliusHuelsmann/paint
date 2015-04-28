@@ -121,8 +121,8 @@ public class ContorlPicture implements PaintListener {
 
 		//paint the painting background (e.g. raster / lines) at the graphical
 		//user interface.
-		if (getPage().getJlbl_background2().getWidth() != 0
-				&& getPage().getJlbl_background2().getHeight() != 0) {
+		if (getPage().getJlbl_backgroundStructure().getWidth() != 0
+				&& getPage().getJlbl_backgroundStructure().getHeight() != 0) {
 
 			
 			bi_background = new BufferedImage(
@@ -148,7 +148,7 @@ public class ContorlPicture implements PaintListener {
 					-getPaintLabel().getLocation().y 
 					+ getPaintLabel().getHeight(),
 					0, 0);
-			getPage().getJlbl_background2().setIcon(
+			getPage().getJlbl_backgroundStructure().setIcon(
 					new ImageIcon(bi_background));  
 		}
 
@@ -288,7 +288,7 @@ public class ContorlPicture implements PaintListener {
 				-getPaintLabel().getLocation().x + _x + _width,
 				-getPaintLabel().getLocation().y + _y + _height, 
 				_x, _y);
-		getPage().getJlbl_background2().setIcon(
+		getPage().getJlbl_backgroundStructure().setIcon(
 				new ImageIcon(bi_background));
 								
 

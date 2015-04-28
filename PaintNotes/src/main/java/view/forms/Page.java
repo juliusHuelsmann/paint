@@ -3,8 +3,10 @@ package view.forms;
 
 //import declarations
 import java.awt.Color;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
@@ -78,9 +80,25 @@ import view.util.mega.MButton;
     private MLabel jlbl_border;
 	
     /**
-     * The background JLabel (which is shown if image is transparent).
+     * 
+     * JLabel jlbl_background is the background JLabel (which is shown if 
+     * image is transparent). 
+     * 			It is either white or has got the typical alpha background
+     * 			raster.
      */
-    private MLabel jlbl_background, jlbl_background2;
+    private MLabel jlbl_backgroundAlpha;
+    
+    
+    
+    /**
+     * JLabel which contains the background that the user selects in the view
+     * tab.
+     * 
+     * This background can either consist of raster or lines. It is possible
+     * to set page margins that determine at which location of the picture
+     * the painting begins and where it ends.
+     */
+    private MLabel jlbl_backgroundStructure;
     
     /**
      * 
@@ -216,12 +234,12 @@ import view.util.mega.MButton;
         jlbl_border.setBorder(BorderFactory.createLineBorder(Color.black));
         super.add(jlbl_border);
 
-        jlbl_background2 = new MLabel();
-        jlbl_background2.setBackground(Color.white);
-        jlbl_background2.setFocusable(false);
-        jlbl_background2.setBorder(null);
-        jlbl_background2.setOpaque(false);
-        super.add(jlbl_background2); 
+        jlbl_backgroundStructure = new MLabel();
+        jlbl_backgroundStructure.setBackground(Color.white);
+        jlbl_backgroundStructure.setFocusable(false);
+        jlbl_backgroundStructure.setBorder(null);
+        jlbl_backgroundStructure.setOpaque(false);
+        super.add(jlbl_backgroundStructure); 
         
         //JLabel for the painting and the raster
         jlbl_painting = new PaintLabel(jpnl_toMove);
@@ -234,12 +252,12 @@ import view.util.mega.MButton;
         super.add(jlbl_painting);
 
 
-        jlbl_background = new MLabel();
-        jlbl_background.setBackground(Color.white);
-        jlbl_background.setFocusable(false);
-        jlbl_background.setBorder(null);
-        jlbl_background.setOpaque(true);
-        super.add(jlbl_background); 
+        jlbl_backgroundAlpha = new MLabel();
+        jlbl_backgroundAlpha.setBackground(Color.white);
+        jlbl_backgroundAlpha.setFocusable(false);
+        jlbl_backgroundAlpha.setBorder(null);
+        jlbl_backgroundAlpha.setOpaque(true);
+        super.add(jlbl_backgroundAlpha); 
 
         
         removeButtons();
@@ -305,14 +323,12 @@ import view.util.mega.MButton;
                 ViewSettings.VIEW_SIZE_SP
                 - ViewSettings.DISTANCE_TO_WINDOW);
 
-        jlbl_background.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
-        jlbl_background2.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
+        jlbl_backgroundAlpha.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
+        jlbl_backgroundStructure.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionBG.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionPainting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         
-        jlbl_background.setIcon(new ImageIcon(Status.getBi_transparency()));
-
-
+        jlbl_backgroundAlpha.setIcon(new ImageIcon(Status.getBi_transparency()));
 
 		//the order of painting is important! It is necessary that the 
         //paintinglabel's bounds and the locations of the ScrollPanes are 
@@ -384,7 +400,7 @@ import view.util.mega.MButton;
      * @return the jlbl_background
      */
     public MLabel getJlbl_background() {
-        return jlbl_background;
+        return jlbl_backgroundAlpha;
     }
 
 
@@ -392,8 +408,8 @@ import view.util.mega.MButton;
     /**
      * @return the jlbl_background
      */
-    public MLabel getJlbl_background2() {
-        return jlbl_background2;
+    public MLabel getJlbl_backgroundStructure() {
+        return jlbl_backgroundStructure;
     }
 
 

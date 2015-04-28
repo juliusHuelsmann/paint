@@ -36,19 +36,53 @@ public final class Status {
 	private static Pen pen_selectedReplaced;
 	
 	
+	
+	/**
+	 * Instance of the paint controller.
+	 */
 	private static ControlPaint controlPaint;
-	private static Picture picture;
+	
 	
 
+	/**
+	 * error-checked getter method.
+	 * @return the controller class of the tab write.
+	 */
 	private static CTabWrite getControlTabWrite() {
-		return controlPaint.getcTabWrite();
+		if (controlPaint != null) {
+
+			return controlPaint.getcTabWrite();
+		} else {
+			Status.getLogger().severe("controlPaint.cTabWrite is null");
+		}
+		return null;
 	}
+	/**
+	 * error-checked getter method.
+	 * @return the view class page.
+	 */
 	private static Page getPage() {
+		
+		if (getView() != null) {
+			return getView().getPage();
+		} else {
+			Status.getLogger().severe("controlPaint.getView() is null.");
+		}
 		return controlPaint.getView().getPage();
 	}
 
+	/**
+	 * error-checked getter method.
+	 * @return the main view class.
+	 */
 	private static View getView() {
-		return controlPaint.getView();
+		if (controlPaint != null) {
+			return controlPaint.getView();
+		} else {
+			Status.getLogger().severe("controlPaint is null");
+		}
+		
+		return null;
 	}
 	
 	public static final int ERASE_ALL = 0;
@@ -85,28 +119,18 @@ public final class Status {
 	
 	
 	/**
-	 * setter method for model class picture.
-	 * @param _picture the picture.
+	 * Error-checked getter method.
+	 * @return	instance of the main model class picture.
 	 */
-	public static void setPicture(final Picture _picture) {
-		if (_picture != null) {
-
-			picture = _picture;
+	private static Picture getPicture() {
+		if (controlPaint != null) {
+			return controlPaint.getPicture();
 		} else {
-			
-			if (picture == null) {
-
-				getLogger().severe("initialized controlPaint "
-						+ "in Status with "
-						+ "not existing controller class.");
-			} else {
-
-				getLogger().severe("Tried to overwrite"
-						+ " existing controller class in"
-						+ " Status.");
-			}
+			Status.getLogger().severe("controlPaint is null");
 		}
+		return null;
 	}
+	
 	
 	/**
 	 * Whether the initialization process has finished or not. If it has,
@@ -476,7 +500,7 @@ public final class Status {
     public static void setPenSelected1(final Pen _penSelected1) {
         Status.penSelected1 = _penSelected1;
         getControlTabWrite().penChanged();
-        picture.changePen(penSelected1);
+        getPicture().changePen(penSelected1);
     }
 
     /**
@@ -859,7 +883,7 @@ public final class Status {
      */
 	public static void applyStandardPen(final Picture _picture) {
 
-        picture.initializePen(
+		getPicture().initializePen(
                 new BallPen(Constants.PEN_ID_POINT, 1, Color.black));
         setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);	
 	}

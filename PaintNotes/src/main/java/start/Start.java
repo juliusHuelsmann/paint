@@ -7,6 +7,7 @@ import java.io.File;
 import javax.swing.JOptionPane;
 
 import model.objects.painting.Picture;
+import model.settings.Constants;
 import model.settings.Status;
 import control.ControlPaint;
 
@@ -99,8 +100,10 @@ public final class Start {
 	        Status.getLogger().info("normal start: launch programm!\n\n");
 	        
 	        //call controller
+	        Status.setIndexPageBackground(
+	        		Constants.CONTROL_PAGE_BACKGROUND_RASTAR);
 	        ControlPaint cp1 =  new ControlPaint();
-	        cp1.getcTabLook().setBackgroundNone();	
+	        cp1.initialize();
 	        
 	        //set the initialization process terminated
             Status.increaseInitializationFinished();
@@ -148,10 +151,15 @@ public final class Start {
         				JOptionPane.INFORMATION_MESSAGE);
 
     	        //call controller
+    	        Status.setIndexPageBackground(
+    	        		Constants.CONTROL_PAGE_BACKGROUND_NONE);
+    	        Status.setBorderRightPercent(0);
+    	        Status.setBorderLeftPercent(0);
+    	        Status.setBorderTopPercent(0);
+    	        Status.setBorderBottomPercent(0);
     	        ControlPaint cp =  new ControlPaint();
+    	        cp.initialize();
     	        cp.getPicture().load(_args[0]);
-    	        cp.getcTabLook().setBackgroundNone();
-    	        cp.getcTabLook().setMargeNone();
     	        cp.getView().getTabs().setTabbedPaneOpen(false);
     	        
     	        //set the initialization process terminated

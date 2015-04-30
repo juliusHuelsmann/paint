@@ -1044,7 +1044,6 @@ MenuListener {
             // write the current working picture into the global picture.
             project.getPicture().finish(view.getTabs().getTab_debug());
             break;
-
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
             if (_event.getButton() == 1) {
 
@@ -1080,7 +1079,6 @@ MenuListener {
                 view.getTabs().getTab_paint().getTb_move().setActivated(true);
             }
             break;
-
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
             if (_event.getButton() == 1) {
 
@@ -1112,30 +1110,24 @@ MenuListener {
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ERASE:
-//        	mr_erase();
         	break;
-
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
             if (_event.getButton() == 1) {
                 project.getPicture().abortPaintObject(controlPic);
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
-
             if (_event.getButton() == MouseEvent.BUTTON1) {
                 mr_zoom(_event);
                 cTabPaint.updateResizeLocation();
             } else if (_event.getButton() == MouseEvent.BUTTON3) {
             	cTabPaint.mr_zoomOut();
-            	cTabPaint.updateResizeLocation();
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_PIPETTE:
             mr_paint_pipette(_event);
             break;
         case Constants.CONTROL_PAINTING_INDEX_MOVE:
-
-        	System.out.println("move");
             if (_event.getButton() == 1) {
 
                 final Point mmSP = pnt_movementSpeed;
@@ -1155,7 +1147,6 @@ MenuListener {
                 
                 //release everything
                 if (project.getPicture().isSelected()) {
-
                     //TODO: zum finden des windows fehler 2 ist es sinnvoll
                 	//hier einen breakpoint zu setzen, da der Fehler (auch)
                 	//auftritt, wenn ein selektiertes Objekt losgelassen wird.
@@ -1174,7 +1165,6 @@ MenuListener {
                 }
             }
             break;
-           
         default:
             Status.getLogger().warning("Switch in mouseReleased default");
             break;
@@ -1383,32 +1373,23 @@ MenuListener {
      */
     private void mr_sel_curve_destroy(final MouseEvent _event, 
             final PaintObjectWriting _ldp) {
-
-    	
     	//
     	Rectangle snapBounds = _ldp.getSnapshotBounds();
         int xShift = snapBounds.x, yShift = snapBounds.y;
-
         
-        //stretch ldp!
-
         //necessary because the points are painted directly to the buffered
         //image which starts at the _ldp snapshot x.
         Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
                 -_ldp.getSnapshotBounds().y);
-
         BufferedImage transform = _ldp.getSnapshot();
-        
 
         //Extract points out of PaintObjectWriting and create a byte array
         //containing all the necessary information for deciding whether
         //a point is inside the selected area or not.
         //Because of this the step above to move the paintObject is necessary.
-        byte[][] field = PaintBI.printFillPolygonN(transform,
-                Color.green, model.util.Util.dpntToPntArray(
-                        model.util.Util.pntLsToArray(_ldp.getPoints())));
-        
-        
+        byte[][] field = PaintBI.printFillPolygonN(transform, Color.green, model
+        		.util.Util.dpntToPntArray(model.util.Util.pntLsToArray(
+        				_ldp.getPoints())));
         
         /*
          * whole item selection.
@@ -1419,12 +1400,10 @@ MenuListener {
         // go to the beginning of the list
         if (!project.getPicture().getLs_po_sortedByX().isEmpty()) {
 
-
         	//start transaction 
         	final int transaction = project.getPicture().getLs_po_sortedByX()
         			.startTransaction("Selection curve destroy", 
         					SecureList.ID_NO_PREDECESSOR);
-        	
             // go to the beginning of the list
             project.getPicture().getLs_po_sortedByX().toFirst(
             		transaction, SecureList.ID_NO_PREDECESSOR);
@@ -1432,8 +1411,6 @@ MenuListener {
             // create and initialize current values
             PaintObject po_current = project.getPicture().getLs_po_sortedByX()
                     .getItem();
-
-            
             /**
              * Because it is impossible to insert the new created items directly
              * to list (otherwise there would be an infinite loop because of 
@@ -1441,7 +1418,6 @@ MenuListener {
              * loop and are destroyed once again and thus reappear etc.
              */
             List<PaintObject> ls_toInsert = new List<PaintObject>();
-
             
             // go through list. until either list is empty or it is
             // impossible for the paintSelection to paint inside the
@@ -1458,7 +1434,6 @@ MenuListener {
 
                     // get item; remove it out of lists and add it to
                     // selection list
-
                     PaintObject [][] separatedPO = po_current.separate(
                     		field, new Point(xShift, yShift));
                     new PictureOverview(view.getTabs().getTab_debug()).remove(
@@ -1472,7 +1447,6 @@ MenuListener {
                             current++) {
 
                         if (separatedPO[1][current] != null) {
-
                             //recalculate snapshot bounds for being able to 
                             //insert the item into the sorted list.
                             separatedPO[1][current].recalculateSnapshotBounds();
@@ -1480,7 +1454,6 @@ MenuListener {
                                     separatedPO[1][current], 
                                     getView().getTabs().getTab_debug());
                         } else {
-                            
                             Status.getLogger().warning("separated paintObject "
                                     + "is null");
                         }
@@ -1491,18 +1464,14 @@ MenuListener {
                     
                     for (int current = 0; current < separatedPO[0].length;
                             current++) {
-
                         if (separatedPO[0][current] != null) {
                             //recalculate snapshot bounds for being able to
                             //insert the item into the sorted list.
                             separatedPO[0][current].recalculateSnapshotBounds();
                             ls_toInsert.insertBehind(separatedPO[0][current]);
-    
-                             new PictureOverview(
-                            		 view.getTabs().getTab_debug()).add(
-                            				 separatedPO[0][current]);
+                             new PictureOverview(view.getTabs().getTab_debug())
+                             .add(separatedPO[0][current]);
                         } else {
-
                             Status.getLogger().warning("separated paintObject "
                                     + "is null");
                         }
@@ -1510,30 +1479,23 @@ MenuListener {
                     project.getPicture().getLs_po_sortedByX().toFirst(
                     		transaction, SecureList.ID_NO_PREDECESSOR);
                 } else {
-                    
                     // next
                     project.getPicture().getLs_po_sortedByX().next(
                     		transaction, SecureList.ID_NO_PREDECESSOR);
                 }
-
-
                 // update current values
                 po_current = project.getPicture().getLs_po_sortedByX()
                         .getItem();
             }
-
-            
             //insert the to insert items to graphical user interface.
             ls_toInsert.toFirst();
             while (!ls_toInsert.isBehind() && !ls_toInsert.isEmpty()) {
-
                 project.getPicture().getLs_po_sortedByX().insertSorted(
                         ls_toInsert.getItem(), 
                         ls_toInsert.getItem().getSnapshotBounds().x,
                         transaction);
                 ls_toInsert.next();
             }
-
         	//finish transaction 
         	project.getPicture().getLs_po_sortedByX().finishTransaction(
         			transaction);
@@ -1543,9 +1505,7 @@ MenuListener {
         			getControlPaintSelection())) {
             	controlPic.refreshPaint();
             } 
-
         }
-
 
         if (!project.getPicture().paintSelected(getPage(),
     			getControlPic(),
@@ -1554,8 +1514,6 @@ MenuListener {
         	view.getPage().getJlbl_selectionBG().setIcon(
         			new ImageIcon(Util.getEmptyBISelection()));
         }
-
-
         //set the old pen to replace the curve afterwards.
         if (Status.getPen_selectedReplaced() != null) {
 
@@ -1563,7 +1521,6 @@ MenuListener {
             Status.setPen_selectedReplaced(null);
         }
         controlPic.refreshPaint();
-
     }
     
     /**

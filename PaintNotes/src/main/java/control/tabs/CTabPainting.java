@@ -699,9 +699,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
                 < Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
                         ViewSettings.MAX_ZOOM_OUT)) {
         	
-            int 
-                    
-            newWidth = Status.getImageShowSize().width
+            int newWidth = Status.getImageShowSize().width
             / ViewSettings.ZOOM_MULITPLICATOR, 
             
             newHeight = Status
@@ -719,17 +717,19 @@ public final class CTabPainting implements ActionListener, MouseListener {
             		+ getPage().getJlbl_painting().getHeight() 
             		* ViewSettings.ZOOM_MULITPLICATOR / 2);
 
-            // not smaller than the
+            
+            // not smaller than the negative image size.
             oldLocation.x = Math.max(oldLocation.x,
-            		-(Status.getImageShowSize().width - getPage().getWidth()));
+            		-(Status.getImageShowSize().width
+            				- getPage().getWidth()
+            				* ViewSettings.ZOOM_MULITPLICATOR));
             oldLocation.y = Math.max(oldLocation.y,
-                    -(Status.getImageShowSize().height 
-                    		- getPage().getHeight()));
+                    -(Status.getImageShowSize().height
+                    		- getPage().getHeight() 
+                    		* ViewSettings.ZOOM_MULITPLICATOR));
             
-            
-            
-            
-            // not greater than 0
+            // not greater than 0, these calculations prevent the zoom-out 
+            // location to be at the upper left of the page.
             oldLocation.x = Math.min(oldLocation.x, 0);
             oldLocation.y = Math.min(oldLocation.y, 0); 
      
@@ -767,9 +767,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
                     "max zoom out reached");
             updateResizeLocation();
         }
-
         // TODO: hier die location aktualisieren.
-    
     }
     
 

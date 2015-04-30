@@ -756,7 +756,16 @@ public class ContorlPicture implements PaintListener {
 	 */
 	public final void beforeLocationChange(final MoveEvent _ev, 
 			final MoveEvent _evOld) {
-		// TODO Auto-generated method stub
+
+		//TODO: für nicht mithalten wenn gescrolled wird.
+//		int dx = (int) (_ev.getPnt_bottomLocation().x 
+//				- getPaintLabel().getLocation().getX()),
+//				dy = (int) (_ev.getPnt_bottomLocation().y
+//						- getPaintLabel().getLocation().getY());
+//
+//		getPage().getJlbl_selectionPainting().setLocation(
+//				getPage().getJlbl_selectionPainting().getX() + dx,
+//				getPage().getJlbl_selectionPainting().getY() + dy);
 		
 	}
 
@@ -875,7 +884,7 @@ public class ContorlPicture implements PaintListener {
 	public final void afterExternalLocationChange(final MoveEvent _ev) {
 
 		if (getPaintLabel().isVisible()) {
-			
+
 			//set changed
 			refreshPaint();
 		}		

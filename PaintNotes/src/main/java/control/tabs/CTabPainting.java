@@ -706,6 +706,8 @@ public final class CTabPainting implements ActionListener, MouseListener {
             .getImageShowSize().height
             / ViewSettings.ZOOM_MULITPLICATOR;
 
+            //TODO: ich glaube das ist unlogisch und funktioniert nru weil
+            // zoom - multiplicator == 2.
             Point oldLocation = new Point(
             		getPage().getJlbl_painting().getLocation().x 
             		- getPage().getJlbl_painting().getWidth() / 2

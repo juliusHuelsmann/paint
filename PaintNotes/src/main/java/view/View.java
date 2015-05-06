@@ -190,6 +190,8 @@ import control.util.WindowMover;
 
         tabs.setVisible(true);
         page.setVisible(true);
+        
+        
         //debug for testing view components.
         //writes analyse file to analyse.png
 //        DebugUtil.performCheckComponents(
@@ -537,10 +539,17 @@ import control.util.WindowMover;
         
         //initialize tabs
         Status.getLogger().info("   initialize Tabs\n");
-        tabs.setSize(
-                ViewSettings.getView_widthTb(), 
-                ViewSettings.getView_heightTB(),
-                ViewSettings.getView_heightTB_visible());
+        
+        if (tabs != null) {
+        	tabs.setSize(
+                    ViewSettings.getView_widthTb(), 
+                    ViewSettings.getView_heightTB(),
+                    ViewSettings.getView_heightTB_visible());
+            tabs.setLocation(ViewSettings.VIEW_LOCATION_TB);
+            
+        } else {
+        	Status.getLogger().severe("tabs at flip null. Debugging?");
+        }
         
         //initialize PaintObjects
         Status.getLogger().info("   initialize PaintObjects\n");
@@ -561,20 +570,26 @@ import control.util.WindowMover;
         		jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
         		Constants.VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
 	        	
-        tabs.setLocation(ViewSettings.VIEW_LOCATION_TB);
 	        	
 	        //the page flip is done directly inside the set size method
 	        //TODO: externalize flipping is not necessary anymore.
 //	        Remove
         
 
-        page.setLocation(
-                ViewSettings.getView_bounds_page().getLocation());
-        page.setSize(ViewSettings.getView_bounds_page().width, 
-                ViewSettings.getView_bounds_page().height);
+        if (page != null) {
 
-        
-        tabs.flip();
+            page.setLocation(
+                    ViewSettings.getView_bounds_page().getLocation());
+            page.setSize(ViewSettings.getView_bounds_page().width, 
+                    ViewSettings.getView_bounds_page().height);
+        } else {
+        	Status.getLogger().severe("page at flip null. Debugging?");
+        }
+
+        if (tabs != null) {
+
+            tabs.flip();	
+        }
         jlbl_border.setBounds(0, 0, getWidth(), getHeight());
 	}
 	

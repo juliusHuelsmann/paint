@@ -98,16 +98,50 @@ public final class Start {
 	        
 	        //print case message
 	        Status.getLogger().info("normal start: launch programm!\n\n");
+	        double d = System.currentTimeMillis();
 	        
 	        //call controller
 	        Status.setIndexPageBackground(
 	        		Constants.CONTROL_PAGE_BACKGROUND_RASTAR);
+
+	        
+	        /*
+	         * Time logging
+	         */
+            String timeLog = ("Time used for startup:\nTime 1:"
+            		+ "\t setBackground\n\t" 
+            + (System.currentTimeMillis() - d) + "!\n");
+            d = System.currentTimeMillis();
+            
 	        ControlPaint cp1 =  new ControlPaint();
+
+	        /*
+	         * Time logging
+	         */
+            timeLog += ("Time 2:\t create paint controller class\n\t" 
+            + (System.currentTimeMillis() - d) + "!\n");
+            d = System.currentTimeMillis();
+            
+            
 	        cp1.initialize();
+
+	        /*
+	         * Time logging
+	         */
+            timeLog += ("Time 3:\t initialize paint controller class\n\t" 
+            + (System.currentTimeMillis() - d) + "!\n");
+            d = System.currentTimeMillis();
 	        
 	        //set the initialization process terminated
             Status.increaseInitializationFinished();
-	        
+
+
+	        /*
+	         * Time logging
+	         */
+            timeLog += ("Time 4: set initialization finished in status\n\t" 
+            + (System.currentTimeMillis() - d) + "!\n");
+            Status.getLogger().severe(timeLog);
 	        break;
 	        
 	    //one or more inputs: change folder

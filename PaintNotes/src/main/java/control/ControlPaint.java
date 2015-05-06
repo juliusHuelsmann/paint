@@ -1117,12 +1117,14 @@ MenuListener {
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
+        	double d = System.currentTimeMillis();
             if (_event.getButton() == MouseEvent.BUTTON1) {
                 mr_zoom(_event);
                 cTabPaint.updateResizeLocation();
             } else if (_event.getButton() == MouseEvent.BUTTON3) {
             	cTabPaint.mr_zoomOut();
             }
+            Status.getLogger().severe("brauchte" + (System.currentTimeMillis() - d) + "ms");
             break;
         case Constants.CONTROL_PAINTING_INDEX_PIPETTE:
             mr_paint_pipette(_event);
@@ -1186,11 +1188,16 @@ MenuListener {
      */
     private void mr_zoom(final MouseEvent _event) {
 
+    	// If the maximal zoom in - size is not reached yet execute the zoom
+    	// -in. 
+    	// Otherwise the user is informed, that it is impossible to zoom-in.
         if (Status.getImageShowSize().width
                 / Status.getImageSize().width 
                 < Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
                         ViewSettings.MAX_ZOOM_IN)) {
             
+        	
+        	// Calculate the new size of the page.
             int newWidth = Status.getImageShowSize().width
                     * ViewSettings.ZOOM_MULITPLICATOR, 
                     newHeight = Status.getImageShowSize().height

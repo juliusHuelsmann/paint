@@ -291,7 +291,7 @@ MenuListener {
 	public final void initialize() {
 
 
-		
+		double startTime = System.currentTimeMillis();
 
         //get location of current workspace and set logger level to finest; 
 		//thus every log message is shown.
@@ -310,7 +310,6 @@ MenuListener {
             project = new Project();
             project.initialize();
             
-            
 
             utilityControlScrollPane = new ScrollPaneActivityListener(this);
             //initialize the model class picture.
@@ -328,7 +327,6 @@ MenuListener {
             cTabPaintStatus = new CPaintStatus(this);
             cTabPaintObjects = new CTabDebug(this);
             zoom = new Zoom(controlPic);
-            
             utilityControlItem2 = new CTabInsert(this);
             cTabs = new CTabs(this);
             
@@ -340,8 +338,11 @@ MenuListener {
             Status.getLogger().info("initialize view class and set visible.");
 
             view = new View();
-            view.initialize(this);
-            view.setVisible(true);
+            System.err.println(System.currentTimeMillis() - startTime);
+            view.initialize(this);	//1000MS
+            System.err.println(System.currentTimeMillis() - startTime);
+            view.setVisible(true);	// 400MS
+            System.err.println(System.currentTimeMillis() - startTime);
 
 //            cl = new CLoading(view.getLoading());
             
@@ -423,13 +424,16 @@ MenuListener {
 		            	//do only preprint if there is no menu open (because
 		            	//that would cause a repaint of the view and close
 		            	//the menu.
-		            	if (!getTabs().isMenuOpen()) {
+		            	if (getTabs() != null) {
 
-		            		removePreprint();
-//			            	BufferedImage bi = Util.getEmptyBISelection();
-//			            	getPage().getJlbl_selectionBG().setIcon(
-//			            			new ImageIcon(bi));
-			            	break;
+			            	if (!getTabs().isMenuOpen()) {
+
+			            		removePreprint();
+//				            	BufferedImage bi = Util.getEmptyBISelection();
+//				            	getPage().getJlbl_selectionBG().setIcon(
+//				            			new ImageIcon(bi));
+				            	break;
+			            	}
 		            	}
 	                default:
 	                	break;
@@ -910,7 +914,8 @@ MenuListener {
             	//do only preprint if there is no menu open (because
             	//that would cause a repaint of the view and close
             	//the menu.
-            	if (!getTabs().isMenuOpen()) {
+            	
+            	if (getTabs() != null && !getTabs().isMenuOpen()) {
 
 
                     if (Status.isNormalRotation()) {
@@ -1042,7 +1047,10 @@ MenuListener {
         case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
          
             // write the current working picture into the global picture.
-            project.getPicture().finish(view.getTabs().getTab_debug());
+        	if (getTabs() != null) {
+
+                project.getPicture().finish(view.getTabs().getTab_debug());
+        	}
             break;
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
             if (_event.getButton() == 1) {
@@ -1222,19 +1230,32 @@ MenuListener {
             
             // check if the bounds are valid
 
-            // not smaller than the
-            newX = Math.max(newX, -(Status.getImageShowSize().width 
-                    - getPage().getJlbl_painting()
-                    .getWidth()));
+//            // not smaller than the
+//            newX = Math.max(newX, -(Status.getImageShowSize().width 
+//                    - getPage().getJlbl_painting()
+//                    .getWidth()));
+//            newY = Math.max(newY,
+//                    -(Status.getImageShowSize().height 
+//                    		- getPage().getJlbl_painting()
+//                    		.getHeight()));
+//            
+//            
+//            // not greater than 0
+//            newX = Math.min(newX, 0);
+//            newY = Math.min(newY, 0);
+
+            // not smaller than the negative image size.
+            newX = Math.max(newX,
+            		(int) -(Status.getImageShowSize().width
+            				- getPage().getWidth()));
             newY = Math.max(newY,
-                    -(Status.getImageShowSize().height 
-                    		- getPage().getJlbl_painting()
-                    		.getHeight()));
+                    -(Status.getImageShowSize().height
+                    		- getPage().getHeight()));
             
-            
-            // not greater than 0
+            // not greater than 0, these calculations prevent the zoom-out 
+            // location to be at the upper left of the page.
             newX = Math.min(newX, 0);
-            newY = Math.min(newY, 0);
+            newY = Math.min(newY, 0); 
             
 
             // apply the location at JLabel (with setLocation method that 

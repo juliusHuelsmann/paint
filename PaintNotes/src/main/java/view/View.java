@@ -8,9 +8,11 @@ import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
@@ -24,7 +26,7 @@ import view.util.mega.MButton;
 import view.util.mega.MFrame;
 import view.util.mega.MLabel;
 import control.ControlPaint;
-import control.ControlView;
+import control.forms.ControlView;
 import control.util.WindowMover;
 
 
@@ -83,8 +85,6 @@ import control.util.WindowMover;
 	 * @param _cp instance of ControlView.
 	 */
 	public void initialize(final ControlPaint _cp) {
-
-
 	    
         //initialize JFrame and alter settings
         super.setAlwaysOnTop(false);
@@ -128,8 +128,6 @@ import control.util.WindowMover;
             super.addMouseMotionListener(wmv);
             
         }
-
-        
 
         
         //exit
@@ -541,6 +539,8 @@ import control.util.WindowMover;
         Status.getLogger().info("   initialize Tabs\n");
         
         if (tabs != null) {
+        	
+        	tabs.reApplySize();
         	tabs.setSize(
                     ViewSettings.getView_widthTb(), 
                     ViewSettings.getView_heightTB(),

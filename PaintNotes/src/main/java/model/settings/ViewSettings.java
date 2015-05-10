@@ -29,7 +29,10 @@ public final class ViewSettings {
     THREE = 3, FOUR = 4, FIVE = 5, SEVEN = 7, TEN = 10, TWENTY_FIFE = 25;
     
 
-    private final static int MIN_WIDTH_WINDOW = 500, MIN_HEIGHT_WINDOW = 300;
+    /**
+     * minimal widht and height of the window.
+     */
+    private static final int MIN_WIDTH_WINDOW = 500, MIN_HEIGHT_WINDOW = 300;
     
     /**
 	 * Distance between items and window borders (for being able to move and 
@@ -157,10 +160,13 @@ public final class ViewSettings {
     /**
      * Whether fullscreen or not.
      */
-    private static boolean fullscreen = !true;
+    private static boolean fullscreen = false;
     //sizes
     
     
+    /**
+     * The standard sizes of JFrame in different modes.
+     */
     private static Dimension 
     standard_size_jframe_normalSize = new Dimension(
     		Math.max(

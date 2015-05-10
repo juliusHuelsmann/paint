@@ -17,9 +17,10 @@ import java.io.Serializable;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
 import control.ContorlPicture;
 import control.ControlPaintSelectin;
-import control.tabs.CTabSelection;
+import control.forms.tabs.CTabSelection;
 import view.forms.Console;
 import view.forms.Message;
 import view.forms.Page;
@@ -1495,6 +1496,11 @@ public final class Picture implements Serializable {
 	
 	
 
+	/**
+	 * 
+	 * @param _slpo
+	 * @return
+	 */
 	public SecureList<PaintObject> cloneSecureListPaintObject(
 			final SecureList<PaintObject> _slpo) {
 		

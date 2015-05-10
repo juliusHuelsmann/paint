@@ -1,4 +1,4 @@
-package control;
+package control.forms;
 
 import java.awt.Color;
 import java.awt.Rectangle;

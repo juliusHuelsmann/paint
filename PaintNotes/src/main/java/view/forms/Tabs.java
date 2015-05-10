@@ -146,7 +146,7 @@ public final class Tabs extends VTabbedPane {
 
         
         //TabbedPane for different pages
-    	reApplySize();
+//    	reApplySize();
         super.setOpaque(true);
         super.setVisible(false);
         super.setFocusable(false);

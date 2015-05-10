@@ -1,5 +1,5 @@
 //package declaration
-package control.tabs;
+package control.forms.tabs;
 
 //import declarations
 import java.awt.Color;
@@ -23,7 +23,6 @@ import control.ContorlPicture;
 import control.ControlPaint;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
-import model.objects.painting.po.PaintObjectPen;
 import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Constants;
 import model.settings.Status;
@@ -251,10 +250,33 @@ public final class CTabPainting implements ActionListener, MouseListener {
     }
     
 
+    /**
+     * Error-checked getter method for getting instance of the view class
+     * page.
+     * @return	instance of the view class page.
+     */
     private Page getPage() {
-    	return controlPaint.getView().getPage();
+    	
+    	if (controlPaint != null) {
+    		if (controlPaint.getView() != null) {
+
+    	    	return controlPaint.getView().getPage();
+    		} else {
+    			Status.getLogger().severe("controlPaint.getView() == null");
+    		}
+    	} else {
+			Status.getLogger().severe("controlPaint == null");
+    	}
+    	return null;
+    	
     }
 
+    
+    /**
+     * Error-checked getter method for getting instance of the view class view.
+     * 
+     * @return instance of the view class View.
+     */
     private View getView() {
     	return controlPaint.getView();
     }

@@ -130,8 +130,8 @@ public class VSpline extends JPanel {
 	
 	
 	/**
-	 * 
-	 * @param _amountPoints
+	 * Initialize the labels with specified amount of points.
+	 * @param _amountPoints		the specified amount of points in spline.
 	 */
 	private void initializeJLabel(final int _amountPoints) {
 		//rm old
@@ -160,6 +160,13 @@ public class VSpline extends JPanel {
 		}
 	}
 	
+	
+	
+	/**
+	 * Recalculate and apply the size and location of the matrix-JLabels.
+	 * Add the JLabels to view afterwards.
+	 * This function does not remove the JLabels.
+	 */
 	private void resetSize() {
 
 		for (int h = 0; jlbl_matrix != null && h < jlbl_matrix.length; h++) {
@@ -176,10 +183,18 @@ public class VSpline extends JPanel {
 		}
 	}
 	
+	
+	/**
+	 * Constructor of the view - spline class.
+	 * @param _c	the Component which contains this class.
+	 */
 	public VSpline(final Container _c) {
 		super();
+		
+		//hard coded size
+		final int size = 300;
 		super.setLayout(null);
-		super.setSize(300, 300);
+		super.setSize(size, size);
 		this.c = _c;
 		jlbl_amountPoints = new JTextField("0");
 		jlbl_amountPoints.setBounds(0 * getWidth(), 5, getWidth() / 2, 20);
@@ -194,7 +209,7 @@ public class VSpline extends JPanel {
 	
 	
 	/**
-	 * 
+	 * {@inheritDoc}
 	 */
 	public final void setSize(final int _x, final int _y) {
 		

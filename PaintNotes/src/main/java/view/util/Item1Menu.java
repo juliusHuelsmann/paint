@@ -342,6 +342,13 @@ public class Item1Menu extends MPanel {
 	}
 	
 	
+	
+	/**
+	 * change the closedWidth and the closedHeight.
+	 * 
+	 * @param _cw	the new closedWidth 
+	 * @param _ch	the new closedHeight
+	 */
 	public final void changeClosedSizes(
 			final int _cw, final int _ch) {
 		open = false;

@@ -1,4 +1,4 @@
-package control.tabs;
+package control.forms.tabs;
 
 //import declarations
 import java.awt.Color;

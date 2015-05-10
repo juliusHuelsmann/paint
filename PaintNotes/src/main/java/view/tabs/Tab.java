@@ -41,6 +41,11 @@ public abstract class Tab extends MPanel {
     	this.applyMySize();
     }
     
+
+    
+    /**
+     * Function for setting size to the tab specified in ViewSettings.
+     */
     private void applyMySize() {
 
         super.setSize(ViewSettings.getView_widthTb(), 

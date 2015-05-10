@@ -16,12 +16,27 @@ import model.settings.Constants;
 import model.settings.Status;
 import control.ControlPaint;
 import control.forms.CPaintStatus;
-import control.tabs.CTabPainting;
+import control.forms.tabs.CTabPainting;
 
+
+/**
+ * Controller class for pen?.
+ * 
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
 public class CPen implements ChangeListener, MouseListener {
 
 
+	/**
+	 * 
+	 */
 	private CTabPainting cp;
+	
+	
+	/**
+	 * 
+	 */
 	private Item1PenSelection i1ps;
 
 	/**
@@ -29,15 +44,37 @@ public class CPen implements ChangeListener, MouseListener {
 	 */
 	private int penSelection = 0;
 	
+	/**
+	 * 
+	 */
 	private Item1Menu i1m_toSet;
 	
+	/**
+	 * 
+	 */
 	private CPaintStatus cps;
+	
+	/**
+	 * 
+	 */
 	private ControlPaint controlPaint;
+	
 	/**
 	 * The pen.
 	 */
 	private Pen pen;
 	
+	
+	/**
+	 * Constructor.
+	 * @param _controlPaint
+	 * @param _cp
+	 * @param _i1ps
+	 * @param _i1m_toSet
+	 * @param _pen
+	 * @param _penSelection
+	 * @param _cps
+	 */
 	public CPen(
 			final ControlPaint _controlPaint,
 			final CTabPainting _cp, 

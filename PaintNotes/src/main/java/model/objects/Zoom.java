@@ -15,10 +15,16 @@ import view.forms.Page;
 public final class Zoom {
 
 	
+	/**
+	 * Controller class which handles the painting.
+	 */
 	private ContorlPicture controlPicture;
     
     /**
-     * Initialize instance.
+     * Initialize instance.<br><br>
+     * 
+     * @param _cp 		instance of the controller class which handles the 
+     * 					painting.
      */
     public Zoom(final ContorlPicture _cp) { 
     	this.controlPicture = _cp;

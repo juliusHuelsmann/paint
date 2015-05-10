@@ -16,17 +16,17 @@ import control.forms.CLoading;
 import control.forms.CNew;
 import control.forms.CPaintStatus;
 import control.forms.CQuickAccess;
+import control.forms.tabs.CTabAbout;
+import control.forms.tabs.CTabDebug;
+import control.forms.tabs.CTabExport;
+import control.forms.tabs.CTabInsert;
+import control.forms.tabs.CTabLook;
+import control.forms.tabs.CTabPainting;
+import control.forms.tabs.CTabPrint;
+import control.forms.tabs.CTabSelection;
+import control.forms.tabs.CTabWrite;
+import control.forms.tabs.CTabs;
 import control.interfaces.MenuListener;
-import control.tabs.CTabAbout;
-import control.tabs.CTabExport;
-import control.tabs.CTabInsert;
-import control.tabs.CTabLook;
-import control.tabs.CTabDebug;
-import control.tabs.CTabPrint;
-import control.tabs.CTabSelection;
-import control.tabs.CTabs;
-import control.tabs.CTabWrite;
-import control.tabs.CTabPainting;
 import control.util.implementations.ScrollPaneActivityListener;
 import model.Project;
 import model.objects.PictureOverview;
@@ -112,6 +112,7 @@ MenuListener {
 	 * Controller class for loading frame which appears if the 
 	 * user has to wait for the program to finish a certain operation.
 	 */
+	@SuppressWarnings("unused")
 	private CLoading cl;
 
 	
@@ -207,9 +208,6 @@ MenuListener {
 	 * 
 	 */
 	private CTabInsert utilityControlItem2;
-	
-	
-	
 	
 	
 	
@@ -1132,7 +1130,8 @@ MenuListener {
             } else if (_event.getButton() == MouseEvent.BUTTON3) {
             	cTabPaint.mr_zoomOut();
             }
-            Status.getLogger().severe("brauchte" + (System.currentTimeMillis() - d) + "ms");
+            Status.getLogger().severe("brauchte" 
+            		+ (System.currentTimeMillis() - d) + "ms");
             break;
         case Constants.CONTROL_PAINTING_INDEX_PIPETTE:
             mr_paint_pipette(_event);
@@ -2342,6 +2341,9 @@ MenuListener {
 	}
 
 	
+	/**
+	 * Remove the previous preprint.
+	 */
 	private void removePreprint() {
 
 
@@ -2351,8 +2353,9 @@ MenuListener {
         	
         	//fetch the color which is written into the position
         	//where the preprint has been.
+        	final int maxRGB = 255;
         	final int rgbWhiteAlpha = new Color(
-        			255, 255, 255, 0).getRGB();
+        			maxRGB, maxRGB, maxRGB, 0).getRGB();
 //        			255, 0, 0).getRGB();
         	
         	//write the preprint to the rgb.

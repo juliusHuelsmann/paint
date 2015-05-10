@@ -1,5 +1,5 @@
 //package declaration
-package control.tabs;
+package control.forms.tabs;
 
 //import declarations
 import java.awt.Color;
@@ -37,6 +37,9 @@ public final class CTabSelection implements ActionListener {
     }
     
     
+    /**
+     *
+     */
     private Selection getSelection() {
     	
     	if (

@@ -3,7 +3,6 @@ package model;
 //import declarations
 import model.objects.history.HistorySession;
 import model.objects.painting.Picture;
-import model.settings.Status;
 
 
 /**

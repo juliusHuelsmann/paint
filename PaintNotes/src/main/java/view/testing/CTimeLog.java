@@ -143,7 +143,4 @@ public class CTimeLog implements ActionListener {
 	}
 	
 
-	public void displayData() {
-		
-	}
-};
+}

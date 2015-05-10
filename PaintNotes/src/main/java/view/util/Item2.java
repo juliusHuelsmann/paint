@@ -33,7 +33,15 @@ public class Item2 extends MButton {
     private String icon = "paint/test.png", title;
     
     
-    
+
+	
+	/**
+	 * Set ActivityListener for the Scroll-Pane view class. If set twice, the
+	 * secondly added ActivityListner is used and the first one is forgotten.
+	 * If the activityListener is to be removed, call setActivityListener(null).
+	 * 
+	 * @param _activityListener	The activityListener which is added
+	 */
     public final void setItemActivityListener(
     		final ActivityListener _activityListener) {
     	CItem2.getInstance().addItemActivityListener(_activityListener);

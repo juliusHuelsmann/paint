@@ -1,4 +1,4 @@
-package control;
+package control.forms;
 
 //import declarations
 import java.awt.event.ActionEvent;
@@ -10,8 +10,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import control.forms.tabs.CTabPainting;
 import control.interfaces.ActivityListener;
-import control.tabs.CTabPainting;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.TextFactory;

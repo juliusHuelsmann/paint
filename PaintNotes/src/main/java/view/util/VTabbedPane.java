@@ -162,7 +162,6 @@ public class VTabbedPane extends MPanel {
 		jpnl_contains.setLayout(null);
 		super.add(jpnl_contains);
 
-        
         //initialize the Background MLabel
         jpnl_background = new MLabel();
         jpnl_background.setFocusable(false);
@@ -390,6 +389,12 @@ public class VTabbedPane extends MPanel {
 	}
 	
 	
+	
+	
+	/**
+	 * Open or close the TabbedPane.
+	 * @param _bool	whether to open or to close the tabbedPane.
+	 */
 	public final void setTabbedPaneOpen(final boolean _bool) {
 		
 		if (_bool) {
@@ -855,7 +860,7 @@ public class VTabbedPane extends MPanel {
     	jbtn_stuffHeadline[getOpenTab()].stroke();
         Util.getStroke(jlbl_stroke);
 
-        Util.getStrokeRec(jlbl_close, 0, 0);
+        Util.getStrokeRec(jlbl_close);
     
         MPanel stuff = jpnl_stuff[getOpenTab()];
         for (Component i : stuff.getComponents()) {

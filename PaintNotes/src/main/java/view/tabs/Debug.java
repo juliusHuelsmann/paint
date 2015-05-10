@@ -8,14 +8,16 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.util.Observable;
 import java.util.Observer;
+
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
 import model.objects.PictureOverview;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
-import control.tabs.CTabDebug;
+import control.forms.tabs.CTabDebug;
 import view.util.VScrollPane;
 import view.util.Item1Button;
 import view.util.mega.MLabel;

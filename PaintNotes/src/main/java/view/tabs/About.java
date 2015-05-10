@@ -3,7 +3,8 @@ package view.tabs;
 
 //import declarations
 import javax.swing.JTextArea;
-import control.tabs.CTabAbout;
+
+import control.forms.tabs.CTabAbout;
 import view.util.Item1Button;
 import model.settings.Constants;
 import model.settings.ViewSettings;

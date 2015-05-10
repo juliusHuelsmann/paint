@@ -4,11 +4,12 @@ package view.tabs;
 //import declarations
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+
 import view.util.mega.MLabel;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
-import control.tabs.CTabLook;
+import control.forms.tabs.CTabLook;
 
 
 /**
@@ -251,7 +252,8 @@ public final class Look extends Tab {
         
         if (_paint) {
 
-            jlbl_subtitle_borderLeft.setFont(ViewSettings.GENERAL_FONT_ITEM_PLAIN);
+            jlbl_subtitle_borderLeft.setFont(
+            		ViewSettings.GENERAL_FONT_ITEM_PLAIN);
             jlbl_subtitle_borderLeft.setFocusable(false);
             super.add(jlbl_subtitle_borderLeft);
 

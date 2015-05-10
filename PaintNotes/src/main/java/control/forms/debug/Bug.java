@@ -1,4 +1,4 @@
-package control.debug;
+package control.forms.debug;
 
 import java.awt.Color;
 import java.awt.Rectangle;

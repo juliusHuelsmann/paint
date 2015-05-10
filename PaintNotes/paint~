@@ -1,0 +1,65 @@
+#!/bin/bash
+
+
+
+
+
+
+
+filename=$1
+
+
+
+
+
+var1="1234567890"
+echo ${var1%??}
+echo ${var1#??}
+file2=${filename#??????}
+echo $file2
+
+if [ "$filename" == file* ]
+	then
+		echo "1"
+fi
+	
+echo " brei"
+
+if [ "asdfasdf" == asdf* ]
+	then
+		echo "2";
+fi
+	
+if [  "asdf" == asdf* ]
+	then
+		echo "32";
+fi
+if [  "fi" == fi* ]
+	then
+		echo "auxarmes";
+fi
+		
+if [ "$filename" == file://* ]
+	then
+		$filename =  echo ${filename#??}
+		echo $filename 
+		echo "ja";
+	else
+		echo $filename
+		echo "nein"
+fi
+
+# funktioniert alles nicht.
+$filename = echo ${filename#???}
+echo $filename
+echo "ende"
+cd ~/Arbeitsfläche/Stuff/"Paint Projekt"/guthub/paint/PaintNotes
+pwd
+java -jar paint.jar $file2
+
+#
+# ich habe folgende dateien erzeugt
+#	/usr/bin/paint (Aufruf dieses Scripts mit uebergabeparam)
+
+# 	/usr/share/application/paint.desktop
+

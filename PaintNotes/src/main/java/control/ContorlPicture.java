@@ -1,10 +1,10 @@
 package control;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
+import control.forms.BorderThread;
 import control.interfaces.MoveEvent;
 import control.interfaces.PaintListener;
 import model.objects.painting.PaintBI;
@@ -28,7 +28,6 @@ import view.util.mega.MPanel;
  */
 public class ContorlPicture implements PaintListener {
 
-
 	/**
 	 * The bufferedImage containing the currently displayed painting stuff.
 	 */
@@ -38,15 +37,6 @@ public class ContorlPicture implements PaintListener {
 	 * The thread which moves the border.
 	 */
 	private BorderThread thrd_moveBorder;
-	
-	
-	/**
-	 * Point is subtracted from new location of item JLabel.
-	 */
-	@SuppressWarnings("unused")
-	private Point pnt_start;
-
-	
 	
 	
 	/**
@@ -672,7 +662,7 @@ public class ContorlPicture implements PaintListener {
 					 * //TODO: put this variable into the settings. Thus it
 					 * may be enabled in testing mode (tab)
 					 */
-					boolean showRefreshRectangle = !!(true == false);
+					boolean showRefreshRectangle = false;
 
 					/*
 					 * 

@@ -7,9 +7,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
-import start.test.BufferedViewer;
-
 import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
 import model.settings.Error;
@@ -185,8 +182,10 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             
 //            System.out.println("locxpoi:" + locXPOI +  "locypoi:" + locYPOI);
 //            System.out.println(
-//            		"betrx:\t"  + (int) Math.min(r.x - pnt_locationOfImage.x, 0)+
-//            		"betry:\t" +  (int) Math.min(r.y - pnt_locationOfImage.y, 0));
+//            		"betrx:\t"  + (int) Math.min(
+//            			r.x - pnt_locationOfImage.x, 0)+
+//            		"betry:\t" +  (int) Math.min(
+//            			r.y - pnt_locationOfImage.y, 0));
 
             // adapt the width of the selection to the size of the 
             // paint-object-image.
@@ -242,9 +241,9 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
                 		r.width);
             } else {
 
-            	Status.getLogger().severe("fatal move error: \n" +
-            			"Section out of scope." +
-            			"x\t" + locXPOI + "\n"
+            	Status.getLogger().severe("fatal move error: \n" 
+            			+ "Section out of scope."
+            			+ "x\t" + locXPOI + "\n"
             			+ "y\t" + locYPOI + "\n"
             			+ "x+w\t" + locXPOI + r.width + "\n"
             			+ "y+h\t" + locYPOI + r.height + "\n"
@@ -294,20 +293,22 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
         	
         	
         	/*
-        	 * paint the section that is to be separated as white inside the image
-        	 * and generate a new POI into which the stuff out of the section is
-        	 * inserted.
+        	 * paint the section that is to be separated as white inside the 
+        	 * image and generate a new POI into which the stuff out of the 
+        	 * section is inserted.
         	 * 
         	 * Afterwards return the the two dimensional array which contains
-        	 * 	@[0]	the content that is outside the selection (the current POI inserted
-        	 * 			into a new POI because the current POI is removed by default because
-        	 * 			that makes more sense if is coped with POWs and all kind of paintObjects
+        	 * 	@[0]	the content that is outside the selection (the current 
+        	 * 			POI inserted into a new POI because the current POI 
+        	 * 			is removed by default because that makes more sense 
+        	 * 			if is coped with POWs and all kind of paintObjects
         	 * 			are treated in the same way for code-simplicity.
-        	 *  @[1]	the content that is inside the selection (the new created POI)
+        	 *  @[1]	the content that is inside the selection (the new 
+        	 *  		created POI)
         	 */
         	
-    		//The white color is necessary because if the catch-color-tool is used,
-    		//the transparency color is to be fetched as white.
+    		//The white color is necessary because if the catch-color-tool 
+        	// is used, the transparency color is to be fetched as white.
     		int[] newRGBA = new int[_r.width * _r.height];
     		final int maxRGB = 255;
     		int rgba = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();

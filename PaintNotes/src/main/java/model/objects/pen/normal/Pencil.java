@@ -242,6 +242,18 @@ public class Pencil extends Pen {
     }
     
     
+    
+    /**
+     * Print one pixe.
+     * @param _x
+     * @param _y
+     * @param _i
+     * @param _j
+     * @param _rX
+     * @param _rY
+     * @param _bi
+     * @return
+     */
     private int printPixel(final int _x, 
             final int _y, final int _i, final int _j, final int _rX, 
             final int _rY, final BufferedImage _bi) {

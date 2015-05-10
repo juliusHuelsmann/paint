@@ -2,28 +2,31 @@ package control.util;
 
 import control.interfaces.MenuListener;
 
+/**
+ * 
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
 public class MenuListener1 implements MenuListener {
 
-	public void beforeOpen() {
-		// TODO Auto-generated method stub
-		
-	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public void beforeOpen() { }
 
-	public void beforeClose() {
-		// TODO Auto-generated method stub
-		
-	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public void beforeClose() { }
 
-	public void afterOpen() {
-		// TODO Auto-generated method stub
-		
-	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public void afterOpen() { }
 
-	public void afterClose() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
+	/**
+	 * {@inheritDoc}
+	 */
+	public void afterClose() { }
 
 }

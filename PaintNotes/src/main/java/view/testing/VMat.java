@@ -124,6 +124,10 @@ public class VMat extends JPanel {
 		}
 	}
 
+	
+	/**
+	 * Constructor of the view matrix class.
+	 */
 	public VMat() {
 		super();
 		super.setLayout(null);
@@ -141,10 +145,18 @@ public class VMat extends JPanel {
 	}
 	
 
+	/**
+	 * Constructor of the view matrix class, for already displaying a matrix
+	 * containing double values.
+	 * 
+	 * @param _vals	the matrix that will be displayed.
+	 */
 	public VMat(final double[][] _vals) {
 		super();
+		//hard coded size
+		final int size = 300;
 		super.setLayout(null);
-		super.setSize(300, 300);
+		super.setSize(size, size);
 
 		int height = _vals.length;
 		int width = _vals[0].length;
@@ -158,7 +170,7 @@ public class VMat extends JPanel {
 		jlbl_amountRows.setBounds(1 * getWidth() / 2, 5, getWidth() / 2, 20);
 		jlbl_amountCols.setEditable(false);
 		super.add(jlbl_amountRows);
-		initializeJLabel( width,  height);
+		initializeJLabel(width,  height);
 		
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
@@ -176,10 +188,13 @@ public class VMat extends JPanel {
 	 */
 	public final void setSize(final int _x, final int _y) {
 		super.setSize(_x, _y);
+		final int twenty = 20;
+		final int five = 5;
+		
 		jlbl_amountCols.setBounds(0 * getWidth() / 2, 
-				5, getWidth() / 2, 20);
+				five, getWidth() / 2, twenty);
 		jlbl_amountRows.setBounds(1 * getWidth() / 2, 
-				5, getWidth() / 2, 20);
+				five, getWidth() / 2, twenty);
 		resetSize();
 	}
 	

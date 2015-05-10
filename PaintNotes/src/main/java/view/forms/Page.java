@@ -324,11 +324,13 @@ import view.util.mega.MButton;
                 - ViewSettings.DISTANCE_TO_WINDOW);
 
         jlbl_backgroundAlpha.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
-        jlbl_backgroundStructure.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
+        jlbl_backgroundStructure.setBounds(
+        		0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionBG.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionPainting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         
-        jlbl_backgroundAlpha.setIcon(new ImageIcon(Status.getBi_transparency()));
+        jlbl_backgroundAlpha.setIcon(new ImageIcon(
+        		Status.getBi_transparency()));
 
 		//the order of painting is important! It is necessary that the 
         //paintinglabel's bounds and the locations of the ScrollPanes are 

@@ -1,4 +1,4 @@
-package control.tabs;
+package control.forms.tabs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -138,6 +138,9 @@ public final class CTabLook implements ActionListener {
 	
 
 	
+	/**
+	 * Set Background to none.
+	 */
 	public void setBackgroundNone() {
 
         int backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
@@ -150,7 +153,9 @@ public final class CTabLook implements ActionListener {
 	}
 	
 
-	
+	/**
+	 * Set page borders to none.
+	 */
 	public void setMargeNone() {
 
         Status.setBorderRightPercent(0);

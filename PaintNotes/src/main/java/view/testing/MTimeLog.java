@@ -10,14 +10,29 @@ import java.io.Serializable;
 
 import model.util.adt.list.SecureListSort;
 
+
+/**
+ * The Model time-log class.
+ * 
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
 public class MTimeLog implements Serializable {
 
+	/**
+	 * Serial Version UID.
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * The list of time items.
 	 */
 	private SecureListSort<MTime> ls_timeItems;
 
 	
+	/**
+	 * Constructor of the model - time log class.
+	 */
 	public MTimeLog() {
 		ls_timeItems = new SecureListSort<MTime>();
 	}

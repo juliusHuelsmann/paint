@@ -17,8 +17,8 @@ import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import control.ControlPaint;
 import control.forms.CPaintStatus;
+import control.forms.tabs.CTabPainting;
 import control.interfaces.MenuListener;
-import control.tabs.CTabPainting;
 import control.util.CPaintSelection;
 import control.util.CPen;
 import view.util.Item1Menu;
@@ -347,7 +347,7 @@ public final class Paint extends Tab {
             it_selection.addMouseListener(_controlPaintStatus);
             it_selection.setMenuListener(_ml);
             it_stift2 = new Item1Menu(false);
-            it_stift2.setMenuListener(_ml);;
+            it_stift2.setMenuListener(_ml);
             it_stift2.removeScroll();
             it_stift2.addMouseListener(_controlPaintStatus);
         }

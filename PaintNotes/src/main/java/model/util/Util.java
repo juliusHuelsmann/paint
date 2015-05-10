@@ -636,13 +636,9 @@ public final class Util {
 	/**
      * Apply stroke on background.
      * @param _jlbl_stroke the background carrying item.
-     * @param _addX	
-     * @param _addY
      */
 	public static void getStrokeRec(
-			final JLabel _jlbl_stroke, 
-			final int _addX,
-			final int _addY) {
+			final JLabel _jlbl_stroke) {
 		
 		
 		final int strokeDistance = 10;

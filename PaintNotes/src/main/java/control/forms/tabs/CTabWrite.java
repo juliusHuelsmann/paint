@@ -1,5 +1,5 @@
 //package declaration
-package control.tabs;
+package control.forms.tabs;
 
 //import declarations
 import java.awt.Color;
@@ -75,9 +75,16 @@ public final class CTabWrite implements ActionListener {
      * Constructor
      */
     
-    private ControlPaint cp;
     /**
-     * Empty utility class constructor.
+     * Instance of the main controller class which gives access to all the 
+     * important model, view and controller classes.
+     */
+    private ControlPaint cp;
+    
+    /**
+     * Constructor: saves instance of the root controller class.
+     * 
+     * @param _cp 	instance of the root controller class.
      */
     public CTabWrite(final ControlPaint _cp) { 
     	this.cp = _cp;

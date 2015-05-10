@@ -38,6 +38,9 @@ public class HistoryObject implements Serializable {
 	 */
 	private final int id_next, id_previous;
 	
+	/**
+	 * The current historySession.
+	 */
 	private HistorySession session;
 	
 	
@@ -222,6 +225,10 @@ public class HistoryObject implements Serializable {
 	}
 
 
+	/**
+	 * 
+	 * @param _o
+	 */
 	private void applyExpBg(final Object _o) {
 		// TODO Auto-generated method stub
 		new Exception("Not implemented yet.").printStackTrace();
@@ -229,6 +236,10 @@ public class HistoryObject implements Serializable {
 	}
 
 
+	/**
+	 * 
+	 * @param _o
+	 */
 	private void applyExpFormat(final Object _o) {
 		// TODO Auto-generated method stub
 		new Exception("Not implemented yet.").printStackTrace();
@@ -236,6 +247,10 @@ public class HistoryObject implements Serializable {
 	}
 
 
+	/**
+	 * 
+	 * @param _o
+	 */
 	private void applyExpMargeLeft(final Object _o) {
 		// TODO Auto-generated method stub
 		new Exception("Not implemented yet.").printStackTrace();
@@ -243,6 +258,10 @@ public class HistoryObject implements Serializable {
 	}
 
 
+	/**
+	 * 
+	 * @param _o
+	 */
 	private void applyExpMargeRight(final Object _o) {
 		// TODO Auto-generated method stub
 		new Exception("Not implemented yet.").printStackTrace();
@@ -250,6 +269,10 @@ public class HistoryObject implements Serializable {
 	}
 
 
+	/**
+	 * 
+	 * @param _o
+	 */
 	private void applyExpMargeTop(final Object _o) {
 		// TODO Auto-generated method stub
 		new Exception("Not implemented yet.").printStackTrace();
@@ -257,6 +280,10 @@ public class HistoryObject implements Serializable {
 	}
 
 
+	/**
+	 * 
+	 * @param _o
+	 */
 	private void applyExpMargeBottom(final Object _o) {
 		// TODO Auto-generated method stub
 		new Exception("Not implemented yet.").printStackTrace();
@@ -309,6 +336,27 @@ public class HistoryObject implements Serializable {
 
 	
 	
+	/**
+	 * This function checks whether an element with a specified identifier 
+	 * does exist inside the list of paint objects which is contained in
+	 * the model class picture which corresponds to the history session.
+	 * Additional to the identifier of the element that is searched, the 
+	 * transactionID and the closedActionID are needed as parameters for
+	 * maintaining the current state of the SecureList. <br><br>
+	 * 
+	 * @param _transactionID		current SecureList transaction identifier
+	 * 								<br> 
+	 * @param _closedActionID		current SecureList closed - action 
+	 * 								identifier
+	 * 								<br>
+	 * @param _elementid			the identifier of the element that is to 
+	 * 								be found.
+	 * 								<br>
+	 * @return						whether the element with specified 
+	 * 								identifier exists in the list of paint
+	 * 								objects contained inside the corresponding
+	 * 								model picture class.
+	 */
 	public final boolean findInList(
 			final int _transactionID, final int _closedActionID, 
 			final int _elementid) {
@@ -318,21 +366,58 @@ public class HistoryObject implements Serializable {
 	}
 	
 	
+	
+	/**
+	 * This function checks whether an element with a specified identifier 
+	 * does exist inside a given list.
+	 * Additional to the identifier of the element that is searched, the 
+	 * transactionID and the closedActionID are needed as parameters for
+	 * maintaining the current state of the SecureList. <br><br>
+	 * 
+	 * @param _sl					the list which is checked
+	 * 								<br>
+	 * @param _transactionID		current SecureList transaction identifier
+	 * 								<br> 
+	 * @param _closedActionID		current SecureList closed - action 
+	 * 								identifier
+	 * 								<br>
+	 * @param _elementid			the identifier of the element that is to 
+	 * 								be found.
+	 * 								<br>
+	 * @return						whether the element with specified 
+	 * 								identifier exists in the list of paint
+	 * 								objects contained inside the corresponding
+	 * 								model picture class.
+	 */
 	public final  boolean findInList(
 			final SecureListSort<PaintObject> _sl, 
 			final int _transactionID, final int _closedActionID, 
 			final int _elementid) {
+		
+		
+		//go to the beginning of the sorted secureList.
 		_sl.toFirst(_transactionID, _closedActionID);
-		while (
-				!_sl.isEmpty()
-				&& !_sl.isBehind()) {
+		
+		//while the secureList contains elements that have not already been 
+		//checked:
+		while (!_sl.isEmpty() && !_sl.isBehind()) {
+			
+			// check if the element identifier of the current elements is 
+			// equal to the element identifier which has been passed to the
+			// function.
+			// If that is the case, return true. 
+			// Otherwise, the function has to check all the remaining 
+			// (unchecked) elements. 
 			if (_sl.getItem().getElementId() == _elementid) {
 				return true;
 			}
 			_sl.next(_transactionID, _closedActionID);
 		}
-		return false;
 		
+		
+		// in here, each element of the sorted secureList have been checked, but
+		// the element which is searched has not been found. Thus return false.
+		return false;
 	}
 	
 	

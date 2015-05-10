@@ -493,10 +493,9 @@ public abstract class Pen implements Serializable {
     
     
     /**
-     * {@inheritDoc}
      * @param _p
      * @param _r
-     * @return
+     * @return		
      */
     public static Point isInRectanlge(
     		final DPoint _p, 
@@ -646,7 +645,15 @@ public abstract class Pen implements Serializable {
         }
     }
     
-    
+    /**
+     * 
+     * @param _ls_point
+     * @param _testing
+     * @param _pnt_shift
+     * @param _bi_paint
+     * @param _pen
+     * @return
+     */
     public static double[][] spline(final List<DPoint> _ls_point, 
     		final boolean _testing,
     		final DPoint _pnt_shift,

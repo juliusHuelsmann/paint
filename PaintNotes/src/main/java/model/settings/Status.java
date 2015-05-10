@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import control.ControlPaint;
-import control.tabs.CTabWrite;
+import control.forms.tabs.CTabWrite;
 import view.View;
 import view.forms.Page;
 import model.objects.painting.PaintBI;
@@ -85,9 +85,16 @@ public final class Status {
 		return null;
 	}
 	
-	public static final int ERASE_ALL = 0;
-	public static final int ERASE_DESTROY = 1;
+	/**
+	 * IDs identifying the current erase operation.
+	 */
+	public static final int ERASE_ALL = 0,  ERASE_DESTROY = 1;
 	
+	
+	/**
+	 * The current erase index which contains the identifier for the current
+	 * erase operation.
+	 */
 	private static int eraseIndex = ERASE_ALL;
 
 	
@@ -995,10 +1002,11 @@ public final class Status {
 		return pen_selectedReplaced;
 	}
 	/**
-	 * @param pen_selectedReplaced the pen_selectedReplaced to set
+	 * @param _pen_selectedReplaced the pen_selectedReplaced to set
 	 */
-	public static void setPen_selectedReplaced(Pen pen_selectedReplaced) {
-		Status.pen_selectedReplaced = pen_selectedReplaced;
+	public static void setPen_selectedReplaced(
+			final Pen _pen_selectedReplaced) {
+		Status.pen_selectedReplaced = _pen_selectedReplaced;
 	}
 
 }

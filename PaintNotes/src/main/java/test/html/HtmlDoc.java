@@ -1,6 +1,5 @@
 package test.html;
 
-import java.awt.Component;
 import java.io.IOException;
 import java.lang.reflect.Method;
 

@@ -113,8 +113,7 @@ public final class CPaintSelection implements ActionListener {
             //set index
             Status.setIndexOperation(
                     Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC);
-        } 
-        else if (_event.getSource().equals(jcb_whole)) {
+        } else if (_event.getSource().equals(jcb_whole)) {
 
 			//set index selection
 			Status.setIndexSelection(Constants

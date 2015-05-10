@@ -13,9 +13,9 @@ import javax.swing.border.LineBorder;
 
 import model.settings.ViewSettings;
 import control.forms.CPaintStatus;
+import control.forms.tabs.CTabPainting;
+import control.forms.tabs.CTabSelection;
 import control.interfaces.MenuListener;
-import control.tabs.CTabSelection;
-import control.tabs.CTabPainting;
 import view.util.Item1Menu;
 import view.util.Item1Button;
 import view.util.VColorPanel;

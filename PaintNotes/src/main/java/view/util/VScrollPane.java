@@ -116,6 +116,14 @@ public class VScrollPane extends MPanel {
 
 	
 	
+	
+	/**
+	 * Set ActivityListener for the Scroll-Pane view class. If set twice, the
+	 * secondly added ActivityListner is used and the first one is forgotten.
+	 * If the activityListener is to be removed, call setActivityListener(null).
+	 * 
+	 * @param _activityListener	The activityListener which is added
+	 */
 	public final void setActivityListener(
 			final ActivityListener _activityListener) {
 		control.setActivityListener(_activityListener);

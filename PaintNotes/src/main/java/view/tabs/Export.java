@@ -4,11 +4,12 @@ package view.tabs;
 //import declarations
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+
 import view.util.mega.MLabel;
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
-import control.tabs.CTabExport;
+import control.forms.tabs.CTabExport;
 
 
 /**

@@ -2735,4 +2735,20 @@ MenuListener {
 	public final Project getProject() {
 		return project;
 	}
+
+
+	/**
+	 * @return the bi_preprint
+	 */
+	public final BufferedImage getBi_preprint() {
+		return bi_preprint;
+	}
+
+
+	/**
+	 * @param _bi_preprint the bi_preprint to set
+	 */
+	public final void setBi_preprint(final BufferedImage _bi_preprint) {
+		this.bi_preprint = _bi_preprint;
+	}
 }

@@ -276,10 +276,7 @@ MenuListener {
 	/**
 	 * Constructor of the main controller class.
 	 */
-	public ControlPaint() {
-		
-		
-	}
+	public ControlPaint() { }
 	
 
 	/**

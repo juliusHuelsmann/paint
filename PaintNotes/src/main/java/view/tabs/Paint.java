@@ -422,16 +422,10 @@ public final class Paint extends Tab {
             jcb_separated.setVerticalAlignment(SwingConstants.TOP);
             jcb_separated.setFocusable(false);
             it_selection.add(jcb_separated);
-        
-            JCheckBox jcb_image = new JCheckBox("image");
-            jcb_image.setFocusable(false);
-            jcb_image.setVerticalAlignment(SwingConstants.TOP);
-            it_selection.add(jcb_image);
-            
             
             //initialize MouesListiener
             new CPaintSelection(
-                    jcb_whole, jcb_separated, jcb_image,
+                    jcb_whole, jcb_separated,
                     tb_selectionLine, tb_selectionCurve, tb_selectionMagic);
             it_selection.setBorder(false);
             super.add(it_selection);
@@ -1345,6 +1339,13 @@ public final class Paint extends Tab {
      */
     public Item1Button getTb_save() {
         return tb_save;
+    }
+
+    /**
+     * @return the tb_save
+     */
+    public Item1Button getTb_saveAs() {
+        return tb_saveAs;
     }
 
     /**

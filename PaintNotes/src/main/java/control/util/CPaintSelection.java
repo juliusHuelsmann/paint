@@ -33,7 +33,7 @@ public final class CPaintSelection implements ActionListener {
 	/**
 	 * JCheckBoxes.
 	 */
-	private JCheckBox jcb_image, jcb_separated, jcb_whole;
+	private JCheckBox jcb_separated, jcb_whole;
 	
 	
 	/**
@@ -44,12 +44,11 @@ public final class CPaintSelection implements ActionListener {
      * @param _tb_curve button
      * @param _tb_magic image button
      * @param _jcb_whole JCheckBox
-     * @param _jcb_image JCheckBox
      * @param _jcb_separated JCheckBox
 	 */
 	public CPaintSelection(
             final JCheckBox _jcb_whole, 
-            final JCheckBox _jcb_separated, final JCheckBox _jcb_image,
+            final JCheckBox _jcb_separated,
             final Item1Button _tb_line, final Item1Button _tb_curve,
             final Item1Button _tb_magic) {
 		
@@ -60,13 +59,11 @@ public final class CPaintSelection implements ActionListener {
 		
 		this.jcb_whole = _jcb_whole;
 		this.jcb_separated = _jcb_separated;
-		this.jcb_image = _jcb_image;
 
 		tb_line.addActionListener(this);
 		tb_curve.addActionListener(this);
 		tb_magic.addActionListener(this);
 		
-		jcb_image.addActionListener(this);
 		jcb_separated.addActionListener(this);
 		jcb_whole.addActionListener(this);
 	}
@@ -87,7 +84,6 @@ public final class CPaintSelection implements ActionListener {
 	private void deactivate() {
 		jcb_whole.setSelected(false);
 		jcb_separated.setSelected(false);
-		jcb_image.setSelected(false);
 	}
 
 
@@ -133,15 +129,6 @@ public final class CPaintSelection implements ActionListener {
 			deactivate();
 			jcb_separated.setSelected(true);
 			
-		} else if (_event.getSource().equals(jcb_image)) {
-
-			//set index selection
-		    Status.setIndexSelection(
-			        Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE);
-			
-			//deactivate others and activate itself
-			deactivate();
-			jcb_image.setSelected(true);
 		}
 	
     }

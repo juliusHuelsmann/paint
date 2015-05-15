@@ -122,7 +122,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
     		
     		if (
     				//turn inverted
-    				_event.getSource().equals(paint.getTb_turnMirror()
+    				_event.getSource().equals(paint.getTb_turnNormal()
     				.getActionCause())) {
 
 
@@ -165,7 +165,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
 	        		
 	        		//turn normal
 	        		_event.getSource().equals(
-	        				paint.getTb_turnNormal().getActionCause())) {
+	        				paint.getTb_turnMirror().getActionCause())) {
 
 
     			/**

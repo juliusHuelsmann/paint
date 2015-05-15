@@ -108,7 +108,6 @@ public class Help extends MPanel {
 	 * 							the information are printed
 	 * 	
 	 * @param _width			the approximate width of the message
-	 * @param _height   		the approximate height of the message
 	 * 
 	 * @return					the identifier of the message is created for 
 	 * 							begin able to control which message is to be
@@ -117,8 +116,52 @@ public class Help extends MPanel {
 	public final synchronized int showInformation(
 			final String _information,
 			final Point _pnt_locOnScreen,
-			final int _width, final int _height) {
+			final int _width) {
 	
+		/*
+		 *  final values
+		 */
+		final int heightArrow = 15;
+		final int rgbClrBackground 
+//		= new Color(230, 250, 255).getRGB();
+//		= new Color(255, 230, 250).getRGB();
+		= new Color(240, 255, 240).getRGB();
+		final int rgbClrAlpha = new Color(0, 0, 0, 0).getRGB();
+		final int rgbClrBorder = Color.lightGray.getRGB();
+		final int heightHeadline = 20;
+
+		//length of one border-line.
+		final int borderLength = 8;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		//compute height of the window (depends on how many newlines the text
+		// contains.
+		int amountLines = 1;
+		for (int index = 0; index < _information.length(); index++) {
+			if (_information.charAt(index) == '\n') {
+				amountLines++;
+			}
+		}
+		
+		
+		// The multiplication with 15 is a result a posteriori (font deja 
+		//vu sans mono)
+		final int height = heightHeadline 
+				+ heightArrow
+				+ ViewSettings.DISTANCE_TO_WINDOW * 2
+				+ ViewSettings.getDistanceBetweenItems()
+				+ amountLines * 15;
+		
+		
+		
 		//calculate the location in window
 		int locInWindowX = _pnt_locOnScreen.x - jf_owner.getX() - _width / 2;
 		int locInWindowY = _pnt_locOnScreen.y - jf_owner.getY(); 
@@ -136,9 +179,9 @@ public class Help extends MPanel {
 		final int shiftY;
 		if (locInWindowY < ViewSettings.DISTANCE_TO_WINDOW) {
 			shiftY = locInWindowY - ViewSettings.DISTANCE_TO_WINDOW;
-		} else if (locInWindowY + _height 
+		} else if (locInWindowY + height 
 				> jf_owner.getHeight() - ViewSettings.DISTANCE_TO_WINDOW) {
-			shiftY = locInWindowY + _height - jf_owner.getHeight()
+			shiftY = locInWindowY + height - jf_owner.getHeight()
 					+ ViewSettings.DISTANCE_TO_WINDOW;
 		} else {
 			shiftY = 0;
@@ -149,16 +192,9 @@ public class Help extends MPanel {
 		
 		
 		//generate BufferedImage
-		final BufferedImage bi_background = new BufferedImage(_width, _height, 
+		final BufferedImage bi_background = new BufferedImage(_width, height, 
 				BufferedImage.TYPE_INT_ARGB);
 		
-		final int heightArrow = 15;
-		final int rgbClrBackground 
-//		= new Color(230, 250, 255).getRGB();
-//		= new Color(255, 230, 250).getRGB();
-		= new Color(240, 255, 240).getRGB();
-		final int rgbClrAlpha = new Color(0, 0, 0, 0).getRGB();
-		final int rgbClrBorder = Color.lightGray.getRGB();
 
 		//visible scope
 		for (int x = 0; x < bi_background.getWidth(); x++) {
@@ -168,8 +204,6 @@ public class Help extends MPanel {
 			}
 		}
 
-		//length of one border-line.
-		final int borderLength = 8;
 		//upper border
 		int cBorderPX = 0;
 		for (int x = 0; x < bi_background.getWidth(); x++) {
@@ -254,10 +288,9 @@ public class Help extends MPanel {
 		}
 		jlbl_background.setIcon(new ImageIcon(bi_background));
 		
-final int heightHeadline = 20;
 		//set size 
-		super.setSize(_width, _height);
-		jlbl_background.setSize(_width, _height);
+		super.setSize(_width, height);
+		jlbl_background.setSize(_width, height);
 		jlbl_headline.setSize(_width, heightHeadline);
 		jlbl_headline.setLocation(
 				(_width - 2 * heightHeadline) / 2, 
@@ -268,7 +301,7 @@ final int heightHeadline = 20;
 				+ jlbl_headline.getHeight()
 				+ jlbl_headline.getY());
 		jta_content.setSize(_width - 2 * ViewSettings.getDistanceBetweenItems(),
-				_height - heightArrow 
+				height - heightArrow 
 				- 2 * ViewSettings.getDistanceBetweenItems());
 
 		//set text

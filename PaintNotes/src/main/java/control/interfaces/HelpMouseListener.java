@@ -48,8 +48,14 @@ public class HelpMouseListener implements MouseListener {
 	 */
 	private final String text;
 	
+	/**
+	 * 
+	 */
 	private Cursor c;
 	
+	/**
+	 * 
+	 */
 	private Component cmp;
 	
 	/**
@@ -102,26 +108,134 @@ public class HelpMouseListener implements MouseListener {
 		HelpMouseListener.visibleHelpId = _visibleHelpId;
 	}
 
+	
+	/**
+	 * Identifier of the message that is currently shown by current instance
+	 * of this class.
+	 * For being able to hide specified messages (by age).
+	 */
 	private int messageID = -1;
 
-	public void mouseEntered(final MouseEvent _event) { 
+	private Thread thread_wait_for_help;
+	
+	/**
+	 * Sets visible the instance of Help and changes the cursor.
+	 * @param _event		the MouseEvent.
+	 */
+	public final void mouseEntered(final MouseEvent _event) { 
 		
-		final int messageSize = 150;
-		// show help message
-		messageID = help.showInformation(text, 
-				new Point(
-						cmp.getLocationOnScreen().x + cmp.getWidth() / 2,
-						cmp.getLocationOnScreen().y + cmp.getHeight()), 
-				messageSize, messageSize);
-		
+		thread_wait_for_help = new Thread() {
+			public void run() {
+
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					interrupt();
+				}
+				if (!interrupted()) {
+					final int messageSize = 200;
+					
+					
+					
+					// show help message
+					messageID = help.showInformation(
+							adaptTextToSize(messageSize, text), new Point(
+									cmp.getLocationOnScreen().x 
+									+ cmp.getWidth() / 2,
+									cmp.getLocationOnScreen().y
+									+ cmp.getHeight()), 
+									messageSize);
+				}
+			}
+		};
+		thread_wait_for_help.start();
 		//show cursor
 		jf_owner.setCursor(c);
 		
 	}
+	
+	public static void main(String[]args){
+		System.out.println(
+				adaptTextToSize(200, "Speichert das aktuelle Bild. "
+        		+ "Wenn noch kein Speicherpfad angegeben wurde, öffnet sich"
+        		+ " ein Dateibrowser. Andernfalls wird die Datei unter dem "
+        		+ "zuletzt angegebenen Pfad gespeichert.\n\n"
+        		+ "Die Speichereinstellungen können im Tab \"Export\""
+        		+ " geändert werden."));
+	}
+	
+	
+	/**
+	 * Adapt text to certain view - size.
+	 */
+	public final static String adaptTextToSize(
+			final int _width,
+			final String _text) {
 
+		// 21 chars each 150 px.
+		// 20 / 150 = #chars / px.
+		final int amountCharsPerLine = 21 * _width / 150;
+		String text = "";
+		
+		int lastSpaceIndex = -1;
+		String word = "";
+		int charsPerRow = 0;
+		for (int index = 0; index < _text.length(); index++) {
+
+			if (charsPerRow >= amountCharsPerLine) {
+				
+				// if no separation character has been found
+				if (lastSpaceIndex == -1) {
+					text += word + "-\n";
+					
+				} else {
+
+					text += "\n";
+					index = lastSpaceIndex;
+				}
+				lastSpaceIndex = -1;
+				word = "";
+				charsPerRow = 0;
+			} else {
+
+				if (_text.charAt(index) == ' '
+						|| _text.charAt(index) == '\t') {
+					lastSpaceIndex = index;
+					text += word + _text.charAt(index);
+					word = "";
+				} else if (_text.charAt(index) == '\n'){
+
+					text += word + _text.charAt(index);
+					word = "";
+					lastSpaceIndex = -1;
+					charsPerRow = 0;
+				} else {
+					word += _text.charAt(index);
+				}
+				charsPerRow++;
+			}
+		}
+		text += word;
+		
+		
+		return text;
+		
+	}
+
+	/**
+	 * Hides the instance of Help (if it is not newer than the help-message 
+	 * with message-id messageID.
+	 * @param _event		the MouseEvent.
+	 */
 	public final void mouseExited(final MouseEvent _event) { 
 		
-		help.hideInformation(messageID);
+		if (thread_wait_for_help != null) {
+
+			
+			thread_wait_for_help.interrupt();
+			help.hideInformation(messageID);
+			thread_wait_for_help = null;
+		}
 		
 
 		jf_owner.setCursor(
@@ -135,7 +249,7 @@ public class HelpMouseListener implements MouseListener {
 	 * @param _path the path of the cursor image.
 	 * @param _name the name of the cursor
 	 */
-	public void setCursor(final String _path, final String _name) {
+	public final void setCursor(final String _path, final String _name) {
 
 	    jf_owner.setCursor(Toolkit.getDefaultToolkit()
 	            .createCustomCursor(new ImageIcon(Utils.resizeImage(

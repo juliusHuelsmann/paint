@@ -314,6 +314,8 @@ import view.util.mega.MButton;
 				Status.getImageShowSize().width,
 				Status.getImageShowSize().height);
 
+//		if (sp_ub.getWidth() == 0 || sp_ub.getHeight() == 0) {
+			
 		sp_ub.setSize(ViewSettings.VIEW_SIZE_SP, 
 				ViewSettings.getSizeJFrame().height 
 				- ViewSettings.VIEW_SIZE_SP
@@ -322,6 +324,10 @@ import view.util.mega.MButton;
         		+ sp_ub.getWidth() * 1 - ViewSettings.DISTANCE_TO_WINDOW * 2, 
                 ViewSettings.VIEW_SIZE_SP
                 - ViewSettings.DISTANCE_TO_WINDOW);
+//        jpnl_toMove.setLocation(
+//        		(int) jlbl_painting.getLocation().getX(), 
+//        		(int) jpnl_toMove.getLocation().getY());
+//		}
 
         jlbl_backgroundAlpha.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_backgroundStructure.setBounds(
@@ -350,6 +356,7 @@ import view.util.mega.MButton;
 				- sp_lr.getHeight() - ViewSettings.DISTANCE_TO_WINDOW);
             	
 
+        refrehsSps();
 	}
 	
 	

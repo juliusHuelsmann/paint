@@ -42,7 +42,8 @@ public class CTabs implements TabbedListener {
 	 * 
 	 */
 	public final void closeListener() {
-		
+
+			
 		double timetoclose0 = System.currentTimeMillis();
 		Page page = cp.getView().getPage();
 		
@@ -83,6 +84,7 @@ public class CTabs implements TabbedListener {
 		System.out.println(getClass() 
 				+ "time passed" + (timetoclose1 - timetoclose0) 
 				/ divisorToSeconds);
+
 	}
 
 	
@@ -93,6 +95,7 @@ public class CTabs implements TabbedListener {
 	public final void moveListener(final MoveEvent _event) {
         cp.getView().getPage().setLocation(
         		_event.getPnt_bottomLocation());
+
 	}
 
 	

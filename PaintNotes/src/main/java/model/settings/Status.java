@@ -450,6 +450,60 @@ public final class Status {
     public static int getIndexOperation() {
         return indexOperation;
     }
+    
+
+    /**
+     * make the index readable.
+     * 
+     * @param _index 	the index that is checked.
+     * @return 			the operation index.
+     */
+    public static String getIndexName(final int _index) {
+        switch (_index) {
+        case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
+        	return "paint1";
+        case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
+        	return "paint2";
+        case Constants.CONTROL_PAINTING_INDEX_FILL:
+        	return "fill";
+        case Constants.CONTROL_PAINTING_INDEX_PIPETTE:
+        	return "pipette";
+        case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
+        	return "selection curve";
+        case Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE:
+        	return "selection line";
+        case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
+        	return "selection magic";
+        case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
+        	return "zoom in";
+        case Constants.CONTROL_PAINTING_INDEX_MOVE:
+        	return "move";
+        case Constants.CONTROL_PAINTING_INDEX_ERASE:
+        	return "erase";
+        case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+        	return "i_g_line";
+        case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
+        	return "i_g_rect";
+        case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+        	return "i_g_curve";
+        case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
+        	return "i_g_triangle";
+        case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
+        	return "i_g_arch";
+        case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
+        	return "i_d_dia";
+        case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
+        	return "i_g_arch_filled";
+        case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
+        	return "i_g_rect_filled";
+        case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
+        	return "i_g_tri_filled";
+        case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
+        	return "i_g_curve";
+        default:
+        	return "index not found. " + _index;
+        }
+    }
 
     /**
      * @return the indexSelection

@@ -29,6 +29,7 @@ import control.forms.tabs.CTabs;
 import control.interfaces.MenuListener;
 import control.util.implementations.ScrollPaneActivityListener;
 import model.Project;
+import model.debug.ActionManager;
 import model.objects.PictureOverview;
 import model.objects.Zoom;
 import model.objects.painting.PaintBI;
@@ -350,6 +351,8 @@ MenuListener {
             view.getTabs().getTab_paint().getIt_stift1()
             .getTb_open().setActivated(true);
 
+            //initialize help listeners
+            view.getTabs().getTab_paint().initializeHelpListeners(view, view.getHelp());
 
             /*
              * Initialize control
@@ -448,8 +451,12 @@ MenuListener {
         if (_event.getSource().equals(
                 getPage().getJlbl_painting())) {
 
+        	// the name of the action. Just used for debugging purpose.
+        	final String actionName = "Paint at Picture, index " 
+        			+ Status.getIndexName(Status.getIndexOperation());
+        	ActionManager.addUserAction(actionName, true);
+        	
         	if (getTabs().isMenuOpen()) {
-
                 getTabs().closeMenues();
         	}
             
@@ -616,6 +623,7 @@ MenuListener {
                 break;
 
             }
+            
         }
     }
 
@@ -626,18 +634,15 @@ MenuListener {
 		if (_event.getSource().equals(
                 getPage().getJlbl_painting())) {
 			mr_painting(_event);
+
+
+        	// the name of the action. Just used for debugging purpose.
+        	final String actionName = "Paint at Picture, index " 
+        			+ Status.getIndexName(Status.getIndexOperation());
+            //add user action just for debugging purpose.
+        	ActionManager.addUserAction(actionName, false);
 		} 
 	}
-
-
-
-	/**
-	 * @return the view
-	 */
-	public final  View getView() {
-		return view;
-	}
-
 
 
 
@@ -855,7 +860,6 @@ MenuListener {
 
 
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -865,7 +869,6 @@ MenuListener {
         if (_event.getSource().equals(getPage().getJlbl_painting())) {
 
             switch (Status.getIndexOperation()) {
-            
             case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
 
             	//do only display zoom box if there is no menu open (because
@@ -2716,6 +2719,14 @@ MenuListener {
 	public final CTabAbout getcTabAbout() {
 		return cTabAbout;
 	}
+
+	/**
+	 * @return the view
+	 */
+	public final  View getView() {
+		return view;
+	}
+
 
 	/**
 	 * @return the project

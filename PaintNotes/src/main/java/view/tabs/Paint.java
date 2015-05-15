@@ -7,6 +7,7 @@ import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
@@ -18,9 +19,11 @@ import model.settings.ViewSettings;
 import control.ControlPaint;
 import control.forms.CPaintStatus;
 import control.forms.tabs.CTabPainting;
+import control.interfaces.HelpMouseListener;
 import control.interfaces.MenuListener;
 import control.util.CPaintSelection;
 import control.util.CPen;
+import view.forms.Help;
 import view.util.Item1Menu;
 import view.util.Item1PenSelection;
 import view.util.VColorPanel;
@@ -986,6 +989,18 @@ public final class Paint extends Tab {
     }
 	
 
+    
+    public void initializeHelpListeners(
+    		final JFrame _jf,
+    		final Help _help) {
+
+        tb_copy.addMouseListener(new HelpMouseListener(
+        		"Kopiert Zeichnungin Zwischenablage", 
+        		HelpMouseListener.HELP_ID_ALWAYS,
+        		_jf, _help, 
+        		tb_copy, 
+        		null));
+    }
 
 
 

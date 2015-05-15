@@ -122,7 +122,30 @@ public class Help extends MPanel {
 		//calculate the location in window
 		int locInWindowX = _pnt_locOnScreen.x - jf_owner.getX() - _width / 2;
 		int locInWindowY = _pnt_locOnScreen.y - jf_owner.getY(); 
-		super.setLocation(locInWindowX, locInWindowY);
+		
+		final int shiftX;
+		if (locInWindowX < 0 + ViewSettings.DISTANCE_TO_WINDOW) {
+			shiftX = locInWindowX - ViewSettings.DISTANCE_TO_WINDOW;
+		} else if (locInWindowX + _width 
+				> jf_owner.getWidth() - ViewSettings.DISTANCE_TO_WINDOW) {
+			shiftX = locInWindowX + _width - jf_owner.getWidth()
+					+ ViewSettings.DISTANCE_TO_WINDOW;
+		} else {
+			shiftX = 0;
+		}
+		final int shiftY;
+		if (locInWindowY < ViewSettings.DISTANCE_TO_WINDOW) {
+			shiftY = locInWindowY - ViewSettings.DISTANCE_TO_WINDOW;
+		} else if (locInWindowY + _height 
+				> jf_owner.getHeight() - ViewSettings.DISTANCE_TO_WINDOW) {
+			shiftY = locInWindowY + _height - jf_owner.getHeight()
+					+ ViewSettings.DISTANCE_TO_WINDOW;
+		} else {
+			shiftY = 0;
+		}
+		
+		super.setLocation(locInWindowX - shiftX, locInWindowY - shiftY);
+		
 		
 		
 		//generate BufferedImage
@@ -150,7 +173,8 @@ public class Help extends MPanel {
 		//upper border
 		int cBorderPX = 0;
 		for (int x = 0; x < bi_background.getWidth(); x++) {
-			final int xRel = x - bi_background.getWidth() / 2;
+			final int xRel = x - bi_background.getWidth() / 2
+					- shiftX;
 			int y = heightArrow;
 			if (Math.abs(xRel) >= y) {
 
@@ -205,7 +229,8 @@ public class Help extends MPanel {
 		for (int x = 0; x < bi_background.getWidth(); x++) {
 				
 			//coordinates relative to center:
-			final int xRel = x - bi_background.getWidth() / 2;
+			final int xRel = x - bi_background.getWidth() / 2
+					- shiftX;
 
 				for (int y = 0; y < heightArrow; y++) {
 				

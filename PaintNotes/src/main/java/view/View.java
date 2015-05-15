@@ -18,6 +18,7 @@ import model.settings.Status;
 import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
+import view.forms.Help;
 import view.forms.Loading;
 import view.forms.Message;
 import view.forms.Page;
@@ -73,6 +74,13 @@ import control.util.WindowMover;
 	 */
 	private Page page;
 	
+	
+	/**
+	 * A help form which is made visible on mouseOver.
+	 */
+	private  Help help;
+	
+	
 	/**
 	 */
 	public View() {
@@ -95,11 +103,15 @@ import control.util.WindowMover;
 
         ControlView cv = new ControlView(this, _cp.getcTabPaint());
         
+        
+        
         JLabel jlbl_backgroundStroke = new JLabel();
         jlbl_backgroundStroke.setSize(getSize());
         jlbl_backgroundStroke.setVisible(true);
         super.add(jlbl_backgroundStroke);
 
+        help = new Help(this);
+        super.add(help);
 
         jlbl_border = new MLabel();
         jlbl_border.setOpaque(false);
@@ -530,9 +542,7 @@ import control.util.WindowMover;
         super.setSize(ViewSettings.getSizeJFrame());
 
         if (loading != null) {
-
-            loading.setSize(getWidth() / 3, getHeight() / 3);
-            loading.setLocation(getWidth() / 3, getHeight() / 3);
+            loading.setBounds(ViewSettings.getView_bounds_loading());
         }
         
         //initialize tabs
@@ -572,7 +582,6 @@ import control.util.WindowMover;
 	        	
 	        	
 	        //the page flip is done directly inside the set size method
-	        //TODO: externalize flipping is not necessary anymore.
 //	        Remove
         
 
@@ -650,6 +659,13 @@ import control.util.WindowMover;
 	 */
 	public Loading getLoading() {
 		return loading;
+	}
+
+	/**
+	 * @return the help
+	 */
+	public Help getHelp() {
+		return help;
 	}
 
 }

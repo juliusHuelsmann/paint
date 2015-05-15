@@ -34,7 +34,12 @@ public final class TextFactory {
 	 */
 	private final String[] view_tb_paste, view_tb_copy,  view_tb_cut, 
 	view_tb_zoomIn, view_tb_zoomOut, view_tb_save, view_popup_saveChangesTitle,
-	view_popup_saveChangesText, 
+	view_popup_saveChangesText,
+	
+	// tabg debug
+	view_debug_headline, view_debug_amountItems, view_debug_console,
+	view_debug_generateViewDiagram, view_debug_generateLog, 
+	view_debug_reportBug,
 	
 	colorPanel_red, colorPanel_green, colorPanel_blue, colorPanel_submit,
 	
@@ -104,6 +109,40 @@ public final class TextFactory {
         		"Auswahl",
         		"Selection"
         };
+        
+        
+        
+        
+        //
+        view_debug_headline = new String[] {
+        		"Fehlerbehebung",
+        		"Debug"
+        };
+        
+        view_debug_amountItems = new String[] {
+        		"Anz. PaintObjects",
+        		"Amount of paint-objects"
+        };
+        
+        view_debug_console = new String[] {
+        		"Konsole",
+        		"Console"
+        };
+        
+        view_debug_generateLog = new String[] {
+        		"Log-Datei",
+        		"log-file"
+        };
+        
+        view_debug_generateViewDiagram = new String[] {
+        		"GUI-Diagramm ",
+        		"gui-diagram"
+        };
+        view_debug_reportBug = new String[] {
+        		"Fehler melden",
+        		"Report bug"
+        };
+        
 	}
 
 	/**
@@ -263,4 +302,52 @@ public final class TextFactory {
 	public String getName_selection() {
 		return name_selection[specifiedLanguage];
 	}
+
+
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getView_debug_amountItems() {
+		return view_debug_amountItems[specifiedLanguage];
+	}
+
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getView_debug_console() {
+		return view_debug_console[specifiedLanguage];
+	}
+
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getView_debug_generateLog() {
+		return view_debug_generateLog[specifiedLanguage];
+	}
+
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getView_debug_generateViewDiagram() {
+		return view_debug_generateViewDiagram[specifiedLanguage];
+	}
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getView_debug_headline() {
+		return view_debug_headline[specifiedLanguage];
+	}
+	/**
+	 * simple getter method.
+	 * @return the text
+	 */
+	public String getView_debug_reportBug() {
+		return view_debug_reportBug[specifiedLanguage];
+	}
+
 }

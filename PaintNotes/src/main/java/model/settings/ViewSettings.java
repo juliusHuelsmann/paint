@@ -284,7 +284,7 @@ public final class ViewSettings {
     private static Rectangle view_bounds_page = new Rectangle(
             viewBoundsPageOpen);
 
-
+    
 
     /**
      * The size of the new - JPanel.
@@ -836,6 +836,12 @@ public final class ViewSettings {
 	}
 
 
+    private static Rectangle view_bounds_loading = new Rectangle(
+    		getView_bounds_page().width / (2 + 1),
+    		getView_bounds_page().height / (2 + 1),
+    		getView_bounds_page().width / (2 + 1),
+    		getView_bounds_page().height / (2 + 1));
+
 
 
 
@@ -848,5 +854,16 @@ public final class ViewSettings {
 		}
 		return standard_size_jframe_normalSize;
 	}
+
+
+
+
+	/**
+	 * @return the view_bounds_loading
+	 */
+	public static Rectangle getView_bounds_loading() {
+		return view_bounds_loading;
+	}
+
     
 }

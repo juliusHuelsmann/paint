@@ -3,11 +3,16 @@ package view.tabs;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.border.LineBorder;
+
 import model.settings.Constants;
 import model.settings.ViewSettings;
+import view.forms.Help;
 import view.util.Item1Button;
 
 
@@ -123,5 +128,14 @@ public final class Print extends Tab {
 	 */
 	public void setTb_print(final Item1Button _tb_new) {
 		this.tb_print = _tb_new;
+	}
+
+
+
+
+	@Override
+	public void initializeHelpListeners(JFrame _jf, Help _c) {
+		// TODO Auto-generated method stub
+		
 	}
 }

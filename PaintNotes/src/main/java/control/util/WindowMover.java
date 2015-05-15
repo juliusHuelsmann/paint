@@ -55,30 +55,6 @@ MouseListener, Serializable {
 
 	
 	
-	/**
-	 * Bytes indicating the current operation.
-	 */
-	private final byte 
-	operationTop = 0, 
-	operationTopRight = 1, 
-	operationRight = 2, 
-	operationRightBottom = 3, 
-	operationBottom = 4, 
-	operationBottomLeft = 5, 
-	operationLeft = 6, 
-	operationLeftTop = 7,
-	operationNo = -1;
-
-	/**
-	 * The current operation indicated by the above-declared IDs.
-	 */
-	private byte currentOperation = operationNo;
-
-	
-	/**
-	 * Previous image identifier.
-	 */
-	private byte prevImage = operationNo;
 	
 	/**
 	 * Marge.
@@ -110,118 +86,10 @@ MouseListener, Serializable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void mouseMoved(final MouseEvent _event) { 
-		
-		if (!ViewSettings.isFullscreen()) {
+	public final void mouseMoved(final MouseEvent _event) { }
 
-			byte cOperation = getOperation(_event);
-			if (cOperation != prevImage) {
-
-				setCursor(cOperation);
-				prevImage = cOperation;
-			}
-		}
-	}
-
-	/**
-	 * set the cursor.
-	 * @param 	_operation the operation
-	 */
-	private void setCursor(final byte _operation) {
-
-		switch(_operation) {
-		case operationTop:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
-		    		Cursor.N_RESIZE_CURSOR));
-			break;
-		case operationTopRight:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
-		    		Cursor.NE_RESIZE_CURSOR));
-			break;
-		case operationRight:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
-		    		Cursor.E_RESIZE_CURSOR));
-			break;
-		case operationRightBottom:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
-		    		Cursor.SE_RESIZE_CURSOR));
-			break;
-		case operationBottom:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
-		    		Cursor.S_RESIZE_CURSOR));
-			break;
-		case operationBottomLeft:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
-		    		Cursor.SW_RESIZE_CURSOR));
-			break;
-		case operationLeft:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
-		    		Cursor.W_RESIZE_CURSOR));
-			break;
-		case operationLeftTop:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
-		    		Cursor.NW_RESIZE_CURSOR));
-			break;
-		default:
-		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
-		    		Cursor.DEFAULT_CURSOR));
-			break;
-		}
-	}
 
 	
-	/**
-	 * 
-	 * @param _event the mouseEvent
-	 * @return the operation
-	 */
-	private byte getOperation(final MouseEvent _event) {
-
-		//reset current operation
-		byte cOperation = operationNo;
-		
-		//if the click is in the right area
-		if (_event.getX() <= marge) {
-			cOperation = operationLeft;
-		} else if (_event.getX() >= cmp_moved.getWidth() - marge) {
-			cOperation = operationRight;
-		}
-	
-		if (_event.getY() <= marge) {
-			
-			switch(cOperation) {
-			case operationNo:
-				cOperation = operationTop;
-				break;
-			case operationLeft:
-				cOperation = operationLeftTop;
-				break;
-			case operationRight:
-				cOperation = operationTopRight;
-				break;
-			default:
-				cOperation = operationTop;
-				break;
-			}
-		} else if (_event.getY() >= cmp_moved.getHeight() - marge) {
-			cOperation = operationBottom;
-			switch(cOperation) {
-			case operationNo:
-				cOperation = operationBottom;
-				break;
-			case operationLeft:
-				cOperation = operationBottomLeft;
-				break;
-			case operationRight:
-				cOperation = operationRightBottom;
-				break;
-			default:
-				cOperation = operationBottom;
-				break;
-			}
-		}
-		return cOperation;
-	}
 	/**
 	 * {@inheritDoc}
 	 */
@@ -235,7 +103,7 @@ MouseListener, Serializable {
 
 		if (!ViewSettings.isFullscreen()) {
 
-			currentOperation = getOperation(_event);
+			
 			
 			//save start position and set pressed
 			pnt_startPosition = 
@@ -263,11 +131,8 @@ MouseListener, Serializable {
 			//set not pressed and repaint component if mouse is released
 			pressed = false;
 			cmp_moved.repaint();
+			
 
-			if (al != null && currentOperation != operationNo) {
-				
-				al.activityOccurred(_event);
-			}
 		}
 	}
 
@@ -281,80 +146,10 @@ MouseListener, Serializable {
 
 			//if pressed change location
 			if (pressed) {
-				switch (currentOperation) {
-
-				case operationNo:
 					
 					int newX = _event.getXOnScreen() - pnt_startPosition.x;
 					int newY = _event.getYOnScreen() - pnt_startPosition.y;
 					cmp_moved.setLocation(newX, newY);
-					System.out.println(newX + ".." + newY);
-					break;
-				case operationTop:
-
-					cmp_moved.setLocation(
-							(int) pnt_origLoc.getX(),
-							(int) (pnt_origLoc.getY() 
-									- pnt_diff2.getY() + _event.getYOnScreen())
-							);
-					
-					cmp_moved.setSize(
-							(int) pnt_origSize.getX(),
-							(int) (pnt_origSize.getY() 
-									+ pnt_diff2.getY() - _event.getYOnScreen())
-							);
-					break;
-				case operationBottom:
-
-					
-					cmp_moved.setSize(
-							(int) pnt_origSize.getX(),
-							(int) (pnt_origSize.getY() - pnt_diff2.getY() 
-									+ _event.getYOnScreen())
-							);
-					break;
-				case operationRight:
-					
-
-					
-					cmp_moved.setSize(
-							(int) (pnt_origSize.getX() - pnt_diff2.getX() 
-									+ _event.getXOnScreen()),
-							(int) pnt_origSize.getY()
-							);
-					break;
-				case operationLeft:
-					cmp_moved.setLocation(
-							(int) (pnt_origLoc.getX() - pnt_diff2.getX() 
-									+ _event.getXOnScreen()),
-							(int) pnt_origLoc.getY()
-							);
-					
-					cmp_moved.setSize(
-							(int) (pnt_origSize.getX() + pnt_diff2.getX()
-									- _event.getXOnScreen()),
-							(int) pnt_origSize.getY()
-							);
-					break;
-
-				case operationTopRight:
-					break;
-				case operationRightBottom:
-					break;
-				case operationBottomLeft:
-
-					cmp_moved.setSize(_event.getXOnScreen() - pnt_startPosition
-							.x,
-							_event.getYOnScreen() - pnt_startPosition.y);
-					break;
-				case operationLeftTop:
-
-					cmp_moved.setLocation(_event.getXOnScreen() 
-							- pnt_startPosition.x,
-							_event.getYOnScreen() - pnt_startPosition.y);
-					break;
-				default: break;
-				}
 			}
 
 			//repaint

@@ -4,6 +4,8 @@ package view.forms;
 //import declarations
 import java.awt.Toolkit;
 
+import javax.swing.JFrame;
+
 import model.settings.ViewSettings;
 import control.ControlPaint;
 import control.util.CItem;
@@ -155,7 +157,7 @@ public final class Tabs extends VTabbedPane {
         /*
          * tab paint
          */
-        super.addTab("Painting");
+        super.addTab("Paint");
         tab_paint =  new Paint(
         		_cp, _cp.getcTabPaint(), _cp,
         		_cp.getcTabPaintStatus());
@@ -165,7 +167,7 @@ public final class Tabs extends VTabbedPane {
         /*
          * 
          */
-        super.addTab("Writing");
+        super.addTab("Write");
         tab_write = new Write(_cp.getcTabWrite());
         super.addToTab(tabNumber, tab_write);
         tabNumber++;
@@ -174,7 +176,7 @@ public final class Tabs extends VTabbedPane {
         /*
          * tab insert
          */
-        super.addTab("Insertion");
+        super.addTab("Insert");
         tab_insert = new Insert(_cp.getcTabPaintStatus(), _cp);
         super.addToTab(tabNumber, tab_insert);
         tabNumber++;
@@ -213,7 +215,7 @@ public final class Tabs extends VTabbedPane {
         /*
          * tab print
          */
-        super.addTab("Printing");
+        super.addTab("Print");
         tab_print = new Print(_cp.getcTabPrint());
         super.addToTab(tabNumber, tab_print);
         tabNumber++;
@@ -227,23 +229,23 @@ public final class Tabs extends VTabbedPane {
         super.addToTab(tabNumber, tab_pos);
         tabNumber++;
         
-        /*
-         * tab print
-         */
-        super.addTab("Projects");
-        tabNumber++;
-
-        /*
-         * tab print
-         */
-        super.addTab("Goals");
-        tabNumber++;
-
-        /*
-         * tab print
-         */
-        super.addTab("Overview");
-        tabNumber++;
+//        /*
+//         * tab print
+//         */
+//        super.addTab("Projects");
+//        tabNumber++;
+//
+//        /*
+//         * tab print
+//         */
+//        super.addTab("Goals");
+//        tabNumber++;
+//
+//        /*
+//         * tab print
+//         */
+//        super.addTab("Overview");
+//        tabNumber++;
         /*
          * tab print
          */
@@ -294,6 +296,25 @@ public final class Tabs extends VTabbedPane {
         CItem.getInstance().reset();
     }
     
+    
+
+    /**
+     * Initialize the help listeners for components of implementations of tab.
+     * @param _jf	the JFrame which contains everything
+     * @param _c	the help-form.
+     */
+    public void initializeHelpListeners(final JFrame _jf, final Help _c) {
+    	tab_about.initializeHelpListeners(_jf, _c);
+    	tab_export.initializeHelpListeners(_jf, _c);
+    	tab_insert.initializeHelpListeners(_jf, _c);
+    	tab_look.initializeHelpListeners(_jf, _c);
+    	tab_paint.initializeHelpListeners(_jf, _c);
+    	tab_pos.initializeHelpListeners(_jf, _c);
+    	tab_print.initializeHelpListeners(_jf, _c);
+    	tab_selection.initializeHelpListeners(_jf, _c);
+    	tab_write.initializeHelpListeners(_jf, _c);
+    	
+    }
 
     /**
      * Checks whether a menu is open.

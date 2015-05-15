@@ -327,6 +327,9 @@ import view.util.mega.MButton;
         jlbl_backgroundStructure.setBounds(
         		0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionBG.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
+//        jlbl_selectionBG.setBackground(new Color(50, 50, 250, 0));
+//        jlbl_selectionBG.setIcon(null);
+//        jlbl_selectionBG.setOpaque(true);
         jlbl_selectionPainting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         
         jlbl_backgroundAlpha.setIcon(new ImageIcon(

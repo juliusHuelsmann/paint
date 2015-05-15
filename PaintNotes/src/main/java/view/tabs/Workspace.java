@@ -1,5 +1,9 @@
 package view.tabs;
 
+import javax.swing.JFrame;
+
+import view.forms.Help;
+
 /**
  * the workspace tab.
  * @author Julius Huelsmann
@@ -23,4 +27,10 @@ public class Workspace extends Tab {
 		//hours
 		//numbers
 		//sizes
+
+	@Override
+	public void initializeHelpListeners(JFrame _jf, Help _c) {
+		// TODO Auto-generated method stub
+		
+	}
 }

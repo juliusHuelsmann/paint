@@ -28,6 +28,7 @@ import view.util.mega.MFrame;
 import view.util.mega.MLabel;
 import control.ControlPaint;
 import control.forms.ControlView;
+import control.interfaces.ActivityListener;
 import control.util.WindowMover;
 
 
@@ -80,6 +81,7 @@ import control.util.WindowMover;
 	 */
 	private  Help help;
 	
+	private ControlView cv;
 	
 	/**
 	 */
@@ -101,7 +103,7 @@ import control.util.WindowMover;
         super.setUndecorated(true);
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        ControlView cv = new ControlView(this, _cp.getcTabPaint());
+        cv = new ControlView(this, _cp.getcTabPaint());
         
         
         
@@ -201,6 +203,7 @@ import control.util.WindowMover;
         tabs.setVisible(true);
         page.setVisible(true);
         
+//        setResizable(false);
         
         //debug for testing view components.
         //writes analyse file to analyse.png
@@ -209,13 +212,21 @@ import control.util.WindowMover;
 
 	}
 
+	
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void validate() {
-//		System.out.println("validate");
+
+		if (cv != null
+				&& (getWidth() != sizeChecked.width
+				|| getHeight() != sizeChecked.height)) {
+			
+			setSize(getWidth(), getHeight());
+			cv.activityOccurred(null);
+		}
 		super.validate();
 	}
 	
@@ -539,6 +550,7 @@ import control.util.WindowMover;
 	public void flip() {
 
 	    //set gui bounds
+		sizeChecked = new Dimension(ViewSettings.getSizeJFrame());
         super.setSize(ViewSettings.getSizeJFrame());
 
         if (loading != null) {
@@ -604,15 +616,19 @@ import control.util.WindowMover;
 	
 	
 	/**
+	 * Dimension for checking which size has been reported.
+	 */
+	private Dimension sizeChecked = new Dimension(0, 0);
+	/**
 	 * Method for setting size of view and its content.
 	 * 
 	 * @param _width the widht
 	 * @param _height the height
 	 */
 	public void setSize(final int _width, final int _height) {
-		
-		ViewSettings.setSize_jframe(
-				new Dimension(_width, _height));
+
+		sizeChecked = new Dimension(_width, _height);
+		ViewSettings.setSize_jframe(sizeChecked);
 		
 		//this is done because viewSettings decides whether to accept _width and
 		//_height or not.

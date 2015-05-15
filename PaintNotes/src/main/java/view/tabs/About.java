@@ -2,9 +2,14 @@
 package view.tabs;
 
 //import declarations
+import java.awt.Component;
+
+import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
 import control.forms.tabs.CTabAbout;
+import control.interfaces.HelpMouseListener;
+import view.forms.Help;
 import view.util.Item1Button;
 import model.settings.Constants;
 import model.settings.ViewSettings;
@@ -121,6 +126,15 @@ public final class About extends Tab {
 	 */
 	public void setJta_about(final JTextArea _jta_about) {
 		this.jta_about = _jta_about;
+	}
+
+
+	@Override
+	public void initializeHelpListeners(final JFrame _jf, final Help _c) {
+		i1b_checkForUpdates.addMouseListener(new HelpMouseListener(
+				"Check for proram updates. Not implemented yet.",
+				HelpMouseListener.HELP_ID_MEDIUM, _jf, 
+				_c, i1b_checkForUpdates, null));
 	}
 	
 	

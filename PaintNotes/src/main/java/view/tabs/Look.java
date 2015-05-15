@@ -4,7 +4,9 @@ package view.tabs;
 //import declarations
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 
+import view.forms.Help;
 import view.util.mega.MLabel;
 import model.settings.Constants;
 import model.settings.Status;
@@ -535,4 +537,13 @@ public final class Look extends Tab {
     public JComboBox getJcb_displayAlpha() {
         return jcb_displayAlpha;
     }
+
+
+
+
+	@Override
+	public void initializeHelpListeners(JFrame _jf, Help _c) {
+		// TODO Auto-generated method stub
+		
+	}
 }

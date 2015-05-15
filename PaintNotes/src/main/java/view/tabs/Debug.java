@@ -10,6 +10,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -19,6 +20,8 @@ import model.settings.Status;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import control.forms.tabs.CTabDebug;
+import control.interfaces.HelpMouseListener;
+import view.forms.Help;
 import view.util.VScrollPane;
 import view.util.Item1Button;
 import view.util.mega.MLabel;
@@ -482,6 +485,45 @@ public final class Debug extends Tab implements Observer {
 	
 	
 
+    public void initializeHelpListeners(
+    		final JFrame _jf,
+    		final Help _help) {
+
+    	//clipboard
+        i1b_console.addMouseListener(new HelpMouseListener(
+        		"Entwicklerkonsole ein oder ausblenden.",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		i1b_console, 
+        		null));
+
+    	//clipboard
+        i1b_diagramView.addMouseListener(new HelpMouseListener(
+        		"Erzeugen eines hierarchie-diagramm bildes, welches in der"
+        		+ " Datei analyze.png im aktuellen Verzeichnis gespeichert "
+        		+ "wird.",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		i1b_diagramView, 
+        		null));
+
+    	//clipboard
+        i1b_generateLog.addMouseListener(new HelpMouseListener(
+        		"Aktionslog erzeugen und anlegen.\n"
+        		+ "Enthält debug-Informationen",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		i1b_generateLog, 
+        		null));
+
+    	//clipboard
+        i1b_reportBug.addMouseListener(new HelpMouseListener(
+        		"Fehler melden. Noch nicht implementiert :(.",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		i1b_reportBug, 
+        		null));
+    }
 
     /**
      * @return the jta_infoSelectedPanel

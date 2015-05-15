@@ -266,7 +266,15 @@ ActivityListener, MouseListener {
 		view.getTabs().reApplySize();
 		view.getTabs().repaint();
 		
-		
+
+		ctp.getControlPaint().setBi_preprint(
+				new BufferedImage(
+						Math.max(ViewSettings.getView_bounds_page()
+								.getSize().width, 1),
+						Math.max(ViewSettings.getView_bounds_page()
+								.getSize().height,
+								1),
+						BufferedImage.TYPE_INT_ARGB));
 		ctp.getControlPaint().getControlPic().setBi_background(
 				new BufferedImage(
 						Math.max(ViewSettings.getView_bounds_page()

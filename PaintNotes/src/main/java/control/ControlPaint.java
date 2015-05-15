@@ -352,8 +352,9 @@ MenuListener {
             .getTb_open().setActivated(true);
 
             //initialize help listeners
-            view.getTabs().getTab_paint().initializeHelpListeners(view, view.getHelp());
-
+            view.getTabs().initializeHelpListeners(
+            		view, view.getHelp());
+            
             /*
              * Initialize control
              */

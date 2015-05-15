@@ -1,5 +1,9 @@
 package view.tabs;
 
+import javax.swing.JFrame;
+
+import view.forms.Help;
+
 /**
  * Panel for the Tab.
  * @author Julius Huelsmann
@@ -24,6 +28,12 @@ public class Project extends Tab {
 	//name
 	//default page values
 	//backup settings
+
+	@Override
+	public void initializeHelpListeners(JFrame _jf, Help _c) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	//pencil selection | pencil size selection | pencil color selection | 
 	//select somethings | special items like graphc etc | copy-paste | 

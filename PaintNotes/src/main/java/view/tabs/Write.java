@@ -3,11 +3,15 @@ package view.tabs;
 //import declarations
 import java.awt.Color;
 import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.border.LineBorder;
+
 
 //
 import model.settings.ViewSettings;
+import view.forms.Help;
 import view.util.Item1Button;
 
 
@@ -265,4 +269,11 @@ public final class Write extends Tab {
     public Item1Button getTb_headline3() {
         return tb_pen_headline3;
     }
+
+
+	@Override
+	public void initializeHelpListeners(JFrame _jf, Help _c) {
+		// TODO Auto-generated method stub
+		
+	}
 }

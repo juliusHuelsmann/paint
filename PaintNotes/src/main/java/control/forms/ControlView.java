@@ -295,5 +295,6 @@ ActivityListener, MouseListener {
 
 		ViewSettings.setSize_jframe(view.getSize());
 		sizeChanged();
+		
 	}
 }

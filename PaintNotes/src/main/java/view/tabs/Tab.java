@@ -1,9 +1,14 @@
 package view.tabs;
 
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.SwingConstants;
+
 import model.settings.ViewSettings;
+import view.forms.Help;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
@@ -147,6 +152,14 @@ public abstract class Tab extends MPanel {
                     _x1, number, _x2 - _x1, number2);
     }
 
+    
+    /**
+     * Initialize the help listeners for components of implementations of tab.
+     * @param _jf	the JFrame which contains everything
+     * @param _c	the component which is explained inside the help-form.
+     */
+    public abstract void initializeHelpListeners(
+    		final JFrame _jf, final Help _c);
 
     /**
      * @return the jlbl_separation

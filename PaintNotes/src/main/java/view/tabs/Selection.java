@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
@@ -16,6 +17,7 @@ import control.forms.CPaintStatus;
 import control.forms.tabs.CTabPainting;
 import control.forms.tabs.CTabSelection;
 import control.interfaces.MenuListener;
+import view.forms.Help;
 import view.util.Item1Menu;
 import view.util.Item1Button;
 import view.util.VColorPanel;
@@ -530,4 +532,12 @@ public final class Selection extends Tab {
     public Item1Button getTb_color() {
         return tb_color;
     }
+
+
+
+	@Override
+	public void initializeHelpListeners(JFrame _jf, Help _c) {
+		// TODO Auto-generated method stub
+		
+	}
 }

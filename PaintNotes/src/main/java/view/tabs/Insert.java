@@ -4,12 +4,14 @@ package view.tabs;
 import java.awt.Color;
 
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import control.ControlPaint;
 import control.forms.CPaintStatus;
 import model.settings.ViewSettings;
+import view.forms.Help;
 import view.util.Item2;
 import view.util.Item2Menu;
 import view.util.Item1Button;
@@ -434,4 +436,10 @@ public final class Insert extends Tab {
     public Item2 getI2_g_curve2() {
         return i2_g_curve2;
     }
+
+	@Override
+	public void initializeHelpListeners(JFrame _jf, Help _c) {
+		// TODO Auto-generated method stub
+		
+	}
 }

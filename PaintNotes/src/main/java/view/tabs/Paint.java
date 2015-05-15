@@ -990,10 +990,12 @@ public final class Paint extends Tab {
 	
 
     
+    /**
+     * {@inheritDoc}
+     */
     public void initializeHelpListeners(
     		final JFrame _jf,
     		final Help _help) {
-
     	
     	//clipboard
         tb_copy.addMouseListener(new HelpMouseListener(
@@ -1003,7 +1005,6 @@ public final class Paint extends Tab {
         		_jf, _help, 
         		tb_copy, 
         		null));
-
 
         tb_paste.addMouseListener(new HelpMouseListener(
         		"Hiermit wird die aktuelle programm-interne (falls "

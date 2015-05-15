@@ -994,18 +994,190 @@ public final class Paint extends Tab {
     		final JFrame _jf,
     		final Help _help) {
 
+    	
+    	//clipboard
         tb_copy.addMouseListener(new HelpMouseListener(
-        		"Kopiert Zeichnungin Zwischenablage", 
-        		HelpMouseListener.HELP_ID_ALWAYS,
+        		"Hiermit wird die aktuelle Markierung sowohl in eine interne,"
+        		+ " als auch in die systemweite Zwischenablage kopiert.",
+        		HelpMouseListener.HELP_ID_LOW,
         		_jf, _help, 
         		tb_copy, 
         		null));
 
+
+        tb_paste.addMouseListener(new HelpMouseListener(
+        		"Hiermit wird die aktuelle programm-interne (falls "
+        		+ "leer: die systemweite) Zwischenablage"
+        		+ " in das Bild eingefügt.",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		tb_paste, 
+        		null));
+
+        tb_cut.addMouseListener(new HelpMouseListener(
+        		"Schneidet die aktuelle Markierung aus.",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		tb_cut, 
+        		null));
+        
+        //history
+        tb_prev.addMouseListener(new HelpMouseListener(
+        		"Macht letzte Aktion rückgängig.",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		tb_prev, 
+        		null));
+
+        tb_next.addMouseListener(new HelpMouseListener(
+        		"Stellt den letzten rückgängig gemachten Schritt wieder her.",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		tb_next, 
+        		null));
+        
+        //pens and colors
+        it_stift1.addMouseListener(new HelpMouseListener(
+        		"Stift - Auswahl nummer 1.\n\n"
+        		+ "Durch Klick mit der rechten Maustaste auf das Bild kann die "
+        		+ " Stiftreihenfolge schnell geändert werden.",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		it_stift1, 
+        		null));
+
+        it_stift2.addMouseListener(new HelpMouseListener(
+        		"Stift - Auswahl nummer 2.\n\n"
+        		+ "Durch Klick mit der rechten Maustaste auf das Bild kann die "
+        		+ " Stiftreihenfolge schnell geändert werden.",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		it_stift2, 
+        		null));
+
+        it_selection.addMouseListener(new HelpMouseListener(
+        		"Durch Klick auf den Pfeil kann entschieden werden, wie "
+        		+ "das Auswahlwerkzeug aussehen soll:\n"
+        		+ "(1) Rechteckauswahl\n"
+        		+ "(2) Freihandauswahl\n"
+        		+ "(3) Farbauswahl\n    (nicht implementiert)\n"
+        		+ "\nund wie die einzelnen "
+        		+ "Objekte ausgewählt werden sollen:\n"
+        		+ "(A) gesamtes Zeichen-objekt\n"
+        		+ "(B) Zeichen-Objekt aufteilen und nur die "
+        		+ "Markierung auswählen\n\n"
+        		+ "Standard: (1), (A)",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		it_selection, 
+        		null));
+
+
+        tb_pipette.addMouseListener(new HelpMouseListener(
+        		"Mithilfe der Pipette kann die Farbe von bereits Gezeichnetem"
+        		+ " wieder aufgegriffen und wiederverwendet werden.",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		tb_pipette, 
+        		null));
+
+        tb_fill.addMouseListener(new HelpMouseListener(
+        		"Farbfläche füllen: noch nicht implementiert!",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		tb_fill, 
+        		null));
+        tb_move.addMouseListener(new HelpMouseListener(
+        		"Zum durch das Bild scrollen",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		tb_move, 
+        		null));
+
+        it_erase.addMouseListener(new HelpMouseListener(
+        		"Durch Klick auf den Pfeil kann entschieden werden, wie "
+        		+ "die einzelnen Objekte gelöscht werden sollen:\n"
+        		+ "(A) gesamtes Zeichen-objekt\n"
+        		+ "(B) Zeichen-Objekt aufteilen und nur teilweise löschen\n\n"
+        		+ "Standard: (A)",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		it_erase, 
+        		null));
+        
+        
+        // zoom 
+
+        tb_zoomIn.addMouseListener(new HelpMouseListener(
+        		"Bildausschnitt vergrößern.",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		tb_zoomIn, 
+        		null));
+
+        tb_zoomOut.addMouseListener(new HelpMouseListener(
+        		"Bildausschnitt verkleinern.",
+        		HelpMouseListener.HELP_ID_LOW,
+        		_jf, _help, 
+        		tb_zoomOut, 
+        		null));
+
+        //save load
+
         tb_save.addMouseListener(new HelpMouseListener(
-        		"Speichert.", 
+        		"Speichert das aktuelle Bild. "
+        		+ "Wenn noch kein Speicherpfad angegeben wurde, öffnet sich"
+        		+ " ein Dateibrowser. Andernfalls wird die Datei unter dem "
+        		+ "zuletzt angegebenen Pfad gespeichert.\n\n"
+        		+ "Die Speichereinstellungen können im Tab \"Export\""
+        		+ " geändert werden."
+        		+ " Gespeichert wird je einmal im angegebenen Dateiformat"
+        		+ " und im eigenen Vektorgrafikformat [PIC].",
         		HelpMouseListener.HELP_ID_ALWAYS,
         		_jf, _help, 
         		tb_save, 
+        		null));
+        tb_saveAs.addMouseListener(new HelpMouseListener(
+        		"Speichern unter.\n\n"
+        		+ "Die Speichereinstellungen können im Tab \"Export\""
+        		+ " geändert werden."
+        		+ " Gespeichert wird je einmal im angegebenen Dateiformat"
+        		+ " und im eigenen Vektorgrafikformat [PIC].",
+        		HelpMouseListener.HELP_ID_ALWAYS,
+        		_jf, _help, 
+        		tb_saveAs, 
+        		null));
+
+        tb_load.addMouseListener(new HelpMouseListener(
+        		"Bild Laden.",
+        		HelpMouseListener.HELP_ID_ALWAYS,
+        		_jf, _help, 
+        		tb_load, 
+        		null));
+        tb_new.addMouseListener(new HelpMouseListener(
+        		"Öffnet eine Form um ein neues Bild zu erstellen."
+        		+ " Größeninformationen können angegeben werden.",
+        		HelpMouseListener.HELP_ID_ALWAYS,
+        		_jf, _help, 
+        		tb_new, 
+        		null));
+        
+
+        tb_turnMirror.addMouseListener(new HelpMouseListener(
+        		"Bildschirm invertieren um besser zeichnen zu können.\n\n"
+        		+ "Empfohlen wird dazu die Installation von xrandr:\n"
+        		+ "\tsudo apt-get install libwebkitgtk-1.0-0.",
+        		HelpMouseListener.HELP_ID_ALWAYS,
+        		_jf, _help, 
+        		tb_turnMirror, 
+        		null));
+        tb_turnNormal.addMouseListener(new HelpMouseListener(
+        		"Bildschirmorientierung nach Invertierung wiederherstellen.\n\n"
+        		+ "Empfohlen wird dazu die Installation von xrandr:\n"
+        		+ "sudo apt-get install libwebkitgtk-1.0-0.",
+        		HelpMouseListener.HELP_ID_ALWAYS,
+        		_jf, _help, 
+        		tb_turnNormal, 
         		null));
     }
 

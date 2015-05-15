@@ -1000,6 +1000,13 @@ public final class Paint extends Tab {
         		_jf, _help, 
         		tb_copy, 
         		null));
+
+        tb_save.addMouseListener(new HelpMouseListener(
+        		"Speichert.", 
+        		HelpMouseListener.HELP_ID_ALWAYS,
+        		_jf, _help, 
+        		tb_save, 
+        		null));
     }
 
 

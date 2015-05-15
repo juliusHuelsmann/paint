@@ -209,6 +209,9 @@ public final class CTabPainting implements ActionListener, MouseListener {
             		paint.getTb_save().getActionCause())) {
                 mr_save();
             } else if (_event.getSource().equals(
+            		paint.getTb_saveAs().getActionCause())) {
+                mr_saveAs();
+            } else if (_event.getSource().equals(
             		paint.getTb_load().getActionCause())) {
                 mr_load();
             } else if (_event.getSource().equals(
@@ -591,6 +594,100 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
 
             Status.setUncommittedChanges(false);
+            controlPaint.getView().getPage().repaint();
+        }
+    }
+    
+
+    
+    
+    /**
+     * the save action.
+     */
+    public void mr_saveAs() {
+
+    	final String fileEnding;
+    	
+
+            // choose a file
+            JFileChooser jfc = new JFileChooser();
+            jfc.setCurrentDirectory(new java.io.File("."));
+            jfc.setDialogTitle("Select save location");
+            int retval = jfc.showOpenDialog(getView());
+
+            // if selected a file.
+            if (retval == JFileChooser.APPROVE_OPTION) {
+
+                // fetch the selected file.
+                File file = jfc.getSelectedFile();
+
+                // edit file ending
+                if (!file.getName().toLowerCase().contains(".")) {
+                	fileEnding = Status.getSaveFormat();
+                    file = new File(file.getAbsolutePath() + ".pic");
+                } else if (!Constants.endsWithSaveFormat(file.getName())) {
+                	
+                	fileEnding = "";
+                	String formatList = "(";
+                	for (String format : Constants.SAVE_FORMATS) {
+                		formatList += format + ", ";
+                	}
+                	formatList = formatList.subSequence(0, 
+                			formatList.length() - 2) + ")";
+                	
+                    JOptionPane.showMessageDialog(getView(),
+                            "Error saving file:\nFile extension \"" 
+                    + Constants.getFileExtension(file.getName())
+                    + "\" not supported! Supported formats:\n\t"
+                    + formatList + ".", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    mr_save();
+                    return;
+                } else {
+
+                	fileEnding = "." 
+                	+ Constants.getFileExtension(file.getName());
+                }
+
+                // if file already exists
+                if (file.exists()) {
+
+                    int result = JOptionPane.showConfirmDialog(
+                            getView(), "File already exists. "
+                                    + "Owerwrite?", "Owerwrite file?",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE);
+                    if (result == 1) {
+                        // no
+                        mr_save();
+                        return;
+                    } else if (result == 2) {
+                        // interrupt
+                        return;
+                    }
+                    // overwrite
+                }
+                Status.setSavePath(file.getAbsolutePath());
+            } else {
+            	fileEnding = "";
+            }
+
+        // generate path without the file ending.
+        if (Status.getSavePath() != null) {
+
+            int d = Status.getSavePath().toCharArray().length - 2 - 1;
+            String firstPath = Status.getSavePath().substring(0, d);
+            
+            // save images in both formats.
+//            controlPaint.getPicture().saveIMAGE(
+//            		firstPath, getPage().getJlbl_painting().getLocation().x,
+//            		getPage().getJlbl_painting().getLocation().y);
+            controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
+            controlPaint.getPicture().savePicture(firstPath + "pic");
+
+
+            Status.setUncommittedChanges(false);
+            controlPaint.getView().getPage().repaint();
         }
     }
     

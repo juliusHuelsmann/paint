@@ -20,6 +20,15 @@ Used
 - Checkstyle
 - JUnit
 
+Install Maven, Checkstyle, JUnit for Eclipse
+==
+
+Add the following update pages to Eclipse:
+- Maven:      http://download.eclipse.org/technology/m2e/releases/
+- Checkstyle: http://eclipse-cs.sourceforge.net/update
+
+Install Maven, Checkstyle plugin.
+
 
 Use recommended checkstyle configuration file
 ====

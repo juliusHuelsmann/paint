@@ -34,7 +34,7 @@ public final class Export extends Tab {
     /**
      * The JCombo boxes for the size of the border.
      */
-    private JComboBox<Object> jcb_margeTop, jcb_margeLeft, jcb_margeRight,
+    private JComboBox jcb_margeTop, jcb_margeLeft, jcb_margeRight,
     jcb_margeBottom;
     
 
@@ -57,7 +57,7 @@ public final class Export extends Tab {
      * JCombobox by which the user ins able to set the exported alpha color 
      * from alpha to white.
      */
-    private JComboBox<Object> jcb_displayAlpha;
+    private JComboBox jcb_displayAlpha;
 
     /*
      * Save as
@@ -65,7 +65,7 @@ public final class Export extends Tab {
     /**
      * Contains the different saveFormats.
      */
-    private JComboBox<Object> jcb_saveFormats;
+    private JComboBox jcb_saveFormats;
     
     /**
      * Titles for save as.
@@ -257,7 +257,7 @@ public final class Export extends Tab {
             jlbl_subtitle_borderTop.setFocusable(false);
             super.add(jlbl_subtitle_borderTop);
             
-            jcb_margeTop = new JComboBox<Object>(Constants.getBorderPercentagesTitle());
+            jcb_margeTop = new JComboBox(Constants.getBorderPercentagesTitle());
         }
         jcb_margeTop.setSize(jlbl_subtitle_borderTop.getSize());
         jcb_margeTop.setLocation(jlbl_subtitle_borderTop.getX() 
@@ -286,7 +286,7 @@ public final class Export extends Tab {
             super.add(jlbl_subtitle_borderBottom);
           
             //bottom
-            jcb_margeBottom = new JComboBox<Object>(
+            jcb_margeBottom = new JComboBox(
             		Constants.getBorderPercentagesTitle());
         }
         jcb_margeBottom.setSize(jlbl_subtitle_borderTop.getSize());
@@ -315,7 +315,7 @@ public final class Export extends Tab {
             jlbl_subtitle_borderLeft.setFocusable(false);
             super.add(jlbl_subtitle_borderLeft);
 
-            jcb_margeLeft = new JComboBox<Object>(
+            jcb_margeLeft = new JComboBox(
             		Constants.getBorderPercentagesTitle());
         }
         
@@ -349,7 +349,7 @@ public final class Export extends Tab {
              jlbl_subtitle_borderRight.setFocusable(false);
              super.add(jlbl_subtitle_borderRight);
              
-             jcb_margeRight = new JComboBox<Object>(
+             jcb_margeRight = new JComboBox(
             		 Constants.getBorderPercentagesTitle());
         }
        
@@ -427,7 +427,7 @@ public final class Export extends Tab {
             jlbl_subtitle_alpha.setFocusable(false);
             super.add(jlbl_subtitle_alpha);
             
-            jcb_displayAlpha = new JComboBox<Object>(new String[]{Constants.ID_WHITE,
+            jcb_displayAlpha = new JComboBox(new String[]{Constants.ID_WHITE,
                     Constants.ID_DISPLAY_ALPHA});
         }
         jcb_displayAlpha.setSize(jlbl_displayAlphaTitle.getWidth()
@@ -461,7 +461,7 @@ public final class Export extends Tab {
             jlbl_subtitle_saveOptions.setFocusable(false);
             super.add(jlbl_subtitle_saveOptions);
             
-            jcb_saveFormats = new JComboBox<Object>(Constants.SAVE_FORMATS);
+            jcb_saveFormats = new JComboBox(Constants.SAVE_FORMATS);
         }
         jcb_saveFormats.setSize(jcb_displayAlpha.getSize());
         jcb_saveFormats.setLocation(jlbl_subtitle_saveOptions.getX() 
@@ -582,7 +582,7 @@ public final class Export extends Tab {
     /**
      * @return the jcb_margeTop
      */
-    public JComboBox<Object> getJcb_margeTop() {
+    public JComboBox getJcb_margeTop() {
         return jcb_margeTop;
     }
 
@@ -591,7 +591,7 @@ public final class Export extends Tab {
     /**
      * @return the jcb_margeLeft
      */
-    public JComboBox<Object> getJcb_margeLeft() {
+    public JComboBox getJcb_margeLeft() {
         return jcb_margeLeft;
     }
 
@@ -599,7 +599,7 @@ public final class Export extends Tab {
     /**
      * @return the jcb_margeRight
      */
-    public JComboBox<Object> getJcb_margeRight() {
+    public JComboBox getJcb_margeRight() {
         return jcb_margeRight;
     }
 
@@ -607,7 +607,7 @@ public final class Export extends Tab {
     /**
      * @return the jcb_margeBottom
      */
-    public JComboBox<Object> getJcb_margeBottom() {
+    public JComboBox getJcb_margeBottom() {
         return jcb_margeBottom;
     }
 
@@ -615,7 +615,7 @@ public final class Export extends Tab {
     /**
      * @return the jcb_displayAlpha
      */
-    public JComboBox<Object> getJcb_displayAlpha() {
+    public JComboBox getJcb_displayAlpha() {
         return jcb_displayAlpha;
     }
 
@@ -623,7 +623,7 @@ public final class Export extends Tab {
     /**
      * @return the jcb_saveFormats
      */
-    public JComboBox<Object> getJcb_saveFormats() {
+    public JComboBox getJcb_saveFormats() {
         return jcb_saveFormats;
     }
 

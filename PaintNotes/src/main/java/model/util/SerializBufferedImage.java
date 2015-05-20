@@ -1,7 +1,9 @@
 package model.util;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+
 import model.settings.Status;
 
 
@@ -148,6 +150,12 @@ public class SerializBufferedImage implements Serializable {
 		return getContent().getWidth();
 	}
 
+	
+	
+	public final int getGrayifiedValue(final int _x, final int _y) {
+		Color c = new Color(bi_content.getRGB(_x, _y));
+		return (c.getRed() + c.getGreen() + c.getBlue()) / 3;
+	}
 
 
 	/**

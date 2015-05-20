@@ -124,8 +124,8 @@ public class BorderThread extends Thread {
         BufferedImage bi_neutral = Util.getEmptyBISelection();
         
         //perform border movement 
-        if (!(System.getProperties().getProperty("os.name")
-        		.contains("Windows"))) {
+//        if (!(System.getProperties().getProperty("os.name")
+//        		.contains("Windows"))) {
 	        while (!isInterrupted()) {
 	
 	            if (operationRectangle) {
@@ -144,7 +144,7 @@ public class BorderThread extends Thread {
 	            } catch (InterruptedException e) {
 	                interrupt();
 	            }
-	        }
+//	        }
         }
     }
     
@@ -202,11 +202,11 @@ public class BorderThread extends Thread {
         indexColor = indexBackup;
         indexStep += ViewSettings.SELECTION_BORDER_MOVE_SPEED_PX;
 
-        tab.repaint();
+//        tab.repaint();
         page.getJlbl_selectionBG().setIcon(
         		new ImageIcon(
                 _bi_neutral));
-        tab.revalidate();
+//        tab.revalidate();
         
         return indexStep;
         
@@ -237,6 +237,7 @@ public class BorderThread extends Thread {
                     new javax.swing.ImageIcon(bi_transformed));
             //color shift.
             pen_curr.resetCurrentBorderValue();
+            
             
         }
     

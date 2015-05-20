@@ -65,7 +65,10 @@ public class CTabs implements TabbedListener {
 				ViewSettings.getView_bounds_page().getSize().width,
 				ViewSettings.getView_bounds_page().getSize().height,
 				BufferedImage.TYPE_INT_ARGB));
-        
+		cp.setBi_preprint(new BufferedImage(
+				ViewSettings.getView_bounds_page().getSize().width,
+				ViewSettings.getView_bounds_page().getSize().height,
+				BufferedImage.TYPE_INT_ARGB));
 
 		//apply new size in view
         //takes some time and repaints the image.
@@ -132,6 +135,11 @@ public class CTabs implements TabbedListener {
 				ViewSettings.getView_bounds_page().getSize().height,
 				BufferedImage.TYPE_INT_ARGB));
 		cp.getControlPic().setBi(new BufferedImage(
+				ViewSettings.getView_bounds_page().getSize().width,
+				ViewSettings.getView_bounds_page().getSize().height,
+				BufferedImage.TYPE_INT_ARGB));
+		
+		cp.setBi_preprint(new BufferedImage(
 				ViewSettings.getView_bounds_page().getSize().width,
 				ViewSettings.getView_bounds_page().getSize().height,
 				BufferedImage.TYPE_INT_ARGB));

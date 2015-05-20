@@ -7,6 +7,10 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
+import javax.swing.JFrame;
+
+import start.test.BufferedViewer;
 import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
 import model.settings.Error;
@@ -666,6 +670,235 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 		}
 
         return null;
+	}
+	
+	
+	
+	
+	/**
+	 * Applies the hysteresis threshold to the contained BufferedImage.
+	 * 
+	 */
+	public final void borderHysteresisThreshold(
+			final int _lower,
+			final int _upper) {
+		
+		BufferedImage bi_result = new BufferedImage(bi_image.getWidth(),
+				bi_image.getHeight(), BufferedImage.TYPE_INT_RGB);
+		
+		double[][][] borderInfo1 = new double[bi_result.getWidth()][bi_result.getHeight()][2];
+		
+		/*
+		 * Step 1: Detection of border pixel.
+		 */
+		
+		for (int x = 1; x < bi_image.getWidth() - 1; x++) {
+			for (int y = 1; y < bi_image.getHeight() - 1; y++) {
+				
+				//fold with 
+				//
+				//	-1/4	0	1/4
+				//	-2/4	0	2/4
+				//	-1/4	0	1/4
+				int magnX = (
+						-bi_image.getGrayifiedValue(x - 1, y - 1) / 3 
+						- bi_image.getGrayifiedValue(x - 1, y) / 3 
+						- bi_image.getGrayifiedValue(x - 1, y + 1) / 3 
+
+						+ bi_image.getGrayifiedValue(x + 1, y - 1) / 3  
+						+ bi_image.getGrayifiedValue(x + 1, y) / 3
+						+ bi_image.getGrayifiedValue(x + 1, y + 1) / 3);
+				
+				
+
+				int magnY = (
+						-bi_image.getGrayifiedValue(x - 1, y - 1) / 3 
+						- bi_image.getGrayifiedValue(x - 1, y) / 3 
+						- bi_image.getGrayifiedValue(x - 1, y + 1) / 3 
+
+						+ bi_image.getGrayifiedValue(x + 1, y - 1) / 3  
+						+ bi_image.getGrayifiedValue(x + 1, y) / 3
+						+ bi_image.getGrayifiedValue(x + 1, y + 1) / 3);
+
+				
+				
+				//direction
+				double direction;
+				if (magnY != 0 && magnX != 0) {
+					direction = Math.atan(magnX / magnY);
+				} else if (magnY == 0) {
+					direction = Math.atan(magnX / 0.01);
+				} else {
+					direction = Math.atan(0);
+				}
+				double magnitude = Math.sqrt(magnX * magnX + magnY * magnY);
+				
+				magnY = Math.abs(magnY);
+				magnX = Math.abs(magnX);
+
+				borderInfo1[x][y][0] = magnitude;
+				borderInfo1[x][y][1] = direction;
+			}
+		}
+		
+		
+		
+		//non-maximum-suppression
+
+		double[][][] borderInfo2 = new double[bi_result.getWidth()][bi_result.getHeight()][2];
+
+		for (int x = 1; x < bi_image.getWidth() - 1; x++) {
+			for (int y = 1; y < bi_image.getHeight() - 1; y++) {
+				//nY
+				// 
+				// |alpha
+				// |
+				// --------->nX
+				// arctan(nX / ny) = Winkel(alpha). gegenkathete / ankathete
+				//find neighbors of the pixel (x, y) by direction:
+				double direction = borderInfo1[x][y][1];
+
+				int nX = 1;
+				int nY = 1;
+				if (direction < 0)
+					nX = -1;
+				else if (direction > 0)
+					nX = 1;
+				
+				
+				
+				if (direction >= 0 && direction <= Math.PI / 4) {
+					nX = 1;
+					nY = 0;
+				} else if (direction >=  Math.PI / 4 && direction <= Math.PI * 2 / 4) {
+					nX = 1;
+					nY = 1;
+				} else if (direction >=  -Math.PI / 4 && direction <= 0) {
+					nX = 0; 
+					nY = 1;
+				} else {
+					
+				}
+				// - pi / 2 ; + pi / 2
+				System.out.println();
+				
+				if (Math.abs(borderInfo1[x][y][0]) >= Math.abs(borderInfo1[x + nX][y + nY][0])
+						&& Math.abs(borderInfo1[x][y][0]) >= Math.abs(borderInfo1[x + nX][y + nY][0])) {
+					borderInfo2[x][y][0] = borderInfo1[x][y][0];
+					borderInfo2[x][y][1] = borderInfo1[x][y][1];
+				}
+			}
+		}
+		
+		
+		//hysteresis-threshold
+		for (int x = 1; x < bi_image.getWidth() - 1; x++) {
+			for (int y = 1; y < bi_image.getHeight() - 1; y++) {
+				if (borderInfo1[x][y][0] >= _lower){
+					bi_result.setRGB(x, y, rgb_potential);
+				} else {
+					bi_result.setRGB(x, y, rgb_noBorder);
+				}
+			}
+		}
+
+		for (int x = 1; x < bi_image.getWidth() - 1; x++) {
+			for (int y = 1; y < bi_image.getHeight() - 1; y++) {
+				if (borderInfo1[x][y][0] >= _upper){
+					followEdge(x, y, bi_result);
+				}
+			}
+		}
+		for (int x = 1; x < bi_image.getWidth() - 1; x++) {
+			for (int y = 1; y < bi_image.getHeight() - 1; y++) {
+				if (bi_result.getRGB(x, y) == rgb_potential){
+					bi_result.setRGB(x, y, rgb_noBorder);
+				} else if (bi_result.getRGB(x, y) == rgb_border) {
+					bi_result.setRGB(x,  y, bi_image.getContent().getRGB(x, y));
+				}
+			}
+		}
+		
+		
+		BufferedViewer.show(bi_result);
+		BufferedViewer.getInstance().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+	}
+	
+	
+	public final BufferedImage hysteresisThreshold(
+			final int _lower,
+			final int _upper) {
+
+		BufferedImage bi_result = new BufferedImage(bi_image.getWidth(),
+				bi_image.getHeight(), BufferedImage.TYPE_INT_RGB);
+		
+		//hysteresis-threshold
+		for (int x = 1; x < bi_image.getWidth() - 1; x++) {
+			for (int y = 1; y < bi_image.getHeight() - 1; y++) {
+				if (-bi_image.getGrayifiedValue(x, y) >= -_lower){
+					bi_result.setRGB(x, y, rgb_potential);
+				} else {
+					bi_result.setRGB(x, y, rgb_noBorder);
+				}
+			}
+		}
+
+		for (int x = 1; x < bi_image.getWidth() - 1; x++) {
+			for (int y = 1; y < bi_image.getHeight() - 1; y++) {
+				if (-bi_image.getGrayifiedValue(x, y) >= -_upper){
+					followEdge(x, y, bi_result);
+				}
+			}
+		}
+		for (int x = 1; x < bi_image.getWidth() - 1; x++) {
+			for (int y = 1; y < bi_image.getHeight() - 1; y++) {
+				if (bi_result.getRGB(x, y) == rgb_potential){
+					bi_result.setRGB(x, y, rgb_noBorder);
+				} else if (bi_result.getRGB(x, y) == rgb_border) {
+					bi_result.setRGB(x,  y, bi_image.getContent().getRGB(x, y));
+				}
+			}
+		}
+		
+		return bi_result;
+		
+	}
+
+	private final int rgb_border = new Color(0, 0, 0).getRGB(),
+			rgb_potential = new Color(255, 0, 0).getRGB(),
+			rgb_noBorder = new Color(255, 255, 255).getRGB();
+	
+	
+	private void followEdge(final int _x, final int _y, final BufferedImage _bi) {
+
+		_bi.setRGB(_x, _y, rgb_border);
+		
+		for (int dX = 1; dX <= 1; dX++) {
+			for (int dY = 1; dY <= 1; dY++) {
+				if (!(dX == dY && dY == 1)) {
+					int x = _x + dX; 
+					int y = _y + dY;
+					
+					if (x >= 0 && y >= 0 && x < _bi.getWidth() && y < _bi.getHeight()) {
+						if (_bi.getRGB(x, y) == rgb_potential) {
+							followEdge(x, y, _bi);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	public static void main(String [] args) {
+		final String path = "/Users/juli/Desktop/";
+		final String fileName = "file";
+		final String fileExtension = ".jpg";
+		BufferedImage bis = Utils.resizeImage(900, 1200, path + fileName + fileExtension);
+		//BufferedViewer.show(bis);
+		Picture.saveBufferedImage(path + fileName + "altered.", new PaintObjectImage(0, bis, null).hysteresisThreshold(15, 75));
+		
 	}
 
 	

@@ -29,7 +29,7 @@ public final class Look extends Tab {
     /**
      * The JCheckBox for background of new Image.
      */
-    private JCheckBox jcb_raster, jcb_lines, jcb_nothing;
+    private JCheckBox jcb_raster, jcb_lines, jcb_nothing, jcb_borderEnabled;
     
     /**
      * The JCombo boxes for the size of the border.
@@ -54,7 +54,7 @@ public final class Look extends Tab {
     /**
      * Final values for the size and location.
      */
-    private final int buttonWidth = 200;
+    private final int buttonWidth = 275;
     
     /**
      * Constructor: Initializes and uses the controller class for this tab for
@@ -111,7 +111,7 @@ public final class Look extends Tab {
     	                -  ViewSettings.getDistanceBetweenItems() 
     	                - ViewSettings.getView_heightTB()
     	                / ViewSettings.TABBED_PANE_TITLE_PROPORTION_HEIGHT)
-    			/ (2 + 2)
+    			/ (2 + 1)
     			- 2 * ViewSettings.getDistanceBetweenItems();
     	
     	if (_paint) {
@@ -121,7 +121,7 @@ public final class Look extends Tab {
         jlbl_backgroundTitle.setBounds(
         		ViewSettings.getDistanceBetweenItems(),
                 ViewSettings.getDistanceBetweenItems(), 
-                buttonWidth, buttonHeight);
+                buttonWidth / 2, buttonHeight);
         if (_paint) {
         	jlbl_backgroundTitle.setFont(ViewSettings.GENERAL_FONT_HEADLINE_2);
             jlbl_backgroundTitle.setFocusable(false);
@@ -133,11 +133,15 @@ public final class Look extends Tab {
             jcb_raster.addActionListener(_clook);	
         }
         
-        jcb_raster.setLocation(jlbl_backgroundTitle.getX(), 
-                ViewSettings.getDistanceBetweenItems()
-                + jlbl_backgroundTitle.getY()
-                + jlbl_backgroundTitle.getHeight());
-        jcb_raster.setSize(buttonWidth * 2 / (2 + 1), buttonHeight);
+        jcb_raster.setLocation(
+        		jlbl_backgroundTitle.getX() 
+        		+ ViewSettings.getDistanceBetweenItems()
+        		+ jlbl_backgroundTitle.getWidth(),
+                jlbl_backgroundTitle.getY()
+//                + ViewSettings.getDistanceBetweenItems()
+//                + jlbl_backgroundTitle.getHeight()
+                );
+        jcb_raster.setSize(buttonWidth * 2 / (2 + 2), buttonHeight);
         
         if (_paint) {
 
@@ -174,12 +178,12 @@ public final class Look extends Tab {
             super.add(jcb_nothing);
 
 
-            jlbl_borderTitle = new MLabel("Border [percent]:");
+            jlbl_borderTitle = new MLabel("Border:");
         }
         jlbl_borderTitle.setBounds(ViewSettings.getDistanceBetweenItems(), 
                 jcb_nothing.getY() + jcb_nothing.getHeight() 
                 + ViewSettings.getDistanceBetweenItems(), 
-                buttonWidth, buttonHeight);
+                buttonWidth / 2, buttonHeight);
         
         if (_paint) {
 
@@ -188,7 +192,29 @@ public final class Look extends Tab {
             super.add(jlbl_borderTitle);
             //top
             jlbl_subtitle_borderTop = new MLabel("Top");
+
+            jcb_borderEnabled = new JCheckBox("enabled");
+            jcb_borderEnabled.setFocusable(false);
+            jcb_borderEnabled.setOpaque(false);
+            jcb_borderEnabled.addActionListener(_clook);	
+
+            jcb_borderEnabled.setFont(ViewSettings.GENERAL_FONT_ITEM);
+            jcb_borderEnabled.setSelected(true);
+            super.add(jcb_borderEnabled);
         }
+        jcb_borderEnabled.setLocation(
+        		jlbl_borderTitle.getX() 
+        		+ ViewSettings.getDistanceBetweenItems()
+        		+ jlbl_borderTitle.getWidth(),
+        		jlbl_borderTitle.getY()
+//                + ViewSettings.getDistanceBetweenItems()
+//                + jlbl_backgroundTitle.getHeight()
+                );
+        jcb_borderEnabled.setSize(buttonWidth * 2 / (2 + 2), buttonHeight);
+        
+        
+        
+        
         jlbl_subtitle_borderTop.setSize(buttonWidth / (2 + 2), buttonHeight);
         jlbl_subtitle_borderTop.setLocation(jlbl_borderTitle.getX(), 
                 ViewSettings.getDistanceBetweenItems() + jlbl_borderTitle.getY()
@@ -201,7 +227,7 @@ public final class Look extends Tab {
             jlbl_subtitle_borderTop.setFocusable(false);
             super.add(jlbl_subtitle_borderTop);
             
-            jcb_margeTop = new JComboBox(Constants.getBorderPercentagesTitle());
+            jcb_margeTop = new JComboBox<Object>(Constants.getBorderPercentagesTitle());
         }
         jcb_margeTop.setSize(jlbl_subtitle_borderTop.getSize());
         jcb_margeTop.setLocation(jlbl_subtitle_borderTop.getX() 
@@ -230,7 +256,7 @@ public final class Look extends Tab {
             super.add(jlbl_subtitle_borderBottom);
           
             //bottom
-            jcb_margeBottom = new JComboBox(
+            jcb_margeBottom = new JComboBox<Object>(
             		Constants.getBorderPercentagesTitle());
         }
         jcb_margeBottom.setSize(jlbl_subtitle_borderTop.getSize());
@@ -259,7 +285,7 @@ public final class Look extends Tab {
             jlbl_subtitle_borderLeft.setFocusable(false);
             super.add(jlbl_subtitle_borderLeft);
 
-            jcb_margeLeft = new JComboBox(
+            jcb_margeLeft = new JComboBox<Object>(
             		Constants.getBorderPercentagesTitle());
         }
         
@@ -545,5 +571,52 @@ public final class Look extends Tab {
 	public void initializeHelpListeners(JFrame _jf, Help _c) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+
+
+	public JCheckBox getJcb_borderEnabled() {
+		return jcb_borderEnabled;
+	}
+
+
+
+
+	/**
+	 * @return the jlbl_subtitle_borderTop
+	 */
+	public MLabel getJlbl_subtitle_borderTop() {
+		return jlbl_subtitle_borderTop;
+	}
+
+
+
+
+	/**
+	 * @return the jlbl_subtitle_borderBottom
+	 */
+	public MLabel getJlbl_subtitle_borderBottom() {
+		return jlbl_subtitle_borderBottom;
+	}
+
+
+
+
+	/**
+	 * @return the jlbl_subtitle_borderLeft
+	 */
+	public MLabel getJlbl_subtitle_borderLeft() {
+		return jlbl_subtitle_borderLeft;
+	}
+
+
+
+
+	/**
+	 * @return the jlbl_subtitle_borderRight
+	 */
+	public MLabel getJlbl_subtitle_borderRight() {
+		return jlbl_subtitle_borderRight;
 	}
 }

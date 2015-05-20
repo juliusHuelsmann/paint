@@ -202,11 +202,11 @@ public class BorderThread extends Thread {
         indexColor = indexBackup;
         indexStep += ViewSettings.SELECTION_BORDER_MOVE_SPEED_PX;
 
-        tab.repaint();
+//        tab.repaint();
         page.getJlbl_selectionBG().setIcon(
         		new ImageIcon(
                 _bi_neutral));
-        tab.revalidate();
+//        tab.revalidate();
         
         return indexStep;
         
@@ -237,6 +237,7 @@ public class BorderThread extends Thread {
                     new javax.swing.ImageIcon(bi_transformed));
             //color shift.
             pen_curr.resetCurrentBorderValue();
+            
             
         }
     

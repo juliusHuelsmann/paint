@@ -153,9 +153,12 @@ public class Item1Menu extends MPanel {
 
 	        //initialize MButton
 	        tb_open = new VButtonWrapper(this);
-	        tb_open.setContentAreaFilled(false);
 	        tb_open.addMouseListener(CItem.getInstance());
+	        tb_open.setContentAreaFilled(false);
 	        tb_open.setBorder(null);
+	        
+	        //for mac os it is not possible to set the border to be null.
+	        tb_open.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0, 0)));
 	        tb_open.setFocusable(false);
 	        tb_open.setOpaque(false);
 	        super.add(tb_open);

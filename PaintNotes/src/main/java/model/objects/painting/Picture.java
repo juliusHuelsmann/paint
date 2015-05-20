@@ -1060,6 +1060,27 @@ public final class Picture implements Serializable {
 		}
 	}
 
+
+	/**
+	 * save BufferedImage as png file.
+	 * 
+	 * @param _wsLoc
+	 *            the path of the location.
+	 *            
+	 *            @param _bi the BufferedImage
+	 */
+	public static void saveBufferedImage(final String _wsLoc,
+			final BufferedImage bi) {
+
+		try {
+
+				ImageIO.write(bi, "png",
+						new File(_wsLoc + "png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * save the picture.
 	 * @return the BufferedImage.

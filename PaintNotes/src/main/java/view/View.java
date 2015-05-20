@@ -204,6 +204,7 @@ import control.util.WindowMover;
         page.setVisible(true);
         
 //        setResizable(false);
+        setResizable(true);
         
         //debug for testing view components.
         //writes analyse file to analyse.png

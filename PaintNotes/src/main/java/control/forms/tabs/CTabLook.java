@@ -62,61 +62,16 @@ public final class CTabLook implements ActionListener {
 		        	setBackgroundNone();
 		        } else if (_event.getSource().equals(
 		                getLook().getJcb_margeBottom())) {
-		            
-		            String str_selected = getLook().getJcb_margeBottom()
-		                    .getSelectedItem().toString().replace("%", "");
-		            
-		            try {
-	
-		                int int_selected = Integer.parseInt(str_selected);
-		                Status.setBorderBottomPercent(int_selected);
-		            } catch (Exception e) {
-		                Status.getLogger().severe(
-		                        "error: change border size: wrong input");
-		            }
+		        	applyMargeBottom();
 		        } else if (_event.getSource().equals(
 		                getLook().getJcb_margeLeft())) {
-		            
-	
-		            String str_selected = getLook().getJcb_margeLeft()
-		                    .getSelectedItem().toString().replace("%", "");
-		            
-		            try {
-	
-		                int int_selected = Integer.parseInt(str_selected);
-		                Status.setBorderLeftPercent(int_selected);
-		            } catch (Exception e) {
-		                Status.getLogger().severe(
-		                        "error: change border size: wrong input");
-		            }
+		        	applyMargeLeft();
 		        } else if (_event.getSource().equals(
 		                getLook().getJcb_margeTop())) {
-	
-		            String str_selected = getLook().getJcb_margeTop()
-		                    .getSelectedItem().toString().replace("%", "");
-		            
-		            try {
-	
-		                int int_selected = Integer.parseInt(str_selected);
-		                Status.setBorderTopPercent(int_selected);
-		            } catch (Exception e) {
-		                Status.getLogger().severe(
-		                        "error: change border size: wrong input");
-		            }
+		        	applyMargeTop();
 		        } else if (_event.getSource().equals(
 		                getLook().getJcb_margeRight())) {
-	
-		            String str_selected = getLook().getJcb_margeRight()
-		                    .getSelectedItem().toString().replace("%", "");
-		            
-		            try {
-	
-		                int int_selected = Integer.parseInt(str_selected);
-		                Status.setBorderRightPercent(int_selected);
-		            } catch (Exception e) {
-		                Status.getLogger().severe(
-		                        "error: change border size: wrong input");
-		            }
+		        	applyMargeRight();
 		        } else if (_event.getSource().equals(getLook()
 		                .getJcb_displayAlpha())) {
 	
@@ -130,10 +85,50 @@ public final class CTabLook implements ActionListener {
 		            	getPage().flip();
 		            }
 		            
+		        } else if (_event.getSource().equals(getLook()
+		        		.getJcb_borderEnabled())) {
+		        	if (!getLook().getJcb_borderEnabled().isSelected()) {
+		        		
+		        		//do not display the explicit border settings anymore.
+		        		setBorderVisible(false);
+		        		
+		        		//apply zero-border
+		                Status.setBorderRightPercent(0);
+		                Status.setBorderLeftPercent(0);
+		                Status.setBorderTopPercent(0);
+		                Status.setBorderBottomPercent(0);
+		        	} else {
+		        		
+		        		//(re-) display the border settings.
+		        		setBorderVisible(true);
+		        		
+		        		//apply the settings that are enabled by the buttons that 
+		        		// have just been set visible.
+		        		applyMargeRight();
+		        		applyMargeLeft();
+		        		applyMargeTop();
+		        		applyMargeBottom();
+		        	}
 		        }
 		        getControlPicture().refreshPaint();
 		        
 		    }
+	}
+	
+	
+	private void setBorderVisible(boolean _visible) {
+
+
+		getLook().getJcb_margeBottom().setVisible(_visible);
+		getLook().getJcb_margeTop().setVisible(_visible);
+		getLook().getJcb_margeLeft().setVisible(_visible);
+		getLook().getJcb_margeRight().setVisible(_visible);
+
+		getLook().getJlbl_subtitle_borderBottom().setVisible(_visible);
+		getLook().getJlbl_subtitle_borderTop().setVisible(_visible);
+		getLook().getJlbl_subtitle_borderLeft().setVisible(_visible);
+		getLook().getJlbl_subtitle_borderRight().setVisible(_visible);
+	
 	}
 	
 
@@ -167,6 +162,77 @@ public final class CTabLook implements ActionListener {
         getLook().getJcb_margeLeft().setSelectedIndex(0);
         getLook().getJcb_margeTop().setSelectedIndex(0);
         getLook().getJcb_margeBottom().setSelectedIndex(0);
+	}
+	
+	
+
+	public void applyMargeRight() {
+
+        String str_selected = getLook().getJcb_margeRight()
+                .getSelectedItem().toString().replace("%", "");
+        
+        try {
+
+            int int_selected = Integer.parseInt(str_selected);
+            Status.setBorderRightPercent(int_selected);
+        } catch (Exception e) {
+            Status.getLogger().severe(
+                    "error: change border size: wrong input");
+        }
+	}
+	
+	
+	public void applyMargeLeft() {
+
+        
+		
+        String str_selected = getLook().getJcb_margeLeft()
+                .getSelectedItem().toString().replace("%", "");
+        
+        try {
+
+            int int_selected = Integer.parseInt(str_selected);
+            Status.setBorderLeftPercent(int_selected);
+        } catch (Exception e) {
+            Status.getLogger().severe(
+                    "error: change border size: wrong input");
+        }
+    
+	}
+	
+	
+	public void applyMargeTop() {
+
+		
+        String str_selected = getLook().getJcb_margeTop()
+                .getSelectedItem().toString().replace("%", "");
+        
+        try {
+
+            int int_selected = Integer.parseInt(str_selected);
+            Status.setBorderTopPercent(int_selected);
+        } catch (Exception e) {
+            Status.getLogger().severe(
+                    "error: change border size: wrong input");
+        }
+    
+	}
+	
+	public void applyMargeBottom() {
+
+        
+        String str_selected = getLook().getJcb_margeBottom()
+                .getSelectedItem().toString().replace("%", "");
+        
+        try {
+
+            int int_selected = Integer.parseInt(str_selected);
+            Status.setBorderBottomPercent(int_selected);
+        } catch (Exception e) {
+            Status.getLogger().severe(
+                    "error: change border size: wrong input");
+        }
+    
 	}
 
 	/**

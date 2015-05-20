@@ -22,7 +22,8 @@ import model.util.paint.Utils;
 
 
 /**
- * 
+ * PaintObject for images.
+ *
  * @author Julius Huelsmann
  * @version %I%, %U%
  */

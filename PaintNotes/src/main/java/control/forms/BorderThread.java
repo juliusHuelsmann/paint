@@ -124,8 +124,8 @@ public class BorderThread extends Thread {
         BufferedImage bi_neutral = Util.getEmptyBISelection();
         
         //perform border movement 
-        if (!(System.getProperties().getProperty("os.name")
-        		.contains("Windows"))) {
+//        if (!(System.getProperties().getProperty("os.name")
+//        		.contains("Windows"))) {
 	        while (!isInterrupted()) {
 	
 	            if (operationRectangle) {
@@ -144,7 +144,7 @@ public class BorderThread extends Thread {
 	            } catch (InterruptedException e) {
 	                interrupt();
 	            }
-	        }
+//	        }
         }
     }
     

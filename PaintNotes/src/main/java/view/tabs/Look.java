@@ -34,13 +34,13 @@ public final class Look extends Tab {
     /**
      * The JCombo boxes for the size of the border.
      */
-    private JComboBox jcb_margeTop, jcb_margeLeft, jcb_margeRight,
+    private JComboBox<Object> jcb_margeTop, jcb_margeLeft, jcb_margeRight,
     jcb_margeBottom;
     
     /**
      * The JCombo box for displaying of alpha.
      */
-    private JComboBox jcb_displayAlpha;
+    private JComboBox<Object> jcb_displayAlpha;
 
     /**
      * Title JLabel.
@@ -319,7 +319,7 @@ public final class Look extends Tab {
              jlbl_subtitle_borderRight.setFocusable(false);
              super.add(jlbl_subtitle_borderRight);
              
-             jcb_margeRight = new JComboBox(
+             jcb_margeRight = new JComboBox<Object>(
             		 Constants.getBorderPercentagesTitle());
         }
        
@@ -450,9 +450,9 @@ public final class Look extends Tab {
     	if (_paint) {
 
             //right
-            jlbl_displayAlphaTitle = new MLabel("Visualization");	
+            jlbl_displayAlphaTitle = new MLabel("Ohter:");	
     	}
-        jlbl_displayAlphaTitle.setSize(buttonWidth, buttonHeight);
+        jlbl_displayAlphaTitle.setSize(buttonWidth * 3 / 4, buttonHeight);
         jlbl_displayAlphaTitle.setLocation(_x
                 + ViewSettings.getDistanceBetweenItems(),
                 jlbl_backgroundTitle.getY());
@@ -463,7 +463,7 @@ public final class Look extends Tab {
             jlbl_displayAlphaTitle.setFocusable(false);
             super.add(jlbl_displayAlphaTitle);
             
-            jlbl_subtitle_alpha = new MLabel("of pure alpha");
+            jlbl_subtitle_alpha = new MLabel("alpha");
         }
         jlbl_subtitle_alpha.setSize(jlbl_subtitle_borderTop.getSize());
         jlbl_subtitle_alpha.setLocation(jlbl_displayAlphaTitle.getX(),
@@ -477,10 +477,13 @@ public final class Look extends Tab {
             jlbl_subtitle_alpha.setFocusable(false);
             super.add(jlbl_subtitle_alpha);
             
-            jcb_displayAlpha = new JComboBox(new String[]{Constants.ID_WHITE,
+            jcb_displayAlpha = new JComboBox<Object>(new String[]{Constants.ID_WHITE,
                     Constants.ID_DISPLAY_ALPHA});
         }
-        jcb_displayAlpha.setSize(jlbl_subtitle_borderTop.getSize());
+        jcb_displayAlpha.setSize(jlbl_displayAlphaTitle.getWidth()
+        		- jlbl_subtitle_borderTop.getWidth()
+        		- ViewSettings.getDistanceBetweenItems(),
+        		buttonHeight);
         jcb_displayAlpha.setLocation(jlbl_subtitle_alpha.getX() 
                 + jlbl_subtitle_alpha.getWidth() 
                 + ViewSettings.getDistanceBetweenItems(),
@@ -527,7 +530,7 @@ public final class Look extends Tab {
     /**
      * @return the jcb_margeTop
      */
-    public JComboBox getJcb_margeTop() {
+    public JComboBox<Object> getJcb_margeTop() {
         return jcb_margeTop;
     }
 
@@ -536,7 +539,7 @@ public final class Look extends Tab {
     /**
      * @return the jcb_margeLeft
      */
-    public JComboBox getJcb_margeLeft() {
+    public JComboBox<Object> getJcb_margeLeft() {
         return jcb_margeLeft;
     }
 
@@ -544,7 +547,7 @@ public final class Look extends Tab {
     /**
      * @return the jcb_margeRight
      */
-    public JComboBox getJcb_margeRight() {
+    public JComboBox<Object> getJcb_margeRight() {
         return jcb_margeRight;
     }
 
@@ -552,7 +555,7 @@ public final class Look extends Tab {
     /**
      * @return the jcb_margeBottom
      */
-    public JComboBox getJcb_margeBottom() {
+    public JComboBox<Object> getJcb_margeBottom() {
         return jcb_margeBottom;
     }
 
@@ -560,7 +563,7 @@ public final class Look extends Tab {
     /**
      * @return the jcb_displayAlpha
      */
-    public JComboBox getJcb_displayAlpha() {
+    public JComboBox<Object> getJcb_displayAlpha() {
         return jcb_displayAlpha;
     }
 

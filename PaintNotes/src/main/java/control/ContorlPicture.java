@@ -452,7 +452,7 @@ public class ContorlPicture implements PaintListener {
 		//close old border thread.
 		if (thrd_moveBorder != null) {
 			thrd_moveBorder.interrupt();
-			getTabs().repaint();
+//			getTabs().repaint();
 		}
 	}
 	

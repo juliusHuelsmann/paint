@@ -2,7 +2,9 @@ package control.forms.tabs;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import view.forms.Page;
+import model.settings.Status;
 import model.settings.ViewSettings;
 import control.ControlPaint;
 import control.interfaces.MoveEvent;
@@ -85,6 +87,18 @@ public class CTabs implements TabbedListener {
 				+ "time passed" + (timetoclose1 - timetoclose0) 
 				/ divisorToSeconds);
 
+        
+        //check whether location is okay.
+		final int d = (int) (ViewSettings.getView_bounds_page().getHeight() 
+        		/ Status.getImageShowSize().height 
+        		* Status.getImageSize().height
+        		- page.getJlbl_painting().getLocation().getY()
+        		- Status.getImageSize().height);
+        if (d > 0) {
+        	page.getJlbl_painting().setLocation(
+        			(int) page.getJlbl_painting().getLocation().getX(),
+        			(int) page.getJlbl_painting().getLocation().getY() + d);
+        } 
 	}
 
 	
@@ -93,9 +107,10 @@ public class CTabs implements TabbedListener {
 	 * {@inheritDoc}
 	 */
 	public final void moveListener(final MoveEvent _event) {
-        cp.getView().getPage().setLocation(
+		
+		Page page = cp.getView().getPage();
+        page.setLocation(
         		_event.getPnt_bottomLocation());
-
 	}
 
 	
@@ -130,5 +145,6 @@ public class CTabs implements TabbedListener {
         page.setSize(
         		(int) ViewSettings.getView_bounds_page().getWidth(),
                 (int) ViewSettings.getView_bounds_page().getHeight());
+        
 	}
 }

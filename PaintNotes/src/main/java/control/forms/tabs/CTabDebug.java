@@ -149,7 +149,7 @@ public final class CTabDebug implements ActionListener {
     	                    		cp.getView().getTabs().getTab_debug());
     	                    new PictureOverview(getPaintObjects()).remove(
     	                    		po_cu);
-    	                    cp.getPicture().getLs_po_sortedByX().remove(
+    	                    cp.getPicture().getLs_po_sortedByY().remove(
     	                    		SecureList.ID_NO_PREDECESSOR);
     	                    
     	                }

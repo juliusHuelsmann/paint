@@ -312,18 +312,18 @@ public class HistoryObject implements Serializable {
 			
 			//start a new transaction
 			final int transactionID = session.getPicture()
-					.getLs_po_sortedByX().startTransaction(
+					.getLs_po_sortedByY().startTransaction(
 							"history apply add", 
 							SecureList.ID_NO_PREDECESSOR);
 
 			//add item.
-			session.getPicture().getLs_po_sortedByX().insertSorted(
+			session.getPicture().getLs_po_sortedByY().insertSorted(
 					((PaintObject) _object).clone(), 
-					((PaintObject) _object).getSnapshotBounds().x, 
+					((PaintObject) _object).getSnapshotBounds().y, 
 					transactionID);
 
 			//finish current transaction.
-			session.getPicture().getLs_po_sortedByX().finishTransaction(
+			session.getPicture().getLs_po_sortedByY().finishTransaction(
 					transactionID);
 				
 		} else {
@@ -361,7 +361,7 @@ public class HistoryObject implements Serializable {
 			final int _transactionID, final int _closedActionID, 
 			final int _elementid) {
 
-		return findInList(session.getPicture().getLs_po_sortedByX(),
+		return findInList(session.getPicture().getLs_po_sortedByY(),
 				_transactionID, _closedActionID, _elementid);
 	}
 	
@@ -431,7 +431,7 @@ public class HistoryObject implements Serializable {
 			
 			//start a new transaction
 			final int transactionID = session.getPicture()
-					.getLs_po_sortedByX().startTransaction(
+					.getLs_po_sortedByY().startTransaction(
 							"history apply remove", 
 							SecureList.ID_NO_PREDECESSOR);
 			
@@ -445,7 +445,7 @@ public class HistoryObject implements Serializable {
 			if (found) {
 				
 				//remove item.
-				session.getPicture().getLs_po_sortedByX().remove(
+				session.getPicture().getLs_po_sortedByY().remove(
 						transactionID);
 				
 			} else {
@@ -456,7 +456,7 @@ public class HistoryObject implements Serializable {
 			}
 			
 			//finish current transaction.
-			session.getPicture().getLs_po_sortedByX().finishTransaction(
+			session.getPicture().getLs_po_sortedByY().finishTransaction(
 					transactionID);
 		} else {
 			
@@ -481,7 +481,7 @@ public class HistoryObject implements Serializable {
 			
 			//start a new transaction
 			final int transactionID = session.getPicture()
-					.getLs_po_sortedByX().startTransaction(
+					.getLs_po_sortedByY().startTransaction(
 							"history apply move", 
 							SecureList.ID_NO_PREDECESSOR);
 
@@ -516,13 +516,13 @@ public class HistoryObject implements Serializable {
 					if (found) {
 						
 						//remove item.
-						session.getPicture().getLs_po_sortedByX().remove(
+						session.getPicture().getLs_po_sortedByY().remove(
 								transactionID);
 
 						//insert moved item.
-						session.getPicture().getLs_po_sortedByX().insertSorted(
+						session.getPicture().getLs_po_sortedByY().insertSorted(
 								(PaintObject) po_moved.clone(), 
-								((PaintObject) po_moved).getSnapshotBounds().x, 
+								((PaintObject) po_moved).getSnapshotBounds().y, 
 								transactionID);
 					
 					} else {
@@ -548,7 +548,7 @@ public class HistoryObject implements Serializable {
 			}
 
 			//finish current transaction.
-			session.getPicture().getLs_po_sortedByX().finishTransaction(
+			session.getPicture().getLs_po_sortedByY().finishTransaction(
 					transactionID);
 		
 			
@@ -624,7 +624,7 @@ public class HistoryObject implements Serializable {
 			
 			//start a new transaction
 			final int transactionID = session.getPicture()
-					.getLs_po_sortedByX().startTransaction(
+					.getLs_po_sortedByY().startTransaction(
 							"history apply move", 
 							SecureList.ID_NO_PREDECESSOR);
 			
@@ -648,7 +648,7 @@ public class HistoryObject implements Serializable {
 
 					//search the element which is to be removed
 					boolean found =
-							session.getPicture().getLs_po_sortedByX().find(
+							session.getPicture().getLs_po_sortedByY().find(
 							(PaintObject) sl_toRemove.getItem(), 
 							SecureList.ID_NO_PREDECESSOR);
 					
@@ -657,7 +657,7 @@ public class HistoryObject implements Serializable {
 					if (found) {
 						
 						//remove item.
-						session.getPicture().getLs_po_sortedByX().remove(
+						session.getPicture().getLs_po_sortedByY().remove(
 								transactionID);
 
 					} else {
@@ -695,7 +695,7 @@ public class HistoryObject implements Serializable {
 
 					//search the element which is to be removed
 					boolean found =
-							session.getPicture().getLs_po_sortedByX().find(
+							session.getPicture().getLs_po_sortedByY().find(
 							(PaintObject) sl_toAdd.getItem(), 
 							SecureList.ID_NO_PREDECESSOR);
 					
@@ -705,10 +705,10 @@ public class HistoryObject implements Serializable {
 						
 
 						//insert moved item.
-						session.getPicture().getLs_po_sortedByX().insertSorted(
+						session.getPicture().getLs_po_sortedByY().insertSorted(
 								((PaintObject) sl_toAdd.getItem()).clone() , 
 								((PaintObject) sl_toAdd.getItem())
-								.getSnapshotBounds().x, 
+								.getSnapshotBounds().y, 
 								transactionID);
 						
 
@@ -733,7 +733,7 @@ public class HistoryObject implements Serializable {
 
 			
 			//finish current transaction.
-			session.getPicture().getLs_po_sortedByX().finishTransaction(
+			session.getPicture().getLs_po_sortedByY().finishTransaction(
 					transactionID);
 		} else {
 			

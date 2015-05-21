@@ -77,9 +77,9 @@ public final class Picture implements Serializable {
 
 	/**
 	 * List of PaintObjects into which all non-selected paintObjects are added 
-	 * sorted by their x coordinate.
+	 * sorted by their y coordinate.
 	 */
-	private SecureListSort<PaintObject> ls_po_sortedByX;
+	private SecureListSort<PaintObject> ls_po_sortedByY;
 	
 	
 	/**
@@ -149,7 +149,7 @@ public final class Picture implements Serializable {
 	public void reload() {
 
 		// initialize both lists ordered by
-		this.ls_po_sortedByX = new SecureListSort<PaintObject>();
+		this.ls_po_sortedByY = new SecureListSort<PaintObject>();
 
 		// save current id
 		this.currentId = 0;
@@ -214,8 +214,8 @@ public final class Picture implements Serializable {
 						+ " geadded werden, obwohl das Alte nicht null ist "
 						+ "also nicht gefinished wurde.\n" 
 						+ "Programm wird beendet.");
-				ls_po_sortedByX.insertSorted(po_current,
-						po_current.getSnapshotBounds().x,
+				ls_po_sortedByY.insertSorted(po_current,
+						po_current.getSnapshotBounds().y,
 						SecureList.ID_NO_PREDECESSOR);
 			}
 
@@ -248,8 +248,8 @@ public final class Picture implements Serializable {
 					+ " geadded werden, obwohl das Alte nicht null ist "
 					+ "also nicht gefinished wurde.\n" 
 					+ "Programm wird beendet.");
-			ls_po_sortedByX.insertSorted(po_current,
-					po_current.getSnapshotBounds().x,
+			ls_po_sortedByY.insertSorted(po_current,
+					po_current.getSnapshotBounds().y,
 					SecureList.ID_NO_PREDECESSOR);
 
 		}
@@ -260,7 +260,7 @@ public final class Picture implements Serializable {
 
 			// create new PaintObject and insert it into list of
 			PaintObjectImage poi = new PaintObjectImage(currentId, _bi, this);
-			ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x,
+			ls_po_sortedByY.insertSorted(poi, poi.getSnapshotBounds().y,
 					SecureList.ID_NO_PREDECESSOR);
 
 			// increase current id
@@ -380,8 +380,8 @@ public final class Picture implements Serializable {
 						+ " geadded werden, obwohl das Alte nicht null ist "
 						+ "also nicht gefinished wurde.\n" 
 						+ "Programm wird beendet.");
-				ls_po_sortedByX.insertSorted(po_current,
-						po_current.getSnapshotBounds().x,
+				ls_po_sortedByY.insertSorted(po_current,
+						po_current.getSnapshotBounds().y,
 						SecureList.ID_NO_PREDECESSOR);
 
 			}
@@ -507,7 +507,7 @@ public final class Picture implements Serializable {
 
 		BufferedImage bi = _bi;
 		// alle die in Frage kommen neu laden.
-		if (ls_po_sortedByX == null || bi == null) {
+		if (ls_po_sortedByY == null || bi == null) {
 			bi = new BufferedImage(_width, _height, BufferedImage
 					.TYPE_INT_ARGB);
 //			return _bi;
@@ -557,8 +557,8 @@ public final class Picture implements Serializable {
 		// If the sorted list of PaintObjects has not been initialized yet,
 		// the list is empty or the given bufferedImage is equal to NULL
 		// return the given BufferedImage because there is nothing to do
-		if (ls_po_sortedByX == null 
-				|| ls_po_sortedByX.isEmpty() 
+		if (ls_po_sortedByY == null 
+				|| ls_po_sortedByY.isEmpty() 
 				|| _bi == null) {
 			return _bi;
 		}
@@ -566,10 +566,10 @@ public final class Picture implements Serializable {
 		// Start a transaction. That means that after the transaction has
 		// been terminated, the current item of the list is reset.
 		final int id_closedAction = 
-				ls_po_sortedByX.startClosedAction("repaintRectangle",
+				ls_po_sortedByY.startClosedAction("repaintRectangle",
 						SecureList.ID_NO_PREDECESSOR);
 		final int id_transaction = 
-				ls_po_sortedByX.startTransaction("repaintRectangle",
+				ls_po_sortedByY.startTransaction("repaintRectangle",
 						SecureList.ID_NO_PREDECESSOR);
 
 		// Initialize new list into which the Items are inserted that are inside
@@ -585,7 +585,7 @@ public final class Picture implements Serializable {
 		// values such as the stretch factors (which occur because of
 		// zooming in and out).
 		boolean behindRectangle = false;
-		ls_po_sortedByX.toFirst(id_closedAction, id_transaction);
+		ls_po_sortedByY.toFirst(id_closedAction, id_transaction);
 
 		/**
 		 * Stretch factor by width and height.
@@ -606,8 +606,8 @@ public final class Picture implements Serializable {
 		 * The location of the page end needed for checking roughly whether a
 		 * paintObject may be inside the repaint rectangle.
 		 */
-		final int xLocationRepaintEnd = (int) (factorW * (_x + _width)), 
-				yLocationRepaintEnd = (int) (factorH * (_y + _height));
+		final int myYLocationRepaintEnd = (int) (factorH * (_y + _height)), 
+				myXLocationRepaintEnd = (int) (factorW * (_x + _width));
 		/**
 		 * The repaint rectangle.
 		 */
@@ -619,19 +619,20 @@ public final class Picture implements Serializable {
 		 * Find out which items are inside the given repaint rectangle and
 		 * insert them into the list of paintObjects.
 		 */
-		while (!ls_po_sortedByX.isEmpty() && !ls_po_sortedByX.isBehind()
+		while (!ls_po_sortedByY.isEmpty() 
+				&& !ls_po_sortedByY.isBehind()
 				&& !behindRectangle) {
 
 			// if the current item is not initialized only perform the
 			// next operation.
-			if (ls_po_sortedByX.getItem() != null) {
+			if (ls_po_sortedByY.getItem() != null) {
 
 				// check whether the current PaintObject is in the given
 				// rectangle by the coordinate by which the list is sorted.
 				// if that is not the case the element is behind the specified
 				// rectangle.
-				if (ls_po_sortedByX.getItem().getSnapshotBounds().x 
-						<= xLocationRepaintEnd) {
+				if (ls_po_sortedByY.getItem().getSnapshotBounds().y
+						<= myYLocationRepaintEnd) {
 
 					// Firstly check whether the current PaintObject may be
 					// inside the given rectangle by the other
@@ -647,13 +648,13 @@ public final class Picture implements Serializable {
 					// but are found behind the current item inside the list
 					// (because the list can only be sorted by one parameter)
 					// Thus it is necessary to use this second if clause.
-					if (ls_po_sortedByX.getItem().getSnapshotBounds().y 
-							<= yLocationRepaintEnd
-							&& ls_po_sortedByX.getItem().isInSelectionImage(
+					if (ls_po_sortedByY.getItem().getSnapshotBounds().x
+							<= myXLocationRepaintEnd
+							&& ls_po_sortedByY.getItem().isInSelectionImage(
 									r_selection)) {
 
-						ls_poChronologic.insertSorted(ls_po_sortedByX.getItem(),
-								ls_po_sortedByX.getItem().getElementId(),
+						ls_poChronologic.insertSorted(ls_po_sortedByY.getItem(),
+								ls_po_sortedByY.getItem().getElementId(),
 								SecureList.ID_NO_PREDECESSOR);
 					}
 				} else {
@@ -672,7 +673,7 @@ public final class Picture implements Serializable {
 						"Error. Null PaintObject inside"
 								+ " the list of sorted paintObjects.");
 			}
-			ls_po_sortedByX.next(id_closedAction, id_transaction);
+			ls_po_sortedByY.next(id_closedAction, id_transaction);
 		}
 
 		/*
@@ -718,8 +719,8 @@ public final class Picture implements Serializable {
 						+ "pixel points for this operation.");
 		//finish transaction and finish closed action; adjust the current
 		//element to its state before the list transaction.
-		ls_po_sortedByX.finishTransaction(id_transaction);
-		ls_po_sortedByX.finishClosedAction(id_closedAction);
+		ls_po_sortedByY.finishTransaction(id_transaction);
+		ls_po_sortedByY.finishClosedAction(id_closedAction);
 
 		return _bi;
 	}
@@ -882,7 +883,7 @@ public final class Picture implements Serializable {
 				pc.setReady();
 			} else {
 
-				ls_po_sortedByX.insertSorted(po_current, b.x, 
+				ls_po_sortedByY.insertSorted(po_current, b.y, 
 						SecureList.ID_NO_PREDECESSOR);
 				new PictureOverview(_po).add(po_current);
 
@@ -977,10 +978,10 @@ public final class Picture implements Serializable {
 
 
     	//start transaction and closed action.
-    	final int transaction = getLs_po_sortedByX()
+    	final int transaction = ls_po_sortedByY
     			.startTransaction("paint selected bi", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = getLs_po_sortedByX()
+    	final int closedAction = ls_po_sortedByY
     			.startClosedAction("paint selected bi", 
     					SecureList.ID_NO_PREDECESSOR);
         
@@ -1009,9 +1010,9 @@ public final class Picture implements Serializable {
 		}
 
     	//close transaction and closed action.
-    	getLs_po_sortedByX().finishTransaction(
+    	ls_po_sortedByY.finishTransaction(
     			transaction);
-    	getLs_po_sortedByX().finishClosedAction(
+    	ls_po_sortedByY.finishClosedAction(
     			closedAction);
         
 		return bi;
@@ -1121,9 +1122,9 @@ public final class Picture implements Serializable {
 	 */
 	public void saveQuickPNG(final String _wsLoc) {
 
-		ls_po_sortedByX.toFirst(SecureList.ID_NO_PREDECESSOR,
+		ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR,
 				SecureList.ID_NO_PREDECESSOR);
-		Rectangle r = ls_po_sortedByX.getItem().getSnapshotBounds();
+		Rectangle r = ls_po_sortedByY.getItem().getSnapshotBounds();
 		BufferedImage bi = new BufferedImage(r.width, r.height,
 				BufferedImage.TYPE_INT_ARGB);
 
@@ -1133,7 +1134,7 @@ public final class Picture implements Serializable {
 			}
 		}
 
-		bi = ls_po_sortedByX.getItem().paint(bi, true, bi, 0, 0, null);
+		bi = ls_po_sortedByY.getItem().paint(bi, true, bi, 0, 0, null);
 
 		try {
 			ImageIO.write(bi, "png", new File(_wsLoc));
@@ -1157,19 +1158,19 @@ public final class Picture implements Serializable {
 			// it afterwards because it is not serializable. After saving 
 			// operation has been completed, the bufferedImages are 
 			// automatically loaded.
-			if (ls_po_sortedByX != null) {
-				ls_po_sortedByX.toFirst(SecureList.ID_NO_PREDECESSOR, 
+			if (ls_po_sortedByY != null) {
+				ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR, 
 						SecureList.ID_NO_PREDECESSOR);
-				while (!ls_po_sortedByX.isBehind()) {
-					if (ls_po_sortedByX.getItem() instanceof PaintObjectImage) {
-						((PaintObjectImage) ls_po_sortedByX.getItem())
+				while (!ls_po_sortedByY.isBehind()) {
+					if (ls_po_sortedByY.getItem() instanceof PaintObjectImage) {
+						((PaintObjectImage) ls_po_sortedByY.getItem())
 						.prepareForSaving();
 					}
-					ls_po_sortedByX.next(SecureList.ID_NO_PREDECESSOR, 
+					ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR, 
 						SecureList.ID_NO_PREDECESSOR);
 				}
 			}
-			oos.writeObject(ls_po_sortedByX);
+			oos.writeObject(ls_po_sortedByY);
 			oos.flush();
 			oos.close();
 			fos.close();
@@ -1179,14 +1180,14 @@ public final class Picture implements Serializable {
 
 		// re - load the bufferedImage to file (which is not serializable, thus
 		// it had to be packed for saving.
-		if (ls_po_sortedByX != null) {
-			ls_po_sortedByX.toFirst(SecureList.ID_NO_PREDECESSOR, 
+		if (ls_po_sortedByY != null) {
+			ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
-			while (!ls_po_sortedByX.isBehind()) {
-				if (ls_po_sortedByX.getItem() instanceof PaintObjectImage) {
-					((PaintObjectImage) ls_po_sortedByX.getItem()).restore();
+			while (!ls_po_sortedByY.isBehind()) {
+				if (ls_po_sortedByY.getItem() instanceof PaintObjectImage) {
+					((PaintObjectImage) ls_po_sortedByY.getItem()).restore();
 				}
-				ls_po_sortedByX.next(SecureList.ID_NO_PREDECESSOR, 
+				ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
 			}
 		}
@@ -1205,7 +1206,7 @@ public final class Picture implements Serializable {
 			@SuppressWarnings("unchecked")
 			SecureListSort<PaintObject> p = 
 			(SecureListSort<PaintObject>) oos.readObject();
-			ls_po_sortedByX = p;
+			ls_po_sortedByY = p;
 
 			oos.close();
 			fos.close();
@@ -1219,15 +1220,15 @@ public final class Picture implements Serializable {
 
 		// re - load the bufferedImage to file (which is not serializable, thus
 		// it had to be packed for saving.
-		if (ls_po_sortedByX != null) {
-			ls_po_sortedByX.toFirst(SecureList.ID_NO_PREDECESSOR, 
+		if (ls_po_sortedByY != null) {
+			ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
-			while (!ls_po_sortedByX.isBehind()) {
-				if (ls_po_sortedByX.getItem() instanceof PaintObjectImage) {
-					((PaintObjectImage) ls_po_sortedByX.getItem()).restore();
+			while (!ls_po_sortedByY.isBehind()) {
+				if (ls_po_sortedByY.getItem() instanceof PaintObjectImage) {
+					((PaintObjectImage) ls_po_sortedByY.getItem()).restore();
 				}
-				ls_po_sortedByX.getItem().setPicture(this);
-				ls_po_sortedByX.next(SecureList.ID_NO_PREDECESSOR, 
+				ls_po_sortedByY.getItem().setPicture(this);
+				ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
 			}
 		}
@@ -1238,7 +1239,7 @@ public final class Picture implements Serializable {
 	 * Empty each paintObject.
 	 */
 	public void emptyImage() {
-		ls_po_sortedByX = new SecureListSort<PaintObject>();
+		ls_po_sortedByY = new SecureListSort<PaintObject>();
 		ls_poSelected = new SecureList<PaintObject>();
 	}
 
@@ -1328,32 +1329,32 @@ public final class Picture implements Serializable {
 	 */
 	public void transformWhiteToAlpha() {
 
-		if (ls_po_sortedByX != null) {
+		if (ls_po_sortedByY != null) {
 
 
 
 	    	//start transaction and closed action.
-	    	final int transaction = getLs_po_sortedByX()
+	    	final int transaction = ls_po_sortedByY
 	    			.startTransaction("transformWhiteToAlpha", 
 	    					SecureList.ID_NO_PREDECESSOR);
-	    	final int closedAction = getLs_po_sortedByX()
+	    	final int closedAction = ls_po_sortedByY
 	    			.startClosedAction("transformWhiteToAlpha", 
 	    					SecureList.ID_NO_PREDECESSOR);
 	        
 			
-			ls_po_sortedByX.toFirst(transaction, closedAction);
-			while (!ls_po_sortedByX.isBehind() && !ls_po_sortedByX.isEmpty()) {
-				if (ls_po_sortedByX.getItem() instanceof PaintObjectImage) {
+			ls_po_sortedByY.toFirst(transaction, closedAction);
+			while (!ls_po_sortedByY.isBehind() && !ls_po_sortedByY.isEmpty()) {
+				if (ls_po_sortedByY.getItem() instanceof PaintObjectImage) {
 
-					whiteToAlpha((PaintObjectImage) ls_po_sortedByX.getItem());
+					whiteToAlpha((PaintObjectImage) ls_po_sortedByY.getItem());
 				}
-				ls_po_sortedByX.next(transaction, closedAction);
+				ls_po_sortedByY.next(transaction, closedAction);
 			}
 
 	    	//close transaction and closed action.
-	    	getLs_po_sortedByX().finishTransaction(
+	    	ls_po_sortedByY.finishTransaction(
 	    			transaction);
-	    	getLs_po_sortedByX().finishClosedAction(
+	    	ls_po_sortedByY.finishClosedAction(
 	    			closedAction);
 	        
 		}
@@ -1564,10 +1565,10 @@ public final class Picture implements Serializable {
 
 
     	//start transaction and closed action.
-    	final int transaction = getLs_po_sortedByX()
+    	final int transaction = getLs_po_sortedByY()
     			.startTransaction("stretch image", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = getLs_po_sortedByX()
+    	final int closedAction = getLs_po_sortedByY()
     			.startClosedAction("stretch image", 
     					SecureList.ID_NO_PREDECESSOR);
         
@@ -1603,9 +1604,9 @@ public final class Picture implements Serializable {
 				sl_oldMove, sl_newMoved));
 		
     	//close transaction and closed action.
-    	getLs_po_sortedByX().finishTransaction(
+    	getLs_po_sortedByY().finishTransaction(
     			transaction);
-    	getLs_po_sortedByX().finishClosedAction(
+    	getLs_po_sortedByY().finishClosedAction(
     			closedAction);
         
 	}
@@ -1683,10 +1684,10 @@ public final class Picture implements Serializable {
 		
 		// Start a transaction. That means that after the transaction has
 		// been terminated, the current item of the list is reset.
-    	final int id_transaction = getLs_po_sortedByX()
+    	final int id_transaction = ls_po_sortedByY
     			.startTransaction("paintSelected", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int id_closedAction = getLs_po_sortedByX()
+    	final int id_closedAction = ls_po_sortedByY
     			.startClosedAction("paintSelected", 
     					SecureList.ID_NO_PREDECESSOR);
 
@@ -1785,8 +1786,8 @@ public final class Picture implements Serializable {
 
 		//finish transaction and finish closed action; adjust the current
 		//element to its state before the list transaction.
-		ls_po_sortedByX.finishTransaction(id_transaction);
-		ls_po_sortedByX.finishClosedAction(id_closedAction);
+		ls_po_sortedByY.finishTransaction(id_transaction);
+		ls_po_sortedByY.finishClosedAction(id_closedAction);
 
 		_page.getJlbl_selectionPainting()
 				.setIcon(new ImageIcon(verbufft));
@@ -1844,10 +1845,10 @@ public final class Picture implements Serializable {
 		BufferedImage verbufft2 = Util.getEmptyBISelection();
 
     	//start transaction and closed action.
-    	final int transaction = getLs_po_sortedByX()
+    	final int transaction = ls_po_sortedByY
     			.startTransaction("paintSelected", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = getLs_po_sortedByX()
+    	final int closedAction = ls_po_sortedByY
     			.startClosedAction("paintSelected", 
     					SecureList.ID_NO_PREDECESSOR);
         
@@ -1894,9 +1895,9 @@ public final class Picture implements Serializable {
 
 
     	//close transaction and closed action.
-    	getLs_po_sortedByX().finishTransaction(
+    	ls_po_sortedByY.finishTransaction(
     			transaction);
-    	getLs_po_sortedByX().finishClosedAction(
+    	ls_po_sortedByY.finishClosedAction(
     			closedAction);
     	
 		_page.getJlbl_selectionPainting()
@@ -1967,10 +1968,10 @@ public final class Picture implements Serializable {
 		
 
     	//start transaction and closed action.
-    	final int transaction = getLs_po_sortedByX()
+    	final int transaction = ls_po_sortedByY
     			.startTransaction("paintSelectedInline", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = getLs_po_sortedByX()
+    	final int closedAction = ls_po_sortedByY
     			.startClosedAction("paintSelectedInline", 
     					SecureList.ID_NO_PREDECESSOR);
         
@@ -2020,9 +2021,9 @@ public final class Picture implements Serializable {
 		}
 
     	//close transaction and closed action.
-    	getLs_po_sortedByX().finishTransaction(
+    	ls_po_sortedByY.finishTransaction(
     			transaction);
-    	getLs_po_sortedByX().finishClosedAction(
+    	ls_po_sortedByY.finishClosedAction(
     			closedAction);
 		
 		_page.getJlbl_selectionPainting()
@@ -2111,13 +2112,13 @@ public final class Picture implements Serializable {
 			if (po instanceof PaintObjectWriting) {
 				PaintObjectWriting pow = (PaintObjectWriting) po;
 				new PictureOverview(_paintObjects).add(pow);
-				ls_po_sortedByX.insertSorted(pow, pow.getSnapshotBounds().x,
+				ls_po_sortedByY.insertSorted(pow, pow.getSnapshotBounds().y,
 						SecureList.ID_NO_PREDECESSOR);
 			} else if (po instanceof PaintObjectImage) {
 				PaintObjectImage poi = (PaintObjectImage) po;
 				new PictureOverview(_paintObjects).add(poi);
 
-				ls_po_sortedByX.insertSorted(poi, poi.getSnapshotBounds().x,
+				ls_po_sortedByY.insertSorted(poi, poi.getSnapshotBounds().y,
 						SecureList.ID_NO_PREDECESSOR);
 			} else if (ls_poSelected.getItem() instanceof POLine) {
 
@@ -2125,7 +2126,7 @@ public final class Picture implements Serializable {
 				p.recalculateSnapshotBounds();
 				new PictureOverview(_paintObjects).add(p);
 
-				ls_po_sortedByX.insertSorted(p, p.getSnapshotBounds().x,
+				ls_po_sortedByY.insertSorted(p, p.getSnapshotBounds().y,
 						SecureList.ID_NO_PREDECESSOR);
 			} else if (po != null) {
 				Status.getLogger().warning("unknown kind of PaintObject" + po);
@@ -2206,22 +2207,22 @@ public final class Picture implements Serializable {
 			Status.setImageShowSize(new Dimension(bi_normalSize.getWidth(),
 					bi_normalSize.getHeight()));
 
-			if (ls_po_sortedByX == null) {
+			if (ls_po_sortedByY == null) {
 				createSelected();
 			}
 
 			//create new transaction
-			int transaction = ls_po_sortedByX.startTransaction(
+			int transaction = ls_po_sortedByY.startTransaction(
 					"load", 
 					SecureList.ID_NO_PREDECESSOR);
 			
-			ls_po_sortedByX.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
+			ls_po_sortedByY.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
 			PaintObjectImage poi_current = createPOI(bi_normalSize);
-			ls_po_sortedByX.insertSorted(poi_current,
-					poi_current.getSnapshotBounds().x, transaction);
+			ls_po_sortedByY.insertSorted(poi_current,
+					poi_current.getSnapshotBounds().y, transaction);
 
 			//finish transaction and destroy list of selected items.
-			ls_po_sortedByX.finishTransaction(transaction);
+			ls_po_sortedByY.finishTransaction(transaction);
 
 		} catch (IOException e) {
 			Util.handleException(
@@ -2255,18 +2256,10 @@ public final class Picture implements Serializable {
 	/**
 	 * @return the ls_po_sortedByX
 	 */
-	public SecureListSort<PaintObject> getLs_po_sortedByX() {
-		return ls_po_sortedByX;
+	public SecureListSort<PaintObject> getLs_po_sortedByY() {
+		return ls_po_sortedByY;
 	}
 
-	/**
-	 * @param _ls_po_sortedByX
-	 *            the ls_po_sortedByX to set
-	 */
-	public void setLs_po_sortedByX(
-			final SecureListSort<PaintObject> _ls_po_sortedByX) {
-		this.ls_po_sortedByX = _ls_po_sortedByX;
-	}
 
 	/**
 	 * @return the ls_poSelected

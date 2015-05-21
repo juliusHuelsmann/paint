@@ -62,12 +62,36 @@ public final class CTabDebug implements ActionListener {
      */
     public void actionPerformed(final ActionEvent _event) {
         
-    	
+    	// Show / Hide console
     	if (_event.getSource().equals(getPaintObjects()
     			.getI1b_console().getActionCause())) {
     		view.forms.Console.getInstance().setVisible(
     				!view.forms.Console.getInstance().isVisible());
+    	} else if (
+    			//generate view diagram (analyse.png)
+    			_event.getSource().equals(getPaintObjects()
+    			.getI1b_diagramView().getActionCause())) {
+    		
+    		
+    		
+    	} else if (
+    			//generate actionLog (text file)
+    			_event.getSource().equals(getPaintObjects()
+    			.getI1b_generateLog().getActionCause())) {
+    		
+    		
+    		
+    	} else if (
+    			//Report bug
+    			_event.getSource().equals(getPaintObjects()
+    			.getI1b_reportBug().getActionCause())) {
+    		
+    		Status.getLogger().warning("not implemented yet.");
+    		
     	} else {
+    		
+    		
+    		//action for elements that represent paintObjects.
     		 Component[] c 
     	        = getPaintObjects().getJpnl_items().getComponents();
     	        

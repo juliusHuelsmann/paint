@@ -8,11 +8,9 @@ import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
 import model.settings.Constants;
 import model.settings.Status;
 import model.settings.ViewSettings;
@@ -28,7 +26,6 @@ import view.util.mega.MFrame;
 import view.util.mega.MLabel;
 import control.ControlPaint;
 import control.forms.ControlView;
-import control.interfaces.ActivityListener;
 import control.util.WindowMover;
 
 

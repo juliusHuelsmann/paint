@@ -6,8 +6,15 @@ package model.debug;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public interface Action {
+public abstract class Action {
 
+	private final long time;
+	
+	public Action(final long _time) {
+		this.time = _time;
+	}
+	
+	
 	
 	
 	/**
@@ -15,5 +22,15 @@ public interface Action {
 	 * @return		the action converted into a string which contains all the
 	 * 				necessary information on the action.
 	 */
-	String getString();
+	public abstract String getString();
+
+
+
+
+	/**
+	 * @return the time
+	 */
+	public long getTime() {
+		return time;
+	}
 }

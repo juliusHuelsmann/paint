@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import control.forms.CLoading;
 import control.forms.CNew;
@@ -428,9 +429,6 @@ MenuListener {
 			            	if (!getTabs().isMenuOpen()) {
 
 			            		removePreprint();
-//				            	BufferedImage bi = Util.getEmptyBISelection();
-//				            	getPage().getJlbl_selectionBG().setIcon(
-//				            			new ImageIcon(bi));
 				            	break;
 			            	}
 		            	}
@@ -450,8 +448,24 @@ MenuListener {
                 getPage().getJlbl_painting())) {
 
         	// the name of the action. Just used for debugging purpose.
-        	final String actionName = "Paint at Picture, index " 
-        			+ Status.getIndexName(Status.getIndexOperation());
+        	// the name of the action which contains necessary information for debugging.
+			// Just used for debugging purpose.
+        	final Point imgCoord = new Point(
+        			-(int) ((getPage().getJlbl_painting().getLocation().getX() 
+        			- _event.getX())
+        			* Status.getImageSize().width 
+        			/ Status.getImageShowSize().width
+        			),
+        			-(int) ((getPage().getJlbl_painting().getLocation().getY() 
+        			- _event.getY())
+        			* Status.getImageSize().height 
+        			/ Status.getImageShowSize().height));
+			final String actionName = "mousePressed at Picture."
+        			+ "\n\t\tActionName:\t\t"
+        			+ Status.getIndexName(Status.getIndexOperation())
+        			+ "\n\t\tMouse Key: \t\t" + _event.getButton()
+        			+ "\n\t\tCmp-Coord: \t\t" + _event.getX() + "," + _event.getY()
+        			+ "\n\t\tImg-Coord: \t\t" + imgCoord.getX() + "," + imgCoord.getY();
         	ActionManager.addUserAction(actionName, true);
         	
         	if (getTabs().isMenuOpen()) {
@@ -633,10 +647,26 @@ MenuListener {
                 getPage().getJlbl_painting())) {
 			mr_painting(_event);
 
-
-        	// the name of the action. Just used for debugging purpose.
-        	final String actionName = "Paint at Picture, index " 
-        			+ Status.getIndexName(Status.getIndexOperation());
+        	// the name of the action which contains necessary information for debugging.
+			// Just used for debugging purpose.
+        	final Point imgCoord = new Point(
+        			-(int) ((getPage().getJlbl_painting().getLocation().getX() 
+        			- _event.getX())
+        			* Status.getImageSize().width 
+        			/ Status.getImageShowSize().width
+        			),
+        			-(int) ((getPage().getJlbl_painting().getLocation().getY() 
+        			- _event.getY())
+        			* Status.getImageSize().height 
+        			/ Status.getImageShowSize().height));
+			final String actionName = "mouseReleased at Picture."
+        			+ "\n\t\tActionName:\t\t"
+        			+ Status.getIndexName(Status.getIndexOperation())
+        			+ "\n\t\tMouse Key: \t\t" + _event.getButton()
+        			+ "\n\t\tCmp-Coord: \t\t" + _event.getX() + "," + _event.getY()
+        			+ "\n\t\tImg-Coord: \t\t" + imgCoord.getX() + "," + imgCoord.getY();
+        	
+        	
             //add user action just for debugging purpose.
         	ActionManager.addUserAction(actionName, false);
 		} 

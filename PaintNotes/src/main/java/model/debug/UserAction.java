@@ -8,7 +8,7 @@ package model.debug;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class UserAction implements Action {
+public class UserAction extends Action {
 
 	
 	/**
@@ -28,7 +28,11 @@ public class UserAction implements Action {
 	 * @param _title	the title that is saved.
 	 * @param _start	whether the action is started or terminated.
 	 */
-	public UserAction(final String _title, final boolean _start) {
+	public UserAction(
+			final String _title, 
+			final boolean _start, 
+			final long _time) {
+		super(_time);
 		this.title = _title;
 		this.start = _start;
 	}
@@ -39,9 +43,9 @@ public class UserAction implements Action {
 	 */
 	public final String getString() {
 		if (start) {
-			return "UA\tStart: \t\t" + title;
+			return getTime() + "\tUA\tStart:     \t" + title;
 		} else {
-			return "UA\t finished: \t" + title;
+			return getTime() + "\tUA\tFinished: \t" + title;
 		}
 	}
 }

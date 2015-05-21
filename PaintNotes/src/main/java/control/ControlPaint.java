@@ -1866,6 +1866,10 @@ MenuListener {
                         transaction);
                 ls_toInsert.next();
             }
+
+        	//finish transaction
+        	project.getPicture().getLs_po_sortedByY().finishTransaction(
+        			transaction);
             if (project.getPicture().paintSelected(getPage(),
         			getControlPic(),
         			getControlPaintSelection())) {
@@ -1904,9 +1908,6 @@ MenuListener {
 
         getPage().getJlbl_backgroundStructure().repaint();
 
-    	//finish transaction
-    	project.getPicture().getLs_po_sortedByY().finishTransaction(
-    			transaction);
     }
     
     

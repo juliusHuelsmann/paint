@@ -574,9 +574,26 @@ public final class Debug extends Tab implements Observer {
 
 
 	/**
-	 * @param _i1b_console the i1b_console to set
+	 * @return the i1b_diagramView
 	 */
-	public void setI1b_console(final Item1Button _i1b_console) {
-		this.i1b_console = _i1b_console;
+	public Item1Button getI1b_diagramView() {
+		return i1b_diagramView;
 	}
+
+
+	/**
+	 * @return the i1b_generateLog
+	 */
+	public Item1Button getI1b_generateLog() {
+		return i1b_generateLog;
+	}
+
+
+	/**
+	 * @return the i1b_reportBug
+	 */
+	public Item1Button getI1b_reportBug() {
+		return i1b_reportBug;
+	}
+
 }

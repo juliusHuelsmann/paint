@@ -279,10 +279,10 @@ public final class CTabSelection implements ActionListener {
 
 
     	//start transaction and closed action.
-    	final int transaction = _cp.getPicture().getLs_po_sortedByX()
+    	final int transaction = _cp.getPicture().getLs_poSelected()
     			.startTransaction("set pen", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = _cp.getPicture().getLs_po_sortedByX()
+    	final int closedAction = _cp.getPicture().getLs_poSelected()
     			.startClosedAction("set pen", 
     					SecureList.ID_NO_PREDECESSOR);
     	
@@ -301,9 +301,9 @@ public final class CTabSelection implements ActionListener {
         
 
     	//close transaction and closed action.
-    	_cp.getPicture().getLs_po_sortedByX().finishTransaction(
+    	_cp.getPicture().getLs_poSelected().finishTransaction(
     			transaction);
-    	_cp.getPicture().getLs_po_sortedByX().finishClosedAction(
+    	_cp.getPicture().getLs_poSelected().finishClosedAction(
     			closedAction);
         
     }
@@ -317,10 +317,10 @@ public final class CTabSelection implements ActionListener {
 
 
     	//start transaction and closed action.
-    	final int transaction = _cp.getPicture().getLs_po_sortedByX()
+    	final int transaction = _cp.getPicture().getLs_poSelected()
     			.startTransaction("set color", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = _cp.getPicture().getLs_po_sortedByX()
+    	final int closedAction = _cp.getPicture().getLs_poSelected()
     			.startClosedAction("set color", 
     					SecureList.ID_NO_PREDECESSOR);
     	
@@ -342,9 +342,9 @@ public final class CTabSelection implements ActionListener {
         }
 
     	//close transaction and closed action.
-    	_cp.getPicture().getLs_po_sortedByX().finishTransaction(
+    	_cp.getPicture().getLs_poSelected().finishTransaction(
     			transaction);
-    	_cp.getPicture().getLs_po_sortedByX().finishClosedAction(
+    	_cp.getPicture().getLs_poSelected().finishClosedAction(
     			closedAction);
         
     }

@@ -1,4 +1,4 @@
-package model.util.debugTools;
+package model.debug.debugTools;
 
 import java.awt.Color;
 import java.awt.Component;

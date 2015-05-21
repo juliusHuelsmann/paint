@@ -7,7 +7,7 @@ package model.debug;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class ProgramAction implements Action {
+public class ProgramAction extends Action {
 
 	
 	/**
@@ -20,7 +20,9 @@ public class ProgramAction implements Action {
 	 * Constructor: saves title of the action.
 	 * @param _title	the title that is saved.
 	 */
-	public ProgramAction(final String _title) {
+	public ProgramAction(final String _title,
+			final long _time) {
+		super(_time);
 		this.title = _title;
 	}
 	
@@ -29,6 +31,6 @@ public class ProgramAction implements Action {
 	 * {@inheritDoc}
 	 */
 	public final String getString() {
-		return "PA\t" + title;
+		return getTime() + "\tPA\t" + title;
 	}
 }

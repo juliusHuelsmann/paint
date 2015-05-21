@@ -7,9 +7,14 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 import control.ContorlPicture;
 import control.ControlPaint;
+import model.debug.ActionManager;
+import model.debug.debugTools.DebugUtil;
 import model.objects.PictureOverview;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
@@ -22,6 +27,7 @@ import model.util.adt.list.SecureList;
 import view.forms.Page;
 import view.tabs.Debug;
 import view.util.Item1Button;
+import view.util.MessageDialog;
 
 
 /**
@@ -71,7 +77,10 @@ public final class CTabDebug implements ActionListener {
     			//generate view diagram (analyse.png)
     			_event.getSource().equals(getPaintObjects()
     			.getI1b_diagramView().getActionCause())) {
-    		
+
+          DebugUtil.performCheckViewComponents(
+          		 cp.getView(), 
+          		 DebugUtil.CHECK_OP_IMAGE);
     		
     		
     	} else if (
@@ -79,6 +88,11 @@ public final class CTabDebug implements ActionListener {
     			_event.getSource().equals(getPaintObjects()
     			.getI1b_generateLog().getActionCause())) {
     		
+    		String actions = ActionManager.externalizeAction();
+//    		JOptionPane.showMessageDialog(cp.getView(), "The following actions were fetched:\n"
+//    		+ actions);
+    		MessageDialog.showMessage("The following actions were fetched:\n"
+    		+ actions, cp.getView());
     		
     		
     	} else if (

@@ -1,5 +1,7 @@
 package model.debug;
 
+import java.util.Date;
+
 import model.util.adt.stack.Stack;
 
 
@@ -20,7 +22,6 @@ public final class ActionManager {
 	 */
 	private static Stack<Action> lsAction;
 	
-	
 	/**
 	 * Empty utility class constructor.
 	 */
@@ -40,9 +41,14 @@ public final class ActionManager {
 	public static void addUserAction(
 			final String _actionTitle,
 			final boolean _start) {
-		getLs_action().insert(new UserAction(_actionTitle, _start));
+		getLs_action().insert(new UserAction(_actionTitle, _start, getCurrentTime()));
 	}
 	
+	
+	
+	private static long getCurrentTime() {
+		return new Date().getTime();
+	}
 	
 	
 	/**
@@ -57,7 +63,7 @@ public final class ActionManager {
 	 */
 	public static void addAnswer(
 			final String _title) {
-		getLs_action().insert(new ProgramAction(_title));
+		getLs_action().insert(new ProgramAction(_title, getCurrentTime()));
 	}
 	
 	
@@ -71,15 +77,30 @@ public final class ActionManager {
 	 * 				that have been performed.
 	 */
 	public static String externalizeAction() {
+
+		//for not throwing away the log after it has been externalized,
+		// the log information are written into the following new-
+		// created stack which replaces the old one.
+		Stack<Action> ls_action2 = new Stack<Action>();
 		
 		//the string that is returned at the end and into which the information
 		//on the actions are inserted.
 		String content = "";
 		while (!getLs_action().isEmpty()) {
-			content = getLs_action().getElem_last().getContent() 
+			content = getLs_action().getElem_last().getContent().getString()
 					+ "\n" + content;
+			ls_action2.insert(getLs_action().getElem_last().getContent());
 			getLs_action().remove();
 		}
+		
+		//invert.
+		while (!ls_action2.isEmpty()) {
+			getLs_action().insert(ls_action2.getElem_last().getContent());
+			ls_action2.remove();
+		}
+
+		//remove the temporary stack
+		ls_action2 = null;
 		
 		//return the content.
 		return content;

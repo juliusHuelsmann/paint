@@ -5,6 +5,7 @@ package model.objects.pen.normal;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.Error;
@@ -28,7 +29,6 @@ public class BallPen extends Pen {
 	 */
 	private static final long serialVersionUID = 0L;
 	
-
 	/**
 	 * Constructor: calls super -constructor.
 	 * @param _index the index of the pen painting method (like line, 
@@ -41,6 +41,7 @@ public class BallPen extends Pen {
 		
 		//call super constructor
 		super(_index, _thickness, _background, getPath(_index));
+		
 	}
 	
 	
@@ -63,19 +64,281 @@ public class BallPen extends Pen {
 	    }
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override protected final void paintPoint(final DPoint _p, 
+
+	
+	private int getSizeBorder() {
+
+		int sizeBorder = 0;
+		switch(getThickness()) {
+		case 0:
+		case 1:
+		case 2:
+			sizeBorder = 0;
+			break;
+		case 3:
+			sizeBorder = 1;
+			break;
+		default:
+			sizeBorder = 2;
+				break;
+		}
+		return sizeBorder;
+	}
+	private void paintBorder(final DPoint _p, 
 	        final BufferedImage _bi, final boolean _final, 
 	        final DPoint _pnt_shift, final BufferedImage _g, 
 	        final Rectangle _r_visibleScope) {
 
+		
 	    for (int i = -getThickness() / 2;
                 i < (getThickness() / 2) + (getThickness() % 2); i++) {
-            
+	    	
+	    	while (i >= getThickness() / 2 + getSizeBorder()
+	    			&& i < (getThickness() / 2) + (getThickness() % 2) - getSizeBorder()) {
+	    		i++;
+	    	}
+	    	
             for (int j = -getThickness() / 2;
                     j < (getThickness() / 2) + (getThickness() % 2); j++) {
+
+
+    	    	while (j >= getThickness() / 2 + getSizeBorder()
+    	    			&& j < (getThickness() / 2) + (getThickness() % 2) - getSizeBorder()) {
+    	    		j++;
+    	    	}
+    	    	
+                //x and y location because is used twice for line 
+                //drawing.
+                int x, y;
+
+                x = (int) (_p.getX() + i);
+                y = (int) (_p.getY() + j);
+                
+                
+				//if is in range
+				if (_final && _p.getX() + i >= 0 && _p.getY() + j >= 0 
+				        && _p.getX() + i < _bi.getWidth() 
+				        && _p.getY() + j < _bi.getHeight()) {
+
+				    //set the given pixel in buffered image
+				    if (_final) {
+				        try {
+				        	
+				        	final Color clr_item = new Color(_bi.getRGB((int) _p.getX() + i, 
+				        			(int) _p.getY() + j), true); 
+	        					
+				        	if (!(clr_item.getRed() == getClr_foreground().getRed()
+				        			&& clr_item.getGreen() == getClr_foreground().getGreen()
+				        			&& clr_item.getBlue() == getClr_foreground().getBlue()
+				        			)) {
+
+					        		int amountPxNeighbor = 0;
+					        		int amountRed = 0,
+					        				amountG = 0, amountB = 0;
+
+									for (int kX = -1; kX <= 1; kX++) {
+					        			for (int kY = -1; kY <= 1; kY++) {
+					        				
+					        				int cpx = (int) _p.getX() + i + kX;
+					        				int cpy = (int) _p.getY() + j + kY;
+
+					        				//if in range
+					        				if (cpx >= 0 && cpy >= 0 
+					        						&& cpx < _bi.getWidth() 
+					        						&& cpy < _bi.getHeight()) {
+
+					        					final Color clr = new Color(_bi.getRGB(cpx, cpy), true); 
+					        					
+					        					if (kX == 0 && kY == 0) {
+					        						if (clr.getAlpha() != 255
+					        								&& clr != Color.white) {
+
+					        							int gewichtung = 4;
+							        					amountRed += gewichtung * clr.getRed();
+							        					amountG += gewichtung * clr.getGreen();
+							        					amountB += gewichtung * clr.getBlue();
+							        					amountPxNeighbor += gewichtung;
+					        						}
+					        					} else {
+
+						        					amountRed += clr.getRed();
+						        					amountG += clr.getGreen();
+						        					amountB += clr.getBlue();
+						        					amountPxNeighbor++;
+					        					}
+					        					
+					        				}
+										}
+									}
+
+									//should never be 0
+									if (amountPxNeighbor != 0) {
+
+							        	_bi.setRGB(x, y, new Color(amountRed / amountPxNeighbor,
+							        			amountG / amountPxNeighbor, amountB / amountPxNeighbor).getRGB());
+									}	
+	        					}
+				        		
+				        } catch (ArrayIndexOutOfBoundsException e) {
+				            Error.printError(getClass().getSimpleName(), 
+				                    "paintPoint", "point is out of range", 
+				                    e, Error.ERROR_MESSAGE_INTERRUPT);
+				        }
+				    }
+				}
+
+                if (!_final) {
+
+
+                    //the image pixel size in pixel for painting.
+                    //for example if zoomed in once, an image pixel has
+                    //got the size of two painted pixel in each dimension.
+                    //thus it is necessary to paint 4 pixel. These pixel
+                    //are painted under the previous pixel. Example:
+                    //      [x] [a] [ ]         (x is the pixel which is 
+                    //      [a] [a] [ ]         already printed, a are those
+                    //      [ ] [ ] [ ]         which are added to avoid gaps.
+                    double imagePixelSizeX = 1.0 * Status.getImageShowSize().width 
+                            / Status.getImageSize().width,
+                            imagePixelSizeY = 1.0 * Status.getImageShowSize().height 
+                            / Status.getImageSize().height;
+
+                    //error prevention (divide by zero if zoomed out a little 
+                    //bit too much)
+                    if (imagePixelSizeX == 0) {
+                        imagePixelSizeX = 1;
+                    }
+                    if (imagePixelSizeY == 0) {
+                        imagePixelSizeY = 1;
+                    }
+                    
+                    //adjust the location at the zoom.
+                    //add the shift coordinates for painting.
+                    x = (int) (((_p.getX() + i) * imagePixelSizeX + _pnt_shift.getX()));
+                    y = (int) (((_p.getY() + j) * imagePixelSizeY + _pnt_shift.getY()));
+                    
+                    //the color which is printed.
+                    Color clr_pixel = null;
+
+                    //if the data is displayed paint lines to graphics. 
+                    //otherwise nothing to do.
+                    if (x / imagePixelSizeX >= 0 && y / imagePixelSizeY >= 0
+                            
+                            //if the x coordinates are in range (displayed
+                            //at the right edge of the screen)
+                            && (int) x / imagePixelSizeX + 1 
+                            <= (int) ViewSettings.getView_bounds_page().width
+                            
+//                            Page.getInstance().getJlbl_painting()
+//                            .getWidth() 
+                            / imagePixelSizeX
+
+                            //if the x coordinates are in range (displayed
+                            //at the bottom edge of the screen)
+                            && (int) y / imagePixelSizeY + 1 
+                            <= (int) ViewSettings.getView_bounds_page().height
+//                            Page.getInstance().getJlbl_painting().getHeight() 
+                            / imagePixelSizeY) {
+                        
+                        Status.setCounter_paintedPoints(Status
+                                .getCounter_paintedPoints() + 1);
+                        
+                        //print the pixel because even if the pixel size in 
+                        //pixel is (rounded) equal to 0 the pixel has to be 
+                        //printed.
+                        
+                        try {
+                        	
+
+
+				        	final Color clr_item = new Color(
+				        			_g.getRGB((int) ((_p.getX() + i + 0) 
+	                        		* imagePixelSizeX + _pnt_shift.getX()),
+	                        		(int) ((_p.getY() + j + 0) 
+			                        		* imagePixelSizeY + _pnt_shift.getY())), true); 
+	        					
+				        	if (!(clr_item.getRed() == getClr_foreground().getRed()
+				        			&& clr_item.getGreen() == getClr_foreground().getGreen()
+				        			&& clr_item.getBlue() == getClr_foreground().getBlue()
+				        			)) {
+				        		
+				        		
+				        		int amountPxNeighbor = 0;
+				        		int amountRed = 0,
+				        				amountG = 0, amountB = 0;
+				        		
+								for (int dX = -1; dX <= 1; dX++) {
+				        			for (int dY = 0; dY <= 1; dY++) {
+
+				                        int cpx = (int) ((_p.getX() + i + dX) 
+				                        		* imagePixelSizeX + _pnt_shift.getX());
+				                        int cpy = (int) ((_p.getY() + j + dY) 
+				                        		* imagePixelSizeY + _pnt_shift.getY());
+
+				        				//if in range
+				        				if (cpx >= 0 && cpy >= 0 
+				        						&& cpx < _g.getWidth() 
+				        						&& cpy < _g.getHeight()) {
+				        					final Color clr = new Color(_g.getRGB(cpx, cpy)); 
+				        					amountRed += clr.getRed();
+				        					amountG += clr.getGreen();
+				        					amountB += clr.getBlue();
+				        					amountPxNeighbor++;
+				        				}
+									}
+								}
+
+								//should never be 0
+								if (amountPxNeighbor != 0) {
+
+									clr_pixel = new Color(amountRed / amountPxNeighbor,
+						        			amountG / amountPxNeighbor, amountB / amountPxNeighbor);
+						        	_g.setRGB(x, y, clr_pixel.getRGB());
+								}
+				        	} else {
+				        		clr_pixel = getClr_foreground();
+				        	}
+                            
+                        } catch (ArrayIndexOutOfBoundsException e) { 
+                        	clr_pixel = getClr_foreground();
+                            Status.getLogger().warning("FEHLER" + x + ";" 
+                                    + y + "width"
+                                    + _g.getWidth() + "h" + _g.getHeight());
+                        }
+                        
+                        //for loop because i want to paint the gaps between the 
+                        //pixel if zoomed in.
+                        for (int kx = 0; kx < imagePixelSizeX; kx++) {
+                            for (int ky = 0; ky < imagePixelSizeY; ky++) {
+
+                                try {
+                                    _g.setRGB(x + kx, y + ky, 
+                                    		clr_pixel.getRGB());
+                                    
+                                } catch (ArrayIndexOutOfBoundsException e) { 
+                                    Status.getLogger().warning("FEHLER" 
+                                            + x + ";" + y + "width"
+                                            + _g.getWidth() 
+                                            + "height" + _g.getHeight());
+                                }
+                            }
+                        }
+                    } 
+                }
+			}
+		}
+	}
+	
+	private void paintOrig(final DPoint _p, 
+	        final BufferedImage _bi, final boolean _final, 
+	        final DPoint _pnt_shift, final BufferedImage _g, 
+	        final Rectangle _r_visibleScope) {
+
+	    for (int i = -getThickness() / 2 + getSizeBorder();
+                i < (getThickness() / 2) + (getThickness() % 2) - getSizeBorder(); i++) {
+            
+            for (int j = -getThickness() / 2 + getSizeBorder();
+                    j < (getThickness() / 2) + (getThickness() % 2) - getSizeBorder(); j++) {
 
 
                 //x and y location because is used twice for line 
@@ -108,9 +371,9 @@ public class BallPen extends Pen {
                 if (!_final) {
 
                     //adjust the location at the zoom.
-                    x = ((x + i) * Status.getImageShowSize().width)
+                    x = ((x) * Status.getImageShowSize().width)
                             / Status.getImageSize().width;
-                    y = ((y + j) * Status.getImageShowSize().height)
+                    y = ((y) * Status.getImageShowSize().height)
                             / Status.getImageSize().height;
 
                     //add the shift coordinates for painting.
@@ -125,9 +388,9 @@ public class BallPen extends Pen {
                     //      [x] [a] [ ]         (x is the pixel which is 
                     //      [a] [a] [ ]         already printed, a are those
                     //      [ ] [ ] [ ]         which are added to avoid gaps.
-                    int imagePixelSizeX = Status.getImageShowSize().width 
+                    double imagePixelSizeX = 1.0 * Status.getImageShowSize().width 
                             / Status.getImageSize().width,
-                            imagePixelSizeY = Status.getImageShowSize().height 
+                            imagePixelSizeY = 1.0 * Status.getImageShowSize().height 
                             / Status.getImageSize().height;
                     
 
@@ -198,7 +461,25 @@ public class BallPen extends Pen {
 			}
 		}
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override protected final void paintPoint(final DPoint _p, 
+	        final BufferedImage _bi, final boolean _final, 
+	        final DPoint _pnt_shift, final BufferedImage _g, 
+	        final Rectangle _r_visibleScope) {
 
+		
+		
+		paintOrig(_p, _bi, _final, _pnt_shift, _g, _r_visibleScope);
+		paintBorder(_p, _bi, _final, _pnt_shift, _g, _r_visibleScope);
+		
+	}
+
+	
+	
+	
 
 	/**
 	 * {@inheritDoc}

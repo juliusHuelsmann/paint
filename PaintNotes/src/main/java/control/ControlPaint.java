@@ -9,10 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
-
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
 import control.forms.CLoading;
 import control.forms.CNew;
 import control.forms.CPaintStatus;
@@ -909,16 +906,48 @@ MenuListener {
         	// the shift compared to the old location for 
         	// not applying a move after the selection has been released
         	// to the selected items which is due to image shift.
-        	int cmpX = shiftX - getPage().getJlbl_selectionPainting().getLocation().x;
-        	int cmpY = shiftY - getPage().getJlbl_selectionPainting().getLocation().y;
+        	int cmpX = 
+        			//location of picture after change
+        			shiftX 
+        			
+        			//location of picture before change
+        			- getPage().getJlbl_selectionBG().getLocation().x;
+        	int cmpY = 
+        			//location of picture afterwards
+        			shiftY 
+        			//location of picture before change
+        			- getPage().getJlbl_selectionBG().getLocation().y;
         	getControlPaintSelection().setOldPaintLabelLocation(new Point(
         			controlPaintSelect.getOldPaintLabelLocation().x + cmpX,
         			controlPaintSelect.getOldPaintLabelLocation().y + cmpY));
+        	
         	
             getPage().getJlbl_selectionPainting().setLocation(
             		shiftX, shiftY);
             getPage().getJlbl_selectionBG().setLocation(
             		shiftX, shiftY);
+            
+            
+//            // update location of rectangle and startpaintlabellocation
+//            getControlPaintSelection().setOldPaintLabelLocation(
+//            		new Point(getControlPaintSelection().getOldPaintLabelLocation().x
+//            				- cmpX,
+//            				getControlPaintSelection().getOldPaintLabelLocation().y
+//                    				- cmpY));
+//            Rectangle rect = new Rectangle(
+//            		getControlPaintSelection().getR_selection().x
+//            		- cmpX,
+//            		getControlPaintSelection().getR_selection().y
+//            		- cmpY,
+//            		getControlPaintSelection().getR_selection().width,
+//            		getControlPaintSelection().getR_selection().height);
+//            Point pnt = new Point(
+//            		(int) getControlPaintSelection().getOldPaintLabelLocation().getX(),
+////            		+ cmpX,
+//            		(int) getControlPaintSelection().getOldPaintLabelLocation().getY());
+////            		+ cmpY);
+//            
+//            getControlPaintSelection().setR_selection(rect, pnt);
             
             
             //the location of the selected area is different from
@@ -2306,32 +2335,38 @@ MenuListener {
      */
     private Rectangle mr_paint_calcRectangleLocation(final MouseEvent _event) {
 
-        int xLocation = Math.min(pnt_start.x, _event.getX());
-        int yLocation = Math.min(pnt_start.y, _event.getY());
-        // not smaller than zero
-        xLocation = Math.max(0, xLocation);
-        yLocation = Math.max(0, yLocation);
-        
-        // not greater than the entire shown image - 
-        // the width of zoom
-        int xSize = Math.min(Status.getImageShowSize().width
-                - xLocation, 
-                Math.abs(pnt_start.x - _event.getX()));
-        int ySize = Math.min(Status.getImageShowSize().height
-                - yLocation, 
-                Math.abs(pnt_start.y - _event.getY()));
+    	//pnt_start is equal to null if the selection is performed through 
+    	//one click.
+    	if (pnt_start != null) {
+    		int xLocation = Math.min(pnt_start.x, _event.getX());
+            int yLocation = Math.min(pnt_start.y, _event.getY());
+            // not smaller than zero
+            xLocation = Math.max(0, xLocation);
+            yLocation = Math.max(0, yLocation);
+            
+            // not greater than the entire shown image - 
+            // the width of zoom
+            int xSize = Math.min(Status.getImageShowSize().width
+                    - xLocation, 
+                    Math.abs(pnt_start.x - _event.getX()));
+            int ySize = Math.min(Status.getImageShowSize().height
+                    - yLocation, 
+                    Math.abs(pnt_start.y - _event.getY()));
 
-        xLocation -= getPage().getJlbl_painting()
-                .getLocation().x;
-        yLocation -= getPage().getJlbl_painting()
-                .getLocation().y;
+            xLocation -= getPage().getJlbl_painting()
+                    .getLocation().x;
+            yLocation -= getPage().getJlbl_painting()
+                    .getLocation().y;
 
+            
+            return new Rectangle(
+                    xLocation,
+                    yLocation,
+                    xSize,
+                    ySize);
+    	}
         
-        return new Rectangle(
-                xLocation,
-                yLocation,
-                xSize,
-                ySize);
+    	return new Rectangle(_event.getX(), _event.getY(), 0, 0);
 
     }
 

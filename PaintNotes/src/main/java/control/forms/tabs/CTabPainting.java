@@ -918,7 +918,6 @@ public final class CTabPainting implements ActionListener, MouseListener {
                     		-getPage().getJbtn_resize()[h][w].getHeight() - 1);
                 } else {
 
-                	
                 	//necessary buttons
                     getPage().getJbtn_resize()[h][w].setLocation(
                     		+ Status.getImageShowSize().width * (w) / 2

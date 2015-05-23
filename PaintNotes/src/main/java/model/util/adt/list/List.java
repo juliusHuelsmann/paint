@@ -509,5 +509,50 @@ public class List<Type> implements Serializable {
     	return ret;
     }
     
+
+    
+    /**
+     * List to array method.
+     * @return the array from list.
+     */
+    public final synchronized String[] toArrayString() {
+
+    	//save the current element of the beginning of passing the list
+    	Element<Type> oldCurrent = elemCurrent;
+    	
+    	//get the length of the array by passing the list once. If the element
+    	//is not a DPoint do not count it.
+    	int length = 0;
+    	toFirst();
+    	while (!isBehind()) {
+    		if (getItem() instanceof String) {
+        		length++;
+    		}
+    		next();
+    	}
+
+    	//create array of DPoints
+    	String[] ret = new String[length];
+    	
+    	
+    	//fill the array
+    	toFirst();
+    	int i = 0;
+    	while (!isBehind()) {
+
+    		//if item is not a DPoint it is not
+    		if (getItem() instanceof String) {
+    			ret [i] = (String) getItem();
+    			i++;
+    		}
+    		next();
+    	}
+    	
+    	//reset current element
+        elemCurrent = oldCurrent;
+        
+        //return the array
+    	return ret;
+    }
     
 }

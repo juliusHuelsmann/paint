@@ -233,8 +233,6 @@ MouseMotionListener, MouseListener {
                     r_selection);
             getPage().getJlbl_selectionPainting().repaint();
             
-//            cv.getPicture().paintSelected();
-            
         } else {
 
 //            if (!wholeImageSelected) {

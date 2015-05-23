@@ -1644,7 +1644,7 @@ public final class Picture implements Serializable {
 
 		_pow.getPoints().toFirst();
 		_pow.adjustSnapshotBounds(_dX, _dY);
-		while (!_pow.getPoints().isBehind()) {
+		while (!_pow.getPoints().isBehind() && !_pow.getPoints().isEmpty()) {
 			_pow.getPoints().getItem()
 					.setX(_pow.getPoints().getItem().getX() + _dX);
 			_pow.getPoints().getItem()

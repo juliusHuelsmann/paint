@@ -136,13 +136,12 @@ public abstract class PaintObjectPen extends PaintObject implements Cloneable {
         		|| shiftedPointX >= _r.length 
         		|| shiftedPointY >= _r[(int) shiftedPointX].length) {
 
-        	System.out.println("elz");
             return false;
         }
-    	System.out.println("out of bounds. NOT"
+    	Status.getLogger().info("out of bounds. NOT"
     			+ shiftedPointX + ".."
     			+ shiftedPointY);
-        System.out.println("inside bounds"
+        Status.getLogger().info("inside bounds"
         		+ (_r[(int) shiftedPointX][(int) shiftedPointY] 
         				== PaintBI.FREE));
         

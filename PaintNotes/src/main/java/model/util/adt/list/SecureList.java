@@ -360,13 +360,20 @@ public class SecureList<SecureListType> implements Serializable {
     }
     
     
-    
+
     /**
      * List to array method.
      * @return the array from list.
      */
     public final synchronized DPoint[] toArray() {
     	return ls.toArray();
+    }
+    /**
+     * List to array method.
+     * @return the array from list.
+     */
+    public final synchronized String[] toArrayString() {
+    	return ls.toArrayString();
     }
     
     
@@ -1190,6 +1197,16 @@ public class SecureList<SecureListType> implements Serializable {
     	//return success
 		return success;
     	
+	}
+
+
+
+	public void resetTransaction() {
+		stck_transaction = new Stack<Transaction<SecureListType>>();
+	}
+
+	public void resetClosedAction() {
+		stck_closedAction = new Stack<ClosedAction<SecureListType>>();
 	}
 }
 

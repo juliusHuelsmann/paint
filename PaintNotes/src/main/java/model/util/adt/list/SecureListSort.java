@@ -2,7 +2,9 @@ package model.util.adt.list;
 
 //import declarations
 import java.io.Serializable;
+import java.util.Random;
 
+import view.testing.TestList;
 import model.settings.Status;
 import model.util.DPoint;
 
@@ -24,6 +26,13 @@ public class SecureListSort<SecureListType> implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
+    
+    /**
+     * The version of the secureListSort which is increased with each big
+     * update of SecureListSort.
+     */
+    public final String listVersion = "v1.0";
+    
 	
     /**
      * Whether to sort ascending or descending.
@@ -295,7 +304,7 @@ public class SecureListSort<SecureListType> implements Serializable {
     public final void printAddcounter() {
     	ls.printAddcounter();
     }
-    
+
     
     
     /**
@@ -304,6 +313,16 @@ public class SecureListSort<SecureListType> implements Serializable {
      */
     public final synchronized DPoint[] toArray() {
     	return ls.toArray();
+    }
+
+    
+    
+    /**
+     * List to array method.
+     * @return the array from list.
+     */
+    public final synchronized String[] toArrayString() {
+    	return ls.toArrayString();
     }
     
     
@@ -500,6 +519,100 @@ public class SecureListSort<SecureListType> implements Serializable {
     }
     
     
+    
+    /**
+     * Use the list with bubble-sort algorithm.
+     * 
+     */
+    @SuppressWarnings("unchecked")
+	public final synchronized void resort(TestList _tl) {
+
+    	//there is nothing to do if the list does not exist or is empty.
+    	if (ls == null || ls.isEmpty()) {
+    		return;
+    	}
+    	
+    	/* 
+    	 * start new transaction and go to the beginning of the list.
+    	 * Initialize the first element as temporarily maintained one.
+    	 * Go to the second element.
+    	 */
+    	final int transactionID = ls.startTransaction(
+    			"Resort the list", SecureList.ID_NO_PREDECESSOR);
+		
+		int amountSteps = 1;
+		for (int i = 0; i < amountSteps; i++) {
+			amountSteps = 1; //=1 - 1;
+			
+	    	ls.toFirst(transactionID, SecureList.ID_NO_PREDECESSOR);
+			Element<SecureListType> elem_maintained = ls.getElement();
+			ls.next(transactionID, SecureList.ID_NO_PREDECESSOR);
+			
+			while (!ls.isEmpty() && !ls.isBehind()) {
+
+	    		//if the maintained element is to be maintained once again:
+	    		if ((elem_maintained.getSortedIndex() 
+	    				> ls.getElement().getSortedIndex()) == sortAsc) {
+	    			
+	    			// P	<->		elem_maintained	<->	elem_current	<->	S
+	    			// is to be transformed into
+	    			// P 	<->		elem_current	<->	elem_maintained	<->	S
+	    			
+	    			final Element<SecureListType> 
+	    			elem_p = elem_maintained.getElemPredecessor(),
+	    			elem_s = ls.getElement().getElemSuccessor(),
+	    			elem_current = ls.getElement();
+	    			
+	    			elem_maintained.setElemPredecessor(elem_current);
+	    			elem_current.setElemSuccessor(elem_maintained);
+	    			
+	    			elem_current.setElemPredecessor(elem_p);
+	    			elem_p.setElemSuccessor(elem_current);
+	    			
+	    			elem_maintained.setElemSuccessor(elem_s);
+	    			elem_s.setElemPredecessor(elem_maintained);
+	    		} else {
+	    			
+	    			elem_maintained = ls.getElement();
+	    		}
+
+
+				if (_tl != null) {
+					_tl.applyList((SecureListSort<String>)this);
+
+		    		try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+	    		ls.next(transactionID, ID_NO_PREDECESSOR);
+    			amountSteps++;
+	    	}
+			if (_tl != null) {
+				_tl.applyList((SecureListSort<String>)this);
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		ls.finishTransaction(transactionID);
+    }
+    
+    
+    
+    public void testInitializeUnSortedList(final int _amount,
+    		final SecureListSort<String> s) {
+
+    	for (int i = 0; i < _amount; i++) {
+    		int d = new Random().nextInt(10);
+    		s.ls.insertBehind(d + "", ID_NO_PREDECESSOR);
+            s.ls.getElement().setSortedIndex(d);
+		}
+    }
+    
     /**
      * Change the sort index of the current element.
      * @param _sortedIndex the new sorted index of the current element.
@@ -587,4 +700,12 @@ public class SecureListSort<SecureListType> implements Serializable {
 	    	}
     	}
     }
+
+
+	public void resetTransaction() {
+		ls.resetTransaction();
+	}
+	public void resetClosedAction() {
+		ls.resetClosedAction();
+	}
 }

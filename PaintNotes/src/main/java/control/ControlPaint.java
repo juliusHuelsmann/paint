@@ -146,7 +146,7 @@ MenuListener {
 	/**
 	 * Controller class for selection paint at the same level as this class.
 	 */
-	private ControlPaintSelectin controlPaintSelection;
+	private ControlPaintSelectin controlPaintSelect;
 	
 	/**
 	 * Controller class for the painting tab.
@@ -319,7 +319,7 @@ MenuListener {
             cTabAbout = new CTabAbout(this);
             controlPic = new ContorlPicture(this);
             cTabSelection = new CTabSelection(this);
-            controlPaintSelection = new ControlPaintSelectin(this);
+            controlPaintSelect = new ControlPaintSelectin(this);
             cTabPaint = new CTabPainting(this);
             cTabPaintStatus = new CPaintStatus(this);
             cTabPaintObjects = new CTabDebug(this);
@@ -873,6 +873,9 @@ MenuListener {
                         y = 0;
                     } 
                     getPage().getJlbl_painting().setLocation(x, y);
+                    
+                    
+                    
                     getPage().refrehsSps();
                     pnt_last = _event.getPoint();
                     break;
@@ -886,6 +889,70 @@ MenuListener {
     		
 	}
 
+	
+	public void changeLocationSelectionOnScroll(final int _x, final int _y) {
+
+        //
+        // change location of the current selection
+        //
+        if (getPicture().isSelected()) {
+        	
+        	//calculate the shift in here not directly because the
+        	//check whether the new coordinates are in range is
+        	//performed with values x and y.
+        	int shiftX = _x - pnt_startLocation.x;
+        	int shiftY = _y - pnt_startLocation.y;
+        	
+        	//stop border thread for movement
+        	controlPic.stopBorderThread();
+
+        	// the shift compared to the old location for 
+        	// not applying a move after the selection has been released
+        	// to the selected items which is due to image shift.
+        	int cmpX = shiftX - getPage().getJlbl_selectionPainting().getLocation().x;
+        	int cmpY = shiftY - getPage().getJlbl_selectionPainting().getLocation().y;
+        	getControlPaintSelection().setOldPaintLabelLocation(new Point(
+        			controlPaintSelect.getOldPaintLabelLocation().x + cmpX,
+        			controlPaintSelect.getOldPaintLabelLocation().y + cmpY));
+        	
+            getPage().getJlbl_selectionPainting().setLocation(
+            		shiftX, shiftY);
+            getPage().getJlbl_selectionBG().setLocation(
+            		shiftX, shiftY);
+            
+            
+            //the location of the selected area is different from
+            //those of the selection background and painting.
+            getPage().getJlbl_border().setLocation(
+            		getControlPaintSelection().getR_selection().x + 
+            		shiftX,
+            		getControlPaintSelection().getR_selection().y + 
+            		shiftY);
+
+            for (int h = 0; h <= 2; h++) {
+                for (int w = 0; w <= 2; w++) {
+
+                    getPage().getJbtn_resize()[h][w].setLocation(
+                    		getControlPaintSelection()
+                    		.getR_selection().x
+                    		+ getControlPaintSelection()
+                    		.getR_selection().width * (h) / 2
+                    		+ shiftX
+                    		- getPage()
+                    		.getJbtn_resize()[h][w].getWidth() / 2,
+                    		getControlPaintSelection()
+                    		.getR_selection().y 
+                    		+ getControlPaintSelection()
+                    		.getR_selection().height * w / 2
+                    		+ shiftY
+                    		- getPage()
+                    		.getJbtn_resize()[h][w].getHeight()
+                    		/ 2);
+
+				}
+			}
+        }
+	}
 
 
 	/**
@@ -1184,14 +1251,8 @@ MenuListener {
                 pnt_startLocation = null;
                 pnt_last = null;
                 pnt_movementSpeed = null;
-                
                 //release everything
                 if (project.getPicture().isSelected()) {
-                    //TODO: zum finden des windows fehler 2 ist es sinnvoll
-                	//hier einen breakpoint zu setzen, da der Fehler (auch)
-                	//auftritt, wenn ein selektiertes Objekt losgelassen wird.
-                	//anscheinend ist allerdings keiner der drei folgenden
-                	//befehle direkt daran schuld.
                     project.getPicture().releaseSelected(
                 			getControlPaintSelection(),
                 			getcTabSelection(),
@@ -1201,7 +1262,6 @@ MenuListener {
                 			getView().getPage().getJlbl_painting()
                 			.getLocation().y);
                     controlPic.releaseSelected();
-                    getPage().removeButtons();
                 }
             }
             break;
@@ -2282,7 +2342,7 @@ MenuListener {
 	 * @return the controlPaintSelection
 	 */
 	public final ControlPaintSelectin getControlPaintSelection() {
-		return controlPaintSelection;
+		return controlPaintSelect;
 	}
 
 
@@ -2778,5 +2838,13 @@ MenuListener {
 	 */
 	public final void setBi_preprint(final BufferedImage _bi_preprint) {
 		this.bi_preprint = _bi_preprint;
+	}
+
+
+	/**
+	 * @return the pnt_startLocation
+	 */
+	public Point getPnt_startLocation() {
+		return pnt_startLocation;
 	}
 }

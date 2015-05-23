@@ -906,19 +906,28 @@ public final class CTabPainting implements ActionListener, MouseListener {
      */
     public void updateResizeLocation() {
 
-        //the width and the height
-        int w = Status.getImageShowSize().width;
-        int h = Status.getImageShowSize().height;
+		// change the location of the resize - buttons. Now that the selection
+		// is released, the entire page can be resized.
+        for (int h = 0; h <= 2; h++) {
+            for (int w = 0; w <= 2; w++) {
+                //that are not necessary buttons
+                if (!(h == 2 || w == 2)) {
 
-        //set location
-        getPage().getJbtn_resize()[2][1].setLocation(w, h / 2);
-        getPage().getJbtn_resize()[2][2].setLocation(w, h);
-        getPage().getJbtn_resize()[1][2].setLocation(w / 2, h);
-        
-        //set visible
-        getPage().getJbtn_resize()[1][2].setVisible(true);
-        getPage().getJbtn_resize()[2][2].setVisible(true);
-        getPage().getJbtn_resize()[2][1].setVisible(true);
+                    getPage().getJbtn_resize()[h][w].setLocation(
+                    		-getPage().getJbtn_resize()[h][w].getWidth() - 1,
+                    		-getPage().getJbtn_resize()[h][w].getHeight() - 1);
+                } else {
+
+                	
+                	//necessary buttons
+                    getPage().getJbtn_resize()[h][w].setLocation(
+                    		+ Status.getImageShowSize().width * (w) / 2
+                    		- getPage().getJbtn_resize()[h][w].getWidth() / 2,
+                    		+ Status.getImageShowSize().height * (h) / 2
+                    		- getPage().getJbtn_resize()[h][w].getWidth() / 2);
+                }
+			}
+		}
     }
 
 

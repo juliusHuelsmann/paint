@@ -419,27 +419,24 @@ public class ContorlPicture implements PaintListener {
 	 */
 	public final void releaseSelected() {
 
-		for (int i = 0; i < getPage().getJbtn_resize().length; i++) {
-			for (int j = 0; j < getPage().getJbtn_resize()[i].length; j++) {
-				int width = getPage().getJbtn_resize()[i][j].getWidth();
-
-				getPage().getJbtn_resize()[i][j].setLocation(-width - 1, -1);
-			}
-		}
-		//method for setting the MButtons to the size of the entire image.
+		// change the location of the resize - buttons. Now that the selection
+		// is released, the entire page can be resized.
 		cp.getcTabPaint().updateResizeLocation();
 		
+		// stop the border thread (if that has not already been done).
 		stopBorderThread();
 		
+		// remove painted selection.
 		BufferedImage emptyBI = Util.getEmptyBISelection();
 		getPage().getJlbl_selectionBG().setIcon(new ImageIcon(emptyBI));
 		getPage().getJlbl_selectionPainting().setIcon(new ImageIcon(emptyBI));
-		getPage().getJlbl_selectionPainting().repaint();
 
+		// remove the shift of the border, selection background and painting.
 		getPage().getJlbl_border().setBounds(0, 0, 0, 0);
 		getPage().getJlbl_selectionBG().setLocation(0, 0);
 		getPage().getJlbl_selectionPainting().setLocation(0, 0);
 		
+		// refresh painting at selected area.
 		refreshPaint();
 	}
 	
@@ -747,16 +744,9 @@ public class ContorlPicture implements PaintListener {
 	public final void beforeLocationChange(final MoveEvent _ev, 
 			final MoveEvent _evOld) {
 
-		//TODO: für nicht mithalten wenn gescrolled wird.
-//		int dx = (int) (_ev.getPnt_bottomLocation().x 
-//				- getPaintLabel().getLocation().getX()),
-//				dy = (int) (_ev.getPnt_bottomLocation().y
-//						- getPaintLabel().getLocation().getY());
-//
-//		getPage().getJlbl_selectionPainting().setLocation(
-//				getPage().getJlbl_selectionPainting().getX() + dx,
-//				getPage().getJlbl_selectionPainting().getY() + dy);
-		
+		cp.changeLocationSelectionOnScroll(
+				_ev.getPnt_bottomLocation().x,
+				_ev.getPnt_bottomLocation().y);
 	}
 
 	

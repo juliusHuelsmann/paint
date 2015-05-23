@@ -1207,6 +1207,23 @@ public final class Picture implements Serializable {
 			SecureListSort<PaintObject> p = 
 			(SecureListSort<PaintObject>) oos.readObject();
 			ls_po_sortedByY = p;
+			
+			//reset current action
+			ls_po_sortedByY.resetTransaction();
+			ls_po_sortedByY.resetClosedAction();
+
+			//convert: is done for old version of .pic because
+			// sorted by x coordinate.
+			ls_po_sortedByY.toFirst(SecureListSort.ID_NO_PREDECESSOR, 
+					SecureListSort.ID_NO_PREDECESSOR);
+			while(!ls_po_sortedByY.isBehind()) {
+				ls_po_sortedByY.getElement().setSortedIndex(
+						ls_po_sortedByY.getItem().getSnapshotBounds().y);
+				ls_po_sortedByY.next(SecureListSort.ID_NO_PREDECESSOR, 
+						SecureListSort.ID_NO_PREDECESSOR);
+			}
+
+			ls_po_sortedByY.resort(null);
 
 			oos.close();
 			fos.close();
@@ -1232,7 +1249,6 @@ public final class Picture implements Serializable {
 					SecureList.ID_NO_PREDECESSOR);
 			}
 		}
-
 	}
 
 	/**
@@ -2215,7 +2231,6 @@ public final class Picture implements Serializable {
 			int transaction = ls_po_sortedByY.startTransaction(
 					"load", 
 					SecureList.ID_NO_PREDECESSOR);
-			
 			ls_po_sortedByY.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
 			PaintObjectImage poi_current = createPOI(bi_normalSize);
 			ls_po_sortedByY.insertSorted(poi_current,

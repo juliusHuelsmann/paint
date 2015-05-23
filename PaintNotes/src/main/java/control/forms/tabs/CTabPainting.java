@@ -696,9 +696,16 @@ public final class CTabPainting implements ActionListener, MouseListener {
      */
     public void mr_load() {
 
-        int i = JOptionPane.showConfirmDialog(getView(),
-                "Do you want to save the committed changes? ",
-                "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
+    	int i;
+    	
+    	if (Status.isUncommittedChanges()) {
+
+            i = JOptionPane.showConfirmDialog(getView(),
+                    "Do you want to save the committed changes? ",
+                    "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
+    	} else {
+    		i = 1;
+    	}
         // no
         if (i == 1) {
 

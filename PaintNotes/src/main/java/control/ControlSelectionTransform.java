@@ -330,7 +330,7 @@ MouseMotionListener, MouseListener {
 	        pnt_start = null;
 	        pnt_rSelectionStart = null;
 	        
-	        // change the point which is maintained inside the controlPaint
+	        // change the point which is maintained inside the controlPaintgit 
 	        // which is used for (not) shifting the selected stuff while
 	        // the user scrolls.
 	        cv.getPnt_startLocation().x -= dX;

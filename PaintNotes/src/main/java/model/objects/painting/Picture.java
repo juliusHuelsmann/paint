@@ -19,7 +19,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import control.ContorlPicture;
-import control.ControlPaintSelectin;
+import control.ControlSelectionTransform;
 import control.forms.tabs.CTabSelection;
 import view.forms.Console;
 import view.forms.Message;
@@ -1688,7 +1688,7 @@ public final class Picture implements Serializable {
 	public boolean paintSelected(
 			final Page _page,
 			final ContorlPicture _cp,
-			final ControlPaintSelectin _cps) {
+			final ControlSelectionTransform _cps) {
 
 
 		// If the list of PaintObjects has not been initialized yet or
@@ -1828,8 +1828,7 @@ public final class Picture implements Serializable {
 
 			_cp.refreshRectangle(realRect.x, realRect.y, realRect.width,
 							realRect.height);
-			_cps.setR_selection(realRect,
-					_page.getJlbl_painting().getLocation());
+			_cps.setR_selection(realRect);
 			_cp.paintEntireSelectionRect(realRect);
 
 			return true;
@@ -1854,7 +1853,7 @@ public final class Picture implements Serializable {
 	public boolean paintSelectedOld(
 			final Page _page,
 			final ContorlPicture _cp,
-			final ControlPaintSelectin _cps) {
+			final ControlSelectionTransform _cps) {
 
 		_page.getJlbl_selectionPainting().setLocation(0, 0);
 		BufferedImage verbufft = Util.getEmptyBISelection();
@@ -1939,8 +1938,7 @@ public final class Picture implements Serializable {
 
 			_cp.refreshRectangle(realRect.x, realRect.y, realRect.width,
 							realRect.height);
-			_cps.setR_selection(realRect,
-					_page.getJlbl_painting().getLocation());
+			_cps.setR_selection(realRect);
 			_cp.paintEntireSelectionRect(realRect);
 
 			return true;
@@ -1954,7 +1952,7 @@ public final class Picture implements Serializable {
 	 * @return whether there is something to be painted or not.
 	 */
 	public boolean paintSelectedInline(
-			final ControlPaintSelectin _controlPaintSelection,
+			final ControlSelectionTransform _controlPaintSelection,
 			final Page _page,
 			final ContorlPicture _controlPic) {
 
@@ -2066,8 +2064,7 @@ public final class Picture implements Serializable {
 			_controlPic
 					.refreshRectangle(realRect.x, realRect.y, realRect.width,
 							realRect.height);
-			_controlPaintSelection.setR_selection(realRect,
-					_page.getJlbl_painting().getLocation());
+			_controlPaintSelection.setR_selection(realRect);
 			_controlPic
 					.paintEntireSelectionRect(realRect);
 			return true;
@@ -2080,26 +2077,11 @@ public final class Picture implements Serializable {
 	 * release selected elements to normal list.
 	 */
 	public synchronized void releaseSelected(
-			final ControlPaintSelectin _controlPaintSelection,
+			final ControlSelectionTransform _controlPaintSelection,
 			final CTabSelection _controlTabSelection,
 			final Debug _paintObjects,
 			final int _xLocationPaint, final int _yLocationPaint) {
 
-		// adjust the bounds of the selected items to the performed
-		// scrolling
-		if (_controlPaintSelection.getOldPaintLabelLocation() != null) {
-
-			int oldX = (int) _controlPaintSelection
-					.getOldPaintLabelLocation().getX();
-			int oldY = (int) _controlPaintSelection
-					.getOldPaintLabelLocation().getY();
-
-			int newX = (int) _xLocationPaint;
-			int newY = (int) _yLocationPaint;
-
-			moveSelected(oldX - newX, oldY - newY);
-			_controlPaintSelection.setOldPaintLabelLocation(null);
-		}
 
 		// deactivates to change operations of selected items
 		_controlTabSelection.deactivateOp();

@@ -27,8 +27,8 @@ import javax.swing.JOptionPane;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
-import model.settings.Settings;
-import model.settings.Status;
+import model.settings.StateStandard;
+import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.adt.list.List;
 
@@ -194,10 +194,10 @@ public final class Util {
 		    return resize(img_scaled, _width, _height);
 		} catch (IOException e) {
 
-        	if (!_path.contains(Settings.ALTERNATIVE_FILE_START)) {
-        		Status.getLogger().severe("other location used for "
+        	if (!_path.contains(StateStandard.ALTERNATIVE_FILE_START)) {
+        		State.getLogger().severe("other location used for "
         				+ "loading images. May be due to an error.");
-        		return resize(Settings.ALTERNATIVE_FILE_START + _path, 
+        		return resize(StateStandard.ALTERNATIVE_FILE_START + _path, 
         				_width, _height);
         	} else {
 
@@ -819,8 +819,8 @@ public final class Util {
      */
     public static BufferedImage getEmptyBITransparent() {
         BufferedImage bi = new BufferedImage(
-                Status.getImageSize().width, 
-                Status.getImageSize().height, BufferedImage.TYPE_INT_ARGB);
+                State.getImageSize().width, 
+                State.getImageSize().height, BufferedImage.TYPE_INT_ARGB);
         final int maxRGB = 255;
         
         int rgba = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
@@ -840,8 +840,8 @@ public final class Util {
      */
     public static BufferedImage getEmptyBIWhite() {
         BufferedImage bi = new BufferedImage(
-                Status.getImageSize().width, 
-                Status.getImageSize().height, BufferedImage.TYPE_INT_RGB);
+                State.getImageSize().width, 
+                State.getImageSize().height, BufferedImage.TYPE_INT_RGB);
         
         final int max = 255;
         int rgb = new Color(max, max, max).getRGB();

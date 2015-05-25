@@ -2,7 +2,7 @@ package control.forms.tabs;
 
 import java.awt.event.MouseEvent;
 
-import model.settings.Status;
+import model.settings.State;
 import view.util.Item2;
 import control.ControlPaint;
 import control.interfaces.ActivityListener;
@@ -46,7 +46,7 @@ public class CTabInsert implements ActivityListener {
     		cp.getView().getTabs().getTab_insert().getTb_selected().setText(
     				i2.getTitle());
         } else {
-        	Status.getLogger().severe("wrong listener added");
+        	State.getLogger().severe("wrong listener added");
         }
 	}
 

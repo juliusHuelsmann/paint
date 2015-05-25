@@ -8,7 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
 import view.util.VScrollPane;
@@ -311,8 +311,8 @@ import view.util.mega.MButton;
 		
 
 		jpnl_toMove.setBounds(0, 0,
-				Status.getImageShowSize().width,
-				Status.getImageShowSize().height);
+				State.getImageShowSize().width,
+				State.getImageShowSize().height);
 
 //		if (sp_ub.getWidth() == 0 || sp_ub.getHeight() == 0) {
 			
@@ -339,7 +339,7 @@ import view.util.mega.MButton;
         jlbl_selectionPainting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         
         jlbl_backgroundAlpha.setIcon(new ImageIcon(
-        		Status.getBi_transparency()));
+        		State.getBi_transparency()));
 
 		//the order of painting is important! It is necessary that the 
         //paintinglabel's bounds and the locations of the ScrollPanes are 

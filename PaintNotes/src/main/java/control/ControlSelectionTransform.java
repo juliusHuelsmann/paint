@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 import model.util.adt.list.SecureList;
 import view.forms.Page;
@@ -146,11 +146,11 @@ MouseMotionListener, MouseListener {
         		|| cv.getPicture().getLs_poSelected() == null
         		|| cv.getPicture().getLs_poSelected().isEmpty()) {
 
-            dim_imageSizeOld = new Dimension(Status.getImageSize());
-            factorW = 1.0 * Status.getImageSize().width 
-                    / Status.getImageShowSize().width;
-            factorH = 1.0 * Status.getImageSize().height 
-                    / Status.getImageShowSize().height;
+            dim_imageSizeOld = new Dimension(State.getImageSize());
+            factorW = 1.0 * State.getImageSize().width 
+                    / State.getImageShowSize().width;
+            factorH = 1.0 * State.getImageSize().height 
+                    / State.getImageShowSize().height;
             wholeImageSelected = true;
             r_selection = null;
         } else {
@@ -214,7 +214,7 @@ MouseMotionListener, MouseListener {
                     mr_stretchImage(_event);
                 }
             } else {
-                Status.getLogger().warning("Wrong action source? "
+                State.getLogger().warning("Wrong action source? "
                         + "This warning should never occure.");
             }
             
@@ -237,7 +237,7 @@ MouseMotionListener, MouseListener {
 		if (pnt_start == null || _event == null) {
 			
 			//print error message.
-			Status.getLogger().severe("the pnt_start or the _event is null"
+			State.getLogger().severe("the pnt_start or the _event is null"
 					+ "\n\tpnt_start: \t" + pnt_start
 					+ "\n\t_event: \t" + _event);
 			return;
@@ -263,7 +263,7 @@ MouseMotionListener, MouseListener {
 	    } else {
 	    	
 	    	// otherwise print an error message.
-	    	Status.getLogger().severe("The pnt_startLocationLabel is null");
+	    	State.getLogger().severe("The pnt_startLocationLabel is null");
 	    }
 		
 		// Shift the Buttons for moving and stretching.
@@ -294,7 +294,7 @@ MouseMotionListener, MouseListener {
 	        }
 	    } else {
 	    	// otherwise print error.
-	    	Status.getLogger().severe(
+	    	State.getLogger().severe(
 	    			"The pnt_startLocationButton is null.");
 	    }
 	            
@@ -312,10 +312,10 @@ MouseMotionListener, MouseListener {
 	    if (_applyChanges) {
 	
 	    	//compute the current zoom - factor
-	        final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
-	                / Status.getImageShowSize().width;
-	        final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
-	                / Status.getImageShowSize().height;
+	        final double cZoomFactorWidth = 1.0 * State.getImageSize().width
+	                / State.getImageShowSize().width;
+	        final double cZoomFactorHeight = 1.0 * State.getImageSize().height
+	                / State.getImageShowSize().height;
 	        
 	        cv.getPicture().moveSelected(
 	                (int) (1.0 * dX * cZoomFactorWidth), 
@@ -401,8 +401,8 @@ MouseMotionListener, MouseListener {
                 j[1][2].getY());
         j[2][1].setLocation(j[2][1].getX(), 
                 j[2][2].getY() / 2 - j[2][1].getHeight() / 2);
-        Status.setImageSize(newDim);
-        Status.setImageShowSize(new Dimension(
+        State.setImageSize(newDim);
+        State.setImageShowSize(new Dimension(
                 (int) (newDim.width / factorW),
                 (int) (newDim.height / factorH)));
         
@@ -765,13 +765,13 @@ MouseMotionListener, MouseListener {
     			if (cv.getView().getPage() != null) {
         			return cv.getView().getPage();	
     			} else {
-        			Status.getLogger().severe("cv.getView().getPage() is null");
+        			State.getLogger().severe("cv.getView().getPage() is null");
     			}
     		} else {
-    			Status.getLogger().severe("cv.getView() is null");	
+    			State.getLogger().severe("cv.getView() is null");	
     		}
     	} else {
-			Status.getLogger().severe("cv is null");	
+			State.getLogger().severe("cv is null");	
     	}
     	return null;
     }

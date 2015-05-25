@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import control.ControlPaint;
 import model.objects.pen.normal.Pencil;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 import model.util.Util;
 import model.util.adt.list.List;
@@ -35,13 +35,13 @@ public final class Bug {
 		
 
         //print case message
-        Status.getLogger().info("normal start: launch programm!\n\n");
+        State.getLogger().info("normal start: launch programm!\n\n");
         
         //call controller
         cp = new ControlPaint();
         
         //set the initialization process terminated
-        Status.increaseInitializationFinished();
+        State.increaseInitializationFinished();
 		
 		//load bug and display it at loaded interface.
 		loadBug(_loadingPath);
@@ -126,7 +126,7 @@ public final class Bug {
 					!cString.equals("")
 					&& !cString.startsWith("//")) {
 				
-				Status.getLogger().severe("error reading bug file! Line: " 
+				State.getLogger().severe("error reading bug file! Line: " 
 				+ cString);
 				ls_strg.next();
 				
@@ -190,7 +190,7 @@ public final class Bug {
 				} else if (i3 == -1) {
 					i3 = i;
 				} else {
-					Status.getLogger().warning("Trailing spaces?");
+					State.getLogger().warning("Trailing spaces?");
 				}
 			} 
 		}

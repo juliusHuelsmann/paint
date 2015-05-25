@@ -2,7 +2,7 @@ package model.util.adt.list;
 
 import java.io.Serializable;
 
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 import model.util.adt.stack.Stack;
 
@@ -652,7 +652,7 @@ public class SecureList<SecureListType> implements Serializable {
     	
     	//threshold: the stack must not be null. catch this error.
     	if (stck_closedAction == null) {
-    		Status.getLogger().severe("The stack is null! That should not "
+    		State.getLogger().severe("The stack is null! That should not "
     				+ "happen!");
     		stck_closedAction = new Stack<ClosedAction<SecureListType>>();
     		return -1;
@@ -673,7 +673,7 @@ public class SecureList<SecureListType> implements Serializable {
         			&& !stck_closedAction.isEmpty()
         			&& ca_old.getId_secureList() != _oldOperationID) {
         		
-        		Status.getLogger().severe("Transaction " + ca_old.getName() 
+        		State.getLogger().severe("Transaction " + ca_old.getName() 
         				+ " not terminated! and new transaction");
         		return -1;
         	} 
@@ -699,7 +699,7 @@ public class SecureList<SecureListType> implements Serializable {
 
     	//threshold: the stack must not be null. catch this error.
     	if (stck_closedAction == null) {
-    		Status.getLogger().severe("The stack is null! That should not "
+    		State.getLogger().severe("The stack is null! That should not "
     				+ "happen!");
     		stck_closedAction = new Stack<ClosedAction<SecureListType>>();
     		return -1;
@@ -717,7 +717,7 @@ public class SecureList<SecureListType> implements Serializable {
     	if (ca_old != null 
     			&& ca_old.getId_secureList() != _oldOperationID) {
     		
-    		Status.getLogger().severe("Wrong closed action to be terminated."
+    		State.getLogger().severe("Wrong closed action to be terminated."
     				+ " Current one: " 
     				+ ca_old.getName()
     				+ " Old id: " + _oldOperationID);
@@ -771,7 +771,7 @@ public class SecureList<SecureListType> implements Serializable {
     	
     	//threshold: the stack must not be null. catch this error.
     	if (stck_transaction == null) {
-    		Status.getLogger().severe("The stack is null! That should not "
+    		State.getLogger().severe("The stack is null! That should not "
     				+ "happen! New transaction name: "
         				+ _transactionName);
     		stck_transaction = new Stack<Transaction<SecureListType>>();
@@ -793,7 +793,7 @@ public class SecureList<SecureListType> implements Serializable {
         			&& !stck_transaction.isEmpty()
         			&& ca_old.getId_secureList() != _oldTransactionID) {
         		
-        		Status.getLogger().severe("Transaction " + ca_old.getName() 
+        		State.getLogger().severe("Transaction " + ca_old.getName() 
         				+ " not terminated! New transaction name: "
         				+ _transactionName);
         		return ID_NO_PREDECESSOR;
@@ -820,7 +820,7 @@ public class SecureList<SecureListType> implements Serializable {
 
     	//threshold: the stack must not be null. catch this error.
     	if (stck_transaction == null) {
-    		Status.getLogger().severe("The stack is null! That should not "
+    		State.getLogger().severe("The stack is null! That should not "
     				+ "happen!");
     		stck_transaction = new Stack<Transaction<SecureListType>>();
     		return -1;
@@ -838,7 +838,7 @@ public class SecureList<SecureListType> implements Serializable {
     	if (ca_old != null 
     			&& ca_old.getId_secureList() != _oldTransactionID) {
     		
-    		Status.getLogger().severe("Wrong closed action to be terminated."
+    		State.getLogger().severe("Wrong closed action to be terminated."
     				+ " Current one: " 
     				+ ca_old.getName()
     				+ " Old id: " + _oldTransactionID);
@@ -956,7 +956,7 @@ public class SecureList<SecureListType> implements Serializable {
 
     			//print error message because otherwise the error might 
     			//disappear if the second approach is successful
-            	Status.getLogger().severe(errorMessage); 
+            	State.getLogger().severe(errorMessage); 
         		
         		//remove the current (null) - closed action for being able to 
         		//proceed without  throwing this error each time a function 
@@ -1025,7 +1025,7 @@ public class SecureList<SecureListType> implements Serializable {
         					+ "\n\tCurrent  action-name: " + currentCAName;
         	
         	//print error message
-        	Status.getLogger().severe(errorInformationText 
+        	State.getLogger().severe(errorInformationText 
         			+ ":\n" + errorMessage); 
         	
     	}
@@ -1121,7 +1121,7 @@ public class SecureList<SecureListType> implements Serializable {
 
     			//print error message because otherwise the error might 
     			//disappear if the second approach is successful
-            	Status.getLogger().severe(errorMessage); 
+            	State.getLogger().severe(errorMessage); 
         		
         		//remove the current (null) - transaction for being able to 
         		//proceed without  throwing this error each time a function 
@@ -1189,7 +1189,7 @@ public class SecureList<SecureListType> implements Serializable {
         					+ "\n\tCurrent  action-name: " + currentCAName;
         	
         	//print error message
-        	Status.getLogger().severe(errorInformationText 
+        	State.getLogger().severe(errorInformationText 
         			+ ":\n" + errorMessage); 
         	
     	}

@@ -4,7 +4,7 @@ package model.objects.history;
 import java.util.Observable;
 
 import model.objects.painting.Picture;
-import model.settings.Status;
+import model.settings.State;
 import model.util.adt.list.List;
 
 
@@ -53,7 +53,7 @@ public final class History extends Observable {
         if (lsHistory.find(_hist)) {
             lsHistory.remove();
         } else {
-            Status.getLogger().warning("History" + "error");
+            State.getLogger().warning("History" + "error");
         }
         setChanged();
         notifyObservers("remove " + _hist);

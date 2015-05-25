@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import control.ControlPaint;
 import view.tabs.Export;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 
 
 
@@ -47,7 +47,7 @@ public final class CTabExport implements ActionListener {
     	            getExport().getJcb_raster().setSelected(true);
     	            getExport().getJcb_nothing().setSelected(false);
     	            getExport().getJcb_lines().setSelected(false);
-    	            Status.setIndexPageBackgroundExport(backgroundID);
+    	            State.setIndexPageBackgroundExport(backgroundID);
     	        
     	        } else if (_event.getSource().equals(
     	                getExport().getJcb_lines())) {
@@ -55,7 +55,7 @@ public final class CTabExport implements ActionListener {
     	            getExport().getJcb_lines().setSelected(true);
     	            getExport().getJcb_nothing().setSelected(false);
     	            getExport().getJcb_raster().setSelected(false);
-    	            Status.setIndexPageBackgroundExport(backgroundID);
+    	            State.setIndexPageBackgroundExport(backgroundID);
     	        
     	        } else if (_event.getSource().equals(
     	                getExport().getJcb_nothing())) {
@@ -63,7 +63,7 @@ public final class CTabExport implements ActionListener {
     	            getExport().getJcb_nothing().setSelected(true);
     	            getExport().getJcb_lines().setSelected(false);
     	            getExport().getJcb_raster().setSelected(false);
-    	            Status.setIndexPageBackgroundExport(backgroundID);
+    	            State.setIndexPageBackgroundExport(backgroundID);
     	        
     	        } else if (_event.getSource().equals(
     	                getExport().getJcb_margeBottom())) {
@@ -74,9 +74,9 @@ public final class CTabExport implements ActionListener {
     	            try {
 
     	                int int_selected = Integer.parseInt(str_selected);
-    	                Status.setBorderBottomPercentExport(int_selected);
+    	                State.setBorderBottomPercentExport(int_selected);
     	            } catch (Exception e) {
-    	                Status.getLogger().severe(
+    	                State.getLogger().severe(
     	                        "error: change border size: wrong input");
     	            }
     	        } else if (_event.getSource().equals(
@@ -89,9 +89,9 @@ public final class CTabExport implements ActionListener {
     	            try {
 
     	                int int_selected = Integer.parseInt(str_selected);
-    	                Status.setBorderLeftPercentExport(int_selected);
+    	                State.setBorderLeftPercentExport(int_selected);
     	            } catch (Exception e) {
-    	                Status.getLogger().severe(
+    	                State.getLogger().severe(
     	                        "error: change border size: wrong input");
     	            }
     	        } else if (_event.getSource().equals(
@@ -103,9 +103,9 @@ public final class CTabExport implements ActionListener {
     	            try {
 
     	                int int_selected = Integer.parseInt(str_selected);
-    	                Status.setBorderTopPercentExport(int_selected);
+    	                State.setBorderTopPercentExport(int_selected);
     	            } catch (Exception e) {
-    	                Status.getLogger().severe(
+    	                State.getLogger().severe(
     	                        "error: change border size: wrong input");
     	            }
     	        } else if (_event.getSource().equals(
@@ -117,19 +117,19 @@ public final class CTabExport implements ActionListener {
     	            try {
 
     	                int int_selected = Integer.parseInt(str_selected);
-    	                Status.setBorderRightPercentExport(int_selected);
+    	                State.setBorderRightPercentExport(int_selected);
     	            } catch (Exception e) {
-    	                Status.getLogger().severe(
+    	                State.getLogger().severe(
     	                        "error: change border size: wrong input");
     	            }
     	        } else if (_event.getSource().equals(getExport()
     	                .getJcb_displayAlpha())) {
-    	            Status.setExportAlpha(getExport().getJcb_displayAlpha()
+    	            State.setExportAlpha(getExport().getJcb_displayAlpha()
     	                    .getSelectedItem().equals(
     	                    		Constants.ID_DISPLAY_ALPHA));
     	        } else if (_event.getSource().equals(getExport()
     	                .getJcb_saveFormats())) {
-    	            Status.setSaveFormat(getExport().getJcb_saveFormats()
+    	            State.setSaveFormat(getExport().getJcb_saveFormats()
     	                    .getSelectedItem().toString());
     	        }
     	        
@@ -153,17 +153,17 @@ public final class CTabExport implements ActionListener {
 	
 				    	return cp.getView().getTabs().getTab_export();
 					} else {
-						Status.getLogger().severe("cp.getView().getTabs()"
+						State.getLogger().severe("cp.getView().getTabs()"
 								+ ".getTab_export() is null");
 					}
 				} else {
-					Status.getLogger().severe("cp.getView().getTabs() is null");
+					State.getLogger().severe("cp.getView().getTabs() is null");
 				}
 			} else {
-				Status.getLogger().severe("cp.getView() is null");
+				State.getLogger().severe("cp.getView() is null");
 			}
 		} else {
-			Status.getLogger().severe("cp is null");
+			State.getLogger().severe("cp is null");
 		}
 		return null;
 	}

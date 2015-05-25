@@ -20,7 +20,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 //import utility classes and settings
-import model.settings.Status;
+import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.Util;
 
@@ -618,7 +618,7 @@ public class VTabbedPane extends MPanel {
         if (jpnl_stuff == null) {
             
             //print error message
-            Status.getLogger().severe(
+            State.getLogger().severe(
                     "add an item to a not existing MPanel (no item added yet)");
     
             //return null
@@ -627,7 +627,7 @@ public class VTabbedPane extends MPanel {
     	} else if (_index < 0 || _index >= jpnl_stuff.length) {
     
             //print error message
-            Status.getLogger().severe("add an item to a not existing MPanel "
+            State.getLogger().severe("add an item to a not existing MPanel "
             		+ "(index out of range)");
     
             //return null
@@ -636,7 +636,7 @@ public class VTabbedPane extends MPanel {
     	} else if (_c == null) {
     
             //print error message
-            Status.getLogger().severe("add an item to a not existing MPanel "
+            State.getLogger().severe("add an item to a not existing MPanel "
             		+ "(Component to add is null)");
     
             //return null
@@ -881,7 +881,7 @@ public class VTabbedPane extends MPanel {
 
         //tell e.g. the initialization thread that the initialization
         //process has proceeded one step.
-        Status.increaseInitializationFinished();
+        State.increaseInitializationFinished();
     }
 
     /**

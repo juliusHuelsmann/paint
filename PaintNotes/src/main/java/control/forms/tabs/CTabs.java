@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import view.forms.Page;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.ViewSettings;
 import control.ControlPaint;
 import control.interfaces.MoveEvent;
@@ -93,10 +93,10 @@ public class CTabs implements TabbedListener {
         
         //check whether location is okay.
 		final int d = (int) (ViewSettings.getView_bounds_page().getHeight() 
-        		/ Status.getImageShowSize().height 
-        		* Status.getImageSize().height
+        		/ State.getImageShowSize().height 
+        		* State.getImageSize().height
         		- page.getJlbl_painting().getLocation().getY()
-        		- Status.getImageSize().height);
+        		- State.getImageSize().height);
         if (d > 0) {
         	page.getJlbl_painting().setLocation(
         			(int) page.getJlbl_painting().getLocation().getX(),

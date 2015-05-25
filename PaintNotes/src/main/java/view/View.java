@@ -12,7 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
@@ -444,7 +444,7 @@ import control.util.WindowMover;
 		            }
 		        }
 
-			    while (!Status.isInitializationFinished()) {
+			    while (!model.settings.State.isInitializationFinished()) {
 			        //sleep for a while
 			        try {
 			            Thread.sleep(time * 2);
@@ -556,7 +556,7 @@ import control.util.WindowMover;
         }
         
         //initialize tabs
-        Status.getLogger().info("   initialize Tabs\n");
+        State.getLogger().info("   initialize Tabs\n");
         
         if (tabs != null) {
         	
@@ -568,14 +568,14 @@ import control.util.WindowMover;
             tabs.setLocation(ViewSettings.VIEW_LOCATION_TB);
             
         } else {
-        	Status.getLogger().severe("tabs at flip null. Debugging?");
+        	State.getLogger().severe("tabs at flip null. Debugging?");
         }
         
         //initialize PaintObjects
-        Status.getLogger().info("   initialize PaintObjects\n");
+        State.getLogger().info("   initialize PaintObjects\n");
 
         //initialize PaintObjects
-        Status.getLogger().info("   initialize Page\n");
+        State.getLogger().info("   initialize Page\n");
         
 	    
 	        	
@@ -602,7 +602,7 @@ import control.util.WindowMover;
             page.setSize(ViewSettings.getView_bounds_page().width, 
                     ViewSettings.getView_bounds_page().height);
         } else {
-        	Status.getLogger().severe("page at flip null. Debugging?");
+        	State.getLogger().severe("page at flip null. Debugging?");
         }
 
         if (tabs != null) {

@@ -7,7 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import javax.swing.JButton;
-import model.settings.Status;
+import model.settings.State;
 
 
 /**
@@ -74,7 +74,7 @@ public class MButton extends JButton implements Mega {
         double rotation = 0;
         
         //if not normal rotation
-        if (!Status.isNormalRotation()) {
+        if (!State.isNormalRotation()) {
             final int filpRotation = 180;
             rotation = filpRotation;
         }

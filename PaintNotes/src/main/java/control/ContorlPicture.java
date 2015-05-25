@@ -10,7 +10,7 @@ import control.interfaces.PaintListener;
 import model.objects.painting.PaintBI;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.special.PenSelection;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
@@ -64,7 +64,7 @@ public class ContorlPicture implements PaintListener {
 	 */
 	public final void refreshPaint() {
 
-		Status.getLogger().finest("refreshing entire PaintLabel. \nValues: "
+		State.getLogger().finest("refreshing entire PaintLabel. \nValues: "
 				+ "\n\tgetSize:\t" + getPaintLabel().getSize() + " vs. " 
 				+ getJPnlToMove().getSize()
 				+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
@@ -221,7 +221,7 @@ public class ContorlPicture implements PaintListener {
 	public final BufferedImage refreshRectangle(final int _x, final int _y, 
 			final int _width, final int _height) {
 
-		Status.getLogger().finest("refreshing PaintLabel. \nValues: "
+		State.getLogger().finest("refreshing PaintLabel. \nValues: "
 				+ "\n\tgetSize:\t" + getPaintLabel().getSize()
 				+ " vs. " + getJPnlToMove().getSize()
 				+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
@@ -254,7 +254,7 @@ public class ContorlPicture implements PaintListener {
 			final int _x, final int _y, 
 			final int _width, final int _height) {
 
-		Status.getLogger().finest("refreshing rectangle background. \nValues: "
+		State.getLogger().finest("refreshing rectangle background. \nValues: "
 				+ "\n\tgetSize:\t" + getPaintLabel().getSize()
 				+ " vs. " + getJPnlToMove().getSize()
 				+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
@@ -346,7 +346,7 @@ public class ContorlPicture implements PaintListener {
 	public final BufferedImage clrRectangle(final int _x, final int _y, 
 			final int _width, final int _height) {
 
-		Status.getLogger().finest("clr PaintLabel. \nValues: "
+		State.getLogger().finest("clr PaintLabel. \nValues: "
 				+ "\n\tgetSize:\t" + getPaintLabel().getSize() 
 				+ " vs. " + getJPnlToMove().getSize()
 				+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
@@ -503,7 +503,7 @@ public class ContorlPicture implements PaintListener {
 		//auf der falschen seite auf.
 		
 		
-		Status.getLogger().finest("beforelocation change:\n"
+		State.getLogger().finest("beforelocation change:\n"
 				+ "x: " + xNew + "\t" + xOld + "\t" + xOld2
 				+ "y: " + yNew + "\t" + yOld + "\t" + yOld2);
 		
@@ -768,25 +768,25 @@ public class ContorlPicture implements PaintListener {
 
 						return cp.getView().getPage().getJpnl_toMove();
 					} else {
-						Status.getLogger().severe(
+						State.getLogger().severe(
 								"error: cp.getView().getPage().getJpnl_toMove()"
 								+ " is null");
 					} 
 				} else {
 
-					Status.getLogger().severe(
+					State.getLogger().severe(
 							"error: cp.getView().getPage() "
 							+ "is null");
 				}
 			} else {
 
-				Status.getLogger().severe(
+				State.getLogger().severe(
 						"error: cp.getView() "
 						+ "is null");
 			}
 		} else {
 
-			Status.getLogger().severe(
+			State.getLogger().severe(
 					"error: cp "
 					+ "is null");
 		}
@@ -805,26 +805,26 @@ public class ContorlPicture implements PaintListener {
 
 						return cp.getView().getPage().getJlbl_painting();
 					} else {
-						Status.getLogger().severe(
+						State.getLogger().severe(
 								"error: cp.getView().getPage()"
 								+ ".getJlbl_painting() "
 								+ "is null");
 					} 
 				} else {
 
-					Status.getLogger().severe(
+					State.getLogger().severe(
 							"error: cp.getView().getPage() "
 							+ "is null");
 				}
 			} else {
 
-				Status.getLogger().severe(
+				State.getLogger().severe(
 						"error: cp.getView() "
 						+ "is null");
 			}
 		} else {
 
-			Status.getLogger().severe(
+			State.getLogger().severe(
 					"error: cp "
 					+ "is null");
 		}

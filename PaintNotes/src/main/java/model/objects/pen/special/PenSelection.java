@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 import model.objects.pen.Pen;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import model.util.DPoint;
@@ -60,10 +60,10 @@ public class PenSelection extends Pen implements Serializable {
 		
 		//TODO: apply the final Rectangle _r_visibleScope update!
 
-		final double factorWidth = 1.0 * Status.getImageSize().width
-				/ Status.getImageShowSize().width;
-		final double factorHeight = 1.0 * Status.getImageSize().height
-				/ Status.getImageShowSize().height;
+		final double factorWidth = 1.0 * State.getImageSize().width
+				/ State.getImageShowSize().width;
+		final double factorHeight = 1.0 * State.getImageSize().height
+				/ State.getImageShowSize().height;
 
 		final int x = (int) (_pnt_shift.getX() + _p.getX() / factorWidth);
 		final int y = (int) (_pnt_shift.getY() + _p.getY() / factorHeight);

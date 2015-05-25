@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import view.forms.Help;
 import view.util.mega.MLabel;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.ViewSettings;
 import control.forms.tabs.CTabLook;
 
@@ -361,16 +361,16 @@ public final class Look extends Tab {
 
         //apply the values set in Settings to the components:
         jcb_margeLeft.setSelectedIndex(getBorderPercentagesSettingsIndex(
-                Status.getBorderLeftPercent()));
+                State.getBorderLeftPercent()));
         jcb_margeRight.setSelectedIndex(getBorderPercentagesSettingsIndex(
-                Status.getBorderRightPercent()));
+                State.getBorderRightPercent()));
         jcb_margeTop.setSelectedIndex(getBorderPercentagesSettingsIndex(
-                Status.getBorderTopPercent()));
+                State.getBorderTopPercent()));
         jcb_margeBottom.setSelectedIndex(getBorderPercentagesSettingsIndex(
-                Status.getBorderBottomPercent()));
+                State.getBorderBottomPercent()));
         
         
-        switch (Status.getIndexPageBackground()) {
+        switch (State.getIndexPageBackground()) {
         case Constants.CONTROL_PAGE_BACKGROUND_RASTAR:
             jcb_raster.setSelected(true);
             jcb_lines.setSelected(false);
@@ -387,11 +387,11 @@ public final class Look extends Tab {
             jcb_nothing.setSelected(true);
             break;
         default:
-            Status.getLogger().severe("error: unknown type of background");
+            State.getLogger().severe("error: unknown type of background");
             break;
         }
         
-        if (Status.isShowAlpha()) {
+        if (State.isShowAlpha()) {
 
             jcb_displayAlpha.setSelectedIndex(1);
         } else {
@@ -417,7 +417,7 @@ public final class Look extends Tab {
         }
         
         if (selected == -1) {
-            Status.getLogger().severe("Fatal error: Value set in settings"
+            State.getLogger().severe("Fatal error: Value set in settings"
                     + " that is not in Constants. Value = " + _percentage);
             selected = 0;
         }

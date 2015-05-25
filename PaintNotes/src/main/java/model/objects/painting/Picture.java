@@ -47,7 +47,7 @@ import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Pencil;
 import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 import model.util.Util;
 import model.util.adt.list.SecureList;
@@ -156,7 +156,7 @@ public final class Picture implements Serializable {
 		
 		//initialize the standard pen and the standard operation id in 
 		//controller class for pen1 selected.
-		Status.applyStandardPen(this);
+		State.applyStandardPen(this);
 	}
 
 	/**
@@ -210,7 +210,7 @@ public final class Picture implements Serializable {
 			if (!(po_current instanceof POCurve)) {
 
 				// throw error message and kill program.
-				Status.getLogger().severe("Es soll ein neues pen objekt"
+				State.getLogger().severe("Es soll ein neues pen objekt"
 						+ " geadded werden, obwohl das Alte nicht null ist "
 						+ "also nicht gefinished wurde.\n" 
 						+ "Programm wird beendet.");
@@ -229,7 +229,7 @@ public final class Picture implements Serializable {
 			currentId++;
 
 			// set uncommitted changes.
-			Status.setUncommittedChanges(true);
+			State.setUncommittedChanges(true);
 		}
 	}
 
@@ -244,7 +244,7 @@ public final class Picture implements Serializable {
 		if (po_current != null) {
 
 			// throw error message and kill program.
-			Status.getLogger().severe("Es soll ein neues pen objekt"
+			State.getLogger().severe("Es soll ein neues pen objekt"
 					+ " geadded werden, obwohl das Alte nicht null ist "
 					+ "also nicht gefinished wurde.\n" 
 					+ "Programm wird beendet.");
@@ -255,7 +255,7 @@ public final class Picture implements Serializable {
 		}
 
 		if (_bi == null) {
-			Status.getLogger().warning("nothing on clipboard.");
+			State.getLogger().warning("nothing on clipboard.");
 		} else {
 
 			// create new PaintObject and insert it into list of
@@ -267,7 +267,7 @@ public final class Picture implements Serializable {
 			currentId++;
 
 			// set uncommitted changes.
-			Status.setUncommittedChanges(true);
+			State.setUncommittedChanges(true);
 		}
 	}
 
@@ -278,7 +278,7 @@ public final class Picture implements Serializable {
 
 		int casus = -1;
 		// switch index of operation
-		switch (Status.getIndexOperation()) {
+		switch (State.getIndexOperation()) {
 
 		case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
 			addPaintObject(new POLine(currentId, pen_current, this));
@@ -306,7 +306,7 @@ public final class Picture implements Serializable {
 						pen_current.getClr_foreground());
 			} else {
 
-				Status.getLogger().warning("fehler stiftz noch nicht hinzu");
+				State.getLogger().warning("fehler stiftz noch nicht hinzu");
 
 				// throw exception
 				throw new Error("Fehler: stift noch nicht hinzugefuegt.");
@@ -359,7 +359,7 @@ public final class Picture implements Serializable {
 					pen_current));
 			break;
 		default:
-			Status.getLogger().warning("unknown index operation");
+			State.getLogger().warning("unknown index operation");
 		}
 	}
 
@@ -376,7 +376,7 @@ public final class Picture implements Serializable {
 			if (!(po_current instanceof POCurve)) {
 
 				// throw error message and kill program.
-				Status.getLogger().severe("Es soll ein neues pen objekt"
+				State.getLogger().severe("Es soll ein neues pen objekt"
 						+ " geadded werden, obwohl das Alte nicht null ist "
 						+ "also nicht gefinished wurde.\n" 
 						+ "Programm wird beendet.");
@@ -396,7 +396,7 @@ public final class Picture implements Serializable {
 			currentId++;
 
 			// set uncommitted changes.
-			Status.setUncommittedChanges(true);
+			State.setUncommittedChanges(true);
 		}
 	}
 
@@ -496,12 +496,12 @@ public final class Picture implements Serializable {
 		// image which is not to be emptied and then repainted.
 		// If that's the case, the rectangle width or height are decreased.
 		int rectWidth = _width, rectHeight = _height;
-		if (_x + _width > Status.getImageShowSize().width) {
-			rectWidth = Status.getImageShowSize().width - _x;
+		if (_x + _width > State.getImageShowSize().width) {
+			rectWidth = State.getImageShowSize().width - _x;
 		}
 
-		if (_y + _height > Status.getImageShowSize().height) {
-			rectHeight = Status.getImageShowSize().height - _y;
+		if (_y + _height > State.getImageShowSize().height) {
+			rectHeight = State.getImageShowSize().height - _y;
 
 		}
 
@@ -579,7 +579,7 @@ public final class Picture implements Serializable {
 		= new SecureListSort<PaintObject>();
 
 		// reset value for debugging and speed testing.
-		Status.setCounter_paintedPoints(0);
+		State.setCounter_paintedPoints(0);
 
 		// initialize start value go to the list's beginning and calculate
 		// values such as the stretch factors (which occur because of
@@ -595,10 +595,10 @@ public final class Picture implements Serializable {
 			factorW = 1;
 			factorH = 1;
 		} else {
-			factorW = 1.0 * Status.getImageSize().width
-					/ Status.getImageShowSize().width;
-			factorH = 1.0 * Status.getImageSize().width 
-					/ Status.getImageShowSize().width;
+			factorW = 1.0 * State.getImageSize().width
+					/ State.getImageShowSize().width;
+			factorH = 1.0 * State.getImageSize().width 
+					/ State.getImageShowSize().width;
 
 		}
 		
@@ -669,7 +669,7 @@ public final class Picture implements Serializable {
 
 				// log severe error because of unnecessary PaintObject inside
 				// list.
-				Status.getLogger().severe(
+				State.getLogger().severe(
 						"Error. Null PaintObject inside"
 								+ " the list of sorted paintObjects.");
 			}
@@ -715,7 +715,7 @@ public final class Picture implements Serializable {
 		}
 		
 		// print logging method
-		Status.getLogger().info("Painted " + Status.getCounter_paintedPoints()
+		State.getLogger().info("Painted " + State.getCounter_paintedPoints()
 						+ "pixel points for this operation.");
 		//finish transaction and finish closed action; adjust the current
 		//element to its state before the list transaction.
@@ -738,12 +738,12 @@ public final class Picture implements Serializable {
 		if (po_current == null) {
 
 			// throw error message and kill program.
-			Status.getLogger().warning(
+			State.getLogger().warning(
 					"Es soll ein nicht existentes Objekt veraendert werden.\n"
 							+ "Programm wird beendet.");
 		}
-		if (_pnt.getX() > Status.getImageSize().getWidth() || _pnt.getX() < 0
-				|| _pnt.getY() > Status.getImageSize().getHeight()
+		if (_pnt.getX() > State.getImageSize().getWidth() || _pnt.getX() < 0
+				|| _pnt.getY() > State.getImageSize().getHeight()
 				|| _pnt.getY() < 0) {
 			return;
 		}
@@ -828,7 +828,7 @@ public final class Picture implements Serializable {
 		}
 
 		// set uncommitted changes.
-		Status.setUncommittedChanges(true);
+		State.setUncommittedChanges(true);
 	}
 
 	/**
@@ -865,7 +865,7 @@ public final class Picture implements Serializable {
 		if (po_current == null) {
 
 			// throw error message and kill program.
-			Status.getLogger().severe(
+			State.getLogger().severe(
 					"Es soll ein nicht existentes Objekt beendet werden.\n"
 							+ "Programm wird beendet.");
 		} else {
@@ -897,7 +897,7 @@ public final class Picture implements Serializable {
 			if (!(pen_current instanceof PenSelection)) {
 
 				// set uncommitted changes.
-				Status.setUncommittedChanges(true);
+				State.setUncommittedChanges(true);
 			}
 		}
 	}
@@ -926,7 +926,7 @@ public final class Picture implements Serializable {
 		} else {
 
 			// alert user.
-			Status.showMessageDialog(
+			State.showMessageDialog(
 					"PROGRAMMIERFEHLER @ paintobjectwriting: "
 							+ "Stift noch nicht hinzugefuegt.");
 
@@ -955,7 +955,7 @@ public final class Picture implements Serializable {
 		}
 
 		// set uncommitted changes.
-		Status.setUncommittedChanges(true);
+		State.setUncommittedChanges(true);
 	}
 
 	/**
@@ -969,7 +969,7 @@ public final class Picture implements Serializable {
 
 		if (_recSelection == null) {
 
-			Status.getLogger().warning("the selection square does not exist!");
+			State.getLogger().warning("the selection square does not exist!");
 			return null;
 		}
 
@@ -1003,7 +1003,7 @@ public final class Picture implements Serializable {
 						-_recSelection.y, null);
 
 			} else {
-				Status.getLogger().warning("unknown kind of PaintObject" + po);
+				State.getLogger().warning("unknown kind of PaintObject" + po);
 			}
 			ls_poSelected.next(transaction, closedAction);
 
@@ -1033,27 +1033,27 @@ public final class Picture implements Serializable {
 			final String _type) {
 
 		BufferedImage bi;
-		if (Status.isExportAlpha()) {
+		if (State.isExportAlpha()) {
 
 			bi = Util.getEmptyBITransparent();
 		} else {
 			bi = Util.getEmptyBIWhite();
 		}
 
-		bi = Utils.getBackgroundExport(bi, 0, 0, Status.getImageSize().width,
-				Status.getImageSize().height, 0, 0);
+		bi = Utils.getBackgroundExport(bi, 0, 0, State.getImageSize().width,
+				State.getImageSize().height, 0, 0);
 
-		bi = repaintRectangle(-_x + 0, -_y + 0, Status.getImageSize().width,
-				Status.getImageSize().height, -_x + 0, -_y + 0, bi, true);
+		bi = repaintRectangle(-_x + 0, -_y + 0, State.getImageSize().width,
+				State.getImageSize().height, -_x + 0, -_y + 0, bi, true);
 
 		try {
 			if (_type == "") {
 
-				ImageIO.write(bi, Status.getSaveFormat(),
-						new File(_wsLoc + Status.getSaveFormat()));
+				ImageIO.write(bi, State.getSaveFormat(),
+						new File(_wsLoc + State.getSaveFormat()));
 			} else {
 
-				ImageIO.write(bi, Status.getSaveFormat(),
+				ImageIO.write(bi, State.getSaveFormat(),
 						new File(_wsLoc + _type));
 			}
 		} catch (IOException e) {
@@ -1089,23 +1089,23 @@ public final class Picture implements Serializable {
 	public BufferedImage calculateImage() {
 
 		BufferedImage bi;
-		if (Status.isExportAlpha()) {
+		if (State.isExportAlpha()) {
 
 			bi = Util.getEmptyBITransparent();
 		} else {
 			bi = Util.getEmptyBIWhite();
 		}
 
-		bi = Utils.getBackgroundExport(bi, 0, 0, Status.getImageSize().width,
-				Status.getImageSize().height, 0, 0);
+		bi = Utils.getBackgroundExport(bi, 0, 0, State.getImageSize().width,
+				State.getImageSize().height, 0, 0);
 
 		bi = repaintRectangle(
 				
 				0, 0,
 //				-Page.getInstance().getJlbl_painting().getLocation().x + 0,
 //				-Page.getInstance().getJlbl_painting().getLocation().y + 0,
-				Status.getImageSize().width,
-				Status.getImageSize().height,
+				State.getImageSize().width,
+				State.getImageSize().height,
 				0, 0,
 				bi, true);
 
@@ -1452,7 +1452,7 @@ public final class Picture implements Serializable {
 			ls_poSelected = new SecureList<PaintObject>();
 		} else {
 			if (!ls_poSelected.isEmpty()) {
-				Status.getLogger().warning(
+				State.getLogger().warning(
 						"creating new selection list but list is not empty.");
 			}
 		}
@@ -1469,7 +1469,7 @@ public final class Picture implements Serializable {
 
 		// deactivates to change operations of selected items
 		if (ls_poSelected == null) {
-			Status.getLogger().warning("insert into null list");
+			State.getLogger().warning("insert into null list");
 		} else if (_po != null) {
 
 //			CTabSelection.activateOp();
@@ -1496,7 +1496,7 @@ public final class Picture implements Serializable {
 
 		// deactivates to change operations of selected items
 		if (ls_poSelected == null) {
-			Status.getLogger().warning("finish selection list which is"
+			State.getLogger().warning("finish selection list which is"
 					+ " null.");
 		} else {
 
@@ -1607,7 +1607,7 @@ public final class Picture implements Serializable {
 				POLine p = (POLine) ls_poSelected.getItem();
 				moveLine(p, _dX, _dY);
 			} else {
-				Status.getLogger().warning("unknown kind of PaintObject?");
+				State.getLogger().warning("unknown kind of PaintObject?");
 			}
 			ls_poSelected.next(transaction, closedAction);
 		}
@@ -1714,7 +1714,7 @@ public final class Picture implements Serializable {
 		= new SecureListSort<PaintObject>();
 
 		// reset value for debugging and speed testing.
-		Status.setCounter_paintedPoints(0);
+		State.setCounter_paintedPoints(0);
 
 		
 		ls_poSelected.toFirst(id_transaction, id_closedAction);
@@ -1750,7 +1750,7 @@ public final class Picture implements Serializable {
 
 				// log severe error because of unnecessary PaintObject inside
 				// list.
-				Status.getLogger().severe(
+				State.getLogger().severe(
 						"Error. Null PaintObject inside"
 								+ " the list of sorted paintObjects.");
 			}
@@ -1797,7 +1797,7 @@ public final class Picture implements Serializable {
 		}
 		
 		// print logging method
-		Status.getLogger().info("Painted " + Status.getCounter_paintedPoints()
+		State.getLogger().info("Painted " + State.getCounter_paintedPoints()
 						+ "pixel points for this operation. (paint selected)");
 
 		//finish transaction and finish closed action; adjust the current
@@ -1814,10 +1814,10 @@ public final class Picture implements Serializable {
 					- r_max.x, r_max.height - r_max.y);
 
 			// adapt the rectangle to the currently used zoom factor.
-			final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
-					/ Status.getImageShowSize().width;
-			final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
-					/ Status.getImageShowSize().height;
+			final double cZoomFactorWidth = 1.0 * State.getImageSize().width
+					/ State.getImageShowSize().width;
+			final double cZoomFactorHeight = 1.0 * State.getImageSize().height
+					/ State.getImageShowSize().height;
 			realRect.x = (int) (1.0 * realRect.x / cZoomFactorWidth);
 			realRect.width = (int) (1.0 * realRect.width / cZoomFactorWidth);
 			realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
@@ -1924,10 +1924,10 @@ public final class Picture implements Serializable {
 					- r_max.x, r_max.height - r_max.y);
 
 			// adapt the rectangle to the currently used zoom factor.
-			final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
-					/ Status.getImageShowSize().width;
-			final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
-					/ Status.getImageShowSize().height;
+			final double cZoomFactorWidth = 1.0 * State.getImageSize().width
+					/ State.getImageShowSize().width;
+			final double cZoomFactorHeight = 1.0 * State.getImageSize().height
+					/ State.getImageShowSize().height;
 			realRect.x = (int) (1.0 * realRect.x / cZoomFactorWidth);
 			realRect.width = (int) (1.0 * realRect.width / cZoomFactorWidth);
 			realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
@@ -2049,10 +2049,10 @@ public final class Picture implements Serializable {
 					- r_max.x, r_max.height - r_max.y);
 
 			// adapt the rectangle to the currently used zoom factor.
-			final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
-					/ Status.getImageShowSize().width;
-			final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
-					/ Status.getImageShowSize().height;
+			final double cZoomFactorWidth = 1.0 * State.getImageSize().width
+					/ State.getImageShowSize().width;
+			final double cZoomFactorHeight = 1.0 * State.getImageSize().height
+					/ State.getImageShowSize().height;
 			realRect.x = (int) (1.0 * realRect.x / cZoomFactorWidth);
 			realRect.width = (int) (1.0 * realRect.width / cZoomFactorWidth);
 			realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
@@ -2086,7 +2086,7 @@ public final class Picture implements Serializable {
 		// deactivates to change operations of selected items
 		_controlTabSelection.deactivateOp();
 		if (ls_poSelected == null) {
-			Status.getLogger().info("o selected elements");
+			State.getLogger().info("o selected elements");
 			return;
 		}
 		
@@ -2102,7 +2102,7 @@ public final class Picture implements Serializable {
 			PaintObject po = ls_poSelected.getItem();
 
 			if (po == null) {
-				Status.getLogger().warning("error: empty list item");
+				State.getLogger().warning("error: empty list item");
 			}
 
 			new PictureOverview(_paintObjects).removeSelected(po);
@@ -2127,7 +2127,7 @@ public final class Picture implements Serializable {
 				ls_po_sortedByY.insertSorted(p, p.getSnapshotBounds().y,
 						SecureList.ID_NO_PREDECESSOR);
 			} else if (po != null) {
-				Status.getLogger().warning("unknown kind of PaintObject" + po);
+				State.getLogger().warning("unknown kind of PaintObject" + po);
 			}
 			ls_poSelected.remove(transaction);
 			ls_poSelected.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
@@ -2146,7 +2146,7 @@ public final class Picture implements Serializable {
 			final CTabSelection _cts) {
 
 		if (ls_poSelected == null) {
-			Status.getLogger().info("o selected elements");
+			State.getLogger().info("o selected elements");
 			return;
 		}
 		//create new transaction
@@ -2159,7 +2159,7 @@ public final class Picture implements Serializable {
 		while (!ls_poSelected.isEmpty()) {
 
 			if (ls_poSelected.getItem() == null) {
-				Status.getLogger().warning("error: empty list item");
+				State.getLogger().warning("error: empty list item");
 			}
 
 			new PictureOverview(_pos).removeSelected(ls_poSelected.getItem());
@@ -2200,9 +2200,9 @@ public final class Picture implements Serializable {
 				}
 			}
 
-			Status.setImageSize(new Dimension(bi_normalSize.getWidth(),
+			State.setImageSize(new Dimension(bi_normalSize.getWidth(),
 					bi_normalSize.getHeight()));
-			Status.setImageShowSize(new Dimension(bi_normalSize.getWidth(),
+			State.setImageShowSize(new Dimension(bi_normalSize.getWidth(),
 					bi_normalSize.getHeight()));
 
 			if (ls_po_sortedByY == null) {
@@ -2232,7 +2232,7 @@ public final class Picture implements Serializable {
 		}
 
 
-		return new DPoint(Status.getImageSize().getWidth(), Status
+		return new DPoint(State.getImageSize().getWidth(), State
 				.getImageSize().getHeight());
 	}
 
@@ -2296,13 +2296,13 @@ public final class Picture implements Serializable {
 
 		Pen pen = Pen.clonePen(_pen);
 		if (_id == 1) {
-			pen.setClr_foreground(Status.getPenSelected1().getClr_foreground());
-			Status.setPenSelected1(pen);
+			pen.setClr_foreground(State.getPenSelected1().getClr_foreground());
+			State.setPenSelected1(pen);
 		} else if (_id == 2) {
-			pen.setClr_foreground(Status.getPenSelected2().getClr_foreground());
-			Status.setPenSelected2(pen);
+			pen.setClr_foreground(State.getPenSelected2().getClr_foreground());
+			State.setPenSelected2(pen);
 		} else {
-			Status.getLogger().severe("wrong identifier: " + _id);
+			State.getLogger().severe("wrong identifier: " + _id);
 		}
 	}
 

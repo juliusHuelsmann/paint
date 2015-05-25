@@ -19,7 +19,7 @@ import view.util.mega.MButton;
  * @author Julius Huelsmann
  * @version %I%,%U%
  */
-public class ControlPaintSelectin implements 
+public class ControlSelectionTransform implements 
 MouseMotionListener, MouseListener {
 
     
@@ -30,14 +30,6 @@ MouseMotionListener, MouseListener {
      */
     private DPoint pnt_startLocationLabel;
     
-    
-    /**
-     * the point which saves the paintLabel location at the beginning of 
-     * selection. Thus it is possible to change the scroll position
-     * while selecting something.
-     */
-    private Point pnt_startPaintLabelLocation;
-    
     /**
      * Start location of Buttons for resizing and moving.
      * For moving operation.
@@ -45,10 +37,16 @@ MouseMotionListener, MouseListener {
     private DPoint[][] pnt_startLocationButton;
 
     /**
-     * Start DPoint.
+     * The location on screen which is saved on mouseClick at the button
+     * which allows the user to move the selected area.
      */
-    private DPoint pnt_start, pnt_rSelectionStart;;
+    private DPoint pnt_start;
 
+    /**
+     * 
+     */
+    private DPoint pnt_rSelectionStart;
+    
     /**
      * This rectangle displays the selection.
      */
@@ -85,7 +83,7 @@ MouseMotionListener, MouseListener {
      * Constructor: initialize DPoint array.
      * @param _cv the cv
      */
-    public ControlPaintSelectin(final ControlPaint _cv) {
+    public ControlSelectionTransform(final ControlPaint _cv) {
     	this.cv = _cv;
         pnt_startLocationButton = new DPoint
                 [2 + 1][2 + 1];
@@ -100,42 +98,10 @@ MouseMotionListener, MouseListener {
         
         if (_event.getSource().equals(
                 getPage().getJbtn_resize()[1][1])) {
-            
-            int dX = (int) (_event.getXOnScreen() - pnt_start.getX()), 
-                    dY = (int) (_event.getYOnScreen() - pnt_start.getY());
-            
-            getPage().getJlbl_selectionBG().setLocation(
-                    (int) pnt_startLocationLabel.getX() + dX,
-                    (int) pnt_startLocationLabel.getY() + dY);
-            
-            getPage().getJlbl_selectionPainting().setLocation(
-                    (int) pnt_startLocationLabel.getX() + dX,
-                    (int) pnt_startLocationLabel.getY() + dY);
-
-            for (int x = 0; x < pnt_startLocationButton.length; x++) {
-
-                for (int y = 0; y < pnt_startLocationButton.length; y++) {
-                     
-                    if ((x == 2 && y == 2)
-                            || (x == 2 && y == 1)
-                            || (x == 1 && y == 2)
-                            || (x == 0 && y == 2)
-                            || !wholeImageSelected) {
-
-                    	getPage().getJbtn_resize()[x][y].setLocation(
-                    			(int) pnt_startLocationButton[x][y].getX() 
-                                + dX,
-                                (int) pnt_startLocationButton[x][y].getY() 
-                                + dY);
-                    }
-
-                }
-            }
-            
-            r_selection.x = (int) pnt_rSelectionStart.getX() + dX;
-            r_selection.y =  (int) pnt_rSelectionStart.getY() + dY;
-            
-            getPage().getJlbl_border().setBounds(r_selection);
+        	
+        	// update values after drag
+        	updateSelectionLocation(_event, false);
+        	
         } else {
             if (wholeImageSelected) {
                 md_buttonLocationWholeImage(_event);
@@ -145,7 +111,8 @@ MouseMotionListener, MouseListener {
             
         }
     }
-
+    
+    
     /**
      * {@inheritDoc}
      */
@@ -217,21 +184,9 @@ MouseMotionListener, MouseListener {
         if (_event.getSource().equals(
                 getPage().getJbtn_resize()[1][1])) {
             
-            int dX = (int) (_event.getXOnScreen() - pnt_start.getX()), 
-                    dY = (int) (_event.getYOnScreen() - pnt_start.getY());
+        	updateSelectionLocation(_event, true);
 
-            final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
-                    / Status.getImageShowSize().width;
-            final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
-                    / Status.getImageShowSize().height;
             
-            cv.getPicture().moveSelected(
-                    (int) (1.0 * dX * cZoomFactorWidth), 
-                    (int) (1.0 * dY * cZoomFactorHeight));
-            
-            cv.getControlPic().paintEntireSelectionRect(
-                    r_selection);
-            getPage().getJlbl_selectionPainting().repaint();
             
         } else {
 
@@ -262,15 +217,128 @@ MouseMotionListener, MouseListener {
                 Status.getLogger().warning("Wrong action source? "
                         + "This warning should never occure.");
             }
+            
+            pnt_start = null;
+            pnt_rSelectionStart = null;
         }
         
-        
-        pnt_start = null;
-        pnt_rSelectionStart = null;
     }
     
 
     /**
+	 * 
+	 * @param _event
+	 * @param _applyChanges 	whether to apply the changes to the selection
+	 * 							and to reset the values.
+	 */
+	private void updateSelectionLocation(final MouseEvent _event,
+			final boolean _applyChanges) {
+		
+		if (pnt_start == null || _event == null) {
+			
+			//print error message.
+			Status.getLogger().severe("the pnt_start or the _event is null"
+					+ "\n\tpnt_start: \t" + pnt_start
+					+ "\n\t_event: \t" + _event);
+			return;
+		}
+		
+		// compute the difference between the location of the mouse press
+		// event (on screen) and the current mouse location (on screen).
+	    int dX = (int) (_event.getXOnScreen() - pnt_start.getX()), 
+	    		dY = (int) (_event.getYOnScreen() - pnt_start.getY());
+	    
+	    
+	    // shift the selection - background JLabel and the label which 
+	    // contains the painted selection by the above-calculated values.
+	    if (pnt_startLocationLabel != null) {
+	
+	        getPage().getJlbl_selectionBG().setLocation(
+	                (int) pnt_startLocationLabel.getX() + dX,
+	                (int) pnt_startLocationLabel.getY() + dY);
+	        getPage().getJlbl_selectionPainting().setLocation(
+	                (int) pnt_startLocationLabel.getX() + dX,
+	                (int) pnt_startLocationLabel.getY() + dY);
+	
+	    } else {
+	    	
+	    	// otherwise print an error message.
+	    	Status.getLogger().severe("The pnt_startLocationLabel is null");
+	    }
+		
+		// Shift the Buttons for moving and stretching.
+	    if (pnt_startLocationButton != null) {
+	        for (int x = 0; x < pnt_startLocationButton.length; x++) {
+	            for (int y = 0; y < pnt_startLocationButton.length; y++) {
+	                 
+	            	
+	            	// if either 
+	            	//		(1)	there is no selection but x + y >== 2 (meaning
+	            	//			they are visible) or
+	            	// 
+	            	//		(2) there is a selection (then each button is 
+	            	//			visible)
+	            	// shift the buttons. 
+	            	//
+	            	// Case (1) should never occur because if the entire image
+	            	// is selected, there is nothing to shift.
+	                if (x + y >= 2 || !wholeImageSelected) {
+	
+	                	getPage().getJbtn_resize()[x][y].setLocation(
+	                			(int) pnt_startLocationButton[x][y].getX() 
+	                            + dX,
+	                            (int) pnt_startLocationButton[x][y].getY() 
+	                            + dY);
+	                }
+	            }
+	        }
+	    } else {
+	    	// otherwise print error.
+	    	Status.getLogger().severe(
+	    			"The pnt_startLocationButton is null.");
+	    }
+	            
+	    
+	    // Shift the rectangle which contains the current location of the
+	    // selection.
+	    r_selection.x = (int) pnt_rSelectionStart.getX() + dX;
+	    r_selection.y =  (int) pnt_rSelectionStart.getY() + dY;
+	    
+	    // Adapt the border to the selection's new calculated location
+	    getPage().getJlbl_border().setBounds(r_selection);
+	    
+	    // if "apply changes" is selected, the shifting is applied to the 
+	    // paintObjects.
+	    if (_applyChanges) {
+	
+	    	//compute the current zoom - factor
+	        final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
+	                / Status.getImageShowSize().width;
+	        final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
+	                / Status.getImageShowSize().height;
+	        
+	        cv.getPicture().moveSelected(
+	                (int) (1.0 * dX * cZoomFactorWidth), 
+	                (int) (1.0 * dY * cZoomFactorHeight));
+	        
+	        cv.getControlPic().paintEntireSelectionRect(
+	                r_selection);
+	        getPage().getJlbl_selectionPainting().repaint();
+	
+	        // reset the pnt_start and the point for which contains the start 
+	        // of the selection.
+	        pnt_start = null;
+	        pnt_rSelectionStart = null;
+	        
+	        // change the point which is maintained inside the controlPaint
+	        // which is used for (not) shifting the selected stuff while
+	        // the user scrolls.
+	        cv.getPnt_startLocation().x -= dX;
+	        cv.getPnt_startLocation().y -= dY;
+	    }
+	}
+
+	/**
      * Moves the buttons and the selection to the right location.
      * @param _event the MouseEvent (from mouseDragged)
      */
@@ -646,78 +714,39 @@ MouseMotionListener, MouseListener {
         return r_selection;
     }
 
-    /**
-     * @return the r_selection
-     */
-    public final Point getOldPaintLabelLocation() {
-        return pnt_startPaintLabelLocation;
-    }
-    
-    /**
-     * Simple setter method.
-     * @param _pnt the point to set.
-     */
-    public final void setOldPaintLabelLocation(final Point _pnt) {
-        
-        if (_pnt == null) {
-            this.pnt_startPaintLabelLocation = null;
-//            this.pnt_startPaintBGLocation = null;
-            
-        } else {
-//
-//            if (pnt_startPaintLabelLocation != null) {
-//
-//                this.pnt_startPaintBGLocation = new Point(_pnt.x 
-//                        - pnt_startPaintBGLocation.x 
-//                        + pnt_startPaintLabelLocation.x,
-//                        _pnt.y 
-//                        - pnt_startPaintBGLocation.y 
-//                        + pnt_startPaintLabelLocation.y);
-//            } else {
-//                pnt_startPaintBGLocation = _pnt;
-//            }
-            this.pnt_startPaintLabelLocation = _pnt;
-        }
-    }
     
     
     
     /**
-     * Reset the start points after some movement is applied.
-     * This is necessary because of the following scenario:
-     * 		1) 	The user selects PaintObjects
-     * 		2)	The user moves the selection
-     * 			-> 	Inside this controller class the movement is saved.
-     * 				The displayed graphical movement is performed by moving
-     * 				the container of the selection image and not by repainting
-     * 				the selection each time it is moved (for better speed)
-     * 		3)  The user demands for a repaint (e.g. because of a change of 
-     * 			color)
-     * 			->	The paintObjects are repainted using the new position
-     * 				(resulting from movement). thus the start locations and the 
-     * 				location of the selection background have to be reset to 
-     * 				zero. Otherwise there will be an error in the next step:
-     * 		4) 	The user moves the PaintObjects
+     * Reset the start points after some movement is applied. <br>
+     * This is necessary because of the following scenario:<br>
+     * 		1) 	The user selects PaintObjects<br>
+     * 		2)	The user moves the selection<br>
+     * 			-> 	Inside this controller class the movement is saved.<br>
+     * 				The displayed graphical movement is performed by moving<br>
+     * 				the container of the selection image and not by repainting<br>
+     * 				the selection each time it is moved (for better speed)<br>
+     * 		3)  The user demands for a repaint (e.g. because of a change of <br>
+     * 			color)<br>
+     * 			->	The paintObjects are repainted using the new position<br>
+     * 				(resulting from movement). thus the start locations and the <br>
+     * 				location of the selection background have to be reset to <br>
+     * 				zero. Otherwise there will be an error in the next step:<br>
+     * 		4) 	The user moves the PaintObjects<br>
      * 			-> 	Otherwise:
-     * 					The selected PaintObjects are painted double-shifted:
-     * 					Once by the location of the PaintLabel, once by 
-     * 					the shift that is saved in model value
+     * 					The selected PaintObjects are painted double-shifted:<br>
+     * 					Once by the location of the PaintLabel, once by <br>
+     * 					the shift that is saved in model value<br>
      */
     public final void resetPntStartLocationLabel() {
     	this.pnt_startLocationLabel = new DPoint(0, 0);
-    	pnt_startPaintLabelLocation = new Point(0, 0);
-    	getPage().getJlbl_selectionBG().setLocation(
-    			pnt_startPaintLabelLocation);
     }
 
     /**
      * @param _r_selection the r_selection to set
-     * @param _pnt_startPaintLabelLocation the start label location.
      */
-    public final void setR_selection(final Rectangle _r_selection,
-            final Point _pnt_startPaintLabelLocation) {
+    public final void setR_selection(final Rectangle _r_selection) {
         this.r_selection = _r_selection;
-        this.pnt_startPaintLabelLocation = _pnt_startPaintLabelLocation;
     }
     
 
@@ -753,4 +782,5 @@ MouseMotionListener, MouseListener {
     public final DPoint getPnt_start() {
         return pnt_start;
     }
+
 }

@@ -911,7 +911,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
         for (int h = 0; h <= 2; h++) {
             for (int w = 0; w <= 2; w++) {
                 //that are not necessary buttons
-                if (!(h == 2 || w == 2)) {
+                if (h + w <= 2) {
 
                     getPage().getJbtn_resize()[h][w].setLocation(
                     		-getPage().getJbtn_resize()[h][w].getWidth() - 1,
@@ -920,9 +920,9 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
                 	//necessary buttons
                     getPage().getJbtn_resize()[h][w].setLocation(
-                    		+ Status.getImageShowSize().width * (w) / 2
+                    		+ Status.getImageShowSize().width * (h) / 2
                     		- getPage().getJbtn_resize()[h][w].getWidth() / 2,
-                    		+ Status.getImageShowSize().height * (h) / 2
+                    		+ Status.getImageShowSize().height * (w) / 2
                     		- getPage().getJbtn_resize()[h][w].getWidth() / 2);
                 }
 			}

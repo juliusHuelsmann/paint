@@ -38,8 +38,8 @@ import model.objects.pen.Pen;
 import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
 import model.settings.ReadSettings;
-import model.settings.Settings;
-import model.settings.Status;
+import model.settings.StateStandard;
+import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.DPoint;
 import model.util.Util;
@@ -289,18 +289,18 @@ MenuListener {
 
         //get location of current workspace and set logger level to finest; 
 		//thus every log message is shown.
-        Settings.setWsLocation(ReadSettings.install());
-        Status.getLogger().setLevel(Level.WARNING);
+        StateStandard.setWsLocation(ReadSettings.install());
+        State.getLogger().setLevel(Level.WARNING);
 
         //if the installation has been found, initialize the whole program.
         //Otherwise print an error and exit program
-        if (!Settings.getWsLocation().equals("")) {
+        if (!StateStandard.getWsLocation().equals("")) {
             
         	//Print logger status to console.
-            Status.getLogger().info("Installation found.");
-            Status.getLogger().info("Initialize model class Page.\n");
+            State.getLogger().info("Installation found.");
+            State.getLogger().info("Initialize model class Page.\n");
 
-            Status.setControlPaint(this);
+            State.setControlPaint(this);
             project = new Project();
             project.initialize();
             
@@ -329,7 +329,7 @@ MenuListener {
 
             //initialize view class and log information on current 
             //initialization progress
-            Status.getLogger().info("initialize view class and set visible.");
+            State.getLogger().info("initialize view class and set visible.");
 
             view = new View();
             System.err.println(System.currentTimeMillis() - startTime);
@@ -353,19 +353,19 @@ MenuListener {
             /*
              * Initialize control
              */
-            Status.getLogger().info("initialize controller class.");
+            State.getLogger().info("initialize controller class.");
             
-            Status.getLogger().info(
+            State.getLogger().info(
                     "Start handling actions and initialize listeners.\n");
 
-            Status.getLogger().info("initialization process completed.\n\n"
+            State.getLogger().info("initialization process completed.\n\n"
                     + "-------------------------------------------------\n");
 
         } else {
 
             //if not installed and no installation done print error and write
         	//null values into final variables
-        	Status.getLogger().severe("Fatal error: no installation found");
+        	State.getLogger().severe("Fatal error: no installation found");
         	this.view = null;
         	this.project = null;
         	
@@ -402,7 +402,7 @@ MenuListener {
 	        	
 	        	//remove old pen - position - indication - point
 	        	if (!project.getPicture().isSelected()) {
-	        		switch (Status.getIndexOperation()) {
+	        		switch (State.getIndexOperation()) {
 
 		        	case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
 		        	case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
@@ -450,16 +450,16 @@ MenuListener {
         	final Point imgCoord = new Point(
         			-(int) ((getPage().getJlbl_painting().getLocation().getX() 
         			- _event.getX())
-        			* Status.getImageSize().width 
-        			/ Status.getImageShowSize().width
+        			* State.getImageSize().width 
+        			/ State.getImageShowSize().width
         			),
         			-(int) ((getPage().getJlbl_painting().getLocation().getY() 
         			- _event.getY())
-        			* Status.getImageSize().height 
-        			/ Status.getImageShowSize().height));
+        			* State.getImageSize().height 
+        			/ State.getImageShowSize().height));
 			final String actionName = "mousePressed at Picture."
         			+ "\n\t\tActionName:\t\t"
-        			+ Status.getIndexName(Status.getIndexOperation())
+        			+ State.getIndexName(State.getIndexOperation())
         			+ "\n\t\tMouse Key: \t\t" + _event.getButton()
         			+ "\n\t\tCmp-Coord: \t\t" + _event.getX() + "," + _event.getY()
         			+ "\n\t\tImg-Coord: \t\t" + imgCoord.getX() + "," + imgCoord.getY();
@@ -470,7 +470,7 @@ MenuListener {
         	}
             
             // switch index of operation
-            switch (Status.getIndexOperation()) {
+            switch (State.getIndexOperation()) {
 
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
@@ -485,9 +485,9 @@ MenuListener {
             case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
             case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
 
-                if ((Status.getIndexOperation() 
+                if ((State.getIndexOperation() 
                         != Constants.CONTROL_PAINTING_INDEX_I_G_CURVE
-                        && Status.getIndexOperation() 
+                        && State.getIndexOperation() 
                         != Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2)
                         || project.getPicture().isPaintObjectReady()) {
                     
@@ -495,27 +495,27 @@ MenuListener {
                     // set currently selected pen. Differs if
                     if (_event.getButton() == MouseEvent.BUTTON1) {
 
-                        if (Status.getIndexOperation() 
+                        if (State.getIndexOperation() 
                                 == Constants.CONTROL_PAINTING_INDEX_PAINT_1) {
                             project.getPicture().changePen(Pen.clonePen(
-                                    Status.getPenSelected1()));
+                                    State.getPenSelected1()));
 
                         } else {
 
                             project.getPicture().changePen(Pen.clonePen(
-                                    Status.getPenSelected2()));
+                                    State.getPenSelected2()));
                         }
                     } else if (_event.getButton() == MouseEvent.BUTTON3) {
 
-                        if (Status.getIndexOperation() 
+                        if (State.getIndexOperation() 
                                 == Constants.CONTROL_PAINTING_INDEX_PAINT_1) {
                             project.getPicture().changePen(Pen.clonePen(
-                                    Status.getPenSelected2()));
+                                    State.getPenSelected2()));
                         } else {
 
 
                             project.getPicture().changePen(Pen.clonePen(
-                                    Status.getPenSelected1()));
+                                    State.getPenSelected1()));
 
                         }
                     }
@@ -532,8 +532,8 @@ MenuListener {
                 project.getPicture().abortPaintObject(controlPic);
 
                 //set the old pen to replace the curve afterwards.
-                Status.setPen_selectedReplaced(Pen.clonePen(
-                		Status.getPenSelected1()));
+                State.setPen_selectedReplaced(Pen.clonePen(
+                		State.getPenSelected1()));
                 
                 // change pen and add new paint object
                 project.getPicture().changePen(new PenSelection());
@@ -558,43 +558,43 @@ MenuListener {
                 						//the value if the border of the picture
                 						//is not displayed (because not enough
                 						//zoom out)
-                						1.0 * Status.getImageSize().width
-                						/ Status.getImageShowSize().width
-                						/ Status.getEraseRadius(),
+                						1.0 * State.getImageSize().width
+                						/ State.getImageShowSize().width
+                						/ State.getEraseRadius(),
 
                 						//value if border is visible on screen; 
                 						//zoomed out
-                						1.0 * Status.getImageSize().width
+                						1.0 * State.getImageSize().width
                 						/ getPage().getJlbl_painting()
                 						.getWidth()
-                						/ Status.getEraseRadius());
+                						/ State.getEraseRadius());
                 		final double factorHeight = 
                 				1.0 * Math.min(
                 						
                 						//the value if the border of the picture
                 						//is not displayed (because not enough
                 						//zoom out)
-                						1.0 * Status.getImageSize().height
-                						/ Status.getImageShowSize().height
-                						/ Status.getEraseRadius(),
+                						1.0 * State.getImageSize().height
+                						/ State.getImageShowSize().height
+                						/ State.getEraseRadius(),
 
                 						//value if border is visible on screen; 
                 						//zoomed out
-                						1.0 * Status.getImageSize().height
+                						1.0 * State.getImageSize().height
                 						/ getPage().getJlbl_painting()
                 						.getHeight()
-                						/ Status.getEraseRadius());
+                						/ State.getEraseRadius());
                 		
                 		field_erase [(int) (_event.getPoint().x * factorWidth)]
                 					[(int) (_event.getPoint().y * factorHeight)]
                 							= PaintBI.FREE;
 
-                		final int displayHeight = Status.getEraseRadius()
-                				* Status.getImageShowSize().height
-                				/ Status.getImageSize().height;
-                		final int displayWidth = Status.getEraseRadius()
-                				* Status.getImageShowSize().width
-                				/ Status.getImageSize().width;
+                		final int displayHeight = State.getEraseRadius()
+                				* State.getImageShowSize().height
+                				/ State.getImageSize().height;
+                		final int displayWidth = State.getEraseRadius()
+                				* State.getImageShowSize().width
+                				/ State.getImageSize().width;
                 		
                 		controlPic.clrRectangle(
                         		_event.getX() - displayWidth / 2, 
@@ -649,16 +649,16 @@ MenuListener {
         	final Point imgCoord = new Point(
         			-(int) ((getPage().getJlbl_painting().getLocation().getX() 
         			- _event.getX())
-        			* Status.getImageSize().width 
-        			/ Status.getImageShowSize().width
+        			* State.getImageSize().width 
+        			/ State.getImageShowSize().width
         			),
         			-(int) ((getPage().getJlbl_painting().getLocation().getY() 
         			- _event.getY())
-        			* Status.getImageSize().height 
-        			/ Status.getImageShowSize().height));
+        			* State.getImageSize().height 
+        			/ State.getImageShowSize().height));
 			final String actionName = "mouseReleased at Picture."
         			+ "\n\t\tActionName:\t\t"
-        			+ Status.getIndexName(Status.getIndexOperation())
+        			+ State.getIndexName(State.getIndexOperation())
         			+ "\n\t\tMouse Key: \t\t" + _event.getButton()
         			+ "\n\t\tCmp-Coord: \t\t" + _event.getX() + "," + _event.getY()
         			+ "\n\t\tImg-Coord: \t\t" + imgCoord.getX() + "," + imgCoord.getY();
@@ -680,7 +680,7 @@ MenuListener {
         // left mouse pressed
         final int leftMouse = 1024;
         if (_event.getSource().equals(getPage().getJlbl_painting())) {
-            switch (Status.getIndexOperation()) {
+            switch (State.getIndexOperation()) {
             case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
             case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
             case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
@@ -721,43 +721,43 @@ MenuListener {
                 						//the value if the border of the picture
                 						//is not displayed (because not enough
                 						//zoom out)
-                						1.0 * Status.getImageSize().width
-                						/ Status.getImageShowSize().width
-                						/ Status.getEraseRadius(),
+                						1.0 * State.getImageSize().width
+                						/ State.getImageShowSize().width
+                						/ State.getEraseRadius(),
 
                 						//value if border is visible on screen; 
                 						//zoomed out
-                						1.0 * Status.getImageSize().width
+                						1.0 * State.getImageSize().width
                 						/ getPage().getJlbl_painting()
                 						.getWidth()
-                						/ Status.getEraseRadius());
+                						/ State.getEraseRadius());
                 		final double factorHeight = 
                 				1.0 * Math.min(
                 						
                 						//the value if the border of the picture
                 						//is not displayed (because not enough
                 						//zoom out)
-                						1.0 * Status.getImageSize().height
-                						/ Status.getImageShowSize().height
-                						/ Status.getEraseRadius(),
+                						1.0 * State.getImageSize().height
+                						/ State.getImageShowSize().height
+                						/ State.getEraseRadius(),
 
                 						//value if border is visible on screen; 
                 						//zoomed out
-                						1.0 * Status.getImageSize().height
+                						1.0 * State.getImageSize().height
                 						/ getPage().getJlbl_painting()
                 						.getHeight()
-                						/ Status.getEraseRadius());
+                						/ State.getEraseRadius());
                 		
                 		field_erase [(int) (_event.getPoint().x * factorWidth)]
                 					[(int) (_event.getPoint().y * factorHeight)]
                 							= PaintBI.FREE;
 
-                		final int displayHeight = Status.getEraseRadius()
-                				* Status.getImageShowSize().height
-                				/ Status.getImageSize().height;
-                		final int displayWidth = Status.getEraseRadius()
-                				* Status.getImageShowSize().width
-                				/ Status.getImageSize().width;
+                		final int displayHeight = State.getEraseRadius()
+                				* State.getImageShowSize().height
+                				/ State.getImageSize().height;
+                		final int displayWidth = State.getEraseRadius()
+                				* State.getImageShowSize().width
+                				/ State.getImageSize().width;
                 		
                 		controlPic.clrRectangle(
                         		_event.getX() - displayWidth / 2, 
@@ -796,10 +796,10 @@ MenuListener {
 
                         // not greater than the entire shown image - 
                         // the width of zoom
-                        int xSize = Math.min(Status.getImageShowSize().width
+                        int xSize = Math.min(State.getImageShowSize().width
                                 - xLocation, 
                                 Math.abs(pnt_start.x - _event.getX()));
-                        int ySize = Math.min(Status.getImageShowSize().height
+                        int ySize = Math.min(State.getImageShowSize().height
                                 - yLocation, 
                                 Math.abs(pnt_start.y - _event.getY()));
 
@@ -807,7 +807,7 @@ MenuListener {
                                 yLocation, xSize, ySize);
                     } else {
                         
-                        Status.getLogger().warning("Want to print border but"
+                        State.getLogger().warning("Want to print border but"
                                 + "the starting point is null.");
                     }
                     break;
@@ -835,7 +835,7 @@ MenuListener {
                         pnt_movementSpeed = new Point(
                                 pnt_last.x - _event.getX(), 
                                 pnt_last.y - _event.getY());
-                        if (!Status.isNormalRotation()) {
+                        if (!State.isNormalRotation()) {
 
                             pnt_movementSpeed = new Point(
                                     -pnt_last.x + _event.getX(), 
@@ -846,24 +846,24 @@ MenuListener {
                     int x = pnt_startLocation.x + _event.getX() - pnt_start.x;
                     int y = pnt_startLocation.y +  _event.getY() - pnt_start.y;
 
-                    if (!Status.isNormalRotation()) {
+                    if (!State.isNormalRotation()) {
 
                         x = pnt_startLocation.x - _event.getX() + pnt_start.x;
                         y = pnt_startLocation.y -  _event.getY() + pnt_start.y;
                     }
                     
-                    if (x < -Status.getImageShowSize().width 
+                    if (x < -State.getImageShowSize().width 
                     		+ getPage().getJlbl_painting().getWidth()) {
                     	
-                        x = -Status.getImageShowSize().width 
+                        x = -State.getImageShowSize().width 
                         		+ getPage().getJlbl_painting().getWidth();
                     }
                     if (x > 0) {
                         x = 0;
                     }
-                    if (y < -Status.getImageShowSize().height 
+                    if (y < -State.getImageShowSize().height 
                     		+ getPage().getJlbl_painting().getHeight()) {
-                        y = -Status.getImageShowSize().height 
+                        y = -State.getImageShowSize().height 
                         		+ getPage().getJlbl_painting().getHeight();
                     }
                     if (y >= 0) {
@@ -993,7 +993,7 @@ MenuListener {
 
         if (_event.getSource().equals(getPage().getJlbl_painting())) {
 
-            switch (Status.getIndexOperation()) {
+            switch (State.getIndexOperation()) {
             case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
 
             	//do only display zoom box if there is no menu open (because
@@ -1014,9 +1014,9 @@ MenuListener {
 	
 	                // not greater than the entire shown image - 
 	                // the width of zoom
-	                xLocation = Math.min(Status.getImageShowSize().width
+	                xLocation = Math.min(State.getImageShowSize().width
 	                        - ViewSettings.ZOOM_SIZE.width, xLocation);
-	                yLocation = Math.min(Status.getImageShowSize().height
+	                yLocation = Math.min(State.getImageShowSize().height
 	                        - ViewSettings.ZOOM_SIZE.height, yLocation);
 	
 	                // apply new location
@@ -1044,7 +1044,7 @@ MenuListener {
             	if (getTabs() != null && !getTabs().isMenuOpen()) {
 
 
-                    if (Status.isNormalRotation()) {
+                    if (State.isNormalRotation()) {
 
                         performPreprint(_event.getX(), _event.getY());
                         
@@ -1099,16 +1099,16 @@ MenuListener {
 	 */
 	private void changePO(final MouseEvent _event) {
 	
-	    if (Status.isNormalRotation()) {
+	    if (State.isNormalRotation()) {
 	
 	        project.getPicture().changePaintObject(new DPoint((_event.getX() 
 	        		- getPage().getJlbl_painting().getLocation().x)
-	        		* Status.getImageSize().width
-	        		/ Status.getImageShowSize().width, 
+	        		* State.getImageSize().width
+	        		/ State.getImageShowSize().width, 
 	        		(_event.getY() 
 	        				- getPage().getJlbl_painting().getLocation().y)
-	                        * Status.getImageSize().height
-	                        / Status.getImageShowSize().height),
+	                        * State.getImageSize().height
+	                        / State.getImageShowSize().height),
 	                        getPage(),
 	                        controlPic);
 	    } else {
@@ -1120,15 +1120,15 @@ MenuListener {
 	                        + getPage()
 	                        .getJlbl_painting().getLocation().x
 	                        )
-	                        * Status.getImageSize().width
-	                        / Status.getImageShowSize().width, 
+	                        * State.getImageSize().width
+	                        / State.getImageShowSize().width, 
 	                        getPage().getJlbl_painting().getHeight()
 	                        - (_event.getY() 
 	                        + getPage().getJlbl_painting()
 	                        .getLocation().y
 	                        )
-	                        * Status.getImageSize().height
-	                        / Status.getImageShowSize().height),
+	                        * State.getImageSize().height
+	                        / State.getImageShowSize().height),
 	                        getPage(),
 	                        controlPic
 	                        );
@@ -1158,7 +1158,7 @@ MenuListener {
     private void mr_painting(final MouseEvent _event) {
 
         // switch index of operation
-        switch (Status.getIndexOperation()) {
+        switch (State.getIndexOperation()) {
         case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
         case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
         case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
@@ -1183,7 +1183,7 @@ MenuListener {
 
                 //remove old rectangle.
                 getPage().getJlbl_border().setBounds(-1, -1, 0, 0);
-                switch (Status.getIndexSelection()) {
+                switch (State.getIndexSelection()) {
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
                     
                         PaintObjectWriting pow 
@@ -1208,7 +1208,7 @@ MenuListener {
                 pnt_start = null;
                 
                 //set index to moving
-                Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
+                State.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
                 cTabPaintStatus.deactivate();
                 view.getTabs().getTab_paint().getTb_move().setActivated(true);
             }
@@ -1219,7 +1219,7 @@ MenuListener {
                 Rectangle r = mr_paint_calcRectangleLocation(_event);
                 getPage().getJlbl_border().setBounds(r);
                 //remove old rectangle.
-                switch (Status.getIndexSelection()) {
+                switch (State.getIndexSelection()) {
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
                     mr_sel_line_complete(r);
                     break;
@@ -1237,7 +1237,7 @@ MenuListener {
                 pnt_start = null;
                 
                 //set index to moving
-                Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
+                State.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
                 cTabPaintStatus.deactivate();
                 view.getTabs().getTab_paint().getTb_move().setActivated(true);
                 getPage().getJlbl_backgroundStructure().repaint();
@@ -1258,7 +1258,7 @@ MenuListener {
             } else if (_event.getButton() == MouseEvent.BUTTON3) {
             	cTabPaint.mr_zoomOut();
             }
-            Status.getLogger().severe("brauchte" 
+            State.getLogger().severe("brauchte" 
             		+ (System.currentTimeMillis() - d) + "ms");
             break;
         case Constants.CONTROL_PAINTING_INDEX_PIPETTE:
@@ -1296,7 +1296,7 @@ MenuListener {
             }
             break;
         default:
-            Status.getLogger().warning("Switch in mouseReleased default");
+            State.getLogger().warning("Switch in mouseReleased default");
             break;
         }
         view.getPage().getJpnl_new().setVisible(false);
@@ -1319,23 +1319,23 @@ MenuListener {
     	// If the maximal zoom in - size is not reached yet execute the zoom
     	// -in. 
     	// Otherwise the user is informed, that it is impossible to zoom-in.
-        if (Status.getImageShowSize().width
-                / Status.getImageSize().width 
+        if (State.getImageShowSize().width
+                / State.getImageSize().width 
                 < Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
                         ViewSettings.MAX_ZOOM_IN)) {
             
         	
         	// Calculate the new size of the page.
-            int newWidth = Status.getImageShowSize().width
+            int newWidth = State.getImageShowSize().width
                     * ViewSettings.ZOOM_MULITPLICATOR, 
-                    newHeight = Status.getImageShowSize().height
+                    newHeight = State.getImageShowSize().height
                     * ViewSettings.ZOOM_MULITPLICATOR;
 
             Point oldLocation = new Point(getPage()
                     .getJlbl_painting().getLocation().x, getPage()
                     .getJlbl_painting().getLocation().y);
 
-            Status.setImageShowSize(new Dimension(newWidth, newHeight));
+            State.setImageShowSize(new Dimension(newWidth, newHeight));
             getPage().flip();
            
             /*
@@ -1366,10 +1366,10 @@ MenuListener {
 
             // not smaller than the negative image size.
             newX = Math.max(newX,
-            		(int) -(Status.getImageShowSize().width
+            		(int) -(State.getImageShowSize().width
             				- getPage().getWidth()));
             newY = Math.max(newY,
-                    -(Status.getImageShowSize().height
+                    -(State.getImageShowSize().height
                     		- getPage().getHeight()));
             
             // not greater than 0, these calculations prevent the zoom-out 
@@ -1500,10 +1500,10 @@ MenuListener {
         }
 
         //set the old pen to replace the curve afterwards.
-        if (Status.getPen_selectedReplaced() != null) {
+        if (State.getPen_selectedReplaced() != null) {
 
-            Status.setPenSelected1(Status.getPen_selectedReplaced());
-            Status.setPen_selectedReplaced(null);
+            State.setPenSelected1(State.getPen_selectedReplaced());
+            State.setPen_selectedReplaced(null);
         }
         controlPic.refreshPaint();
 
@@ -1602,7 +1602,7 @@ MenuListener {
                                     separatedPO[1][current], 
                                     getView().getTabs().getTab_debug());
                         } else {
-                            Status.getLogger().warning("separated paintObject "
+                            State.getLogger().warning("separated paintObject "
                                     + "is null");
                         }
                     }
@@ -1620,7 +1620,7 @@ MenuListener {
                              new PictureOverview(view.getTabs().getTab_debug())
                              .add(separatedPO[0][current]);
                         } else {
-                            Status.getLogger().warning("separated paintObject "
+                            State.getLogger().warning("separated paintObject "
                                     + "is null");
                         }
                     }
@@ -1663,10 +1663,10 @@ MenuListener {
         			new ImageIcon(Util.getEmptyBISelection()));
         }
         //set the old pen to replace the curve afterwards.
-        if (Status.getPen_selectedReplaced() != null) {
+        if (State.getPen_selectedReplaced() != null) {
 
-            Status.setPenSelected1(Status.getPen_selectedReplaced());
-            Status.setPen_selectedReplaced(null);
+            State.setPenSelected1(State.getPen_selectedReplaced());
+            State.setPen_selectedReplaced(null);
         }
         controlPic.refreshPaint();
     }
@@ -1721,10 +1721,10 @@ MenuListener {
         int currentY = po_current.getSnapshotBounds().y;
 
         //adapt the rectangle to the currently used zoom factor.
-        final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
-                / Status.getImageShowSize().width;
-        final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
-                / Status.getImageShowSize().height;
+        final double cZoomFactorWidth = 1.0 * State.getImageSize().width
+                / State.getImageShowSize().width;
+        final double cZoomFactorHeight = 1.0 * State.getImageSize().height
+                / State.getImageShowSize().height;
         _r_size.x *= cZoomFactorWidth;
         _r_size.width *= cZoomFactorWidth;
         _r_size.y *= cZoomFactorHeight;
@@ -1847,10 +1847,10 @@ MenuListener {
             List<PaintObject> ls_toInsert = new List<PaintObject>();
 
             //adapt the rectangle to the currently used zoom factor.
-            final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
-                    / Status.getImageShowSize().width;
-            final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
-                    / Status.getImageShowSize().height;
+            final double cZoomFactorWidth = 1.0 * State.getImageSize().width
+                    / State.getImageShowSize().width;
+            final double cZoomFactorHeight = 1.0 * State.getImageSize().height
+                    / State.getImageShowSize().height;
             _r_sizeField.x *= cZoomFactorWidth;
             _r_sizeField.width *= cZoomFactorWidth;
             _r_sizeField.y *= cZoomFactorHeight;
@@ -1906,7 +1906,7 @@ MenuListener {
                             		);
                         } else {
                             
-                            Status.getLogger().warning("separated paintObject "
+                            State.getLogger().warning("separated paintObject "
                                     + "is null");
                         }
                         
@@ -1929,7 +1929,7 @@ MenuListener {
                             				 separatedPO[0][current]);
                         } else {
 
-                            Status.getLogger().warning("separated paintObject "
+                            State.getLogger().warning("separated paintObject "
                                     + "is null");
                         }
                     }
@@ -2020,10 +2020,10 @@ MenuListener {
     	final boolean debug_update_paintObjects_view = false;
     	
     	final Rectangle r_sizeField = new Rectangle(
-    			_p.x - Status.getEraseRadius(), 
-    			_p.y - Status.getEraseRadius(), 
-    			Status.getEraseRadius() * 2, 
-    			Status.getEraseRadius() * 2);
+    			_p.x - State.getEraseRadius(), 
+    			_p.y - State.getEraseRadius(), 
+    			State.getEraseRadius() * 2, 
+    			State.getEraseRadius() * 2);
         /*
          * whole item selection.
          */
@@ -2043,10 +2043,10 @@ MenuListener {
             
 
             //adapt the rectangle to the currently used zoom factor.
-            final double cZoomFactorWidth = 1.0 * Status.getImageSize().width
-                    / Status.getImageShowSize().width;
-            final double cZoomFactorHeight = 1.0 * Status.getImageSize().height
-                    / Status.getImageShowSize().height;
+            final double cZoomFactorWidth = 1.0 * State.getImageSize().width
+                    / State.getImageShowSize().width;
+            final double cZoomFactorHeight = 1.0 * State.getImageSize().height
+                    / State.getImageShowSize().height;
             r_sizeField.x *= cZoomFactorWidth;
             r_sizeField.width *= cZoomFactorWidth;
             r_sizeField.y *= cZoomFactorHeight;
@@ -2054,8 +2054,8 @@ MenuListener {
             List<PaintObjectWriting> ls_separatedPO = null;
             
             
-            switch (Status.getEraseIndex()) {
-            case Status.ERASE_ALL:
+            switch (State.getEraseIndex()) {
+            case Constants.ERASE_ALL:
 
                 
                 // go through list. until either list is empty or it is
@@ -2115,7 +2115,7 @@ MenuListener {
             	project.getPicture().deleteSelected(getView()
             			.getTabs().getTab_debug(), cTabSelection);
             	break;
-            case Status.ERASE_DESTROY:
+            case Constants.ERASE_DESTROY:
 
             
 	            // go through list. until either list is empty or it is
@@ -2193,7 +2193,7 @@ MenuListener {
 	                    	}
 	                    } else {
 	
-	                        Status.getLogger().warning("separated paintObject "
+	                        State.getLogger().warning("separated paintObject "
 	                                + "is null");
 	                    }
 	                    ls_separatedPO.next();
@@ -2252,15 +2252,15 @@ MenuListener {
         if (_event.getButton() == 1) {
         	view.getTabs().getTab_paint().getTb_color1().setBackground(
         			new Color(color));
-            Pen pen = Status.getPenSelected1();
+            Pen pen = State.getPenSelected1();
             pen.setClr_foreground(new Color(color));
-            Status.setPenSelected1(pen);
+            State.setPenSelected1(pen);
         } else {
         	view.getTabs().getTab_paint().getTb_color2().setBackground(
         			new Color(color));
-            Pen pen = Status.getPenSelected2();
+            Pen pen = State.getPenSelected2();
             pen.setClr_foreground(new Color(color));
-            Status.setPenSelected2(pen);
+            State.setPenSelected2(pen);
         }
     }
     
@@ -2292,10 +2292,10 @@ MenuListener {
                             .getLocation().y 
                             - _mmSP.y * i / max;
 
-                    if (x < -Status.getImageShowSize().width 
+                    if (x < -model.settings.State.getImageShowSize().width 
                             + getPage().getJlbl_painting()
                             .getWidth()) {
-                        x = -Status.getImageShowSize().width
+                        x = -model.settings.State.getImageShowSize().width
                                 + getPage()
                                 .getJlbl_painting().getWidth();
                     }
@@ -2303,10 +2303,10 @@ MenuListener {
                         x = 0;
                     }
                     
-                    if (y < -Status.getImageShowSize().height
+                    if (y < -model.settings.State.getImageShowSize().height
                             + getPage().getJlbl_painting()
                             .getHeight()) {
-                        y = -Status.getImageShowSize().height
+                        y = -model.settings.State.getImageShowSize().height
                                 + getPage()
                                 .getJlbl_painting().getHeight();
                     }
@@ -2347,10 +2347,10 @@ MenuListener {
             
             // not greater than the entire shown image - 
             // the width of zoom
-            int xSize = Math.min(Status.getImageShowSize().width
+            int xSize = Math.min(State.getImageShowSize().width
                     - xLocation, 
                     Math.abs(pnt_start.x - _event.getX()));
-            int ySize = Math.min(Status.getImageShowSize().height
+            int ySize = Math.min(State.getImageShowSize().height
                     - yLocation, 
                     Math.abs(pnt_start.y - _event.getY()));
 
@@ -2516,26 +2516,26 @@ MenuListener {
         						+ ".." + bi_preprint.getHeight();
 
             			if (shiftedX < 0) {
-            				Status.getLogger().info(
+            				State.getLogger().info(
             						"preprint location wrong: x < 0"
             						+ problemSpecification);
             			}
 
             			if (shiftedX >= bi_preprint.getWidth()) {
-            				Status.getLogger().info(
+            				State.getLogger().info(
             						"preprint location wrong: x >= "
             						+ "bi_preprint.getWidth()"
             						+ problemSpecification);
             			}
 
             			if (shiftedY < 0) {
-            				Status.getLogger().info(
+            				State.getLogger().info(
             						"preprint location wrong: y < 0"
             						+ problemSpecification);
             			}
 
             			if (shiftedY >= bi_preprint.getHeight()) {
-            				Status.getLogger().info(
+            				State.getLogger().info(
             						"preprint location wrong: y >= "
             						+ "bi_preprint.getHeight()"
             						+ problemSpecification);
@@ -2571,10 +2571,10 @@ MenuListener {
         
         
         //zoom factor
-        double zoomFactorX = Status.getImageShowSize().width
-                / Status.getImageSize().width, 
-                zoomFactorY = Status.getImageShowSize().height
-                        / Status.getImageSize().height; 
+        double zoomFactorX = State.getImageShowSize().width
+                / State.getImageSize().width, 
+                zoomFactorY = State.getImageShowSize().height
+                        / State.getImageSize().height; 
         
         //fetch the preprintSize and divide it by two.
         int preprintX =
@@ -2680,10 +2680,10 @@ MenuListener {
     		if (view.getPage() != null) {
     	    	return view.getPage();
     		} else {
-    			Status.getLogger().severe("view.getPage() is null");
+    			State.getLogger().severe("view.getPage() is null");
     		}
     	} else {
-			Status.getLogger().severe("view is null");
+			State.getLogger().severe("view is null");
     	}
     	return null;
     }
@@ -2699,10 +2699,10 @@ MenuListener {
     		if (view.getTabs() != null) {
     	    	return view.getTabs();
     		} else {
-    			Status.getLogger().severe("view.getTabs() is null");
+    			State.getLogger().severe("view.getTabs() is null");
     		}
     	} else {
-			Status.getLogger().severe("view is null");
+			State.getLogger().severe("view is null");
     	}
     	return null;
     }

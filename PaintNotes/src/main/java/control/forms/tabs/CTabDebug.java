@@ -20,7 +20,7 @@ import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.Pen;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
@@ -100,7 +100,7 @@ public final class CTabDebug implements ActionListener {
     			_event.getSource().equals(getPaintObjects()
     			.getI1b_reportBug().getActionCause())) {
     		
-    		Status.getLogger().warning("not implemented yet.");
+    		State.getLogger().warning("not implemented yet.");
     		
     	} else {
     		
@@ -137,7 +137,7 @@ public final class CTabDebug implements ActionListener {
 
 
 
-    	                    Status.setIndexOperation(
+    	                    State.setIndexOperation(
     	                            Constants.CONTROL_PAINTING_INDEX_MOVE);
     	                    
     	                    //decativate other menuitems and activate the 
@@ -154,7 +154,7 @@ public final class CTabDebug implements ActionListener {
     	                    
     	                }
     	            } else {
-    	                Status.getLogger().severe("Error in ActionListener: "
+    	                State.getLogger().severe("Error in ActionListener: "
     	                        + "wrong kind of element. "
     	                        + "This error should never occure");
     	            }
@@ -390,8 +390,8 @@ public final class CTabDebug implements ActionListener {
                     + ", " + pe.getClr_foreground().getBlue()
                     + ")\nBounds    " + r.x + "." + r.y + ";" 
                     + r.width + "." + r.height + "\nimageSize  "
-                    + Status.getImageSize().width + "." 
-                    + Status.getImageSize().height 
+                    + State.getImageSize().width + "." 
+                    + State.getImageSize().height 
                     + "\nPoints";
             ls_point.toFirst();
             int currentLine = 0;
@@ -425,13 +425,13 @@ public final class CTabDebug implements ActionListener {
         
         //fetch rectangle
         int x = r.x * bi.getWidth() 
-                / Status.getImageSize().width;
+                / State.getImageSize().width;
         int y = r.y * bi.getHeight() 
-                / Status.getImageSize().height;
+                / State.getImageSize().height;
         int width = r.width * bi.getWidth() 
-                / Status.getImageSize().width;
+                / State.getImageSize().width;
         int height = r.height * bi.getHeight() 
-                / Status.getImageSize().height;
+                / State.getImageSize().height;
 
         int border = 2;
         int highlightX = x - border;
@@ -478,19 +478,19 @@ public final class CTabDebug implements ActionListener {
 
     					return cp.getView().getTabs().getTab_debug();
     				} else {
-    					Status.getLogger().severe("cp.getView().getTabs()"
+    					State.getLogger().severe("cp.getView().getTabs()"
     							+ ".getTab_debug() is null");
     				}
     			} else {
-					Status.getLogger().severe("cp.getView().getTabs()"
+					State.getLogger().severe("cp.getView().getTabs()"
 							+ " is null");
 				}
     		} else {
-				Status.getLogger().severe("cp.getView()"
+				State.getLogger().severe("cp.getView()"
 						+ " is null");
 			}
     	} else {
-			Status.getLogger().severe("cp"
+			State.getLogger().severe("cp"
 					+ " is null");
 		}
     	return null;
@@ -507,10 +507,10 @@ public final class CTabDebug implements ActionListener {
 			if (cp.getView() != null) {
 				return cp.getView().getPage();
 			} else {
-				Status.getLogger().severe("cp.getView() is null");
+				State.getLogger().severe("cp.getView() is null");
 			}
 		} else {
-			Status.getLogger().severe("cp is null");
+			State.getLogger().severe("cp is null");
 		}
 		return null;
 	}
@@ -526,7 +526,7 @@ public final class CTabDebug implements ActionListener {
 		if (cp != null) {
 			return cp.getControlPic();
 		} else {
-			Status.getLogger().severe("cp is null");
+			State.getLogger().severe("cp is null");
 		}
 		return null;
 	}

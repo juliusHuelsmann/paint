@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 import view.testing.TestList;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 
 
@@ -498,7 +498,7 @@ public class SecureListSort<SecureListType> implements Serializable {
         if (ls.isEmpty()) {
             sortAsc = true;
         } else {
-            Status.getLogger().warning("tried to change sorting order without"
+            State.getLogger().warning("tried to change sorting order without"
                     + "success: The list is not empty and thus may have"
                     + "been sorted in a different order. " + sortAsc + "true");
         }
@@ -512,7 +512,7 @@ public class SecureListSort<SecureListType> implements Serializable {
         if (ls.isEmpty()) {
             sortAsc = false;
         } else {
-            Status.getLogger().warning("tried to change sorting order without"
+            State.getLogger().warning("tried to change sorting order without"
                     + "success: The list is not empty and thus may have"
                     + "been sorted in a different order. " + sortAsc + "false");
         }
@@ -623,7 +623,7 @@ public class SecureListSort<SecureListType> implements Serializable {
     	if (getElement() != null) {
     		getElement().setSortedIndex(_sortedIndex);
     	} else {
-    		Status.getLogger().warning("The current element is null. Thus it "
+    		State.getLogger().warning("The current element is null. Thus it "
     				+ "is impossible to change the sort index.");
     	}
     }

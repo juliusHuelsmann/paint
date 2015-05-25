@@ -3,7 +3,7 @@ package model.objects.history;
 //import declarations
 import java.io.Serializable;
 import model.objects.painting.po.PaintObject;
-import model.settings.Status;
+import model.settings.State;
 import model.util.adt.list.SecureList;
 import model.util.adt.list.SecureListSort;
 
@@ -115,7 +115,7 @@ public class HistoryObject implements Serializable {
 			break;
 		default:
 			id_previous = -1;
-			Status.getLogger().severe("illegal history id. Do not know which"
+			State.getLogger().severe("illegal history id. Do not know which"
 					+ " action to perform.");
 			break;
 			
@@ -153,7 +153,7 @@ public class HistoryObject implements Serializable {
 		} else if (_o.equals(o_statePrevious)) {
 			otherObj = o_stateNext;
 		} else {
-			Status.getLogger().severe("wrong object passed to method.");
+			State.getLogger().severe("wrong object passed to method.");
 		}
 		
 		
@@ -205,7 +205,7 @@ public class HistoryObject implements Serializable {
 			break;
 		default:
 
-			Status.getLogger().severe("illegal history id. Do not know which"
+			State.getLogger().severe("illegal history id. Do not know which"
 					+ " action to perform.");
 			break;
 		}
@@ -329,7 +329,7 @@ public class HistoryObject implements Serializable {
 		} else {
 			
 			//print error because the object does not match 
-			Status.getLogger().severe("Fatal error. Remove. "
+			State.getLogger().severe("Fatal error. Remove. "
 					+ "Objects does not match identifier.");
 		}
 	}
@@ -451,7 +451,7 @@ public class HistoryObject implements Serializable {
 			} else {
 				
 				//otherwise print error.
-				Status.getLogger().severe("Fatal error. Remove. "
+				State.getLogger().severe("Fatal error. Remove. "
 						+ "Object not found.");
 			}
 			
@@ -461,7 +461,7 @@ public class HistoryObject implements Serializable {
 		} else {
 			
 			//print error because the object does not match 
-			Status.getLogger().severe("Fatal error. Remove. "
+			State.getLogger().severe("Fatal error. Remove. "
 					+ "Objects does not match identifier.");
 		}
 	}
@@ -501,7 +501,7 @@ public class HistoryObject implements Serializable {
 
 
 					//otherwise print error.
-					Status.getLogger().severe("Fatal error. apply move. "
+					State.getLogger().severe("Fatal error. apply move. "
 							+ "Paint Object null. "
 							+ "Maybe Length of lists does not match. "
 							+ "Maybe forgot to copy items.");
@@ -528,7 +528,7 @@ public class HistoryObject implements Serializable {
 					} else {
 					
 						//otherwise print error.
-						Status.getLogger().severe("Fatal error. apply move. "
+						State.getLogger().severe("Fatal error. apply move. "
 								+ "Object not found.");
 					}
 				}
@@ -543,7 +543,7 @@ public class HistoryObject implements Serializable {
 			if (ls_moved.isBehind() != ls_orig.isBehind()) {
 
 				//otherwise print error.
-				Status.getLogger().severe("Fatal error. apply move. "
+				State.getLogger().severe("Fatal error. apply move. "
 						+ "Length of lists does not match.");
 			}
 
@@ -556,7 +556,7 @@ public class HistoryObject implements Serializable {
 		} else {
 			
 			//print error because the object does not match 
-			Status.getLogger().severe("Fatal error. Remove. "
+			State.getLogger().severe("Fatal error. Remove. "
 					+ "Objects does not match identifier.");
 		}
 	}
@@ -663,14 +663,14 @@ public class HistoryObject implements Serializable {
 					} else {
 						
 						//otherwise print error.
-						Status.getLogger().severe("Fatal error. apply selectin"
+						State.getLogger().severe("Fatal error. apply selectin"
 								+ " destroy. "
 								+ "Object to be removed not found.");
 					}
 				} else {
 
 					//otherwise print error.
-					Status.getLogger().severe("Fatal error. apply selectin"
+					State.getLogger().severe("Fatal error. apply selectin"
 							+ " destroy. "
 							+ "Object not instance of PaintObject.");
 				}
@@ -715,14 +715,14 @@ public class HistoryObject implements Serializable {
 					} else {
 						
 						//otherwise print error.
-						Status.getLogger().severe("Fatal error. apply selectin"
+						State.getLogger().severe("Fatal error. apply selectin"
 								+ " destroy. "
 								+ "Object to be removed not found.");
 					}
 				} else {
 
 					//otherwise print error.
-					Status.getLogger().severe("Fatal error. apply selectin"
+					State.getLogger().severe("Fatal error. apply selectin"
 							+ " destroy. "
 							+ "Object not instance of PaintObject.");
 				}
@@ -738,7 +738,7 @@ public class HistoryObject implements Serializable {
 		} else {
 			
 			//print error because the object does not match 
-			Status.getLogger().severe("Fatal error. Remove. "
+			State.getLogger().severe("Fatal error. Remove. "
 					+ "Objects does not match identifier.");
 		}
 	}

@@ -11,7 +11,7 @@ import control.interfaces.PaintListener;
 //
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
-import model.settings.Status;
+import model.settings.State;
 
 
 /**
@@ -92,7 +92,7 @@ public class PaintLabel extends MLabel {
         			new MoveEvent(new Point(_x, _y)), 
         			new MoveEvent(new Point(x, y)));
         } else {
-        	Status.getLogger().severe("PaintListener not set.");
+        	State.getLogger().severe("PaintListener not set.");
         }
         
         //save the old values for being able to pass them to "after location
@@ -114,7 +114,7 @@ public class PaintLabel extends MLabel {
         	paintListener.afterLocationChange(new MoveEvent(new Point(_x, _y)),
         			new MoveEvent(new Point(lastX, lastY)));
         } else {
-        	Status.getLogger().severe("PaintListener not set.");
+        	State.getLogger().severe("PaintListener not set.");
         }
         
     }
@@ -148,7 +148,7 @@ public class PaintLabel extends MLabel {
         if (paintListener != null) {
         	paintListener.beforeExternalLocationChange(new MoveEvent(_p));
         } else {
-        	Status.getLogger().severe("PaintListener not set.");
+        	State.getLogger().severe("PaintListener not set.");
         }
         
         //save the new location
@@ -166,7 +166,7 @@ public class PaintLabel extends MLabel {
         if (paintListener != null) {
         	paintListener.afterExternalLocationChange(new MoveEvent(_p));
         } else {
-        	Status.getLogger().severe("PaintListener not set.");
+        	State.getLogger().severe("PaintListener not set.");
         }
 
     }
@@ -193,7 +193,7 @@ public class PaintLabel extends MLabel {
         	paintListener.beforeExternalSizeChange(new MoveEvent(
         			new Point(_widht, _height)));
         } else {
-        	Status.getLogger().severe("PaintListener not set.");
+        	State.getLogger().severe("PaintListener not set.");
         }
         
         //save the new location 
@@ -216,7 +216,7 @@ public class PaintLabel extends MLabel {
         			new MoveEvent(new Point(_x, _y)),
         			new MoveEvent(new Point(_widht, _height)));
         } else {
-        	Status.getLogger().severe("PaintListener not set.");
+        	State.getLogger().severe("PaintListener not set.");
         }
     }
 

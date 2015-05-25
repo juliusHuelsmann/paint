@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import javax.swing.JCheckBox;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import view.util.Item1Button;
 
 /**
@@ -95,24 +95,24 @@ public final class CPaintSelection implements ActionListener {
         if (_event.getSource().equals(tb_curve.getActionCause())) {
 
             //set index
-            Status.setIndexOperation(
+            State.setIndexOperation(
                     Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE);
             
         } else if (_event.getSource().equals(tb_line.getActionCause())) {
  
             //set index
-            Status.setIndexOperation(
+            State.setIndexOperation(
                     Constants.CONTROL_PAINTING_INDEX_SELECTION_LINE);
             
         } else if (_event.getSource().equals(tb_magic.getActionCause())) {
 
             //set index
-            Status.setIndexOperation(
+            State.setIndexOperation(
                     Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC);
         } else if (_event.getSource().equals(jcb_whole)) {
 
 			//set index selection
-			Status.setIndexSelection(Constants
+			State.setIndexSelection(Constants
 			        .CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM);
 			
 			//deactivate others and activate itself
@@ -122,7 +122,7 @@ public final class CPaintSelection implements ActionListener {
 		} else if (_event.getSource().equals(jcb_separated)) {
 
 			//set index selection
-		    Status.setIndexSelection(
+		    State.setIndexSelection(
 			        Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM);
 			
 			//deactivate others and activate itself

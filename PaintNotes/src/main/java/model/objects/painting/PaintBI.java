@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import model.settings.Status;
+import model.settings.State;
 
 
 /**
@@ -384,7 +384,7 @@ public final class PaintBI {
         //interrupt if error in field size
         if (_field.length != _bi.getWidth() 
                 || _field[0].length != _bi.getHeight()) {
-            Status.getLogger().warning("problem");
+            State.getLogger().warning("problem");
             throw new ThreadDeath();
         }
         

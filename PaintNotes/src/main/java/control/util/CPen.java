@@ -13,7 +13,7 @@ import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;
 import model.objects.pen.Pen;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import control.ControlPaint;
 import control.forms.CPaintStatus;
 import control.forms.tabs.CTabPainting;
@@ -155,7 +155,7 @@ public class CPen implements ChangeListener, MouseListener {
                     
                     paint.getIt_stift1().setIcon(sa.getImagePath());
                     paint.getIt_stift1().setOpen(false);
-                    Status.setIndexOperation(
+                    State.setIndexOperation(
                             Constants.CONTROL_PAINTING_INDEX_PAINT_1);
                     cps.deactivate();
                     paint.getIt_stift1().getTb_open()
@@ -168,7 +168,7 @@ public class CPen implements ChangeListener, MouseListener {
                     
                     paint.getIt_stift2().setIcon(sa.getImagePath());
                     paint.getIt_stift2().setOpen(false);
-                    Status.setIndexOperation(
+                    State.setIndexOperation(
                             Constants.CONTROL_PAINTING_INDEX_PAINT_2);
 
                     cps.deactivate();

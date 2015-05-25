@@ -4,7 +4,7 @@ package model.objects.history;
 import java.io.Serializable;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
-import model.settings.Status;
+import model.settings.State;
 import model.util.adt.list.SecureList;
 
 
@@ -150,7 +150,7 @@ public class HistorySession implements Serializable {
 				ls_history == null) {
 			
 			//throw error and reinitialize the list.
-			Status.getLogger().severe("Error: list of History Items is not"
+			State.getLogger().severe("Error: list of History Items is not"
 					+ " initialized. Reinitializing.");
 			ls_history = new SecureList<HistoryObject>();
 			
@@ -159,7 +159,7 @@ public class HistorySession implements Serializable {
 			//if the content which is to be inserted is not initialized
 			//throw an error. that should never happen. For further information
 			//throw a stack trace.
-			Status.getLogger().severe("Error: history item which is to be "
+			State.getLogger().severe("Error: history item which is to be "
 					+ "inserted is not initialized.");
 			
 			//print stack trace.

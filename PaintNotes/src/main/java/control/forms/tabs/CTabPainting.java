@@ -25,7 +25,7 @@ import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
 import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.DPoint;
 import model.util.Util;
@@ -94,7 +94,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
     		return controlPaint.getView().getTabs().getTab_paint();
     	} else {
     		
-    		Status.getLogger().severe("Tab does not exist!");
+    		State.getLogger().severe("Tab does not exist!");
     		return null;
     	}
     }
@@ -142,23 +142,23 @@ public final class CTabPainting implements ActionListener, MouseListener {
 	        	if (result.startsWith(Util.EXECUTION_SUCCESS)) {
 	        		
 	        		//print success information
-	        		Status.getLogger().info("Rotation normal success");
+	        		State.getLogger().info("Rotation normal success");
 	        	} else if (result.startsWith(Util.EXECUTION_FAILED)) {
 	        		
 	        		
 	        		//if the window has not been inverted yet invert it by
 	        		//using the implemented methods turn. Otherwise there
 	        		//is nothing to do.
-	        		if (Status.isNormalRotation()) {
+	        		if (State.isNormalRotation()) {
 	
 	        			
 	            		//print a warning and turn the instance of view 
 	        			//afterwards
-	            		Status.getLogger().warning("beta rotation");
+	            		State.getLogger().warning("beta rotation");
 	                    getView().turn();
 	                    
 	                    //set the new rotation value.
-	                    Status.setNormalRotation(false);
+	                    State.setNormalRotation(false);
 	            	}
 	            }
 	        } else if (
@@ -184,22 +184,22 @@ public final class CTabPainting implements ActionListener, MouseListener {
 	        	if (result.startsWith(Util.EXECUTION_SUCCESS)) {
 
 	        		//print success information
-	        		Status.getLogger().info("Rotation normal success");
+	        		State.getLogger().info("Rotation normal success");
 	        	} else if (result.startsWith(Util.EXECUTION_FAILED)) {
 	        
 	        		//if the window has been inverted yet invert it by
 	        		//using the implemented methods turn. Otherwise there
 	        		//is nothing to do.
-	        		if (!Status.isNormalRotation()) {
+	        		if (!State.isNormalRotation()) {
 	
 	        			
 	            		//print a warning and turn the instance of view 
 	        			//afterwards
-	            		Status.getLogger().warning("beta rotation");
+	            		State.getLogger().warning("beta rotation");
 	                    getView().turn();
 
 	                    //set the new rotation value.
-	                    Status.setNormalRotation(true);
+	                    State.setNormalRotation(true);
 	            	}
 	            }
 	        } else if (_event.getSource().equals(
@@ -228,13 +228,13 @@ public final class CTabPainting implements ActionListener, MouseListener {
                 mr_cut();
             } else if (_event.getSource().equals(
             		paint.getTb_eraseAll().getActionCause())) {
-            	Status.setEraseIndex(Status.ERASE_ALL);
+            	State.setEraseIndex(Constants.ERASE_ALL);
             	getView().getTabs().getTab_paint().getTb_erase().setOpen(false);
             	
             } else if (_event.getSource().equals(
             		paint.getTb_eraseDestroy().getActionCause())) {
 
-            	Status.setEraseIndex(Status.ERASE_DESTROY);
+            	State.setEraseIndex(Constants.ERASE_DESTROY);
             	getView().getTabs().getTab_paint().getTb_erase().setOpen(false);
             } else if (_event.getSource().equals(
             		paint.getTb_prev().getActionCause())) {
@@ -265,10 +265,10 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
     	    	return controlPaint.getView().getPage();
     		} else {
-    			Status.getLogger().severe("controlPaint.getView() == null");
+    			State.getLogger().severe("controlPaint.getView() == null");
     		}
     	} else {
-			Status.getLogger().severe("controlPaint == null");
+			State.getLogger().severe("controlPaint == null");
     	}
     	return null;
     	
@@ -374,10 +374,10 @@ public final class CTabPainting implements ActionListener, MouseListener {
             pnt_centerInImage.x /= amount;
             pnt_centerInImage.y /= amount;
             
-            final double stretchWidth = 1.0 * Status.getImageSize().getWidth()
-            		/ Status.getImageShowSize().getWidth(),
-            		stretchHeight = 1.0 * Status.getImageSize().getHeight()
-            		/ Status.getImageShowSize().getHeight();
+            final double stretchWidth = 1.0 * State.getImageSize().getWidth()
+            		/ State.getImageShowSize().getWidth(),
+            		stretchHeight = 1.0 * State.getImageSize().getHeight()
+            		/ State.getImageShowSize().getHeight();
             // calculate the wanted result for the center, thus the coordinates
             // of the currently displayed image-scope's center.
             Point pnt_wanted = new Point(
@@ -425,7 +425,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
                 
                 } else  if (po != null) {
-                    Status.getLogger().warning("unknown kind of "
+                    State.getLogger().warning("unknown kind of "
                             + "PaintObject; element = " + po);
                 }
                 ls.next();
@@ -459,7 +459,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
             		controlPaint.getcTabSelection());
             new Exception("hier").printStackTrace();
         } else {
-            Status.getLogger().warning("unknown return type of clipboard"
+            State.getLogger().warning("unknown return type of clipboard"
             		+ "\ncontent: " + o);
         }
         controlPaint.getPicture().paintSelected(getPage(),
@@ -511,7 +511,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
     	final String fileEnding;
     	
         // if not saved yet. Otherwise use the saved save path.
-        if (Status.getSavePath() == null) {
+        if (State.getSavePath() == null) {
 
             // choose a file
             JFileChooser jfc = new JFileChooser();
@@ -527,7 +527,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
                 // edit file ending
                 if (!file.getName().toLowerCase().contains(".")) {
-                	fileEnding = Status.getSaveFormat();
+                	fileEnding = State.getSaveFormat();
                     file = new File(file.getAbsolutePath() + ".pic");
                 } else if (!Constants.endsWithSaveFormat(file.getName())) {
                 	
@@ -571,7 +571,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
                     }
                     // overwrite
                 }
-                Status.setSavePath(file.getAbsolutePath());
+                State.setSavePath(file.getAbsolutePath());
             } else {
             	fileEnding = "";
             }
@@ -580,10 +580,10 @@ public final class CTabPainting implements ActionListener, MouseListener {
         }
 
         // generate path without the file ending.
-        if (Status.getSavePath() != null) {
+        if (State.getSavePath() != null) {
 
-            int d = Status.getSavePath().toCharArray().length - 2 - 1;
-            String firstPath = Status.getSavePath().substring(0, d);
+            int d = State.getSavePath().toCharArray().length - 2 - 1;
+            String firstPath = State.getSavePath().substring(0, d);
             
             // save images in both formats.
 //            controlPaint.getPicture().saveIMAGE(
@@ -593,7 +593,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
             controlPaint.getPicture().savePicture(firstPath + "pic");
 
 
-            Status.setUncommittedChanges(false);
+            State.setUncommittedChanges(false);
             controlPaint.getView().getPage().repaint();
         }
     }
@@ -623,7 +623,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
                 // edit file ending
                 if (!file.getName().toLowerCase().contains(".")) {
-                	fileEnding = Status.getSaveFormat();
+                	fileEnding = State.getSaveFormat();
                     file = new File(file.getAbsolutePath() + ".pic");
                 } else if (!Constants.endsWithSaveFormat(file.getName())) {
                 	
@@ -667,16 +667,16 @@ public final class CTabPainting implements ActionListener, MouseListener {
                     }
                     // overwrite
                 }
-                Status.setSavePath(file.getAbsolutePath());
+                State.setSavePath(file.getAbsolutePath());
             } else {
             	fileEnding = "";
             }
 
         // generate path without the file ending.
-        if (Status.getSavePath() != null) {
+        if (State.getSavePath() != null) {
 
-            int d = Status.getSavePath().toCharArray().length - 2 - 1;
-            String firstPath = Status.getSavePath().substring(0, d);
+            int d = State.getSavePath().toCharArray().length - 2 - 1;
+            String firstPath = State.getSavePath().substring(0, d);
             
             // save images in both formats.
 //            controlPaint.getPicture().saveIMAGE(
@@ -686,7 +686,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
             controlPaint.getPicture().savePicture(firstPath + "pic");
 
 
-            Status.setUncommittedChanges(false);
+            State.setUncommittedChanges(false);
             controlPaint.getView().getPage().repaint();
         }
     }
@@ -698,7 +698,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
     	int i;
     	
-    	if (Status.isUncommittedChanges()) {
+    	if (State.isUncommittedChanges()) {
 
             i = JOptionPane.showConfirmDialog(getView(),
                     "Do you want to save the committed changes? ",
@@ -722,17 +722,17 @@ public final class CTabPainting implements ActionListener, MouseListener {
                 if (file.getName().toLowerCase().endsWith(".pic")) {
                     controlPaint.getPicture().loadPicture(
                     		file.getAbsolutePath());
-                    Status.setUncommittedChanges(false);
+                    State.setUncommittedChanges(false);
                     getControlPicture().refreshPaint();
                 } else if (file.getName().toLowerCase().endsWith(".png")
                 		|| file.getName().toLowerCase().endsWith(".jpg")) {
                     
                     try {
                         BufferedImage bi_imageBG = ImageIO.read(file);
-                        Status.setImageSize(new Dimension(
+                        State.setImageSize(new Dimension(
                                 bi_imageBG.getWidth(), 
                                 bi_imageBG.getHeight()));
-                        Status.setImageShowSize(Status.getImageSize());
+                        State.setImageShowSize(State.getImageSize());
                         controlPaint.getPicture().emptyImage();
                         controlPaint.getPicture().addPaintObjectImage(
                         		bi_imageBG);
@@ -756,7 +756,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
                             "Select a .png file.", "Error",
                             JOptionPane.ERROR_MESSAGE);
                     mr_save();
-                    Status.setUncommittedChanges(false);
+                    State.setUncommittedChanges(false);
                 }
             }
         
@@ -777,7 +777,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
      */
     public void mr_new() {
 
-        if (Status.isUncommittedChanges()) {
+        if (State.isUncommittedChanges()) {
             int i = JOptionPane.showConfirmDialog(getView(),
                     "Do you want to save the committed changes? ",
                     "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
@@ -791,13 +791,13 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
             	controlPaint.getView().getPage().getJpnl_new().setVisible(true);
                 controlPaint.getPicture().reload();
-                Status.setUncommittedChanges(false);
+                State.setUncommittedChanges(false);
             }
         } else {
 
         	controlPaint.getView().getPage().getJpnl_new().setVisible(true);
             controlPaint.getPicture().reload();
-            Status.setUncommittedChanges(false);
+            State.setUncommittedChanges(false);
 
         }
     }
@@ -820,15 +820,15 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
     	//TODO: adjust this one.
         //if able to zoom out
-        if (Status.getImageSize().width
-                / Status.getImageShowSize().width 
+        if (State.getImageSize().width
+                / State.getImageShowSize().width 
                 < Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
                         ViewSettings.MAX_ZOOM_OUT)) {
         	
-            int newWidth = Status.getImageShowSize().width
+            int newWidth = State.getImageShowSize().width
             / ViewSettings.ZOOM_MULITPLICATOR, 
             
-            newHeight = Status
+            newHeight = State
             .getImageShowSize().height
             / ViewSettings.ZOOM_MULITPLICATOR;
 
@@ -848,11 +848,11 @@ public final class CTabPainting implements ActionListener, MouseListener {
             
             // not smaller than the negative image size.
             oldLocation.x = Math.max(oldLocation.x,
-            		-(Status.getImageShowSize().width
+            		-(State.getImageShowSize().width
             				- getPage().getWidth()
             				* ViewSettings.ZOOM_MULITPLICATOR));
             oldLocation.y = Math.max(oldLocation.y,
-                    -(Status.getImageShowSize().height
+                    -(State.getImageShowSize().height
                     		- getPage().getHeight() 
                     		* ViewSettings.ZOOM_MULITPLICATOR));
             
@@ -866,7 +866,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
             //why? 
             //transformed into setLocation. works too by now.
 
-            Status.setImageShowSize(new Dimension(newWidth, newHeight));
+            State.setImageShowSize(new Dimension(newWidth, newHeight));
 
             getPage().flip();
             getPage().getJlbl_painting()
@@ -920,9 +920,9 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
                 	//necessary buttons
                     getPage().getJbtn_resize()[h][w].setLocation(
-                    		+ Status.getImageShowSize().width * (h) / 2
+                    		+ State.getImageShowSize().width * (h) / 2
                     		- getPage().getJbtn_resize()[h][w].getWidth() / 2,
-                    		+ Status.getImageShowSize().height * (w) / 2
+                    		+ State.getImageShowSize().height * (w) / 2
                     		- getPage().getJbtn_resize()[h][w].getWidth() / 2);
                 }
 			}

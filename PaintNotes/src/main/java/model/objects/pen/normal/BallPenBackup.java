@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.Error;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import model.util.DPoint;
@@ -58,7 +58,7 @@ public class BallPenBackup extends Pen {
 	    case Constants.PEN_ID_POINT:
 	        return Constants.PATH_PEN_KULI_POINT;
 	    default:
-	        Status.getLogger().severe("unknown paint index");
+	        State.getLogger().severe("unknown paint index");
 	        return null;
 	    }
 	}
@@ -112,10 +112,10 @@ public class BallPenBackup extends Pen {
                 if (!_final) {
 
                     //adjust the location at the zoom.
-                    x = ((x) * Status.getImageShowSize().width)
-                            / Status.getImageSize().width;
-                    y = ((y) * Status.getImageShowSize().height)
-                            / Status.getImageSize().height;
+                    x = ((x) * State.getImageShowSize().width)
+                            / State.getImageSize().width;
+                    y = ((y) * State.getImageShowSize().height)
+                            / State.getImageSize().height;
 
                     //add the shift coordinates for painting.
                     x +=  _pnt_shift.getX();
@@ -129,10 +129,10 @@ public class BallPenBackup extends Pen {
                     //      [x] [a] [ ]         (x is the pixel which is 
                     //      [a] [a] [ ]         already printed, a are those
                     //      [ ] [ ] [ ]         which are added to avoid gaps.
-                    double imagePixelSizeX = 1.0 * Status.getImageShowSize().width 
-                            / Status.getImageSize().width,
-                            imagePixelSizeY = 1.0 * Status.getImageShowSize().height 
-                            / Status.getImageSize().height;
+                    double imagePixelSizeX = 1.0 * State.getImageShowSize().width 
+                            / State.getImageSize().width,
+                            imagePixelSizeY = 1.0 * State.getImageShowSize().height 
+                            / State.getImageSize().height;
                     
 
                     //error prevention (divide by zero if zoomed out a little 
@@ -164,7 +164,7 @@ public class BallPenBackup extends Pen {
 //                            Page.getInstance().getJlbl_painting().getHeight() 
                             / imagePixelSizeY) {
                         
-                        Status.setCounter_paintedPoints(Status
+                        State.setCounter_paintedPoints(State
                                 .getCounter_paintedPoints() + 1);
                         
                         //print the pixel because even if the pixel size in 
@@ -175,7 +175,7 @@ public class BallPenBackup extends Pen {
                             _g.setRGB(x, y, getClr_foreground().getRGB());
                             
                         } catch (ArrayIndexOutOfBoundsException e) { 
-                            Status.getLogger().warning("FEHLER" + x + ";" 
+                            State.getLogger().warning("FEHLER" + x + ";" 
                                     + y + "width"
                                     + _g.getWidth() + "h" + _g.getHeight());
                         }
@@ -190,7 +190,7 @@ public class BallPenBackup extends Pen {
                                             getClr_foreground().getRGB());
                                     
                                 } catch (ArrayIndexOutOfBoundsException e) { 
-                                    Status.getLogger().warning("FEHLER" 
+                                    State.getLogger().warning("FEHLER" 
                                             + x + ";" + y + "width"
                                             + _g.getWidth() 
                                             + "height" + _g.getHeight());

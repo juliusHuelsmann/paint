@@ -19,7 +19,7 @@ import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
 import model.objects.painting.po.PaintObjectWriting;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
@@ -41,7 +41,7 @@ public final class MyClipboard implements ClipboardOwner {
     public static void main(final String[]_args) {
         BufferedImage bi = (BufferedImage) getInstance().paste();
 
-        if (!Status.isDebug()) {
+        if (!State.isDebug()) {
 
             final int startSize = 30;
             JFrame jf = new JFrame();
@@ -153,7 +153,7 @@ public final class MyClipboard implements ClipboardOwner {
                 ls_new.insertBehind(pow_new);
             
             } else {
-                Status.getLogger().warning("unknown kind of "
+                State.getLogger().warning("unknown kind of "
                         + "PaintObject; element = " + po);
             }
             
@@ -178,28 +178,28 @@ public final class MyClipboard implements ClipboardOwner {
                     .getSystemClipboard().getData(DataFlavor.imageFlavor);
             
         } catch (HeadlessException e) {
-            Status.getLogger().info("clipboard headless exception thrown");
+            State.getLogger().info("clipboard headless exception thrown");
         } catch (UnsupportedFlavorException e) {
-            Status.getLogger().info("UnsupportedFlavorException thrown");
+            State.getLogger().info("UnsupportedFlavorException thrown");
         } catch (IOException e) {
-            Status.getLogger().info("IOException thrown");
+            State.getLogger().info("IOException thrown");
         }
         
         if (own_clipboard && ls_po_selected != null) {
 
-            Status.getLogger().warning("list owned: " + own_clipboard 
+            State.getLogger().warning("list owned: " + own_clipboard 
                     + ls_po_selected);
             return ls_po_selected;
         }
         if (o instanceof BufferedImage) {
-            Status.getLogger().warning("bi! owned: " + own_clipboard 
+            State.getLogger().warning("bi! owned: " + own_clipboard 
                     + ls_po_selected);
             
             
         } else if (o instanceof String) {
-            Status.getLogger().warning("string! owned:" + own_clipboard);
+            State.getLogger().warning("string! owned:" + own_clipboard);
         } else {
-            Status.getLogger().warning("nothing on clipboard! owned: "
+            State.getLogger().warning("nothing on clipboard! owned: "
                     + own_clipboard + "obj=" + o);
             
             if (o == null) {

@@ -11,7 +11,7 @@ import javax.swing.border.Border;
 
 import view.util.mega.MButton;
 import view.util.mega.MPanel;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.ViewSettings;
 import control.interfaces.MenuListener;
 import control.util.CItemAufklappen;
@@ -186,7 +186,7 @@ public class Item2Menu extends MPanel {
 	        		menuListener.beforeClose();
         		}
         	} else {
-        		Status.getLogger().warning("no menu listener inserted!");
+        		State.getLogger().warning("no menu listener inserted!");
         	}
 	    	//open or close
 	    	
@@ -246,7 +246,7 @@ public class Item2Menu extends MPanel {
 	        		menuListener.afterClose();
         		}
         	} else {
-        		Status.getLogger().warning("no menu listener inserted!");
+        		State.getLogger().warning("no menu listener inserted!");
         	}
 	        
 	    } //otherwise nothing to do

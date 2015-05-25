@@ -13,7 +13,7 @@ import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Pencil;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 
 /**
  * 
@@ -109,11 +109,11 @@ public final class CTabWrite implements ActionListener {
                     PEN_EXMPL_1.getClr_foreground());
             paint.getJbtn_color2().setBackground(
                     PEN_EXMPL_2.getClr_foreground());
-            Status.setPenSelected1(Pen.clonePen(PEN_EXMPL_1));
-            Status.setPenSelected2(Pen.clonePen(PEN_EXMPL_2));
+            State.setPenSelected1(Pen.clonePen(PEN_EXMPL_1));
+            State.setPenSelected2(Pen.clonePen(PEN_EXMPL_2));
             
             System.out.println(PEN_EXMPL_1.getClr_foreground());
-            System.out.println(Status.getPenSelected1().getClr_foreground());
+            System.out.println(State.getPenSelected1().getClr_foreground());
 
         } else if (_event.getSource().equals(write
                 .getTb_bemerkung().getActionCause())) {
@@ -122,8 +122,8 @@ public final class CTabWrite implements ActionListener {
                     PEN_CMMNT_1.getClr_foreground());
             paint.getJbtn_color2().setBackground(
                     PEN_CMMNT_2.getClr_foreground());
-            Status.setPenSelected1(Pen.clonePen(PEN_CMMNT_1));
-            Status.setPenSelected2(Pen.clonePen(PEN_CMMNT_2));
+            State.setPenSelected1(Pen.clonePen(PEN_CMMNT_1));
+            State.setPenSelected2(Pen.clonePen(PEN_CMMNT_2));
 
         } else if (_event.getSource().equals(write
                 .getTb_beweis().getActionCause())) {
@@ -132,8 +132,8 @@ public final class CTabWrite implements ActionListener {
                     PEN_PROOF_1.getClr_foreground());
             paint.getJbtn_color2().setBackground(
                     PEN_PROOF_2.getClr_foreground());
-            Status.setPenSelected1(Pen.clonePen(PEN_PROOF_1));
-            Status.setPenSelected2(Pen.clonePen(PEN_PROOF_2));
+            State.setPenSelected1(Pen.clonePen(PEN_PROOF_1));
+            State.setPenSelected2(Pen.clonePen(PEN_PROOF_2));
         } else if (_event.getSource().equals(write
                 .getTb_headline1().getActionCause())) {
             deactivate();
@@ -141,8 +141,8 @@ public final class CTabWrite implements ActionListener {
                     PEN_HEADLINE_1_1.getClr_foreground());
             paint.getJbtn_color2().setBackground(
                     PEN_HEADLINE_1_2.getClr_foreground());
-            Status.setPenSelected1(Pen.clonePen(PEN_HEADLINE_1_1));
-            Status.setPenSelected2(Pen.clonePen(PEN_HEADLINE_1_2));
+            State.setPenSelected1(Pen.clonePen(PEN_HEADLINE_1_1));
+            State.setPenSelected2(Pen.clonePen(PEN_HEADLINE_1_2));
             //TODO: update paint gui.
         } else if (_event.getSource().equals(write
                 .getTb_headline2().getActionCause())) {
@@ -151,8 +151,8 @@ public final class CTabWrite implements ActionListener {
                     PEN_HEADLINE_2_1.getClr_foreground());
             paint.getJbtn_color2().setBackground(
                     PEN_HEADLINE_2_2.getClr_foreground());
-            Status.setPenSelected1(Pen.clonePen(PEN_HEADLINE_2_1));
-            Status.setPenSelected2(Pen.clonePen(PEN_HEADLINE_2_2));
+            State.setPenSelected1(Pen.clonePen(PEN_HEADLINE_2_1));
+            State.setPenSelected2(Pen.clonePen(PEN_HEADLINE_2_2));
             //TODO: update paint gui.
         } else if (_event.getSource().equals(write
                 .getTb_headline3().getActionCause())) {
@@ -161,8 +161,8 @@ public final class CTabWrite implements ActionListener {
                     PEN_HEADLINE_3_1.getClr_foreground());
             paint.getJbtn_color2().setBackground(
                     PEN_HEADLINE_3_2.getClr_foreground());
-            Status.setPenSelected1(Pen.clonePen(PEN_HEADLINE_3_1));
-            Status.setPenSelected2(Pen.clonePen(PEN_HEADLINE_3_2));
+            State.setPenSelected1(Pen.clonePen(PEN_HEADLINE_3_1));
+            State.setPenSelected2(Pen.clonePen(PEN_HEADLINE_3_2));
             //TODO: update paint gui.
         } else if (_event.getSource().equals(write
                 .getTb_satz().getActionCause())) {
@@ -171,17 +171,17 @@ public final class CTabWrite implements ActionListener {
                     PEN_THEOREM_1.getClr_foreground());
             paint.getJbtn_color2().setBackground(
                     PEN_THEOREM_2.getClr_foreground());
-            Status.setPenSelected1(Pen.clonePen(PEN_THEOREM_1));
-            Status.setPenSelected2(Pen.clonePen(PEN_THEOREM_2));
+            State.setPenSelected1(Pen.clonePen(PEN_THEOREM_1));
+            State.setPenSelected2(Pen.clonePen(PEN_THEOREM_2));
             //TODO: update paint gui.
         }
 
         paint.getIt_stift1().setIcon(
-                Status.getPenSelected1().getIconPath());
+                State.getPenSelected1().getIconPath());
         paint.getIt_stift2().setIcon(
-                Status.getPenSelected2().getIconPath());
+                State.getPenSelected2().getIconPath());
 
-        Status.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);
+        State.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_PAINT_1);
         cp.getcTabPaintStatus().deactivate();
         paint.getIt_stift1().getTb_open().setActivated(true);
         paint.getTb_color1().setActivated(true);
@@ -233,26 +233,26 @@ public final class CTabWrite implements ActionListener {
     public void penChanged() {
         deactivate();
     	Write write = cp.getView().getTabs().getTab_write();
-        if (Status.getPenSelected1().equals(PEN_THEOREM_1)
-                && Status.getPenSelected2().equals(PEN_THEOREM_2)) {
+        if (State.getPenSelected1().equals(PEN_THEOREM_1)
+                && State.getPenSelected2().equals(PEN_THEOREM_2)) {
             write.getTb_satz().setActivated(true);
-        } else if (Status.getPenSelected1().equals(PEN_PROOF_1)
-                && Status.getPenSelected2().equals(PEN_PROOF_2)) {
+        } else if (State.getPenSelected1().equals(PEN_PROOF_1)
+                && State.getPenSelected2().equals(PEN_PROOF_2)) {
             write.getTb_beweis().setActivated(true);
-        } else if (Status.getPenSelected1().equals(PEN_EXMPL_1)
-                && Status.getPenSelected2().equals(PEN_EXMPL_2)) {
+        } else if (State.getPenSelected1().equals(PEN_EXMPL_1)
+                && State.getPenSelected2().equals(PEN_EXMPL_2)) {
             write.getTb_beispiel().setActivated(true);
-        } else if (Status.getPenSelected1().equals(PEN_CMMNT_1)
-                && Status.getPenSelected2().equals(PEN_CMMNT_2)) {
+        } else if (State.getPenSelected1().equals(PEN_CMMNT_1)
+                && State.getPenSelected2().equals(PEN_CMMNT_2)) {
             write.getTb_bemerkung().setActivated(true);
-        } else if (Status.getPenSelected1().equals(PEN_HEADLINE_1_1)
-                && Status.getPenSelected2().equals(PEN_HEADLINE_1_2)) {
+        } else if (State.getPenSelected1().equals(PEN_HEADLINE_1_1)
+                && State.getPenSelected2().equals(PEN_HEADLINE_1_2)) {
             write.getTb_headline1().setActivated(true);
-        } else if (Status.getPenSelected1().equals(PEN_HEADLINE_2_1)
-                && Status.getPenSelected2().equals(PEN_HEADLINE_2_2)) {
+        } else if (State.getPenSelected1().equals(PEN_HEADLINE_2_1)
+                && State.getPenSelected2().equals(PEN_HEADLINE_2_2)) {
             write.getTb_headline2().setActivated(true);
-        } else if (Status.getPenSelected1().equals(PEN_HEADLINE_3_1)
-                && Status.getPenSelected2().equals(PEN_HEADLINE_3_2)) {
+        } else if (State.getPenSelected1().equals(PEN_HEADLINE_3_1)
+                && State.getPenSelected2().equals(PEN_HEADLINE_3_2)) {
             write.getTb_headline3().setActivated(true);
         } 
     }

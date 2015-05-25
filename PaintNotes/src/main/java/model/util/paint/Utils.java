@@ -11,8 +11,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import model.objects.painting.PaintBI;
 import model.settings.Constants;
-import model.settings.Settings;
-import model.settings.Status;
+import model.settings.StateStandard;
+import model.settings.State;
 import model.settings.ViewSettings;
 
 /**
@@ -142,13 +142,13 @@ public final class Utils {
             return outImg;
         } catch (IOException e) {
         	
-        	if (!_path.contains(Settings.ALTERNATIVE_FILE_START)) {
-        		Status.getLogger().severe(
+        	if (!_path.contains(StateStandard.ALTERNATIVE_FILE_START)) {
+        		State.getLogger().severe(
         				"other location used for loading images."
         				+ " May be due to an error.");
         		return normalResizeImage(
         				_width, _height, 
-        				Settings.ALTERNATIVE_FILE_START + _path);
+        				StateStandard.ALTERNATIVE_FILE_START + _path);
         	} else {
 
         		System.out.println(_path);
@@ -171,7 +171,7 @@ public final class Utils {
     public static BufferedImage resizeImage(final int _width, 
             final int _height, final String _path) {
         
-        if (Status.isNormalRotation()) {
+        if (State.isNormalRotation()) {
             return normalResizeImage(_width, _height, _path);
         } else {
             return flipImage(_width, _height, _path);
@@ -280,7 +280,7 @@ public final class Utils {
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {
         
-        switch (Status.getIndexPageBackground()) {
+        switch (State.getIndexPageBackground()) {
         case Constants.CONTROL_PAGE_BACKGROUND_LINES:
             return getLinedImage(_f, _fromX, _fromY, _untilX, _untilY, 
                     _graphiX, _graphiY);
@@ -294,7 +294,7 @@ public final class Utils {
                     _graphiX, _graphiY);
             
         default:
-            Status.getLogger().warning("unknown background type.");
+            State.getLogger().warning("unknown background type.");
             return null;
         }
         
@@ -322,25 +322,25 @@ public final class Utils {
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {
         
-        Dimension d = new Dimension(Status.getImageShowSize());
-        Status.setImageShowSize(new Dimension(Status.getImageSize()));
+        Dimension d = new Dimension(State.getImageShowSize());
+        State.setImageShowSize(new Dimension(State.getImageSize()));
         
         //fetch show percentages; thus able to reset them because the 
         //called methods work with show - percentages; thus save the export
         //percentages inside the show percentages.
-        int borderLShow = Status.getBorderLeftPercent();
-        int borderRShow = Status.getBorderRightPercent();
-        int borderTShow = Status.getBorderTopPercent();
-        int borderBShow = Status.getBorderBottomPercent();
+        int borderLShow = State.getBorderLeftPercent();
+        int borderRShow = State.getBorderRightPercent();
+        int borderTShow = State.getBorderTopPercent();
+        int borderBShow = State.getBorderBottomPercent();
 
         //set percentages
-        Status.setBorderLeftPercent(Status.getBorderLeftPercentExport());
-        Status.setBorderRightPercent(Status.getBorderRightPercentExport());
-        Status.setBorderTopPercent(Status.getBorderTopPercentExport());
-        Status.setBorderBottomPercent(Status.getBorderBottomPercentExport());
+        State.setBorderLeftPercent(State.getBorderLeftPercentExport());
+        State.setBorderRightPercent(State.getBorderRightPercentExport());
+        State.setBorderTopPercent(State.getBorderTopPercentExport());
+        State.setBorderBottomPercent(State.getBorderBottomPercentExport());
 
         BufferedImage bi = null;
-        switch (Status.getIndexPageBackgroundExport()) {
+        switch (State.getIndexPageBackgroundExport()) {
         case Constants.CONTROL_PAGE_BACKGROUND_LINES:
             bi = getLinedImage(_f, _fromX, _fromY, _untilX, _untilY, 
                     _graphiX, _graphiY);
@@ -356,18 +356,18 @@ public final class Utils {
                     _graphiX, _graphiY);
             break;
         default:
-            Status.getLogger().warning("unknown background type.");
+            State.getLogger().warning("unknown background type.");
             bi = null;
             break;
         }
 
         //reset percentages
-        Status.setBorderLeftPercentExport(borderLShow);
-        Status.setBorderRightPercentExport(borderRShow);
-        Status.setBorderTopPercentExport(borderTShow);
-        Status.setBorderBottomPercentExport(borderBShow);
+        State.setBorderLeftPercentExport(borderLShow);
+        State.setBorderRightPercentExport(borderRShow);
+        State.setBorderTopPercentExport(borderTShow);
+        State.setBorderBottomPercentExport(borderBShow);
 
-        Status.setImageShowSize(d);
+        State.setImageShowSize(d);
         return bi;
     }
 
@@ -499,14 +499,14 @@ public final class Utils {
         
         //the width and the height of the entire image, of which the parts
         //are painted.
-        int width  = Status.getImageShowSize().width;
-        int height = Status.getImageShowSize().height;
+        int width  = State.getImageShowSize().width;
+        int height = State.getImageShowSize().height;
 
         //the merge of the page which is not filled with raster but entirely
         //white. distancePoints is not the right expression. distance between 
         //points = distancePoints - 1
         final int distancePoints;
-        if (Status.getRasterSize() <= (2 + 2 + 1) * 2) {
+        if (State.getRasterSize() <= (2 + 2 + 1) * 2) {
            distancePoints = 2 + 1;
         } else {
            distancePoints = 2 + 1;
@@ -521,28 +521,28 @@ public final class Utils {
         //calculate the border pixel location adapted to the size of the
         //raster
         final int topBorder = 
-        		(int) (Status.getRasterBorderTop() / Status.getRasterSize())
-        		* Status.getRasterSize();
+        		(int) (State.getRasterBorderTop() / State.getRasterSize())
+        		* State.getRasterSize();
         
         final int bottomBorder = 
-        		(int) ((height - Status.getRasterBorderBottom())
-        				/ Status.getRasterSize())
-        				* Status.getRasterSize();
+        		(int) ((height - State.getRasterBorderBottom())
+        				/ State.getRasterSize())
+        				* State.getRasterSize();
 
         final int leftBorder = 
-        		(int) (Status.getRasterBorderFront() / Status.getRasterSize())
-        		* Status.getRasterSize();
+        		(int) (State.getRasterBorderFront() / State.getRasterSize())
+        		* State.getRasterSize();
         
         final int rightBorder = 
-        		(int) ((width - Status.getRasterBorderEnd())
-        				/ Status.getRasterSize())
-        				* Status.getRasterSize();
+        		(int) ((width - State.getRasterBorderEnd())
+        				/ State.getRasterSize())
+        				* State.getRasterSize();
 
-        final int fromX_raster = (int) (_fromX / Status.getRasterSize())
-                * Status.getRasterSize();
+        final int fromX_raster = (int) (_fromX / State.getRasterSize())
+                * State.getRasterSize();
 
-        final int fromY_raster = (int) (_fromY / Status.getRasterSize())
-                * Status.getRasterSize();
+        final int fromY_raster = (int) (_fromY / State.getRasterSize())
+                * State.getRasterSize();
 
         final int fromX_points = (int) (_fromX / distancePoints)
         		* distancePoints;
@@ -550,11 +550,11 @@ public final class Utils {
         final int fromY_points = (int) (_fromY / distancePoints)
         		* distancePoints;
 
-        final int untilX_raster = (int) (_untilX / Status.getRasterSize())
-        		* Status.getRasterSize();
+        final int untilX_raster = (int) (_untilX / State.getRasterSize())
+        		* State.getRasterSize();
 
-        final int untilY_raster = (int) (_untilY / Status.getRasterSize())
-        		* Status.getRasterSize();
+        final int untilY_raster = (int) (_untilY / State.getRasterSize())
+        		* State.getRasterSize();
 
         final int untilX_points = (int) (_untilX / distancePoints)
         		* distancePoints;
@@ -591,7 +591,7 @@ public final class Utils {
         		
         		
                 //proceeds in size steps
-                x += Status.getRasterSize()) {
+                x += State.getRasterSize()) {
 
             
             for (int y = 
@@ -667,7 +667,7 @@ public final class Utils {
                 		
                 		untilY_raster); 
 
-        		y += Status.getRasterSize()) {
+        		y += State.getRasterSize()) {
             
             for (int x =  Math.max(
             		
@@ -753,14 +753,14 @@ public final class Utils {
         
         //the width and the height of the entire image, of which the parts
         //are painted.
-        int width  = Status.getImageShowSize().width;
-        int height = Status.getImageShowSize().height;
+        int width  = State.getImageShowSize().width;
+        int height = State.getImageShowSize().height;
 
         //the merge of the page which is not filled with raster but entirely
         //white. distancePoints is not the right expression. distance between 
         //points = distancePoints - 1
         final int distancePoints;
-        if (Status.getRasterSize() <= (2 + 2 + 1) * 2) {
+        if (State.getRasterSize() <= (2 + 2 + 1) * 2) {
            distancePoints = 2 + 1;
         } else {
            distancePoints = 2 + 1;
@@ -783,28 +783,28 @@ public final class Utils {
         //calculate the border pixel location adapted to the size of the
         //raster
         final int topBorder = 
-        		(int) (Status.getRasterBorderTop() / Status.getRasterSize())
-        		* Status.getRasterSize();
+        		(int) (State.getRasterBorderTop() / State.getRasterSize())
+        		* State.getRasterSize();
         
         final int bottomBorder = 
-        		(int) ((height - Status.getRasterBorderBottom())
-        				/ Status.getRasterSize())
-        				* Status.getRasterSize();
+        		(int) ((height - State.getRasterBorderBottom())
+        				/ State.getRasterSize())
+        				* State.getRasterSize();
 
         final int leftBorder = 
-        		(int) (Status.getRasterBorderFront() / Status.getRasterSize())
-        		* Status.getRasterSize();
+        		(int) (State.getRasterBorderFront() / State.getRasterSize())
+        		* State.getRasterSize();
         
         final int rightBorder = 
-        		(int) ((width - Status.getRasterBorderEnd())
-        				/ Status.getRasterSize())
-        				* Status.getRasterSize();
+        		(int) ((width - State.getRasterBorderEnd())
+        				/ State.getRasterSize())
+        				* State.getRasterSize();
 
-        final int fromX_raster = (int) (_fromX / Status.getRasterSize())
-                * Status.getRasterSize();
+        final int fromX_raster = (int) (_fromX / State.getRasterSize())
+                * State.getRasterSize();
 
-        final int fromY_raster = (int) (_fromY / Status.getRasterSize())
-                * Status.getRasterSize();
+        final int fromY_raster = (int) (_fromY / State.getRasterSize())
+                * State.getRasterSize();
 
         final int fromX_points = (int) (_fromX / distancePoints)
         		* distancePoints;
@@ -812,11 +812,11 @@ public final class Utils {
         final int fromY_points = (int) (_fromY / distancePoints)
         		* distancePoints;
 
-        final int untilX_raster = (int) (_untilX / Status.getRasterSize())
-        		* Status.getRasterSize();
+        final int untilX_raster = (int) (_untilX / State.getRasterSize())
+        		* State.getRasterSize();
 
-        final int untilY_raster = (int) (_untilY / Status.getRasterSize())
-        		* Status.getRasterSize();
+        final int untilY_raster = (int) (_untilY / State.getRasterSize())
+        		* State.getRasterSize();
 
         final int untilX_points = (int) (_untilX / distancePoints)
         		* distancePoints;
@@ -853,7 +853,7 @@ public final class Utils {
         		
         		
                 //proceeds in size steps
-                x += Status.getRasterSize()) {
+                x += State.getRasterSize()) {
 
             
             for (int y = 
@@ -929,7 +929,7 @@ public final class Utils {
                 		
                 		untilY_raster); 
 
-        		y += Status.getRasterSize()) {
+        		y += State.getRasterSize()) {
             
             for (int x =  Math.max(
             		
@@ -1007,14 +1007,14 @@ public final class Utils {
         
         //the width and the height of the entire image, of which the parts
         //are painted.
-        int width = Status.getImageShowSize().width;
-        int height = Status.getImageShowSize().height;
+        int width = State.getImageShowSize().width;
+        int height = State.getImageShowSize().height;
 
         //the merge of the page which is not filled with raster but entirely
         //white. distancePoints is not the right expression. distance between 
         //points = distancePoints - 1
         final int distancePoints;
-        if (Status.getRasterSize() <= (2 + 2 + 1) * 2) {
+        if (State.getRasterSize() <= (2 + 2 + 1) * 2) {
            distancePoints = 2;
         } else {
            distancePoints = 2 + 1;
@@ -1032,28 +1032,28 @@ public final class Utils {
         //calculate the border pixel location adapted to the size of the
         //raster
         final int topBorder = 
-        		(int) (Status.getRasterBorderTop() / Status.getRasterSize())
-        		* Status.getRasterSize();
+        		(int) (State.getRasterBorderTop() / State.getRasterSize())
+        		* State.getRasterSize();
         
         final int bottomBorder = 
-        		(int) ((height - Status.getRasterBorderBottom())
-        				/ Status.getRasterSize())
-        				* Status.getRasterSize();
+        		(int) ((height - State.getRasterBorderBottom())
+        				/ State.getRasterSize())
+        				* State.getRasterSize();
 
         final int leftBorder = 
-        		(int) (Status.getRasterBorderFront() / Status.getRasterSize())
-        		* Status.getRasterSize();
+        		(int) (State.getRasterBorderFront() / State.getRasterSize())
+        		* State.getRasterSize();
         
         final int rightBorder = 
-        		(int) ((width - Status.getRasterBorderEnd())
-        				/ Status.getRasterSize())
-        				* Status.getRasterSize();
+        		(int) ((width - State.getRasterBorderEnd())
+        				/ State.getRasterSize())
+        				* State.getRasterSize();
 
-        final int fromX_raster = (int) (_fromX / Status.getRasterSize())
-                * Status.getRasterSize();
+        final int fromX_raster = (int) (_fromX / State.getRasterSize())
+                * State.getRasterSize();
 
-        final int fromY_raster = (int) (_fromY / Status.getRasterSize())
-                * Status.getRasterSize();
+        final int fromY_raster = (int) (_fromY / State.getRasterSize())
+                * State.getRasterSize();
 
         final int fromX_points = (int) (_fromX / distancePoints)
         		* distancePoints;
@@ -1061,11 +1061,11 @@ public final class Utils {
         final int fromY_points = (int) (_fromY / distancePoints)
         		* distancePoints;
 
-        final int untilX_raster = (int) (_untilX / Status.getRasterSize())
-        		* Status.getRasterSize();
+        final int untilX_raster = (int) (_untilX / State.getRasterSize())
+        		* State.getRasterSize();
 
-        final int untilY_raster = (int) (_untilY / Status.getRasterSize())
-        		* Status.getRasterSize();
+        final int untilY_raster = (int) (_untilY / State.getRasterSize())
+        		* State.getRasterSize();
 
         final int untilX_points = (int) (_untilX / distancePoints)
         		* distancePoints;
@@ -1138,9 +1138,9 @@ public final class Utils {
                             RASTAR_COLOR.getRGB());
     
                    //if the loop has reached the last values paint a line.
-                   if (x == Status.getRasterBorderFront() 
-                           || x >= width - Status.getRasterBorderEnd() 
-                           - Status.getRasterSize() + 1) {
+                   if (x == State.getRasterBorderFront() 
+                           || x >= width - State.getRasterBorderEnd() 
+                           - State.getRasterSize() + 1) {
                         
                         if (y + 1 < height) {
                             PaintBI.paintScilentPoint(
@@ -1173,7 +1173,7 @@ public final class Utils {
                 		
                 		untilY_raster); 
 
-        		y += Status.getRasterSize()) {
+        		y += State.getRasterSize()) {
             
             for (int x =  Math.max(
             		
@@ -1252,14 +1252,14 @@ public final class Utils {
 
         //the width and the height of the entire image, of which the parts
         //are painted.
-        int width = Status.getImageShowSize().width;
-        int height = Status.getImageShowSize().height;
+        int width = State.getImageShowSize().width;
+        int height = State.getImageShowSize().height;
 
         //the merge of the page which is not filled with raster but entirely
         //white. distancePoints is not the right expression. distance between 
         //points = distancePoints - 1
         final int distancePoints;
-        if (Status.getRasterSize() <= (2 + 2 + 1) * 2) {
+        if (State.getRasterSize() <= (2 + 2 + 1) * 2) {
            distancePoints = 2;
         } else {
            distancePoints = 2 + 1;
@@ -1274,21 +1274,21 @@ public final class Utils {
         //                  |                       |
         //                  |                       |
 
-    	if (Status.getRasterBorderFront() != 0 
-    			|| Status.getBorderRightPercentShow() != 0) {
+    	if (State.getRasterBorderFront() != 0 
+    			|| State.getBorderRightPercentShow() != 0) {
     	
-        for (int x : new int[]{Status.getRasterBorderFront(), 
-            width - Status.getRasterBorderEnd()}) {
+        for (int x : new int[]{State.getRasterBorderFront(), 
+            width - State.getRasterBorderEnd()}) {
             for (int y = 
                     //the fromX (the window from x)
                     Math.max((_fromY / distancePoints) * distancePoints,
-                            Status.getRasterBorderTop()); 
+                            State.getRasterBorderTop()); 
                     
                     //either the height merge (the height minus the height
                     //modulo the distance of the different points or until 
                     //x coordinate
                     y < Math.min(Math.min(height -  (height % distancePoints), 
-                            _untilY), height - Status.getRasterBorderBottom()); 
+                            _untilY), height - State.getRasterBorderBottom()); 
                     
                     //proceeds with the speed of distancePoints
                     y += distancePoints) {
@@ -1305,9 +1305,9 @@ public final class Utils {
                             RASTAR_COLOR.getRGB());
     
                    //if the loop has reached the last values paint a line.
-                   if (x == Status.getRasterBorderFront() 
-                           || x >= width - Status.getRasterBorderEnd() 
-                           - Status.getRasterSize() + 1) {
+                   if (x == State.getRasterBorderFront() 
+                           || x >= width - State.getRasterBorderEnd() 
+                           - State.getRasterSize() + 1) {
                         
                         if (y + 1 < height) {
                             PaintBI.paintScilentPoint(
@@ -1328,23 +1328,23 @@ public final class Utils {
         
         
 
-    	if (Status.getBorderBottomPercentShow() != 0 
-    			|| Status.getRasterBorderTop() != 0) {
+    	if (State.getBorderBottomPercentShow() != 0 
+    			|| State.getRasterBorderTop() != 0) {
     	
         //horizontal lines  _______________________
         //
         //
         //
         //                  _______________________
-        for (int y = Math.max(Status.getRasterBorderTop(),  
-                (_fromY / Status.getRasterSize()) * Status.getRasterSize());
+        for (int y = Math.max(State.getRasterBorderTop(),  
+                (_fromY / State.getRasterSize()) * State.getRasterSize());
                 y < Math.min(Math.min(height -  (height % distancePoints), 
-                        _untilY), height - Status.getRasterBorderBottom()); 
-                y += Status.getRasterSize()) {
+                        _untilY), height - State.getRasterBorderBottom()); 
+                y += State.getRasterSize()) {
             
-            for (int x =  Math.max(Status.getRasterBorderFront(), 
+            for (int x =  Math.max(State.getRasterBorderFront(), 
                     _fromX / distancePoints * distancePoints); 
-                    x < Math.min(width - Status.getRasterBorderEnd(), _untilX); 
+                    x < Math.min(width - State.getRasterBorderEnd(), _untilX); 
                     x += distancePoints) {
 
                 //calculate correct coordinate values for the graphics
@@ -1352,9 +1352,9 @@ public final class Utils {
                 final int newY = y - _fromY + _graphiY;
 
                 //if the loop has reached the last values paint a line.
-                if (y == Status.getRasterBorderTop() 
-                        || y >= height - Status.getRasterBorderBottom() 
-                        - Status.getRasterSize() + 1) {
+                if (y == State.getRasterBorderTop() 
+                        || y >= height - State.getRasterBorderBottom() 
+                        - State.getRasterSize() + 1) {
                      
                      if (y + 1 < height) {
                          PaintBI.paintScilentPoint(

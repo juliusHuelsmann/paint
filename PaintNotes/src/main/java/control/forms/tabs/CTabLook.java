@@ -8,7 +8,7 @@ import control.ControlPaint;
 import view.forms.Page;
 import view.tabs.Look;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 
 
 
@@ -47,7 +47,7 @@ public final class CTabLook implements ActionListener {
 		            getLook().getJcb_raster().setSelected(true);
 		            getLook().getJcb_nothing().setSelected(false);
 		            getLook().getJcb_lines().setSelected(false);
-		            Status.setIndexPageBackground(backgroundID);
+		            State.setIndexPageBackground(backgroundID);
 		        
 		        } else if (_event.getSource().equals(
 		                getLook().getJcb_lines())) {
@@ -55,7 +55,7 @@ public final class CTabLook implements ActionListener {
 		            getLook().getJcb_lines().setSelected(true);
 		            getLook().getJcb_nothing().setSelected(false);
 		            getLook().getJcb_raster().setSelected(false);
-		            Status.setIndexPageBackground(backgroundID);
+		            State.setIndexPageBackground(backgroundID);
 		        
 		        } else if (_event.getSource().equals(
 		                getLook().getJcb_nothing())) {
@@ -75,7 +75,7 @@ public final class CTabLook implements ActionListener {
 		        } else if (_event.getSource().equals(getLook()
 		                .getJcb_displayAlpha())) {
 	
-		            Status.setShowAlpha(getLook().getJcb_displayAlpha()
+		            State.setShowAlpha(getLook().getJcb_displayAlpha()
 		                    .getSelectedItem().equals(
 		                    		Constants.ID_DISPLAY_ALPHA));
 		            
@@ -93,10 +93,10 @@ public final class CTabLook implements ActionListener {
 		        		setBorderVisible(false);
 		        		
 		        		//apply zero-border
-		                Status.setBorderRightPercent(0);
-		                Status.setBorderLeftPercent(0);
-		                Status.setBorderTopPercent(0);
-		                Status.setBorderBottomPercent(0);
+		                State.setBorderRightPercent(0);
+		                State.setBorderLeftPercent(0);
+		                State.setBorderTopPercent(0);
+		                State.setBorderBottomPercent(0);
 		        	} else {
 		        		
 		        		//(re-) display the border settings.
@@ -142,7 +142,7 @@ public final class CTabLook implements ActionListener {
         getLook().getJcb_nothing().setSelected(true);
         getLook().getJcb_lines().setSelected(false);
         getLook().getJcb_raster().setSelected(false);
-        Status.setIndexPageBackground(backgroundID);
+        State.setIndexPageBackground(backgroundID);
 
 
 	}
@@ -153,10 +153,10 @@ public final class CTabLook implements ActionListener {
 	 */
 	public void setMargeNone() {
 
-        Status.setBorderRightPercent(0);
-        Status.setBorderLeftPercent(0);
-        Status.setBorderTopPercent(0);
-        Status.setBorderBottomPercent(0);
+        State.setBorderRightPercent(0);
+        State.setBorderLeftPercent(0);
+        State.setBorderTopPercent(0);
+        State.setBorderBottomPercent(0);
         
         getLook().getJcb_margeRight().setSelectedIndex(0);
         getLook().getJcb_margeLeft().setSelectedIndex(0);
@@ -174,9 +174,9 @@ public final class CTabLook implements ActionListener {
         try {
 
             int int_selected = Integer.parseInt(str_selected);
-            Status.setBorderRightPercent(int_selected);
+            State.setBorderRightPercent(int_selected);
         } catch (Exception e) {
-            Status.getLogger().severe(
+            State.getLogger().severe(
                     "error: change border size: wrong input");
         }
 	}
@@ -192,9 +192,9 @@ public final class CTabLook implements ActionListener {
         try {
 
             int int_selected = Integer.parseInt(str_selected);
-            Status.setBorderLeftPercent(int_selected);
+            State.setBorderLeftPercent(int_selected);
         } catch (Exception e) {
-            Status.getLogger().severe(
+            State.getLogger().severe(
                     "error: change border size: wrong input");
         }
     
@@ -210,9 +210,9 @@ public final class CTabLook implements ActionListener {
         try {
 
             int int_selected = Integer.parseInt(str_selected);
-            Status.setBorderTopPercent(int_selected);
+            State.setBorderTopPercent(int_selected);
         } catch (Exception e) {
-            Status.getLogger().severe(
+            State.getLogger().severe(
                     "error: change border size: wrong input");
         }
     
@@ -227,9 +227,9 @@ public final class CTabLook implements ActionListener {
         try {
 
             int int_selected = Integer.parseInt(str_selected);
-            Status.setBorderBottomPercent(int_selected);
+            State.setBorderBottomPercent(int_selected);
         } catch (Exception e) {
-            Status.getLogger().severe(
+            State.getLogger().severe(
                     "error: change border size: wrong input");
         }
     
@@ -247,13 +247,13 @@ public final class CTabLook implements ActionListener {
     			if (cp.getView().getPage() != null) {
     	    		return cp.getView().getPage();
     	    	} else {
-    	    		Status.getLogger().severe("cp.getView().getPage() is null");
+    	    		State.getLogger().severe("cp.getView().getPage() is null");
     	    	}
         	} else {
-	    		Status.getLogger().severe("cp.getView() is null");
+	    		State.getLogger().severe("cp.getView() is null");
 	    	}
     	} else {
-    		Status.getLogger().severe("cp is null");
+    		State.getLogger().severe("cp is null");
     	}
     	
     	return null;
@@ -273,17 +273,17 @@ public final class CTabLook implements ActionListener {
 
         	    		return cp.getView().getTabs().getTab_look();
         			} else {
-        				Status.getLogger().severe("cp.getView().getTabs()"
+        				State.getLogger().severe("cp.getView().getTabs()"
         						+ ".getTab_look() is null");
         			}
     	    	} else {
-    	    		Status.getLogger().severe("cp.getView().getTabs() is null");
+    	    		State.getLogger().severe("cp.getView().getTabs() is null");
     	    	}
         	} else {
-	    		Status.getLogger().severe("cp.getView() is null");
+	    		State.getLogger().severe("cp.getView() is null");
 	    	}
     	} else {
-    		Status.getLogger().severe("cp is null");
+    		State.getLogger().severe("cp is null");
     	}
     	return null;
     }
@@ -300,10 +300,10 @@ public final class CTabLook implements ActionListener {
     		if (cp.getControlPic() != null) {
     	    	return cp.getControlPic();
     		} else {
-        		Status.getLogger().severe("cp.getControlPic() is null");
+        		State.getLogger().severe("cp.getControlPic() is null");
     		}
     	} else {
-    		Status.getLogger().severe("cp is null");
+    		State.getLogger().severe("cp is null");
     	}
     	return null;
     

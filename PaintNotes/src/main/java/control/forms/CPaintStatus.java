@@ -15,7 +15,7 @@ import control.ContorlPicture;
 import control.ControlPaint;
 import model.objects.pen.Pen;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.util.paint.Utils;
 import view.View;
 import view.forms.Page;
@@ -58,7 +58,7 @@ public final class CPaintStatus implements MouseListener {
 		if (controlPaint != null) {
 			return controlPaint.getView();
 		} else {
-			Status.getLogger().severe("control Paint is null");
+			State.getLogger().severe("control Paint is null");
 		}
 		return null;
 	}
@@ -71,7 +71,7 @@ public final class CPaintStatus implements MouseListener {
 		if (getView() != null) {
 			return getView().getPage();
 		} else {
-			Status.getLogger().severe("controlPaint.getView() is null");
+			State.getLogger().severe("controlPaint.getView() is null");
 		}
 		return null;
 	}
@@ -86,7 +86,7 @@ public final class CPaintStatus implements MouseListener {
 		if (getView() != null) {
 			return getView().getTabs();
 		} else {
-			Status.getLogger().severe("controlPaint.getView() is null");
+			State.getLogger().severe("controlPaint.getView() is null");
 		}
 		return null;
 	}
@@ -102,7 +102,7 @@ public final class CPaintStatus implements MouseListener {
 		if (getTabs() != null) {
 			return getTabs().getTab_insert();
 		} else {
-			Status.getLogger().severe(
+			State.getLogger().severe(
 					"controlPaint.getView().getTabs() is null");
 		}
 		return null;
@@ -119,7 +119,7 @@ public final class CPaintStatus implements MouseListener {
 			return controlPaint.getControlPic();	
 		} else {
 
-			Status.getLogger().severe(
+			State.getLogger().severe(
 					"controlPaint is null");
 		}
 		return null;
@@ -137,7 +137,7 @@ public final class CPaintStatus implements MouseListener {
     		return controlPaint.getView().getTabs().getTab_paint();
     	} else {
     		
-    		Status.getLogger().severe("Tab does not exist!");
+    		State.getLogger().severe("Tab does not exist!");
     		return null;
     	}
     }
@@ -173,8 +173,8 @@ public final class CPaintStatus implements MouseListener {
 
 	    getView().setCursor(Toolkit.getDefaultToolkit()
 	            .createCustomCursor(_path, 
-                        new Point(Status.getEraseRadius(), 
-                        		Status.getEraseRadius()), 
+                        new Point(State.getEraseRadius(), 
+                        		State.getEraseRadius()), 
                                 _name));	    
 	}
 	
@@ -380,10 +380,10 @@ public final class CPaintStatus implements MouseListener {
                 if (_event.getSource().equals(
                         paint.getJbtn_colors()[j])) {
                     
-                    if (Status.getIndexOperation()
+                    if (State.getIndexOperation()
                             != Constants.CONTROL_PAINTING_INDEX_PAINT_2) {
 
-                        Pen pen = Status.getPenSelected1();
+                        Pen pen = State.getPenSelected1();
                         
                         Color newBG = paint.getJbtn_colors()[j]
                                         .getBackground();
@@ -393,12 +393,12 @@ public final class CPaintStatus implements MouseListener {
                         pen.setClr_foreground(
                                 new Color(newBG.getRGB(), true));
                         
-                        Status.setPenSelected1(pen);
+                        State.setPenSelected1(pen);
                         
-                    } else if (Status.getIndexOperation()
+                    } else if (State.getIndexOperation()
                             == Constants.CONTROL_PAINTING_INDEX_PAINT_2) {
 
-                        Pen pen = Status.getPenSelected2();
+                        Pen pen = State.getPenSelected2();
                         
                         Color newBG = paint.getJbtn_colors()[j]
                                         .getBackground();
@@ -406,7 +406,7 @@ public final class CPaintStatus implements MouseListener {
                         paint.getJbtn_color2().setBackground(newBG);
                         pen.setClr_foreground(newBG);
                         
-                        Status.setPenSelected2(pen);
+                        State.setPenSelected2(pen);
                         
                     } 
                 }
@@ -435,7 +435,7 @@ public final class CPaintStatus implements MouseListener {
     	if (paint != null) {
 
     		//if previously zoomed remove zoom field.
-    		if (Status.getIndexOperation()
+    		if (State.getIndexOperation()
     				== Constants.CONTROL_PAINTING_INDEX_ZOOM_IN) {
     			getControlPicture().removeZoomBox();
     		}
@@ -447,7 +447,7 @@ public final class CPaintStatus implements MouseListener {
     		if (operationID != -1) {
     			
     			//set operation and deactivate older operation Buttons
-    			Status.setIndexOperation(operationID);
+    			State.setIndexOperation(operationID);
     			deactivate();
     			
     			if (controlPaint.getPicture().isSelected()) {
@@ -487,7 +487,7 @@ public final class CPaintStatus implements MouseListener {
     				.setActivated(true);
     				paint.getTb_color1().setActivated(true);
     				controlPaint.getPicture().changePen(
-    						Status.getPenSelected1());
+    						State.getPenSelected1());
                         	
     				//set cursor
     				setCursor(paint.getIt_stift1().getImagePath(), "p1");
@@ -499,7 +499,7 @@ public final class CPaintStatus implements MouseListener {
     				paint.getIt_stift2().getTb_open().setActivated(true);
     				paint.getTb_color2().setActivated(true);
     				controlPaint.getPicture().changePen(
-    						Status.getPenSelected2());
+    						State.getPenSelected2());
                         	
     				//set cursor
     				setCursor(paint.getIt_stift2().getImagePath(), "p2");
@@ -542,8 +542,8 @@ public final class CPaintStatus implements MouseListener {
     				paint.getTb_erase().getTb_open().setActivated(true);
     				
     				BufferedImage bi_erase = new BufferedImage(
-    						Status.getEraseRadius() * 2,
-    						Status.getEraseRadius() * 2, 
+    						State.getEraseRadius() * 2,
+    						State.getEraseRadius() * 2, 
     						BufferedImage.TYPE_INT_RGB);
     				for (int y = 0; y < bi_erase.getHeight(); y++) {
     					for (int x = 0; x < bi_erase.getWidth(); x++) {
@@ -561,7 +561,7 @@ public final class CPaintStatus implements MouseListener {
     				setCursor(bi_erase, "p1");
     				break;
     			default:
-    				Status.getLogger().warning("wrong identifier.");
+    				State.getLogger().warning("wrong identifier.");
     				break;
     			}
     		} else {

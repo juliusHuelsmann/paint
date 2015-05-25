@@ -7,7 +7,7 @@ import java.awt.geom.AffineTransform;
 
 import javax.swing.JLabel;
 
-import model.settings.Status;
+import model.settings.State;
 
 /**
  * View class for which add the possibility to rotate the components 
@@ -73,7 +73,7 @@ public class MLabel extends JLabel implements Mega {
         double rotation = 0;
         
         //if not normal rotation
-        if (!Status.isNormalRotation()) {
+        if (!State.isNormalRotation()) {
             final int filpRotation = 180;
             rotation = filpRotation;
         }

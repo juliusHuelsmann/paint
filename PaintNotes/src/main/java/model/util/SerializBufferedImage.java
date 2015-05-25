@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
-import model.settings.Status;
+import model.settings.State;
 
 
 /**
@@ -70,7 +70,7 @@ public class SerializBufferedImage implements Serializable {
 			//remove the BufferdImage because it is not possible to save it.
 			bi_content = null;
 		} else {
-			Status.getLogger().severe("Prepare for save: Content to "
+			State.getLogger().severe("Prepare for save: Content to "
 					+ "be saved is null");
 		}
 	}
@@ -103,16 +103,16 @@ public class SerializBufferedImage implements Serializable {
 					rgb_content = null;
 				} else {
 
-					Status.getLogger().severe("Implementation error."
+					State.getLogger().severe("Implementation error."
 							+ " Size does not match.");
 				}
 			} else {
 
-				Status.getLogger().severe("Do not have to restore:"
+				State.getLogger().severe("Do not have to restore:"
 						+ "Content has already been restored.");
 			}
 		} else {
-			Status.getLogger().severe("Unable to restore: Content is null");
+			State.getLogger().severe("Unable to restore: Content is null");
 		}
 	}
 	

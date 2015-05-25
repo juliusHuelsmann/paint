@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
 import model.objects.pen.Pen;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 
 /**
@@ -72,7 +72,7 @@ public abstract class PaintObjectPen extends PaintObject implements Cloneable {
     	//if the values given to the function are not valid return false
     	//and print an error message
     	if (_p == null || _r == null) {
-    		Status.getLogger().severe("Checking invalid point or rectanlge:"
+    		State.getLogger().severe("Checking invalid point or rectanlge:"
     				+ " Point: " + _p + "\tRectangle: " + _r);
     		return false;
     	}
@@ -118,7 +118,7 @@ public abstract class PaintObjectPen extends PaintObject implements Cloneable {
     	//if the values given to the function are not valid return false
     	//and print an error message
     	if (_p == null || _r == null) {
-    		Status.getLogger().severe("Checking invalid point or area:"
+    		State.getLogger().severe("Checking invalid point or area:"
     				+ " Point: " + _p + "\tArea: " + _r);
     		return false;
     	}
@@ -138,10 +138,10 @@ public abstract class PaintObjectPen extends PaintObject implements Cloneable {
 
             return false;
         }
-    	Status.getLogger().info("out of bounds. NOT"
+    	State.getLogger().info("out of bounds. NOT"
     			+ shiftedPointX + ".."
     			+ shiftedPointY);
-        Status.getLogger().info("inside bounds"
+        State.getLogger().info("inside bounds"
         		+ (_r[(int) shiftedPointX][(int) shiftedPointY] 
         				== PaintBI.FREE));
         

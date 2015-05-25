@@ -13,7 +13,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import test.html.HtmlDoc;
 
 
@@ -112,7 +112,7 @@ public class ReportError extends JPanel {
 							Thread.sleep(speelpTime);
 						} catch (InterruptedException e) {
 							//do nothing
-							Status.getLogger().severe(
+							model.settings.State.getLogger().severe(
 									"interrupted bug reporting.");
 						}
 					}
@@ -128,7 +128,7 @@ public class ReportError extends JPanel {
 						//elements.
 						load(_message);
 					} else {
-						Status.getLogger().severe("Unable to communicate with"
+						model.settings.State.getLogger().severe("Unable to communicate with"
 								+ " the bug server.");
 					}
 				}
@@ -136,7 +136,7 @@ public class ReportError extends JPanel {
 			
         } catch (IOException ex) {
         	//do nothing.
-        	Status.getLogger().severe("io exception while trying "
+        	State.getLogger().severe("io exception while trying "
         			+ "to report bug...");
         }
 	}

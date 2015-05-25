@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import control.forms.tabs.CTabPainting;
 import control.interfaces.ActivityListener;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import model.util.paint.Utils;
@@ -66,7 +66,7 @@ ActivityListener, MouseListener {
 
 
 			//if there are changes to be saved
-			if (Status.isUncommittedChanges()) {
+			if (State.isUncommittedChanges()) {
 
 				final int answer = JOptionPane.showConfirmDialog(
 						

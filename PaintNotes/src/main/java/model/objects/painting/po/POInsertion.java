@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import model.objects.painting.Picture;
 import model.objects.pen.Pen;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 import model.util.adt.list.List;
 
@@ -132,8 +132,8 @@ public abstract class POInsertion extends PaintObjectPen implements Cloneable {
 		
 	
 		return paint(new BufferedImage(
-		        Status.getImageSize().width, 
-				Status.getImageSize().height, 
+		        State.getImageSize().width, 
+				State.getImageSize().height, 
 				BufferedImage.TYPE_INT_ARGB), 
 				true, null, 
 //                Page.getInstance().getJlbl_painting().getLocation().x,

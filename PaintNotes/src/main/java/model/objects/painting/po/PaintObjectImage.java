@@ -14,7 +14,7 @@ import start.test.BufferedViewer;
 import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
 import model.settings.Error;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 import model.util.SerializBufferedImage;
 import model.util.adt.list.List;
@@ -167,11 +167,11 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
         	
         	//fetch the zoom factors for stretching the image if necessary.
             final double cZoomFactorWidth = 1.0 
-                    * Status.getImageShowSize().width
-                    / Status.getImageSize().width;
+                    * State.getImageShowSize().width
+                    / State.getImageSize().width;
             final double cZoomFactorHeight = 1.0 
-                    * Status.getImageShowSize().height
-                    / Status.getImageSize().height;
+                    * State.getImageShowSize().height
+                    / State.getImageSize().height;
             
             // these values contain the location of the selection inside 
             // the picture
@@ -246,7 +246,7 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
                 		r.width);
             } else {
 
-            	Status.getLogger().severe("fatal move error: \n" 
+            	State.getLogger().severe("fatal move error: \n" 
             			+ "Section out of scope."
             			+ "x\t" + locXPOI + "\n"
             			+ "y\t" + locYPOI + "\n"
@@ -533,11 +533,11 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 
         //print image to graphical user interface
         final double cZoomFactorWidth = 1.0 
-                * Status.getImageSize().width
-                / Status.getImageShowSize().width;
+                * State.getImageSize().width
+                / State.getImageShowSize().width;
         final double cZoomFactorHeight = 1.0 
-                * Status.getImageSize().height
-                / Status.getImageShowSize().height;
+                * State.getImageSize().height
+                / State.getImageShowSize().height;
         bi_image.setContent(Utils.resizeImage(
                 (int) (_pnt_size.getX() * cZoomFactorWidth), 
                 (int) (_pnt_size.getY() * cZoomFactorHeight), 
@@ -636,7 +636,7 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 		
 		
 		//TODO: neither used nor tested
-		Status.getLogger().severe("not tested implementation yet");
+		State.getLogger().severe("not tested implementation yet");
 		final int maxRGB = 255;
 		final int rgbAlpha = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
 		for (int xPx = _pnt_shiftRectangle.x; 
@@ -656,15 +656,15 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 
 					if (xPx < 0) {
 
-						Status.getLogger().severe(errorMsg + "x < 0");
+						State.getLogger().severe(errorMsg + "x < 0");
 					} else if (xPx >= bi_image.getWidth()) {
 
-						Status.getLogger().severe(errorMsg + "x >= widht");
+						State.getLogger().severe(errorMsg + "x >= widht");
 					} else if (yPx < 0) {
 
-						Status.getLogger().severe(errorMsg + "y < 0");
+						State.getLogger().severe(errorMsg + "y < 0");
 					} else if (yPx >= bi_image.getHeight()) {
-						Status.getLogger().severe(errorMsg + "y >= heights");
+						State.getLogger().severe(errorMsg + "y >= heights");
 					}
 				}
 			}	

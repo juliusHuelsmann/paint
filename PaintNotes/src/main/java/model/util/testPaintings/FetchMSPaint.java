@@ -20,7 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
-import model.settings.Status;
+import model.settings.State;
 
 /**
  * 
@@ -254,17 +254,17 @@ public class FetchMSPaint extends JFrame {
 						cLength = -(int) Math.sqrt(
 						        Math.pow(xLength, 2) + Math.pow(yLength, 2));
 					} else {
-					    Status.getLogger().severe("error");
+					    State.getLogger().severe("error");
 					}
 				
 					if (pnt_1.getX() == pnt_2.getX() 
 					        && pnt_1.getY() == pnt_2.getY()) {
-					    Status.getLogger().severe("gleicher punkt");
+					    State.getLogger().severe("gleicher punkt");
 					} else {
 						double thing = 0.0000 + ((hundred * yLength) / cLength);
 						degree = (int) Math.toDegrees(Math.asin(
 						        thing / hundred));
-						Status.getLogger().info("xLength " + xLength 
+						State.getLogger().info("xLength " + xLength 
 						        + "	yLength " 
 						        + yLength + "	cLength " + cLength + "	degree "
 						        + degree);

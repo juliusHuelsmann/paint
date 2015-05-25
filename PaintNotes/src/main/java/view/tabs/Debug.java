@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
 
 import model.objects.PictureOverview;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import control.forms.tabs.CTabDebug;
@@ -348,7 +348,7 @@ public final class Debug extends Tab implements Observer {
 		        + jpnl_owner.getWidth(), jpnl_owner.getY());
 		jlbl_detailedPosition.setSize(
 		        (availableHeight - jlbl_detailedPosition.getY()) 
-		        * Status.getImageSize().width / Status.getImageSize().height, 
+		        * State.getImageSize().width / State.getImageSize().height, 
 		        availableHeight - jlbl_detailedPosition.getY());
 
         sp_up.setLocation(jpnl_owner.getWidth() - twentyFife, 0);
@@ -471,7 +471,7 @@ public final class Debug extends Tab implements Observer {
                     (PictureOverview) _obs);
 	        break;
         default:
-            Status.getLogger().warning("unknown case!");
+            State.getLogger().warning("unknown case!");
             break;
 	        
 	    }

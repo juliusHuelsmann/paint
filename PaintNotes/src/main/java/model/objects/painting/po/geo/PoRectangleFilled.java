@@ -10,7 +10,7 @@ import model.objects.painting.Picture;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.Pen;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 
 /**
@@ -43,7 +43,7 @@ public class PoRectangleFilled extends POInsertion {
 
 	    //check whether the PaintObject is completed
 	    if (getPnt_first() == null || getPnt_last() == null) {
-	        Status.getLogger().warning("Paint object line not ready");
+	        State.getLogger().warning("Paint object line not ready");
 	        return false;
 	    }
 
@@ -104,14 +104,14 @@ public class PoRectangleFilled extends POInsertion {
             
 
             //adjust the location at the zoom.
-            cMinX = ((cMinX) * Status.getImageShowSize().width)
-                    / Status.getImageSize().width;
-            cMinY = ((cMinY) * Status.getImageShowSize().height)
-                    / Status.getImageSize().height;
-            cMaxX = ((cMaxX) * Status.getImageShowSize().width)
-                    / Status.getImageSize().width;
-            cMaxY = ((cMaxY) * Status.getImageShowSize().height)
-                    / Status.getImageSize().height;
+            cMinX = ((cMinX) * State.getImageShowSize().width)
+                    / State.getImageSize().width;
+            cMinY = ((cMinY) * State.getImageShowSize().height)
+                    / State.getImageSize().height;
+            cMaxX = ((cMaxX) * State.getImageShowSize().width)
+                    / State.getImageSize().width;
+            cMaxY = ((cMaxY) * State.getImageShowSize().height)
+                    / State.getImageSize().height;
 
             //add the shift coordinates for painting.
             cMinX +=  _x;
@@ -157,7 +157,7 @@ public class PoRectangleFilled extends POInsertion {
      */
     @Override public final synchronized PaintObject[][] separate(
             final Rectangle _r) {
-        Status.getLogger().severe("not impklemented yet");
+        State.getLogger().severe("not impklemented yet");
         return null;
     }
 

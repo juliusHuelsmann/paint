@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
 import view.util.mega.MButton;
 import view.util.mega.MPanel;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.util.paint.Utils;
 import control.interfaces.ActivityListener;
 import control.util.CScrollPane;
@@ -272,7 +272,7 @@ public class VScrollPane extends MPanel {
                 - jpnl_owner.getHeight();
 
         
-        if (!Status.isNormalRotation()) {
+        if (!State.isNormalRotation()) {
 
             jbtn_center100percentPX = (-jbtn_center.getHeight() 
                     + jbtn_toTop.getY()) 
@@ -306,7 +306,7 @@ public class VScrollPane extends MPanel {
             float percentage = -jpnl_toLocate.getY() * Constants.MAX_PERCENTAGE 
                     / cmp_toLocate100percentPX;
 
-            if (Status.isNormalRotation()) {
+            if (State.isNormalRotation()) {
 
                 //set location of the MButton jbtn_center
                 jbtn_center.setLocation(0, (int) (percentage 
@@ -343,7 +343,7 @@ public class VScrollPane extends MPanel {
                 - jpnl_owner.getWidth();
         
 
-        if (!Status.isNormalRotation()) {
+        if (!State.isNormalRotation()) {
 
             jbtn_center100percentPX = (-jbtn_center.getWidth() 
                     + jbtn_toTop.getX()) 
@@ -375,7 +375,7 @@ public class VScrollPane extends MPanel {
             float percentage = -jpnl_toLocate.getX() * Constants.MAX_PERCENTAGE 
                     / cmp_toLocate100percentPX;
             
-            if (Status.isNormalRotation()) {
+            if (State.isNormalRotation()) {
 
                 //set location of the MButton jbtn_center
                 jbtn_center.setLocation((int) (percentage 

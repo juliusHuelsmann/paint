@@ -182,6 +182,13 @@ public final class Constants {
 	SIZE_A6 = new Dimension(SIZE_A5.width / 2, SIZE_A5.height),
     SIZE_A7 = new Dimension(SIZE_A6.width, SIZE_A6.height / 2);
 
+
+	
+	
+	/**
+	 * IDs identifying the current erase operation.
+	 */
+	public static final int ERASE_ALL = 0,  ERASE_DESTROY = 1;
 	
 	
 	/**
@@ -250,6 +257,9 @@ public final class Constants {
 	    
 	    return s;
 	}
+	
+	
+	public static final int ID_STARTUP_NORMAL = 0, ID_STARTUP_LOAD_IMAGE = 1, ID_STARTUP_LOAD = 2;
 	
 	
 	/**

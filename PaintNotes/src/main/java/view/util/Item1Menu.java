@@ -27,7 +27,7 @@ import control.interfaces.MenuListener;
 //import the controller responsible for opening and closing the menu
 import control.util.CItem;
 
-import model.settings.Status;
+import model.settings.State;
 //import utility classes and settings
 import model.settings.ViewSettings;
 import model.util.adt.list.List;
@@ -232,7 +232,7 @@ public class Item1Menu extends MPanel {
         		if (menuListener != null) {
             		menuListener.beforeOpen();
         		} else {
-            		Status.getLogger().warning("no menu listener inserted!");
+            		State.getLogger().warning("no menu listener inserted!");
             	}
             	
                 setSize(openedWidth, openedHeight);
@@ -246,7 +246,7 @@ public class Item1Menu extends MPanel {
         		if (menuListener != null) {
             		menuListener.afterOpen();
         		} else {
-            		Status.getLogger().warning("no menu listener inserted!");
+            		State.getLogger().warning("no menu listener inserted!");
             	}
             	
             } else {
@@ -254,7 +254,7 @@ public class Item1Menu extends MPanel {
 
             		menuListener.beforeClose();
         		} else {
-            		Status.getLogger().warning("no menu listener inserted!");
+            		State.getLogger().warning("no menu listener inserted!");
             	}
             	
                 setSize(closedWidth, closedHeight);
@@ -265,7 +265,7 @@ public class Item1Menu extends MPanel {
 
             		menuListener.afterClose();
         		} else {
-            		Status.getLogger().warning("no menu listener inserted!");
+            		State.getLogger().warning("no menu listener inserted!");
             	}
             }
     	}

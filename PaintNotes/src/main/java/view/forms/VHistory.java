@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import model.settings.Status;
+import model.settings.State;
 import model.settings.ViewSettings;
 
 /**
@@ -72,7 +72,7 @@ public final class VHistory extends JFrame implements Observer {
             String newText = jta_info.getText().replace(
                     "\n" + c.replaceFirst("remove ", "add "), "");
             
-            Status.getLogger().info("remove: " + newText);
+            State.getLogger().info("remove: " + newText);
         }
     }
     

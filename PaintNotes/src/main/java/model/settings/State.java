@@ -27,182 +27,12 @@ import model.util.paint.Utils;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class Status {
+public final class State {
 
-	
-	/**
-	 * Replaced by pen selection. 
+
+	/*
+	 * Values that never change (once initialized).
 	 */
-	private static Pen pen_selectedReplaced;
-	
-	
-	
-	/**
-	 * Instance of the paint controller.
-	 */
-	private static ControlPaint controlPaint;
-	
-	
-
-	/**
-	 * error-checked getter method.
-	 * @return the controller class of the tab write.
-	 */
-	private static CTabWrite getControlTabWrite() {
-		if (controlPaint != null) {
-
-			return controlPaint.getcTabWrite();
-		} else {
-			Status.getLogger().severe("controlPaint.cTabWrite is null");
-		}
-		return null;
-	}
-	/**
-	 * error-checked getter method.
-	 * @return the view class page.
-	 */
-	private static Page getPage() {
-		
-		if (getView() != null) {
-			return getView().getPage();
-		} else {
-			Status.getLogger().severe("controlPaint.getView() is null.");
-		}
-		return controlPaint.getView().getPage();
-	}
-
-	/**
-	 * error-checked getter method.
-	 * @return the main view class.
-	 */
-	private static View getView() {
-		if (controlPaint != null) {
-			return controlPaint.getView();
-		} else {
-			Status.getLogger().severe("controlPaint is null");
-		}
-		
-		return null;
-	}
-	
-	/**
-	 * IDs identifying the current erase operation.
-	 */
-	public static final int ERASE_ALL = 0,  ERASE_DESTROY = 1;
-	
-	
-	/**
-	 * The current erase index which contains the identifier for the current
-	 * erase operation.
-	 */
-	private static int eraseIndex = ERASE_ALL;
-
-	
-	
-	/**
-	 * Setter method for control paint.
-	 * @param _controlPaint the control paint.
-	 */
-	public static void setControlPaint(
-			final ControlPaint _controlPaint) {
-		if (_controlPaint != null) {
-
-			controlPaint = _controlPaint;
-		} else {
-			
-			if (controlPaint == null) {
-
-				getLogger().severe("initialized controlPaint "
-						+ "in Status with "
-						+ "not existing controller class.");
-			} else {
-
-				getLogger().severe("Tried to overwrite"
-						+ " existing controller class in"
-						+ " Status.");
-			}
-		}
-	}
-	
-	
-	/**
-	 * Error-checked getter method.
-	 * @return	instance of the main model class picture.
-	 */
-	private static Picture getPicture() {
-		if (controlPaint != null) {
-			return controlPaint.getPicture();
-		} else {
-			Status.getLogger().severe("controlPaint is null");
-		}
-		return null;
-	}
-	
-	
-	/**
-	 * Whether the initialization process has finished or not. If it has,
-	 * the fadeOut can disappear.
-	 */
-	private static int initializationFinished = 0;
-	
-
-    /**
-     * The format in which the image files are saved.
-     */
-    private static String saveFormat = Constants.SAVE_FORMATS[2 * 2 * 2 - 1];
-    
-    /**
-     * Whether to export alpha transparently or to replace it with white color.
-     */
-    private static boolean exportAlpha = false;
-
-    /**
-     * Whether to export alpha transparently or to replace it with white color.
-     */
-    private static boolean showAlpha = false;
-    
-    /**
-     * The open project.
-     */
-    private static String openProject = "";
-    
-    /**
-     * the index indicates which operation is to be performed. (e.g. pen/
-     * selection mode 1 - 3, ...).
-     */
-    private static int indexOperation = 
-            Constants.CONTROL_PAINTING_INDEX_PAINT_1;
-    
-    /**
-     * The displayed Background of the pages.
-     */
-    private static int indexPageBackground = 
-            Constants.CONTROL_PAGE_BACKGROUND_RASTAR;
-    
-    
-    /**
-     * The exported background of pages.
-     */
-    private static int indexPageBackgroundExport 
-    = Constants.CONTROL_PAGE_BACKGROUND_RASTAR;
-    
-    /**
-     * index contains selection kind. (separate paintObjects,
-     * whole paintObjects, image).
-     */
-    private static int indexSelection = 
-            Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM;
-
-    /**
-     * with these values the image size is initialized.
-     */
-    private static final int START_IMAGE_WIDTH = 2000; //2500;
-
-    /**
-     * with these values the image size is initialized.
-     */
-    private static final int START_IMAGE_HEIGHT = 2800; //3535;
-    
     
     /**
      * The entire list of available pens.
@@ -217,44 +47,280 @@ public final class Status {
             new BallPen(Constants.PEN_ID_POINT, 2, Color.black),
 
             new Marker(Constants.PEN_ID_LINES, 2, Color.black)};
+
+    
+    /**
+     * The BufferedImage which is shown for the transparency.
+     * Is contained by a JLabel in background of the image.
+     */
+    private static BufferedImage biTransparency;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
+    
+    
+    
+    
+    
+	/*
+	 * Instance of the main controller class for being able to inform the
+	 * rest of the program if the status has changed somehow and instance
+	 * of a logger.
+	 */
+
+	/**
+	 * Instance of the paint controller.
+	 */
+	private static ControlPaint controlPaint;
+
+    /**
+     * The logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger("info"); 
+    
+	
+    
+    /**
+     * Identifier for startup.
+     */
+	private final int startupIdentifier;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
+
+	/*
+	 * Status values that often change during the execution of the program
+	 * but demand initialization by settings-class.
+	 */
+	
+
+	/**
+	 * The current erase index which contains the identifier for the current
+	 * erase operation.
+	 */
+	private static int eraseIndex;
+
+
+    /**
+     * The format in which the image files are saved.
+     */
+    private static String saveFormat;
+    
+    /**
+     * Whether to export alpha transparently or to replace it with white color.
+     */
+    private static boolean exportAlpha;
+
+    /**
+     * Whether to export alpha transparently or to replace it with white color.
+     */
+    private static boolean showAlpha;
+
+
+    /**
+     * the index indicates which operation is to be performed. (e.g. pen/
+     * selection mode 1 - 3, ...).
+     */
+    private static int indexOperation;
+    
+    /**
+     * The displayed Background of the pages.
+     */
+    private static int indexPageBackground;
+    
+    
+    /**
+     * The exported background of pages.
+     */
+    private static int indexPageBackgroundExport;
+    
+    /**
+     * index contains the selected kind of selection. (separate paintObjects,
+     * whole paintObjects, image).
+     */
+    private static int indexSelection;
+
+    
     
     /**
      * Erase radius.
      */
-    private static int eraseRadius = 10;
+    private static int eraseRadius;
 
     /**
      * The border show percentages.
      */
     private static int
-    borderLeftPercentShow = Constants.BORDER_PRERCENTAGES[2 + 1], 
-    borderRightPercentShow = borderLeftPercentShow, 
-    borderTopPercentShow = Constants.BORDER_PRERCENTAGES[1], 
-    borderBottomPercentShow = Constants.BORDER_PRERCENTAGES[1];
+    borderLeftPercentShow,
+    borderRightPercentShow,
+    borderTopPercentShow,
+    borderBottomPercentShow;
     
     /**
      * The border export percentages.
      */
     private static int 
-    borderLeftPercentExport = Constants.BORDER_PRERCENTAGES[2 + 1], 
-    borderRightPercentExport = borderLeftPercentExport, 
-    borderTopPercentExport = Constants.BORDER_PRERCENTAGES[1], 
-    borderBottomPercentExport = Constants.BORDER_PRERCENTAGES[1];
+    borderLeftPercentExport,
+    borderRightPercentExport,
+    borderTopPercentExport,
+    borderBottomPercentExport;
 
     
-
-
+    /**
+     * selected pens.
+     */
+    private static Pen 
+    penSelected1,
+    penSelected2;
 
     /**
-     * the size of the image.
+     * the size of the image. (depends on start image width and start image 
+     * height, those values are determined by settings).
      */
-    private static Dimension imageSize = new Dimension(
-            START_IMAGE_WIDTH, START_IMAGE_HEIGHT);
+    private static Dimension imageSize;
+
     
+
+    /**
+     * Initialize the values that depend on the standard state (depending
+     * on the way the program is opened (open image file/ launch program
+     * without parameter).
+     */
+    public void initialize() {
+
+    	eraseIndex = StateStandard.getStandardEraseIndex()
+    			[startupIdentifier];
+    	
+    	
+    	saveFormat = StateStandard.getStandardSaveFormat()[startupIdentifier];
+    	exportAlpha 
+    	= StateStandard.getStandardExportAlpha()[startupIdentifier];
+    	
+    	showAlpha 
+    	= StateStandard.getStandardShowAlpha()[startupIdentifier];
+    	
+    	indexOperation = StateStandard.getStandardIndexOperation()
+    			[startupIdentifier];
+    	
+    	indexPageBackground 
+    	= StateStandard.getStandardIndexPageBackground()
+    	[startupIdentifier];
+    	
+    	indexPageBackgroundExport 
+    	= StateStandard.getStandardIndexPageBackgroundExport()
+    	[startupIdentifier];
+    	
+    	indexSelection = StateStandard.getStandardIndexSelection()
+    			[startupIdentifier];
+    	
+    	
+    	eraseRadius = StateStandard.getStandardEraseRadius()
+    			[startupIdentifier];
+    	
+    	borderLeftPercentShow 
+    	= StateStandard.getStandardBorderLeftPercentShow()
+    	[startupIdentifier];
+    	borderRightPercentShow 
+    	= StateStandard.getStandardBorderRightPercentShow()
+    	[startupIdentifier];
+    	borderBottomPercentShow 
+    	= StateStandard.getStandardBorderBottomPercentShow()
+    	[startupIdentifier];
+    	borderTopPercentShow 
+    	= StateStandard.getStandardBorderTopPercentShow()
+    	[startupIdentifier];
+    	
+    	
+    	borderLeftPercentExport 
+    	= StateStandard.getStandardBorderLeftPercentExport()
+    	[startupIdentifier];
+    	borderRightPercentExport 
+    	= StateStandard.getStandardBorderRightPercentExport()
+    	[startupIdentifier];
+    	borderBottomPercentExport 
+    	= StateStandard.getStandardBorderBottomPercentExport()
+    	[startupIdentifier];
+    	borderTopPercentExport 
+    	= StateStandard.getStandardBorderTopPercentExport()
+    	[startupIdentifier];
+    	
+    	penSelected1 = StateStandard.getStandardPenSelected1()
+    			[startupIdentifier];
+    	penSelected2 = StateStandard.getStandardPenSelected1()
+    			[startupIdentifier];
+    	
+    	
+    	imageSize = new Dimension(
+    			StateStandard.getStandardImageWidth()
+    			[startupIdentifier],
+    			StateStandard.getStandardimageheight()
+    			[startupIdentifier]);
+    	
+    	imageShowSize = imageSize;
+    	
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+	/*
+	 * Other status values that often change during the execution of the program
+	 * and do not demand initialization by the settings-class.
+	 */
+	
+	/**
+	 * The pen which is replaced by pen selection. (To be restored after 
+	 * selection line has been done).
+	 */
+	private static Pen pen_selectedReplaced;
+
     /**
      * the size of the shown image (zoom).
      */
-    private static Dimension imageShowSize = imageSize;
+    private static Dimension imageShowSize;
+	
+	
+	/**
+	 * Whether the initialization process has finished or not. If it has,
+	 * the fadeOut can disappear.
+	 */
+	private static int initializationFinished = 0;
+	
+	
+    /**
+     * The open project.
+     */
+    private static String openProject = "";
     
     
     /**
@@ -270,18 +336,6 @@ public final class Status {
      */
     private static boolean debug = false;
 
-    /**
-     * selected pens.
-     */
-    private static Pen 
-    penSelected1 = new Pencil(Constants.PEN_ID_LINES, 2, Color.gray), 
-    penSelected2 = new BallPen(Constants.PEN_ID_LINES, 2, 
-            new Color(2 * 2 * 2 * 2 * 2 * 2, 
-                    (int) (Math.pow(2, 2 + 2 + 2 + 1) 
-                            + Math.pow(2, 2 + 2 + 2) + 2 + 2 + 1), 
-                    (2 + 1) * (2 + 1) * (2 + 1) + (2 + 2 + 2 + 1) 
-                    * (2 + 2 + 2 + 2 + 2)));
-    
     
     /**
      * This counter counts the amount of image points that are printed
@@ -295,28 +349,48 @@ public final class Status {
     private static String savePath = "";
     
     
-    
-    /**
-     * The BufferedImage which is shown for the transparency.
-     * Is contained by a JLabel in background of the image.
-     */
-    private static BufferedImage biTransparency;
-    
-    /**
-     * The logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger("info"); 
-    
     /**
      * uncommitted changes.
      */
     private static boolean uncommittedChanges = false;
     
-    /**
-     * private utility class constructor.
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
+     * Constructor.
+     *  
      */
-    private Status() { }
+    
+    
+    
+    /**
+     * Empty, private utility class constructor.
+     */
+    public State(final int _startupIdentifier) {
+    	startupIdentifier = _startupIdentifier;
+    }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
+     * Functions.
+     */
+    
+    
     
     /**
      * Return the size of the raster which is printed by the
@@ -341,7 +415,7 @@ public final class Status {
     public static int getRasterBorderFront() {
         
         final int maxPercent = 100;
-        return Status.getImageShowSize().width 
+        return State.getImageShowSize().width 
                 * borderLeftPercentShow / maxPercent;
     }
 
@@ -355,7 +429,7 @@ public final class Status {
 
         final int maxPercent = 100;
 
-        int lastBorder = Status.getImageShowSize().width 
+        int lastBorder = State.getImageShowSize().width 
                 * borderRightPercentShow / maxPercent;
         int size = imageShowSize.width - getRasterBorderFront() - lastBorder;
         
@@ -376,7 +450,7 @@ public final class Status {
     public static int getRasterBorderTop() {
         
         final int maxPercent = 100;
-        return Status.getImageShowSize().height
+        return State.getImageShowSize().height
                 * borderTopPercentShow / maxPercent;
     }
 
@@ -390,7 +464,7 @@ public final class Status {
 
         final int maxPercent = 100;
 
-        int lastBorder = Status.getImageShowSize().height 
+        int lastBorder = State.getImageShowSize().height 
                 * borderBottomPercentShow / maxPercent;
         int size = imageShowSize.height - getRasterBorderTop() - lastBorder;
         
@@ -516,7 +590,7 @@ public final class Status {
      * @param _indexSelection the indexSelection to set
      */
     public static void setIndexSelection(final int _indexSelection) {
-        Status.indexSelection = _indexSelection;
+        State.indexSelection = _indexSelection;
     }
 
     /**
@@ -531,7 +605,7 @@ public final class Status {
      */
     public static void setImageSize(final Dimension _imageSize) {
         
-        Status.imageSize = _imageSize;
+        State.imageSize = _imageSize;
     }
 
     /**
@@ -545,7 +619,7 @@ public final class Status {
      * @param _normalRotation the normalRotation to set
      */
     public static void setNormalRotation(final boolean _normalRotation) {
-        Status.normalRotation = _normalRotation;
+        State.normalRotation = _normalRotation;
     }
 
     /**
@@ -559,7 +633,7 @@ public final class Status {
      * @param _penSelected1 the penSelected1 to set
      */
     public static void setPenSelected1(final Pen _penSelected1) {
-        Status.penSelected1 = _penSelected1;
+        State.penSelected1 = _penSelected1;
         getControlTabWrite().penChanged();
         getPicture().changePen(penSelected1);
     }
@@ -575,7 +649,7 @@ public final class Status {
      * @param _penSelected2 the penSelected2 to set
      */
     public static void setPenSelected2(final Pen _penSelected2) {
-        Status.penSelected2 = _penSelected2;
+        State.penSelected2 = _penSelected2;
         getControlTabWrite().penChanged();
     }
 
@@ -590,7 +664,7 @@ public final class Status {
      * @param _imageShowSize the imageShowSize to set
      */
     public static void setImageShowSize(final Dimension _imageShowSize) {
-        Status.imageShowSize = _imageShowSize;
+        State.imageShowSize = _imageShowSize;
         //frefresh sps due to the new size of the image.
         controlPaint.getView().getPage().flip();
         controlPaint.getView().getPage().refrehsSps();
@@ -619,7 +693,7 @@ public final class Status {
      * @param _savePath the savePath to set
      */
     public static void setSavePath(final String _savePath) {
-        Status.savePath = _savePath;
+        State.savePath = _savePath;
     }
 
 
@@ -654,7 +728,7 @@ public final class Status {
      */
     public static void setCounter_paintedPoints(
             final int _counter_paintedPoints) {
-        Status.counterPaintedPoints = _counter_paintedPoints;
+        State.counterPaintedPoints = _counter_paintedPoints;
     }
 
 
@@ -678,7 +752,7 @@ public final class Status {
      * @param _indexPageBackground the indexPageBackground to set
      */
     public static void setIndexPageBackground(final int _indexPageBackground) {
-        Status.indexPageBackground = _indexPageBackground;
+        State.indexPageBackground = _indexPageBackground;
     }
 
 
@@ -687,7 +761,7 @@ public final class Status {
      */
     public static void setIndexPageBackgroundExport(
             final int _indexPageBackground) {
-        Status.indexPageBackgroundExport = _indexPageBackground;
+        State.indexPageBackgroundExport = _indexPageBackground;
     }
     /**
      * @return the indexPageBackground
@@ -709,7 +783,7 @@ public final class Status {
      * @param _openProject the openProject to set
      */
     public static void setOpenProject(final String _openProject) {
-        Status.openProject = _openProject;
+        State.openProject = _openProject;
     }
 
 
@@ -733,7 +807,7 @@ public final class Status {
      * @param _borderLeftPercent the borderLeftPercent to set
      */
     public static void setBorderLeftPercent(final int _borderLeftPercent) {
-        Status.borderLeftPercentShow = _borderLeftPercent;
+        State.borderLeftPercentShow = _borderLeftPercent;
     }
 
 
@@ -742,7 +816,7 @@ public final class Status {
      * @param _borderRightPercent the borderRightPercent to set
      */
     public static void setBorderRightPercent(final int _borderRightPercent) {
-        Status.borderRightPercentShow = _borderRightPercent;
+        State.borderRightPercentShow = _borderRightPercent;
     }
 
 
@@ -752,7 +826,7 @@ public final class Status {
      * @param _borderTopPercent the borderTopPercent to set
      */
     public static void setBorderTopPercent(final int _borderTopPercent) {
-        Status.borderTopPercentShow = _borderTopPercent;
+        State.borderTopPercentShow = _borderTopPercent;
     }
 
 
@@ -761,7 +835,7 @@ public final class Status {
      * @param _borderBottomPercent the borderBottomPercent to set
      */
     public static void setBorderBottomPercent(final int _borderBottomPercent) {
-        Status.borderBottomPercentShow = _borderBottomPercent;
+        State.borderBottomPercentShow = _borderBottomPercent;
     }
     
 
@@ -808,7 +882,7 @@ public final class Status {
      */
     public static void setBorderLeftPercentExport(
             final int _borderLeftPercentExport) {
-        Status.borderLeftPercentExport = _borderLeftPercentExport;
+        State.borderLeftPercentExport = _borderLeftPercentExport;
     }
 
 
@@ -825,7 +899,7 @@ public final class Status {
      */
     public static void setBorderRightPercentExport(
             final int _borderRightPercentExport) {
-        Status.borderRightPercentExport = _borderRightPercentExport;
+        State.borderRightPercentExport = _borderRightPercentExport;
     }
 
 
@@ -842,7 +916,7 @@ public final class Status {
      */
     public static void setBorderTopPercentExport(
             final int _borderTopPercentExport) {
-        Status.borderTopPercentExport = _borderTopPercentExport;
+        State.borderTopPercentExport = _borderTopPercentExport;
     }
 
 
@@ -859,7 +933,7 @@ public final class Status {
      */
     public static void setBorderBottomPercentExport(
             final int _borderBottomPercentExport) {
-        Status.borderBottomPercentExport = _borderBottomPercentExport;
+        State.borderBottomPercentExport = _borderBottomPercentExport;
     }
 
 
@@ -893,7 +967,7 @@ public final class Status {
     public static void setShowAlpha(final boolean _showAlpha) {
         
         
-        Status.showAlpha = _showAlpha;
+        State.showAlpha = _showAlpha;
         
         if (getPage().getJlbl_background().getWidth() <= 0
                 || getPage().getJlbl_background().getHeight() <= 0) {
@@ -961,7 +1035,7 @@ public final class Status {
      * @param _saveFormat the saveFormat to set
      */
     public static void setSaveFormat(final String _saveFormat) {
-        Status.saveFormat = _saveFormat;
+        State.saveFormat = _saveFormat;
     }
 
 
@@ -977,7 +1051,7 @@ public final class Status {
 	 * @param _eraseRadius the eraseRadius to set
 	 */
 	public static void setEraseRadius(final int _eraseRadius) {
-		Status.eraseRadius = _eraseRadius;
+		State.eraseRadius = _eraseRadius;
 	}
 
 
@@ -1022,7 +1096,7 @@ public final class Status {
 	 * @param _eraseIndex the eraseIndex to set
 	 */
 	public static void setEraseIndex(final int _eraseIndex) {
-		Status.eraseIndex = _eraseIndex;
+		State.eraseIndex = _eraseIndex;
 	}
 	
 	
@@ -1040,7 +1114,7 @@ public final class Status {
 	 */
 	public static void setBorderRightPercentShow(
 			final int _borderRightPercentShow) {
-		Status.borderRightPercentShow = _borderRightPercentShow;
+		State.borderRightPercentShow = _borderRightPercentShow;
 	}
 	
 	/**
@@ -1060,7 +1134,100 @@ public final class Status {
 	 */
 	public static void setPen_selectedReplaced(
 			final Pen _pen_selectedReplaced) {
-		Status.pen_selectedReplaced = _pen_selectedReplaced;
+		State.pen_selectedReplaced = _pen_selectedReplaced;
 	}
 
+	
+	
+	
+	/*
+	 * Error-checked getter methods.
+	 */
+	
+	
+	
+	
+
+
+	/**
+	 * error-checked getter method.
+	 * @return the controller class of the tab write.
+	 */
+	private static CTabWrite getControlTabWrite() {
+		if (controlPaint != null) {
+
+			return controlPaint.getcTabWrite();
+		} else {
+			State.getLogger().severe("controlPaint.cTabWrite is null");
+		}
+		return null;
+	}
+	/**
+	 * error-checked getter method.
+	 * @return the view class page.
+	 */
+	private static Page getPage() {
+		
+		if (getView() != null) {
+			return getView().getPage();
+		} else {
+			State.getLogger().severe("controlPaint.getView() is null.");
+		}
+		return controlPaint.getView().getPage();
+	}
+
+	/**
+	 * error-checked getter method.
+	 * @return the main view class.
+	 */
+	private static View getView() {
+		if (controlPaint != null) {
+			return controlPaint.getView();
+		} else {
+			State.getLogger().severe("controlPaint is null");
+		}
+		
+		return null;
+	}
+	
+	
+
+	/**
+	 * Setter method for control paint.
+	 * @param _controlPaint the control paint.
+	 */
+	public static void setControlPaint(
+			final ControlPaint _controlPaint) {
+		if (_controlPaint != null) {
+
+			controlPaint = _controlPaint;
+		} else {
+			
+			if (controlPaint == null) {
+
+				getLogger().severe("initialized controlPaint "
+						+ "in Status with "
+						+ "not existing controller class.");
+			} else {
+
+				getLogger().severe("Tried to overwrite"
+						+ " existing controller class in"
+						+ " Status.");
+			}
+		}
+	}
+	
+	
+	/**
+	 * Error-checked getter method.
+	 * @return	instance of the main model class picture.
+	 */
+	private static Picture getPicture() {
+		if (controlPaint != null) {
+			return controlPaint.getPicture();
+		} else {
+			State.getLogger().severe("controlPaint is null");
+		}
+		return null;
+	}
 }

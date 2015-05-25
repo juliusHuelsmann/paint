@@ -3,7 +3,7 @@ package model.util.solveLGS;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import model.settings.Status;
+import model.settings.State;
 import model.util.adt.list.List;
 
 
@@ -52,7 +52,7 @@ public class Matrix {
 	public final double[] solveUnexact() {
 		
 		if (content.length + 1 != content[0].length) {
-		    Status.getLogger().severe(
+		    State.getLogger().severe(
 			        "unable to solve matrix: not quadratic!");
 		}
 		
@@ -103,7 +103,7 @@ public class Matrix {
         	 return null;
         	 
         } else if (content.length + 1 != content[0].length) {
-            Status.getLogger().severe("unable to solve matrix: not quadratic!");
+            State.getLogger().severe("unable to solve matrix: not quadratic!");
             return null;
         } 
         String s = ("anfang" + printMatrix());

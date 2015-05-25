@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import model.settings.Status;
+import model.settings.State;
 import model.util.Util;
 
 
@@ -79,7 +79,7 @@ public final class BufferedViewer extends JFrame {
     		final int minTimeDiff = 5000;
     		final int maxWindowSize = 700;
     		
-    		Status.getLogger().warning("TEST" + "BufferdViewer.show");
+    		State.getLogger().warning("TEST" + "BufferdViewer.show");
 
         	final double time = System.currentTimeMillis();
 

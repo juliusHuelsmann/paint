@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 import model.objects.pen.Pen;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.DPoint;
 
@@ -70,7 +70,7 @@ public class Pencil extends Pen {
         case Constants.PEN_ID_POINT:
             return Constants.PATH_PEN_BLEI_POINT;
         default:
-            Status.getLogger().severe("unknown paint index");
+            State.getLogger().severe("unknown paint index");
             return null;
         }
     }
@@ -133,10 +133,10 @@ public class Pencil extends Pen {
                 if (!_final) {
 
                     //adjust the location at the zoom.
-                    int rx = ((x + i) * Status.getImageShowSize().width)
-                            / Status.getImageSize().width;
-                    int ry = ((y + j) * Status.getImageShowSize().height)
-                            / Status.getImageSize().height;
+                    int rx = ((x + i) * State.getImageShowSize().width)
+                            / State.getImageSize().width;
+                    int ry = ((y + j) * State.getImageShowSize().height)
+                            / State.getImageSize().height;
 
                     //add the shift coordinates for painting.
                     rx +=  _pnt_shift.getX();
@@ -150,10 +150,10 @@ public class Pencil extends Pen {
                     //      [x] [a] [ ]         (x is the pixel which is 
                     //      [a] [a] [ ]         already printed, a are those
                     //      [ ] [ ] [ ]         which are added to avoid gaps.
-                    int imagePixelSizeX = Status.getImageShowSize().width 
-                            / Status.getImageSize().width,
-                            imagePixelSizeY = Status.getImageShowSize().height 
-                            / Status.getImageSize().height;
+                    int imagePixelSizeX = State.getImageShowSize().width 
+                            / State.getImageSize().width,
+                            imagePixelSizeY = State.getImageShowSize().height 
+                            / State.getImageSize().height;
                     
 
                     //error prevention (divide by zero if zoomed out a little 
@@ -192,7 +192,7 @@ public class Pencil extends Pen {
                                 (rx),
                                 (int) (ry), _g);
                         }
-                        Status.setCounter_paintedPoints(Status
+                        State.setCounter_paintedPoints(State
                                 .getCounter_paintedPoints() + 1);
 
                         if (rx >= 0 && rx < _g.getWidth()

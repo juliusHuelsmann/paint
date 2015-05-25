@@ -13,7 +13,7 @@ import javax.swing.border.LineBorder;
 
 import model.objects.pen.Pen;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import control.ControlPaint;
@@ -118,8 +118,8 @@ public final class Paint extends Tab {
 
         //activate first color and set colors.
         tb_color1.setActivated(true);
-		tb_color1.setBackground(Status.getPenSelected1().getClr_foreground());
-		tb_color2.setBackground(Status.getPenSelected2().getClr_foreground());
+		tb_color1.setBackground(State.getPenSelected1().getClr_foreground());
+		tb_color2.setBackground(State.getPenSelected2().getClr_foreground());
 
 //		//set size
 //		super.setSize((int) Toolkit.getDefaultToolkit().getScreenSize()
@@ -127,8 +127,8 @@ public final class Paint extends Tab {
 
 		//TODO: directly apply to status values.
 		//set standard values (is going to be put into a new settings class)
-		it_stift1.setIcon(Status.getPenSelected1().getIconPath());
-		it_stift2.setIcon(Status.getPenSelected2().getIconPath());
+		it_stift1.setIcon(State.getPenSelected1().getIconPath());
+		it_stift2.setIcon(State.getPenSelected2().getIconPath());
 	}
 	
 
@@ -144,8 +144,8 @@ public final class Paint extends Tab {
 		x = initializeZoom(x, false, null, null);
         x = initializeFileOperations(x, false, null, null);
 
-		it_stift1.setIcon(Status.getPenSelected1().getIconPath());
-		it_stift2.setIcon(Status.getPenSelected2().getIconPath());
+		it_stift1.setIcon(State.getPenSelected1().getIconPath());
+		it_stift2.setIcon(State.getPenSelected2().getIconPath());
 	}
 
 	/**
@@ -888,7 +888,7 @@ public final class Paint extends Tab {
 
 
 		
-		for (Pen pen_available : Status.getPen_available()) {
+		for (Pen pen_available : State.getPen_available()) {
 			
 			/*
 			 * The pen which is inserted into the first penMenu

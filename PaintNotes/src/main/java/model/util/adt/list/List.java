@@ -5,7 +5,7 @@ package model.util.adt.list;
 import java.io.Serializable;
 
 import model.objects.painting.po.PaintObject;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 
 /**
@@ -352,7 +352,7 @@ public class List<Type> implements Serializable {
         	
         	
         	//print warning message
-        	Status.getLogger().warning("remove null item out of list: Perform"
+        	State.getLogger().warning("remove null item out of list: Perform"
         			+ " previous or next for being able to pass the list"
         			+ " and for not creating an infinite loop");
         	
@@ -447,7 +447,7 @@ public class List<Type> implements Serializable {
         
     	Element<Type> oldCurrent = elemCurrent;
     	
-        Status.getLogger().info("\n\nprint counter. Caution; only valid if list"
+        State.getLogger().info("\n\nprint counter. Caution; only valid if list"
         		+ "is holding PaintObjects.\n");
         toFirst();
         while (!isBehind()) {

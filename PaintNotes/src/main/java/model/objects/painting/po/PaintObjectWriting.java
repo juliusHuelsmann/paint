@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
 import model.objects.pen.Pen;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 import model.util.Util;
 import model.util.adt.list.List;
@@ -228,15 +228,15 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
 		
 
 		int x = rect.x, y = rect.y;
-        if (x > Status.getImageSize().width) {
-            x = Status.getImageSize().width;
+        if (x > State.getImageSize().width) {
+            x = State.getImageSize().width;
         }
 
         if (x < 0) {
             x = 0;
         } 
-        if (y > Status.getImageSize().height) {
-            y = Status.getImageSize().height;
+        if (y > State.getImageSize().height) {
+            y = State.getImageSize().height;
         }
 
         if (y < 0) {
@@ -246,21 +246,21 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
         int width = rect.width;
         int height = rect.height;
 
-        if (x + width > Status.getImageSize().width) {
-            width = Status.getImageSize().width - x;
+        if (x + width > State.getImageSize().width) {
+            width = State.getImageSize().width - x;
         }
-        if (y + height > Status.getImageSize().height) {
-            height = Status.getImageSize().height - y;
+        if (y + height > State.getImageSize().height) {
+            height = State.getImageSize().height - y;
         }
         
         if (width == 0 || height == 0) {
 
-            if (Status.getImageSize().width >= 1 
-                    && Status.getImageSize().height >= 1) {
+            if (State.getImageSize().width >= 1 
+                    && State.getImageSize().height >= 1) {
 
                 return paint(new BufferedImage(
-                        Status.getImageSize().width, 
-                        Status.getImageSize().height, 
+                        State.getImageSize().width, 
+                        State.getImageSize().height, 
                         BufferedImage.TYPE_INT_ARGB), 
                         true, null, 
 //                        Page.getInstance().getJlbl_painting().getLocation().x,
@@ -270,15 +270,15 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
                         .getSubimage(
                                 0, 0, 1, 1);
             } else {
-                Status.getLogger().warning(
+                State.getLogger().warning(
                         "image size zero -> resulting error");
                 return null;
             }
         } else {
 
             return paint(new BufferedImage(
-                    Status.getImageSize().width, 
-                    Status.getImageSize().height, 
+                    State.getImageSize().width, 
+                    State.getImageSize().height, 
                     BufferedImage.TYPE_INT_ARGB), 
                     true, null, 
 //                  Page.getInstance().getJlbl_painting().getLocation().x,
@@ -887,7 +887,7 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
                     pow_current.addPoint(new DPoint(pnt_border));
                     ls_pow_outside.insertBehind((pow_current));
                 } else {
-                	Status.getLogger().warning("error calc border");
+                	State.getLogger().warning("error calc border");
                 }
                 
                 //crate new PaintObject and add the borderDPoint to the 
@@ -981,7 +981,7 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
                 }
                 
             } else {
-            	Status.getLogger().severe("Fatal");
+            	State.getLogger().severe("Fatal");
             	System.exit(1);
             }
 
@@ -1185,7 +1185,7 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
                     pow_current.addPoint(new DPoint(pnt_border));
                     ls_pow_outside.insertBehind((pow_current));
                 } else {
-                	Status.getLogger().warning("error calc border");
+                	State.getLogger().warning("error calc border");
                 }
                 
                 pow_current = new PaintObjectWriting(
@@ -1568,7 +1568,7 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
                 }
             }
         } else {
-        	if (Status.isDebug()) {
+        	if (State.isDebug()) {
               System.out.println("elz" + getClass()
             		  + ls.isEmpty() + ".." + ls.getItem());
         	}

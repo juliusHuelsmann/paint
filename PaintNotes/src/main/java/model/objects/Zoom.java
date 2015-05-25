@@ -1,7 +1,7 @@
 package model.objects;
 
 import control.ContorlPicture;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.ViewSettings;
 import view.forms.Page;
 
@@ -68,10 +68,10 @@ public final class Zoom {
         //      [x] [a] [ ]         (x is the pixel which is 
         //      [a] [a] [ ]         already printed, a are those
         //      [ ] [ ] [ ]         which are added to avoid gaps.
-        int imagePixelSizeX = Status.getImageShowSize().width 
-                / Status.getImageSize().width,
-                imagePixelSizeY = Status.getImageShowSize().height 
-                / Status.getImageSize().height;
+        int imagePixelSizeX = State.getImageShowSize().width 
+                / State.getImageSize().width,
+                imagePixelSizeY = State.getImageShowSize().height 
+                / State.getImageSize().height;
 
         int xNewAligned, yNewAligned;
         

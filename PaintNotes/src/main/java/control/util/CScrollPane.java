@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
 import control.interfaces.ActivityListener;
 import model.settings.Constants;
 import model.settings.Error;
-import model.settings.Status;
+import model.settings.State;
 import model.util.paint.Utils;
 import view.util.VScrollPane;
 
@@ -229,7 +229,7 @@ implements MouseMotionListener, MouseListener, KeyListener {
             //vertical scroll versus horizontal scroll
             if (view.isVerticalScroll()) {
 
-                if (Status.isNormalRotation()) {
+                if (State.isNormalRotation()) {
                     int y = (int) (
                             pnt_centerStartLocation.getY() 
                             - pnt_dragStartOnScreen.getY() 
@@ -268,7 +268,7 @@ implements MouseMotionListener, MouseListener, KeyListener {
                 }
             } else {
 
-                if (Status.isNormalRotation()) {
+                if (State.isNormalRotation()) {
                     int x = (int) (pnt_centerStartLocation.getX() 
                             - pnt_dragStartOnScreen.getX() 
                             + _event.getXOnScreen());
@@ -627,7 +627,7 @@ implements MouseMotionListener, MouseListener, KeyListener {
                     * (view.getJbtn_center().getY()
                             - view.getJbtn_toTop().getHeight()) 
                             / bar100Percent;
-            if (!Status.isNormalRotation()) {
+            if (!State.isNormalRotation()) {
 
                 bar100Percent = (-view.getJbtn_center().getHeight() 
                         + view.getJbtn_toTop().getY()) 
@@ -657,7 +657,7 @@ implements MouseMotionListener, MouseListener, KeyListener {
                             - view.getJbtn_toTop().getWidth()) 
                             / bar100Percent;
             
-            if (!Status.isNormalRotation()) {
+            if (!State.isNormalRotation()) {
 
                 bar100Percent = (-view.getJbtn_center().getWidth() 
                         + view.getJbtn_toTop().getX()) 

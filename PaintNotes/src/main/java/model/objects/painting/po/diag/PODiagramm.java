@@ -9,7 +9,7 @@ import model.objects.painting.Picture;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.Pen;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 
 /**
@@ -47,7 +47,7 @@ public class PODiagramm extends POInsertion {
 
 	    //check whether the PaintObject is completed
 	    if (getPnt_first() == null || getPnt_last() == null) {
-	        Status.getLogger().warning("Paint object line not ready");
+	        State.getLogger().warning("Paint object line not ready");
 	        return false;
 	    }
 
@@ -147,7 +147,7 @@ public class PODiagramm extends POInsertion {
      */
     @Override public final synchronized PaintObject[][] separate(
             final Rectangle _r) {
-        Status.getLogger().severe("not impklemented yet");
+        State.getLogger().severe("not impklemented yet");
         return null;
     }
     

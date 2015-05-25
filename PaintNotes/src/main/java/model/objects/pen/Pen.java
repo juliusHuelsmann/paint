@@ -24,7 +24,7 @@ import model.objects.pen.normal.Marker;
 import model.objects.pen.normal.Pencil;
 import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 import model.util.adt.list.List;
 import model.util.solveLGS.Matrix;
@@ -140,7 +140,7 @@ public abstract class Pen implements Serializable {
         } else {
             
             //alert user.
-        	Status.showMessageDialog("PROGRAMMIERFEHLER @ paintobjectwriting: "
+        	State.showMessageDialog("PROGRAMMIERFEHLER @ paintobjectwriting: "
         			+ "Stift noch nicht hinzugefuegt.");
             
             
@@ -1389,10 +1389,10 @@ public abstract class Pen implements Serializable {
     		final BufferedImage _biEmtpy,
     		final JLabel _jlbl_selectionBG) {
 
-        final double factorW = 1.0 * Status.getImageSize().width 
-                / Status.getImageShowSize().width;
-        final double factorH = 1.0 * Status.getImageSize().height
-                / Status.getImageShowSize().height;
+        final double factorW = 1.0 * State.getImageSize().width 
+                / State.getImageShowSize().width;
+        final double factorH = 1.0 * State.getImageSize().height
+                / State.getImageShowSize().height;
         paintPoint(new DPoint(_x * factorW, _y * factorH), _biEmtpy, false, 
                 new DPoint(0, 0),
                 _biEmtpy, null);

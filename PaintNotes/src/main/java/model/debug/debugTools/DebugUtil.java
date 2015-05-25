@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import model.settings.Status;
+import model.settings.State;
 
 
 
@@ -135,7 +135,7 @@ public final class DebugUtil {
 		
 			break;
 		default:
-			Status.getLogger().warning("Debug tool: unknown debug operator:"
+			State.getLogger().warning("Debug tool: unknown debug operator:"
 					+ _operation);
 			break;
 		}

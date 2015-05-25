@@ -5,10 +5,9 @@ package start;
 import java.io.File;
 
 import javax.swing.JOptionPane;
-
 import model.objects.painting.Picture;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import control.ControlPaint;
 
 
@@ -38,7 +37,7 @@ public final class Start {
 
 		//if file exists and is directory
 		if (f.exists() && f.isDirectory()) {
-		    Status.getLogger().info(f.getPath());
+		    State.getLogger().info(f.getPath());
 		    
 		    //load, edit and save each file
 			for (File currentFile: f.listFiles()) {
@@ -47,7 +46,7 @@ public final class Start {
                     
                     p.load(currentFile.getPath());
                     p.transformWhiteToAlpha();
-                    Status.getLogger().info(currentFile.getPath());
+                    State.getLogger().info(currentFile.getPath());
                     p.saveQuickPNG(currentFile.getPath() + "2");
                 } else if (currentFile.isFile()
                         && currentFile.getPath().endsWith(".gif")) {
@@ -56,7 +55,7 @@ public final class Start {
                     p.transformWhiteToAlpha();
                     p.saveIMAGE(currentFile.getPath() + "2", 0, 0, "");
                 } else {
-                    Status.getLogger().info("unknown type");
+                    State.getLogger().info("unknown type");
                 }
 			}
 
@@ -95,13 +94,18 @@ public final class Start {
 	    
 	    //no input: launch program
 	    case 0:
+	    	
+	    	//create new instance of settings which initializes the new created
+	    	// status class depending on current startup option.
+	    	new State(Constants.ID_STARTUP_LOAD_IMAGE).initialize();
+	    	
 	        
 	        //print case message
-	        Status.getLogger().info("normal start: launch programm!\n\n");
+	        State.getLogger().info("normal start: launch programm!\n\n");
 	        double d = System.currentTimeMillis();
 	        
 	        //call controller
-	        Status.setIndexPageBackground(
+	        State.setIndexPageBackground(
 	        		Constants.CONTROL_PAGE_BACKGROUND_RASTAR);
 
 	        
@@ -133,7 +137,7 @@ public final class Start {
             d = System.currentTimeMillis();
 	        
 	        //set the initialization process terminated
-            Status.increaseInitializationFinished();
+            State.increaseInitializationFinished();
 
 
 	        /*
@@ -141,12 +145,15 @@ public final class Start {
 	         */
             timeLog += ("Time 4: set initialization finished in status\n\t" 
             + (System.currentTimeMillis() - d) + "!\n");
-            Status.getLogger().severe(timeLog);
+            State.getLogger().severe(timeLog);
 	        break;
 	        
 	    //one or more inputs: change folder
         default:
 
+	    	//create new instance of settings which initializes the new created
+	    	// status class depending on current startup option.
+	    	new State(Constants.ID_STARTUP_LOAD_IMAGE).initialize();
         	
         	boolean newStart = true;
         	if (newStart) {
@@ -185,29 +192,29 @@ public final class Start {
         				JOptionPane.INFORMATION_MESSAGE);
 
     	        //call controller
-    	        Status.setIndexPageBackground(
+    	        State.setIndexPageBackground(
     	        		Constants.CONTROL_PAGE_BACKGROUND_NONE);
-    	        Status.setBorderRightPercent(0);
-    	        Status.setBorderLeftPercent(0);
-    	        Status.setBorderTopPercent(0);
-    	        Status.setBorderBottomPercent(0);
+    	        State.setBorderRightPercent(0);
+    	        State.setBorderLeftPercent(0);
+    	        State.setBorderTopPercent(0);
+    	        State.setBorderBottomPercent(0);
     	        ControlPaint cp =  new ControlPaint();
     	        cp.initialize();
     	        cp.getPicture().load(_args[0]);
     	        cp.getView().getTabs().setTabbedPaneOpen(false);
     	        
     	        //set the initialization process terminated
-                Status.increaseInitializationFinished();
+                State.increaseInitializationFinished();
     	        
 
         		double time1 = System.currentTimeMillis();
-        		Status.getLogger().warning("Took " 
+        		State.getLogger().warning("Took " 
         		+ (time1 - time0) + "ms for startup");
         		
         	} else {
 
             	//print case message
-                Status.getLogger().info(
+                State.getLogger().info(
                 		"start with parameters; alter images!\n\n");
                 
                 //go through array of Strings
@@ -216,7 +223,7 @@ public final class Start {
                 }
 
     	        //set the initialization process terminated
-                Status.increaseInitializationFinished();
+                State.increaseInitializationFinished();
                 
         	}
         	

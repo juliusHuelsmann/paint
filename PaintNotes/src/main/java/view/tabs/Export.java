@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import view.forms.Help;
 import view.util.mega.MLabel;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.ViewSettings;
 import control.forms.tabs.CTabExport;
 
@@ -515,15 +515,15 @@ public final class Export extends Tab {
 
         //apply the values set in Settings to the components:
         jcb_margeLeft.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
-                Status.getBorderLeftPercent()));
+                State.getBorderLeftPercent()));
         jcb_margeRight.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
-                Status.getBorderRightPercent()));
+                State.getBorderRightPercent()));
         jcb_margeTop.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
-                Status.getBorderTopPercent()));
+                State.getBorderTopPercent()));
         jcb_margeBottom.setSelectedIndex(Look.getBorderPercentagesSettingsIndex(
-                Status.getBorderBottomPercent()));
+                State.getBorderBottomPercent()));
         
-        switch (Status.getIndexPageBackgroundExport()) {
+        switch (State.getIndexPageBackgroundExport()) {
         case Constants.CONTROL_PAGE_BACKGROUND_RASTAR:
             jcb_raster.setSelected(true);
             jcb_lines.setSelected(false);
@@ -540,11 +540,11 @@ public final class Export extends Tab {
             jcb_nothing.setSelected(true);
             break;
         default:
-            Status.getLogger().severe("error: unknown type of background");
+            State.getLogger().severe("error: unknown type of background");
             break;
         }
         
-        if (Status.isExportAlpha()) {
+        if (State.isExportAlpha()) {
 
             jcb_displayAlpha.setSelectedIndex(1);
         } else {
@@ -552,7 +552,7 @@ public final class Export extends Tab {
             jcb_displayAlpha.setSelectedIndex(0);
         }
         
-        jcb_saveFormats.setSelectedItem(Status.getSaveFormat());
+        jcb_saveFormats.setSelectedItem(State.getSaveFormat());
     }
     
 

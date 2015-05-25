@@ -8,7 +8,7 @@ import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.Pen;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.util.DPoint;
 
 /**
@@ -57,7 +57,7 @@ public class POCurve extends PaintObjectWriting {
 
         if (_casus != Constants.PEN_ID_MATHS_SILENT 
                 && _casus != Constants.PEN_ID_MATHS_SILENT_2) {
-            Status.getLogger().severe("wrong case,.");
+            State.getLogger().severe("wrong case,.");
         }
         
 	    this.ready = true;

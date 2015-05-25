@@ -12,7 +12,7 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import control.ControlPaint;
 import model.settings.Constants;
-import model.settings.Status;
+import model.settings.State;
 import model.util.paint.Utils;
 import view.View;
 import view.forms.Message;
@@ -124,7 +124,7 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
                 width = Constants.SIZE_A7.width;
                 height = Constants.SIZE_A7.height;
             } else {
-                Status.getLogger().warning("no page activated.");
+                State.getLogger().warning("no page activated.");
                 width = 2;
                 height = 2;
             }
@@ -136,15 +136,15 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
             } else if (getNew().getJcb_nothing().isSelected()) {
                 backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
             } else {
-                Status.getLogger().warning("no background selected.");
+                State.getLogger().warning("no background selected.");
                 backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
             }
 
-            Status.setImageShowSize(new Dimension(width, height));
-            Status.setImageSize(new Dimension(width, height));
-            Status.setIndexPageBackground(backgroundID);
+            State.setImageShowSize(new Dimension(width, height));
+            State.setImageSize(new Dimension(width, height));
+            State.setIndexPageBackground(backgroundID);
             cp.getPicture().reload();
-            Status.setOpenProject(project);
+            State.setOpenProject(project);
             cp.getView().getPage().getJpnl_new().setVisible(false);
             
             cp.getControlPic().refreshPaint();

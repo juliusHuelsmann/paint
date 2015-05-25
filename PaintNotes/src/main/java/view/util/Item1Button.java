@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
-import model.settings.Status;
+import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
@@ -419,7 +419,7 @@ public class Item1Button extends MPanel {
 
         	jlbl_color.setSize(_imageWidth, jlbl_color.getHeight());	
     	} else {
-    		Status.getLogger().warning("element does not exist which is "
+    		State.getLogger().warning("element does not exist which is "
     				+ "supposed to exist.");
     	}
         this.imageWidth = _imageWidth;
@@ -440,7 +440,7 @@ public class Item1Button extends MPanel {
     if (jlbl_color != null) {
     	jlbl_color.setSize(jlbl_color.getWidth(), _imageHeight);	
 	} else {
-		Status.getLogger().warning("element does not exist which is "
+		State.getLogger().warning("element does not exist which is "
 				+ "supposed to exist.");
 	}
         this.imageHeight = _imageHeight;

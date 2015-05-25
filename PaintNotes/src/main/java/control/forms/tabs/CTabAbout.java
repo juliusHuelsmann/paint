@@ -11,7 +11,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-import model.settings.Status;
+import model.settings.State;
 import model.util.Util;
 import view.tabs.About;
 import control.ControlPaint;
@@ -92,7 +92,7 @@ public class CTabAbout implements ActionListener {
 			
 			if (defaultTempLoadPath.length != defaultLocationPathLenght) {
 			
-				Status.getLogger().severe(
+				State.getLogger().severe(
 						"implementation error: wrong default temp load path");
 				return false;
 			}
@@ -149,10 +149,10 @@ public class CTabAbout implements ActionListener {
 			    	if (resultUnzip.startsWith(Util.EXECUTION_SUCCESS)) {
 			    		
 			    		//print success information
-			    		Status.getLogger().info("remove successful");
+			    		State.getLogger().info("remove successful");
 			    	} else if (resultUnzip.startsWith(Util.EXECUTION_FAILED)) {
 
-			    		Status.getLogger().severe("remove failed" 
+			    		State.getLogger().severe("remove failed" 
 			    				+ resultUnzip);
 			        }
 					
@@ -218,10 +218,10 @@ public class CTabAbout implements ActionListener {
 	    	if (resultUnzip.startsWith(Util.EXECUTION_SUCCESS)) {
 	    		
 	    		//print success information
-	    		Status.getLogger().info("Download and execution successfull");
+	    		State.getLogger().info("Download and execution successfull");
 	    	} else if (resultUnzip.startsWith(Util.EXECUTION_FAILED)) {
 
-	    		Status.getLogger().severe("Download and execution failed" 
+	    		State.getLogger().severe("Download and execution failed" 
 	    				+ resultUnzip);
 	    		return false;
 	        }
@@ -245,10 +245,10 @@ public class CTabAbout implements ActionListener {
 	    	if (result.startsWith(Util.EXECUTION_SUCCESS)) {
 
 	    		//print success information
-	    		Status.getLogger().info("Entered successfully");
+	    		State.getLogger().info("Entered successfully");
 	    	} else if (result.startsWith(Util.EXECUTION_FAILED)) {
 
-	    		Status.getLogger().severe("Enter and remove failed " + result);
+	    		State.getLogger().severe("Enter and remove failed " + result);
 	    		return false;
 	        }
 	    	
@@ -293,18 +293,18 @@ public class CTabAbout implements ActionListener {
 
 						return cp.getView().getTabs().getTab_about();
 					} else {
-						Status.getLogger().severe("cp.getView()"
+						State.getLogger().severe("cp.getView()"
 								+ ".getTabs().getTab_about()is null.");
 					}
 				} else {
-					Status.getLogger().severe("cp.getView().getTabs()"
+					State.getLogger().severe("cp.getView().getTabs()"
 							+ " is null.");
 				}
 			} else {
-				Status.getLogger().severe("cp.getView() is null.");
+				State.getLogger().severe("cp.getView() is null.");
 			}
 		} else {
-			Status.getLogger().severe("cp is null.");
+			State.getLogger().severe("cp is null.");
 		}
 		return null;
 	}

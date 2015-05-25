@@ -97,17 +97,12 @@ public final class Start {
 	    	
 	    	//create new instance of settings which initializes the new created
 	    	// status class depending on current startup option.
-	    	new State(Constants.ID_STARTUP_LOAD_IMAGE).initialize();
+	    	new State(Constants.ID_STARTUP_NORMAL).initialize();
 	    	
 	        
 	        //print case message
 	        State.getLogger().info("normal start: launch programm!\n\n");
 	        double d = System.currentTimeMillis();
-	        
-	        //call controller
-	        State.setIndexPageBackground(
-	        		Constants.CONTROL_PAGE_BACKGROUND_RASTAR);
-
 	        
 	        /*
 	         * Time logging
@@ -191,13 +186,13 @@ public final class Start {
         				"PaintNotes",
         				JOptionPane.INFORMATION_MESSAGE);
 
-    	        //call controller
-    	        State.setIndexPageBackground(
-    	        		Constants.CONTROL_PAGE_BACKGROUND_NONE);
-    	        State.setBorderRightPercent(0);
-    	        State.setBorderLeftPercent(0);
-    	        State.setBorderTopPercent(0);
-    	        State.setBorderBottomPercent(0);
+//    	        //call controller
+//    	        State.setIndexPageBackground(
+//    	        		Constants.CONTROL_PAGE_BACKGROUND_NONE);
+//    	        State.setBorderRightPercent(0);
+//    	        State.setBorderLeftPercent(0);
+//    	        State.setBorderTopPercent(0);
+//    	        State.setBorderBottomPercent(0);
     	        ControlPaint cp =  new ControlPaint();
     	        cp.initialize();
     	        cp.getPicture().load(_args[0]);

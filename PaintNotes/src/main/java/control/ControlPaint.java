@@ -143,7 +143,7 @@ MenuListener {
 	/**
 	 * Controller class for selection paint at the same level as this class.
 	 */
-	private ControlPaintSelectin controlPaintSelect;
+	private ControlSelectionTransform controlPaintSelect;
 	
 	/**
 	 * Controller class for the painting tab.
@@ -316,7 +316,7 @@ MenuListener {
             cTabAbout = new CTabAbout(this);
             controlPic = new ContorlPicture(this);
             cTabSelection = new CTabSelection(this);
-            controlPaintSelect = new ControlPaintSelectin(this);
+            controlPaintSelect = new ControlSelectionTransform(this);
             cTabPaint = new CTabPainting(this);
             cTabPaintStatus = new CPaintStatus(this);
             cTabPaintObjects = new CTabDebug(this);
@@ -885,6 +885,8 @@ MenuListener {
 //        New.getInstance().repaint();
     		
 	}
+	
+	
 
 	
 	public void changeLocationSelectionOnScroll(final int _x, final int _y) {
@@ -917,9 +919,6 @@ MenuListener {
         			shiftY 
         			//location of picture before change
         			- getPage().getJlbl_selectionBG().getLocation().y;
-        	getControlPaintSelection().setOldPaintLabelLocation(new Point(
-        			controlPaintSelect.getOldPaintLabelLocation().x + cmpX,
-        			controlPaintSelect.getOldPaintLabelLocation().y + cmpY));
         	
         	
             getPage().getJlbl_selectionPainting().setLocation(
@@ -948,15 +947,17 @@ MenuListener {
 ////            		+ cmpY);
 //            
 //            getControlPaintSelection().setR_selection(rect, pnt);
-            
+            getControlPaintSelection().getR_selection().x += cmpX;
+            getControlPaintSelection().getR_selection().y += cmpY;
             
             //the location of the selected area is different from
             //those of the selection background and painting.
             getPage().getJlbl_border().setLocation(
-            		getControlPaintSelection().getR_selection().x + 
-            		shiftX,
-            		getControlPaintSelection().getR_selection().y + 
-            		shiftY);
+            		getControlPaintSelection().getR_selection().x,
+//            		+ shiftX,
+            		getControlPaintSelection().getR_selection().y
+//            		+ shiftY
+            		);
 
             for (int h = 0; h <= 2; h++) {
                 for (int w = 0; w <= 2; w++) {
@@ -966,14 +967,14 @@ MenuListener {
                     		.getR_selection().x
                     		+ getControlPaintSelection()
                     		.getR_selection().width * (h) / 2
-                    		+ shiftX
+//                    		+ shiftX
                     		- getPage()
                     		.getJbtn_resize()[h][w].getWidth() / 2,
                     		getControlPaintSelection()
                     		.getR_selection().y 
                     		+ getControlPaintSelection()
                     		.getR_selection().height * w / 2
-                    		+ shiftY
+//                    		+ shiftY
                     		- getPage()
                     		.getJbtn_resize()[h][w].getHeight()
                     		/ 2);
@@ -2376,7 +2377,7 @@ MenuListener {
 	/**
 	 * @return the controlPaintSelection
 	 */
-	public final ControlPaintSelectin getControlPaintSelection() {
+	public final ControlSelectionTransform getControlPaintSelection() {
 		return controlPaintSelect;
 	}
 

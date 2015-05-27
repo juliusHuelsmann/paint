@@ -21,3 +21,11 @@ PaintNotes/consoleOutput/*
 
 # View analyse file
 analyse.png
+
+
+# Tex files
+*.tex
+*.log
+*.out
+*.gz
+*.aux

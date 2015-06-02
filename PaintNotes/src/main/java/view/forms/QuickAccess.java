@@ -3,7 +3,10 @@ package view.forms;
 import java.awt.Color;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
+
+import model.settings.Constants;
 import model.settings.ViewSettings;
 import model.util.Util;
 import control.util.MousePositionTracker;
@@ -53,7 +56,8 @@ public class QuickAccess extends MPanel {
 		jlbl_move = new MLabel();
 		jlbl_move.setSize(sizeItem, sizeItem);
 		jlbl_move.setOpaque(false);
-		jlbl_move.setIcon(new ImageIcon(Util.resize("centerResize.png",
+		jlbl_move.setIcon(new ImageIcon(Util.resize(
+				Constants.VIEW_QA_JBTN_RESIZE,
 				sizeItem, sizeItem)));
 		jlbl_move
 				.setLocation(getWidth() / 2 - sizeItem / 2, getHeight() / five);
@@ -62,7 +66,8 @@ public class QuickAccess extends MPanel {
 		jlbl_pen = new MLabel();
 		jlbl_pen.setSize(sizeItem, sizeItem);
 		jlbl_pen.setOpaque(false);
-		jlbl_pen.setIcon(new ImageIcon(Util.resize("centerResize.png",
+		jlbl_pen.setIcon(new ImageIcon(Util.resize(
+				Constants.VIEW_QA_JBTN_RESIZE,
 				sizeItem, sizeItem)));
 		jlbl_pen.setLocation(getWidth() / 2 - sizeItem / 2, getHeight()
 				- getHeight() / five - sizeItem);
@@ -71,7 +76,9 @@ public class QuickAccess extends MPanel {
 		jlbl_erase = new MLabel();
 		jlbl_erase.setSize(sizeItem, sizeItem);
 		jlbl_erase.setOpaque(false);
-		jlbl_erase.setIcon(new ImageIcon(Util.resize("icon/save.png", sizeItem,
+		jlbl_erase.setIcon(new ImageIcon(Util.resize(
+				Constants.VIEW_TB_SAVE_PATH,
+				sizeItem,
 				sizeItem)));
 		jlbl_erase.setLocation(getWidth() / five, getHeight() / 2 - sizeItem
 				/ 2);
@@ -80,7 +87,8 @@ public class QuickAccess extends MPanel {
 		jlbl_select = new MLabel();
 		jlbl_select.setSize(sizeItem, sizeItem);
 		jlbl_select.setOpaque(false);
-		jlbl_select.setIcon(new ImageIcon(Util.resize("centerResize.png",
+		jlbl_select.setIcon(new ImageIcon(Util.resize(
+				Constants.VIEW_TB_MOVE_PATH,
 				sizeItem, sizeItem)));
 		jlbl_select.setLocation(getWidth() - getWidth() / five - sizeItem,
 				getHeight() / 2 - sizeItem / 2);

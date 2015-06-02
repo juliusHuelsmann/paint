@@ -700,7 +700,7 @@ public final class Paint extends Tab {
     	        ViewSettings.getDistanceBetweenItems());
     	
 
-        it_color.setIcon("icon/palette.png");
+        it_color.setIcon(Constants.VIEW_TAB_PAINT_PALETTE);
         
         int xLocationSeparation = it_color.getWidth() + it_color.getX() 
                 + ViewSettings.getDistanceBeforeLine();

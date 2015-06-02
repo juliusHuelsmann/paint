@@ -893,11 +893,12 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 	
 	
 	public static void main(String [] args) {
-		final String path = "/home/juli/Arbeitsfläche/PraktischeOffline/Zettel/"
-				+ "5/asdfghjkl";
-		final String fileName = "file3";
+		final String path = "/home/juli/Arbeitsfläche/"
+				+ "PraktischeOffline/Zettel/6";
+		final String fileName = "f4";
 		final String fileExtension = ".jpg";
-		BufferedImage bis = Utils.resizeImage(600, 400, path + fileName + fileExtension);
+		BufferedImage bis = Utils.resizeImage(
+				2500, 3300, path + fileName + fileExtension);
 		Picture.saveBufferedImage(path + fileName + ".", new PaintObjectImage(
 		//BufferedViewer.show(bis);
 				0, bis, null).hysteresisThreshold(5, 105));

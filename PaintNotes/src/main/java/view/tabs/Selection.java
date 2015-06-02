@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import model.settings.Constants;
 import model.settings.ViewSettings;
 import control.forms.CPaintStatus;
 import control.forms.tabs.CTabPainting;
@@ -314,7 +315,7 @@ public final class Selection extends Tab {
 	        		_controlPaintStatus));
 	        it_color.setBorder(false);
 		}
-        it_color.setIcon("icon/palette.png");
+        it_color.setIcon(Constants.VIEW_TAB_PAINT_PALETTE);
 
 		if (_paint) {
 
@@ -438,7 +439,7 @@ public final class Selection extends Tab {
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
         tb.setActivable(false);
-        tb.setIcon("icon/tabs/write/write.png");
+        tb.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
         super.add(tb);
 
         tb_changePen = new Item1Button(null);
@@ -458,7 +459,7 @@ public final class Selection extends Tab {
                 new LineBorder(Color.white)));
         tb_changePen.setActivable(false);
 		}
-        tb_changePen.setIcon("icon/tabs/write/write.png");
+        tb_changePen.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
 		if (_paint) {
 
         super.add(tb_changePen);

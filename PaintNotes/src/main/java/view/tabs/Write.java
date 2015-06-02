@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.border.LineBorder;
 
 
+
+import model.settings.Constants;
 //
 import model.settings.ViewSettings;
 import view.forms.Help;
@@ -199,13 +201,13 @@ public final class Write extends Tab {
                 + ViewSettings.getDistanceBetweenItems(), 
                 ViewSettings.getDistanceBetweenItems());
 
-        tb_pen_headline2.setIcon("icon/tabs/write/write.png");
-        tb_pen_headline1.setIcon("icon/tabs/write/write.png");
-        tb_pen_comment.setIcon("icon/tabs/write/write.png");
-        tb_pen_example.setIcon("icon/tabs/write/write.png");
-        tb_pen_proof.setIcon("icon/tabs/write/write.png");
-        tb_pen_theorem.setIcon("icon/tabs/write/write.png");
-        tb_pen_headline3.setIcon("icon/tabs/write/write.png");
+        tb_pen_headline2.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
+        tb_pen_headline1.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
+        tb_pen_comment.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
+        tb_pen_example.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
+        tb_pen_proof.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
+        tb_pen_theorem.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
+        tb_pen_headline3.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
         
         insertSectionStuff("pen settings headline", 
                 tb_pen_comment.getX() + tb_pen_comment.getWidth()

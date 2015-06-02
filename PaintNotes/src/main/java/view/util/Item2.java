@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 
 
 
+
 //import rotatatble buttons and panels
 import view.util.mega.MButton;
 import control.interfaces.ActivityListener;
@@ -15,6 +16,7 @@ import control.interfaces.ActivityListener;
 //import the controller showing mouseOver animations 
 import control.util.CItem2;
 
+import model.settings.Constants;
 //import utility class for image resizing.
 import model.util.paint.Utils;
 
@@ -30,7 +32,7 @@ public class Item2 extends MButton {
     /**
      * The icon.
      */
-    private String icon = "paint/test.png", title;
+    private String icon = Constants.VIEW_PATH_I2_STANDARD, title;
     
     
 

@@ -7,8 +7,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
+import start.Start;
 
 /**
  * reads the settings from the settings directory while program
@@ -140,6 +145,8 @@ public final class ReadSettings {
 				jc.setMultiSelectionEnabled(false);
 				jc.showDialog(null, "Select Workspace Folder");
 				
+				linkProgram();
+				
 				//fetch selected file
 				File f = jc.getSelectedFile();
 				
@@ -174,6 +181,22 @@ public final class ReadSettings {
 	}
 	
 	
+	private static void linkProgram() {
+		
+		final String os_propertyName = "os.name";
+		final String propertyLinux = "Linux";
+
+		if (System.getProperties().getProperty(os_propertyName).equals(
+				propertyLinux)) {
+			
+			System.out.println("here i am");
+		}
+		
+		System.out.println("ReadSettings.linkProgram()");
+		System.out.println(System.getProperties().getProperty(os_propertyName));
+	}
+
+
 	/**
 	 * prints error message to screen.
 	 */

@@ -491,7 +491,7 @@ public final class CPaintStatus implements MouseListener {
                         	
     				//set cursor
     				setCursor(paint.getIt_stift1().getImagePath(), "p1");
-    				setCursor("cursor.png", "p1");
+    				setCursor(Constants.VIEW_CURSOR_PATH, "p1");
     				break;
     			case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
     				
@@ -503,7 +503,7 @@ public final class CPaintStatus implements MouseListener {
                         	
     				//set cursor
     				setCursor(paint.getIt_stift2().getImagePath(), "p2");
-    				setCursor("cursor.png", "p1");
+    				setCursor(Constants.VIEW_CURSOR_PATH, "p1");
     				break;
     			case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
     				getTabs().closeMenues();

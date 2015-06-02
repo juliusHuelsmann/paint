@@ -197,7 +197,9 @@ public final class Util {
 
 	        String myPath = Start.class.getResource(_path).getPath();
 	        myPath = Utils.convertString(myPath);
-			img_scaled = ImageIO.read(new File(myPath));
+
+	        img_scaled = ImageIO.read(Start.class.getResourceAsStream(_path));
+			//img_scaled = ImageIO.read(new File(myPath));
 		    return resize(img_scaled, _width, _height);
 		} catch (IOException e) {
 

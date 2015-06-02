@@ -150,7 +150,9 @@ public final class Utils {
         File inputFile = new File(myPath);
         BufferedImage bi;
         try {
-            bi = ImageIO.read(inputFile);
+
+            bi = ImageIO.read(Start.class.getResourceAsStream(_path));
+          //  bi = ImageIO.read(inputFile);
             java.awt.Image scaledImage = bi.getScaledInstance(
             		Math.max(_width, 1),
                     Math.max(_height, 1), java.awt.Image.SCALE_SMOOTH);
@@ -164,6 +166,7 @@ public final class Utils {
             g.dispose();
             return outImg;
         } catch (IOException e) {
+        	System.out.println(myPath);
         	System.out.println(e);
         	System.out.println("FEHLER:::");
         	

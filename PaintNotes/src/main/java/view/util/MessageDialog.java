@@ -1,16 +1,10 @@
 package view.util;
 
 import java.awt.Component;
-import java.awt.ScrollPane;
 import java.awt.Window;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-
 import control.util.WindowFocusListener;
 
 @SuppressWarnings("serial")

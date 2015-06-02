@@ -9,10 +9,12 @@ import java.awt.event.MouseListener;
 
 
 
+
 //import java.swing components
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+
 
 
 
@@ -26,7 +28,7 @@ import view.util.mega.MPanel;
 import control.interfaces.MenuListener;
 //import the controller responsible for opening and closing the menu
 import control.util.CItem;
-
+import model.settings.Constants;
 import model.settings.State;
 //import utility classes and settings
 import model.settings.ViewSettings;
@@ -105,7 +107,7 @@ public class Item1Menu extends MPanel {
 	/**
 	 * the path of the image.
 	 */
-	private String imagePath = "st2.png";
+	private String imagePath = Constants.VIEW_PATH_I1M_STANDARD;
 	
 	/**
 	 * whether the menu is opened or not.
@@ -468,7 +470,7 @@ public class Item1Menu extends MPanel {
                 final int imageHeight = 42;
                 tb_open.setIcon(new ImageIcon(Utils.resizeImage(
                         height * imageWidth / imageHeight, 
-                        height, "open.png")));
+                        height, Constants.VIEW_I1M_OPEN_PATH)));
             } else {
 
                 tb_select.setSize(closedWidth, closedHeight);

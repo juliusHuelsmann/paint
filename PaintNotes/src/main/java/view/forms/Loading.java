@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
+import model.settings.Constants;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
@@ -30,18 +31,6 @@ public class Loading extends MPanel {
 	private ImageIcon[] iic;
 	
 	
-	/**
-	 * The paths for the loading image.
-	 */
-	private String[] path = new String[] {
-			"img/icn0.png", 
-			"img/icn1.png", 
-			"img/icn2.png", 
-			"img/icn3.png",
-			"img/icn4.png", 
-			"img/icn5.png", 
-			"img/icn6.png"};
-	
 	
 	/**
 	 * Constructor: initialize.
@@ -65,7 +54,7 @@ public class Loading extends MPanel {
 	 */
 	public final void setSize(final int _width, final int _height) {
 		super.setSize(_width, _height);
-		iic = new ImageIcon[path.length];
+		iic = new ImageIcon[Constants.str_loading.length];
 //		for (int i = 0; i < iic.length; i++) {
 //			try {
 //				iic[i] = new ImageIcon(model.util.Util.resize(

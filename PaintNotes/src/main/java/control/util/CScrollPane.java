@@ -142,12 +142,14 @@ implements MouseMotionListener, MouseListener, KeyListener {
             if (view.isVerticalScroll()) {
                 view.getJbtn_toTop().setIcon(new ImageIcon(Utils.resizeImage(
                         view.getJbtn_toTop().getWidth(), 
-                        view.getJbtn_toTop().getWidth(), "sb/n/tp.png")));
+                        view.getJbtn_toTop().getWidth(), 
+                        Constants.VIEW_SB_VERT1)));
     
             } else {
                 view.getJbtn_toTop().setIcon(new ImageIcon(Utils.resizeImage(
                         view.getJbtn_toTop().getWidth(), 
-                        view.getJbtn_toTop().getWidth(), "sb/s/tp.png")));
+                        view.getJbtn_toTop().getWidth(),
+                        Constants.VIEW_SB_HORIZ1)));
     
             }
         } else if (_event.getSource().equals(view.getJbtn_toBottom())) {
@@ -166,12 +168,12 @@ implements MouseMotionListener, MouseListener, KeyListener {
                 view.getJbtn_toBottom().setIcon(new ImageIcon(
                         Utils.resizeImage(view.getJbtn_toBottom().getWidth(),
                                 view.getJbtn_toBottom().getWidth(),
-                                "sb/n/bp.png")));
+                                Constants.VIEW_SB_VERT2)));
             } else {
                 view.getJbtn_toBottom().setIcon(new ImageIcon(
                         Utils.resizeImage(view.getJbtn_toBottom().getWidth(), 
                                 view.getJbtn_toBottom().getWidth(), 
-                                "sb/s/bp.png")));
+                                Constants.VIEW_SB_HORIZ2)));
             }
         }
             

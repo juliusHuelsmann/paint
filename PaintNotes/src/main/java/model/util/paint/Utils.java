@@ -7,8 +7,18 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.imageio.ImageIO;
+
+import start.Start;
 import model.objects.painting.PaintBI;
 import model.settings.Constants;
 import model.settings.StateStandard;
@@ -106,6 +116,17 @@ public final class Utils {
         
         return _bi_background;
     }
+    
+    
+    
+    public static String convertString(final String _input) {
+    	
+
+    	return _input.replaceAll("%20"," ")
+    	.replaceAll("%c3%bc","ü")
+    	.replaceAll("%c3%a4","ä")
+    	.replaceAll("%c3%b6","ö");
+    }
 
 
     /**
@@ -124,7 +145,9 @@ public final class Utils {
             return null;
         }
         
-        File inputFile = new File(_path);
+        String myPath = Start.class.getResource(_path).getPath();
+        myPath = convertString(myPath);
+        File inputFile = new File(myPath);
         BufferedImage bi;
         try {
             bi = ImageIO.read(inputFile);
@@ -141,10 +164,12 @@ public final class Utils {
             g.dispose();
             return outImg;
         } catch (IOException e) {
+        	System.out.println(e);
+        	System.out.println("FEHLER:::");
         	
         	if (!_path.contains(StateStandard.ALTERNATIVE_FILE_START)) {
         		State.getLogger().severe(
-        				"other location used for loading images."
+        				"Other location used for loading images."
         				+ " May be due to an error.");
         		return normalResizeImage(
         				_width, _height, 

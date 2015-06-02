@@ -18,12 +18,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
+import start.Start;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectWriting;
@@ -31,6 +34,7 @@ import model.settings.StateStandard;
 import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.adt.list.List;
+import model.util.paint.Utils;
 
 
 /**
@@ -190,7 +194,10 @@ public final class Util {
 	   
     	BufferedImage img_scaled;
 		try {
-			img_scaled = ImageIO.read(new File(_path));
+
+	        String myPath = Start.class.getResource(_path).getPath();
+	        myPath = Utils.convertString(myPath);
+			img_scaled = ImageIO.read(new File(myPath));
 		    return resize(img_scaled, _width, _height);
 		} catch (IOException e) {
 

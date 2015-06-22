@@ -137,7 +137,7 @@ public final class Utils {
      * @param _path the path  of the buffered image to be transformed
      * @return the transformed bufferedImage 
      */
-    private static BufferedImage normalResizeImage(final int _width, 
+    private static BufferedImage normalResizeImageFromJar(final int _width, 
             final int _height, final String _path) {
 
         //if path is null return null
@@ -174,7 +174,7 @@ public final class Utils {
         		State.getLogger().severe(
         				"Other location used for loading images."
         				+ " May be due to an error.");
-        		return normalResizeImage(
+        		return normalResizeImageFromJar(
         				_width, _height, 
         				StateStandard.ALTERNATIVE_FILE_START + _path);
         	} else {
@@ -188,6 +188,63 @@ public final class Utils {
     }
     
     
+    
+
+    /**
+     * resizes a BufferedImage (input BufferedImage, output BufferedImage).
+     * 
+     * @param _width the width of the new image
+     * @param _height the height of the new image
+     * @param _path the path  of the buffered image to be transformed
+     * @return the transformed bufferedImage 
+     */
+    public static BufferedImage normalResizeImageFromOutside(final int _width, 
+            final int _height, final String _path) {
+
+        //if path is null return null
+        if (_path == "") {
+            return null;
+        }
+        
+        File inputFile = new File(_path);
+        BufferedImage bi;
+        try {
+
+            bi = ImageIO.read(inputFile);
+          //  bi = ImageIO.read(inputFile);
+            java.awt.Image scaledImage = bi.getScaledInstance(
+            		Math.max(_width, 1),
+                    Math.max(_height, 1), java.awt.Image.SCALE_SMOOTH);
+            BufferedImage outImg = new BufferedImage(
+            		Math.max(_width, 1),
+                    Math.max(_height, 1), BufferedImage.TYPE_INT_ARGB);
+            
+            
+            Graphics g = outImg.getGraphics();
+            g.drawImage(scaledImage, 0, 0, null);
+            g.dispose();
+            return outImg;
+        } catch (IOException e) {
+        	System.out.println(e);
+        	System.out.println("FEHLER:::");
+        	
+        	if (!_path.contains(StateStandard.ALTERNATIVE_FILE_START)) {
+        		State.getLogger().severe(
+        				"Other location used for loading images."
+        				+ " May be due to an error.");
+        		return normalResizeImageFromJar(
+        				_width, _height, 
+        				StateStandard.ALTERNATIVE_FILE_START + _path);
+        	} else {
+
+        		System.out.println(_path);
+                e.printStackTrace();
+                return null;
+        	}
+        	
+        }
+    }
+    
     /**
      * returns a resized image (rotated or not).
      * 
@@ -200,7 +257,7 @@ public final class Utils {
             final int _height, final String _path) {
         
         if (State.isNormalRotation()) {
-            return normalResizeImage(_width, _height, _path);
+            return normalResizeImageFromJar(_width, _height, _path);
         } else {
             return flipImage(_width, _height, _path);
         }
@@ -218,7 +275,7 @@ public final class Utils {
             final int _height, final String _path) {
 
         final int degree = 180;
-        BufferedImage src = normalResizeImage(_width, _height, _path);
+        BufferedImage src = normalResizeImageFromJar(_width, _height, _path);
 
         BufferedImage newImage = 
                 new BufferedImage(_width, _height, src.getType());

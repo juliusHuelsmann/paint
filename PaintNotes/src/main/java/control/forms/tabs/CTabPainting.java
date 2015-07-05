@@ -31,6 +31,7 @@ import model.util.DPoint;
 import model.util.Util;
 import model.util.adt.list.List;
 import model.util.paint.MyClipboard;
+import model.util.paint.Utils;
 import view.View;
 import view.forms.Message;
 import view.forms.Page;
@@ -248,6 +249,17 @@ public final class CTabPainting implements ActionListener, MouseListener {
             	controlPaint.getPicture().getHistory().applyNext();
             	controlPaint.getControlPic().refreshPaint();
             	
+            } else if (_event.getSource().equals(
+            		paint.getTb_insertImage().getActionCause())) {
+            	JFileChooser jfc = new JFileChooser();
+            	jfc.showOpenDialog(controlPaint.getView());
+            	jfc.setVisible(true);
+            	File s = jfc.getSelectedFile();
+            	
+            	if (s != null) {
+                	controlPaint.getProject().getPicture().addPaintObjectImage(Utils.readImageFromOutiseJar(s.getPath()));
+                	controlPaint.getControlPic().refreshPaint();
+            	}
             }
     	}
     }

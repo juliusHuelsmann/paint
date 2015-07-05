@@ -82,7 +82,7 @@ public final class Paint extends Tab {
 	/**
 	 * Button for erasing (that are contained by the erase menu).
 	 */
-	private Item1Button tb_eraseAll, tb_eraseDestroy;
+	private Item1Button tb_eraseAll, tb_eraseDestroy, tb_insertImage;
 	
 	/**
 	 * constants.
@@ -811,6 +811,12 @@ public final class Paint extends Tab {
 	        tb_turnNormal.setBorder(false);
 	        tb_turnNormal.addActionListener(_controlTabPaint);
 	        tb_turnNormal.setActivable(false);
+
+	        //cut
+	        tb_insertImage = new Item1Button(null);
+	        tb_insertImage.setBorder(false);
+	        tb_insertImage.addActionListener(_controlTabPaint);
+	        tb_insertImage.setActivable(false);
 	        
 		}
         tb_save.setSize(tb_copy.getWidth(), tb_copy.getHeight());
@@ -842,6 +848,11 @@ public final class Paint extends Tab {
         tb_turnNormal.setLocation(tb_turnMirror.getX(), tb_zoomOut.getY());
 
 
+        tb_insertImage.setSize(tb_turnMirror.getWidth(), tb_turnMirror.getHeight());
+        tb_insertImage.setLocation(tb_turnMirror.getWidth() + tb_turnMirror.getX() 
+                + ViewSettings.getDistanceBetweenItems(), tb_turnMirror.getY());
+        
+        
 	        initializeTextButton(tb_save,
 	                TextFactory.getInstance().getTextViewTb_save(),
 	                Constants.VIEW_TB_SAVE_PATH, 0,
@@ -866,9 +877,18 @@ public final class Paint extends Tab {
 	                "Spiegelung normal",
 	                Constants.VIEW_TB_UP_PATH, 0,
 	                _controlPaintStatus, _paint);
-        
-        int xLocationSeparation = tb_turnMirror.getWidth() 
-                + tb_turnMirror.getX() 
+	        initializeTextButton(tb_insertImage,
+	                "Bild einfügen",
+	                Constants.VIEW_TB_FILL_PATH, 0,
+	                _controlPaintStatus, _paint);
+
+	        if (_paint) {
+
+	            tb_insertImage.setActivable(false);
+	        }
+
+        int xLocationSeparation = tb_insertImage.getWidth() 
+                + tb_insertImage.getX() 
                 + ViewSettings.getDistanceBeforeLine();
 		insertSectionStuff("Dateioperationen", _x, xLocationSeparation,
 		        2 + 2 + 1, _paint);
@@ -1417,6 +1437,22 @@ public final class Paint extends Tab {
 	 */
 	public Item1Button getTb_eraseDestroy() {
 		return tb_eraseDestroy;
+	}
+
+
+	/**
+	 * @return the tb_insertImage
+	 */
+	public Item1Button getTb_insertImage() {
+		return tb_insertImage;
+	}
+
+
+	/**
+	 * @param tb_insertImage the tb_insertImage to set
+	 */
+	public void setTb_insertImage(Item1Button tb_insertImage) {
+		this.tb_insertImage = tb_insertImage;
 	}
 
 }

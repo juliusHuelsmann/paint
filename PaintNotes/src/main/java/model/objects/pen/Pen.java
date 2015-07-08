@@ -185,6 +185,13 @@ public abstract class Pen implements Serializable {
 			return _bi;
 		}	
 		
+		final Rectangle rect;
+		if (_rVisibleScope == null) {
+			rect = null;
+		} else {
+			rect = _rVisibleScope.getRectangle();
+		}
+		
 		
 		//if the painting is not final and id is for mathematics.
 		int tempId_operation = id_operation;
@@ -194,12 +201,12 @@ public abstract class Pen implements Serializable {
 		
 		switch (tempId_operation) {
 		case Constants.PEN_ID_POINT:
-		    operationPoint(ls_point, _bi, _final, _p_start, _g, _rVisibleScope.getRectangle());
+		    operationPoint(ls_point, _bi, _final, _p_start, _g, rect);
 			
 			break;
 		case Constants.PEN_ID_LINES:
 
-			operationLine(ls_point, _bi, _final, _p_start, _g, _rVisibleScope.getRectangle());
+			operationLine(ls_point, _bi, _final, _p_start, _g, rect);
 			
 			break;
         case Constants.PEN_ID_MATHS:

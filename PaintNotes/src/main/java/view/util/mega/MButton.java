@@ -26,6 +26,7 @@ public class MButton extends JButton implements Mega {
      */
     public MButton() {
         super();
+        super.setFocusable(false);
     }
     
 

@@ -49,6 +49,7 @@ import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
 import model.settings.State;
 import model.util.DPoint;
+import model.util.DRect;
 import model.util.Util;
 import model.util.adt.list.SecureList;
 import model.util.adt.list.SecureListSort;
@@ -611,9 +612,9 @@ public final class Picture implements Serializable {
 		/**
 		 * The repaint rectangle.
 		 */
-		final Rectangle r_selection = new Rectangle(
-				(int) (factorW * _x), (int) (factorH * _y), 
-				(int) (factorW * _width), (int) (factorH * _height));
+		final DRect r_selection = new DRect(
+				(factorW * _x), (factorH * _y), 
+				(factorW * _width), (factorH * _height));
 
 		/*
 		 * Find out which items are inside the given repaint rectangle and
@@ -651,7 +652,7 @@ public final class Picture implements Serializable {
 					if (ls_po_sortedByY.getItem().getSnapshotBounds().x
 							<= myXLocationRepaintEnd
 							&& ls_po_sortedByY.getItem().isInSelectionImage(
-									r_selection)) {
+									r_selection.getRectangle())) {
 
 						ls_poChronologic.insertSorted(ls_po_sortedByY.getItem(),
 								ls_po_sortedByY.getItem().getElementId(),
@@ -965,7 +966,7 @@ public final class Picture implements Serializable {
 	 * 
 	 * @return the painted BufferedImage.
 	 */
-	public BufferedImage paintSelectedBI(final Rectangle _recSelection) {
+	public BufferedImage paintSelectedBI(final DRect _recSelection) {
 
 		if (_recSelection == null) {
 
@@ -973,8 +974,8 @@ public final class Picture implements Serializable {
 			return null;
 		}
 
-		BufferedImage bi = new BufferedImage(_recSelection.width + 1, 
-				_recSelection.height + 1, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bi = new BufferedImage(_recSelection.getIWidth() + 1, 
+				_recSelection.getIHeight() + 1, BufferedImage.TYPE_INT_ARGB);
 
 
     	//start transaction and closed action.
@@ -994,13 +995,13 @@ public final class Picture implements Serializable {
 				PaintObjectWriting pow = (PaintObjectWriting) po;
 
 				// TODO: zoom, scroll adjust?
-				pow.paint(bi, false, bi, -_recSelection.x, 
-						-_recSelection.y, null);
+				pow.paint(bi, false, bi, -_recSelection.getIX(), 
+						-_recSelection.getIY(), null);
 
 			} else if (po instanceof PaintObjectImage) {
 				PaintObjectImage poi = (PaintObjectImage) po;
-				poi.paint(bi, false, bi, -_recSelection.x, 
-						-_recSelection.y, null);
+				poi.paint(bi, false, bi, -_recSelection.getIX(), 
+						-_recSelection.getIY(), null);
 
 			} else {
 				State.getLogger().warning("unknown kind of PaintObject" + po);

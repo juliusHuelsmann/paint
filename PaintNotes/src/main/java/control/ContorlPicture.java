@@ -471,7 +471,6 @@ public class ContorlPicture implements PaintListener {
 	 */
 	public final void setBi(final BufferedImage _bi) {
 		
-		BufferedViewer.show(_bi);
 		cp.getView().getPage().getJlbl_painting().setIcon(new ImageIcon(_bi));
 		cp.getView().getPage().getJlbl_painting().repaint();
 		this.bi = _bi;

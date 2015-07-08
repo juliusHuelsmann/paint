@@ -103,7 +103,6 @@ import control.util.WindowMover;
         cv = new ControlView(this, _cp.getcTabPaint());
         
         
-        
         JLabel jlbl_backgroundStroke = new JLabel();
         jlbl_backgroundStroke.setSize(getSize());
         jlbl_backgroundStroke.setVisible(true);

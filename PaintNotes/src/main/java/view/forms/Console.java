@@ -35,7 +35,7 @@ public final class Console extends MPanel {
 	 * The only instance of this singleton class.
 	 */
 	private static Console instance;
-	
+
 	/**
 	 * Different IDs for different console outputs.
 	 */
@@ -44,6 +44,16 @@ public final class Console extends MPanel {
 			ID_INFO_IMPORTANT = 2,
 			ID_INFO_MEDIUM = 3,
 			ID_INFO_UNIMPORTANT = 4; 
+
+	/**
+	 * Different IDs for different console outputs.
+	 */
+	public static final String STRG_ID_ERROR = "Error:\t", 
+			STRG_ID_WARNING = "Warning:\t", 
+			STRG_ID_INFO_IMPORTANT = "Info:\t",
+			STRG_ID_INFO_MEDIUM = "Info: ",
+			STRG_ID_INFO_UNIMPORTANT = "Info:\t",
+					STRG_ID_POSITION = "Pos:\t"; 
 			
 	
 	/**
@@ -104,14 +114,12 @@ public final class Console extends MPanel {
 		
 		//set the messageID to the starting value (0)
 		this.messageID = 0;
-
-		
 	}
 	
 	/**
 	 * Log message with additional information on the kind of information.
 	 * 
-	 * @param _message		The message that is printed
+	 * @param message		The message that is printed
 	 * @param _messageType	the type of the message; whether it is an error 
 	 * 						message, a warning or only additional information
 	 * @param _callClass	the class calling the log method
@@ -121,6 +129,7 @@ public final class Console extends MPanel {
 			final String _message, final int _messageType, 
 			@SuppressWarnings("rawtypes") final Class _callClass, 
 			final String _methodName) {
+		final String message = _message.replaceAll("\t", " ");
 		
 		//if the message is important enough for the current configuration
 		//to be printed to screen
@@ -131,32 +140,32 @@ public final class Console extends MPanel {
 			
 			switch (_messageType) {
 			case ID_ERROR:
-				getInstance().jta_console.append("\nError:  " 
-						+ timestamp + ":\t" + _message 
+				getInstance().jta_console.append(STRG_ID_ERROR
+						+ timestamp + ":\t" + message 
 						+ "\n@Class" + _callClass.getSimpleName() 
 						+ "." + _methodName + "\n");
 				break;
 			case ID_WARNING:
-				getInstance().jta_console.append("\nWarning:" 
-						+ timestamp + ":\t" + _message
+				getInstance().jta_console.append(STRG_ID_WARNING
+						+ timestamp + ":\t" + message
 						+ "\n@Class" + _callClass.getSimpleName()
 						+ "." + _methodName + "\n");
 				break;
 			case ID_INFO_IMPORTANT: 
-				getInstance().jta_console.append("\nInfo:   " 
-						+ timestamp + ":\t" + _message
+				getInstance().jta_console.append(STRG_ID_INFO_IMPORTANT
+						+ timestamp + ":\t" + message
 						+ "\n@Class" + _callClass.getSimpleName()
 						+ "." + _methodName + "\n");
 				break;
 			case ID_INFO_MEDIUM: 
-				getInstance().jta_console.append("\nInfo:   " 
-						+ timestamp + ":\t" + _message
+				getInstance().jta_console.append(STRG_ID_INFO_MEDIUM
+						+ timestamp + ":\t" + message
 						+ "\n@Class" + _callClass.getSimpleName()
 						+ "." + _methodName + "\n");
 				break;
 			case ID_INFO_UNIMPORTANT: 
-				getInstance().jta_console.append("\nInfo:   " 
-						+ timestamp + ":\t" + _message
+				getInstance().jta_console.append(STRG_ID_INFO_UNIMPORTANT
+						+ timestamp + ":\t" + message
 						+ "\n@Class" + _callClass.getSimpleName()
 						+ "." + _methodName + "\n");
 				break;
@@ -189,5 +198,31 @@ public final class Console extends MPanel {
 		}
 		
 		return instance;
+	}
+
+	
+	/**
+	 * Log location of mouse in image. Not done in the general log method
+	 * because this kinds of logging have to be deleted (thus updated if 
+	 * new one appears).
+	 * @param _x		x location in image
+	 * @param _y		y location in image
+	 */
+	public void logPosition(final int _x, final int _y) {
+		String text = jta_console.getText();
+		
+		int id_mouse = text.lastIndexOf(STRG_ID_POSITION);
+		int id_others = Math.max(text.lastIndexOf(STRG_ID_INFO_MEDIUM), 
+				Math.max(text.lastIndexOf(STRG_ID_INFO_IMPORTANT), 
+						Math.max(text.lastIndexOf(STRG_ID_INFO_UNIMPORTANT), 
+								Math.max(text.lastIndexOf(STRG_ID_WARNING), 
+										text.lastIndexOf(STRG_ID_ERROR)))));
+		
+		// if the last logged stuff is mouse text, remove it
+		if (id_mouse > id_others) {
+			text = text.substring(0, id_mouse );
+		}
+		
+		jta_console.setText(text + STRG_ID_POSITION + "IMAGE"+ "\n" + _x + "." + _y + "\n");
 	}
 }

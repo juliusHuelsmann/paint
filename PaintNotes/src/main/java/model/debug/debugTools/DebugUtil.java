@@ -244,6 +244,58 @@ public final class DebugUtil {
 		Rectangle pnt_res = new Rectangle(depth, amount, maxDepth, 0);
 		return pnt_res;
 	}
+	
+	
+	
+	
+	
+	
+	
+
+	
+	/**
+	 * Check the components.
+	 * Recursive method which prints all components that are focusable.
+	 * 
+	 * @param _rootComponent 	the root component
+	 */
+	public static void checkComponentsFocusable(
+			final Component _rootComponent) {
+
+		if (_rootComponent.isFocusable()) {
+			System.out.println( "Focusable: \t" + 
+					_rootComponent.getClass().getSimpleName()
+					+ _rootComponent.getSize()
+					);
+		}
+		
+		if (_rootComponent instanceof JPanel) {
+			for (Component x : ((JPanel) _rootComponent).getComponents()) {
+				
+				checkComponentsFocusable(x);
+			}
+		} else if (_rootComponent instanceof JFrame) {
+			for (Component x : ((JFrame) _rootComponent).getContentPane().getComponents()) {
+				
+				checkComponentsFocusable(x);
+			}
+		} else if (_rootComponent instanceof Panel) {
+			for (Component x : ((Panel) _rootComponent).getComponents()) {
+				
+				checkComponentsFocusable(x);
+			}
+		} else if (_rootComponent instanceof Window) {
+			for (Component x : ((Window) _rootComponent).getComponents()) {
+				
+				checkComponentsFocusable(x);
+			}
+		}
+	}
+	
+	
+	
+	
+	
 
 	
 	/**

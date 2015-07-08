@@ -25,6 +25,7 @@ public class MLabel extends JLabel implements Mega {
      */
     public MLabel() {
         super();
+        super.setFocusable(false);
     }
     
     /**
@@ -33,6 +34,7 @@ public class MLabel extends JLabel implements Mega {
      */
     public MLabel(final String _t) {
         super(_t);
+        super.setFocusable(false);
     }
 
     /**

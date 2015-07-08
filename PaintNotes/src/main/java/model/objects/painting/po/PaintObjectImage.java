@@ -16,6 +16,7 @@ import model.objects.painting.Picture;
 import model.settings.Error;
 import model.settings.State;
 import model.util.DPoint;
+import model.util.DRect;
 import model.util.SerializBufferedImage;
 import model.util.adt.list.List;
 import model.util.paint.Utils;
@@ -134,7 +135,13 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
     		final boolean _final, 
     		final BufferedImage _g, 
     		final int _x, final int _y, 
-    		final Rectangle _r) {
+    		final DRect _r) {
+
+
+        
+    	
+    	// _x, _y ^			scroll location (dependent of the current zoom size)
+    	// -> transform to image size
 
         //if final only paint at BufferedImage
         //if not final only paint at graphics
@@ -151,16 +158,17 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 
             // interrupt if the given values are illegal if the size of 
         	// the area which is to be repainted is equal to zero.
-        	final Rectangle r;
+        	final DRect r;
         	if (_r == null) {
-        		r = new Rectangle(
+        		System.out.println(getClass() + "r0");
+        		r = new DRect(
         				0, 0,
         				bi_image.getWidth(), bi_image.getHeight());
         	} else {
         		r = _r;
         	}
         	
-            if (r == null || r.height <= 0 || r.width <= 0) {
+            if (r == null || r.getHeight() <= 0 || r.getWidth() <= 0) {
             	return _bi;
             }
 
@@ -173,24 +181,44 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
                     * State.getImageShowSize().height
                     / State.getImageSize().height;
             
+            
+            // TODO: this seems to be due to rounding (while method call).
+            if (cZoomFactorWidth > 1) {
+            	r.setWidth(r.getWidth() + cZoomFactorWidth);
+            	r.setX(r.getX() - cZoomFactorWidth / 2);
+            }if (cZoomFactorHeight > 1) {
+            	r.setHeight(r.getHeight() + cZoomFactorHeight);
+            	r.setY(r.getY() - cZoomFactorHeight / 2);
+            }
+            
             // these values contain the location of the selection inside 
-            // the picture
-            int locXPage = (int) ((r.x + pnt_locationOfImage.x) 
+            // the small page image 
+            int locXSmallPageImage = (int) ((r.getX()) 
             		* cZoomFactorWidth) + _x;
-            int locYPage = ((int) ((r.y + pnt_locationOfImage.y)
+            int locYSmallPageImage = ((int) ((r.getY())
             		* cZoomFactorHeight)) + _y;
             
-            // these values contain the location of the selection inside the
-            // current paint-object-image
-            int locXPOI = (int) Math.max(+r.x - pnt_locationOfImage.x, 0);
-            int locYPOI = (int) Math.max(+r.y - pnt_locationOfImage.y, 0);
+            locXSmallPageImage = Math.max(0, locXSmallPageImage);
+            locYSmallPageImage = Math.max(0, locYSmallPageImage);
+
             
-//            System.out.println("locxpoi:" + locXPOI +  "locypoi:" + locYPOI);
-//            System.out.println(
-//            		"betrx:\t"  + (int) Math.min(
-//            			r.x - pnt_locationOfImage.x, 0)+
-//            		"betry:\t" +  (int) Math.min(
-//            			r.y - pnt_locationOfImage.y, 0));
+            int locXPOI = r.getIX() - pnt_locationOfImage.x;
+            int locYPOI = r.getIY() - pnt_locationOfImage.y;
+            if (locXPOI < 0) {
+
+            	r.setWidth(r.getWidth() + locXPOI);
+                locXSmallPageImage -= locXPOI * cZoomFactorWidth;
+
+            	locXPOI = 0;
+                
+            }if (locYPOI < 0) {
+            	r.setWidth(r.getHeight() + locYPOI);
+                locYSmallPageImage -= locYPOI * cZoomFactorHeight;
+            	locYPOI = 0;
+            }
+            
+            
+
 
             // adapt the width of the selection to the size of the 
             // paint-object-image.
@@ -199,24 +227,18 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             // to the normal width, 2 * zoom-factor is added 
             // because if zoomed in, there are gaps between the painted
             // sub-images.
-            r.width = Math.min(
-//            		Math.min(
-            				bi_image.getWidth() - locXPOI,
-            				r.width + (int)  (2 * cZoomFactorWidth));
-//            		_bi.getWidth() - locXPOI);
-            r.height = Math.min(
-//            		Math.min(
-            				bi_image.getHeight() - locYPOI,
-            				r.height + (int) (2 * cZoomFactorHeight));
-//            		_bi.getHeight() - locYPOI);
+            r.setWidth(Math.min(
+            		bi_image.getWidth() - locXPOI,
+            		r.getIWidth()));
+            r.setHeight(Math.min(
+            		bi_image.getHeight() - locYPOI,
+            		r.getIHeight()));
             
-//            System.out.println("RWDITH" + r.width + "\tRHEIGHT" + r.height);
             // interrupt if the given values are illegal if the size of 
         	// the area which is to be repainted is equal to zero.
-            if (r == null || r.height <= 0 || r.width <= 0) {
+            if (r == null || r.getIHeight() <= 0 || r.getIWidth() <= 0) {
             	return _bi;
             }
-
             
             /* 
              * now a sub-image containing the newly painted stuff is created
@@ -226,32 +248,32 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             // create sub-BufferedImage for the selection and fill it with
             // the pixel from image
             BufferedImage bi_section = new BufferedImage(
-            		r.width, r.height, 
+            		r.getIWidth(), r.getIHeight(), 
             		BufferedImage.TYPE_INT_ARGB);
             
             // for filling the BufferedImage, the RGB-alpha values are written 
             // into an integer array
-            int[] rgbA = new int[r.height * r.width];
+            int[] rgbA = new int[r.getIHeight() * r.getIWidth()];
             if (
             		locXPOI >= 0 
             		&& locYPOI >= 0
-            		&& locXPOI + r.width <= bi_image.getWidth()
-            		&& locYPOI + r.height <= bi_image.getHeight()) {
+            		&& locXPOI + r.getIWidth() <= bi_image.getWidth()
+            		&& locYPOI + r.getIHeight() <= bi_image.getHeight()) {
 
                 rgbA = bi_image.getRGB(
                 		locXPOI, locYPOI, 
-                		r.width, r.height, 
+                		r.getIWidth(), r.getIHeight(), 
                 		rgbA,
                 		0, 
-                		r.width);
+                		r.getIWidth());
             } else {
 
             	State.getLogger().severe("fatal move error: \n" 
             			+ "Section out of scope."
             			+ "x\t" + locXPOI + "\n"
             			+ "y\t" + locYPOI + "\n"
-            			+ "x+w\t" + locXPOI + r.width + "\n"
-            			+ "y+h\t" + locYPOI + r.height + "\n"
+            			+ "x+w\t" + locXPOI + r.getWidth() + "\n"
+            			+ "y+h\t" + locYPOI + r.getHeight() + "\n"
             			+ "\n@image\n"
             			+ "width:\t" + bi_image.getWidth()
             			+ "\nheight:\t" + bi_image.getHeight());
@@ -262,24 +284,23 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             // section-BufferedImage.
             bi_section.setRGB(
             		0, 0, 
-            		r.width, 
-            		r.height,
-            		rgbA, 0, r.width);
+            		r.getIWidth(), 
+            		r.getIHeight(),
+            		rgbA, 0, r.getIWidth());
             
-            /*
-             * The Content of the BufferedImage is resized and afterwards 
-             * printed into the BufferedImage that displays the currently 
-             * visible section of the image.
-             */
+
             final Graphics g = _g.getGraphics();
+            int newWidth = (int) Math.max(1, (r.getWidth()) * cZoomFactorWidth);
+            int newHeight = (int) Math.max(1, (r.getHeight()) * cZoomFactorHeight);
             g.drawImage(Utils.resizeImageQuick(
-                    (int) Math.max(1, (r.width) * cZoomFactorWidth),
-                    (int) Math.max(1, (r.height) * cZoomFactorHeight), 
+                    newWidth, 
+                    newHeight , 
                     bi_section),
-                    (int) (locXPage), 
-                    (int) (locYPage), 
-                    (int) Math.max(1, (r.width) * cZoomFactorWidth),
-                    (int) Math.max(1, ((r.height) * cZoomFactorHeight)), null);
+                    (int) (locXSmallPageImage), 
+                    (int) (locYSmallPageImage), 
+                    newWidth,
+                    newHeight, null);
+
             return _g;
         }
         
@@ -892,10 +913,10 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 	}
 	
 	
-	public static void main(String [] args) {
+	public static void rhein(String [] args) {
 		final String path = "/home/juli/"
 				+ "";
-		final String fileName = "Leonie";
+		final String fileName = "";
 		final String fileExtension = ".jpg";
 		BufferedImage bis = Utils.normalResizeImageFromOutside(
 				2500, 3300, path + fileName + fileExtension);

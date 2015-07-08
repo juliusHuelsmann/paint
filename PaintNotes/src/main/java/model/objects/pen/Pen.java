@@ -26,6 +26,7 @@ import model.objects.pen.special.PenSelection;
 import model.settings.Constants;
 import model.settings.State;
 import model.util.DPoint;
+import model.util.DRect;
 import model.util.adt.list.List;
 import model.util.solveLGS.Matrix;
 
@@ -172,7 +173,7 @@ public abstract class Pen implements Serializable {
 	public final BufferedImage paintToImage(final BufferedImage _bi,
 			final PaintObjectWriting _o, final boolean _final, 
 			final DPoint _p_start, final BufferedImage _g, 
-			final Rectangle _rVisibleScope) {
+			final DRect _rVisibleScope) {
 
 		//fetch list of points and go to the beginning of the list
 		List<DPoint> ls_point = _o.getPoints();
@@ -193,12 +194,12 @@ public abstract class Pen implements Serializable {
 		
 		switch (tempId_operation) {
 		case Constants.PEN_ID_POINT:
-		    operationPoint(ls_point, _bi, _final, _p_start, _g, _rVisibleScope);
+		    operationPoint(ls_point, _bi, _final, _p_start, _g, _rVisibleScope.getRectangle());
 			
 			break;
 		case Constants.PEN_ID_LINES:
 
-			operationLine(ls_point, _bi, _final, _p_start, _g, _rVisibleScope);
+			operationLine(ls_point, _bi, _final, _p_start, _g, _rVisibleScope.getRectangle());
 			
 			break;
         case Constants.PEN_ID_MATHS:

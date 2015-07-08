@@ -73,10 +73,10 @@ public final class BufferedViewer extends JFrame {
      */
     public static synchronized void show(final BufferedImage _bi) {
     	
-    	final boolean showEnabled = false;
+    	final boolean showEnabled = !false;
     	if (showEnabled) {
         	
-    		final int minTimeDiff = 5000;
+    		final int minTimeDiff = 5;
     		final int maxWindowSize = 700;
     		
     		State.getLogger().warning("TEST" + "BufferdViewer.show");

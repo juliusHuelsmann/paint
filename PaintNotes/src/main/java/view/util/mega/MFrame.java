@@ -15,6 +15,9 @@ import javax.swing.JFrame;
 @SuppressWarnings("serial")
 public class MFrame extends JFrame implements Mega {
 
+	public MFrame() {
+		super.setFocusable(false);
+	}
     /**
      * Turn the owned components.
      */

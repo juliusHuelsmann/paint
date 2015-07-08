@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 import model.objects.painting.Picture;
 import model.util.DPoint;
+import model.util.DRect;
 import model.util.adt.list.List;
 
 
@@ -143,7 +144,7 @@ public abstract class PaintObject implements Serializable, Cloneable {
 	 */
     public abstract BufferedImage paint(final BufferedImage _bi, 
             final boolean _final, final BufferedImage _g, final int _x, 
-            final int _y, final Rectangle _rectRepaint);
+            final int _y, final DRect _rectRepaint);
     
     
     /*

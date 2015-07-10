@@ -411,12 +411,10 @@ implements MouseMotionListener, MouseListener, KeyListener, MouseWheelListener {
         }
         if (_event.getSource().equals(view.getJbtn_toBottom()) 
                 || _event.getSource().equals(view.getJbtn_toTop())) {
-            
             upDownPressed = false;
         }
         
         if (activityListener != null) {
-
             activityListener.activityOccurred(_event);
         }
     }
@@ -440,9 +438,6 @@ implements MouseMotionListener, MouseListener, KeyListener, MouseWheelListener {
      */
     public final void mouseMoved(final MouseEvent _event) {
 
-//        if (_event.getSource().equals(view.getJpnl_toLocate())) {
-//            view.requestFocus();
-//        }
     }
 
     /**

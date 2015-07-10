@@ -105,7 +105,7 @@ public class VScrollPane extends MPanel {
 		super();
 		initialize(_jpnl_toLocate, _jpnl_owener, _vertical, _cmp_focus);
 
-        _cmp_focus.   addMouseListener(control);
+        _cmp_focus.addMouseListener(control);
         _cmp_focus.setFocusable(true);
 	}
 	
@@ -142,6 +142,7 @@ public class VScrollPane extends MPanel {
         
         jpnl_toLocate.addKeyListener(control);
         _cmp_focus.addMouseWheelListener(control);
+        _cmp_focus.addKeyListener(control);
         super.addKeyListener(control);
 		
 		//initialize MButtons for up, button and center.

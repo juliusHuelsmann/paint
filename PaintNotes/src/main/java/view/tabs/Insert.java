@@ -5,7 +5,6 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import control.ControlPaint;
@@ -17,6 +16,7 @@ import view.util.Item2;
 import view.util.Item2Menu;
 import view.util.Item1Button;
 import view.util.mega.MLabel;
+import view.util.mega.MTextField;
 
 
 /**
@@ -55,7 +55,7 @@ public final class Insert extends Tab {
     /**
      * Input fields for the amount of lines and rows of diagrams.
      */
-    private JTextField jtf_amountLines, jtf_amountRows;
+    private MTextField jtf_amountLines, jtf_amountRows;
 
     /**
      * Constants.
@@ -157,7 +157,7 @@ public final class Insert extends Tab {
         jlbl_amountLines.setSize(widthLabel, heightLabel);
         super.add(jlbl_amountLines);
         
-        jtf_amountLines = new JTextField();
+        jtf_amountLines = new MTextField();
         jtf_amountLines.setLocation(distance 
                 + jlbl_amountLines.getX() + jlbl_amountLines.getWidth(),
                 ia_diagram.getY());
@@ -177,7 +177,7 @@ public final class Insert extends Tab {
         jlbl_amountRows.setSize(widthLabel, heightLabel);
         super.add(jlbl_amountRows);
 
-        jtf_amountRows = new JTextField();
+        jtf_amountRows = new MTextField();
         jtf_amountRows.setLocation(distance 
                 + jlbl_amountRows.getX() + jlbl_amountRows.getWidth(),
                 jlbl_amountRows.getY());
@@ -390,7 +390,7 @@ public final class Insert extends Tab {
     /**
      * @return the jtf_amountLines
      */
-    public JTextField getJtf_amountLines() {
+    public MTextField getJtf_amountLines() {
         return jtf_amountLines;
     }
 
@@ -398,7 +398,7 @@ public final class Insert extends Tab {
     /**
      * @return the jtf_amountRows
      */
-    public JTextField getJtf_amountRows() {
+    public MTextField getJtf_amountRows() {
         return jtf_amountRows;
     }
 

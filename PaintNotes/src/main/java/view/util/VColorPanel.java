@@ -9,11 +9,12 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
 import view.util.mega.MButton;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
+import view.util.mega.MTextField;
 import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import control.interfaces.MenuListener;
@@ -29,9 +30,9 @@ import control.util.CColorPanel;
 @SuppressWarnings("serial") public class VColorPanel extends MPanel {
 
 	/**
-	 * JTextFields for entering special color.
+	 * MTextFields for entering special color.
 	 */
-	private JTextField jtf_r, jtf_g, jtf_b;
+	private MTextField jtf_r, jtf_g, jtf_b;
 	
 	/**
 	 * JLabel for selected color and RGB - titles.
@@ -166,7 +167,7 @@ import control.util.CColorPanel;
 
         //save final values that are rather unimportant.
         final Dimension dim_JLabel = new Dimension(40, 16);
-        final Dimension dim_JTextField = new Dimension(30, 16);
+        final Dimension dim_MTextField = new Dimension(30, 16);
         final int widthTotal = 500;
         final int currentHeight = 150;
 
@@ -181,7 +182,7 @@ import control.util.CColorPanel;
         super.add(jlbl_selectedColor);
 
         /*
-         * JLabels and JTextFields for color RGB Values
+         * JLabels and MTextFields for color RGB Values
          */
         jlbl_r = new MLabel(TextFactory.getInstance().getTextColorPanel_red());
         jlbl_r.setSize(dim_JLabel);
@@ -190,10 +191,10 @@ import control.util.CColorPanel;
         jlbl_r.setBorder(null);
         super.add(jlbl_r);
 
-        jtf_r  = new JTextField();
+        jtf_r  = new MTextField();
         jtf_r.setOpaque(false);
         jtf_r.setFont(ViewSettings.GENERAL_FONT_ITEM);
-        jtf_r.setSize(dim_JTextField);
+        jtf_r.setSize(dim_MTextField);
         jtf_r.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         super.add(jtf_r);
 
@@ -205,9 +206,9 @@ import control.util.CColorPanel;
         jlbl_g.setFont(ViewSettings.GENERAL_FONT_ITEM);
         super.add(jlbl_g);
 
-        jtf_g  = new JTextField();
+        jtf_g  = new MTextField();
         jtf_g.setOpaque(false);
-        jtf_g.setSize(dim_JTextField);
+        jtf_g.setSize(dim_MTextField);
         jtf_g.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jtf_g.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         super.add(jtf_g);
@@ -220,9 +221,9 @@ import control.util.CColorPanel;
         jlbl_b.setFont(ViewSettings.GENERAL_FONT_ITEM);
         super.add(jlbl_b);
 
-        jtf_b  = new JTextField();
+        jtf_b  = new MTextField();
         jtf_b.setOpaque(false);
-        jtf_b.setSize(dim_JTextField);
+        jtf_b.setSize(dim_MTextField);
         jtf_b.setFont(ViewSettings.GENERAL_FONT_ITEM);
         jtf_b.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         jtf_b.setFocusable(true);
@@ -508,7 +509,7 @@ import control.util.CColorPanel;
 	/**
 	 * @return the jtf_r
 	 */
-	public final JTextField getJtf_r() {
+	public final MTextField getJtf_r() {
 		return jtf_r;
 	}
 
@@ -516,7 +517,7 @@ import control.util.CColorPanel;
 	/**
 	 * @return the jtf_g
 	 */
-	public final JTextField getJtf_g() {
+	public final MTextField getJtf_g() {
 		return jtf_g;
 	}
 
@@ -524,7 +525,7 @@ import control.util.CColorPanel;
 	/**
 	 * @return the jtf_b
 	 */
-	public final JTextField getJtf_b() {
+	public final MTextField getJtf_b() {
 		return jtf_b;
 	}
 

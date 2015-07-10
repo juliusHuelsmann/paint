@@ -26,22 +26,22 @@ import view.util.mega.MButton;
 
     
     /*
-     * JLabel which is being painted
+     * MLabel which is being painted
      */
     
 	/**
-	 * JLabel on which is painted and JLabel for background (e.g. raster).
+	 * MLabel on which is painted and MLabel for background (e.g. raster).
 	 */
 	private PaintLabel jlbl_painting;
 	
 	/*
-	 * Stuff for scrolling the JLabel
+	 * Stuff for scrolling the MLabel
 	 */
 
     /**
      * Internal panel which is not added to graphical user interface.
      * The panel serves to be able to scroll and handles the location change 
-     * further to the Painting JLabel
+     * further to the Painting MLabel
      */
     private MPanel jpnl_toMove;
     
@@ -65,23 +65,23 @@ import view.util.mega.MButton;
     private MLabel jlbl_resizeSelectionSize;
 
     /**
-     * Selection JLabel.
+     * Selection MLabel.
      */
     private MLabel jlbl_selectionBG;
 
     /**
-     * Selection JLabel.
+     * Selection MLabel.
      */
     private MLabel jlbl_selectionPainting;
 
     /**
-     * The border JLabel.
+     * The border MLabel.
      */
     private MLabel jlbl_border;
 	
     /**
      * 
-     * JLabel jlbl_background is the background JLabel (which is shown if 
+     * MLabel jlbl_background is the background MLabel (which is shown if 
      * image is transparent). 
      * 			It is either white or has got the typical alpha background
      * 			raster.
@@ -91,7 +91,7 @@ import view.util.mega.MButton;
     
     
     /**
-     * JLabel which contains the background that the user selects in the view
+     * MLabel which contains the background that the user selects in the view
      * tab.
      * 
      * This background can either consist of raster or lines. It is possible
@@ -160,13 +160,14 @@ import view.util.mega.MButton;
                 jlbl_painting.setLocation(_x, _y);
             }
         };
+        jlbl_painting = new PaintLabel(jpnl_toMove);
 
         //ScrollPanel for up and down
-        sp_ub = new VScrollPane(jpnl_toMove, this, true);
+        sp_ub = new VScrollPane(jpnl_toMove, this, true, jlbl_painting);
         sp_ub.setActivityListener(_controlPaint.getUtilityControlScrollPane());
         _controlPaint.getView().add(sp_ub);
 
-        sp_lr = new VScrollPane(jpnl_toMove, this, false);
+        sp_lr = new VScrollPane(jpnl_toMove, this, false, jlbl_painting);
         sp_lr.setActivityListener(_controlPaint.getUtilityControlScrollPane());
         _controlPaint.getView().add(sp_lr);
         
@@ -241,8 +242,7 @@ import view.util.mega.MButton;
         jlbl_backgroundStructure.setOpaque(false);
         super.add(jlbl_backgroundStructure); 
         
-        //JLabel for the painting and the raster
-        jlbl_painting = new PaintLabel(jpnl_toMove);
+        //MLabel for the painting and the raster
         jlbl_painting.setFocusable(false);
         jlbl_painting.setBorder(null);
         jlbl_painting.addMouseMotionListener(_controlPaint);

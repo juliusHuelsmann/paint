@@ -7,8 +7,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
+
 //import java.swing components
-import javax.swing.JLabel;
 import javax.swing.border.Border;
 
 //import rotatatble buttons and panels
@@ -16,6 +16,7 @@ import view.util.mega.MPanel;
 
 //import utility class
 import model.util.Util;
+import view.util.mega.MLabel;
 
 
 /**
@@ -35,9 +36,9 @@ public class VTabButton extends MPanel {
 	
 	
 	/**
-	 * JLabel for a stroke background.
+	 * MLabel for a stroke background.
 	 */
-	private JLabel jlbl_stroke;
+	private MLabel jlbl_stroke;
 	
 	
 	/**
@@ -54,7 +55,7 @@ public class VTabButton extends MPanel {
 		super.setOpaque(true);
 		super.setFocusable(false);
 		
-		jlbl_stroke = new JLabel();
+		jlbl_stroke = new MLabel();
 		jlbl_stroke.setOpaque(false);
 		jlbl_stroke.setFocusable(false);
 		super.add(jlbl_stroke);

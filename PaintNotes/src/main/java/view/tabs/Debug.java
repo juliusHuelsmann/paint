@@ -11,7 +11,6 @@ import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import model.objects.PictureOverview;
@@ -26,6 +25,7 @@ import view.util.VScrollPane;
 import view.util.Item1Button;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
+import view.util.mega.MScrollPane;
 
 /**
  * JPanel which shows the list of existing non-selected PaintObjects and 
@@ -89,7 +89,7 @@ public final class Debug extends Tab implements Observer {
 	private final VScrollPane sp_up;
 	
 	/**
-	 * JPanel which contains the JScrollPane of the JTextArea.
+	 * JPanel which contains the MScrollPane of the JTextArea.
 	 */
 	private final MPanel jpnl_container;
 
@@ -173,7 +173,7 @@ public final class Debug extends Tab implements Observer {
 		jpnl_items.setOpaque(false);
 		jpnl_owner.add(jpnl_items);
 
-		//JLabel for amount of items
+		//MLabel for amount of items
 		jlbl_amountOfItems = new MLabel();
 		jlbl_amountOfItems.setFocusable(false);
 		jlbl_amountOfItems.setBorder(null);
@@ -199,9 +199,9 @@ public final class Debug extends Tab implements Observer {
 		jta_infoSelectedPanel.setLineWrap(true);
 		jta_infoSelectedPanel.setFont(ViewSettings.GENERAL_FONT_ITEM_SMALL);
 
-		JScrollPane scrollPane = new JScrollPane(jta_infoSelectedPanel);
+		MScrollPane scrollPane = new MScrollPane(jta_infoSelectedPanel);
 		scrollPane.setVerticalScrollBarPolicy(
-		        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		        MScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		jpnl_container.add(scrollPane, BorderLayout.CENTER);
 		
 		jlbl_detailedPosition = new MLabel();
@@ -293,8 +293,8 @@ public final class Debug extends Tab implements Observer {
 	@Override public void setSize(final int _width, final int _height) {
 
 	    
-		final int heightJLabel2 = 20;
-		final int heightJLabel = 10;
+		final int heightMLabel2 = 20;
+		final int heightMLabel = 10;
 		final int heightNewComponent = 50;
 		final int distance = 5;
 		
@@ -320,7 +320,7 @@ public final class Debug extends Tab implements Observer {
                 distance, 
                 distance, 
                 _width / (amountCols) / 2, 
-                heightJLabel2);
+                heightMLabel2);
 
         jpnl_owner.setLocation(
                 jlbl_title.getX(), 
@@ -341,7 +341,7 @@ public final class Debug extends Tab implements Observer {
                 jlbl_title.getX() + jlbl_title.getWidth() + distance,
                 jlbl_title.getY(), 
                 _width / amountOfItemsC1, 
-                heightJLabel);
+                heightMLabel);
 		
 
 		jlbl_detailedPosition.setLocation(jpnl_owner.getX() + distance

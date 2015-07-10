@@ -2,9 +2,11 @@ package view.util;
 
 import java.awt.Component;
 import java.awt.Window;
+
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import view.util.mega.MScrollPane;
 import control.util.WindowFocusListener;
 
 @SuppressWarnings("serial")
@@ -24,7 +26,7 @@ public class MessageDialog extends JFrame  {
 		
 		jta_text = new JTextArea(_message);
 		
-		JScrollPane sp = new JScrollPane(jta_text);
+		MScrollPane sp = new MScrollPane(jta_text);
 		super.add(sp);
 		
 		super.setSize(

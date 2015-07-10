@@ -8,7 +8,6 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import view.util.mega.MLabel;
@@ -40,12 +39,12 @@ public class Item1Button extends MPanel {
 	 */
 	private boolean textEnabled = false;
 	/**
-	 * JLabel for text.
+	 * MLabel for text.
 	 */
 	private MLabel jlbl_title;
 
     /**
-     * JLabel for color or image.
+     * MLabel for color or image.
      */
 	private MLabel jlbl_color;
 
@@ -69,9 +68,9 @@ public class Item1Button extends MPanel {
 	
     
     /**
-     * JLabel containing stroke.
+     * MLabel containing stroke.
      */
-    private JLabel jlbl_stroke;
+    private MLabel jlbl_stroke;
     
 	/**
 	 * Constructor: save Object.
@@ -93,7 +92,7 @@ public class Item1Button extends MPanel {
 		this.border = true;
 		this.disabled = false;
 		
-		//initialize title JLabel
+		//initialize title MLabel
 		jlbl_title = new MLabel();
 		jlbl_title.setBorder(null);
 		jlbl_title.setFocusable(false);
@@ -118,14 +117,14 @@ public class Item1Button extends MPanel {
 		jbtn_touch.setBorder(null);
 		super.add(jbtn_touch);
 
-		//initialize color JLabel
+		//initialize color MLabel
 		jlbl_color = new MLabel();
 		jlbl_color.setBorder(null);
 		jlbl_color.setOpaque(true);
 		jlbl_color.setFocusable(false);
 		super.add(jlbl_color);
 		
-		jlbl_stroke = new JLabel();
+		jlbl_stroke = new MLabel();
 		jlbl_stroke.setBorder(null);
 		jlbl_stroke.setFocusable(false);
 		super.add(jlbl_stroke);
@@ -208,7 +207,7 @@ public class Item1Button extends MPanel {
 	
 
 	/**
-	 * set icon of the JLabel jlbl_color.
+	 * set icon of the MLabel jlbl_color.
 	 * @param _i the path of the Icon.
 	 */
 	public final void setIcon(final String _i) {
@@ -219,7 +218,7 @@ public class Item1Button extends MPanel {
 	
 	
 	/**
-	 * set icon of the JLabel jlbl_color.
+	 * set icon of the MLabel jlbl_color.
 	 * @param _i the path of the Icon.
 	 */
 	public final void setIcon(final BufferedImage _i) {
@@ -240,7 +239,7 @@ public class Item1Button extends MPanel {
 	}
 	
 	/**
-	 * set the text of JLabel.
+	 * set the text of MLabel.
 	 * @param _text the text
 	 */
 	public final void setText(final String _text) {
@@ -248,7 +247,7 @@ public class Item1Button extends MPanel {
 	}
 
 	/**
-	 * return the icon of the JLabel.
+	 * return the icon of the MLabel.
 	 * @return the icon.
 	 */
 	public final Icon getIcon() {
@@ -272,12 +271,12 @@ public class Item1Button extends MPanel {
     }
 	
 	/**
-	 * set the background of the Color JLabel.
+	 * set the background of the Color MLabel.
 	 * @param _c the color
 	 */
 	@Override public final void setBackground(final Color _c) {
 
-		//if the JLabel is initialized
+		//if the MLabel is initialized
 		if (jlbl_color != null) {
 			jlbl_color.setBackground(_c);
 		}
@@ -309,14 +308,14 @@ public class Item1Button extends MPanel {
 	
 
 	/**
-	 * set the y coordinate of Item1Button-Icon JLabel.
+	 * set the y coordinate of Item1Button-Icon MLabel.
 	 * @param _y the new coordinate
 	 */
 	public final void setIconLabelY(final int _y) {
 	    jlbl_color.setLocation(jlbl_color.getX(), _y);
 	}
 	/**
-	 * set the x coordinate of Item1Button-Icon JLabel.
+	 * set the x coordinate of Item1Button-Icon MLabel.
 	 * @param _x the new coordinate
 	 */
 	public final void setIconLabelX(final int _x) {
@@ -333,7 +332,7 @@ public class Item1Button extends MPanel {
 	    
 
 	    jlbl_title.setFont(ViewSettings.GENERAL_FONT_ITEM1_BUTTON);
-	    //set size of color - and title JLabel
+	    //set size of color - and title MLabel
 	    if (imageWidth == -1 || imageHeight == -1) {
 	    	jlbl_color.setBounds(distance * (2 + 1), distance, 
 	    			getWidth() - colorSize, getWidth() - colorSize);

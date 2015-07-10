@@ -18,6 +18,7 @@ import control.forms.CLoading;
 import control.forms.CNew;
 import control.forms.CPaintStatus;
 import control.forms.CQuickAccess;
+import control.forms.minorImportance.InfoSelection;
 import control.forms.tabs.CTabAbout;
 import control.forms.tabs.CTabDebug;
 import control.forms.tabs.CTabExport;
@@ -276,7 +277,12 @@ MenuListener {
      * Is null if there currently is no displayed preprint.
      */
     private Rectangle rect_preprintBounds;
-	
+    
+    /**
+     * Info selection.
+     */
+    private InfoSelection info_selection;
+    
 	/**
 	 * Constructor of the main controller class.
 	 */
@@ -329,6 +335,7 @@ MenuListener {
             zoom = new Zoom(controlPic);
             utilityControlItem2 = new CTabInsert(this);
             cTabs = new CTabs(this);
+            info_selection = new InfoSelection(this);
             
             //initialize the preprint image.
             bi_preprint = Util.getEmptyBISelection();
@@ -2906,4 +2913,13 @@ MenuListener {
 	public Point getPnt_startLocation() {
 		return pnt_startLocation;
 	}
+
+
+	/**
+	 * @return the info_selection
+	 */
+	public InfoSelection getInfo_selection() {
+		return info_selection;
+	}
+
 }

@@ -127,6 +127,8 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             System.out.println("move to " + pnt_locationOfImage);
         }
     }
+    
+    
     /**
      * {@inheritDoc}
      */
@@ -137,8 +139,6 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
     		final int _x, final int _y, 
     		final DRect _r) {
 
-
-        
     	
     	// _x, _y ^			scroll location (dependent of the current zoom size)
     	// -> transform to image size
@@ -184,11 +184,11 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             
             // TODO: this seems to be due to rounding (while method call).
             if (cZoomFactorWidth > 1) {
-            	r.setWidth(r.getWidth() + cZoomFactorWidth);
-            	r.setX(r.getX() - cZoomFactorWidth / 2);
+            	r.setWidth(r.getWidth() +  2);
+            	r.setX(r.getX() - 1);
             }if (cZoomFactorHeight > 1) {
-            	r.setHeight(r.getHeight() + cZoomFactorHeight);
-            	r.setY(r.getY() - cZoomFactorHeight / 2);
+            	r.setHeight(r.getHeight() + 2);
+            	r.setY(r.getY() - 1);
             }
             
             // these values contain the location of the selection inside 

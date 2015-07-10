@@ -3,7 +3,6 @@ package control.util;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -11,6 +10,7 @@ import view.tabs.Paint;
 import view.util.Item1Menu;
 import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;
+import view.util.mega.MSlider;
 import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.State;
@@ -98,10 +98,10 @@ public class CPen implements ChangeListener, MouseListener {
 	 */
 	public final void stateChanged(final ChangeEvent _event) {
 
-		if (_event.getSource() instanceof JSlider) {
+		if (_event.getSource() instanceof MSlider) {
 
-			//fetch the thickness from JSlider
-			final int thickness = ((JSlider) _event.getSource()).getValue();
+			//fetch the thickness from MSlider
+			final int thickness = ((MSlider) _event.getSource()).getValue();
 			
 			//set text and apply the thickness inside the model pen
 			i1ps.getJlbl_thickness().setText(thickness + "px");

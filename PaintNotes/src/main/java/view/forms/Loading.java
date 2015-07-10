@@ -3,7 +3,6 @@ package view.forms;
 import java.awt.Color;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
 import model.settings.Constants;
@@ -21,9 +20,9 @@ public class Loading extends MPanel {
 
 	
 	/**
-	 * JLabel for the background.
+	 * MLabel for the background.
 	 */
-	private JLabel jlbl_background;
+	private MLabel jlbl_background;
 	
 	/**
 	 * ImageIcons for the loading image.

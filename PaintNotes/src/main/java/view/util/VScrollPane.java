@@ -82,9 +82,48 @@ public class VScrollPane extends MPanel {
 	 */
 	public VScrollPane(final Component _jpnl_toLocate, 
 	        final MPanel _jpnl_owener, final boolean _vertical) {
-	    
+
 	    //initialize
 		super();
+		initialize(_jpnl_toLocate, _jpnl_owener, _vertical, this);
+		
+	}
+
+
+	/**
+	 * Constructor. Initialize components.
+	 * 
+	 * @param _jpnl_toLocate the panel of which the location is changed
+	 * @param _jpnl_owener its owner
+	 * @param _vertical whether vertical or not
+	 */
+	public VScrollPane(final Component _jpnl_toLocate, 
+	        final MPanel _jpnl_owener, final boolean _vertical,
+	        final Component _cmp_focus) {
+
+	    //initialize
+		super();
+		initialize(_jpnl_toLocate, _jpnl_owener, _vertical, _cmp_focus);
+
+        _cmp_focus.   addMouseListener(control);
+        _cmp_focus.setFocusable(true);
+	}
+	
+	
+
+	
+	/**
+	 * Constructor. Initialize components.
+	 * 
+	 * @param _jpnl_toLocate the panel of which the location is changed
+	 * @param _jpnl_owener its owner
+	 * @param _vertical whether vertical or not
+	 */
+	private void initialize(final Component _jpnl_toLocate, 
+	        final MPanel _jpnl_owener, final boolean _vertical,
+	        final Component _cmp_focus) {
+
+	    //initialize
 		super.setLayout(null);
 		super.setFocusable(true);
         super.setBackground(Color.white);
@@ -94,10 +133,15 @@ public class VScrollPane extends MPanel {
 		this.jpnl_toLocate = _jpnl_toLocate;
 		this.jpnl_owner = _jpnl_owener;
 		this.verticalScroll = _vertical;
-		this.control = new CScrollPane(this);
+		this.control = new CScrollPane(this, _cmp_focus);
 
 		//add listeners
         jpnl_toLocate.addMouseMotionListener(control);
+        jpnl_toLocate.addMouseListener(control);
+        jpnl_owner.   addMouseListener(control);
+        
+        jpnl_toLocate.addKeyListener(control);
+        _cmp_focus.addMouseWheelListener(control);
         super.addKeyListener(control);
 		
 		//initialize MButtons for up, button and center.
@@ -113,7 +157,6 @@ public class VScrollPane extends MPanel {
 		}
 		jbtn_center = initializeMButton(null);
 	}
-
 	
 	
 	

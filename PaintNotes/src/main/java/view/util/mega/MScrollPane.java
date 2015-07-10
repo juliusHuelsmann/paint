@@ -1,14 +1,14 @@
-//package declaration
 package view.util.mega;
 
-//import declarations
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import javax.swing.JButton;
-import model.settings.State;
 
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+
+import model.settings.State;
 
 /**
  * View class for which add the possibility to rotate the components 
@@ -19,26 +19,31 @@ import model.settings.State;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class MButton extends JButton implements Mega {
+public class MScrollPane extends JScrollPane implements Mega {
 
     /**
      * Constructor. Call super - constructor.
      */
-    public MButton() {
+    public MScrollPane() {
         super();
         super.setFocusable(false);
     }
     
-
     /**
-     * Constructor. Call super - constructor.
-     * @param _t the text of the Label.
+     * Creates a <code>JScrollPane</code> that displays the
+     * contents of the specified
+     * component, where both horizontal and vertical scrollbars appear
+     * whenever the component's contents are larger than the view.
+     *
+     * @see #setViewportView
+     * @param view the component to display in the scrollpane's viewport
      */
-    public MButton(final String _t) {
-        super(_t);
+    public MScrollPane(final Component _view) {
+        super(_view);
         super.setFocusable(false);
     }
-
+    
+    
     /**
      * Turn the owned components.
      */
@@ -54,6 +59,7 @@ public class MButton extends JButton implements Mega {
             }
         }
     }
+    
 
     /**
      * paintComponent which paints the component. Flips if Status is 
@@ -61,7 +67,7 @@ public class MButton extends JButton implements Mega {
      * 
      * @param _graphics the graphics which are painted.
      */
-    public final void paintComponent(final Graphics _graphics) {
+    @Override public final void paintComponent(final Graphics _graphics) {
                 
         //initialize values
         Graphics2D g2d = (Graphics2D) _graphics;

@@ -17,7 +17,6 @@ import java.util.Calendar;
 
 //import java.swing components
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 
 //import utility classes and settings
 import model.settings.State;
@@ -127,9 +126,9 @@ public class VTabbedPane extends MPanel {
 	private MLabel jlbl_closeTime;
 	
 	/**
-	 * JLabel for stroke.
+	 * MLabel for stroke.
 	 */
-	private JLabel jlbl_stroke;
+	private MLabel jlbl_stroke;
 
 	
 	/**
@@ -172,7 +171,7 @@ public class VTabbedPane extends MPanel {
                 1, 0, 0, 1, ViewSettings.GENERAL_CLR_BORDER));
         jpnl_contains.add(jpnl_background);
 
-        jlbl_stroke = new JLabel();
+        jlbl_stroke = new MLabel();
         jlbl_stroke.setBorder(null);
         jlbl_stroke.setOpaque(false);
         jpnl_contains.add(jlbl_stroke);

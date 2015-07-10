@@ -865,5 +865,12 @@ public final class ViewSettings {
 		return view_bounds_loading;
 	}
 
+
+
+
+	public static int getWidthInfoForm() {
+		return 100;
+	}
+
     
 }

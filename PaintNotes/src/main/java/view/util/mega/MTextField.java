@@ -1,14 +1,14 @@
-//package declaration
 package view.util.mega;
 
-//import declarations
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import javax.swing.JButton;
-import model.settings.State;
 
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+import model.settings.State;
 
 /**
  * View class for which add the possibility to rotate the components 
@@ -19,24 +19,28 @@ import model.settings.State;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class MButton extends JButton implements Mega {
+public class MTextField extends JTextField implements Mega {
 
     /**
      * Constructor. Call super - constructor.
      */
-    public MButton() {
+    public MTextField() {
         super();
-        super.setFocusable(false);
     }
-    
 
     /**
      * Constructor. Call super - constructor.
      * @param _t the text of the Label.
      */
-    public MButton(final String _t) {
+    public MTextField(final String _t) {
         super(_t);
-        super.setFocusable(false);
+    }
+    /**
+     * Constructor. Call super - constructor.
+     * @param _t the integer.
+     */
+    public MTextField(final int _t) {
+        super(_t);
     }
 
     /**
@@ -54,6 +58,7 @@ public class MButton extends JButton implements Mega {
             }
         }
     }
+    
 
     /**
      * paintComponent which paints the component. Flips if Status is 
@@ -61,7 +66,7 @@ public class MButton extends JButton implements Mega {
      * 
      * @param _graphics the graphics which are painted.
      */
-    public final void paintComponent(final Graphics _graphics) {
+    @Override public final void paintComponent(final Graphics _graphics) {
                 
         //initialize values
         Graphics2D g2d = (Graphics2D) _graphics;

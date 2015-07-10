@@ -6,7 +6,8 @@ import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+
+import view.util.mega.MTextField;
 
 
 /**
@@ -21,12 +22,12 @@ public class VMat extends JPanel {
 	/**
 	 * 
 	 */
-	private JTextField[][] jlbl_matrix;
+	private MTextField[][] jlbl_matrix;
 	
 	/**
 	 * 
 	 */
-	private JTextField jlbl_amountRows, jlbl_amountCols;
+	private MTextField jlbl_amountRows, jlbl_amountCols;
 	
 	
 	/**
@@ -84,10 +85,10 @@ public class VMat extends JPanel {
 			}
 		}
 		
-		jlbl_matrix = new JTextField[_h][_w];
+		jlbl_matrix = new MTextField[_h][_w];
 		for (int wid = 0; wid < _h; wid++) {
 			for (int heig = 0; heig < _w; heig++) {
-				jlbl_matrix[wid][heig] = new JTextField();
+				jlbl_matrix[wid][heig] = new MTextField();
 				double itW = 1.0 * (getWidth()) / _w;
 				double itH = 1.0 * (getHeight() - jlbl_amountCols.getHeight() 
 						- jlbl_amountCols.getY() - 50) / _h;
@@ -133,12 +134,12 @@ public class VMat extends JPanel {
 		super.setLayout(null);
 		super.setSize(300, 300);
 		
-		jlbl_amountCols = new JTextField("0");
+		jlbl_amountCols = new MTextField("0");
 		jlbl_amountCols.setBounds(0 * getWidth() / 2, 5, getWidth() / 2, 20);
 		jlbl_amountCols.addKeyListener(kl);
 		super.add(jlbl_amountCols);
 		
-		jlbl_amountRows = new JTextField("0");
+		jlbl_amountRows = new MTextField("0");
 		jlbl_amountRows.addKeyListener(kl);
 		jlbl_amountRows.setBounds(1 * getWidth() / 2, 5, getWidth() / 2, 20);
 		super.add(jlbl_amountRows);
@@ -161,12 +162,12 @@ public class VMat extends JPanel {
 		int height = _vals.length;
 		int width = _vals[0].length;
 		
-		jlbl_amountCols = new JTextField(width);
+		jlbl_amountCols = new MTextField(width);
 		jlbl_amountCols.setBounds(0 * getWidth() / 2, 5, getWidth() / 2, 20);
 		jlbl_amountCols.setEditable(false);
 		super.add(jlbl_amountCols);
 		
-		jlbl_amountRows = new JTextField(height);
+		jlbl_amountRows = new MTextField(height);
 		jlbl_amountRows.setBounds(1 * getWidth() / 2, 5, getWidth() / 2, 20);
 		jlbl_amountCols.setEditable(false);
 		super.add(jlbl_amountRows);

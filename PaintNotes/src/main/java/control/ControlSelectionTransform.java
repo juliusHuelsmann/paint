@@ -123,7 +123,19 @@ MouseMotionListener, MouseListener {
     /**
      * {@inheritDoc}
      */
-    public void mouseClicked(final MouseEvent _event) { }
+    public void mouseClicked(final MouseEvent _event) { 
+
+        if (_event.getSource().equals(
+                getPage().getJbtn_resize()[1][1])) {
+        	
+        	if (_event.getButton() == MouseEvent.BUTTON3) {
+        		cv.getInfo_selection().show(new Point(
+        				_event.getXOnScreen() - cv.getView().getX() - 1,
+        				_event.getYOnScreen() - cv.getView().getY() - 1));
+                cv.getControlPic().stopBorderThread();
+        	}
+        }
+    }
 
     /**
      * {@inheritDoc}

@@ -5,12 +5,12 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import control.util.MousePositionTracker;
 import model.settings.ViewSettings;
 import view.util.mega.MPanel;
+import view.util.mega.MScrollPane;
 
 
 /**
@@ -29,7 +29,7 @@ public final class Console extends MPanel {
 	/**
 	 * ScrollPane for textArea.
 	 */
-	private JScrollPane scrollPane;
+	private MScrollPane scrollPane;
 	
 	/**
 	 * The only instance of this singleton class.
@@ -105,9 +105,9 @@ public final class Console extends MPanel {
 		jta_console.setLineWrap(true);
 		jta_console.setFont(ViewSettings.GENERAL_FONT_ITEM_SMALL);
 
-		scrollPane = new JScrollPane(jta_console);
+		scrollPane = new MScrollPane(jta_console);
 		scrollPane.setVerticalScrollBarPolicy(
-				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+				MScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		jpnl_container.add(scrollPane, BorderLayout.CENTER);
 		jpnl_container.setSize(getSize());
 

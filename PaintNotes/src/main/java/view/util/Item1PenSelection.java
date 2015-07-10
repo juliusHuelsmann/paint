@@ -7,19 +7,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
 
+
 //import java.swing components
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JSlider;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeListener;
+
 
 
 //import rotatatble buttons and panels
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
-
+import view.util.mega.MSlider;
 import model.objects.pen.Pen;
 //constants and viewSettings
 import model.settings.Constants;
@@ -48,7 +49,7 @@ public class Item1PenSelection extends MPanel {
 	/**
 	 * Slider with which it is possible to change sickness.
 	 */
-	private JSlider jsl_thickness;
+	private MSlider jsl_thickness;
 	
 	/**
 	 * contains whether this pen is the pen selected for the current working 
@@ -120,7 +121,7 @@ public class Item1PenSelection extends MPanel {
 		jlbl_name.setOpaque(false);
 		super.add(jlbl_name);
 		
-		jsl_thickness = new JSlider(1, Constants.MAX_PEN_THICKNESS, 2);
+		jsl_thickness = new MSlider(1, Constants.MAX_PEN_THICKNESS, 2);
 		jsl_thickness.setPaintTicks(true);
 		jsl_thickness.setMajorTickSpacing(
 		        Constants.MAX_PEN_THICKNESS / (2 + 2));

@@ -2,14 +2,13 @@ package view.forms;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
 import model.settings.Constants;
 import model.settings.ViewSettings;
 import model.util.Util;
@@ -18,8 +17,10 @@ import control.forms.CNew;
 import control.util.MousePositionTracker;
 import view.util.Item1Button;
 import view.util.mega.MButton;
+import view.util.mega.MComboBox;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
+import view.util.mega.MTextField;
 
 /**
  * This class is the user interface for creating a new page.
@@ -77,7 +78,7 @@ public final class New extends MPanel {
     /**
      * Where to insert the new page.
      */
-    private JComboBox jcb_project;
+    private MComboBox jcb_project;
     
     /**
      * MButton for selecting something and thus completing the creation of the
@@ -95,14 +96,14 @@ public final class New extends MPanel {
     private MLabel jlbl_customWidth, jlbl_customHeight;
     
     /**
-     * Stroke jlabel.
+     * Stroke MLabel.
      */
-    private JLabel jlbl_stroke;
+    private MLabel jlbl_stroke;
     /**
      * JTextFields which will be filled manually by user with the custom
      * size of the new Page.
      */
-    private JTextField jtf_customWidth, jtf_customHeight;
+    private MTextField jtf_customWidth, jtf_customHeight;
     
     
     /*
@@ -164,7 +165,7 @@ public final class New extends MPanel {
         super.addMouseMotionListener(mpt);
         super.addMouseListener(mpt);
 
-        jlbl_stroke = new JLabel();
+        jlbl_stroke = new MLabel();
         jlbl_stroke.setFocusable(false);
         jlbl_stroke.setBorder(null);
         super.add(jlbl_stroke);
@@ -233,7 +234,7 @@ public final class New extends MPanel {
         hideCustomInformation();
 
         
-        //set size of stroke - JLabel
+        //set size of stroke - MLabel
         jlbl_stroke.setSize(getSize());
         
         //enable default values
@@ -393,7 +394,7 @@ public final class New extends MPanel {
         jlbl_sizeProject.setFocusable(false);
         jpnl_stuff.add(jlbl_sizeProject);
 
-        jcb_project = new JComboBox(new String[]{"none", "..."});
+        jcb_project = new MComboBox(new String[]{"none", "..."});
         jcb_project.setBounds(jlbl_sizeProject.getX(), 
                 jlbl_sizeProject.getHeight() + jlbl_sizeProject.getY() 
                 + distanceBetweenItems, jlbl_sizeProject.getWidth(),
@@ -431,7 +432,7 @@ public final class New extends MPanel {
                 buttonHeight);
         jpnl_stuff.add(jlbl_customHeight);
         
-        jtf_customHeight = new JTextField();
+        jtf_customHeight = new MTextField();
         jtf_customHeight.setOpaque(false);
         jtf_customHeight.addKeyListener(c_new);
         jtf_customHeight.setBorder(BorderFactory.createLineBorder(Color.gray));
@@ -452,7 +453,7 @@ public final class New extends MPanel {
                 buttonHeight);
         jpnl_stuff.add(jlbl_customWidth);
 
-        jtf_customWidth = new JTextField();
+        jtf_customWidth = new MTextField();
         jtf_customWidth.setOpaque(false);
         jtf_customWidth.addKeyListener(c_new);
         jtf_customWidth.setBorder(BorderFactory.createLineBorder(Color.gray));
@@ -721,7 +722,7 @@ public final class New extends MPanel {
     /**
      * @return the jcb_project
      */
-    public JComboBox getJcb_project() {
+    public MComboBox getJcb_project() {
         return jcb_project;
     }
 
@@ -737,7 +738,7 @@ public final class New extends MPanel {
     /**
      * @return the jtf_customWidth
      */
-    public JTextField getJtf_customWidth() {
+    public MTextField getJtf_customWidth() {
         return jtf_customWidth;
     }
 
@@ -745,7 +746,7 @@ public final class New extends MPanel {
     /**
      * @return the jtf_customHeight
      */
-    public JTextField getJtf_customHeight() {
+    public MTextField getJtf_customHeight() {
         return jtf_customHeight;
     }
 

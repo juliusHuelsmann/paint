@@ -173,7 +173,7 @@ public class PaintLabel extends MLabel {
     
     
     /**
-     * set the size of the JLabel and save the new location. Location is not 
+     * set the size of the MLabel and save the new location. Location is not 
      * set because the paint methods shell be able to decide for themselves
      * what to paint at which position.
      * 

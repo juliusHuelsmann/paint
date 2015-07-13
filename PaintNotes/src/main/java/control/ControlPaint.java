@@ -1,6 +1,7 @@
 package control;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -9,11 +10,15 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
+
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+
 import control.forms.CLoading;
 import control.forms.CNew;
 import control.forms.CPaintStatus;
 import control.forms.CQuickAccess;
+import control.forms.minorImportance.InfoSelection;
 import control.forms.tabs.CTabAbout;
 import control.forms.tabs.CTabDebug;
 import control.forms.tabs.CTabExport;
@@ -28,6 +33,7 @@ import control.interfaces.MenuListener;
 import control.util.implementations.ScrollPaneActivityListener;
 import model.Project;
 import model.debug.ActionManager;
+import model.debug.debugTools.DebugUtil;
 import model.objects.PictureOverview;
 import model.objects.Zoom;
 import model.objects.painting.PaintBI;
@@ -46,6 +52,7 @@ import model.util.Util;
 import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
 import view.View;
+import view.forms.Console;
 import view.forms.Message;
 import view.forms.Page;
 import view.forms.Tabs;
@@ -270,7 +277,12 @@ MenuListener {
      * Is null if there currently is no displayed preprint.
      */
     private Rectangle rect_preprintBounds;
-	
+    
+    /**
+     * Info selection.
+     */
+    private InfoSelection info_selection;
+    
 	/**
 	 * Constructor of the main controller class.
 	 */
@@ -323,6 +335,7 @@ MenuListener {
             zoom = new Zoom(controlPic);
             utilityControlItem2 = new CTabInsert(this);
             cTabs = new CTabs(this);
+            info_selection = new InfoSelection(this);
             
             //initialize the preprint image.
             bi_preprint = Util.getEmptyBISelection();
@@ -372,9 +385,10 @@ MenuListener {
         	//exit program
             System.exit(1);
         }
-	
+        DebugUtil.checkComponentsFocusable(getView());
 	
 	}
+	
 	
 	
 	
@@ -1062,9 +1076,25 @@ MenuListener {
                 break;
             default:
                 
+            	
+            	
                 break;
             }
         }
+        
+        
+        /*
+         * Log location information.
+         */
+        final double zoomWidth = State.getImageSize().width 
+        		/ State.getImageShowSize().width;
+        final double zoomHeight = State.getImageSize().height 
+        		/ State.getImageShowSize().height;
+        Console.getInstance().logPosition(
+        		(int) (zoomWidth * (_event.getX() 
+        				- getPage().getJlbl_painting().getLocation().getX())),
+        		(int) (zoomHeight * (_event.getY() 
+        				- getPage().getJlbl_painting().getLocation().getY())));
     		
 	}
 	
@@ -2883,4 +2913,13 @@ MenuListener {
 	public Point getPnt_startLocation() {
 		return pnt_startLocation;
 	}
+
+
+	/**
+	 * @return the info_selection
+	 */
+	public InfoSelection getInfo_selection() {
+		return info_selection;
+	}
+
 }

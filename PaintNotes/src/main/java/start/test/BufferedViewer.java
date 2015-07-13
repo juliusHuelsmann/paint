@@ -4,8 +4,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
+import view.util.mega.MLabel;
 import model.settings.State;
 import model.util.Util;
 
@@ -21,9 +21,9 @@ public final class BufferedViewer extends JFrame {
     
     
     /**
-     * The JLabel for the painting.
+     * The MLabel for the painting.
      */
-    private JLabel jlbl_painting;
+    private MLabel jlbl_painting;
     
     
     /**
@@ -42,7 +42,7 @@ public final class BufferedViewer extends JFrame {
         final int size = 100;
         super.setSize(size, size);
         
-        jlbl_painting = new JLabel();
+        jlbl_painting = new MLabel();
         jlbl_painting.setSize(getSize());
         super.add(jlbl_painting);
         
@@ -73,10 +73,10 @@ public final class BufferedViewer extends JFrame {
      */
     public static synchronized void show(final BufferedImage _bi) {
     	
-    	final boolean showEnabled = false;
+    	final boolean showEnabled = !false;
     	if (showEnabled) {
         	
-    		final int minTimeDiff = 5000;
+    		final int minTimeDiff = 5;
     		final int maxWindowSize = 700;
     		
     		State.getLogger().warning("TEST" + "BufferdViewer.show");

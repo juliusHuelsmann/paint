@@ -7,8 +7,8 @@ import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
+import view.util.mega.MLabel;
 import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
 import model.util.adt.list.SecureListSort;
@@ -18,7 +18,7 @@ public class TestList extends JFrame {
 	private SecureListSort<String> sls;
 	private String [] s_current;
 	
-	private JLabel [] jlbl_listeEntry;
+	private MLabel [] jlbl_listeEntry;
 	private JButton jbtn_next;
 	
 	private final int buttonHeight = 20;
@@ -70,9 +70,9 @@ public class TestList extends JFrame {
 			}
 		}
 		
-		jlbl_listeEntry = new JLabel[s_new.length];
+		jlbl_listeEntry = new MLabel[s_new.length];
 		for (int i = 0; i < s_new.length; i++) {
-			jlbl_listeEntry[i] = new JLabel(i + ":   " + s_new[i]);
+			jlbl_listeEntry[i] = new MLabel(i + ":   " + s_new[i]);
 			jlbl_listeEntry[i].setOpaque(true);
 			jlbl_listeEntry[i].setBounds(0,
 					jbtn_next.getY() + jbtn_next.getHeight() + (i) * buttonHeight,

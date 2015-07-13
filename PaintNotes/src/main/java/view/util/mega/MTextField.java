@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 import model.settings.State;
 
@@ -18,23 +19,28 @@ import model.settings.State;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class MLabel extends JLabel implements Mega {
+public class MTextField extends JTextField implements Mega {
 
     /**
      * Constructor. Call super - constructor.
      */
-    public MLabel() {
+    public MTextField() {
         super();
-        super.setFocusable(false);
     }
-    
+
     /**
      * Constructor. Call super - constructor.
      * @param _t the text of the Label.
      */
-    public MLabel(final String _t) {
+    public MTextField(final String _t) {
         super(_t);
-        super.setFocusable(false);
+    }
+    /**
+     * Constructor. Call super - constructor.
+     * @param _t the integer.
+     */
+    public MTextField(final int _t) {
+        super(_t);
     }
 
     /**

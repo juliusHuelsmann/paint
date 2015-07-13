@@ -6,9 +6,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import view.util.mega.MScrollPane;
 import model.settings.State;
 import model.settings.ViewSettings;
 
@@ -44,10 +44,10 @@ public final class VHistory extends JFrame implements Observer {
         jta_info.setLineWrap(true);
         jta_info.setFont(ViewSettings.GENERAL_FONT_ITEM_SMALL);
 
-        JScrollPane scrollPane = new JScrollPane(jta_info);
+        MScrollPane scrollPane = new MScrollPane(jta_info);
         scrollPane.setAutoscrolls(true);
         scrollPane.setVerticalScrollBarPolicy(
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                MScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         super.add(scrollPane, BorderLayout.CENTER);
         
         super.setVisible(true);

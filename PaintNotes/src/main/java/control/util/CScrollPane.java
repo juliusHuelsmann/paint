@@ -3,12 +3,15 @@ package control.util;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -28,7 +31,7 @@ import view.util.VScrollPane;
  * @version %I%, %U%
  */
 public class CScrollPane 
-implements MouseMotionListener, MouseListener, KeyListener {
+implements MouseMotionListener, MouseListener, KeyListener, MouseWheelListener {
 
 	
 	/**
@@ -49,6 +52,11 @@ implements MouseMotionListener, MouseListener, KeyListener {
      * The view class.
      */
     private VScrollPane view;
+    
+    /**
+     * The view class.
+     */
+    private Component cmp_focusFetcher;
 
     /*
      * interaction values
@@ -90,8 +98,10 @@ implements MouseMotionListener, MouseListener, KeyListener {
      * 
      * @param _view the view class.
      */
-    public CScrollPane(final VScrollPane _view) {
+    public CScrollPane(final VScrollPane _view,
+    		final Component _cmp_focusFetcher) {
         this.view = _view;
+        this.cmp_focusFetcher = _cmp_focusFetcher;
     }
     
     
@@ -401,12 +411,10 @@ implements MouseMotionListener, MouseListener, KeyListener {
         }
         if (_event.getSource().equals(view.getJbtn_toBottom()) 
                 || _event.getSource().equals(view.getJbtn_toTop())) {
-            
             upDownPressed = false;
         }
         
         if (activityListener != null) {
-
             activityListener.activityOccurred(_event);
         }
     }
@@ -415,7 +423,9 @@ implements MouseMotionListener, MouseListener, KeyListener {
     /**
      * {@inheritDoc}
      */
-    public final void mouseEntered(final MouseEvent _event) { }
+    public final void mouseEntered(final MouseEvent _event) { 
+    	cmp_focusFetcher.requestFocus();
+    }
 
     /**
      * {@inheritDoc}
@@ -428,9 +438,6 @@ implements MouseMotionListener, MouseListener, KeyListener {
      */
     public final void mouseMoved(final MouseEvent _event) {
 
-//        if (_event.getSource().equals(view.getJpnl_toLocate())) {
-//            view.requestFocus();
-//        }
     }
 
     /**
@@ -453,16 +460,16 @@ implements MouseMotionListener, MouseListener, KeyListener {
                         //up button and vertical scroll
                         if (_event.getKeyCode() == keyCodeUp
                                 && view.isVerticalScroll()) {
-                            addYLocation();
+                            addYLocation(1);
                         } else if (_event.getKeyCode() == keyCodeDown
                                 && view.isVerticalScroll()) {
-                            removeYLocation();
+                            removeYLocation(1);
                         } else if (_event.getKeyCode() == keyCodeLeft
                                 && !view.isVerticalScroll()) {
-                                addXLocation();   
+                                addXLocation(1);   
                         } else if (_event.getKeyCode() == keyCodeRight
                                 && !view.isVerticalScroll()) {
-                            removeXLocation();
+                            removeXLocation(1);
                         }
                     } catch (InterruptedException exception) {
 
@@ -505,7 +512,7 @@ implements MouseMotionListener, MouseListener, KeyListener {
     
 //                if (Status.isNormalRotation()) {
 
-                    removeYLocation();
+                    removeYLocation(1);
 //                } else {
 //                    addYLocation();
 //                }
@@ -513,7 +520,7 @@ implements MouseMotionListener, MouseListener, KeyListener {
 
 //                if (Status.isNormalRotation()) {
 
-                    removeXLocation();
+                    removeXLocation(1);
 //                } else {
 //                    addXLocation();
 //                }
@@ -524,7 +531,7 @@ implements MouseMotionListener, MouseListener, KeyListener {
 
 //                if (Status.isNormalRotation()) {
 
-                    addYLocation();
+                    addYLocation(1);
 //                } else {
 //                    removeYLocation();
 //                }
@@ -532,7 +539,7 @@ implements MouseMotionListener, MouseListener, KeyListener {
 
 //                if (Status.isNormalRotation()) {
 
-                    addXLocation();
+                    addXLocation(1);
 //                } else {
 //                    removeXLocation();
 //                }
@@ -544,10 +551,10 @@ implements MouseMotionListener, MouseListener, KeyListener {
     /**
      * remove x location.
      */
-    private void removeXLocation() {
+    private void removeXLocation(final int _factor) {
         
 
-            int x = view.getJpnl_toLocate().getLocation().x - moveStep;
+            int x = view.getJpnl_toLocate().getLocation().x - moveStep * _factor;
             if (x < -view.getJpnl_toLocate().getWidth()
                     + view.getJpnl_owner().getWidth()) {
                 x = -view.getJpnl_toLocate().getWidth()
@@ -564,12 +571,12 @@ implements MouseMotionListener, MouseListener, KeyListener {
     /**
      * increase x location.
      */
-    private void addXLocation() {
+    private void addXLocation(final int _factor) {
         
         
         
 
-            int x = view.getJpnl_toLocate().getLocation().x + moveStep;
+            int x = view.getJpnl_toLocate().getLocation().x + moveStep * _factor;
             if (x > 0) {
                 x = 0;
             }
@@ -583,9 +590,9 @@ implements MouseMotionListener, MouseListener, KeyListener {
     /**
      * decrease y location.
      */
-    private void removeYLocation() {
+    private void removeYLocation(final int _factor) {
 
-        int y = view.getJpnl_toLocate().getLocation().y - moveStep;
+        int y = view.getJpnl_toLocate().getLocation().y - moveStep * _factor;
             if (y < -view.getJpnl_toLocate().getHeight()
                     + view.getJpnl_owner().getHeight()) {
                 y = -view.getJpnl_toLocate().getHeight()
@@ -602,8 +609,8 @@ implements MouseMotionListener, MouseListener, KeyListener {
     /**
      * increase y location.
      */
-    private void addYLocation() {
-        int y = view.getJpnl_toLocate().getLocation().y + moveStep;
+    private void addYLocation(final int _factor) {
+        int y = view.getJpnl_toLocate().getLocation().y + moveStep * _factor;
         
 
             if (y > 0) {
@@ -679,5 +686,27 @@ implements MouseMotionListener, MouseListener, KeyListener {
                             - view.getJpnl_owner().getWidth()) / cent, 
                             view.getJpnl_toLocate().getLocation().y);
         }
+    }
+
+
+	public void mouseWheelMoved(final MouseWheelEvent _event) {
+
+    	int de = _event.getUnitsToScroll();
+        int absde = Math.abs(de);
+
+      //up button and vertical scroll
+      if (de > 0 && !_event.isShiftDown()
+              && view.isVerticalScroll()) {
+          addYLocation(absde);
+      } else if (de < 0 && !_event.isShiftDown()
+              && view.isVerticalScroll()) {
+          removeYLocation(absde);
+      } else if (de > 0 && _event.isShiftDown()
+              && !view.isVerticalScroll()) {
+              addXLocation(absde);   
+      } else if (de < 0 && _event.isShiftDown()
+              && !view.isVerticalScroll()) {
+          removeXLocation(absde);
+      }
     }
 }

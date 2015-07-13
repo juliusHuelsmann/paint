@@ -7,10 +7,10 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 import model.settings.ViewSettings;
+import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
 
@@ -57,10 +57,10 @@ public class Help extends MPanel {
 	
 	
 	/**
-	 * JLabel which contains background image (auto generated if displayed 
+	 * MLabel which contains background image (auto generated if displayed 
 	 * (and size is changed).
 	 */
-	private JLabel jlbl_background, jlbl_headline;
+	private MLabel jlbl_background, jlbl_headline;
 	
 	
 	/**
@@ -75,7 +75,7 @@ public class Help extends MPanel {
 		
 		this.jf_owner = _view;
 		
-		jlbl_headline = new JLabel("Hilfe");
+		jlbl_headline = new MLabel("Hilfe");
 		jlbl_headline.setFocusable(false);
 		jlbl_headline.setOpaque(false);
 		jlbl_headline.setForeground(Color.gray);
@@ -90,7 +90,7 @@ public class Help extends MPanel {
 		jta_content.setFocusable(false);
 		super.add(jta_content);
 		
-		jlbl_background = new JLabel();
+		jlbl_background = new MLabel();
 		jlbl_background.setOpaque(false);
 		jlbl_background.setFocusable(false);
 		super.add(jlbl_background);

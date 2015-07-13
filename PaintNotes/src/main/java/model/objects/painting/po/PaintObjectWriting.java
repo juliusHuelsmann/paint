@@ -6,11 +6,13 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.settings.State;
 import model.util.DPoint;
+import model.util.DRect;
 import model.util.Util;
 import model.util.adt.list.List;
 import model.util.adt.list.SecureList;
@@ -182,7 +184,7 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
     @Override 
     public final BufferedImage paint(final BufferedImage _bi, 
             final boolean _final, final BufferedImage _g, final int _x, 
-            final int _y, final Rectangle _rVisibleScope) {
+            final int _y, final DRect _rVisibleScope) {
         
         return getPen().paintToImage(
                 _bi, this, _final, new DPoint(_x, _y), _g, _rVisibleScope);

@@ -5,7 +5,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
+import javax.swing.BoundedRangeModel;
 import javax.swing.JLabel;
+import javax.swing.JSlider;
 
 import model.settings.State;
 
@@ -18,24 +20,41 @@ import model.settings.State;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class MLabel extends JLabel implements Mega {
+public class MSlider extends JSlider implements Mega {
 
     /**
      * Constructor. Call super - constructor.
      */
-    public MLabel() {
+    public MSlider() {
         super();
         super.setFocusable(false);
     }
     
+
     /**
      * Constructor. Call super - constructor.
-     * @param _t the text of the Label.
+    /**
+     * Creates a horizontal slider using the specified min, max and value.
+     * <p>
+     * The <code>BoundedRangeModel</code> that holds the slider's data
+     * handles any issues that may arise from improperly setting the
+     * minimum, initial, and maximum values on the slider.  See the
+     * {@code BoundedRangeModel} documentation for details.
+     *
+     * @param min  the minimum value of the slider
+     * @param max  the maximum value of the slider
+     * @param value  the initial value of the slider
+     *
+     * @see BoundedRangeModel
+     * @see #setMinimum
+     * @see #setMaximum
+     * @see #setValue
      */
-    public MLabel(final String _t) {
-        super(_t);
+    public MSlider(final int _min, final int _max, final int _value) {
+        super(_min, _max, _value);
         super.setFocusable(false);
     }
+    
 
     /**
      * Turn the owned components.

@@ -7,17 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import javax.imageio.ImageIO;
-
 import start.Start;
 import model.objects.painting.PaintBI;
 import model.settings.Constants;
@@ -144,10 +135,8 @@ public final class Utils {
         if (_path == "") {
             return null;
         }
-        
-        String myPath = Start.class.getResource(_path).getPath();
-        myPath = convertString(myPath);
-        File inputFile = new File(myPath);
+   //     String myPath = Start.class.getResource(_path).getPath();
+   //     myPath = convertString(myPath);
         BufferedImage bi;
         try {
 
@@ -166,7 +155,7 @@ public final class Utils {
             g.dispose();
             return outImg;
         } catch (IOException e) {
-        	System.out.println(myPath);
+     //   	System.out.println(myPath);
         	System.out.println(e);
         	System.out.println("FEHLER:::");
         	
@@ -244,6 +233,46 @@ public final class Utils {
         	
         }
     }
+    
+    
+    
+    
+
+    /**
+     * reads a BufferedImage (input path, output BufferedImage).
+     * 
+     * @param _width the width of the new image
+     * @param _height the height of the new image
+     * @param _path the path  of the buffered image to be transformed
+     * @return the transformed bufferedImage 
+     */
+    public static BufferedImage readImageFromOutiseJar(final String _path) {
+
+        //if path is null return null
+        if (_path == "") {
+            return null;
+        }
+        
+        File inputFile = new File(_path);
+        BufferedImage bi;
+        try {
+
+            bi = ImageIO.read(inputFile);
+
+            return bi;
+        } catch (IOException e) {
+        	e.printStackTrace();
+        	return null;
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     
     /**
      * returns a resized image (rotated or not).

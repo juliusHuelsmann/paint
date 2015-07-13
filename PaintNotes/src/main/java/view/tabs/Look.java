@@ -3,10 +3,10 @@ package view.tabs;
 
 //import declarations
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
 import view.forms.Help;
+import view.util.mega.MComboBox;
 import view.util.mega.MLabel;
 import model.settings.Constants;
 import model.settings.State;
@@ -34,13 +34,13 @@ public final class Look extends Tab {
     /**
      * The JCombo boxes for the size of the border.
      */
-    private JComboBox jcb_margeTop, jcb_margeLeft, jcb_margeRight,
+    private MComboBox jcb_margeTop, jcb_margeLeft, jcb_margeRight,
     jcb_margeBottom;
     
     /**
      * The JCombo box for displaying of alpha.
      */
-    private JComboBox jcb_displayAlpha;
+    private MComboBox jcb_displayAlpha;
 
     /**
      * Title JLabel.
@@ -227,7 +227,7 @@ public final class Look extends Tab {
             jlbl_subtitle_borderTop.setFocusable(false);
             super.add(jlbl_subtitle_borderTop);
             
-            jcb_margeTop = new JComboBox(Constants.getBorderPercentagesTitle());
+            jcb_margeTop = new MComboBox(Constants.getBorderPercentagesTitle());
         }
         jcb_margeTop.setSize(jlbl_subtitle_borderTop.getSize());
         jcb_margeTop.setLocation(jlbl_subtitle_borderTop.getX() 
@@ -256,7 +256,7 @@ public final class Look extends Tab {
             super.add(jlbl_subtitle_borderBottom);
           
             //bottom
-            jcb_margeBottom = new JComboBox(
+            jcb_margeBottom = new MComboBox(
             		Constants.getBorderPercentagesTitle());
         }
         jcb_margeBottom.setSize(jlbl_subtitle_borderTop.getSize());
@@ -285,7 +285,7 @@ public final class Look extends Tab {
             jlbl_subtitle_borderLeft.setFocusable(false);
             super.add(jlbl_subtitle_borderLeft);
 
-            jcb_margeLeft = new JComboBox(
+            jcb_margeLeft = new MComboBox(
             		Constants.getBorderPercentagesTitle());
         }
         
@@ -319,7 +319,7 @@ public final class Look extends Tab {
              jlbl_subtitle_borderRight.setFocusable(false);
              super.add(jlbl_subtitle_borderRight);
              
-             jcb_margeRight = new JComboBox(
+             jcb_margeRight = new MComboBox(
             		 Constants.getBorderPercentagesTitle());
         }
        
@@ -477,7 +477,7 @@ public final class Look extends Tab {
             jlbl_subtitle_alpha.setFocusable(false);
             super.add(jlbl_subtitle_alpha);
             
-            jcb_displayAlpha = new JComboBox(new String[]{Constants.ID_WHITE,
+            jcb_displayAlpha = new MComboBox(new String[]{Constants.ID_WHITE,
                     Constants.ID_DISPLAY_ALPHA});
         }
         jcb_displayAlpha.setSize(jlbl_displayAlphaTitle.getWidth()
@@ -530,7 +530,7 @@ public final class Look extends Tab {
     /**
      * @return the jcb_margeTop
      */
-    public JComboBox getJcb_margeTop() {
+    public MComboBox getJcb_margeTop() {
         return jcb_margeTop;
     }
 
@@ -539,7 +539,7 @@ public final class Look extends Tab {
     /**
      * @return the jcb_margeLeft
      */
-    public JComboBox getJcb_margeLeft() {
+    public MComboBox getJcb_margeLeft() {
         return jcb_margeLeft;
     }
 
@@ -547,7 +547,7 @@ public final class Look extends Tab {
     /**
      * @return the jcb_margeRight
      */
-    public JComboBox getJcb_margeRight() {
+    public MComboBox getJcb_margeRight() {
         return jcb_margeRight;
     }
 
@@ -555,7 +555,7 @@ public final class Look extends Tab {
     /**
      * @return the jcb_margeBottom
      */
-    public JComboBox getJcb_margeBottom() {
+    public MComboBox getJcb_margeBottom() {
         return jcb_margeBottom;
     }
 
@@ -563,7 +563,7 @@ public final class Look extends Tab {
     /**
      * @return the jcb_displayAlpha
      */
-    public JComboBox getJcb_displayAlpha() {
+    public MComboBox getJcb_displayAlpha() {
         return jcb_displayAlpha;
     }
 

@@ -4,11 +4,12 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+
+import view.util.mega.MComboBox;
+import view.util.mega.MLabel;
 
 
 /**
@@ -35,13 +36,13 @@ public class VTimeLog extends JPanel {
 	/**
 	 * 
 	 */
-	private JComboBox jcb_currentOperation;
+	private MComboBox jcb_currentOperation;
 	
 	
 	/**
 	 * 
 	 */
-	private JLabel jlbl_start, jlbl_time;
+	private MLabel jlbl_start, jlbl_time;
 	
 
 	/**
@@ -74,9 +75,9 @@ public class VTimeLog extends JPanel {
 		jbtn_startLog.addActionListener(al);
 		super.add(jbtn_startLog);
 
-		jlbl_start = new JLabel("");
+		jlbl_start = new MLabel("");
 		jlbl_start.setOpaque(false);
-		jlbl_time = new JLabel("");
+		jlbl_time = new MLabel("");
 		jlbl_time.setOpaque(false);
 		jtbl_content = new JTable(
 				new String[][]{},
@@ -121,7 +122,7 @@ public class VTimeLog extends JPanel {
 			remove(jcb_currentOperation);
 		}
 
-		jcb_currentOperation = new JComboBox(_headlines);
+		jcb_currentOperation = new MComboBox(_headlines);
 		jcb_currentOperation.addActionListener(al);
 		super.add(jcb_currentOperation);
 		setSize(getWidth(), getHeight());
@@ -250,7 +251,7 @@ public class VTimeLog extends JPanel {
 	/**
 	 * @return the jcb_currentOperation
 	 */
-	public final JComboBox getJcb_currentOperation() {
+	public final MComboBox getJcb_currentOperation() {
 		return jcb_currentOperation;
 	}
 
@@ -259,7 +260,7 @@ public class VTimeLog extends JPanel {
 	/**
 	 * @return the jlbl_start
 	 */
-	public final JLabel getJlbl_start() {
+	public final MLabel getJlbl_start() {
 		return jlbl_start;
 	}
 
@@ -268,7 +269,7 @@ public class VTimeLog extends JPanel {
 	/**
 	 * @return the jlbl_time
 	 */
-	public final JLabel getJlbl_time() {
+	public final MLabel getJlbl_time() {
 		return jlbl_time;
 	}
 

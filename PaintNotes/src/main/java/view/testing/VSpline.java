@@ -11,8 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
+import view.util.mega.MTextField;
 import model.objects.pen.Pen;
 import model.util.DPoint;
 import model.util.adt.list.List;
@@ -27,14 +27,14 @@ public class VSpline extends JPanel {
 
 	
 	/**
-	 * JTextField that displays the matrix.
+	 * MTextField that displays the matrix.
 	 */
-	private JTextField[][] jlbl_matrix;
+	private MTextField[][] jlbl_matrix;
 	
 	/**
-	 * JTextField for setting the amount of points.
+	 * MTextField for setting the amount of points.
 	 */
-	private JTextField jlbl_amountPoints;
+	private MTextField jlbl_amountPoints;
 	
 	/**
 	 * JButton which for enabling spline.
@@ -143,10 +143,10 @@ public class VSpline extends JPanel {
 			}
 		}
 		
-		jlbl_matrix = new JTextField[_amountPoints][amountCoordinates];
+		jlbl_matrix = new MTextField[_amountPoints][amountCoordinates];
 		for (int h = 0; h < _amountPoints; h++) {
 			for (int w = 0; w < amountCoordinates; w++) {
-				jlbl_matrix[h][w] = new JTextField();
+				jlbl_matrix[h][w] = new MTextField();
 				double itW = 1.0 * (getWidth()) / amountCoordinates;
 				double itH = 1.0 * (getHeight() - jlbl_amountPoints.getHeight()
 						- jlbl_amountPoints.getY() - 50) / _amountPoints;
@@ -196,7 +196,7 @@ public class VSpline extends JPanel {
 		super.setLayout(null);
 		super.setSize(size, size);
 		this.c = _c;
-		jlbl_amountPoints = new JTextField("0");
+		jlbl_amountPoints = new MTextField("0");
 		jlbl_amountPoints.setBounds(0 * getWidth(), 5, getWidth() / 2, 20);
 		jlbl_amountPoints.addKeyListener(kl);
 		super.add(jlbl_amountPoints);

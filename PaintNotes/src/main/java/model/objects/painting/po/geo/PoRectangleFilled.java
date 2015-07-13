@@ -12,6 +12,7 @@ import model.objects.painting.po.PaintObject;
 import model.objects.pen.Pen;
 import model.settings.State;
 import model.util.DPoint;
+import model.util.DRect;
 
 /**
  * The paintObject corresponds to one item that has been painted. It consists
@@ -81,7 +82,7 @@ public class PoRectangleFilled extends POInsertion {
     @Override 
     public final BufferedImage paint(final BufferedImage _bi, 
             final boolean _final, final BufferedImage _g, final int _x, 
-            final int _y, final Rectangle _r) {
+            final int _y, final DRect _r) {
         
 
         if (getPnt_first() == null || getPnt_last() == null) {

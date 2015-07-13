@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 
 import model.settings.State;
 
@@ -18,25 +19,31 @@ import model.settings.State;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public class MLabel extends JLabel implements Mega {
+public class MScrollPane extends JScrollPane implements Mega {
 
     /**
      * Constructor. Call super - constructor.
      */
-    public MLabel() {
+    public MScrollPane() {
         super();
         super.setFocusable(false);
     }
     
     /**
-     * Constructor. Call super - constructor.
-     * @param _t the text of the Label.
+     * Creates a <code>JScrollPane</code> that displays the
+     * contents of the specified
+     * component, where both horizontal and vertical scrollbars appear
+     * whenever the component's contents are larger than the view.
+     *
+     * @see #setViewportView
+     * @param view the component to display in the scrollpane's viewport
      */
-    public MLabel(final String _t) {
-        super(_t);
+    public MScrollPane(final Component _view) {
+        super(_view);
         super.setFocusable(false);
     }
-
+    
+    
     /**
      * Turn the owned components.
      */

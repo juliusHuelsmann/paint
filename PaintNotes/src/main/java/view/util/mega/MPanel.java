@@ -16,6 +16,9 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class MPanel extends JPanel implements Mega {
 
+	public MPanel() {
+		super.setFocusable(false);
+	}
     
     /**
      * Turn the owned components.

@@ -8,15 +8,17 @@ import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+
 import model.settings.Constants;
 import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
 import view.forms.Help;
+import view.forms.InfoForm;
 import view.forms.Loading;
 import view.forms.Message;
 import view.forms.Page;
@@ -26,6 +28,7 @@ import view.util.mega.MFrame;
 import view.util.mega.MLabel;
 import control.ControlPaint;
 import control.forms.ControlView;
+import control.forms.minorImportance.InfoSelection;
 import control.util.WindowMover;
 
 
@@ -51,7 +54,7 @@ import control.util.WindowMover;
 	
     
 	/**
-	 * JLabel which contains the program title (for start fade in) and JLabel
+	 * MLabel which contains the program title (for start fade in) and MLabel
 	 * for painting border of JFrame if non-fullscreen mode is enabled.
 	 * Only question of design (no real usage).
 	 */
@@ -81,6 +84,11 @@ import control.util.WindowMover;
 	private ControlView cv;
 	
 	/**
+	 * Info form which delivers.
+	 */
+	private InfoForm info_form;
+	
+	/**
 	 */
 	public View() {
 		
@@ -103,8 +111,7 @@ import control.util.WindowMover;
         cv = new ControlView(this, _cp.getcTabPaint());
         
         
-        
-        JLabel jlbl_backgroundStroke = new JLabel();
+        MLabel jlbl_backgroundStroke = new MLabel();
         jlbl_backgroundStroke.setSize(getSize());
         jlbl_backgroundStroke.setVisible(true);
         super.add(jlbl_backgroundStroke);
@@ -165,6 +172,9 @@ import control.util.WindowMover;
 //        loading = new Loading();
 //        super.add(loading);
         page = new Page(_cp);
+        
+        info_form = new InfoForm();
+        super.add(info_form);
         
         
         tabs = new Tabs(this);
@@ -279,7 +289,7 @@ import control.util.WindowMover;
         final boolean fade = false;
         
         /**
-         * The maximum mount of movements the JLabel performs.
+         * The maximum mount of movements the MLabel performs.
          */
         final int maxAmountMovement = 2;
         
@@ -292,7 +302,7 @@ import control.util.WindowMover;
 
         	return null;
         }
-        //initialize the JLabel and set view visible
+        //initialize the MLabel and set view visible
         jlbl_title = new MLabel("Paint!");
         jlbl_title.setBounds(title_start_x, title_start_y,
                 title_start_width, title_start_height);
@@ -330,7 +340,7 @@ import control.util.WindowMover;
         };
 
         t_waitFor.start();
-        //move JLabel into the graphical user interface.
+        //move MLabel into the graphical user interface.
         for (int i = 0; i < dsgn_max_moveTitle; i++) {
         	jlbl_title.setBounds((int) (title_start_x 
         			+ (getWidth() + title_start_width) / 2 * ((i))
@@ -345,11 +355,11 @@ import control.util.WindowMover;
         }
                 
         /**
-         * The last position of the title-JLabel. Used for 
+         * The last position of the title-MLabel. Used for 
          */
         int lastPosition = -1;
 
-        //let JLabel swing.
+        //let MLabel swing.
         for (int anzSteps = 1; 
         		anzSteps <= maxAmountMovement; 
         		anzSteps++) {
@@ -384,7 +394,7 @@ import control.util.WindowMover;
                     }
                 }
                 
-                //move JLabel out of the graphical user interface.
+                //move MLabel out of the graphical user interface.
                 for (int i = 0; i < dsgn_max_moveTitle; i++) {
 
                     jlbl_title.setBounds(
@@ -680,6 +690,13 @@ import control.util.WindowMover;
 	 */
 	public Help getHelp() {
 		return help;
+	}
+
+	/**
+	 * @return the info_form
+	 */
+	public InfoForm getInfo_form() {
+		return info_form;
 	}
 
 }

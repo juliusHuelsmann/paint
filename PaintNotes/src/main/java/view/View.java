@@ -168,16 +168,23 @@ import control.util.WindowMover;
         jbtn_fullscreen.setFocusable(false);
         super.add(jbtn_fullscreen);
 
-        
 //        loading = new Loading();
 //        super.add(loading);
         page = new Page(_cp);
+        tabs = new Tabs(this);
+        
+
+        flip();
+        super.setVisible(true);
+        if (!ViewSettings.isFullscreen()) {
+            super.getContentPane().setBackground(Color.white);
+            super.setLocationRelativeTo(null);
+        }
         
         info_form = new InfoForm();
         super.add(info_form);
         
         
-        tabs = new Tabs(this);
         tabs.initialize(this, _cp);
         
 
@@ -195,10 +202,6 @@ import control.util.WindowMover;
         flip();
         repaint();
 
-        if (!ViewSettings.isFullscreen()) {
-            super.getContentPane().setBackground(Color.white);
-            super.setLocationRelativeTo(null);
-        }
         /*
          * add Message form, tab, overview about paintObjects and Page
          */

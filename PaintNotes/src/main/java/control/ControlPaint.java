@@ -345,7 +345,7 @@ MenuListener {
             State.getLogger().info("initialize view class and set visible.");
 
             view = new View();
-            System.err.println(System.currentTimeMillis() - startTime);
+            System.err.println("h" + (System.currentTimeMillis() - startTime));
             view.initialize(this);	//1000MS
             System.err.println(System.currentTimeMillis() - startTime);
             view.setVisible(true);	// 400MS

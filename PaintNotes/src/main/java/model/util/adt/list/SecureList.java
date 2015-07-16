@@ -1,5 +1,6 @@
 package model.util.adt.list;
 
+import java.awt.Point;
 import java.io.Serializable;
 
 import model.settings.State;
@@ -367,6 +368,13 @@ public class SecureList<SecureListType> implements Serializable {
      */
     public final synchronized DPoint[] toArray() {
     	return ls.toArray();
+    }
+    /**
+     * List to array method.
+     * @return the array from list.
+     */
+    public final synchronized Point[] toPntArray() {
+    	return ls.toPntArray();
     }
     /**
      * List to array method.

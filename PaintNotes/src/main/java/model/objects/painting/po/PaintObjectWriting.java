@@ -1,16 +1,24 @@
-//package declaration
+ //package declaration
 package model.objects.painting.po;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.math.BigInteger;
 
+import javax.swing.JFrame;
+
+import org.hamcrest.Factory;
+
+import start.test.BufferedViewer;
 import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.settings.State;
+import model.util.BinKoeff;
 import model.util.DPoint;
 import model.util.DRect;
 import model.util.Util;
@@ -1906,6 +1914,98 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
     }
 
 
+    /**
+     * List which contains the deCastlejeauPoints.
+     */
+    private SecureList<Point> ls_deCastlejeauPoints;
+    
+    
+    public static void main(String[]args) {
+    	deCasteljau(null, true);
+    }
+    /**
+     * Adapted DeCasteljau algorithm for font-smootihng.
+     * 
+     * If one point is added, it is not necessary to compute the new point
+     */
+    public final static BufferedImage deCasteljau(final Point[] _b, final boolean _paint) {
+
+    	
+    	int scale = 5;
+    	int size = 100 * scale;
+    	int shift = size / 3;
+    	BufferedImage bi_test = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+    	// Test function
+    	Point[] b = new Point[] {new Point(10 * scale + shift, 20 * scale + shift),
+    			new Point (20 * scale + shift, 40* scale+ shift), 
+    			new Point (20 * scale + shift, 40* scale+ shift), 
+    			new Point (50* scale+ shift, 5* scale+ shift), 
+    			new Point (50* scale+ shift, 5* scale+ shift), 
+    			new Point(30* scale+ shift, 30* scale+ shift)};
+    	if (_b != null)
+    		b = _b;
+    		
+    	int len = 0;
+    	for (int i = 0; i < b.length-1; i++) {
+			len += Math.abs(b[i].x - b[i+1].x) + Math.abs(b[i].y - b[i+1].y);
+		}
+    	
+    	Graphics g = bi_test.getGraphics();
+
+    	
+    	if (_paint) {
+    		
+        	g.setColor(Color.red);
+        	int paintrect = 10;
+        	for (int i = 0; i < b.length; i++) {
+        		g.drawRoundRect(b[i].x - paintrect / 2, b[i].y - paintrect / 2, paintrect, paintrect, 3, 3);
+            	g.drawString(i +"", b[i].x , b[i].y);
+    		}
+
+    	}
+    	
+    	
+    	Point pnt_predecessor = b[0];
+    	final int k = b.length - 1;
+    	for (int i = 1; i < len; i++) {
+    		double val1 = 1.0 * len/ i;
+    		double x = 0, y = 0;
+    		
+        	for (int j = 0; j <= k; j++) {
+        		
+        		if (j == 0) {
+        			val1 = 1.0;
+        		} else  {
+
+            		val1 = 1.0 * val1 * i / len;
+        		}
+        		
+        		double val2 = 1.0 * Math.pow(1.0 * (len - i) / len, k - j);
+        		double factor = BinKoeff.binKoeff(k, j);
+        		
+        		x += 1.0 * b[j].x * factor * val1 * val2;
+        		y += 1.0 * b[j].y * factor * val1 * val2;
+        		
+    		}
+        	g.setColor(new Color(255 - 255*i / len,255 *i / len,255));
+
+    		Point pnt_new = new Point((int) x, (int) y);
+    	
+    		g.drawLine(pnt_predecessor.x, pnt_predecessor.y, pnt_new.x, pnt_new.y);
+    		pnt_predecessor = pnt_new;
+		}
+    	
+    	if (_paint) {
+    		BufferedViewer.show(bi_test);
+        	BufferedViewer.getInstance().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        	
+    	}
+    	
+    	return bi_test;
+    	
+    }
+    
+    
     
     /**
      * {@inheritDoc}

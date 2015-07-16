@@ -1926,11 +1926,13 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
     /**
      * Adapted DeCasteljau algorithm for font-smootihng.
      * 
+     * Wenn maximaler Abstandswert von den stützstellen überschritten wird,
+     * wird separiert.
+     * 
      * If one point is added, it is not necessary to compute the new point
      */
     public final static BufferedImage deCasteljau(final Point[] _b, final boolean _paint) {
 
-    	
     	int scale = 5;
     	int size = 100 * scale;
     	int shift = size / 3;
@@ -1944,6 +1946,7 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
     			new Point(30* scale+ shift, 30* scale+ shift)};
     	if (_b != null)
     		b = _b;
+    	System.out.println("#Punkte "+ b.length);
     		
     	int len = 0;
     	for (int i = 0; i < b.length-1; i++) {

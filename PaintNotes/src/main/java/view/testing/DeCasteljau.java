@@ -81,8 +81,8 @@ public class DeCasteljau extends JFrame {
 			
 			public void mouseDragged(MouseEvent e) {
 				pnt.insertAtTheEnd(e.getPoint(), SecureListSort.ID_NO_PREDECESSOR);
-				pnt.insertAtTheEnd(e.getPoint(), SecureListSort.ID_NO_PREDECESSOR);
-				pnt.insertAtTheEnd(e.getPoint(), SecureListSort.ID_NO_PREDECESSOR);
+//				pnt.insertAtTheEnd(e.getPoint(), SecureListSort.ID_NO_PREDECESSOR);
+//				pnt.insertAtTheEnd(e.getPoint(), SecureListSort.ID_NO_PREDECESSOR);
 				show(PaintObjectWriting.deCasteljau(pnt.toPntArray(), false));
 			}
 		});

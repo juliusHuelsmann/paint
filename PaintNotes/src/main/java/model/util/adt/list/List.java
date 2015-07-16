@@ -2,6 +2,7 @@
 package model.util.adt.list;
 
 //import declaration
+import java.awt.Point;
 import java.io.Serializable;
 
 import model.objects.painting.po.PaintObject;
@@ -497,6 +498,50 @@ public class List<Type> implements Serializable {
     		//if item is not a DPoint it is not
     		if (getItem() instanceof DPoint) {
     			ret [i] = (DPoint) getItem();
+    			i++;
+    		}
+    		next();
+    	}
+    	
+    	//reset current element
+        elemCurrent = oldCurrent;
+        
+        //return the array
+    	return ret;
+    }
+    
+    /**
+     * List to array method.
+     * @return the array from list.
+     */
+    public final synchronized Point[] toPntArray() {
+
+    	//save the current element of the beginning of passing the list
+    	Element<Type> oldCurrent = elemCurrent;
+    	
+    	//get the length of the array by passing the list once. If the element
+    	//is not a DPoint do not count it.
+    	int length = 0;
+    	toFirst();
+    	while (!isBehind()) {
+    		if (getItem() instanceof Point) {
+        		length++;
+    		}
+    		next();
+    	}
+
+    	//create array of DPoints
+    	Point[] ret = new Point[length];
+    	
+    	
+    	//fill the array
+    	toFirst();
+    	int i = 0;
+    	while (!isBehind()) {
+
+    		//if item is not a DPoint it is not
+    		if (getItem() instanceof Point) {
+    			ret [i] = (Point) getItem();
     			i++;
     		}
     		next();

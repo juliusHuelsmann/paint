@@ -269,6 +269,11 @@ public abstract class PaintObjectPen extends PaintObject implements Cloneable {
         pen.setClr_foreground(_clr);
     }
     
+    
+    
+    
+    
+    
     /**
 	 * getter method for pen. is used (e.g.) to
 	 *     reset the Border starting index at Curve Selection Pen.

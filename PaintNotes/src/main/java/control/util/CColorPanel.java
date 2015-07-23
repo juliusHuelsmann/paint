@@ -180,6 +180,11 @@ MouseMotionListener {
 	private void updateColor(final MouseEvent _event) {
 
 		try {
+			if (_event.getX() < 0 || _event.getY() < 0
+					|| _event.getX() >= bi_colors.getWidth() 
+					|| _event.getY() >= bi_colors.getHeight()) {
+				return;
+			}
 			
 			//fetch color 
 			

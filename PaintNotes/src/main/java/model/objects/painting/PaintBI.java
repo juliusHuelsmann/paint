@@ -28,6 +28,11 @@ public final class PaintBI {
         
     }
     
+//    /**
+//     * Colored rectangle which is saved for performance purpose.
+//     */
+//    private static int[] rectColored = null;
+    
     
     /**
      * fill rectangle quickly in a certain color.
@@ -42,21 +47,42 @@ public final class PaintBI {
             final BufferedImage _bi, 
             final Color _clr,
             final Rectangle _r) {
-        
-        //go through the coordinates of the rectangle and paint
-        for (int x = 0; x < _r.width; x++) {
-            for (int y = 0; y < _r.height; y++) {
 
-                //painting points
-                if (
-                		_r.y + y < _bi.getHeight() && _r.y + y >= 0
-                        && _r.x + x < _bi.getWidth() && _r.x + x >= 0) {
-                    
-                    _bi.setRGB(_r.x + x, _r.y + y, _clr.getRGB());
+//    	if (rectColored == null 
+//    			|| _r.x + _r.width >= _bi.getWidth()
+//    			|| _r.y + _r.height >= _bi.getHeight()
+//    			|| _r.width * _r.height != rectColored.length
+//    			|| rectColored.length == 0
+//    			|| rectColored[0] != _clr.getRGB()) {
+
+//    		if (_r.width > 0 && _r.height > 0) {
+//
+//        		rectColored = new int[_r.width * _r.height];
+//    		}
+    		final int rgb = _clr.getRGB();
+    		
+            //go through the coordinates of the rectangle and paint
+            for (int x = 0; x < _r.width; x++) {
+                for (int y = 0; y < _r.height; y++) {
+
+                    //painting points
+                    if (
+                    		_r.y + y < _bi.getHeight() && _r.y + y >= 0
+                            && _r.x + x < _bi.getWidth() && _r.x + x >= 0) {
+//                        rectColored[x * _r.height + y] = rgb;
+                        _bi.setRGB(_r.x + x, _r.y + y, rgb);
+                    }
                 }
-                 
             }
-        }
+//    	} else {
+//    		
+//    		// rectColored != null 
+//        	// _r.width * _r.height == rectColored.length
+//        	// rectColored.length > 0
+//        	// rectColored[0] == _clr.getRGB()
+//    		_bi.setRGB(_r.x, _r.y, _r.width, _r.height, rectColored, 1, _r.width);
+//    	}
+        
     }
     
     

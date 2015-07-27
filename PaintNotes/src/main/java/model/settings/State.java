@@ -1230,4 +1230,23 @@ public final class State {
 		}
 		return null;
 	}
+
+
+
+
+
+
+
+
+
+
+
+	public static boolean isBorder() {
+		
+		return (indexPageBackground != Constants.CONTROL_PAGE_BACKGROUND_NONE
+				|| borderTopPercentShow != 0
+				|| borderRightPercentShow != 0
+				|| borderBottomPercentShow != 0
+				|| borderLeftPercentShow != 0);
+	}
 }

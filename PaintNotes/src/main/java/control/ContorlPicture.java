@@ -569,23 +569,28 @@ public class ContorlPicture implements PaintListener {
 							maintainHeight, 
 							rgbArray,  0, maintainWidth);
 					
-					//for the background the same stuff:
-					//TODO:
-					rgbArray = bi_background.getRGB(
-							maintainStartX, 
-							maintainStartY, 
-							maintainWidth, 
-							maintainHeight, 
-							rgbArray, 0, maintainWidth);
-					
-					//write the maintained RGB array to shifted coordinates.
-					bi_background.setRGB(shiftedStartX, 
-							shiftedStartY, 
-							maintainWidth,
-							maintainHeight, 
-							rgbArray,  0, maintainWidth);
-					
-					
+					final boolean backgroundEnabled 
+					= State.isBorder();
+
+					if (backgroundEnabled) {
+						//for the background the same stuff:
+						rgbArray = bi_background.getRGB(
+								maintainStartX, 
+								maintainStartY, 
+								maintainWidth, 
+								maintainHeight, 
+								rgbArray, 0, maintainWidth);
+						
+						//write the maintained RGB array to shifted coordinates.
+						bi_background.setRGB(shiftedStartX, 
+								shiftedStartY, 
+								maintainWidth,
+								maintainHeight, 
+								rgbArray,  0, maintainWidth);
+						
+						
+						
+					}
 					
 					/*
 					 * paint the new stuff. 
@@ -640,17 +645,20 @@ public class ContorlPicture implements PaintListener {
 
 					//BufferedImage
 					
-					refreshRectangleBackground(refreshWidthX, refreshWidthY, 
-							refreshWidthWidth, refreshWidthHeight);
-					
-					refreshRectangleBackground(refreshHeightX, refreshHeightY, 
-							refreshHeightWidth, refreshHeightHeight);
-					
+					if (backgroundEnabled) {
+
+						refreshRectangleBackground(refreshWidthX, refreshWidthY, 
+								refreshWidthWidth, refreshWidthHeight);
+						
+						refreshRectangleBackground(refreshHeightX, refreshHeightY, 
+								refreshHeightWidth, refreshHeightHeight);
+						
+					}
 					refreshRectangle(refreshWidthX, refreshWidthY, 
 							refreshWidthWidth, refreshWidthHeight);
 					refreshRectangle(refreshHeightX, refreshHeightY, 
 							refreshHeightWidth, refreshHeightHeight);
-
+					
 //					refreshPaintBackground();
 					
 					/*

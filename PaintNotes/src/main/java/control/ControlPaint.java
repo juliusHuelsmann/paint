@@ -838,6 +838,8 @@ MenuListener {
 //                }
             case Constants.CONTROL_PAINTING_INDEX_MOVE:
                 if (_event.getModifiersEx() == leftMouse) {
+                	
+                	double d0 = System.currentTimeMillis();
                     if (pnt_start == null) {
                         pnt_start = _event.getPoint();
                         pnt_startLocation = getPage()
@@ -889,6 +891,8 @@ MenuListener {
                     
                     getPage().refrehsSps();
                     pnt_last = _event.getPoint();
+                	double d1 = System.currentTimeMillis();
+                	System.out.println(getClass() + " time used:\t" + (d1 - d0));
                     break;
                 }
 

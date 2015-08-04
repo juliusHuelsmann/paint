@@ -1,6 +1,10 @@
 package model.settings;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+
+import start.Start;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Pencil;
@@ -226,9 +230,28 @@ public final class StateStandard {
 
 
     /**
-     * @param _wsLocation the wsLocation to set
+     * 
+     * @param _wsLocation		the new location of the workspace folder 
+     * 							(the folder where - by default - the 
+     * 							 documents are saved)
+     * @param _updatePermanent	whether to update the workspace location
+     * 							permanently (in settings file which is loaded
+     * 							 each time the paint program starts).
      */
-    public static void setWsLocation(final String _wsLocation) {
+    public static void setWsLocation(final String _wsLocation, final boolean _updatePermanent) {
+    	
+    	try {
+    		if (_updatePermanent && _wsLocation != null 
+    				&& new File(_wsLocation).exists()) {
+
+    			ReadSettings.changeOption(ReadSettings.ID_PROGRAM_LOCATION, _wsLocation);
+    		} else if (_updatePermanent) {
+    			State.getLogger().warning("the save file location is not valid:\n"
+    					+ _wsLocation + ".");
+    		}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         StateStandard.wsLocation = _wsLocation;
     }
     

@@ -301,7 +301,7 @@ MenuListener {
 
         //get location of current workspace and set logger level to finest; 
 		//thus every log message is shown.
-        StateStandard.setWsLocation(ReadSettings.install());
+        StateStandard.setWsLocation(ReadSettings.install(), false);
         State.getLogger().setLevel(Level.WARNING);
 
         //if the installation has been found, initialize the whole program.

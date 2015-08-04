@@ -26,6 +26,7 @@ import model.objects.painting.po.PaintObjectImage;
 import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Constants;
 import model.settings.State;
+import model.settings.StateStandard;
 import model.settings.ViewSettings;
 import model.util.DPoint;
 import model.util.DRect;
@@ -531,7 +532,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
             JFileChooser jfc = new JFileChooser();
             jfc.setCurrentDirectory(new java.io.File("."));
             jfc.setDialogTitle("Select save location");
-            int retval = jfc.showOpenDialog(getView());
+            int retval = jfc.showSaveDialog(getView());
 
             // if selected a file.
             if (retval == JFileChooser.APPROVE_OPTION) {
@@ -625,9 +626,9 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
             // choose a file
             JFileChooser jfc = new JFileChooser();
-            jfc.setCurrentDirectory(new java.io.File("."));
+            jfc.setCurrentDirectory(new java.io.File(StateStandard.getWsLocation()));
             jfc.setDialogTitle("Select save location");
-            int retval = jfc.showOpenDialog(getView());
+            int retval = jfc.showSaveDialog(getView());
 
             // if selected a file.
             if (retval == JFileChooser.APPROVE_OPTION) {
@@ -655,7 +656,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
                     + "\" not supported! Supported formats:\n\t"
                     + formatList + ".", "Error",
                             JOptionPane.ERROR_MESSAGE);
-                    mr_save();
+                    mr_saveAs();
                     return;
                 } else {
 
@@ -665,21 +666,28 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
                 // if file already exists
                 if (file.exists()) {
-
+                	
                     int result = JOptionPane.showConfirmDialog(
                             getView(), "File already exists. "
                                     + "Owerwrite?", "Owerwrite file?",
                             JOptionPane.YES_NO_CANCEL_OPTION,
                             JOptionPane.QUESTION_MESSAGE);
-                    if (result == 1) {
-                        // no
+                    if (result == JOptionPane.NO_OPTION) {
                         mr_save();
                         return;
-                    } else if (result == 2) {
+                    } else if (result == JOptionPane.CANCEL_OPTION) {
                         // interrupt
                         return;
                     }
                     // overwrite
+                }
+                if (file != null 
+                		&& file.getParentFile() != null
+                		&& file.getParentFile().exists() ) {
+
+                	// save file to settings.
+                	StateStandard.setWsLocation(file.getParentFile().getAbsolutePath(), true);
+
                 }
                 State.setSavePath(file.getAbsolutePath());
             } else {

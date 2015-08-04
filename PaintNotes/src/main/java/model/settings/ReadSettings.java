@@ -8,7 +8,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.security.CodeSource;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -16,6 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import model.util.Util;
+import model.util.paint.Utils;
 import start.Start;
 
 /**
@@ -311,9 +316,142 @@ public final class ReadSettings {
 			}
 		}
 		
+		installOSX();
 		return wsLocation;
 	}
 	
+	public static void main(String[] _args) {
+		installOSX();
+	}
+	
+	
+	private static void installOSX() {
+		
+		
+		try {
+
+			final String name = "paint";
+			final String app_name = "Paint.app";
+			/*
+			 * STEP 1:	Create files and folders for the info.plist
+			 */
+			final String filePath = "/Applications/" + app_name + "/Contents/";
+			final String fileName = "Info.plist";
+			final String fileContent = ""
+					+ "<dict>\n"
+					+ "    <key>CFBundleTypeExtensions</key>\n"
+					+ "    <array>\n"
+					+ "        <string>jpeg</string>\n"
+					+ "        <string>png</string>\n"
+					+ "        <string>gif</string>\n"
+					+ "        <string>pic</string>\n"
+					+ "    </array>\n"
+					+ "</dict>";
+			
+
+			FileWriter fw;
+			// create necessary directories
+			File p = new File(filePath);
+			p.mkdirs();
+
+			//TODO: this is just a debug paraemter
+			boolean overwrite = false;
+			if (overwrite) {
+
+				// Create info.plist
+				fw = new FileWriter(filePath + fileName);
+				BufferedWriter bw = new BufferedWriter(fw);
+				bw.write(fileContent);
+				bw.flush();
+				bw.close();
+				fw.close();
+			}
+
+			
+			
+			/*
+			 * STEP 2:	Create (executable) file which is called if the 
+			 * 			application is run.
+			 */
+			final String app_folder_path = filePath + "MacOS/";
+			final String app_file_path = app_folder_path + name;
+			new File(app_folder_path).mkdirs();
+			String orig_jar_file = "";
+			orig_jar_file = URLDecoder.decode(
+					ClassLoader.getSystemClassLoader().getResource(".").getPath(), "UTF-8");
+			
+			// if Eclipse on-the-fly-compiling
+			final String eclipseSubstring = "target/classes/";
+			if (orig_jar_file.endsWith(eclipseSubstring)) {
+				orig_jar_file = orig_jar_file.substring(
+						0,
+						orig_jar_file.length() - eclipseSubstring.length());
+				
+			}
+			orig_jar_file += "paint.jar";
+			
+			final String jar_file_path =  app_file_path + ".jar";
+			final String content = "#!/bin/bash\n"
+					+ "echo $1\n"
+					+ "echo $2\n"
+					+ "echo $3\n"
+					+ "java -jar " + jar_file_path + " $@$0$1";
+
+			// Create application file
+			FileWriter fw2 = new FileWriter(app_file_path);
+			BufferedWriter bw_2 = new BufferedWriter(fw2);
+			bw_2.write(content);
+			bw_2.flush();
+			bw_2.close();
+			fw2.close();
+
+
+			// Make the file executable
+
+			final String command0 = 
+					"chmod a+x " + app_file_path;
+			String ret = Util.executeCommandLinux(command0);
+			
+			
+
+			/*
+			 * Step 3:	Copy .jar file to the destination.
+			 */
+
+			final String command1 = 
+					"cp " + orig_jar_file + " " + jar_file_path;
+			String ret1 = Util.executeCommandLinux(command1);
+			
+			
+			final String command2 = 
+					"/System/Library/Frameworks/CoreServices.framework/Versions/"
+					+ "A/Frameworks/LaunchServices.framework/Versions/A/Support/"
+					+ "lsregister -f /Applications/" + app_name + "/";
+			String ret2 = Util.executeCommandLinux(command1);
+			
+			
+			final String command3 = "killall Finder";
+			String ret3 = Util.executeCommandLinux(command3);
+
+			String s = "Operation log:\n";
+			System.out.println(s);
+			System.out.println(ret + "\n" + ret1 +"\n" + ret2 +"\n" + ret3);
+			
+			
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+
+	
+	
+	private void updateOSX() {
+		
+	}
 	
 	private static void printInformation() {
 		

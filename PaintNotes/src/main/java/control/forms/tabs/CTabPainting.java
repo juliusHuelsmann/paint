@@ -538,7 +538,6 @@ public final class CTabPainting implements ActionListener, MouseListener {
             controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
             controlPaint.getPicture().savePicture(firstPath + ".pic");
 
-
             State.setUncommittedChanges(false);
             controlPaint.getView().getPage().repaint();
         }

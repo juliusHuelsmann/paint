@@ -124,6 +124,8 @@ public final class CPaintStatus implements MouseListener {
 		}
 		return null;
 	}
+	
+	
     /**
      * Fetch the instance of tab paint.
      * @return the tab paint.
@@ -379,8 +381,14 @@ public final class CPaintStatus implements MouseListener {
 
                 if (_event.getSource().equals(
                         paint.getJbtn_colors()[j])) {
-                    
-                    if (State.getIndexOperation()
+                	
+                	if (controlPaint.getPicture().isSelected()) {
+
+                    	controlPaint.getcTabSelection().setSelectionColor(
+                    			paint
+                    			.getJbtn_colors()[j].getBackground()
+                    			.getRGB());
+                	} else if (State.getIndexOperation()
                             != Constants.CONTROL_PAINTING_INDEX_PAINT_2) {
 
                         Pen pen = State.getPenSelected1();

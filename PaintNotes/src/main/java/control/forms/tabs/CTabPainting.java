@@ -523,89 +523,20 @@ public final class CTabPainting implements ActionListener, MouseListener {
      */
     public void mr_save() {
 
-    	final String fileEnding;
     	
         // if not saved yet. Otherwise use the saved save path.
         if (State.getSavePath() == null) {
-
-            // choose a file
-            JFileChooser jfc = new JFileChooser();
-            jfc.setCurrentDirectory(new java.io.File("."));
-            jfc.setDialogTitle("Select save location");
-            int retval = jfc.showSaveDialog(getView());
-
-            // if selected a file.
-            if (retval == JFileChooser.APPROVE_OPTION) {
-
-                // fetch the selected file.
-                File file = jfc.getSelectedFile();
-
-                // edit file ending
-                if (!file.getName().toLowerCase().contains(".")) {
-                	fileEnding = State.getSaveFormat();
-                    file = new File(file.getAbsolutePath() + ".pic");
-                } else if (!Constants.endsWithSaveFormat(file.getName())) {
-                	
-                	fileEnding = "";
-                	String formatList = "(";
-                	for (String format : Constants.SAVE_FORMATS) {
-                		formatList += format + ", ";
-                	}
-                	formatList = formatList.subSequence(0, 
-                			formatList.length() - 2) + ")";
-                	
-                    JOptionPane.showMessageDialog(getView(),
-                            "Error saving file:\nFile extension \"" 
-                    + Constants.getFileExtension(file.getName())
-                    + "\" not supported! Supported formats:\n\t"
-                    + formatList + ".", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    mr_save();
-                    return;
-                } else {
-
-                	fileEnding = "." 
-                	+ Constants.getFileExtension(file.getName());
-                }
-
-                // if file already exists
-                if (file.exists()) {
-
-                    int result = JOptionPane.showConfirmDialog(
-                            getView(), "File already exists. "
-                                    + "Owerwrite?", "Owerwrite file?",
-                            JOptionPane.YES_NO_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE);
-                    if (result == 1) {
-                        // no
-                        mr_save();
-                        return;
-                    } else if (result == 2) {
-                        // interrupt
-                        return;
-                    }
-                    // overwrite
-                }
-                State.setSavePath(file.getAbsolutePath());
-            } else {
-            	fileEnding = "";
-            }
+        	JOptionPane.showMessageDialog(getView(), "Sorry, this file"
+        			 + "has not been saved yet.\n\nSpecify save location!");
+        	mr_saveAs();
         } else {
-        	fileEnding = "";
-        }
-
-        // generate path without the file ending.
-        if (State.getSavePath() != null) {
-
-            int d = State.getSavePath().toCharArray().length - 2 - 1;
+        	final String fileEnding = "." + State.getSaveFormat();
+        	final int lengthFileEndig = fileEnding.length();
+            int d = State.getSavePath().toCharArray().length - lengthFileEndig;
             String firstPath = State.getSavePath().substring(0, d);
             
-            // save images in both formats.
-//            controlPaint.getPicture().saveIMAGE(
-//            		firstPath, getPage().getJlbl_painting().getLocation().x,
-//            		getPage().getJlbl_painting().getLocation().y);
             controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
-            controlPaint.getPicture().savePicture(firstPath + "pic");
+            controlPaint.getPicture().savePicture(firstPath + ".pic");
 
 
             State.setUncommittedChanges(false);
@@ -638,7 +569,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
                 // edit file ending
                 if (!file.getName().toLowerCase().contains(".")) {
-                	fileEnding = State.getSaveFormat();
+                	fileEnding = "." + State.getSaveFormat();
                     file = new File(file.getAbsolutePath() + ".pic");
                 } else if (!Constants.endsWithSaveFormat(file.getName())) {
                 	
@@ -692,12 +623,14 @@ public final class CTabPainting implements ActionListener, MouseListener {
                 State.setSavePath(file.getAbsolutePath());
             } else {
             	fileEnding = "";
+            	return;
             }
 
         // generate path without the file ending.
         if (State.getSavePath() != null) {
 
-            int d = State.getSavePath().toCharArray().length - 2 - 1;
+        	final int lengthFileEndig = fileEnding.length();
+            int d = State.getSavePath().toCharArray().length - lengthFileEndig;
             String firstPath = State.getSavePath().substring(0, d);
             
             // save images in both formats.
@@ -705,7 +638,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
 //            		firstPath, getPage().getJlbl_painting().getLocation().x,
 //            		getPage().getJlbl_painting().getLocation().y);
             controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
-            controlPaint.getPicture().savePicture(firstPath + "pic");
+            controlPaint.getPicture().savePicture(firstPath + ".pic");
 
 
             State.setUncommittedChanges(false);

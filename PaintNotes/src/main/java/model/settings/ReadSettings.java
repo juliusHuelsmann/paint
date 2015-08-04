@@ -147,12 +147,10 @@ public final class ReadSettings {
 			// operation that has to be changed.
 			if (currentLine != null && currentLine.equals(_operation)) {
 				found = true;
-				System.out.println("gefunden.");
 			}
 			currentLine = br.readLine();
 			
 		}
-		System.out.println(sumLine);
 
 		//close reader
 		br.close();

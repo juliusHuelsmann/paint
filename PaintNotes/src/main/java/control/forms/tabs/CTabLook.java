@@ -116,23 +116,6 @@ public final class CTabLook implements ActionListener {
 	}
 	
 	
-	private void setBorderVisible(boolean _visible) {
-
-
-		getLook().getJcb_margeBottom().setVisible(_visible);
-		getLook().getJcb_margeTop().setVisible(_visible);
-		getLook().getJcb_margeLeft().setVisible(_visible);
-		getLook().getJcb_margeRight().setVisible(_visible);
-
-		getLook().getJlbl_subtitle_borderBottom().setVisible(_visible);
-		getLook().getJlbl_subtitle_borderTop().setVisible(_visible);
-		getLook().getJlbl_subtitle_borderLeft().setVisible(_visible);
-		getLook().getJlbl_subtitle_borderRight().setVisible(_visible);
-	
-	}
-	
-
-	
 	/**
 	 * Set Background to none.
 	 */
@@ -165,6 +148,21 @@ public final class CTabLook implements ActionListener {
 	}
 	
 	
+
+	private void setBorderVisible(boolean _visible) {
+	
+	
+		getLook().getJcb_margeBottom().setVisible(_visible);
+		getLook().getJcb_margeTop().setVisible(_visible);
+		getLook().getJcb_margeLeft().setVisible(_visible);
+		getLook().getJcb_margeRight().setVisible(_visible);
+	
+		getLook().getJlbl_subtitle_borderBottom().setVisible(_visible);
+		getLook().getJlbl_subtitle_borderTop().setVisible(_visible);
+		getLook().getJlbl_subtitle_borderLeft().setVisible(_visible);
+		getLook().getJlbl_subtitle_borderRight().setVisible(_visible);
+	
+	}
 
 	public void applyMargeRight() {
 

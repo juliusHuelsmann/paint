@@ -882,6 +882,7 @@ public final class State {
      */
     public static void setBorderLeftPercentExport(
             final int _borderLeftPercentExport) {
+    	
         State.borderLeftPercentExport = _borderLeftPercentExport;
     }
 
@@ -907,6 +908,7 @@ public final class State {
      * @return the borderTopPercentExport
      */
     public static int getBorderTopPercentExport() {
+    
         return borderTopPercentExport;
     }
 

@@ -316,7 +316,10 @@ public final class ReadSettings {
 			}
 		}
 		
-		installOSX();
+		if (System.getProperty("os.name").equals("Mac OS X")) {
+
+			installOSX();
+		}
 		return wsLocation;
 	}
 	

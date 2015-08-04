@@ -535,7 +535,9 @@ public final class CTabPainting implements ActionListener, MouseListener {
             int d = State.getSavePath().toCharArray().length - lengthFileEndig;
             String firstPath = State.getSavePath().substring(0, d);
             
-            controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
+            if (!fileEnding.equals(".pic")) {
+                controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, ".png");
+            }
             controlPaint.getPicture().savePicture(firstPath + ".pic");
 
             State.setUncommittedChanges(false);
@@ -636,7 +638,10 @@ public final class CTabPainting implements ActionListener, MouseListener {
 //            controlPaint.getPicture().saveIMAGE(
 //            		firstPath, getPage().getJlbl_painting().getLocation().x,
 //            		getPage().getJlbl_painting().getLocation().y);
-            controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
+            if (!fileEnding.equals(".pic")) {
+
+                controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, ".png");
+            }
             controlPaint.getPicture().savePicture(firstPath + ".pic");
 
 
@@ -666,7 +671,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
 
             JFileChooser jfc = new JFileChooser();
-            jfc.setCurrentDirectory(new java.io.File("."));
+            jfc.setCurrentDirectory(new java.io.File(StateStandard.getWsLocation()));
             jfc.setDialogTitle("Select load location");
             int retval = jfc.showOpenDialog(getView());
 
@@ -678,8 +683,10 @@ public final class CTabPainting implements ActionListener, MouseListener {
                     		file.getAbsolutePath());
                     State.setUncommittedChanges(false);
                     getControlPicture().refreshPaint();
-                } else if (file.getName().toLowerCase().endsWith(".png")
-                		|| file.getName().toLowerCase().endsWith(".jpg")) {
+
+                    State.setSavePath(file.getAbsolutePath());
+                    
+                } else if (Constants.endsWithSaveFormat(file.getName())) {
                     
                     try {
                         BufferedImage bi_imageBG = ImageIO.read(file);

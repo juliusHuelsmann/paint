@@ -5,6 +5,8 @@ import java.awt.Dimension;
 
 import javax.imageio.ImageIO;
 
+import model.util.Util;
+
 
 /**
  * singleton class containing static constants (e.g. static paths or integers)
@@ -246,7 +248,8 @@ public final class Constants {
 	/**
 	 * The save formats.
 	 */
-    public static final String[] SAVE_FORMATS =  ImageIO.getWriterFormatNames();
+    public static final String[] SAVE_FORMATS = Util
+    		.concatenate(ImageIO.getWriterFormatNames(), ".pic");
 	
     
     /**

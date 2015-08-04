@@ -12,8 +12,6 @@ Working environment
 
 The project is a maven project developed in eclipse. Both the used Checkstyle configuration and the dictionary are  pushed into repository's root folder.
 
-Is not working for windows devices.
-
 Used 
 - Eclipse
 - Maven
@@ -38,3 +36,14 @@ Use recommended checkstyle configuration file
 ```
 sudo apt-get install libwebkitgtk-1.0-0
 ```
+
+
+Operating Systems
+====
+Tested for
+* Elementary OS 
+* Ubuntu (12.04 LTS)
+* Windows 8, 8.1, 10
+* Mac OS X Yosemite (10.10.4)
+
+Minor display errors for windows usage.

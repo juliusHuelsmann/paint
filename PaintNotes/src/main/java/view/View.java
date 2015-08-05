@@ -28,7 +28,6 @@ import view.util.mega.MFrame;
 import view.util.mega.MLabel;
 import control.ControlPaint;
 import control.forms.ControlView;
-import control.forms.minorImportance.InfoSelection;
 import control.util.WindowMover;
 
 

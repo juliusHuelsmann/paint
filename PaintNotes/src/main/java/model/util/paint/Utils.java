@@ -1370,7 +1370,7 @@ public final class Utils {
      *                  
      * @return the transformed BufferedImage
      */
-    private static BufferedImage printWhiteBackgroundOld(
+    public static BufferedImage printWhiteBackgroundOld(
             final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {

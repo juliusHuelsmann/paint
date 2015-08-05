@@ -1,12 +1,9 @@
 package view.tabs;
 
 import java.awt.Color;
-import java.awt.Component;
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
-
 import model.settings.ViewSettings;
 import view.forms.Help;
 import view.util.mega.MLabel;

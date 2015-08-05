@@ -2,11 +2,8 @@
 package view.tabs;
 
 //import declarations
-import java.awt.Component;
-
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
-
 import control.forms.tabs.CTabAbout;
 import control.interfaces.HelpMouseListener;
 import view.forms.Help;

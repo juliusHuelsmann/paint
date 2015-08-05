@@ -4,8 +4,6 @@ import java.awt.Component;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import javax.swing.JFrame;
-
 public class WindowFocusListener implements WindowListener {
 
 	private Component c_focus;

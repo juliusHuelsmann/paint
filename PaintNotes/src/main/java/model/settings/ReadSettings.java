@@ -8,20 +8,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
 import java.net.URLDecoder;
-import java.security.CodeSource;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import model.util.Util;
-import model.util.paint.Utils;
-import start.Start;
 
 /**
  * reads the settings from the settings directory while program
@@ -431,7 +425,7 @@ public final class ReadSettings {
 					"/System/Library/Frameworks/CoreServices.framework/Versions/"
 					+ "A/Frameworks/LaunchServices.framework/Versions/A/Support/"
 					+ "lsregister -f /Applications/" + app_name + "/";
-			String ret2 = Util.executeCommandLinux(command1);
+			String ret2 = Util.executeCommandLinux(command2);
 			
 			
 			final String command3 = "killall Finder";
@@ -453,8 +447,8 @@ public final class ReadSettings {
 
 	
 	
-	private void updateOSX() {
-		
+	public void updateOSX() {
+		throw new UnsupportedOperationException("not impl. yet.");
 	}
 	
 	private static void printInformation() {

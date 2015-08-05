@@ -1,7 +1,6 @@
 package control;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -10,10 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
-
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-
 import control.forms.CLoading;
 import control.forms.CNew;
 import control.forms.CPaintStatus;

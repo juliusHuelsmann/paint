@@ -3,8 +3,6 @@ package model.settings;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
-
-import start.Start;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
 import model.objects.pen.normal.Pencil;

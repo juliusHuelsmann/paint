@@ -1,6 +1,5 @@
 package model.util;
 
-import java.math.BigInteger;
 
 public class BinKoeff {
   

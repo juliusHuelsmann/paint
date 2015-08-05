@@ -3,13 +3,10 @@ package view.tabs;
 
 //import declarations
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.border.LineBorder;
-
 import model.settings.Constants;
 import model.settings.ViewSettings;
 import view.forms.Help;

@@ -46,6 +46,7 @@ public final class Write extends Tab {
 		super.setLayout(null);
 		
 		int x = initializePresettings(true, _cw);
+		x = x + 0;
 	}
 	
 	

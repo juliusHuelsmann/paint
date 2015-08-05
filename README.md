@@ -17,7 +17,14 @@ Used
 - Checkstyle
 - JUnit
 
-## 2.1 Install Eclipse and Maven, Checkstyle, JUnit for Eclipse
+
+## 2.1 Install Git, Eclipse, Eclipse Plugins (Maven, Checkstyle, JUnit)
+Git Page
+- https://git-scm.com/
+- Installation of git
+```
+sudo apt-get install git
+```
 Eclipse Download Page:
 - http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/marsr
 

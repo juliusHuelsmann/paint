@@ -1,5 +1,4 @@
 # 1 About Paint
-=====
 
 This is a touch-based paint application for personal computers designed in Java. 
 Its purpose is to write down notes (e. g. at university). 

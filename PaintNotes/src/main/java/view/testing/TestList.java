@@ -3,16 +3,12 @@ package view.testing;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Random;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
-
 import view.util.mega.MLabel;
-import model.util.adt.list.List;
-import model.util.adt.list.SecureList;
 import model.util.adt.list.SecureListSort;
 
+@SuppressWarnings("serial")
 public class TestList extends JFrame {
 	
 	private SecureListSort<String> sls;

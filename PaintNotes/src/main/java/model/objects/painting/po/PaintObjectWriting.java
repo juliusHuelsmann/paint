@@ -7,12 +7,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.math.BigInteger;
-
 import javax.swing.JFrame;
-
-import org.hamcrest.Factory;
-
 import start.test.BufferedViewer;
 import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
@@ -1914,10 +1909,10 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
     }
 
 
-    /**
-     * List which contains the deCastlejeauPoints.
-     */
-    private SecureList<Point> ls_deCastlejeauPoints;
+//    /**
+//     * List which contains the deCastlejeauPoints.
+//     */
+//    private SecureList<Point> ls_deCastlejeauPoints;
     
     
     public static void main(String[]args) {
@@ -1970,7 +1965,6 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
 
     	}
 
-    	double abstand = 0;
     	Point pnt_predecessor = b[0];
     	final int k = b.length - 1;
     	for (int i = 1; i < len; i++) {

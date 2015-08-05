@@ -178,7 +178,6 @@ public class VTimeLog extends JPanel {
 	public static void main(final String[] _args) {
 		
 
-		@SuppressWarnings("serial")
 		JFrame jf = new JFrame("Time logger") {
 			
 			/**

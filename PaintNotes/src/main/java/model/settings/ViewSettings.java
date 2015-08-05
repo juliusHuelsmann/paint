@@ -26,7 +26,7 @@ public final class ViewSettings {
      * constants.
      */
     private static final int 
-    THREE = 3, FOUR = 4, FIVE = 5, SEVEN = 7, TEN = 10, TWENTY_FIFE = 25;
+    THREE = 3, FIVE = 5, SEVEN = 7, TEN = 10, TWENTY_FIFE = 25;
     
 
     /**

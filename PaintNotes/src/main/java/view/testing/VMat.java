@@ -2,8 +2,6 @@ package view.testing;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -30,15 +28,6 @@ public class VMat extends JPanel {
 	private MTextField jlbl_amountRows, jlbl_amountCols;
 	
 	
-	/**
-	 * 
-	 */
-	private JButton jbtn_spline;
-	
-	/**
-	 * 
-	 */
-	private final int addY = 50;
 	
 	/**
 	 * 
@@ -210,7 +199,6 @@ public class VMat extends JPanel {
 		
 		final VMat vsp = new VMat();
 		
-		@SuppressWarnings("serial")
 		JFrame jf = new JFrame() {
 
 			public void setSize(final int _x, final int _y) {

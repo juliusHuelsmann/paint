@@ -94,7 +94,15 @@ public class CTabAbout implements ActionListener {
 		final int defaultLocationPathLenght = 3;
 
 		HtmlDoc document = new HtmlDoc(Constants.URL_UPDATE_PAGE);
+
+		document = new HtmlDoc("http://juliushuelsmann.github.io/paint/index.html");
 		try {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			String s = document.getHl().getText(0, 2);
 			System.out.println(s);
 		} catch (BadLocationException e) {

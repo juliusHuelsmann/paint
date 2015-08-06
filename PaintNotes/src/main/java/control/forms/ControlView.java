@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import control.forms.tabs.CTabPainting;
+import control.forms.tabs.CTabTools;
 import control.interfaces.ActivityListener;
 import model.settings.Constants;
 import model.settings.State;
@@ -40,7 +40,7 @@ ActivityListener, MouseListener {
 	/**
 	 * Instance of the controller class controlTabPainting.
 	 */
-	private CTabPainting ctp;
+	private CTabTools ctp;
 	
 	
 	
@@ -49,7 +49,7 @@ ActivityListener, MouseListener {
 	 * @param _view instance of view
 	 * @param _ctp instance of ControlTabPainting
 	 */
-	public ControlView(final View _view, final CTabPainting _ctp) {
+	public ControlView(final View _view, final CTabTools _ctp) {
 		
 		this.view = _view;
 		this.ctp = _ctp;
@@ -263,7 +263,7 @@ ActivityListener, MouseListener {
 		view.getTabs().flipSons();
 		view.getTabs().flip();
 		view.getTabs().openTab(0);
-		view.getTabs().reApplySize();
+		view.getTabs().reApplySize(view);
 		view.getTabs().repaint();
 		
 

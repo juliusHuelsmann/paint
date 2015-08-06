@@ -572,7 +572,7 @@ import control.util.WindowMover;
         
         if (tabs != null) {
         	
-        	tabs.reApplySize();
+        	tabs.reApplySize(this);
         	tabs.setSize(
                     ViewSettings.getView_widthTb(), 
                     ViewSettings.getView_heightTB(),

@@ -5,20 +5,30 @@ package view.forms;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import model.settings.ViewSettings;
 import control.ControlPaint;
 import control.util.CItem;
 import view.View;
-import view.tabs.About;
+import view.tabs.AboutPaint;
 import view.tabs.Export;
 import view.tabs.Insert;
 import view.tabs.Look;
-import view.tabs.Paint;
+import view.tabs.Tools;
 import view.tabs.Debug;
 import view.tabs.Print;
 import view.tabs.Selection;
 import view.tabs.Write;
+import view.tabs.settings.Settings;
+import view.tabs.settings.SettingsAbout;
+import view.tabs.settings.SettingsExport;
+import view.tabs.settings.SettingsInsert;
+import view.tabs.settings.SettingsLook;
+import view.tabs.settings.SettingsPrint;
+import view.tabs.settings.SettingsSelection;
+import view.tabs.settings.SettingsTools;
+import view.tabs.settings.SettingsWrite;
 import view.util.VTabbedPane;
 
 
@@ -33,7 +43,7 @@ public final class Tabs extends VTabbedPane {
     /**
      * Tab for general painting stuff like pen, colors etc.
      */
-    private Paint tab_paint;
+    private Tools tab_paint;
     
     
     /**
@@ -72,12 +82,15 @@ public final class Tabs extends VTabbedPane {
      * Tab which contains the information on the program and the possibilty to
      * update the program.
      */
-    private About tab_about;
+    private AboutPaint tab_about;
     
     /**
      * Tab for things which can be inserted.
      */
     private Insert tab_insert;
+    
+    private Settings set_about, set_export, set_insert, set_print, set_tools, set_view, set_write,
+    set_selection, set_debug;
     
     /**
      * Empty utility class constructor.
@@ -91,7 +104,7 @@ public final class Tabs extends VTabbedPane {
     /**
      * 
      */
-    public void reApplySize() {
+    public void reApplySize(final View _view) {
 
         super.setSize(
                 ViewSettings.getView_widthTb(), 
@@ -133,6 +146,12 @@ public final class Tabs extends VTabbedPane {
         if (tab_insert != null) {
         	tab_insert.applySize();
         }
+        
+        if (set_about != null) {
+        	set_about.setSize(
+                _view.getWidth(), 
+                getVisibleHeightEnitelyOpen() - ViewSettings.getView_heightTB_visible());
+        }
     }
     
     
@@ -157,11 +176,19 @@ public final class Tabs extends VTabbedPane {
         /*
          * tab paint
          */
-        super.addTab("Paint");
-        tab_paint =  new Paint(
+        super.addTab("Tools");
+        tab_paint =  new Tools(
         		_cp, _cp.getcTabPaint(), _cp,
         		_cp.getcTabPaintStatus());
         super.addToTab(tabNumber, tab_paint);
+
+        set_tools = new SettingsTools();
+        set_tools.setSize(
+                _view.getWidth(), 
+                getVisibleHeightEnitelyOpen() - ViewSettings.getView_heightTB_visible());
+        super.addToTabLayer2(tabNumber, set_tools);
+        
+        
         tabNumber++;
 
         /*
@@ -170,6 +197,12 @@ public final class Tabs extends VTabbedPane {
         super.addTab("Write");
         tab_write = new Write(_cp.getcTabWrite());
         super.addToTab(tabNumber, tab_write);
+
+        set_write = new SettingsWrite();
+        set_write.setSize(
+                _view.getWidth(), 
+                getVisibleHeightEnitelyOpen() - ViewSettings.getView_heightTB_visible());
+        super.addToTabLayer2(tabNumber, set_write);
         tabNumber++;
 
 
@@ -179,6 +212,12 @@ public final class Tabs extends VTabbedPane {
         super.addTab("Insert");
         tab_insert = new Insert(_cp.getcTabPaintStatus(), _cp);
         super.addToTab(tabNumber, tab_insert);
+
+        set_insert = new SettingsInsert();
+        set_insert.setSize(
+                _view.getWidth(), 
+                getVisibleHeightEnitelyOpen() - ViewSettings.getView_heightTB_visible());
+        super.addToTabLayer2(tabNumber, set_insert);
         tabNumber++;
 
         
@@ -191,6 +230,12 @@ public final class Tabs extends VTabbedPane {
         		_cp.getcTabPaint(), _cp.getcTabSelection(), _cp, 
         		_cp.getcTabPaintStatus());
         super.addToTab(tabNumber, tab_selection);
+
+        set_selection = new SettingsSelection();
+        set_selection.setSize(
+                _view.getWidth(), 
+                getVisibleHeightEnitelyOpen() - ViewSettings.getView_heightTB_visible());
+        super.addToTabLayer2(tabNumber, set_selection);
         tabNumber++;
         /*
          * tab view
@@ -198,6 +243,12 @@ public final class Tabs extends VTabbedPane {
         super.addTab("View");   //view
         tab_look = new Look(_cp.getcTabLook());
         super.addToTab(tabNumber, tab_look);
+
+        set_view = new SettingsLook();
+        set_view.setSize(
+                _view.getWidth(), 
+                getVisibleHeightEnitelyOpen() - ViewSettings.getView_heightTB_visible());
+        super.addToTabLayer2(tabNumber, set_view);
         tabNumber++;
 
         /*
@@ -207,6 +258,12 @@ public final class Tabs extends VTabbedPane {
         tab_export = new Export();
         tab_export.initialize(_cp.getcTabExport());
         super.addToTab(tabNumber, tab_export);
+
+        set_export = new SettingsExport();
+        set_export.setSize(
+                _view.getWidth(), 
+                getVisibleHeightEnitelyOpen() - ViewSettings.getView_heightTB_visible());
+        super.addToTabLayer2(tabNumber, set_export);
         tabNumber++;
         
 
@@ -218,6 +275,11 @@ public final class Tabs extends VTabbedPane {
         super.addTab("Print");
         tab_print = new Print(_cp.getcTabPrint());
         super.addToTab(tabNumber, tab_print);
+        set_print = new SettingsPrint();
+        set_print.setSize(
+                _view.getWidth(), 
+                getVisibleHeightEnitelyOpen() - ViewSettings.getView_heightTB_visible());
+        super.addToTabLayer2(tabNumber, set_print);
         tabNumber++;
 
 
@@ -227,6 +289,11 @@ public final class Tabs extends VTabbedPane {
                 (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
                 ViewSettings.getView_heightTB());
         super.addToTab(tabNumber, tab_pos);
+        set_debug = new SettingsPrint();
+        set_debug.setSize(
+                _view.getWidth(), 
+                getVisibleHeightEnitelyOpen() - ViewSettings.getView_heightTB_visible());
+        super.addToTabLayer2(tabNumber, set_debug);
         tabNumber++;
         
 //        /*
@@ -249,12 +316,19 @@ public final class Tabs extends VTabbedPane {
         /*
          * tab print
          */
-        super.addTab("About");
-        tab_about = new About(_cp.getcTabAbout());
+        super.addTab("Paint");
+        tab_about = new AboutPaint(_cp.getcTabAbout());
+        super.addToTab(tabNumber, new JLabel("hier"));
         tab_about.setSize(
                 (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
                 ViewSettings.getView_heightTB());
+        
         super.addToTab(tabNumber, tab_about);
+        set_about = new SettingsAbout();
+        set_about.setSize(
+                _view.getWidth(), 
+                getVisibleHeightEnitelyOpen() - ViewSettings.getView_heightTB_visible());
+        super.addToTabLayer2(tabNumber, set_about);
         
         tabNumber++;
 
@@ -336,7 +410,7 @@ public final class Tabs extends VTabbedPane {
     /**
      * @return the tab_paint
      */
-    public  Paint getTab_paint() {
+    public  Tools getTab_paint() {
         return tab_paint;
     }
 
@@ -400,7 +474,7 @@ public final class Tabs extends VTabbedPane {
 	/**
 	 * @return the tab_about
 	 */
-	public About getTab_about() {
+	public AboutPaint getTab_about() {
 		return tab_about;
 	}
 }

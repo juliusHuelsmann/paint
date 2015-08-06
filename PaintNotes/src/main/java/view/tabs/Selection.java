@@ -15,7 +15,7 @@ import javax.swing.border.LineBorder;
 import model.settings.Constants;
 import model.settings.ViewSettings;
 import control.forms.CPaintStatus;
-import control.forms.tabs.CTabPainting;
+import control.forms.tabs.CTabTools;
 import control.forms.tabs.CTabSelection;
 import control.interfaces.MenuListener;
 import view.forms.Help;
@@ -105,7 +105,7 @@ public final class Selection extends Tab {
      * 								etc.
 	 */
 	public void initialize(
-			final CTabPainting _cPaint, 
+			final CTabTools _cPaint, 
 			final CTabSelection _cts,
 			final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus) {

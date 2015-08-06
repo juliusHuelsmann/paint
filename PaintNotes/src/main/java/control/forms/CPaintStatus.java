@@ -21,7 +21,7 @@ import view.View;
 import view.forms.Page;
 import view.forms.Tabs;
 import view.tabs.Insert;
-import view.tabs.Paint;
+import view.tabs.Tools;
 
 
 /**
@@ -130,7 +130,7 @@ public final class CPaintStatus implements MouseListener {
      * Fetch the instance of tab paint.
      * @return the tab paint.
      */
-    private Paint getTabPaint() {
+    private Tools getTabPaint() {
     	
     	if (controlPaint != null
     			&& controlPaint.getView() != null
@@ -194,7 +194,7 @@ public final class CPaintStatus implements MouseListener {
     	 * The getter method handles the printing of an error message if the 
     	 * instance of Paint is null.
     	 */
-    	final Paint paint = getTabPaint();
+    	final Tools paint = getTabPaint();
 
     	
     	//if the initialization process has terminated without errors
@@ -233,7 +233,7 @@ public final class CPaintStatus implements MouseListener {
     	 * The getter method handles the printing of an error message if the 
     	 * instance of Paint is null.
     	 */
-    	final Paint paint = getTabPaint();
+    	final Tools paint = getTabPaint();
 
     	
     	//if the initialization process has terminated without errors
@@ -370,7 +370,7 @@ public final class CPaintStatus implements MouseListener {
     	 * The getter method handles the printing of an error message if the 
     	 * instance of Paint is null.
     	 */
-    	final Paint paint = getTabPaint();
+    	final Tools paint = getTabPaint();
 
     	
     	//if the initialization process has terminated without errors
@@ -435,7 +435,7 @@ public final class CPaintStatus implements MouseListener {
     	 * The getter method handles the printing of an error message if the 
     	 * instance of Paint is null.
     	 */
-    	final Paint paint = getTabPaint();
+    	final Tools paint = getTabPaint();
     	
     	//if the initialization process has terminated without errors
     	//the instance of Paint is not equal to null, thus it is possible to

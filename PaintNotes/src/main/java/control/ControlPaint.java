@@ -15,12 +15,12 @@ import control.forms.CNew;
 import control.forms.CPaintStatus;
 import control.forms.CQuickAccess;
 import control.forms.minorImportance.InfoSelection;
-import control.forms.tabs.CTabAbout;
+import control.forms.tabs.CTabAboutPaint;
 import control.forms.tabs.CTabDebug;
 import control.forms.tabs.CTabExport;
 import control.forms.tabs.CTabInsert;
 import control.forms.tabs.CTabLook;
-import control.forms.tabs.CTabPainting;
+import control.forms.tabs.CTabTools;
 import control.forms.tabs.CTabPrint;
 import control.forms.tabs.CTabSelection;
 import control.forms.tabs.CTabWrite;
@@ -151,7 +151,7 @@ MenuListener {
 	/**
 	 * Controller class for the painting tab.
 	 */
-	private CTabPainting cTabPaint;
+	private CTabTools cTabPaint;
 	
 	/**
 	 * Controller class for the tab Print.
@@ -166,7 +166,7 @@ MenuListener {
 	/**
 	 * Controller class for the tab about.
 	 */
-	private CTabAbout cTabAbout;
+	private CTabAboutPaint cTabAbout;
 	
 	
 	/**
@@ -322,11 +322,11 @@ MenuListener {
             cTabLook = new CTabLook(this);
             cTabExport = new CTabExport(this);
             cTabWrite = new CTabWrite(this);
-            cTabAbout = new CTabAbout(this);
+            cTabAbout = new CTabAboutPaint(this);
             controlPic = new ContorlPicture(this);
             cTabSelection = new CTabSelection(this);
             controlPaintSelect = new ControlSelectionTransform(this);
-            cTabPaint = new CTabPainting(this);
+            cTabPaint = new CTabTools(this);
             cTabPaintStatus = new CPaintStatus(this);
             cTabPaintObjects = new CTabDebug(this);
             zoom = new Zoom(controlPic);
@@ -2415,7 +2415,7 @@ MenuListener {
 	/**
 	 * @return the cTabPaint
 	 */
-	public final CTabPainting getcTabPaint() {
+	public final CTabTools getcTabPaint() {
 		return cTabPaint;
 	}
 
@@ -2869,7 +2869,7 @@ MenuListener {
 	/**
 	 * @return the cTabAbout
 	 */
-	public final CTabAbout getcTabAbout() {
+	public final CTabAboutPaint getcTabAbout() {
 		return cTabAbout;
 	}
 

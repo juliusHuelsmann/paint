@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import view.tabs.Paint;
+import view.tabs.Tools;
 import view.util.Item1Menu;
 import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;
@@ -16,7 +16,7 @@ import model.settings.Constants;
 import model.settings.State;
 import control.ControlPaint;
 import control.forms.CPaintStatus;
-import control.forms.tabs.CTabPainting;
+import control.forms.tabs.CTabTools;
 
 
 /**
@@ -31,7 +31,7 @@ public class CPen implements ChangeListener, MouseListener {
 	/**
 	 * 
 	 */
-	private CTabPainting cp;
+	private CTabTools cp;
 	
 	
 	/**
@@ -77,7 +77,7 @@ public class CPen implements ChangeListener, MouseListener {
 	 */
 	public CPen(
 			final ControlPaint _controlPaint,
-			final CTabPainting _cp, 
+			final CTabTools _cp, 
 			final Item1PenSelection _i1ps,
 			final Item1Menu _i1m_toSet,
 			final Pen _pen,
@@ -115,7 +115,7 @@ public class CPen implements ChangeListener, MouseListener {
 
 			i1m_toSet.setIcon(i1ps.getImagePath());
 	            
-	        CTabPainting.applyFocus(i1ps);
+	        CTabTools.applyFocus(i1ps);
 		}
 	}
 	
@@ -135,7 +135,7 @@ public class CPen implements ChangeListener, MouseListener {
     	 * The getter method handles the printing of an error message if the 
     	 * instance of Paint is null.
     	 */
-    	final Paint paint = cp.getTabPaint();
+    	final Tools paint = cp.getTabPaint();
 
     	//if the initialization process has terminated without errors
     	//the instance of Paint is not equal to null, thus it is possible to
@@ -144,7 +144,7 @@ public class CPen implements ChangeListener, MouseListener {
     		/*
              * the different pens in open pen menu
              */
-            if (CTabPainting.isAStiftAuswahl((_event.getSource()))) {
+            if (CTabTools.isAStiftAuswahl((_event.getSource()))) {
                 Item1PenSelection sa = (Item1PenSelection) ((VButtonWrapper) 
                         _event.getSource()).wrapObject();
                 
@@ -177,7 +177,7 @@ public class CPen implements ChangeListener, MouseListener {
                     paint.getTb_color2()
                     .setActivated(true);
                 }
-                CTabPainting.applyFocus(sa);
+                CTabTools.applyFocus(sa);
                 controlPaint.getPicture().userSetPen(pen, penSelection);
                 CItem.getInstance().reset();
                 

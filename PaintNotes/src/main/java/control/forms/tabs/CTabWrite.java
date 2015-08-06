@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import control.ControlPaint;
-import view.tabs.Paint;
+import view.tabs.Tools;
 import view.tabs.Write;
 import model.objects.pen.Pen;
 import model.objects.pen.normal.BallPen;
@@ -100,7 +100,7 @@ public final class CTabWrite implements ActionListener {
     public void actionPerformed(final ActionEvent _event) {
     	
     	
-    	Paint paint = cp.getView().getTabs().getTab_paint();
+    	Tools paint = cp.getView().getTabs().getTab_paint();
     	Write write = cp.getView().getTabs().getTab_write();
         if (_event.getSource().equals(write
                 .getTb_beispiel().getActionCause())) {

@@ -229,6 +229,7 @@ MenuListener {
 	
 	/*
 	 * Computation values.
+	 * 
 	 */
 	
     //TODO: quadratic? movement function which interpolates a time interval
@@ -403,47 +404,44 @@ MenuListener {
 	 * {@inheritDoc}
 	 */
 	public final void mouseExited(final MouseEvent _event) {
-
-
-
-	       if (_event.getSource().equals(
-	        		getPage().getJlbl_painting())) { 
+		if (_event.getSource().equals(
+				getPage().getJlbl_painting())) { 
 	        	
 	        	
-	        	//remove old pen - position - indication - point
-	        	if (!project.getPicture().isSelected()) {
-	        		switch (State.getIndexOperation()) {
-
-		        	case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
-		        	case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
-		            case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
-		            case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
-
-
-		            	//do only preprint if there is no menu open (because
-		            	//that would cause a repaint of the view and close
-		            	//the menu.
-		            	if (getTabs() != null) {
-
-			            	if (!getTabs().isMenuOpen()) {
-
-			            		removePreprint();
-				            	break;
-			            	}
-		            	}
-	                default:
-	                	break;
-	        		}
-	        	}
-	        }		
+			//remove old pen - position - indication - point
+			if (!project.getPicture().isSelected()) {
+				switch (State.getIndexOperation()) {
+				
+				case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
+				case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
+				case Constants.CONTROL_PAINTING_INDEX_PAINT_1:		
+					
+					
+					//do only preprint if there is no menu open (because
+					//that would cause a repaint of the view and close
+					//the menu.
+					if (getTabs() != null) {
+						
+						if (!getTabs().isMenuOpen()) {
+							
+							removePreprint();
+							break;
+						}
+					}
+				default:
+					break;
+				}
+			}
+		}		
 	}
 
 	/**

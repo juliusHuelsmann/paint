@@ -43,7 +43,7 @@ public class ReportError extends JPanel {
 		final int width = 450, height = 975;
 		super.setSize(width, height);
 		myEditorPane = new JEditorPane();
-		myEditorPane.setEditable(false);
+		myEditorPane.setEditable(true);
 		myEditorPane.addHyperlinkListener(new HyperlinkListener() {
 			public void hyperlinkUpdate(final HyperlinkEvent _e) {
 		        if (_e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
@@ -137,6 +137,7 @@ public class ReportError extends JPanel {
         	//do nothing.
         	State.getLogger().severe("io exception while trying "
         			+ "to report bug...");
+        	ex.printStackTrace();
         }
 	}
 	

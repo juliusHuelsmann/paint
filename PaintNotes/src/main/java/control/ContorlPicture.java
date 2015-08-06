@@ -291,6 +291,46 @@ public class ContorlPicture implements PaintListener {
 		
 		return getBi();
 	}
+
+	
+	/**
+	 * repaint a special rectangle.
+	 * @param _x the x coordinate in view
+	 * @param _y the y coordinate in view
+	 * @param _width the width
+	 * @param _height the height
+	 * @return the graphics
+	 */
+	public final synchronized BufferedImage refreshRectangleBackground(
+			final int _x, final int _y, 
+			final int _width, final int _height,
+			BufferedImage _bi_origin) {
+
+		State.getLogger().finest("refreshing rectangle background. \nValues: "
+				+ "\n\tgetSize:\t" + getPaintLabel().getSize()
+				+ " vs. " + getJPnlToMove().getSize()
+				+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
+				+ " vs. " + getJPnlToMove().getLocation()
+				+ "\n\t" + "_x:\t\t" + _x
+				+ "\n\t" + "_y\t\t" + _y
+				+ "\n\t" + "_width\t\t" + _width
+				+ "\n\t" + "_height\t\t" + _height + "\n");
+
+		
+		BufferedImage bi_background = _bi_origin;
+		bi_background = Utils.getBackground(
+				bi_background, 
+				-getPaintLabel().getLocation().x + _x,
+				-getPaintLabel().getLocation().y + _y,
+				-getPaintLabel().getLocation().x + _x + _width,
+				-getPaintLabel().getLocation().y + _y + _height, 
+				_x, _y);
+		
+		getPage().getJlbl_painting().setIcon(
+				new ImageIcon(bi_background));
+								
+		return getBi();
+	}
 	
 	
 	

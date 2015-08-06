@@ -11,8 +11,13 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
+
+import model.settings.Constants;
 import model.settings.State;
 import model.util.Util;
+import model.util.html.HtmlDoc;
 import view.tabs.About;
 import control.ControlPaint;
 
@@ -79,11 +84,48 @@ public class CTabAbout implements ActionListener {
 
 	
 
+
 	/**
 	 * Method for checking for program updates.
 	 * @return whether there is a valid program update.
 	 */
-	private boolean checkForUpdates() {
+	private static boolean checkForUpdates() {
+
+		final int defaultLocationPathLenght = 3;
+
+		HtmlDoc document = new HtmlDoc(Constants.URL_UPDATE_PAGE);
+		try {
+			String s = document.getHl().getText(0, 2);
+			System.out.println(s);
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			Element[] el = document.getRootElements();;
+			for (int i = 0; i < el.length; i++) {
+				System.out.println(el[i].getName());
+			}
+			System.out.println(document.getRootElements()[1].getElementCount());
+			System.out.println(document.getRootElements()[1].getElement(0).getName());
+			System.out.println(document.getRootElements()[1].getElement(0).getElementCount());
+			return true;
+			
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return false;
+		}	
+	}	
+	
+	public static void main(String[]args) {
+		checkForUpdates();
+	}
+	
+	/**
+	 * Method for checking for program updates.
+	 * @return whether there is a valid program update.
+	 */
+	public boolean performDownloadForUpdate() {
 
 		final int defaultLocationPathLenght = 3;
 		

@@ -1,12 +1,16 @@
-package test.html;
+package model.util.html;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.ElementIterator;
 import javax.swing.text.html.HTMLDocument;
+
+import model.settings.Constants;
 
 
 /**
@@ -31,6 +35,17 @@ public class HtmlDoc {
 		this.hl = _hl;
 	}
 
+	
+	public HtmlDoc(final String _url) {
+		this.hl =  new HTMLDocument();
+		try {
+			hl.setBase(new URL(_url));
+		} catch (MalformedURLException e) {
+			hl = null;
+		
+			e.printStackTrace();
+		}
+	}
 	
 	
 	

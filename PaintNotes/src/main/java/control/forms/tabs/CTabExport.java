@@ -131,12 +131,136 @@ public final class CTabExport implements ActionListener {
     	                .getJcb_saveFormats())) {
     	            State.setSaveFormat(getExport().getJcb_saveFormats()
     	                    .getSelectedItem().toString());
-    	        }
+    	        } else if (_event.getSource().equals(getExport()
+		        		.getJcb_borderEnabled())) {
+    	        	
+		        	if (!getExport().getJcb_borderEnabled().isSelected()) {
+		        		
+		        		//do not display the explicit border settings anymore.
+		        		setBorderVisible(false);
+		        		
+		        		//apply zero-border
+		                State.setBorderRightPercentExport(0);
+		                State.setBorderLeftPercentExport(0);
+		                State.setBorderTopPercentExport(0);
+		                State.setBorderBottomPercentExport(0);
+		        	} else {
+		        		
+		        		//(re-) display the border settings.
+		        		setBorderVisible(true);
+		        		
+		        		//apply the settings that are enabled by the buttons that 
+		        		// have just been set visible.
+		        		applyMargeRight();
+		        		applyMargeLeft();
+		        		applyMargeTop();
+		        		applyMargeBottom();
+		        	}
+		        }
     	        
     	    }
     	}
 
 
+    
+    
+    
+    
+    
+    
+
+
+	private void setBorderVisible(boolean _visible) {
+	
+	
+		getExport().getJcb_margeBottom().setVisible(_visible);
+		getExport().getJcb_margeTop().setVisible(_visible);
+		getExport().getJcb_margeLeft().setVisible(_visible);
+		getExport().getJcb_margeRight().setVisible(_visible);
+	
+		getExport().getJlbl_subtitle_borderBottom().setVisible(_visible);
+		getExport().getJlbl_subtitle_borderTop().setVisible(_visible);
+		getExport().getJlbl_subtitle_borderLeft().setVisible(_visible);
+		getExport().getJlbl_subtitle_borderRight().setVisible(_visible);
+	
+	}
+
+	public void applyMargeRight() {
+
+        String str_selected = getExport().getJcb_margeRight()
+                .getSelectedItem().toString().replace("%", "");
+        
+        try {
+
+            int int_selected = Integer.parseInt(str_selected);
+            State.setBorderRightPercentExport(int_selected);
+        } catch (Exception e) {
+            State.getLogger().severe(
+                    "error: change border size: wrong input");
+        }
+	}
+	
+	
+	public void applyMargeLeft() {
+
+        
+		
+        String str_selected = getExport().getJcb_margeLeft()
+                .getSelectedItem().toString().replace("%", "");
+        
+        try {
+
+            int int_selected = Integer.parseInt(str_selected);
+            State.setBorderLeftPercentExport(int_selected);
+        } catch (Exception e) {
+            State.getLogger().severe(
+                    "error: change border size: wrong input");
+        }
+    
+	}
+	
+	
+	public void applyMargeTop() {
+
+		
+        String str_selected = getExport().getJcb_margeTop()
+                .getSelectedItem().toString().replace("%", "");
+        
+        try {
+
+            int int_selected = Integer.parseInt(str_selected);
+            State.setBorderTopPercentExport(int_selected);
+        } catch (Exception e) {
+            State.getLogger().severe(
+                    "error: change border size: wrong input");
+        }
+    
+	}
+	
+	public void applyMargeBottom() {
+
+        
+        String str_selected = getExport().getJcb_margeBottom()
+                .getSelectedItem().toString().replace("%", "");
+        
+        try {
+
+            int int_selected = Integer.parseInt(str_selected);
+            State.setBorderBottomPercentExport(int_selected);
+        } catch (Exception e) {
+            State.getLogger().severe(
+                    "error: change border size: wrong input");
+        }
+    
+	}
+
+    
+    
+    
+    
+    /*
+     * getter
+     */
 
 
 	/**

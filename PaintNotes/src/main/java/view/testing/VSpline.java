@@ -23,6 +23,7 @@ import model.util.adt.list.List;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
+@SuppressWarnings("serial")
 public class VSpline extends JPanel {
 
 	

@@ -57,8 +57,14 @@ public final class History extends Observable {
         }
         setChanged();
         notifyObservers("remove " + _hist);
-    }  
-    
+    }
+
+	/**
+	 * @return the pic
+	 */
+	public Picture getPic() {
+		return pic;
+	}
 
     
     

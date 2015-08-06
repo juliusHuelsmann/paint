@@ -17,6 +17,7 @@ import view.util.mega.MPanel;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
+@SuppressWarnings("serial")
 public class InfoForm extends MPanel {
 
 	private final int heightPerLine = 15;

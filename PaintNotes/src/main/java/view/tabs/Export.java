@@ -633,4 +633,40 @@ public final class Export extends Tab {
 		
 	}
 
+	/**
+	 * @return the jcb_borderEnabled
+	 */
+	public JCheckBox getJcb_borderEnabled() {
+		return jcb_borderEnabled;
+	}
+
+	/**
+	 * @return the jlbl_subtitle_borderTop
+	 */
+	public MLabel getJlbl_subtitle_borderTop() {
+		return jlbl_subtitle_borderTop;
+	}
+
+
+	/**
+	 * @return the jlbl_subtitle_borderBottom
+	 */
+	public MLabel getJlbl_subtitle_borderBottom() {
+		return jlbl_subtitle_borderBottom;
+	}
+
+	/**
+	 * @return the jlbl_subtitle_borderLeft
+	 */
+	public MLabel getJlbl_subtitle_borderLeft() {
+		return jlbl_subtitle_borderLeft;
+	}
+
+	/**
+	 * @return the jlbl_subtitle_borderRight
+	 */
+	public MLabel getJlbl_subtitle_borderRight() {
+		return jlbl_subtitle_borderRight;
+	}
+
 }

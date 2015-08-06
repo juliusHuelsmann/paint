@@ -60,6 +60,7 @@ public final class ViewSettings {
      */
     public static final Color 
     GENERAL_CLR_BACKGROUND_DARK = new Color(245, 246, 253), 
+    GENERAL_CLR_BACKGROUND_GREEN = new Color(224, 240, 250), //(218, 233, 244), 
     GENERAL_CLR_BACKGROUND_DISABLED = new Color(245, 220, 240),
     GENERAL_CLR_BACKGROUND_DARK_X = new Color(236, 237, 238),
     GENERAL_CLR_BACKGROUND_DARK_XX = new Color(226, 227, 228),
@@ -549,7 +550,7 @@ public final class ViewSettings {
      */
     public static int getView_heightTB_visible() {
     	return Math.max(
-    			(int) (getSize_jframe().height / (FIVE)),
+    			(int) (getSize_jframe().height / (2 + 2 + 0.8)),
     			
     			//TODO: adapt window size
         		120);

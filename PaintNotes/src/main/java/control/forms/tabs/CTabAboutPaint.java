@@ -18,7 +18,8 @@ import model.settings.Constants;
 import model.settings.State;
 import model.util.Util;
 import model.util.html.HtmlDoc;
-import view.tabs.About;
+import view.tabs.AboutPaint;
+import view.util.VTabbedPane;
 import control.ControlPaint;
 
 
@@ -31,7 +32,7 @@ import control.ControlPaint;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class CTabAbout implements ActionListener {
+public class CTabAboutPaint implements ActionListener {
 
 	
 	/**
@@ -65,7 +66,7 @@ public class CTabAbout implements ActionListener {
 	 * 
 	 * @param _cp	instance of the root controller class which is saved.
 	 */
-	public CTabAbout(final ControlPaint _cp) {
+	public CTabAboutPaint(final ControlPaint _cp) {
 		this.cp = _cp;
 	}
 	
@@ -79,6 +80,18 @@ public class CTabAbout implements ActionListener {
 		if (_event.getSource().equals(
 				getAbout().getI1b_checkForUpdates().getActionCause())) {
 			checkForUpdates();
+		} else if (_event.getSource().equals(getAbout().getI1b_settings()
+				.getActionCause())) {
+			if (cp.getView().getTabs().getTabbedPaneOpenState() 
+					== VTabbedPane.ID_TABBED_PANE_OPEN_2) {
+
+				cp.getView().getTabs().setTabbedPaneOpen(true);
+			}
+				
+			else {
+				cp.getView().getTabs().setTabbedPaneEntirelyOpen();
+				
+			}
 		}
 	}
 
@@ -334,7 +347,7 @@ public class CTabAbout implements ActionListener {
 	 * @return 	instance of About (tab) fetched out of the root controller 
 	 * 			class.
 	 */
-	private About getAbout() {
+	private AboutPaint getAbout() {
 		
 		if (cp != null) {
 			if (cp.getView() != null) {

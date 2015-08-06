@@ -18,7 +18,7 @@ import model.settings.TextFactory;
 import model.settings.ViewSettings;
 import control.ControlPaint;
 import control.forms.CPaintStatus;
-import control.forms.tabs.CTabPainting;
+import control.forms.tabs.CTabTools;
 import control.interfaces.HelpMouseListener;
 import control.interfaces.MenuListener;
 import control.util.CPaintSelection;
@@ -37,7 +37,7 @@ import view.util.mega.MButton;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public final class Paint extends Tab {
+public final class Tools extends Tab {
 
 
     /**
@@ -92,8 +92,8 @@ public final class Paint extends Tab {
 	/**
 	 * Constructor of Paint.
 	 */
-	public Paint(final ControlPaint _controlPaint,
-			final CTabPainting _paint, final MenuListener _ml,
+	public Tools(final ControlPaint _controlPaint,
+			final CTabTools _paint, final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus) {
 
 		//initialize JPanel and alter settings
@@ -157,7 +157,7 @@ public final class Paint extends Tab {
 	 * @return the x coordinate for following items.
 	 */
 	private int initializeClipboard(final int _x, final boolean _paint,
-			final CTabPainting _cp,
+			final CTabTools _cp,
 			final CPaintStatus _controlPaintStatus) {
 
         if (_paint) {
@@ -241,7 +241,7 @@ public final class Paint extends Tab {
 	 * @return the new x coordinate
 	 */
 	private int initializeHistory(final int _x, final boolean _paint,
-			final CTabPainting _ctp,
+			final CTabTools _ctp,
 			final CPaintStatus _controlPaintStatus) {
 
 	    if (_paint) {
@@ -318,7 +318,7 @@ public final class Paint extends Tab {
 	private int initializePagePens(
 			final ControlPaint _controlPaint, 
 			final int _x, final boolean _paint,
-			final CTabPainting _cp,
+			final CTabTools _cp,
 			final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus) {
         final Dimension sizeIT = new Dimension(550, 550);
@@ -523,7 +523,7 @@ public final class Paint extends Tab {
 	 * @return the new position.
 	 */
     private int initializePageColors(final int _x, final boolean _paint, 
-    		final CTabPainting _cPaint,
+    		final CTabTools _cPaint,
     		final MenuListener _ml,
     		final CPaintStatus _controlPaintStatus) {
     	
@@ -718,7 +718,7 @@ public final class Paint extends Tab {
      * @return the new x coordinate
 	 */
 	private int initializeZoom(final int _x, final boolean _paint, 
-			final CTabPainting _controlTabPaint,
+			final CTabTools _controlTabPaint,
 			final CPaintStatus _controlPaintStatus) {
 
 		
@@ -773,7 +773,7 @@ public final class Paint extends Tab {
      * @return the new x coordinate
 	 */
 	private int initializeFileOperations(final int _x, final boolean _paint,
-			final CTabPainting _controlTabPaint, 
+			final CTabTools _controlTabPaint, 
 			final CPaintStatus _controlPaintStatus) {
 
 		
@@ -903,7 +903,7 @@ public final class Paint extends Tab {
 	 * add pens .
 	 */
 	private void addPens(final ControlPaint _controlPaint, 
-			final CTabPainting _cp,
+			final CTabTools _cp,
 			final CPaintStatus _controlPaintStatus) {
 
 

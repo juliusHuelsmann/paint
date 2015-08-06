@@ -37,7 +37,7 @@ import model.util.paint.Utils;
 import view.View;
 import view.forms.Message;
 import view.forms.Page;
-import view.tabs.Paint;
+import view.tabs.Tools;
 import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;
 
@@ -47,7 +47,7 @@ import view.util.VButtonWrapper;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class CTabPainting implements ActionListener, MouseListener {
+public final class CTabTools implements ActionListener, MouseListener {
 
 
 	/**
@@ -65,7 +65,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
      * empty utility class Constructor.
      * @param _cp the instance of ControlPaint
      */
-    public CTabPainting(final ControlPaint  _cp) {
+    public CTabTools(final ControlPaint  _cp) {
 
     	this.controlPaint = _cp;
         // initialize and start action
@@ -88,7 +88,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
      * Fetch the instance of tab paint.
      * @return the tab paint.
      */
-    public Paint getTabPaint() {
+    public Tools getTabPaint() {
     	
     	if (controlPaint != null
     			&& controlPaint.getView() != null
@@ -115,7 +115,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
     	 * The getter method handles the printing of an error message if the 
     	 * instance of Paint is null.
     	 */
-    	final Paint paint = getTabPaint();
+    	final Tools paint = getTabPaint();
 
     	
     	//if the initialization process has terminated without errors
@@ -903,7 +903,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
     	 * The getter method handles the printing of an error message if the 
     	 * instance of Paint is null.
     	 */
-    	final Paint paint = getTabPaint();
+    	final Tools paint = getTabPaint();
 
     	
     	//if the initialization process has terminated without errors
@@ -957,7 +957,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
     	 * The getter method handles the printing of an error message if the 
     	 * instance of Paint is null.
     	 */
-    	final Paint paint = getTabPaint();
+    	final Tools paint = getTabPaint();
 
     	
     	//if the initialization process has terminated without errors

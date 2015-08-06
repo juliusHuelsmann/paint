@@ -210,7 +210,6 @@ public final class Debug extends Tab implements Observer {
 		        BorderFactory.createLineBorder(Color.black));
 		super.add(jlbl_detailedPosition);
 
-
 		i1b_console = new Item1Button(null);
 		i1b_console.setBorder(false);
         i1b_console.addActionListener(null);

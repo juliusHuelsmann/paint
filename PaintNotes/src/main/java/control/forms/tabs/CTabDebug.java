@@ -17,6 +17,7 @@ import model.debug.ActionManager;
 import model.debug.debugTools.DebugUtil;
 import model.objects.PictureOverview;
 import model.objects.painting.po.PaintObject;
+import model.objects.painting.po.PaintObjectImage;
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.pen.Pen;
 import model.settings.Constants;
@@ -410,6 +411,12 @@ public final class CTabDebug implements ActionListener {
                          + ls_point.getItem().getY() + " | ";
                 ls_point.next();
              }
+        } else if (_po_cu instanceof PaintObjectImage) {
+        	PaintObjectImage poi = (PaintObjectImage) _po_cu;
+        	text = "element id\t" + poi.getElementId();
+        	text += "\nbounds \t" + poi.getSnapshotBounds();
+        	text += "\nsqrBounds \t" + poi.getSnapshotSquareBounds();
+        	
         }
         
         getPaintObjects().getJta_infoSelectedPanel()

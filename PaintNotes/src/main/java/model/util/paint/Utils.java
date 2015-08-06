@@ -8,7 +8,9 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
+
 import start.Start;
 import model.objects.painting.PaintBI;
 import model.settings.Constants;
@@ -435,7 +437,7 @@ public final class Utils {
             final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {
-        
+
         Dimension d = new Dimension(State.getImageShowSize());
         State.setImageShowSize(new Dimension(State.getImageSize()));
         
@@ -448,10 +450,16 @@ public final class Utils {
         int borderBShow = State.getBorderBottomPercent();
 
         //set percentages
-        State.setBorderLeftPercent(State.getBorderLeftPercentExport());
-        State.setBorderRightPercent(State.getBorderRightPercentExport());
-        State.setBorderTopPercent(State.getBorderTopPercentExport());
+        State.setBorderLeftPercent(	 State.getBorderLeftPercentExport());
+        State.setBorderRightPercent( State.getBorderRightPercentExport());
+        State.setBorderTopPercent(	 State.getBorderTopPercentExport());
         State.setBorderBottomPercent(State.getBorderBottomPercentExport());
+        
+        System.out.println("background values:\n");
+        System.out.println(State.getBorderLeftPercentExport());
+        System.out.println(State.getBorderRightPercentExport());
+        System.out.println(State.getBorderTopPercent());
+        System.out.println(State.getBorderBottomPercent());
 
         BufferedImage bi = null;
         switch (State.getIndexPageBackgroundExport()) {
@@ -475,13 +483,17 @@ public final class Utils {
             break;
         }
 
-        //reset percentages
-        State.setBorderLeftPercentExport(borderLShow);
-        State.setBorderRightPercentExport(borderRShow);
-        State.setBorderTopPercentExport(borderTShow);
-        State.setBorderBottomPercentExport(borderBShow);
+        /*
+         * reset values
+         */
+        State.setBorderLeftPercent(borderLShow);
+        State.setBorderRightPercent(borderRShow);
+        State.setBorderTopPercent(borderTShow);
+        State.setBorderBottomPercent(borderBShow);
 
         State.setImageShowSize(d);
+        
+        // return the image that has been painted.
         return bi;
     }
 
@@ -1358,7 +1370,7 @@ public final class Utils {
      *                  
      * @return the transformed BufferedImage
      */
-    private static BufferedImage printWhiteBackgroundOld(
+    public static BufferedImage printWhiteBackgroundOld(
             final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {

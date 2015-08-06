@@ -774,7 +774,6 @@ public abstract class Pen implements Serializable {
     		int j = i + 1;
     		a[j - 1] = (b[j] - b[j - 1]) / (three * (x[j] - x[j - 1]));
 
-    		double hi = x[i + 1] - x[i];
     		if (i + 1 >= d.length) {
 
 //        		c[i] = 

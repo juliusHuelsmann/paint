@@ -294,10 +294,7 @@ import control.util.CColorPanel;
          * first and second colorPanels
          */
         final byte itemsInRow = (byte) 32;
-        final int abstand = 8, abstand2 = 8, maxRGB = 255, komisch = 10, 
-                heightPanel = 70, yThing2 = 73;
-        final Dimension dim_it_color = new Dimension(_width, _height / 2 
-                - komisch);
+        final int abstand = 8, abstand2 = 8, maxRGB = 255;
         
         
 
@@ -487,21 +484,6 @@ import control.util.CColorPanel;
 	}
 
 	
-	/**
-	 * insert JPanel to Item1Menu for color panel.
-	 * @param _it_color the panel where to add
-	 * @param _color the color of JPanel
-	 */
-	private void insertPanel(final Item1Menu _it_color, 
-	        final Color _color) {
-	    MPanel jpnl_currentColor = new MPanel();
-        _it_color.add(jpnl_currentColor);
-        jpnl_currentColor.addMouseMotionListener(control); 
-        jpnl_currentColor.addMouseListener(control);
-        jpnl_currentColor.setOpaque(true);
-        jpnl_currentColor.setBackground(_color);
-        jpnl_currentColor.setBorder(null);
-	}
 	/*
 	 * getter and setter methods.
 	 */

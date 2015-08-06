@@ -4,8 +4,6 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-
-import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import model.settings.State;

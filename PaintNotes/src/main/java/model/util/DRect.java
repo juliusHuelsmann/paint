@@ -11,10 +11,14 @@ public class DRect {
 		
 	}
 	public DRect(Rectangle _r) {
-		x = _r.x;
-		y = _r.y;
-		width = _r.width;
-		height = _r.height;
+		
+		if (_r != null) {
+
+			x = _r.x;
+			y = _r.y;
+			width = _r.width;
+			height = _r.height;
+		}
 	}
 
 	public DRect(double _x, double _y, double _width, double _height) {

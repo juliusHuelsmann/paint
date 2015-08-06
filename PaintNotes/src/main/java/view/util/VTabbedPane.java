@@ -15,8 +15,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+
+import java.util.Random;
+
 //import java.swing components
 import javax.swing.BorderFactory;
+
+
 
 //import utility classes and settings
 import model.settings.State;
@@ -29,7 +34,6 @@ import control.interfaces.TabbedListener;
 
 //controller class which handles the tab - opening
 import control.util.CTabbedPane;
-
 import view.tabs.Tab;
 //import rotatatble buttons and panels
 import view.util.mega.MLabel;
@@ -66,7 +70,7 @@ public class VTabbedPane extends MPanel {
 	/**
 	 * array of Panels for each MButton.
 	 */
-	private MPanel  [] jpnl_stuff;
+	private MPanel  [] jpnl_stuff, jpnl_stuff_layer_2;
 	
 	/**
 	 * MLabel for the background.
@@ -130,12 +134,15 @@ public class VTabbedPane extends MPanel {
 	 */
 	private MLabel jlbl_stroke;
 
-	
 	/**
 	 * The owner of the VTabbedPane used for being able to open and to close
 	 * the VTabbedPane by dragging the mouse.
 	 */
 	private Component c_owner;
+	
+	
+	private MLabel jlbl_background_settings_1, jlbl_background_settings_2;
+	
 	/**
 	 * Constructor initialize view and corresponding controller class..
 	 * @param _c_owner 
@@ -175,7 +182,23 @@ public class VTabbedPane extends MPanel {
         jlbl_stroke.setBorder(null);
         jlbl_stroke.setOpaque(false);
         jpnl_contains.add(jlbl_stroke);
+
+        jlbl_background_settings_2 = new MLabel();
+        jlbl_background_settings_2.setBorder(null);
+        jlbl_background_settings_2.setVisible(false);
+        jlbl_background_settings_2.setOpaque(false);
+        jpnl_contains.add(jlbl_background_settings_2);
         
+        jlbl_background_settings_1 = new MLabel();
+        jlbl_background_settings_1.setBorder(null);
+        jlbl_background_settings_1.setOpaque(true);
+        jlbl_background_settings_1.setVisible(false);
+        jlbl_background_settings_1.setBackground(
+        		ViewSettings.GENERAL_CLR_BACKGROUND_GREEN);
+        jlbl_background_settings_1.setBorder(BorderFactory.createMatteBorder(
+                1, 0, 0, 0, ViewSettings.GENERAL_CLR_BORDER));
+        jpnl_contains.add(jlbl_background_settings_1);
+
         jpnl_close = new MPanel();
         jpnl_close.setFocusable(false);
         jpnl_close.setOpaque(true);
@@ -211,8 +234,13 @@ public class VTabbedPane extends MPanel {
                         / ViewSettings
                         .TABBED_PANE_TITLE_PROPORTION_HEIGHT)) / 2) {
                     closeTabbedPane();
-                } else {
+                } else if (getHeight() <= (oldVisibleHeight
+                		+ (getVisibleHeightEnitelyOpen() -  oldVisibleHeight ) / 2)) {
+                	System.out.println("open t");
                     openTabbedPane();
+                } else {
+                	System.out.println("open enti");
+                	openTabbedPaneEntirely();
                 }
             }
             public void mousePressed(final MouseEvent _event) {
@@ -403,6 +431,17 @@ public class VTabbedPane extends MPanel {
 		}
 	}
 	
+	public final void setTabbedPaneEntirelyOpen() {
+		openTabbedPaneEntirely();
+	}
+	
+	
+	public final static int ID_TABBED_PANE_CLOSED = 0, ID_TABBED_PANE_OPEN_1 = 1,
+			ID_TABBED_PANE_OPEN_2 = 2;
+	private int tabbedPaneOpenState = ID_TABBED_PANE_OPEN_1;
+	
+	private final int time_to_sleep_open_close = 3;
+	private final int amountSteps = 25;
 	
 	/**
 	 * close the tab.
@@ -414,7 +453,7 @@ public class VTabbedPane extends MPanel {
 	        public void run() {
 
 	            int startHeight = getHeight();
-	            final int max = 20;
+	            final int max = amountSteps;
 	            for (int i = 0; i < max; i++) {
 
 	                setComponentSize(getWidth(), startHeight + (oldHeight 
@@ -429,7 +468,7 @@ public class VTabbedPane extends MPanel {
 		                        .getView_bounds_page().x, getHeight() + 1)));
 	                }
 	                try {
-	                    Thread.sleep(2);
+	                    Thread.sleep(time_to_sleep_open_close);
 	                } catch (InterruptedException e) {
 	                    e.printStackTrace();
 	                }
@@ -459,8 +498,16 @@ public class VTabbedPane extends MPanel {
 	            //adapt image size.
                 
                 tl.closeListener();
+                jlbl_closeTime.repaint();
+            	tabbedPaneOpenState = ID_TABBED_PANE_CLOSED;
 	        }
 	    };
+        jlbl_stroke.setBorder(null);
+        jlbl_background_settings_1.setVisible(false);
+        jlbl_background_settings_2.setVisible(false);
+        for (int i = 0; i < jpnl_stuff_layer_2.length; i++) {
+            jpnl_stuff_layer_2[i].setVisible(false);
+		}
 	    t_closeTab.start();
 	    
 	}
@@ -476,11 +523,11 @@ public class VTabbedPane extends MPanel {
 
                 int startHeight = getHeight();
                 int startHeight2 = jpnl_close.getY();
-                final int max = 20;
+                final int max = amountSteps;
                 for (int i = 0; i < max; i++) {
 
                     setComponentSize(getWidth(), startHeight
-                            + (oldHeight - startHeight)
+                            + (oldHeight * 2 - startHeight)
                             * i / max);
                     jpnl_close.setLocation(0, startHeight2 
                             + (oldVisibleHeight - startHeight2) * i / max);
@@ -503,7 +550,7 @@ public class VTabbedPane extends MPanel {
                     }
                     
                     try {
-                        Thread.sleep(1);
+                        Thread.sleep(time_to_sleep_open_close);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -534,10 +581,119 @@ public class VTabbedPane extends MPanel {
                 if (tl != null)  {
                 	tl.openListener();
                 }
+                jlbl_closeTime.repaint();
+            	tabbedPaneOpenState = ID_TABBED_PANE_OPEN_1;
+            }
+        };
+        jlbl_stroke.setBorder(null);
+        jlbl_background_settings_1.setVisible(false);
+        jlbl_background_settings_2.setVisible(false);
+
+        for (int i = 0; i < jpnl_stuff_layer_2.length; i++) {
+
+            jpnl_stuff_layer_2[i].setVisible(false);
+		}
+        t_closeTab.start();
+
+	}
+	
+	
+
+	
+	/**
+	 * open the tab.
+	 */
+	private void openTabbedPaneEntirely() {
+
+        jlbl_stroke.setBorder(BorderFactory.createMatteBorder(
+                0, 0, 1, 0, ViewSettings.GENERAL_CLR_BORDER));
+        jlbl_background_settings_1.setVisible(true);
+        jlbl_background_settings_2.setVisible(true);
+        jpnl_contains.setVisible(true);
+        
+        for (int i = 0; i < jpnl_stuff_layer_2.length; i++) {
+
+            jpnl_stuff_layer_2[i].setVisible(true);
+		}
+        
+        Thread t_closeTab = new Thread() {
+            public void run() {
+
+                int startHeight = getHeight();
+                int startHeight2 = jpnl_close.getY();
+                final int max = amountSteps;
+                for (int i = 0; i < max; i++) {
+
+                    setComponentSize(getWidth(), startHeight
+                            + (getHeightEnitelyOpen() - startHeight)
+                            * i / max);
+                    jpnl_close.setLocation(0, startHeight2 
+                            + (getVisibleHeightEnitelyOpen() - startHeight2) * i / max);
+                    
+                    jlbl_closeTime.setBounds(0 , 2, jpnl_close.getWidth() 
+                            / 2, jpnl_close.getHeight());
+                    
+                    jpnl_background.setSize(getWidth(), 
+                            startHeight2 + (oldVisibleHeight
+                            		+ titleY + 5
+                            		- startHeight2) 
+                            * i / max
+                            - jpnl_background.getY());
+                    
+
+                    if (tl != null)  {
+                    	tl.moveListener(new MoveEvent(new Point(
+                                ViewSettings.getView_bounds_page().x, 
+                                startHeight2 
+                                + (getVisibleHeightEnitelyOpen() - startHeight2) 
+                                * i / max)));
+                    }
+                    
+                    try {
+                        Thread.sleep(time_to_sleep_open_close);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                
+                setComponentSize(getWidth(), getHeightEnitelyOpen());
+                jpnl_close.setLocation(0, 
+                        getVisibleHeightEnitelyOpen());
+                jpnl_background.setSize(getWidth(), oldVisibleHeight 
+                		+ titleY + 5
+                        - jpnl_background.getY());
+                jlbl_stroke.setSize(jpnl_background.getSize());
+                jpnl_background.repaint();
+
+                if (tl != null)  {
+                	tl.moveListener(new MoveEvent(new Point(
+                            ViewSettings.getView_bounds_page().x, 
+                            getVisibleHeightEnitelyOpen() 
+                            + jpnl_close.getHeight() + getY() + 1)));
+                }
+                setComponentZOrder(jpnl_close, 1);
+
+
+                ViewSettings.getView_bounds_page().y
+                = ViewSettings.getView_bounds_page_open().y;
+                ViewSettings.getView_bounds_page().height
+                = ViewSettings.getView_bounds_page_open().height;
+
+                if (jlbl_background_settings_2.isVisible())
+                Util.getStroke(jlbl_background_settings_2);
+
+                if (tl != null)  {
+                	tl.openListener();
+                }
+                jlbl_closeTime.repaint();
+            	tabbedPaneOpenState = ID_TABBED_PANE_OPEN_2;
             }
         };
         t_closeTab.start();
+
 	}
+	
+	
 	/**
 	 * add a new tab and its title to tabbedPane.
 	 * @param _title the title of the new tab.
@@ -549,16 +705,19 @@ public class VTabbedPane extends MPanel {
 			
 		    //create arrays for content MPanel and headline MButton
 			jpnl_stuff = new MPanel[1];
+			jpnl_stuff_layer_2 = new MPanel[1];
 			jbtn_stuffHeadline = new VTabButton[1];
 
 			//initialize title button and content MPanel
 			jbtn_stuffHeadline[0] = initJbtn_title(0, _title);
 			jpnl_stuff[0] = initJpnl_tab();
+			jpnl_stuff_layer_2[0] = initJpnl_tab_layer2();
 			
 		} else {
 			
 		    //create new arrays
 			MPanel [] jpnl_stuff2 = new MPanel [jpnl_stuff.length + 1];
+			MPanel [] jpnl_stuff2_layer_2 = new MPanel[jpnl_stuff.length + 1];
 			VTabButton[] jbtn_stuff2 
 			= new VTabButton[jpnl_stuff.length + 1];
 
@@ -566,6 +725,7 @@ public class VTabbedPane extends MPanel {
 			for (int i = 0; i < jpnl_stuff.length; i++) {
 				jpnl_stuff2[i] = jpnl_stuff[i];
 				jbtn_stuff2[i] = jbtn_stuffHeadline[i];
+				jpnl_stuff2_layer_2[i] = jpnl_stuff_layer_2[i];
 				jpnl_stuff2[i].setVisible(true);
 			}
 			
@@ -573,6 +733,7 @@ public class VTabbedPane extends MPanel {
 			jbtn_stuff2[jpnl_stuff.length] = initJbtn_title(
 			        jpnl_stuff.length, _title);
 			jpnl_stuff2[jpnl_stuff.length] = initJpnl_tab();
+			jpnl_stuff2_layer_2[jpnl_stuff.length] = initJpnl_tab_layer2();
 
             if (_title.equals("")) {
                 
@@ -583,6 +744,7 @@ public class VTabbedPane extends MPanel {
 			//save the new created MPanel and MButton arrays.
 			jpnl_stuff = jpnl_stuff2;
 			jbtn_stuffHeadline = jbtn_stuff2;
+			jpnl_stuff_layer_2 = jpnl_stuff2_layer_2;
 		}
 		
 		//set position of background to last painted
@@ -598,7 +760,7 @@ public class VTabbedPane extends MPanel {
         
 	}
 	
-	
+
 	
 	/**
      * add component at special tab index.
@@ -645,6 +807,52 @@ public class VTabbedPane extends MPanel {
     		return jpnl_stuff[_index].add(_c);
     	}
     }
+	
+	/**
+     * add component at special tab index.
+     * 
+     * @param _index the tab index.
+     * @param _c the component which is added.
+     * 
+     * @return the added component
+     */
+    public final Component addToTabLayer2(final int _index, final Component _c) {
+    	
+    
+           //if the MPanel for the stuff does not exist yet, not a single
+        //tab has been added before and it is thus impossible to add
+        //a component to a special tab.
+        if (jpnl_stuff == null) {
+            
+            //print error message
+            State.getLogger().severe(
+                    "add an item to a not existing MPanel (no item added yet)");
+    
+            //return null
+            return null;
+    		
+    	} else if (_index < 0 || _index >= jpnl_stuff.length) {
+    
+            //print error message
+            State.getLogger().severe("add an item to a not existing MPanel "
+            		+ "(index out of range)");
+    
+            //return null
+            return null;
+            
+    	} else if (_c == null) {
+    
+            //print error message
+            State.getLogger().severe("add an item to a not existing MPanel "
+            		+ "(Component to add is null)");
+    
+            //return null
+            return null;
+    	} else {
+    		_c.setFocusable(false);
+    		return jpnl_stuff_layer_2[_index].add(_c);
+    	}
+    }
 
 
     /**
@@ -669,7 +877,7 @@ public class VTabbedPane extends MPanel {
 		jpnl_contains.add(jbtn);
 		return jbtn;
 	}
-	
+
 	
 	/**
 	 * initialize a new MPanel for the tab.
@@ -682,6 +890,23 @@ public class VTabbedPane extends MPanel {
 		jpnl.setLayout(null);
 		jpnl.setFocusable(false);
 		jpnl.setOpaque(false);
+		jpnl_contains.add(jpnl);
+		return jpnl;
+	}
+	
+	/**
+	 * initialize a new MPanel for the tab.
+	 * @return the ready MPanel.
+	 */
+	private MPanel initJpnl_tab_layer2() {
+
+		MPanel jpnl = new MPanel();
+		jpnl.setVisible(false);
+		jpnl.setLayout(null);
+		jpnl.setFocusable(false);
+		jpnl.setOpaque(false);
+//		jpnl.setBackground(new Color(new Random().nextInt(250),
+//				new Random().nextInt(250), new Random().nextInt(250)));
 		jpnl_contains.add(jpnl);
 		return jpnl;
 	}
@@ -721,6 +946,13 @@ public class VTabbedPane extends MPanel {
                 jpnl_stuff[i].setLocation(getWidth() * (i - lastTab), 
                         jpnl_stuff[i].getY());
                 jpnl_stuff[i].setVisible(true);
+                //make the tab MPanel visible
+                jpnl_stuff_layer_2[i].setLocation(getWidth() * (i - lastTab), 
+                        jpnl_stuff_layer_2[i].getY());
+                if (getTabbedPaneOpenState() == ID_TABBED_PANE_OPEN_2) {
+
+                    jpnl_stuff_layer_2[i].setVisible(true);
+                }
             }
             
             //set the selected background for the currently selected tab
@@ -733,7 +965,14 @@ public class VTabbedPane extends MPanel {
             jpnl_contains.setComponentZOrder(jbtn_stuffHeadline[_index], 1);
             jpnl_contains.setComponentZOrder(jlbl_stroke, 2);
 
-            super.setSize(getWidth(), visibleHeight);
+            
+            if (getTabbedPaneOpenState() == ID_TABBED_PANE_OPEN_2) {
+            	super.setSize(getWidth(), getVisibleHeightEnitelyOpen()
+            			);
+            } else {
+
+                super.setSize(getWidth(), visibleHeight);
+            }
             new Thread() {
                 public void run() {
 
@@ -741,21 +980,37 @@ public class VTabbedPane extends MPanel {
                     
                     //go through the list of headline MButtons and tab 
                     //MPanels
-                    jpnl_contains.setComponentZOrder(jpnl_stuff[openTab], 1);
+                    jpnl_contains.setComponentZOrder(jpnl_stuff[openTab],1);
+                    jpnl_contains.setComponentZOrder(jpnl_stuff_layer_2[openTab],2);
                     for (int percent = 0; percent <= max; percent++) {
                         for (int i = 0; i < jbtn_stuffHeadline.length; i++) {
 
                             int cStartLocation = getWidth() * (i - lastTab);
                             int cEndLocation = getWidth() * (i - _index);
-                            
+
                             //make the tab MPanel visible
                             jpnl_stuff[i].setLocation(cStartLocation
                                     + (cEndLocation - cStartLocation)
                                     * percent / max,
                                     jpnl_stuff[i].getY());
-                            jpnl_stuff[i].repaint();
                             
+
+                            if (getTabbedPaneOpenState() == ID_TABBED_PANE_OPEN_2) {
+
+                                //make the tab MPanel visible
+                                jpnl_stuff_layer_2[i].setLocation(cStartLocation
+                                        + (cEndLocation - cStartLocation)
+                                        * percent / max,
+                                        jpnl_stuff_layer_2[i].getY());
+                            }
+                            
+                            
+//                            jpnl_stuff[i].repaint();
+//                            jlbl_background_settings_1.repaint();
                         }
+                        
+//                        jlbl_background_settings_1.setLocation(jlbl_background_settings_1.getLocation());
+//                        jpnl_contains.setComponentZOrder(jpnl_stuff[openTab], 1);
                         try {
                             Thread.sleep(1);
                         } catch (InterruptedException e) {
@@ -770,12 +1025,16 @@ public class VTabbedPane extends MPanel {
                         jpnl_stuff[i].setLocation(cStartLocation
                                 + cEndLocation - cStartLocation,
                                 jpnl_stuff[i].getY());
+                        
+                        jpnl_stuff_layer_2[i].setLocation(cStartLocation
+                                + cEndLocation - cStartLocation,
+                                jpnl_stuff_layer_2[i].getY());
                     }
 
-                	//TODO: das hier suche ich warhscheinlich.
                     setSize(getWidth(), oldHeight);
                     stroke();
                     jpnl_contains.setComponentZOrder(jpnl_stuff[openTab], 1);
+                    jpnl_contains.setComponentZOrder(jpnl_stuff_layer_2[openTab], 2);
 
 //                    Status.getLogger().severe("hier bin ich "
 //                    		+ "(der ehemalige windows fehler,"
@@ -800,6 +1059,11 @@ public class VTabbedPane extends MPanel {
 
                 //set the tab invisible
                 jpnl_stuff[i].setVisible(false);
+
+                if (getTabbedPaneOpenState() == ID_TABBED_PANE_OPEN_2) {
+
+                    jpnl_stuff_layer_2[i].setVisible(false);
+                }
                 
                 //set the standard background and a border at the bottom for 
                 //each not selected panel and button
@@ -818,6 +1082,11 @@ public class VTabbedPane extends MPanel {
             
             //make the tab MPanel visible
             jpnl_stuff[_index].setVisible(true);
+
+            if (getTabbedPaneOpenState() == ID_TABBED_PANE_OPEN_2) {
+
+                jpnl_stuff_layer_2[_index].setVisible(true);
+            }
             
             //set the size of open tab
             flip();
@@ -902,18 +1171,32 @@ public class VTabbedPane extends MPanel {
         
         //set background size (only visible width and height shown)
         jpnl_background.setSize(getWidth(), visibleHeight 
-                - titleHeight - titleY + 1);
+                - titleHeight + 5
+//                - titleY
+                );
 
         jlbl_whiteBackground.setSize(getWidth(), visibleHeight);
-        
+
+        jpnl_background.setLocation(0, titleHeight + titleY - 1);
         jlbl_stroke.setLocation(jpnl_background.getLocation());
         jlbl_stroke.setSize(jpnl_background.getSize());
+        
+
+        jlbl_background_settings_1.setLocation(jpnl_background.getX(),
+        		jpnl_background.getY() + jpnl_background.getHeight()
+        		+ 0);
+        jlbl_background_settings_1.setSize(
+        		jpnl_background.getWidth(),
+        		getVisibleHeightEnitelyOpen()- jlbl_background_settings_1.getY());
+        jlbl_background_settings_2.setLocation(jlbl_background_settings_1.getLocation());
+        jlbl_background_settings_2.setSize(jlbl_background_settings_1.getSize());
+//        jlbl_stroke.setSize(jpnl_background.getWidth(), 
+//        		(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight());
         
 //        Util.getStroke(jlbl_stroke, jlbl_stroke.getX() + super.getX(), 
 //        		jlbl_stroke.getY() + super.getY());
 	        
 	        //because the border should be visible 
-            jpnl_background.setLocation(0, titleHeight + titleY - 1);
             jpnl_contains.setLocation(0, 0);
             jlbl_close.setSize(getWidth(),
                     ViewSettings.getView_heightTB_opener());
@@ -935,10 +1218,21 @@ public class VTabbedPane extends MPanel {
 
 	                jbtn_stuffHeadline[index].setSize(titleWidth, titleHeight);
 	            }
+
+	            jpnl_stuff[index].setLocation(0, titleHeight + titleY);
+	            
                 jpnl_stuff[index].setSize(
                         getWidth(), getHeight() - getHeight() / ViewSettings
                                 .TABBED_PANE_TITLE_PROPORTION_HEIGHT - titleY);
                 
+	            jpnl_stuff_layer_2[index].setLocation(0,  visibleHeight);
+	            
+                
+                jpnl_stuff_layer_2[index].setSize(getWidth(), 
+                		getVisibleHeightEnitelyOpen() - 
+                		jpnl_stuff_layer_2[index].getY());
+
+                System.out.println(jpnl_stuff_layer_2[index].getBounds());
                 //set locations depending on previous locations.
                 //if index == 0 there is no previous location, it has to be
                 //addressed in particular
@@ -950,7 +1244,6 @@ public class VTabbedPane extends MPanel {
                             + jbtn_stuffHeadline[index - 1].getWidth(),
                             titleY);
                 }
-	            jpnl_stuff[index].setLocation(0, titleHeight + titleY);
 	        }
 
 	}
@@ -980,6 +1273,9 @@ public class VTabbedPane extends MPanel {
 	        }
 
 	}
+    
+    
+    
 
 
     /**
@@ -988,4 +1284,25 @@ public class VTabbedPane extends MPanel {
     public final int getOpenTab() {
         return openTab;
     }
+    
+    
+
+	public int getVisibleHeightEnitelyOpen() {
+		return visibleHeight * 3;
+	}
+	
+
+	public int getHeightEnitelyOpen() {
+		return oldHeight * 3;
+	}
+
+
+	/**
+	 * @return the tabbedPaneOpenState
+	 */
+	public int getTabbedPaneOpenState() {
+		return tabbedPaneOpenState;
+	}
+
+
 }

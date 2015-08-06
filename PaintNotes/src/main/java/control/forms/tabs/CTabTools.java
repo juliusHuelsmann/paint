@@ -26,6 +26,7 @@ import model.objects.painting.po.PaintObjectImage;
 import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Constants;
 import model.settings.State;
+import model.settings.StateStandard;
 import model.settings.ViewSettings;
 import model.util.DPoint;
 import model.util.DRect;
@@ -36,7 +37,7 @@ import model.util.paint.Utils;
 import view.View;
 import view.forms.Message;
 import view.forms.Page;
-import view.tabs.Paint;
+import view.tabs.Tools;
 import view.util.Item1PenSelection;
 import view.util.VButtonWrapper;
 
@@ -46,7 +47,7 @@ import view.util.VButtonWrapper;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class CTabPainting implements ActionListener, MouseListener {
+public final class CTabTools implements ActionListener, MouseListener {
 
 
 	/**
@@ -64,7 +65,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
      * empty utility class Constructor.
      * @param _cp the instance of ControlPaint
      */
-    public CTabPainting(final ControlPaint  _cp) {
+    public CTabTools(final ControlPaint  _cp) {
 
     	this.controlPaint = _cp;
         // initialize and start action
@@ -87,7 +88,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
      * Fetch the instance of tab paint.
      * @return the tab paint.
      */
-    public Paint getTabPaint() {
+    public Tools getTabPaint() {
     	
     	if (controlPaint != null
     			&& controlPaint.getView() != null
@@ -114,7 +115,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
     	 * The getter method handles the printing of an error message if the 
     	 * instance of Paint is null.
     	 */
-    	final Paint paint = getTabPaint();
+    	final Tools paint = getTabPaint();
 
     	
     	//if the initialization process has terminated without errors
@@ -522,90 +523,22 @@ public final class CTabPainting implements ActionListener, MouseListener {
      */
     public void mr_save() {
 
-    	final String fileEnding;
     	
         // if not saved yet. Otherwise use the saved save path.
         if (State.getSavePath() == null) {
-
-            // choose a file
-            JFileChooser jfc = new JFileChooser();
-            jfc.setCurrentDirectory(new java.io.File("."));
-            jfc.setDialogTitle("Select save location");
-            int retval = jfc.showOpenDialog(getView());
-
-            // if selected a file.
-            if (retval == JFileChooser.APPROVE_OPTION) {
-
-                // fetch the selected file.
-                File file = jfc.getSelectedFile();
-
-                // edit file ending
-                if (!file.getName().toLowerCase().contains(".")) {
-                	fileEnding = State.getSaveFormat();
-                    file = new File(file.getAbsolutePath() + ".pic");
-                } else if (!Constants.endsWithSaveFormat(file.getName())) {
-                	
-                	fileEnding = "";
-                	String formatList = "(";
-                	for (String format : Constants.SAVE_FORMATS) {
-                		formatList += format + ", ";
-                	}
-                	formatList = formatList.subSequence(0, 
-                			formatList.length() - 2) + ")";
-                	
-                    JOptionPane.showMessageDialog(getView(),
-                            "Error saving file:\nFile extension \"" 
-                    + Constants.getFileExtension(file.getName())
-                    + "\" not supported! Supported formats:\n\t"
-                    + formatList + ".", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    mr_save();
-                    return;
-                } else {
-
-                	fileEnding = "." 
-                	+ Constants.getFileExtension(file.getName());
-                }
-
-                // if file already exists
-                if (file.exists()) {
-
-                    int result = JOptionPane.showConfirmDialog(
-                            getView(), "File already exists. "
-                                    + "Owerwrite?", "Owerwrite file?",
-                            JOptionPane.YES_NO_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE);
-                    if (result == 1) {
-                        // no
-                        mr_save();
-                        return;
-                    } else if (result == 2) {
-                        // interrupt
-                        return;
-                    }
-                    // overwrite
-                }
-                State.setSavePath(file.getAbsolutePath());
-            } else {
-            	fileEnding = "";
-            }
+        	JOptionPane.showMessageDialog(getView(), "Sorry, this file"
+        			 + "has not been saved yet.\n\nSpecify save location!");
+        	mr_saveAs();
         } else {
-        	fileEnding = "";
-        }
-
-        // generate path without the file ending.
-        if (State.getSavePath() != null) {
-
-            int d = State.getSavePath().toCharArray().length - 2 - 1;
+        	final String fileEnding = "." + State.getSaveFormat();
+        	final int lengthFileEndig = fileEnding.length();
+            int d = State.getSavePath().toCharArray().length - lengthFileEndig;
             String firstPath = State.getSavePath().substring(0, d);
             
-            // save images in both formats.
-//            controlPaint.getPicture().saveIMAGE(
-//            		firstPath, getPage().getJlbl_painting().getLocation().x,
-//            		getPage().getJlbl_painting().getLocation().y);
-            controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
-            controlPaint.getPicture().savePicture(firstPath + "pic");
-
+            if (!fileEnding.equals(".pic")) {
+                controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, ".png");
+            }
+            controlPaint.getPicture().savePicture(firstPath + ".pic");
 
             State.setUncommittedChanges(false);
             controlPaint.getView().getPage().repaint();
@@ -625,9 +558,9 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
             // choose a file
             JFileChooser jfc = new JFileChooser();
-            jfc.setCurrentDirectory(new java.io.File("."));
+            jfc.setCurrentDirectory(new java.io.File(StateStandard.getWsLocation()));
             jfc.setDialogTitle("Select save location");
-            int retval = jfc.showOpenDialog(getView());
+            int retval = jfc.showSaveDialog(getView());
 
             // if selected a file.
             if (retval == JFileChooser.APPROVE_OPTION) {
@@ -637,7 +570,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
                 // edit file ending
                 if (!file.getName().toLowerCase().contains(".")) {
-                	fileEnding = State.getSaveFormat();
+                	fileEnding = "." + State.getSaveFormat();
                     file = new File(file.getAbsolutePath() + ".pic");
                 } else if (!Constants.endsWithSaveFormat(file.getName())) {
                 	
@@ -655,7 +588,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
                     + "\" not supported! Supported formats:\n\t"
                     + formatList + ".", "Error",
                             JOptionPane.ERROR_MESSAGE);
-                    mr_save();
+                    mr_saveAs();
                     return;
                 } else {
 
@@ -665,39 +598,51 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
                 // if file already exists
                 if (file.exists()) {
-
+                	
                     int result = JOptionPane.showConfirmDialog(
                             getView(), "File already exists. "
                                     + "Owerwrite?", "Owerwrite file?",
                             JOptionPane.YES_NO_CANCEL_OPTION,
                             JOptionPane.QUESTION_MESSAGE);
-                    if (result == 1) {
-                        // no
+                    if (result == JOptionPane.NO_OPTION) {
                         mr_save();
                         return;
-                    } else if (result == 2) {
+                    } else if (result == JOptionPane.CANCEL_OPTION) {
                         // interrupt
                         return;
                     }
                     // overwrite
                 }
+                if (file != null 
+                		&& file.getParentFile() != null
+                		&& file.getParentFile().exists() ) {
+
+                	// save file to settings.
+                	StateStandard.setWsLocation(file.getParentFile().getAbsolutePath(), true);
+
+                }
                 State.setSavePath(file.getAbsolutePath());
             } else {
             	fileEnding = "";
+            	return;
             }
 
         // generate path without the file ending.
         if (State.getSavePath() != null) {
 
-            int d = State.getSavePath().toCharArray().length - 2 - 1;
+        	final int lengthFileEndig = fileEnding.length();
+            int d = State.getSavePath().toCharArray().length - lengthFileEndig;
             String firstPath = State.getSavePath().substring(0, d);
             
             // save images in both formats.
 //            controlPaint.getPicture().saveIMAGE(
 //            		firstPath, getPage().getJlbl_painting().getLocation().x,
 //            		getPage().getJlbl_painting().getLocation().y);
-            controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
-            controlPaint.getPicture().savePicture(firstPath + "pic");
+            if (!fileEnding.equals(".pic")) {
+
+                controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, ".png");
+            }
+            controlPaint.getPicture().savePicture(firstPath + ".pic");
 
 
             State.setUncommittedChanges(false);
@@ -726,7 +671,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
 
 
             JFileChooser jfc = new JFileChooser();
-            jfc.setCurrentDirectory(new java.io.File("."));
+            jfc.setCurrentDirectory(new java.io.File(StateStandard.getWsLocation()));
             jfc.setDialogTitle("Select load location");
             int retval = jfc.showOpenDialog(getView());
 
@@ -738,8 +683,10 @@ public final class CTabPainting implements ActionListener, MouseListener {
                     		file.getAbsolutePath());
                     State.setUncommittedChanges(false);
                     getControlPicture().refreshPaint();
-                } else if (file.getName().toLowerCase().endsWith(".png")
-                		|| file.getName().toLowerCase().endsWith(".jpg")) {
+
+                    State.setSavePath(file.getAbsolutePath());
+                    
+                } else if (Constants.endsWithSaveFormat(file.getName())) {
                     
                     try {
                         BufferedImage bi_imageBG = ImageIO.read(file);
@@ -956,7 +903,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
     	 * The getter method handles the printing of an error message if the 
     	 * instance of Paint is null.
     	 */
-    	final Paint paint = getTabPaint();
+    	final Tools paint = getTabPaint();
 
     	
     	//if the initialization process has terminated without errors
@@ -1010,7 +957,7 @@ public final class CTabPainting implements ActionListener, MouseListener {
     	 * The getter method handles the printing of an error message if the 
     	 * instance of Paint is null.
     	 */
-    	final Paint paint = getTabPaint();
+    	final Tools paint = getTabPaint();
 
     	
     	//if the initialization process has terminated without errors

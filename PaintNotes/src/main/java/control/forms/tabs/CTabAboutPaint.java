@@ -11,9 +11,15 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
+
+import model.settings.Constants;
 import model.settings.State;
 import model.util.Util;
-import view.tabs.About;
+import model.util.html.HtmlDoc;
+import view.tabs.AboutPaint;
+import view.util.VTabbedPane;
 import control.ControlPaint;
 
 
@@ -26,7 +32,7 @@ import control.ControlPaint;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class CTabAbout implements ActionListener {
+public class CTabAboutPaint implements ActionListener {
 
 	
 	/**
@@ -60,7 +66,7 @@ public class CTabAbout implements ActionListener {
 	 * 
 	 * @param _cp	instance of the root controller class which is saved.
 	 */
-	public CTabAbout(final ControlPaint _cp) {
+	public CTabAboutPaint(final ControlPaint _cp) {
 		this.cp = _cp;
 	}
 	
@@ -74,16 +80,73 @@ public class CTabAbout implements ActionListener {
 		if (_event.getSource().equals(
 				getAbout().getI1b_checkForUpdates().getActionCause())) {
 			checkForUpdates();
+		} else if (_event.getSource().equals(getAbout().getI1b_settings()
+				.getActionCause())) {
+			if (cp.getView().getTabs().getTabbedPaneOpenState() 
+					== VTabbedPane.ID_TABBED_PANE_OPEN_2) {
+
+				cp.getView().getTabs().setTabbedPaneOpen(true);
+			}
+				
+			else {
+				cp.getView().getTabs().setTabbedPaneEntirelyOpen();
+				
+			}
 		}
 	}
 
 	
 
+
 	/**
 	 * Method for checking for program updates.
 	 * @return whether there is a valid program update.
 	 */
-	private boolean checkForUpdates() {
+	private static boolean checkForUpdates() {
+
+		final int defaultLocationPathLenght = 3;
+
+		HtmlDoc document = new HtmlDoc(Constants.URL_UPDATE_PAGE);
+
+		document = new HtmlDoc("http://juliushuelsmann.github.io/paint/index.html");
+		try {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String s = document.getHl().getText(0, 2);
+			System.out.println(s);
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			Element[] el = document.getRootElements();;
+			for (int i = 0; i < el.length; i++) {
+				System.out.println(el[i].getName());
+			}
+			System.out.println(document.getRootElements()[1].getElementCount());
+			System.out.println(document.getRootElements()[1].getElement(0).getName());
+			System.out.println(document.getRootElements()[1].getElement(0).getElementCount());
+			return true;
+			
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return false;
+		}	
+	}	
+	
+	public static void main(String[]args) {
+		checkForUpdates();
+	}
+	
+	/**
+	 * Method for checking for program updates.
+	 * @return whether there is a valid program update.
+	 */
+	public boolean performDownloadForUpdate() {
 
 		final int defaultLocationPathLenght = 3;
 		
@@ -284,7 +347,7 @@ public class CTabAbout implements ActionListener {
 	 * @return 	instance of About (tab) fetched out of the root controller 
 	 * 			class.
 	 */
-	private About getAbout() {
+	private AboutPaint getAbout() {
 		
 		if (cp != null) {
 			if (cp.getView() != null) {

@@ -31,6 +31,7 @@ public class HelpMouseListener implements MouseListener {
 	/**
 	 * The help id of the component which is initializes the helpMouseListener.
 	 */
+	@SuppressWarnings("unused")
 	private final int help_id;
 	
 	/**

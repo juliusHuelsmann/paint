@@ -2,12 +2,9 @@
 package view.tabs;
 
 //import declarations
-import java.awt.Component;
-
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
-
-import control.forms.tabs.CTabAbout;
+import control.forms.tabs.CTabAboutPaint;
 import control.interfaces.HelpMouseListener;
 import view.forms.Help;
 import view.util.Item1Button;
@@ -22,7 +19,7 @@ import model.settings.ViewSettings;
  * @version %I%, %U%
  */
 @SuppressWarnings("serial")
-public final class About extends Tab {
+public final class AboutPaint extends Tab {
 
 	
 	/**
@@ -33,14 +30,14 @@ public final class About extends Tab {
 	/**
 	 * Button for checking for program updates.
 	 */
-	private Item1Button i1b_checkForUpdates;
+	private Item1Button i1b_checkForUpdates, i1b_settings;
 	
 	/**
 	 * Constructor: initialize instances of Components and add special 
 	 * MouseMotionListener.
 	 * @param _controlTabAbout instance of controller class for this view item
 	 */
-	public About(final CTabAbout _controlTabAbout) {
+	public AboutPaint(final CTabAboutPaint _controlTabAbout) {
 		
 		//initialize JPanel and alter settings
 		super(0);
@@ -48,7 +45,7 @@ public final class About extends Tab {
 		super.setOpaque(false);
 
 		jta_about = new JTextArea("Paint Program maintained by "
-				+ "Julius H�lsmann.\n\n"
+				+ "Julius Hülsmann.\n\n"
 				+ "Visit https://github.com/juliusHuelsmann/paint");
 		jta_about.setFocusable(false);
 		jta_about.setBorder(null);
@@ -69,6 +66,20 @@ public final class About extends Tab {
 		super.add(i1b_checkForUpdates);
 		
 		
+
+
+		i1b_settings = new Item1Button(null);
+		i1b_settings.setLocation(
+				i1b_checkForUpdates.getX() 
+				+ i1b_checkForUpdates.getWidth()
+				+ ViewSettings.getDistanceBetweenItems(), 
+        		ViewSettings.getDistanceBetweenItems());
+		i1b_settings.setBorder(false);
+        i1b_settings.addActionListener(_controlTabAbout);
+        i1b_settings.setActivable(false);
+		super.add(i1b_settings);
+		
+		
 	}
 
 	
@@ -87,12 +98,26 @@ public final class About extends Tab {
 		i1b_checkForUpdates.setSize(ViewSettings.getItemMenu1Width(), 
                 ViewSettings.getItemMenu1Height());
 
+		i1b_settings.setLocation(
+				i1b_checkForUpdates.getX() 
+				+ i1b_checkForUpdates.getWidth()
+				+ ViewSettings.getDistanceBetweenItems(), 
+        		ViewSettings.getDistanceBetweenItems());
+		i1b_settings.setSize(ViewSettings.getItemMenu1Width(), 
+                ViewSettings.getItemMenu1Height());
+
         Print.initializeTextButtonOhneAdd(i1b_checkForUpdates,
                 "check for updates",
                 Constants.VIEW_TB_NEW_PATH);
+
+        Print.initializeTextButtonOhneAdd(i1b_settings,
+                "Settings",
+                Constants.VIEW_TB_NEW_PATH);
+                
+                
 		i1b_checkForUpdates.setActivable(false);
-        jta_about.setLocation(i1b_checkForUpdates.getX() 
-        		+ i1b_checkForUpdates.getWidth() 
+        jta_about.setLocation(i1b_settings.getX() 
+        		+ i1b_settings.getWidth() 
         		+ ViewSettings.getDistanceBetweenItems() , 
         		ViewSettings.getDistanceBetweenItems());
         
@@ -136,6 +161,16 @@ public final class About extends Tab {
 				HelpMouseListener.HELP_ID_MEDIUM, _jf, 
 				_c, i1b_checkForUpdates, null));
 	}
+
+
+	/**
+	 * @return the i1b_settings
+	 */
+	public Item1Button getI1b_settings() {
+		return i1b_settings;
+	}
+
+
 	
 	
 }

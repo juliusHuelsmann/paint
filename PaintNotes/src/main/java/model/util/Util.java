@@ -12,7 +12,6 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -864,6 +863,40 @@ public final class Util {
     }
 	
 	
+    
+    /**
+     * concatenates string array and string.
+     * 
+     * @param _stringArray	the string array to which the string is 
+     * 						added (at the end)
+     * @param _stringAdd	the new string.
+     * @return				the new string array [_stringArray, _stringAdd]
+     */
+    public static String [] concatenate(final String[] _stringArray, 
+    		final String _stringAdd) {
+    
+    	
+    	// error - catching
+    	if (_stringArray == null || _stringAdd == null) {
+    		
+    		return null;
+    	}
+    	
+    	// create new, empty string array.
+    	final String[] newString = new String[_stringArray.length + 1];
+
+    	/*
+    	 * concatenates string array and string
+    	 */
+    	for (int i = 0; i < _stringArray.length; i++) {
+			newString[i] = _stringArray[i];
+		}
+    	newString[_stringArray.length] = _stringAdd;
+    	
+    	// return string - array.
+    	return newString;
+    	
+    }
 
     
     

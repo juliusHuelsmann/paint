@@ -10,12 +10,19 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import model.objects.painting.po.PaintObjectWriting;
-import model.settings.State;
-import model.util.Util;
 import model.util.adt.list.SecureList;
 import model.util.adt.list.SecureListSort;
 import view.util.mega.MLabel;
 
+
+
+/**
+ * View class which illustrates the DeCastlejau algorithm.
+ * 
+ * @author Julius Huelsmann
+ * @version %I%, %U%
+ */
+@SuppressWarnings("serial")
 public class DeCasteljau extends JFrame {
 
     

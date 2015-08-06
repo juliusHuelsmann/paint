@@ -1,7 +1,6 @@
 package control;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -10,21 +9,18 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
-
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-
 import control.forms.CLoading;
 import control.forms.CNew;
 import control.forms.CPaintStatus;
 import control.forms.CQuickAccess;
 import control.forms.minorImportance.InfoSelection;
-import control.forms.tabs.CTabAbout;
+import control.forms.tabs.CTabAboutPaint;
 import control.forms.tabs.CTabDebug;
 import control.forms.tabs.CTabExport;
 import control.forms.tabs.CTabInsert;
 import control.forms.tabs.CTabLook;
-import control.forms.tabs.CTabPainting;
+import control.forms.tabs.CTabTools;
 import control.forms.tabs.CTabPrint;
 import control.forms.tabs.CTabSelection;
 import control.forms.tabs.CTabWrite;
@@ -155,7 +151,7 @@ MenuListener {
 	/**
 	 * Controller class for the painting tab.
 	 */
-	private CTabPainting cTabPaint;
+	private CTabTools cTabPaint;
 	
 	/**
 	 * Controller class for the tab Print.
@@ -170,7 +166,7 @@ MenuListener {
 	/**
 	 * Controller class for the tab about.
 	 */
-	private CTabAbout cTabAbout;
+	private CTabAboutPaint cTabAbout;
 	
 	
 	/**
@@ -233,6 +229,7 @@ MenuListener {
 	
 	/*
 	 * Computation values.
+	 * 
 	 */
 	
     //TODO: quadratic? movement function which interpolates a time interval
@@ -301,7 +298,7 @@ MenuListener {
 
         //get location of current workspace and set logger level to finest; 
 		//thus every log message is shown.
-        StateStandard.setWsLocation(ReadSettings.install());
+        StateStandard.setWsLocation(ReadSettings.install(), false);
         State.getLogger().setLevel(Level.WARNING);
 
         //if the installation has been found, initialize the whole program.
@@ -325,11 +322,11 @@ MenuListener {
             cTabLook = new CTabLook(this);
             cTabExport = new CTabExport(this);
             cTabWrite = new CTabWrite(this);
-            cTabAbout = new CTabAbout(this);
+            cTabAbout = new CTabAboutPaint(this);
             controlPic = new ContorlPicture(this);
             cTabSelection = new CTabSelection(this);
             controlPaintSelect = new ControlSelectionTransform(this);
-            cTabPaint = new CTabPainting(this);
+            cTabPaint = new CTabTools(this);
             cTabPaintStatus = new CPaintStatus(this);
             cTabPaintObjects = new CTabDebug(this);
             zoom = new Zoom(controlPic);
@@ -407,47 +404,44 @@ MenuListener {
 	 * {@inheritDoc}
 	 */
 	public final void mouseExited(final MouseEvent _event) {
-
-
-
-	       if (_event.getSource().equals(
-	        		getPage().getJlbl_painting())) { 
+		if (_event.getSource().equals(
+				getPage().getJlbl_painting())) { 
 	        	
 	        	
-	        	//remove old pen - position - indication - point
-	        	if (!project.getPicture().isSelected()) {
-	        		switch (State.getIndexOperation()) {
-
-		        	case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
-		        	case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
-		            case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
-		            case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
-		            case Constants.CONTROL_PAINTING_INDEX_PAINT_1:
-
-
-		            	//do only preprint if there is no menu open (because
-		            	//that would cause a repaint of the view and close
-		            	//the menu.
-		            	if (getTabs() != null) {
-
-			            	if (!getTabs().isMenuOpen()) {
-
-			            		removePreprint();
-				            	break;
-			            	}
-		            	}
-	                default:
-	                	break;
-	        		}
-	        	}
-	        }		
+			//remove old pen - position - indication - point
+			if (!project.getPicture().isSelected()) {
+				switch (State.getIndexOperation()) {
+				
+				case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_ARCH_FILLED:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_LINE:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE:
+				case Constants.CONTROL_PAINTING_INDEX_PAINT_2:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_RECTANGLE_FILLED:
+				case Constants.CONTROL_PAINTING_INDEX_I_G_TRIANGLE_FILLED:
+				case Constants.CONTROL_PAINTING_INDEX_PAINT_1:		
+					
+					
+					//do only preprint if there is no menu open (because
+					//that would cause a repaint of the view and close
+					//the menu.
+					if (getTabs() != null) {
+						
+						if (!getTabs().isMenuOpen()) {
+							
+							removePreprint();
+							break;
+						}
+					}
+				default:
+					break;
+				}
+			}
+		}		
 	}
 
 	/**
@@ -2421,7 +2415,7 @@ MenuListener {
 	/**
 	 * @return the cTabPaint
 	 */
-	public final CTabPainting getcTabPaint() {
+	public final CTabTools getcTabPaint() {
 		return cTabPaint;
 	}
 
@@ -2875,7 +2869,7 @@ MenuListener {
 	/**
 	 * @return the cTabAbout
 	 */
-	public final CTabAbout getcTabAbout() {
+	public final CTabAboutPaint getcTabAbout() {
 		return cTabAbout;
 	}
 

@@ -14,7 +14,6 @@ import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
-import start.test.BufferedViewer;
 import view.forms.Page;
 import view.forms.PaintLabel;
 import view.forms.Tabs;

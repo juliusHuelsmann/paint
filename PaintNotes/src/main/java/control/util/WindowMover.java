@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.io.Serializable;
+
 import model.settings.ViewSettings;
 import control.interfaces.ActivityListener;
 
@@ -27,6 +28,7 @@ MouseListener, Serializable {
 	/**
 	 * The activityListener.
 	 */
+	@SuppressWarnings("unused")
 	private ActivityListener al;
 	
 	
@@ -50,6 +52,7 @@ MouseListener, Serializable {
 	/**
 	 * the position from where the drag started.
 	 */
+	@SuppressWarnings("unused")
 	private Point pnt_startPosition, pnt_diff2, pnt_origSize, pnt_origLoc;
 
 	
@@ -58,6 +61,7 @@ MouseListener, Serializable {
 	/**
 	 * Marge.
 	 */
+	@SuppressWarnings("unused")
 	private final int marge = 10;
 	
 	/**

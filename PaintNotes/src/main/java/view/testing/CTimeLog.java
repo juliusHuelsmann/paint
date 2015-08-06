@@ -92,6 +92,7 @@ public class CTimeLog implements ActionListener {
 					t_time  = new Thread() {
 						
 						
+						@SuppressWarnings("deprecation")
 						public void run() {
 
 							view.getJbtn_startLog().setText("stop log");

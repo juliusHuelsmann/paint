@@ -63,7 +63,8 @@ public class BorderThread extends Thread {
     /**
      * Instance of view- class tab.
      */
-    private final Tabs tab;
+    @SuppressWarnings("unused")
+	private final Tabs tab;
     
     
     /**

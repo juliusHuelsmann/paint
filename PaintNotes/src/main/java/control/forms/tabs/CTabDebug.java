@@ -7,10 +7,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
 import control.ContorlPicture;
 import control.ControlPaint;
 import model.debug.ActionManager;

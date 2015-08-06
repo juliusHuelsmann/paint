@@ -28,7 +28,6 @@ import view.util.mega.MFrame;
 import view.util.mega.MLabel;
 import control.ControlPaint;
 import control.forms.ControlView;
-import control.forms.minorImportance.InfoSelection;
 import control.util.WindowMover;
 
 
@@ -573,7 +572,7 @@ import control.util.WindowMover;
         
         if (tabs != null) {
         	
-        	tabs.reApplySize();
+        	tabs.reApplySize(this);
         	tabs.setSize(
                     ViewSettings.getView_widthTb(), 
                     ViewSettings.getView_heightTB(),

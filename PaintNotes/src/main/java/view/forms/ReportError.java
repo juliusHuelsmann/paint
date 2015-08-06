@@ -14,7 +14,7 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import model.settings.Constants;
 import model.settings.State;
-import test.html.HtmlDoc;
+import model.util.html.HtmlDoc;
 
 
 /**
@@ -87,7 +87,6 @@ public class ReportError extends JPanel {
 			
 			//open the specified web-page
 			myEditorPane.setPage(Constants.URL_BUG_PAGE);
-			
 			
 			//wait for the page to have loaded.
 			new Thread() {

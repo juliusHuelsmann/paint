@@ -4,6 +4,7 @@ package model.settings;
 import java.awt.Dimension;
 
 import javax.imageio.ImageIO;
+import javax.swing.text.html.HTMLDocument;
 
 import model.util.Util;
 
@@ -308,6 +309,8 @@ public final class Constants {
 	
 	
 	public static final int ID_STARTUP_NORMAL = 0, ID_STARTUP_LOAD_IMAGE = 1, ID_STARTUP_LOAD = 2;
+
+	public static final String URL_UPDATE_PAGE = "http://juliushuelsmann.github.io/paint/release.html";
 	
 	
 	/**

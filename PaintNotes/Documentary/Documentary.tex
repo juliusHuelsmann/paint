@@ -1,0 +1,143 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{newcent}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}      
+\usepackage{amsmath}		% wichtige symbole
+\usepackage{bbm}	 	% mathbb
+\usepackage{hyperref}
+\usepackage{amsmath}%
+\usepackage{MnSymbol}%
+\usepackage{wasysym}%
+ \usepackage{booktabs}
+ \usepackage[table,xcdraw]{xcolor}
+\usepackage{geometry}
+\geometry{a4paper, top=25mm, left=25mm, right=25mm, bottom=30mm,
+headsep=10mm, footskip=12mm}
+\newcommand{\openEx}[1]{ {\bf Aufgabe #1}}
+\newcommand{\closeEx}{\vspace{1.5cm}}
+
+% Mathbb versions
+\newcommand{\N}{\mathbbm N}
+\newcommand{\K}{\mathbbm K}
+\newcommand{\R}{ R}
+\newcommand{\C}{\mathbbm C}
+\newcommand{\Z}{\mathbbm Z}
+
+% Theorem und Satz           
+\newtheorem{thm}{Satz}[section]
+\newtheorem{myDef}[thm]{Definition}
+% \newtheorem{thm}{Satz}[section]
+\newtheorem{ex}{Aufgabe}[section]
+% \newtheorem{myDef}[thm]{Definition}
+\newtheorem{myExmpl}[thm]{Beispiel}
+\newtheorem{myCmmt}[thm]{Bemerkung}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{myKor}[thm]{Korollar}
+\newtheorem{myLemma}[thm]{Lemma}
+\makeatletter
+\newcommand*{\eqnumref}[1]{%
+	\begingroup
+	\let\tagtext\@gobble
+	\let\tagcomma\relax
+	\eqref{#1}%
+	\endgroup
+}
+\newcommand*{\eqtextref}[1]{%
+	\begingroup
+	\let\tagcomma\relax
+	\let\tagnumber\@gobble
+	\ref{#1}%
+	\endgroup
+} 
+
+%\newcommand{\openEx}[1]{ {\bf Aufgabe #1}}
+% \newcommand{\closeEx}{\vspace{1.5cm}}
+
+
+
+
+
+\begin{document}
+
+
+\begin{center}
+\Large{\textbf{{Dokumentationsauszug}}}\\
+\large{\textbf{{Paint}}}
+\end{center}
+
+~\\\begin{tabular}[h]{@{}p{0.82\textwidth} @{}p{0.8\textwidth}}
+\begin{tabular}{@{}l}
+Julius Hülsmann
+\end{tabular}
+&\begin{tabular}{@{}r}
+%Vortrag AL II\\
+18.05.2015 \\
+\textbf{Status}: in Planung
+\end{tabular}
+\end{tabular}
+\vspace{0.5cm}
+\normalsize
+
+
+
+\section{Schriftsuche}
+\begin{myDef}[\textsc{Buchstabensegment}]~\\
+	Bezeichne als \textsc{Buchstabensegment} ein Tupel $(f, Z)$ einer abschnittsweise definierten, stetigen Funktion 
+	\begin{align}
+		f: I &\rightarrow \R^2 \nonumber \quad mit~ f(t) = (x, y)\nonumber  \\
+		f_i: [t_i, t_{i+1}] &\rightarrow \R^2 \nonumber \quad \forall i = 1, \dotsc, n \\
+		f_{|[t_i, t_{i+1}]} &:= f_i \nonumber
+	\end{align} zusammen mit einer beliebigen und beliebig groben Unterteilung $$Z := \{0 = t_0 <= t_1 <= \dotsc <= t_n\}$$ eines beliebigen Invervalls $I := [0, t_n] \subset \R$, für das die folgende Bedingung gelte:
+		$$h_i :=  t_{i+1} - t_{i} = \| f_i(t_{i+1}) - f_i(t_i) \|_2 \quad \forall i = 1, \dotsc, n.$$
+\end{myDef}
+
+\begin{myDef}[\textsc{Position eines Buchstabensegmentes}]~\\
+	Als \textsc{Position des Buchstabensegmentes} $(f, Z)$ bezeichne $f(t_0) \in \R^2$.
+\end{myDef}
+
+\begin{myDef}[\textsc{Übereinstimmungsfunktion}]~\\
+	Eine Funktion $g((f_1, Z_1), (f_2, Z_2)) = g((f_2, Z_2), (f_1, Z_1)) = p$ , die als Übergabeparameter zwei \textsc{Buchstabensegmente} entgegennimmt und eine Wahrscheinlichkeits- \\übereinstimmung zurückgibt, wird im Folgenden als
+	 \textsc{Übereinstimmungsfunktion} bezeichnet. 
+\end{myDef}
+
+\paragraph{Aufgabenstellung}
+
+Es ist gegeben:
+\begin{enumerate}
+	\item[a)] Der gesuchte Ausdruck als Liste von  \textsc{Buchstabensegmenten},
+	\item[b)] Der zu durchsuchende Ausdruck als Liste von  \textsc{Buchstabensegmenten},
+	\item[c)] Eine angegebene Wahrscheinlichkeit $p \in [0, 1]$.
+\end{enumerate} 
+Ziel ist es, alle zusammenhängenden Teilausdrücke des zu durchsuchenden Ausdrucks  zu lokalisieren, die zu einer Wahrscheinlichkeit $\geq p$ mit dem gesuchten Ausdruck übereinstimmt.
+Die \textsc{Übereinstimmungsfunktion} $g$ muss folgenden Kriterien genügen:
+\begin{enumerate}
+	\item[a)] Positionsinvarianz, also $g((f_1 + c, I_1), (f_2, I_2 )) = g((f_1, I_1), (f_2, I_2 ))  \forall c \in \R^2$
+	\item[b)] Verschiebungsinvarianz, also wenn $f_{1|I_2 + t} == f_{2|I_2}$ mit $I_2 \subseteq I_1, t \in \R $ soll gelten $g((f_1, I_1), (f_2, I_2)) = 1$
+	\item[b)] Skalierungsinvarianz
+	\item[c)] Rotationsinvarizanz
+	\item[d)] Scherungsinvarianz
+	\item[e)] Separationsinvarianz (Aufteilung in verschiedene PaintObjects.)
+\end{enumerate}
+Bemerkung: An eine Streckunginvarianz bezgülgich der oberen Intervallgrenze $t_n$ muss hier nicht extra gedacht werden, da $t_n$ = der Norm der gezeichneten Kurve ist.
+Allerdings düfte das in die Skalierungsinvarianz eingehen.
+
+\subsection{Transformation des gesuchten Ausdrucks}
+- Aufteilung in "Wörter", welche Energiesparend in ein PaintObjectWriting zusammengeführt werden.
+- Suche nach einzelnen Wörtern.
+- Ordnung der Fundstellen nach ungefähr höchster Übereinstimmung
+()Überprüfen, ob Gesamtausdruck gefunden wurde)
+	-> JA 		=> Gesamtausdruck hat beste
+	-> NEIN   => länsten zusammenhängenden gefundenen Ausdruck angeben.
+	
+	falls mehrere Objekte ungefähr die gleiche Übereinstimmung besitzen, Ordnen nach Position y.
+	
+
+
+
+Transformation:
+jedes PaintObjectWriting kann transformiert werden in eine abschnittsweise definierte Funktion $f: \R \Rightarrow R^2 $ mit $f(t) = (x, y)$
+
+
+\end{document}

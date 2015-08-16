@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>jhuelsmann</groupId>
   <artifactId>PaintNotes</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <name>PaintNotes</name>
   <description>Paint program for taking notes</description>
   <url>http://juliushuelsmann.github.io/paint/</url>

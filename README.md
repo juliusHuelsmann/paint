@@ -18,12 +18,13 @@ Used
 - JUnit
 
 
-## 2.1 Install Git, Eclipse, Eclipse Plugins (Maven, Checkstyle, JUnit)
+## 2.1 Install Git, Maven, Eclipse, Eclipse Plugins (Maven, Checkstyle, JUnit)
 Git Page
 - https://git-scm.com/
-- Installation of git
+- Installation of git, maven
 ```
 sudo apt-get install git
+sudo apt-get install maven
 ```
 Eclipse Download Page:
 - http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/marsr

@@ -297,10 +297,11 @@ public final class PDFUtils {
 
     	int dpi = 0;
         try {
-            dpi = Toolkit.getDefaultToolkit().getScreenResolution();
+            dpi = Toolkit.getDefaultToolkit().getScreenResolution() * 1;
+            dpi = 130;
         } catch( HeadlessException e ) {
             dpi = 96;
-            dpi = 106;
+            dpi = 130;
         }
     	PDFRenderer renderer = new PDFRenderer(_document);
     	BufferedImage image;
@@ -358,7 +359,6 @@ public final class PDFUtils {
     {
         for (PDPage page : document.getPages())
         {
-            System.out.println("resizing page");
             PDRectangle rectangle = new PDRectangle();
             rectangle.setLowerLeftX(a);
             rectangle.setLowerLeftY(b);
@@ -389,7 +389,7 @@ public final class PDFUtils {
      * @throws IOException occurs if reading the data fails.
      */
     public void saveAsPdf(
-    		String _inputFile, String _imagePath, String _outputFile )
+    	 String _imagePath, String _outputFile )
             throws IOException{
 
     	

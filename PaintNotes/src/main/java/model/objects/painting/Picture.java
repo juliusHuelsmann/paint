@@ -758,19 +758,22 @@ public final class Picture implements Serializable {
 			while (!ls_poChronologic.isBehind()
 					&& !ls_poChronologic.isEmpty()) {
 
-				ls_poChronologic.getItem().paint(_bi, _final,
-						_bi, 
-//						_x, _y,
-//						_paintLocationX,
-//						_paintLocationY,
-						-_x + _xBi, -_y + _yBi,
-//						Page.getInstance().getJlbl_painting().getBi(),
-//						Page.getInstance().getJlbl_painting().getLocation().x,
-//						Page.getInstance().getJlbl_painting().getLocation().y,
-						r_selection);
-				counter++;
-				ls_poChronologic.next(SecureList.ID_NO_PREDECESSOR, 
-						SecureList.ID_NO_PREDECESSOR);
+//				if (!_final || !(ls_poChronologic.getItem() instanceof PaintObjectPdf)) {
+
+					ls_poChronologic.getItem().paint(_bi, _final,
+							_bi, 
+//							_x, _y,
+//							_paintLocationX,
+//							_paintLocationY,
+							-_x + _xBi, -_y + _yBi,
+//							Page.getInstance().getJlbl_painting().getBi(),
+//							Page.getInstance().getJlbl_painting().getLocation().x,
+//							Page.getInstance().getJlbl_painting().getLocation().y,
+							r_selection);
+					counter++;
+//				}
+					ls_poChronologic.next(SecureList.ID_NO_PREDECESSOR, 
+							SecureList.ID_NO_PREDECESSOR);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1102,6 +1105,32 @@ public final class Picture implements Serializable {
 			final int _y,
 			final String _type) {
 
+		BufferedImage bi = getBufferedImage(_x, _y);
+		try {
+			if (_type == "") {
+
+				ImageIO.write(bi, State.getSaveFormat(),
+						new File(_wsLoc + State.getSaveFormat()));
+			} else {
+
+				ImageIO.write(bi, State.getSaveFormat(),
+						new File(_wsLoc + _type));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * save the picture.
+	 * 
+	 *            
+	 *            @param _x the location of the PaintLabel.
+	 *            @param _y the location of the PaintLabel.
+	 */
+	public BufferedImage getBufferedImage(
+			final int _x,
+			final int _y) {
+
 		BufferedImage bi;
 		if (State.isExportAlpha()) {
 
@@ -1116,19 +1145,7 @@ public final class Picture implements Serializable {
 		bi = repaintRectangle(-_x + 0, -_y + 0, State.getImageSize().width,
 				State.getImageSize().height, -_x + 0, -_y + 0, bi, true);
 
-		try {
-			if (_type == "") {
-
-				ImageIO.write(bi, State.getSaveFormat(),
-						new File(_wsLoc + State.getSaveFormat()));
-			} else {
-
-				ImageIO.write(bi, State.getSaveFormat(),
-						new File(_wsLoc + _type));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		return bi;
 	}
 
 

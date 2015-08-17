@@ -306,5 +306,12 @@ public class XDocument {
 		return pdfPages;
 	}
 
+	/**
+	 * @param document the document to set
+	 */
+	public PDDocument getPDDocument() {
+		return this.document;
+	}
+
 	
 }

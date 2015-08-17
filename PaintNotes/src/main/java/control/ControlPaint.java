@@ -1,5 +1,24 @@
 package control;
 
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -8,8 +27,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
+
 import javax.swing.ImageIcon;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+
 import control.forms.CLoading;
 import control.forms.CNew;
 import control.forms.CPaintStatus;
@@ -27,10 +52,10 @@ import control.forms.tabs.CTabWrite;
 import control.forms.tabs.CTabs;
 import control.interfaces.MenuListener;
 import control.util.implementations.ScrollPaneActivityListener;
-import model.Project;
 import model.debug.ActionManager;
 import model.debug.debugTools.DebugUtil;
 import model.objects.PictureOverview;
+import model.objects.Project;
 import model.objects.Zoom;
 import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
@@ -409,7 +434,7 @@ MenuListener {
 	        	
 	        	
 			//remove old pen - position - indication - point
-			if (!project.getPicture().isSelected()) {
+			if (!project.getCurrentPicture().isSelected()) {
 				switch (State.getIndexOperation()) {
 				
 				case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
@@ -497,7 +522,7 @@ MenuListener {
                         != Constants.CONTROL_PAINTING_INDEX_I_G_CURVE
                         && State.getIndexOperation() 
                         != Constants.CONTROL_PAINTING_INDEX_I_G_CURVE_2)
-                        || project.getPicture().isPaintObjectReady()) {
+                        || project.getCurrentPicture().isPaintObjectReady()) {
                     
 
                     // set currently selected pen. Differs if
@@ -505,24 +530,24 @@ MenuListener {
 
                         if (State.getIndexOperation() 
                                 == Constants.CONTROL_PAINTING_INDEX_PAINT_1) {
-                            project.getPicture().changePen(Pen.clonePen(
+                            project.getCurrentPicture().changePen(Pen.clonePen(
                                     State.getPenSelected1()));
 
                         } else {
 
-                            project.getPicture().changePen(Pen.clonePen(
+                            project.getCurrentPicture().changePen(Pen.clonePen(
                                     State.getPenSelected2()));
                         }
                     } else if (_event.getButton() == MouseEvent.BUTTON3) {
 
                         if (State.getIndexOperation() 
                                 == Constants.CONTROL_PAINTING_INDEX_PAINT_1) {
-                            project.getPicture().changePen(Pen.clonePen(
+                            project.getCurrentPicture().changePen(Pen.clonePen(
                                     State.getPenSelected2()));
                         } else {
 
 
-                            project.getPicture().changePen(Pen.clonePen(
+                            project.getCurrentPicture().changePen(Pen.clonePen(
                                     State.getPenSelected1()));
 
                         }
@@ -530,22 +555,22 @@ MenuListener {
                 }
                     
                 // add paintObject and point to Picture
-                project.getPicture().addPaintObject(getTabs().getTab_insert());
+                project.getCurrentPicture().addPaintObject(getTabs().getTab_insert());
                 changePO(_event);
                 break;
             
             case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
 
                 // abort old paint object
-                project.getPicture().abortPaintObject(controlPic);
+                project.getCurrentPicture().abortPaintObject(controlPic);
 
                 //set the old pen to replace the curve afterwards.
                 State.setPen_selectedReplaced(Pen.clonePen(
                 		State.getPenSelected1()));
                 
                 // change pen and add new paint object
-                project.getPicture().changePen(new PenSelection());
-                project.getPicture().addPaintObjectWrinting();
+                project.getCurrentPicture().changePen(new PenSelection());
+                project.getCurrentPicture().addPaintObjectWrinting();
                 break;
 
             case Constants.CONTROL_PAINTING_INDEX_ERASE:
@@ -791,7 +816,7 @@ MenuListener {
                         pnt_start = _event.getPoint();
                         pnt_startLocation = getPage()
                                 .getJlbl_painting().getLocation();
-                        project.getPicture().abortPaintObject(controlPic);
+                        project.getCurrentPicture().abortPaintObject(controlPic);
                     }
 
                     if (pnt_start != null) {
@@ -838,7 +863,7 @@ MenuListener {
                         pnt_start = _event.getPoint();
                         pnt_startLocation = getPage()
                                 .getJlbl_painting().getLocation();
-                        project.getPicture().abortPaintObject(controlPic);
+                        project.getCurrentPicture().abortPaintObject(controlPic);
                     }
                     
                     if (pnt_last != null) {
@@ -1129,7 +1154,7 @@ MenuListener {
 	
 	    if (State.isNormalRotation()) {
 	
-	        project.getPicture().changePaintObject(new DPoint((_event.getX() 
+	        project.getCurrentPicture().changePaintObject(new DPoint((_event.getX() 
 	        		- getPage().getJlbl_painting().getLocation().x)
 	        		* State.getImageSize().width
 	        		/ State.getImageShowSize().width, 
@@ -1141,7 +1166,7 @@ MenuListener {
 	                        controlPic);
 	    } else {
 	
-	        project.getPicture().changePaintObject(
+	        project.getCurrentPicture().changePaintObject(
 	                new DPoint(
 	                        getPage().getJlbl_painting().getWidth()
 	                        - (_event.getX() 
@@ -1203,7 +1228,7 @@ MenuListener {
             // write the current working picture into the global picture.
         	if (getTabs() != null) {
 
-                project.getPicture().finish(view.getTabs().getTab_debug());
+                project.getCurrentPicture().finish(view.getTabs().getTab_debug());
         	}
             break;
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
@@ -1215,13 +1240,13 @@ MenuListener {
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
                     
                         PaintObjectWriting pow 
-                        = project.getPicture().abortPaintObject(controlPic);
+                        = project.getCurrentPicture().abortPaintObject(controlPic);
                         mr_sel_curve_complete(_event, pow);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
 
                     PaintObjectWriting pow2 
-                    = project.getPicture().abortPaintObject(controlPic);
+                    = project.getCurrentPicture().abortPaintObject(controlPic);
                     mr_sel_curve_destroy(_event, pow2);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
@@ -1275,7 +1300,7 @@ MenuListener {
         	break;
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
             if (_event.getButton() == 1) {
-                project.getPicture().abortPaintObject(controlPic);
+                project.getCurrentPicture().abortPaintObject(controlPic);
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
@@ -1310,8 +1335,8 @@ MenuListener {
                 pnt_last = null;
                 pnt_movementSpeed = null;
                 //release everything
-                if (project.getPicture().isSelected()) {
-                    project.getPicture().releaseSelected(
+                if (project.getCurrentPicture().isSelected()) {
+                    project.getCurrentPicture().releaseSelected(
                 			getControlPaintSelection(),
                 			getcTabSelection(),
                 			getView().getTabs().getTab_debug(),
@@ -1444,7 +1469,7 @@ MenuListener {
 
     	
     	//start transaction
-    	final int transaction = project.getPicture().getLs_po_sortedByY()
+    	final int transaction = project.getCurrentPicture().getLs_po_sortedByY()
     			.startTransaction("Selection curve Complete", 
     					SecureList.ID_NO_PREDECESSOR);
 
@@ -1469,12 +1494,12 @@ MenuListener {
         
         
         // initialize selection list
-        project.getPicture().getLs_po_sortedByY().toFirst(
+        project.getCurrentPicture().getLs_po_sortedByY().toFirst(
         		transaction, SecureList.ID_NO_PREDECESSOR);
-        project.getPicture().createSelected();
+        project.getCurrentPicture().createSelected();
         
         // create and initialize current values (current PO and its coordinates)
-        PaintObject po_current = project.getPicture().getLs_po_sortedByY()
+        PaintObject po_current = project.getCurrentPicture().getLs_po_sortedByY()
                 .getItem();
         
         
@@ -1491,35 +1516,35 @@ MenuListener {
             		field, new Point(xShift, yShift))) {
 
                 //move current item from normal list into selected list 
-                project.getPicture().insertIntoSelected(po_current,
+                project.getCurrentPicture().insertIntoSelected(po_current,
                 		getView().getTabs().getTab_debug());
-                project.getPicture().getLs_po_sortedByY().remove(
+                project.getCurrentPicture().getLs_po_sortedByY().remove(
                 		transaction);
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
                  new PictureOverview(view.getTabs().getTab_debug()).remove(
                 		 po_current);
-                project.getPicture().getLs_po_sortedByY().toFirst(
+                project.getCurrentPicture().getLs_po_sortedByY().toFirst(
                 		transaction, SecureList.ID_NO_PREDECESSOR);
             } else {
                 // next; in if clause the next is realized by remove()
-                project.getPicture().getLs_po_sortedByY().next(
+                project.getCurrentPicture().getLs_po_sortedByY().next(
                 		transaction, SecureList.ID_NO_PREDECESSOR);
             }
             // update current values
-            po_current = project.getPicture().getLs_po_sortedByY().getItem();
+            po_current = project.getCurrentPicture().getLs_po_sortedByY().getItem();
         }
 
 
     	//finish transaction 
-    	project.getPicture().getLs_po_sortedByY().finishTransaction(
+    	project.getCurrentPicture().getLs_po_sortedByY().finishTransaction(
     			transaction);
     	
         //finish insertion into selected.
-        project.getPicture().finishSelection(getcTabSelection());
+        project.getCurrentPicture().finishSelection(getcTabSelection());
         
         //paint the selected item and refresh entire painting.
-        if (!project.getPicture().paintSelected(getPage(),
+        if (!project.getCurrentPicture().paintSelected(getPage(),
         		getControlPic(),
         		getControlPaintSelection())) {
         	controlPic.stopBorderThread();
@@ -1571,21 +1596,21 @@ MenuListener {
          * whole item selection.
          */
         // initialize selection list
-        project.getPicture().createSelected();
+        project.getCurrentPicture().createSelected();
 
         // go to the beginning of the list
-        if (!project.getPicture().getLs_po_sortedByY().isEmpty()) {
+        if (!project.getCurrentPicture().getLs_po_sortedByY().isEmpty()) {
 
         	//start transaction 
-        	final int transaction = project.getPicture().getLs_po_sortedByY()
+        	final int transaction = project.getCurrentPicture().getLs_po_sortedByY()
         			.startTransaction("Selection curve destroy", 
         					SecureList.ID_NO_PREDECESSOR);
             // go to the beginning of the list
-            project.getPicture().getLs_po_sortedByY().toFirst(
+            project.getCurrentPicture().getLs_po_sortedByY().toFirst(
             		transaction, SecureList.ID_NO_PREDECESSOR);
             
             // create and initialize current values
-            PaintObject po_current = project.getPicture().getLs_po_sortedByY()
+            PaintObject po_current = project.getCurrentPicture().getLs_po_sortedByY()
                     .getItem();
             /**
              * Because it is impossible to insert the new created items directly
@@ -1613,9 +1638,9 @@ MenuListener {
                     PaintObject [][] separatedPO = po_current.separate(
                     		field, new Point(xShift, yShift));
                     new PictureOverview(view.getTabs().getTab_debug()).remove(
-                    		project.getPicture()
+                    		project.getCurrentPicture()
                             .getLs_po_sortedByY().getItem());
-                    project.getPicture().getLs_po_sortedByY().remove(
+                    project.getCurrentPicture().getLs_po_sortedByY().remove(
                     		transaction);
                     
                     //go through the list of elements.
@@ -1626,7 +1651,7 @@ MenuListener {
                             //recalculate snapshot bounds for being able to 
                             //insert the item into the sorted list.
                             separatedPO[1][current].recalculateSnapshotBounds();
-                            project.getPicture().insertIntoSelected(
+                            project.getCurrentPicture().insertIntoSelected(
                                     separatedPO[1][current], 
                                     getView().getTabs().getTab_debug());
                         } else {
@@ -1636,7 +1661,7 @@ MenuListener {
                     }
                     
                     //finish insertion into selected.
-                    project.getPicture().finishSelection(getcTabSelection());
+                    project.getCurrentPicture().finishSelection(getcTabSelection());
                     
                     for (int current = 0; current < separatedPO[0].length;
                             current++) {
@@ -1652,38 +1677,38 @@ MenuListener {
                                     + "is null");
                         }
                     }
-                    project.getPicture().getLs_po_sortedByY().toFirst(
+                    project.getCurrentPicture().getLs_po_sortedByY().toFirst(
                     		transaction, SecureList.ID_NO_PREDECESSOR);
                 } else {
                     // next
-                    project.getPicture().getLs_po_sortedByY().next(
+                    project.getCurrentPicture().getLs_po_sortedByY().next(
                     		transaction, SecureList.ID_NO_PREDECESSOR);
                 }
                 // update current values
-                po_current = project.getPicture().getLs_po_sortedByY()
+                po_current = project.getCurrentPicture().getLs_po_sortedByY()
                         .getItem();
             }
             //insert the to insert items to graphical user interface.
             ls_toInsert.toFirst();
             while (!ls_toInsert.isBehind() && !ls_toInsert.isEmpty()) {
-                project.getPicture().getLs_po_sortedByY().insertSorted(
+                project.getCurrentPicture().getLs_po_sortedByY().insertSorted(
                         ls_toInsert.getItem(), 
                         ls_toInsert.getItem().getSnapshotBounds().y,
                         transaction);
                 ls_toInsert.next();
             }
         	//finish transaction 
-        	project.getPicture().getLs_po_sortedByY().finishTransaction(
+        	project.getCurrentPicture().getLs_po_sortedByY().finishTransaction(
         			transaction);
         	
-            if (project.getPicture().paintSelected(getPage(),
+            if (project.getCurrentPicture().paintSelected(getPage(),
         			getControlPic(),
         			getControlPaintSelection())) {
             	controlPic.refreshPaint();
             } 
         }
 
-        if (!project.getPicture().paintSelected(getPage(),
+        if (!project.getCurrentPicture().paintSelected(getPage(),
     			getControlPic(),
     			getControlPaintSelection())) {
         	controlPic.stopBorderThread();
@@ -1710,14 +1735,14 @@ MenuListener {
 
     	
     	//start transaction 
-    	final int transaction = project.getPicture().getLs_po_sortedByY()
+    	final int transaction = project.getCurrentPicture().getLs_po_sortedByY()
     			.startTransaction("Selection line complete", 
     					SecureList.ID_NO_PREDECESSOR);
         /*
          * SELECT ALL ITEMS INSIDE RECTANGLE    
          */
         //case: there can't be items inside rectangle because list is empty
-        if (project.getPicture().getLs_po_sortedByY().isEmpty()) {
+        if (project.getCurrentPicture().getLs_po_sortedByY().isEmpty()) {
 
 
     		getPage().getJlbl_border().setBounds(
@@ -1739,12 +1764,12 @@ MenuListener {
         
         // find paintObjects and move them from image to Selection and 
         // initialize selection list
-        project.getPicture().getLs_po_sortedByY().toFirst(
+        project.getCurrentPicture().getLs_po_sortedByY().toFirst(
         		transaction, SecureList.ID_NO_PREDECESSOR);
-        project.getPicture().createSelected();
+        project.getCurrentPicture().createSelected();
         
         // create and initialize current values (current PO and its coordinates)
-        PaintObject po_current = project.getPicture().getLs_po_sortedByY()
+        PaintObject po_current = project.getCurrentPicture().getLs_po_sortedByY()
                 .getItem();
         int currentY = po_current.getSnapshotBounds().y;
 
@@ -1779,32 +1804,32 @@ MenuListener {
                 		 po_current);
                 
                 //move current item from normal list into selected list 
-                project.getPicture().insertIntoSelected(
+                project.getCurrentPicture().insertIntoSelected(
                 		po_current, getView().getTabs().getTab_debug());
                              
-                project.getPicture().getLs_po_sortedByY().remove(
+                project.getCurrentPicture().getLs_po_sortedByY().remove(
                 		transaction);
             }            
 
-            project.getPicture().getLs_po_sortedByY().next(
+            project.getCurrentPicture().getLs_po_sortedByY().next(
             		transaction, SecureList.ID_NO_PREDECESSOR);
 
             // update current values
             currentY = po_current.getSnapshotBounds().y;
-            po_current = project.getPicture().getLs_po_sortedByY().getItem();
+            po_current = project.getCurrentPicture().getLs_po_sortedByY().getItem();
 
         }
 
     	//finish transaction 
-    	project.getPicture().getLs_po_sortedByY().finishTransaction(
+    	project.getCurrentPicture().getLs_po_sortedByY().finishTransaction(
     			transaction);
 
         //finish insertion into selected.
-        project.getPicture().finishSelection(getcTabSelection());
+        project.getCurrentPicture().finishSelection(getcTabSelection());
         
         controlPic.refreshPaint();
 
-        if (!project.getPicture().paintSelected(getPage(),
+        if (!project.getCurrentPicture().paintSelected(getPage(),
     			getControlPic(),
     			getControlPaintSelection())) {
 
@@ -1846,22 +1871,22 @@ MenuListener {
     public final void mr_sel_line_destroy(final Rectangle _r_sizeField) {
 
     	//start transaction 
-    	final int transaction = project.getPicture().getLs_po_sortedByY()
+    	final int transaction = project.getCurrentPicture().getLs_po_sortedByY()
     			.startTransaction("Selection line destroy", 
     					SecureList.ID_NO_PREDECESSOR);
         /*
          * whole item selection.
          */
         // initialize selection list
-        project.getPicture().createSelected();
+        project.getCurrentPicture().createSelected();
 
         // go to the beginning of the list
-        project.getPicture().getLs_po_sortedByY().toFirst(transaction, 
+        project.getCurrentPicture().getLs_po_sortedByY().toFirst(transaction, 
         		SecureList.ID_NO_PREDECESSOR);
-        if (!project.getPicture().getLs_po_sortedByY().isEmpty()) {
+        if (!project.getCurrentPicture().getLs_po_sortedByY().isEmpty()) {
 
             // create and initialize current values
-            PaintObject po_current = project.getPicture().getLs_po_sortedByY()
+            PaintObject po_current = project.getCurrentPicture().getLs_po_sortedByY()
                     .getItem();
             int mycurrentY = po_current.getSnapshotBounds().y;
 
@@ -1914,9 +1939,9 @@ MenuListener {
 //                    PaintObject [][] separatedPO = 
 //                    Util.mergeDoubleArray(p, p2);
                      new PictureOverview(view.getTabs().getTab_debug()).remove(
-                    		 project.getPicture()
+                    		 project.getCurrentPicture()
                             .getLs_po_sortedByY().getItem());
-                    project.getPicture().getLs_po_sortedByY().remove(
+                    project.getCurrentPicture().getLs_po_sortedByY().remove(
                     		transaction);
                     
                     //go through the list of elements.
@@ -1928,7 +1953,7 @@ MenuListener {
                             //recalculate snapshot bounds for being able to 
                             //insert the item into the sorted list.
                             separatedPO[1][current].recalculateSnapshotBounds();
-                            project.getPicture().insertIntoSelected(
+                            project.getCurrentPicture().insertIntoSelected(
                                     separatedPO[1][current],
                                     getView().getTabs().getTab_debug()
                             		);
@@ -1941,7 +1966,7 @@ MenuListener {
                     }
 
                     //finish insertion into selected.
-                    project.getPicture().finishSelection(getcTabSelection());
+                    project.getCurrentPicture().finishSelection(getcTabSelection());
                     
                     for (int current = 0; current < separatedPO[0].length;
                             current++) {
@@ -1963,13 +1988,13 @@ MenuListener {
                     }
                 } 
                 // next
-                project.getPicture().getLs_po_sortedByY().next(transaction,
+                project.getCurrentPicture().getLs_po_sortedByY().next(transaction,
                 		SecureList.ID_NO_PREDECESSOR);
 
 
                 // update current values
                 mycurrentY = po_current.getSnapshotBounds().y;
-                po_current = project.getPicture().getLs_po_sortedByY()
+                po_current = project.getCurrentPicture().getLs_po_sortedByY()
                         .getItem();
             }
 
@@ -1978,7 +2003,7 @@ MenuListener {
             ls_toInsert.toFirst();
             while (!ls_toInsert.isBehind() && !ls_toInsert.isEmpty()) {
 
-                project.getPicture().getLs_po_sortedByY().insertSorted(
+                project.getCurrentPicture().getLs_po_sortedByY().insertSorted(
                         ls_toInsert.getItem(), 
                         ls_toInsert.getItem().getSnapshotBounds().y,
                         transaction);
@@ -1986,9 +2011,9 @@ MenuListener {
             }
 
         	//finish transaction
-        	project.getPicture().getLs_po_sortedByY().finishTransaction(
+        	project.getCurrentPicture().getLs_po_sortedByY().finishTransaction(
         			transaction);
-            if (project.getPicture().paintSelected(getPage(),
+            if (project.getCurrentPicture().paintSelected(getPage(),
         			getControlPic(),
         			getControlPaintSelection())) {
 
@@ -2039,7 +2064,7 @@ MenuListener {
     	
     	
     	//start transaction 
-    	final int transaction = project.getPicture().getLs_po_sortedByY()
+    	final int transaction = project.getCurrentPicture().getLs_po_sortedByY()
     			.startTransaction("erase", 
     					SecureList.ID_NO_PREDECESSOR);
     	/**
@@ -2056,15 +2081,15 @@ MenuListener {
          * whole item selection.
          */
         // initialize selection list
-        project.getPicture().createSelected();
+        project.getCurrentPicture().createSelected();
 
         // go to the beginning of the list
-        project.getPicture().getLs_po_sortedByY().toFirst(transaction,
+        project.getCurrentPicture().getLs_po_sortedByY().toFirst(transaction,
         		SecureList.ID_NO_PREDECESSOR);
-        if (!project.getPicture().getLs_po_sortedByY().isEmpty()) {
+        if (!project.getCurrentPicture().getLs_po_sortedByY().isEmpty()) {
 
             // create and initialize current values
-            PaintObject po_current = project.getPicture().getLs_po_sortedByY()
+            PaintObject po_current = project.getCurrentPicture().getLs_po_sortedByY()
                     .getItem();
             int mycurrentY = po_current.getSnapshotBounds().y;
 
@@ -2111,26 +2136,26 @@ MenuListener {
                          new PictureOverview(view.getTabs()
                         		 .getTab_debug()).remove(po_current);
                         
-                        project.getPicture().getLs_po_sortedByY().remove(
+                        project.getCurrentPicture().getLs_po_sortedByY().remove(
                         		transaction);
                     }            
 
-                    project.getPicture().getLs_po_sortedByY().next(
+                    project.getCurrentPicture().getLs_po_sortedByY().next(
                     		transaction, SecureList.ID_NO_PREDECESSOR);
 
                     // update current values
                     mycurrentY = po_current.getSnapshotBounds().y;
-                    po_current = project.getPicture()
+                    po_current = project.getCurrentPicture()
                     		.getLs_po_sortedByY().getItem();
 
                 }
 
             	//finish transaction 
-            	project.getPicture().getLs_po_sortedByY().finishTransaction(
+            	project.getCurrentPicture().getLs_po_sortedByY().finishTransaction(
             			transaction);
 
                 //finish insertion into selected.
-                project.getPicture().finishSelection(getcTabSelection());
+                project.getCurrentPicture().finishSelection(getcTabSelection());
                 
                 controlPic.refreshPaint();
             	
@@ -2140,7 +2165,7 @@ MenuListener {
             	
             	
             	
-            	project.getPicture().deleteSelected(getView()
+            	project.getCurrentPicture().deleteSelected(getView()
             			.getTabs().getTab_debug(), cTabSelection);
             	break;
             case Constants.ERASE_DESTROY:
@@ -2173,21 +2198,21 @@ MenuListener {
 	
 	                            new PictureOverview(view.getTabs()
 	                            		.getTab_debug()).remove(
-	                            				project.getPicture()
+	                            				project.getCurrentPicture()
 	                                    .getLs_po_sortedByY().getItem());
 	                    	}
-	                        project.getPicture().getLs_po_sortedByY().remove(
+	                        project.getCurrentPicture().getLs_po_sortedByY().remove(
 	                        		transaction);
 	                	}
 	                } 
 	                // next
-	                project.getPicture().getLs_po_sortedByY().next(transaction,
+	                project.getCurrentPicture().getLs_po_sortedByY().next(transaction,
 	                		SecureList.ID_NO_PREDECESSOR);
 	
 	
 	                // update current values
 	                mycurrentY = po_current.getSnapshotBounds().y;
-	                po_current = project.getPicture().getLs_po_sortedByY()
+	                po_current = project.getCurrentPicture().getLs_po_sortedByY()
 	                        .getItem();
 	            }
 	
@@ -2206,7 +2231,7 @@ MenuListener {
 	                    	ls_separatedPO.getItem()
 	                    	.recalculateSnapshotBounds();
 	
-	                        project.getPicture().getLs_po_sortedByY()
+	                        project.getCurrentPicture().getLs_po_sortedByY()
 	                        .insertSorted(
 	                        		ls_separatedPO.getItem(), 
 	                        		ls_separatedPO.getItem()
@@ -2228,11 +2253,11 @@ MenuListener {
 	                }
 	            }
 	        	//finish transaction
-	        	project.getPicture().getLs_po_sortedByY().finishTransaction(
+	        	project.getCurrentPicture().getLs_po_sortedByY().finishTransaction(
 	        			transaction);
 	        
 	            
-	            if (project.getPicture().paintSelected(getPage(),
+	            if (project.getCurrentPicture().paintSelected(getPage(),
 	        			getControlPic(),
 	        			getControlPaintSelection())) {
 	            	controlPic.refreshPaint();
@@ -2250,7 +2275,7 @@ MenuListener {
         } else {
 
         	//finish transaction
-        	project.getPicture().getLs_po_sortedByY().finishTransaction(
+        	project.getCurrentPicture().getLs_po_sortedByY().finishTransaction(
         			transaction);
         
         }
@@ -2275,7 +2300,7 @@ MenuListener {
     private void mr_paint_pipette(final MouseEvent _event) {
 
 
-        int color = project.getPicture().getColorPX(_event.getX(), 
+        int color = project.getCurrentPicture().getColorPX(_event.getX(), 
                 _event.getY(), getControlPic().getBi());
         if (_event.getButton() == 1) {
         	view.getTabs().getTab_paint().getTb_color1().setBackground(
@@ -2465,8 +2490,8 @@ MenuListener {
 	public final void beforeOpen() {
 
     	//release selected because of display bug otherwise.
-    	if (project.getPicture().isSelected()) {
-	    	project.getPicture().releaseSelected(
+    	if (project.getCurrentPicture().isSelected()) {
+	    	project.getCurrentPicture().releaseSelected(
         			getControlPaintSelection(),
         			getcTabSelection(),
         			getView().getTabs().getTab_debug(),
@@ -2485,8 +2510,8 @@ MenuListener {
 	public final void beforeClose() {
 
     	//release selected because of display bug otherwise.
-    	if (project.getPicture().isSelected()) {
-	    	project.getPicture().releaseSelected(
+    	if (project.getCurrentPicture().isSelected()) {
+	    	project.getCurrentPicture().releaseSelected(
         			getControlPaintSelection(),
         			getcTabSelection(),
         			getView().getTabs().getTab_debug(),
@@ -2592,7 +2617,7 @@ MenuListener {
          */
         
         // perform the preprinting
-        project.getPicture().getPen_current().preprint(
+        project.getCurrentPicture().getPen_current().preprint(
                 _x, _y,
                 bi_preprint,
                 getPage().getJlbl_selectionBG());
@@ -2608,13 +2633,13 @@ MenuListener {
         int preprintX =
         		Math.max(
         				(int) Math.ceil(
-        						project.getPicture().getPen_current()
+        						project.getCurrentPicture().getPen_current()
         						.getThickness()  * zoomFactorX / 2),
         						1);
         int preprintY =
         		Math.max(
         				(int) Math.ceil(
-        						project.getPicture().getPen_current()
+        						project.getCurrentPicture().getPen_current()
         						.getThickness()  * zoomFactorY / 2),
         						1);
         
@@ -2863,7 +2888,7 @@ MenuListener {
 	 * @return the picture
 	 */
 	public final Picture getPicture() {
-		return project.getPicture();
+		return project.getCurrentPicture();
 	}
 
 	/**

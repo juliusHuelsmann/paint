@@ -1,5 +1,21 @@
 //package declaration
 package control.forms.tabs;
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //import declarations
 import java.awt.Color;
@@ -259,7 +275,7 @@ public final class CTabTools implements ActionListener, MouseListener {
             	File s = jfc.getSelectedFile();
             	
             	if (s != null) {
-                	controlPaint.getProject().getPicture().addPaintObjectImage(Utils.readImageFromOutiseJar(s.getPath()));
+                	controlPaint.getProject().getCurrentPicture().addPaintObjectImage(Utils.readImageFromOutiseJar(s.getPath()));
                 	controlPaint.getControlPic().refreshPaint();
             	}
             }
@@ -674,10 +690,11 @@ public final class CTabTools implements ActionListener, MouseListener {
             jfc.setCurrentDirectory(new java.io.File(StateStandard.getWsLocation()));
             jfc.setDialogTitle("Select load location");
             int retval = jfc.showOpenDialog(getView());
-
             if (retval == JFileChooser.APPROVE_OPTION) {
                 File file = jfc.getSelectedFile();
 
+                System.out.println(Constants.endsWithSaveFormat(file.getName()) + ".." + file.getName()
+                		);
                 if (file.getName().toLowerCase().endsWith(".pic")) {
                     controlPaint.getPicture().loadPicture(
                     		file.getAbsolutePath());
@@ -688,26 +705,27 @@ public final class CTabTools implements ActionListener, MouseListener {
                     
                 } else if (Constants.endsWithSaveFormat(file.getName())) {
                     
-                    try {
-                        BufferedImage bi_imageBG = ImageIO.read(file);
-                        State.setImageSize(new Dimension(
-                                bi_imageBG.getWidth(), 
-                                bi_imageBG.getHeight()));
-                        State.setImageShowSize(State.getImageSize());
+//                    try {
+//                        BufferedImage bi_imageBG = ImageIO.read(file);
+//                        State.setImageSize(new Dimension(
+//                                bi_imageBG.getWidth(), 
+//                                bi_imageBG.getHeight()));
+//                        State.setImageShowSize(State.getImageSize());
                         controlPaint.getPicture().emptyImage();
-                        controlPaint.getPicture().addPaintObjectImage(
-                        		bi_imageBG);
+//                        controlPaint.getPicture().addPaintObjectImage(
+//                        		bi_imageBG);
+                    	controlPaint.getProject().load(file.getAbsolutePath());
                         getControlPicture().refreshPaint();
                         
-                    } catch (IOException e) {
-                        e.printStackTrace();
-
-                        new Error("not supported yet to load pictures "
-                                + "because there are no paintObjects for "
-                                + "pictures"
-                                + "but only those for lines.")
-                        .printStackTrace();
-                    }
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//
+//                        new Error("not supported yet to load pictures "
+//                                + "because there are no paintObjects for "
+//                                + "pictures"
+//                                + "but only those for lines.")
+//                        .printStackTrace();
+//                    }
                     
                     
 

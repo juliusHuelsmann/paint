@@ -550,10 +550,20 @@ public final class CTabTools implements ActionListener, MouseListener {
         	final int lengthFileEndig = fileEnding.length();
             int d = State.getSavePath().toCharArray().length - lengthFileEndig;
             String firstPath = State.getSavePath().substring(0, d);
-            
             if (!fileEnding.equals(".pic")) {
-                controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, ".png");
-            }
+
+            	if (fileEnding.equals(".pdf")) {
+
+                    try {
+						controlPaint.getProject().savePDF(firstPath + fileEnding);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+            	} else  {
+
+                    controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
+            	}
+            } 
             controlPaint.getPicture().savePicture(firstPath + ".pic");
 
             State.setUncommittedChanges(false);
@@ -656,8 +666,18 @@ public final class CTabTools implements ActionListener, MouseListener {
 //            		getPage().getJlbl_painting().getLocation().y);
             if (!fileEnding.equals(".pic")) {
 
-                controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, ".png");
-            }
+            	if (fileEnding.equals(".pdf")) {
+
+                    try {
+						controlPaint.getProject().savePDF(firstPath + fileEnding);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+            	} else  {
+
+                    controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
+            	}
+            } 
             controlPaint.getPicture().savePicture(firstPath + ".pic");
 
 

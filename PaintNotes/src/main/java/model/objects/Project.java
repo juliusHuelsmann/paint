@@ -23,6 +23,7 @@ package model.objects;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.awt.image.CropImageFilter;
 import java.io.File;
 import java.io.IOException;
 
@@ -30,6 +31,11 @@ import javax.imageio.ImageIO;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.PDXObject;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import model.objects.history.HistorySession;
 import model.objects.painting.Picture;
@@ -39,6 +45,8 @@ import model.settings.State;
 import model.util.DPoint;
 import model.util.Util;
 import model.util.adt.list.SecureList;
+import model.util.paint.Utils;
+import model.util.pdf.PDFUtils;
 import model.util.pdf.XDocument;
 
 /**
@@ -285,5 +293,97 @@ public class Project {
 	public int getCurrentPageNumber() {
 		return currentlyDisplayedPage;
 	}
+
+
+	/**
+	 * 
+	 * @param _doc
+	 * @param _bi
+	 * @param _pageindex 		index of page to which the BufferedImage is 
+	 * 							inserted.
+	 * 							If it is equal to -1, new page is created.
+	 * 						
+	 */
+	public void attatchToPDF(
+			final PDDocument _doc, 
+			final BufferedImage _bi,
+			final int _pageindex){
+	    PDPage page = null;
+	    try {
+	    	if (_pageindex == -1) {
+	    		page = new PDPage(new PDRectangle(State.getImageSize().width, State.getImageSize().height));
+
+		        _doc.addPage(page);
+	    	} else {
+	    		page = _doc.getPage(_pageindex);
+//	    		page.setCropBox(new PDRectangle(State.getImageSize().width , 
+//	    				State.getImageSize().height ));
+	    		
+	    	}
+
+		        PDPageContentStream content = new PDPageContentStream(_doc, page);
+		        
+		        int width = (int) page.getCropBox().getWidth();
+		        int height = (int) page.getCropBox().getHeight();
+		        PDImageXObject ximage =  LosslessFactory.createFromImage(_doc, 
+//		        		_bi);
+		        		Utils.resizeImage(width, height, _bi));
+		        content.drawImage(ximage, 0, 0);
+		        content.close();
+	    }
+	    catch (IOException ie){
+	        //handle exception
+	    }
+	}
+	
+	
+	
+	
+	
+	public void savePDF(final String firstPath) throws IOException {
+
+    	
+    	
+    	PDDocument doc = document.getPDDocument();
+        try
+        {
+        	
+        	final boolean newlyCreated = (doc == null);
+        	
+        	if (newlyCreated) {
+
+            	// create new document and insert empty page to the document.
+            	doc = new PDDocument();
+        	} else {
+        		// reset wrong settings.
+        		State.setBorderBottomPercentExport(0);
+        		State.setBorderRightPercentExport(0);
+        		State.setBorderLeftPercentExport(0);
+        		State.setBorderTopPercentExport(0);
+        		State.setExportAlpha(true);
+        	}
+        	
+        	
+        	for (int i = 0; i < pictures.length; i++) {
+        		int index = i + 0;
+        		if (newlyCreated) {
+        			index = -1;
+        		}
+        		
+        		attatchToPDF(doc, pictures[i].getBufferedImage(0, 0), index);
+			}
+
+
+    	    //save and close
+    	    doc.save(firstPath);
+        }
+        finally
+        {
+            if( doc != null )
+            {
+                doc.close();
+            }
+        }
+    }
 
 }

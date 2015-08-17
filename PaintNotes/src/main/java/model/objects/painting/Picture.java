@@ -216,7 +216,7 @@ public final class Picture implements Serializable {
 	 * 
 	 * @return the new created PaintObjectImage.
 	 */
-	public PaintObjectImage createPDF(final BufferedImage _bi) {
+	public PaintObjectPdf createPDF(final BufferedImage _bi) {
 		return new PaintObjectPdf(getIncreaseCID(), _bi, this);
 	}
 
@@ -312,7 +312,7 @@ public final class Picture implements Serializable {
 	 * @param _bi
 	 *            the BufferedImage which is to be transformed into ImagePO.
 	 */
-	public void addPaintObjectPDF(final BufferedImage _bi) {
+	public PaintObjectPdf addPaintObjectPDF(final BufferedImage _bi) {
 
 		if (po_current != null) {
 
@@ -332,11 +332,13 @@ public final class Picture implements Serializable {
 		} else {
 
 			// create new PaintObject and insert it into list of
-			PaintObjectImage poi = createPDF(_bi);
+			PaintObjectPdf poi = createPDF(_bi);
 			ls_po_sortedByY.insertSorted(poi, poi.getSnapshotBounds().y,
 					SecureList.ID_NO_PREDECESSOR);
+			return poi;
 
 		}
+		return null;
 	}
 
 	/**

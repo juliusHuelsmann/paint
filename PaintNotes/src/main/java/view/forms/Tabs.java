@@ -26,6 +26,8 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import view.tabs.Project;
+
 import model.settings.ViewSettings;
 import control.ControlPaint;
 import control.util.CItem;
@@ -92,6 +94,10 @@ public final class Tabs extends VTabbedPane {
      */
     private Look tab_look;
     
+    /**
+     * Tab for project. 
+     */
+    private Project tab_project;
     /**
      * Debug tab.
      */
@@ -165,12 +171,15 @@ public final class Tabs extends VTabbedPane {
         if (tab_insert != null) {
         	tab_insert.applySize();
         }
-        
+
         if (set_about != null) {
         	set_about.setSize(
                 _view.getWidth(), 
                 getVisibleHeightEnitelyOpen() - ViewSettings.getView_heightTB_visible());
         }
+        
+
+
     }
     
     
@@ -299,6 +308,20 @@ public final class Tabs extends VTabbedPane {
                 _view.getWidth(), 
                 getVisibleHeightEnitelyOpen() - ViewSettings.getView_heightTB_visible());
         super.addToTabLayer2(tabNumber, set_print);
+        tabNumber++;
+
+        
+        /*
+         * tab project
+         */
+        super.addTab("Project");
+        tab_project = new Project(_cp.getcTabProject());
+        super.addToTab(tabNumber, tab_project);
+//        set_print = new SettingsPrint();
+//        set_print.setSize(
+//                _view.getWidth(), 
+//                getVisibleHeightEnitelyOpen() - ViewSettings.getView_heightTB_visible());
+//        super.addToTabLayer2(tabNumber, set_print);
         tabNumber++;
 
 
@@ -495,5 +518,14 @@ public final class Tabs extends VTabbedPane {
 	 */
 	public AboutPaint getTab_about() {
 		return tab_about;
+	}
+
+
+
+	/**
+	 * @return the tab_project
+	 */
+	public Project getTab_project() {
+		return tab_project;
 	}
 }

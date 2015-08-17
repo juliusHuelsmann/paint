@@ -16,6 +16,7 @@ Used
 - Maven
 - Checkstyle
 - JUnit
+- Apache Open Box 
 
 
 ## 2.1 Install Git, Maven, Eclipse, Eclipse Plugins (Maven, Checkstyle, JUnit)

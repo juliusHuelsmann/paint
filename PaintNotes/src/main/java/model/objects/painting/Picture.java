@@ -1,6 +1,25 @@
 //package declaration
 package model.objects.painting;
 
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
 //import declarations
 import java.awt.Color;
 import java.awt.Dimension;
@@ -31,6 +50,7 @@ import model.objects.history.HistorySession;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
+import model.objects.painting.po.PaintObjectPdf;
 import model.objects.painting.po.PaintObjectPen;
 import model.objects.painting.po.PaintObjectWriting;
 import model.objects.painting.po.diag.PODiagramm;
@@ -184,7 +204,20 @@ public final class Picture implements Serializable {
 	 */
 	public PaintObjectImage createPOI(final BufferedImage _bi) {
 		return new PaintObjectImage(getIncreaseCID(), _bi, this);
+	}
 
+	/**
+	 * Method for creating a new PaintObjectImage which is not directly added to
+	 * a list but returned to the demanding method.
+	 * 
+	 * @param _bi
+	 *            the BufferedImage of which the new created PaintObjectImage
+	 *            consists
+	 * 
+	 * @return the new created PaintObjectImage.
+	 */
+	public PaintObjectImage createPDF(final BufferedImage _bi) {
+		return new PaintObjectPdf(getIncreaseCID(), _bi, this);
 	}
 
 	/**
@@ -269,6 +302,40 @@ public final class Picture implements Serializable {
 
 			// set uncommitted changes.
 			State.setUncommittedChanges(true);
+		}
+	}
+	
+
+	/**
+	 * adds a new PaintObject to list.
+	 * 
+	 * @param _bi
+	 *            the BufferedImage which is to be transformed into ImagePO.
+	 */
+	public void addPaintObjectPDF(final BufferedImage _bi) {
+
+		if (po_current != null) {
+
+			// throw error message and kill program.
+			State.getLogger().severe("Es soll ein neues pen objekt"
+					+ " geadded werden, obwohl das Alte nicht null ist "
+					+ "also nicht gefinished wurde.\n" 
+					+ "Programm wird beendet.");
+			ls_po_sortedByY.insertSorted(po_current,
+					po_current.getSnapshotBounds().y,
+					SecureList.ID_NO_PREDECESSOR);
+
+		}
+
+		if (_bi == null) {
+			State.getLogger().warning("nothing on clipboard.");
+		} else {
+
+			// create new PaintObject and insert it into list of
+			PaintObjectImage poi = createPDF(_bi);
+			ls_po_sortedByY.insertSorted(poi, poi.getSnapshotBounds().y,
+					SecureList.ID_NO_PREDECESSOR);
+
 		}
 	}
 
@@ -2189,39 +2256,49 @@ public final class Picture implements Serializable {
 	public DPoint load(final String _wsLoc) {
 		BufferedImage bi_normalSize;
 		try {
-			BufferedImage bi_unnormalSchaizz = ImageIO.read(new File(_wsLoc));
-			bi_normalSize = new BufferedImage(bi_unnormalSchaizz.getWidth(),
-					bi_unnormalSchaizz.getHeight(), 
-					BufferedImage.TYPE_INT_ARGB);
+			
+			if (_wsLoc.endsWith(".pdf")) {
+				State.getLogger().severe("Wrong calling method load. Have"
+						+ " to call Project.load instead of picutre.load.");
 
-			for (int x = 0; x < bi_unnormalSchaizz.getWidth(); x++) {
+			} else {
 
-				for (int y = 0; y < bi_unnormalSchaizz.getHeight(); y++) {
-					bi_normalSize.setRGB(x, y, bi_unnormalSchaizz.getRGB(x, y));
+				
+				
+				BufferedImage bi_unnormalSchaizz = ImageIO.read(new File(_wsLoc));
+				bi_normalSize = new BufferedImage(bi_unnormalSchaizz.getWidth(),
+						bi_unnormalSchaizz.getHeight(), 
+						BufferedImage.TYPE_INT_ARGB);
+
+				for (int x = 0; x < bi_unnormalSchaizz.getWidth(); x++) {
+
+					for (int y = 0; y < bi_unnormalSchaizz.getHeight(); y++) {
+						bi_normalSize.setRGB(x, y, bi_unnormalSchaizz.getRGB(x, y));
+					}
 				}
-			}
 
-			State.setImageSize(new Dimension(bi_normalSize.getWidth(),
-					bi_normalSize.getHeight()));
-			State.setImageShowSize(new Dimension(bi_normalSize.getWidth(),
-					bi_normalSize.getHeight()));
+				State.setImageSize(new Dimension(bi_normalSize.getWidth(),
+						bi_normalSize.getHeight()));
+				State.setImageShowSize(new Dimension(bi_normalSize.getWidth(),
+						bi_normalSize.getHeight()));
 
-			if (ls_po_sortedByY == null) {
-				createSelected();
-			}
+				if (ls_po_sortedByY == null) {
+					createSelected();
+				}
 
-			//create new transaction
-			int transaction = ls_po_sortedByY.startTransaction(
-					"load", 
-					SecureList.ID_NO_PREDECESSOR);
-			ls_po_sortedByY.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
-			PaintObjectImage poi_current = createPOI(bi_normalSize);
-			ls_po_sortedByY.insertSorted(poi_current,
-					poi_current.getSnapshotBounds().y, transaction);
+				//create new transaction
+				int transaction = ls_po_sortedByY.startTransaction(
+						"load", 
+						SecureList.ID_NO_PREDECESSOR);
+				ls_po_sortedByY.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
+				PaintObjectImage poi_current = createPOI(bi_normalSize);
+				ls_po_sortedByY.insertSorted(poi_current,
+						poi_current.getSnapshotBounds().y, transaction);
 
-			//finish transaction and destroy list of selected items.
-			ls_po_sortedByY.finishTransaction(transaction);
+				//finish transaction and destroy list of selected items.
+				ls_po_sortedByY.finishTransaction(transaction);
 
+			} 
 		} catch (IOException e) {
 			Util.handleException(
 					"Error opening image: File not found", 
@@ -2231,8 +2308,6 @@ public final class Picture implements Serializable {
 			
 			
 		}
-
-
 		return new DPoint(State.getImageSize().getWidth(), State
 				.getImageSize().getHeight());
 	}

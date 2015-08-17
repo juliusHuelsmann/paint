@@ -21,6 +21,7 @@ package model.util.pdf;
 
 
 //import declarations
+import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -29,6 +30,7 @@ import java.io.IOException;
 
 import model.objects.Project;
 import model.objects.painting.po.PaintObjectPdf;
+import model.settings.Constants;
 
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -99,12 +101,15 @@ public class XDocument {
 	}
 	
 	
-	public void initialize() {
+	public Dimension initialize() {
 
 		// initialize the paintObjectPdf array which is saved
 		// for being able to modify them just after inserting
 		// or removing page.
 		this.pdfPages = new PaintObjectPdf[document.getNumberOfPages()];
+		
+		//
+		BufferedImage bi_saved = null;
 		
 		//
 		// initialize the pages
@@ -116,15 +121,31 @@ public class XDocument {
 //			pdfPages[i] = _project.getPicture(i).createPPF(); 
 
 			if (document != null) {
+				
+				
 				BufferedImage bi = PDFUtils.pdf2image(
 						document, i);
-				System.out.println(bi);
-				project.getPicture(i).addPaintObjectPDF(bi);
+
+				if (bi != null) {
+
+					
+					pdfPages[i] = project.getPicture(i).addPaintObjectPDF(bi);
+
+					if (project.getCurrentPageNumber() == i) {
+						bi_saved = bi;
+					}
+					
+				}
 			}
 //			 BufferedImage buffImage = convertToImage(page, 8, 12);
 
 //					new PaintObjectPdf(_elementId, _bi, _picture)
 		}
+
+		if (bi_saved == null) {
+			return Constants.SIZE_A4;
+		}
+		return new Dimension(bi_saved.getWidth(), bi_saved.getHeight());
 		
 	}
 	
@@ -277,5 +298,13 @@ public class XDocument {
 	public ResourceCache getResourceCache() {
 		return document.getResourceCache();
 	}
+
+	/**
+	 * @return the pdfPages
+	 */
+	public PaintObjectPdf[] getPdfPages() {
+		return pdfPages;
+	}
+
 	
 }

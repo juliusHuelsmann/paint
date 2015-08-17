@@ -21,6 +21,7 @@ package model.objects;
 
 //import declarations
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -124,8 +125,13 @@ public class Project {
 			}
 
 			initialize();
-			document.initialize();
+			Dimension d = document.initialize();
 
+			State.setImageSize(d);
+			State.setImageShowSize(d);
+
+			
+			
 		} else {
 
 			// create new instances of picture and history.
@@ -224,10 +230,60 @@ public class Project {
 	}
 
 
+	
+	public void resetCurrentPage() {
+		currentlyDisplayedPage = 0;
+	}
+	
+	public void increaseCurrentPage() {
+		if (document != null 
+				&& currentlyDisplayedPage < document.getNumberOfPages() - 1) {
+
+			currentlyDisplayedPage++;
+
+			// fetch zoom factor
+			double zW = 1.0 * State.getImageSize().getWidth() / State.getImageShowSize().getWidth();
+			double zH = 1.0 * State.getImageSize().getHeight() / State.getImageShowSize().getHeight();
+			
+			Rectangle r = document.getPdfPages()[currentlyDisplayedPage].getSnapshotBounds();
+			
+			State.setImageSize(r.getSize());
+			State.setImageShowSize(new Dimension((int) (r.getWidth() / zW), (int) (r.getHeight() / zH)));
+
+		}
+	}
+	
+	
+	public void decreaseCurrentPage() {
+
+		if (currentlyDisplayedPage > 0) {
+
+			
+			currentlyDisplayedPage--;
+
+			// fetch zoom factor
+			double zW = 1.0 * State.getImageSize().getWidth() / State.getImageShowSize().getWidth();
+			double zH = 1.0 * State.getImageSize().getHeight() / State.getImageShowSize().getHeight();
+			
+			Rectangle r = document.getPdfPages()[currentlyDisplayedPage].getSnapshotBounds();
+			
+			State.setImageSize(r.getSize());
+			State.setImageShowSize(new Dimension((int) (r.getWidth() / zW), (int) (r.getHeight() / zH)));
+		}
+	}
 	/**
 	 * @return the pictures
 	 */
 	public Picture getPicture(int _pictureID) {
 		return pictures[_pictureID];
 	}
+
+
+	/**
+	 * @return the currentlyDisplayedPage
+	 */
+	public int getCurrentPageNumber() {
+		return currentlyDisplayedPage;
+	}
+
 }

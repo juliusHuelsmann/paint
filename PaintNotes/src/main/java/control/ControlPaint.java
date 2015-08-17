@@ -45,6 +45,7 @@ import control.forms.tabs.CTabDebug;
 import control.forms.tabs.CTabExport;
 import control.forms.tabs.CTabInsert;
 import control.forms.tabs.CTabLook;
+import control.forms.tabs.CTabProject;
 import control.forms.tabs.CTabTools;
 import control.forms.tabs.CTabPrint;
 import control.forms.tabs.CTabSelection;
@@ -210,6 +211,11 @@ MenuListener {
 	private CTabLook cTabLook;
 	
 	/**
+	 * Controller class for the tab project.
+	 */
+	private CTabProject cTabProject;
+	
+	/**
 	 * Controller class for the tab debug.
 	 */
 	private CTabDebug cTabPaintObjects;
@@ -345,6 +351,7 @@ MenuListener {
             controlnew = new CNew(this);
             cTabPrint = new CTabPrint(this);
             cTabLook = new CTabLook(this);
+            cTabProject = new CTabProject(this);
             cTabExport = new CTabExport(this);
             cTabWrite = new CTabWrite(this);
             cTabAbout = new CTabAboutPaint(this);
@@ -2944,5 +2951,14 @@ MenuListener {
 	public InfoSelection getInfo_selection() {
 		return info_selection;
 	}
+
+
+	/**
+	 * @return the cTabProject
+	 */
+	public CTabProject getcTabProject() {
+		return cTabProject;
+	}
+
 
 }

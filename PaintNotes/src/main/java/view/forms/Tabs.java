@@ -360,7 +360,6 @@ public final class Tabs extends VTabbedPane {
          */
         super.addTab("Paint");
         tab_about = new AboutPaint(_cp.getcTabAbout());
-        super.addToTab(tabNumber, new JLabel("hier"));
         tab_about.setSize(
                 (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
                 ViewSettings.getView_heightTB());

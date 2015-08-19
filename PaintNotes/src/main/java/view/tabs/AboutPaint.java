@@ -63,15 +63,12 @@ public final class AboutPaint extends Tab {
 		super.setLayout(null);
 		super.setOpaque(false);
 
-		jta_about = new JTextArea("Paint Program maintained by "
-				+ "Julius Hülsmann.\n\n"
-				+ "Visit https://github.com/juliusHuelsmann/paint");
+		jta_about = new JTextArea(CTabAboutPaint.demandInformation());
 		jta_about.setFocusable(false);
 		jta_about.setBorder(null);
 		jta_about.setOpaque(false);
 		jta_about.setEditable(false);
 		super.add(jta_about);
-		
 		
 		
 
@@ -100,6 +97,7 @@ public final class AboutPaint extends Tab {
 		
 		
 	}
+	
 
 	
 	/**

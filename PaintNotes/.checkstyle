@@ -4,7 +4,11 @@
   <local-check-config name="projectCheckstyle" location="/Users/juli/Documents/Paint/paint/checkstyle.xml" type="external" description="">
     <additional-data name="protect-config-file" value="false"/>
   </local-check-config>
-  <fileset name="all" enabled="true" check-config-name="projectCheckstyle" local="true">
+  <local-check-config name="asdf" location="internal_config__1440010795433.xml" type="internal" description=""/>
+  <local-check-config name="cs" location="/home/juli/Arbeitsfläche/paint/paintPC/github/paint/checkstyle.xml" type="external" description="">
+    <additional-data name="protect-config-file" value="false"/>
+  </local-check-config>
+  <fileset name="all" enabled="true" check-config-name="cs" local="true">
     <file-match-pattern match-pattern="." include-pattern="true"/>
   </fileset>
 </fileset-config>

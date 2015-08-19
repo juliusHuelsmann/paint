@@ -403,6 +403,19 @@ MenuListener {
             State.getLogger().info("initialization process completed.\n\n"
                     + "-------------------------------------------------\n");
 
+            
+
+    		/*
+    		 * Call update procedure.
+    		 */
+    		
+
+    		boolean updateOnStart = true;
+    		if (updateOnStart) {
+    			ReadSettings.update(view, false);
+    		}
+
+            
         } else {
 
             //if not installed and no installation done print error and write

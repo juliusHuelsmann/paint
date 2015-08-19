@@ -73,8 +73,8 @@ public final class AboutPaint extends Tab {
 		
 
 		i1b_checkForUpdates = new Item1Button(null);
-
-		i1b_checkForUpdates.setLocation(ViewSettings.getDistanceBetweenItems(), 
+		i1b_checkForUpdates.setLocation(
+				ViewSettings.getDistanceBetweenItems(), 
         		ViewSettings.getDistanceBetweenItems());
 		i1b_checkForUpdates.setBorder(false);
         i1b_checkForUpdates.addActionListener(_controlTabAbout);
@@ -174,7 +174,7 @@ public final class AboutPaint extends Tab {
 	@Override
 	public void initializeHelpListeners(final JFrame _jf, final Help _c) {
 		i1b_checkForUpdates.addMouseListener(new HelpMouseListener(
-				"Check for proram updates. Not implemented yet.",
+				"Check for program updates.",
 				HelpMouseListener.HELP_ID_MEDIUM, _jf, 
 				_c, i1b_checkForUpdates, null));
 	}

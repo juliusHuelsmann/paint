@@ -412,7 +412,7 @@ MenuListener {
 
     		boolean updateOnStart = true;
     		if (updateOnStart) {
-    			ReadSettings.update(view);
+    			ReadSettings.update(view, false);
     		}
 
             

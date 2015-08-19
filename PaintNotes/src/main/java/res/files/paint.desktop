@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Name=Paint
+GenericName=Photo Manager
+Comment=photo
+Keywords=album;camera;cameras;crop;edit;enhance;export;gallery;image;images;import;organize;photo;photographs;photos;picture;pictures;photography;print;publish;rotate;share;tags;video;facebook;flickr;picasa;youtube;piwigo;
+Exec=paint  %U
+Icon=shotwell
+Terminal=false
+Type=Application
+MimeType=x-content/image-dcf;
+Categories=Graphics;Photography;GE;GTK;
+X-GIO-NoFuse=true
+X-GNOME-Gettext-Domain=paint
+X-GNOME-FullName=Paint

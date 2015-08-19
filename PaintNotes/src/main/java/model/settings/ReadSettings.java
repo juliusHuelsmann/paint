@@ -507,7 +507,7 @@ public final class ReadSettings {
 			public void run() {
 		        try {
 					 // Create a URL for the desired page
-			        URL url = new URL("http://juliushuelsmann.github.io/paint/currentRelease.html");       
+			        URL url = new URL("http://juliushuelsmann.github.io/paint/currentRelease");       
 
 			        // Read all the text returned by the server
 			        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));

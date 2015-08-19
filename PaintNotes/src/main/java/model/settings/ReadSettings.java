@@ -31,12 +31,15 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLDecoder;
 
+import javax.sound.midi.MidiDevice.Info;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import start.Start;
+import view.View;
+import view.util.InformationWindow;
 import model.util.Util;
 
 /**
@@ -346,16 +349,6 @@ public final class ReadSettings {
 		
 		
 
-		/*
-		 * Call update procedure.
-		 */
-		
-		
-		boolean updateOnStart = true;
-		if (updateOnStart) {
-			update();
-		}
-
 		
 		
 		
@@ -494,108 +487,205 @@ public final class ReadSettings {
 	}
 	
 	
+	
+	private static boolean checkForUpdate(final View _view) {
+		try {
+			 // Create a URL for the desired page
+	        URL url = new URL("http://juliushuelsmann.github.io/paint/currentRelease");       
+
+	        // Read all the text returned by the server
+	        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+	        String version = in.readLine();
+			in.close();
+			
+			final String[] result = Version.getMilestonePercentageDone(version);
+			if (result == null) {
+				// error
+				return false;
+			}
+
+			final String MS = result[0];
+			final String perc = result[1];
+
+			try {
+				
+				// parse information to integer.
+				int new_milestone  = Integer.parseInt(MS);
+				int new_percentage = Integer.parseInt(perc);
+
+				int crrnt_milestone  = Integer.parseInt(Version.MILESTONE);
+				int crrnt_percentage = Integer.parseInt(
+						Version.PERCENTAGE_DONE);
+				
+				if (new_milestone > crrnt_milestone
+						|| (new_percentage > crrnt_percentage 
+								&& new_milestone == crrnt_milestone)) {
+					
+
+					int d = JOptionPane.showConfirmDialog(_view, 
+							"A new version of paint has been found:\n"
+							+ "Used Version:\t"
+							+ "" + crrnt_milestone + "."
+							+ "" + crrnt_percentage+ "\n" 
+							+ "New  Version:\t"
+							+ "" + new_milestone + "."
+							+ "" + new_percentage+ "\n\n" 
+							+ "Do you want to download it right now? \n"
+							+ "This operation will close paint and restart \n"
+							+ "the new version in about one minute.",
+							"Update",
+							JOptionPane.YES_NO_OPTION);
+					
+					return d == JOptionPane.YES_OPTION;
+				} else {
+					return false;
+				}
+				
+			} catch(NumberFormatException _nex) {
+				
+				//error
+				model.settings.State.getLogger()
+				.severe("Failed to update: version number currupted.");
+				return false;
+			}
+			
+			
+       } catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 
 	
 	/**
 	 * Update the entire program.
 	 */
-	public static void update() {
+	public static void update(final View _view) {
 		
 		
 		new Thread() {
 			
 			public void run() {
-		        try {
-					 // Create a URL for the desired page
-			        URL url = new URL("http://juliushuelsmann.github.io/paint/currentRelease");       
+		        
+				final boolean newReleaseAccepted = checkForUpdate( _view);
+				
+				if (newReleaseAccepted) {
 
-			        // Read all the text returned by the server
-			        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-			        String version = in.readLine();
-					in.close();
+					_view.dispose();
 					
-					System.out.println(version);
+					/*
+					 * dispose current version of paint that is currently running.
+					 */
 					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-		        System.exit(1);
-				
-				
-				
-				
-				/*
-				 * Property name for getting operating system identifier.
-				 */
-				final String os_propertyName = "os.name";
-				
-				/*
-				 * Different property content values for deciding which
-				 * operating system is used.
-				 */
-				final String propertyLinux = "Linux";
-				final String propertyOSX = "Mac OS X";
-				final String propertyWindows = "Windows";
+					InformationWindow iw = new InformationWindow("Update Process.");
+					
+					
+					/*
+					 * Property name for getting operating system identifier.
+					 */
+					final String os_propertyName = "os.name";
+					
+					/*
+					 * Different property content values for deciding which
+					 * operating system is used.
+					 */
+					final String propertyLinux = "Linux";
+					final String propertyOSX = "Mac OS X";
+					final String propertyWindows = "Windows";
 
-				/*
-				 * The identifier for the currently used operating system.
-				 */
-				final String propertyContent = System.getProperties()
-						.getProperty(os_propertyName);
-				
-				
-				/*
-				 * Compute TEMP directory path depending on the currently 
-				 * used operating system.
-				 */
-				final String temp;
-				if (propertyContent.equals(propertyLinux)) {
-					temp = "";
-					throw new UnsupportedOperationException("not impl. yet.");
-				} else if (propertyContent.equals(propertyWindows)) {
-					temp = "";
-					throw new UnsupportedOperationException("not impl. yet.");
-				} else if (propertyContent.equals(propertyOSX)) {
-					temp = System.getenv().get("TMPDIR");
-				} else {
-					temp = "";
-					throw new UnsupportedOperationException("not impl. yet.");
-				}
-				
-				
-				/*
-				 * Create sub-TEMP directory
-				 */
-				final String tempDirPaint = temp + "/paint/";
-				final String ret0, command0 = "mkdir " + tempDirPaint;
-				if (!new File(tempDirPaint).exists()) {
+					/*
+					 * The identifier for the currently used operating system.
+					 */
+					final String propertyContent = System.getProperties()
+							.getProperty(os_propertyName);
+					
+					
+					/*
+					 * Compute TEMP directory path depending on the currently 
+					 * used operating system.
+					 */
+					iw.appendText("Checking operating system:");
+					final String temp;
+					if (propertyContent.equals(propertyLinux)) {
+						temp = "";
+						iw.appendText("\tLinux");
+						throw new UnsupportedOperationException("not impl. yet.");
+					} else if (propertyContent.equals(propertyWindows)) {
+						temp = "";
+						iw.appendText("\tWindows");
+						throw new UnsupportedOperationException("not impl. yet.");
+					} else if (propertyContent.equals(propertyOSX)) {
+						temp = System.getenv().get("TMPDIR");
+						iw.appendText("\tOS X");
+					} else {
+						temp = "";
+						iw.appendText("\t Not found!");
+						throw new UnsupportedOperationException("not impl. yet.");
+					}
 
-					ret0 = Util.executeCommandLinux(command0);
-				} else  {
-					ret0 = "The file already exists: " + tempDirPaint + "." ;
+					
+					/*
+					 * Create sub-TEMP directory
+					 */
+					final String tempDirPaint = temp + "paint/";
+					final String ret0_a, command0 = "mkdir " + tempDirPaint;
+					if (new File(tempDirPaint).exists()) {
+
+						
+						ret0_a = "The file already exists: " + tempDirPaint + "." ;
+						iw.appendText("\t" + ret0_a);
+						
+						
+						// remove file
+						iw.appendText("Remove old temp file.");
+						final String ret0_b, command0_b = "rm -r -f " + tempDirPaint ;
+						ret0_b = Util.executeCommandLinux(command0_b);
+
+						iw.appendText("\t" + ret0_b);
+						
+					} 
+
+					iw.appendText("Create sub-TEMP directory");
+					final String ret0 = Util.executeCommandLinux(command0);
+					iw.appendText("\t" + ret0);
+					
+
+					/*
+					 * Clone project into TEMP directory
+					 */
+					iw.appendText("Clone Project into TEMP directory.");
+					final String command1 = "git clone "
+							+ "https://github.com/juliusHuelsmann/paint.git "
+							+ tempDirPaint;
+					String ret1 = Util.executeCommandLinux(command1);
+					iw.appendText("\t" + ret1);
+
+					/*
+					 * Start jar file which copies itself into the program directory.
+					 */
+					iw.appendText("Launching new project file");
+					final String command2 = "java -jar "
+							+ tempDirPaint + "PaintNotes/paint.jar";
+					String ret2 = Util.executeCommandLinux(command2);
+					iw.appendText("\t" + ret2);
+					
+					System.exit(1);
+	//
+//					
+//					/*
+//					 * Check for version number
+//					 */
+//					final String command1 = "git clone "
+//							+ "https://github.com/juliusHuelsmann/paint.git "
+//							+ tempDirPaint;
+//					String ret2 = Util.executeCommandLinux(command1);
+//					model.settings.State.getLogger().severe("Executed"
+//							+ "\nC1:\t" + command0 + "\n\t" + ret0_a 
+//							+ "\nC2:\t" + command1 + "\n\t" + ret1
+//							+ "\nC3:\t" + command2 + "\n\t" + ret2);
+					
 				}
-				
-				
-				/*
-				 * Clone project into TEMP directory
-				 */
-				final String command1 = "git clone "
-						+ "https://github.com/juliusHuelsmann/paint.git "
-						+ tempDirPaint;
-				String ret2 = Util.executeCommandLinux(command1);
-				
-//
-//				
-//				/*
-//				 * Check for version number
-//				 */
-//				final String command1 = "git clone "
-//						+ "https://github.com/juliusHuelsmann/paint.git "
-//						+ tempDirPaint;
-//				String ret2 = Util.executeCommandLinux(command1);
-				model.settings.State.getLogger().info("Executed"
-						+ "\nC1:\t" + command0 + "\n\t" + ret0 
-						+ "\nC2:\t"   + command1 + "\n\t" + ret2);
 				
 			}
 		}.start();

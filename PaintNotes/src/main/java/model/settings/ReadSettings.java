@@ -26,7 +26,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.net.URLDecoder;
 
 import javax.swing.JFileChooser;
@@ -34,6 +36,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import start.Start;
 import model.util.Util;
 
 /**
@@ -329,16 +332,40 @@ public final class ReadSettings {
 			}
 		}
 		
+		
+		
+		
 		if (System.getProperty("os.name").equals("Mac OS X")) {
 
 			installOSX();
 		}
+	
+		
+		
+		
+		
+		
+
+		/*
+		 * Call update procedure.
+		 */
+		
+		
+		boolean updateOnStart = true;
+		if (updateOnStart) {
+			update();
+		}
+
+		
+		
+		
 		return wsLocation;
+
 	}
 	
-	public static void main(String[] _args) {
-		installOSX();
-	}
+//	public static void main(String[] _args) {
+//		installOSX();
+//	}
 	
 	
 	private static void installOSX() {
@@ -369,11 +396,12 @@ public final class ReadSettings {
 			// create necessary directories
 			File p = new File(filePath);
 			p.mkdirs();
+			
 
 			
-			//TODO: this is just a debug paraemter
-			boolean overwrite = false;
-			if (overwrite) {
+			//TODO: this is just a debug parameter
+			boolean installed = new File(filePath + fileName).exists();
+			if (!installed) {
 
 				// Create info.plist
 				fw = new FileWriter(filePath + fileName);
@@ -440,21 +468,24 @@ public final class ReadSettings {
 			String ret1 = Util.executeCommandLinux(command1);
 			
 			
-			final String command2 = 
-					"/System/Library/Frameworks/CoreServices.framework/Versions/"
-					+ "A/Frameworks/LaunchServices.framework/Versions/A/Support/"
-					+ "lsregister -f /Applications/" + app_name + "/";
-			String ret2 = Util.executeCommandLinux(command2);
-			
-			
-			final String command3 = "killall Finder";
-			String ret3 = Util.executeCommandLinux(command3);
+			if (!installed) {
 
-			String s = "Operation log:\n";
-			System.out.println(s);
-			System.out.println(ret + "\n" + ret1 +"\n" + ret2 +"\n" + ret3);
-			
-			
+				final String command2 = 
+						"/System/Library/Frameworks/CoreServices.framework/Versions/"
+						+ "A/Frameworks/LaunchServices.framework/Versions/A/Support/"
+						+ "lsregister -f /Applications/" + app_name + "/";
+				String ret2 = Util.executeCommandLinux(command2);
+				
+				
+				final String command3 = "killall Finder";
+				String ret3 = Util.executeCommandLinux(command3);
+
+				String s = "Operation log:\n";
+				System.out.println(s);
+				System.out.println(ret + "\n" + ret1 +"\n" + ret2 +"\n" + ret3);
+				
+
+			}			
 			
 			
 		} catch (IOException e) {
@@ -465,9 +496,118 @@ public final class ReadSettings {
 	
 
 	
+	/**
+	 * Update the entire program.
+	 */
+	public static void update() {
+		
+		
+		new Thread() {
+			
+			public void run() {
+		        try {
+					 // Create a URL for the desired page
+			        URL url = new URL("http://juliushuelsmann.github.io/paint/currentRelease.html");       
+
+			        // Read all the text returned by the server
+			        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+			        String version = in.readLine();
+					in.close();
+					
+					System.out.println(version);
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+		        System.exit(1);
+				
+				
+				
+				
+				/*
+				 * Property name for getting operating system identifier.
+				 */
+				final String os_propertyName = "os.name";
+				
+				/*
+				 * Different property content values for deciding which
+				 * operating system is used.
+				 */
+				final String propertyLinux = "Linux";
+				final String propertyOSX = "Mac OS X";
+				final String propertyWindows = "Windows";
+
+				/*
+				 * The identifier for the currently used operating system.
+				 */
+				final String propertyContent = System.getProperties()
+						.getProperty(os_propertyName);
+				
+				
+				/*
+				 * Compute TEMP directory path depending on the currently 
+				 * used operating system.
+				 */
+				final String temp;
+				if (propertyContent.equals(propertyLinux)) {
+					temp = "";
+					throw new UnsupportedOperationException("not impl. yet.");
+				} else if (propertyContent.equals(propertyWindows)) {
+					temp = "";
+					throw new UnsupportedOperationException("not impl. yet.");
+				} else if (propertyContent.equals(propertyOSX)) {
+					temp = System.getenv().get("TMPDIR");
+				} else {
+					temp = "";
+					throw new UnsupportedOperationException("not impl. yet.");
+				}
+				
+				
+				/*
+				 * Create sub-TEMP directory
+				 */
+				final String tempDirPaint = temp + "/paint/";
+				final String ret0, command0 = "mkdir " + tempDirPaint;
+				if (!new File(tempDirPaint).exists()) {
+
+					ret0 = Util.executeCommandLinux(command0);
+				} else  {
+					ret0 = "The file already exists: " + tempDirPaint + "." ;
+				}
+				
+				
+				/*
+				 * Clone project into TEMP directory
+				 */
+				final String command1 = "git clone "
+						+ "https://github.com/juliusHuelsmann/paint.git "
+						+ tempDirPaint;
+				String ret2 = Util.executeCommandLinux(command1);
+				
+//
+//				
+//				/*
+//				 * Check for version number
+//				 */
+//				final String command1 = "git clone "
+//						+ "https://github.com/juliusHuelsmann/paint.git "
+//						+ tempDirPaint;
+//				String ret2 = Util.executeCommandLinux(command1);
+				model.settings.State.getLogger().info("Executed"
+						+ "\nC1:\t" + command0 + "\n\t" + ret0 
+						+ "\nC2:\t"   + command1 + "\n\t" + ret2);
+				
+			}
+		}.start();
+	}
 	
-	public void updateOSX() {
-		throw new UnsupportedOperationException("not impl. yet.");
+	
+	public static void updateOSX() {
+
+		final String tempDirectory = "";
+		
+		
+		//		
 	}
 	
 	private static void printInformation() {

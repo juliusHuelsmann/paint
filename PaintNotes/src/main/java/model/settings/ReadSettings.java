@@ -28,18 +28,27 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import start.Start;
 import view.View;
 import view.util.InformationWindow;
 import model.util.Util;
+import model.util.paint.Utils;
 
 /**
  * reads the settings from the settings directory while program
@@ -366,9 +375,6 @@ public final class ReadSettings {
 	 */
 	private static void installOSX() {
 		
-		// /usr/share/applications
-		// /usr/bin/paint
-		
 		try {
 
 			final String name = "paint";
@@ -492,66 +498,80 @@ public final class ReadSettings {
 	}
 	
 	
+	
+	
 
 	/**
 	 * Set up paint as program in OSX.
 	 */
 	private static void installLinux() {
+
 		
 		
+		
+		/*
+		 * setting up "open with" links for paint.
+		 * Therefore request SUDO rights.
+		 */
 		try {
 
-			final String name = "paint";
-			final String app_name = "Paint";
+			final String userHome = System.getProperty("user.home");
+			final String localDest = userHome + "/paint.desktop";
+			final String finalDest = "/usr/share/applications/paint.desktop";
+			Util.exportResource("/res/files/paint.desktop", localDest);
+			
+			String passwd = "";
+
 			/*
-			 * STEP 1:	Create files and folders for the info.plist
+			 * Check whether the execution was successfully (and the password
+			 * was correct) or the file already exists
 			 */
-			final String filePath = "/usr/share/" + app_name;
-			final String fileName = "Info.plist";
-			final String fileContent = ""
-					+ "<dict>\n"
-					+ "    <key>CFBundleTypeExtensions</key>\n"
-					+ "    <array>\n"
-					+ "        <string>jpeg</string>\n"
-					+ "        <string>png</string>\n"
-					+ "        <string>gif</string>\n"
-					+ "        <string>pic</string>\n"
-					+ "    </array>\n"
-					+ "</dict>";
-			
+			while (!new File(finalDest).exists()) {
 
-			FileWriter fw;
-			// create necessary directories
-			File p = new File(filePath);
-			p.mkdirs();
-			
-
-			
-			//TODO: this is just a debug parameter
-			boolean installed = new File(filePath + fileName).exists();
-			if (!installed) {
-
-				// Create info.plist
-				fw = new FileWriter(filePath + fileName);
-				BufferedWriter bw = new BufferedWriter(fw);
-				bw.write(fileContent);
-				bw.flush();
-				bw.close();
-				fw.close();
+				/*
+				 * Request SUDO privileges.
+				 */
+				passwd 
+				= Util.requestSudoRights("mv " + localDest + " " + finalDest);
+				
+				if (passwd.equals("")) {
+					JOptionPane.showMessageDialog(null, 
+							"installation failed due to lack of privileges.");
+					return;
+				}
+				
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-
 			
+			/*
+			 * Copy jar file
+			 */
+
+			/////////////////////////Path for jar file.///////////////////
+			// /usr/lib/paint/paint.jar requests sudo rights.
+			// because of this, each time an update is done these rights 
+			// have to be requested. Thus chose another path:
+			// ~/.PaintUni/paint.jar
+			// (PROGRAM_LOCATION/paint.jar)
+			
+			
+
 			
 			/*
 			 * STEP 2:	Create (executable) file which is called if the 
 			 * 			application is run.
 			 */
-			final String app_folder_path = filePath + "MacOS/";
-			final String app_file_path = app_folder_path + name;
-			new File(app_folder_path).mkdirs();
-			String orig_jar_file = "";
-			orig_jar_file = URLDecoder.decode(
-					ClassLoader.getSystemClassLoader().getResource(".").getPath(), "UTF-8");
+			
+			final String dest_jar_file = PROGRAM_LOCATION + "paint.jar";
+			final String dest_exec = "/usr/bin/paint";
+			String orig_jar_file = URLDecoder.decode(
+					ClassLoader.getSystemClassLoader().getResource(".")
+					.getPath(), "UTF-8");
 			
 			// if Eclipse on-the-fly-compiling
 			final String eclipseSubstring = "target/classes/";
@@ -563,62 +583,83 @@ public final class ReadSettings {
 			}
 			orig_jar_file += "paint.jar";
 			
-			final String jar_file_path =  app_file_path + ".jar";
-			final String content = "#!/bin/bash\n"
-					+ "echo $1\n"
-					+ "echo $2\n"
-					+ "echo $3\n"
-					+ "java -jar " + jar_file_path + " $@$0$1";
-
-			// Create application file
-			FileWriter fw2 = new FileWriter(app_file_path);
-			BufferedWriter bw_2 = new BufferedWriter(fw2);
-			bw_2.write(content);
-			bw_2.flush();
-			bw_2.close();
-			fw2.close();
-
-
-			// Make the file executable
-
-			final String command0 = 
-					"chmod a+x " + app_file_path;
-			String ret = Util.executeCommandLinux(command0);
-			
-			
 
 			/*
 			 * Step 3:	Copy .jar file to the destination.
 			 */
 
 			final String command1 = 
-					"cp " + orig_jar_file + " " + jar_file_path;
+					"cp " + orig_jar_file + " " + dest_jar_file;
 			String ret1 = Util.executeCommandLinux(command1);
 			
 			
-			if (!installed) {
+			final String content = "#!/bin/bash \n"
+					+ "java -jar " + dest_jar_file + " $1";
+			
+			PrintWriter writer = new PrintWriter( userHome + "/paint", "UTF-8");
+			writer.println(content);
+			writer.close();
 
-				final String command2 = 
-						"/System/Library/Frameworks/CoreServices.framework/Versions/"
-						+ "A/Frameworks/LaunchServices.framework/Versions/A/Support/"
-						+ "lsregister -f /Applications/" + app_name + "/";
-				String ret2 = Util.executeCommandLinux(command2);
-				
-				
-				final String command3 = "killall Finder";
-				String ret3 = Util.executeCommandLinux(command3);
+			final String command = "mv " + userHome + "/paint " + dest_exec;
+			Util.execSudoCommand(command, passwd);
+			// if the password was not correct / no sudo rights
+			if (!new File(dest_exec).exists()) {
+				while (!new File(dest_exec).exists()) {
 
-				String s = "Operation log:\n";
-				System.out.println(s);
-				System.out.println(ret + "\n" + ret1 +"\n" + ret2 +"\n" + ret3);
-				
+					/*
+					 * Request SUDO privileges.
+					 */
+					passwd 
+					= Util.requestSudoRights(command);
+					
+					if (passwd.equals("")) {
+						JOptionPane.showMessageDialog(null, 
+								"installation failed due to lack of privileges.");
+						return;
+					}
+					
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+			
+			Util.execSudoCommand("chmod a+x " + dest_exec, passwd);
+			
 
-			}			
+
 			
 			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		
+		
 	}
 	
 	

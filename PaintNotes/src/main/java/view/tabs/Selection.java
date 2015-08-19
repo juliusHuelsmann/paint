@@ -61,7 +61,7 @@ public final class Selection extends Tab {
     /**
      * Buttons for the second and the first color.
      */
-    private Item1Button tb_color;
+    private Item1Button tb_color, tb_erase;
     
     /**
      * Color fetcher.
@@ -443,6 +443,31 @@ public final class Selection extends Tab {
 	private void initOthers(final int _x, final boolean _paint,
 			final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus) {
+		
+
+		
+		
+		if (_paint) {
+
+	        tb_erase = new Item1Button(null);
+	        tb_erase.setOpaque(true);
+		}
+		tb_erase.setSize(ViewSettings.getItemMenu1Width(), 
+                ViewSettings.getItemMenu1Height());
+		tb_erase.setLocation(_x + distance, distance);
+		if (_paint) {
+
+			tb_erase.setText("Delete");
+			tb_erase.setActivable(false);
+			tb_erase.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
+			tb_erase.setBorder(BorderFactory.createCompoundBorder(
+                    new LineBorder(Color.black),
+                    new LineBorder(Color.white)));
+            super.add(tb_erase);
+        }
+		
+		
+		
 		if (_paint) {
 
 	        tb = new Item1Button(null);
@@ -450,7 +475,7 @@ public final class Selection extends Tab {
 		}
         tb.setSize(ViewSettings.getItemMenu1Width(), 
                 ViewSettings.getItemMenu1Height());
-        tb.setLocation(_x + distance, distance);
+        tb.setLocation(tb_erase.getWidth() + tb_erase.getX() + distance, distance);
 		if (_paint) {
 
         tb.setText("Groesse aendern");

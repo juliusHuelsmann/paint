@@ -44,6 +44,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import org.apache.tools.ant.listener.AnsiColorLogger;
+
 import start.Start;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
@@ -248,6 +250,7 @@ public final class Util {
     	
     	
         Process p;
+        String answer = "", s;
         try {
         	
         	//execute command
@@ -256,7 +259,6 @@ public final class Util {
                 new InputStreamReader(p.getInputStream()));
             
             //fetch answer
-            String answer = "", s;
             while ((s = br.readLine()) != null) {
             	answer += s;
             }
@@ -266,7 +268,7 @@ public final class Util {
             if (p.exitValue() == 0) {
             	answer = EXECUTION_SUCCESS  + ": " + answer;
             } else {
-            	answer = EXECUTION_FAILED + ": " + answer;
+            	answer = EXECUTION_FAILED   + ": " + answer;
             }
             
             //destroy execution process and return the result
@@ -276,7 +278,7 @@ public final class Util {
         } catch (Exception e) {
         	
         	//print stack trace and return the failure message.
-        	e.printStackTrace();
+//        	e.printStackTrace();
         	return EXECUTION_FAILED;
         }
     }

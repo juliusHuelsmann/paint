@@ -23,18 +23,28 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 
+import javax.sound.midi.MidiDevice.Info;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import start.Start;
+import view.View;
+import view.util.InformationWindow;
 import model.util.Util;
+import model.settings.State;
 
 /**
  * reads the settings from the settings directory while program
@@ -329,16 +339,30 @@ public final class ReadSettings {
 			}
 		}
 		
+		
+		
+		
 		if (System.getProperty("os.name").equals("Mac OS X")) {
 
 			installOSX();
 		}
+	
+		
+		
+		
+		
+		
+
+		
+		
+		
 		return wsLocation;
+
 	}
 	
-	public static void main(String[] _args) {
-		installOSX();
-	}
+//	public static void main(String[] _args) {
+//		installOSX();
+//	}
 	
 	
 	private static void installOSX() {
@@ -369,11 +393,12 @@ public final class ReadSettings {
 			// create necessary directories
 			File p = new File(filePath);
 			p.mkdirs();
+			
 
 			
-			//TODO: this is just a debug paraemter
-			boolean overwrite = false;
-			if (overwrite) {
+			//TODO: this is just a debug parameter
+			boolean installed = new File(filePath + fileName).exists();
+			if (!installed) {
 
 				// Create info.plist
 				fw = new FileWriter(filePath + fileName);
@@ -440,21 +465,24 @@ public final class ReadSettings {
 			String ret1 = Util.executeCommandLinux(command1);
 			
 			
-			final String command2 = 
-					"/System/Library/Frameworks/CoreServices.framework/Versions/"
-					+ "A/Frameworks/LaunchServices.framework/Versions/A/Support/"
-					+ "lsregister -f /Applications/" + app_name + "/";
-			String ret2 = Util.executeCommandLinux(command2);
-			
-			
-			final String command3 = "killall Finder";
-			String ret3 = Util.executeCommandLinux(command3);
+			if (!installed) {
 
-			String s = "Operation log:\n";
-			System.out.println(s);
-			System.out.println(ret + "\n" + ret1 +"\n" + ret2 +"\n" + ret3);
-			
-			
+				final String command2 = 
+						"/System/Library/Frameworks/CoreServices.framework/Versions/"
+						+ "A/Frameworks/LaunchServices.framework/Versions/A/Support/"
+						+ "lsregister -f /Applications/" + app_name + "/";
+				String ret2 = Util.executeCommandLinux(command2);
+				
+				
+				final String command3 = "killall Finder";
+				String ret3 = Util.executeCommandLinux(command3);
+
+				String s = "Operation log:\n";
+				System.out.println(s);
+				System.out.println(ret + "\n" + ret1 +"\n" + ret2 +"\n" + ret3);
+				
+
+			}			
 			
 			
 		} catch (IOException e) {
@@ -463,12 +491,343 @@ public final class ReadSettings {
 	}
 	
 	
+	
+	private static boolean checkForUpdate(final View _view, final boolean _showNoUpdateMSG) {
+		try {
+			 // Create a URL for the desired page
+	        URL url = new URL("http://juliushuelsmann.github.io/paint/currentRelease");       
+
+	        // Read all the text returned by the server
+	        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+	        String version = in.readLine();
+			in.close();
+			
+			final String[] result = Version.getMilestonePercentageDone(version);
+			if (result == null) {
+				// error
+				return false;
+			}
+
+			final String MS = result[0];
+			final String perc = result[1];
+
+			try {
+				
+				// parse information to integer.
+				int new_milestone  = Integer.parseInt(MS);
+				int new_percentage = Integer.parseInt(perc);
+
+				int crrnt_milestone  = Integer.parseInt(Version.MILESTONE);
+				int crrnt_percentage = Integer.parseInt(
+						Version.PERCENTAGE_DONE);
+				
+				if (new_milestone > crrnt_milestone
+						|| (new_percentage > crrnt_percentage 
+								&& new_milestone == crrnt_milestone)) {
+					
+
+					int d = JOptionPane.showConfirmDialog(_view, 
+							"A new version of paint has been found:\n"
+							+ "Used Version:\t"
+							+ "" + crrnt_milestone + "."
+							+ "" + crrnt_percentage+ "\n" 
+							+ "New  Version:\t"
+							+ "" + new_milestone + "."
+							+ "" + new_percentage+ "\n\n" 
+							+ "Do you want to download it right now? \n"
+							+ "This operation will close paint and restart \n"
+							+ "the new version in about one minute.",
+							"Update",
+							JOptionPane.YES_NO_OPTION);
+					
+					return d == JOptionPane.YES_OPTION;
+				} else {
+
+					if (_showNoUpdateMSG) {
+
+						JOptionPane.showMessageDialog(_view, 
+								"No updates found.",
+								"Update", 
+								JOptionPane.INFORMATION_MESSAGE);
+						
+					}
+					
+					return false;
+				}
+				
+			} catch(NumberFormatException _nex) {
+				
+				//error
+				model.settings.State.getLogger()
+				.severe("Failed to update: version number currupted.");
+				return false;
+			}
+			
+			
+       } catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 
 	
-	
-	public void updateOSX() {
-		throw new UnsupportedOperationException("not impl. yet.");
+	/**
+	 * Update the entire program.
+	 */
+	public static void update(final View _view, final boolean _showNoUpdateMSG) {
+		
+		
+		new Thread() {
+			
+			public void run() {
+		        
+				final boolean newReleaseAccepted = checkForUpdate( _view, _showNoUpdateMSG);
+				
+				if (newReleaseAccepted) {
+
+					_view.dispose();
+					
+					/*
+					 * dispose current version of paint that is currently running.
+					 */
+					
+					InformationWindow iw = new InformationWindow("Update Process.");
+					
+					
+					/*
+					 * Property name for getting operating system identifier.
+					 */
+					final String os_propertyName = "os.name";
+					
+					/*
+					 * Different property content values for deciding which
+					 * operating system is used.
+					 */
+					final String propertyLinux = "Linux";
+					final String propertyOSX = "Mac OS X";
+					final String propertyWindows = "Windows";
+
+					/*
+					 * The identifier for the currently used operating system.
+					 */
+					final String propertyContent = System.getProperties()
+							.getProperty(os_propertyName);
+					
+					
+					/*
+					 * Compute TEMP directory path depending on the currently 
+					 * used operating system.
+					 */
+					iw.appendText("Checking operating system:");
+					final String temp;
+					if (propertyContent.equals(propertyLinux)) {
+						temp = "";
+						iw.appendText("\tLinux");
+						throw new UnsupportedOperationException("not impl. yet.");
+					} else if (propertyContent.equals(propertyWindows)) {
+						temp = "";
+						iw.appendText("\tWindows");
+						throw new UnsupportedOperationException("not impl. yet.");
+					} else if (propertyContent.equals(propertyOSX)) {
+						temp = System.getenv().get("TMPDIR");
+						iw.appendText("\tOS X");
+					} else {
+						temp = "";
+						iw.appendText("\t Not found!");
+						throw new UnsupportedOperationException("not impl. yet.");
+					}
+
+					
+					/*
+					 * Create sub-TEMP directory
+					 */
+					final String tempDirPaint = temp + "paint/";
+					final String ret0_a, command0 = "mkdir " + tempDirPaint;
+					if (new File(tempDirPaint).exists()) {
+
+						
+						ret0_a = "The file already exists: " + tempDirPaint + "." ;
+						iw.appendText("\t" + ret0_a);
+						
+						
+						// remove file
+						iw.appendText("Remove old temp file.");
+						final String ret0_b, command0_b = "rm -r -f " + tempDirPaint ;
+						ret0_b = Util.executeCommandLinux(command0_b);
+
+						iw.appendText("\t" + ret0_b);
+						
+					} 
+
+					iw.appendText("Create sub-TEMP directory");
+					final String ret0 = Util.executeCommandLinux(command0);
+					iw.appendText("\t" + ret0);
+
+					
+					/*
+					 * Check whether git is installted at the machine.
+					 */
+
+					iw.appendText("Clone Project into TEMP directory.");
+					iw.appendText("Check whether git is installed.");
+					final String command1 = "git version";
+					String ret1 = Util.executeCommandLinux(command1);
+					boolean installed = ret1.contains(Util.EXECUTION_SUCCESS);
+					
+					if (installed) {
+						
+						iw.appendText("\t Git installed." );
+
+						/*
+						 * Clone project into TEMP directory
+						 */
+						iw.appendText("Clone Project into TEMP directory.");
+						final String command1a = "git clone "
+								+ "https://github.com/juliusHuelsmann/paint.git "
+								+ tempDirPaint;
+						String ret1a = Util.executeCommandLinux(command1a);
+						iw.appendText("\t" + ret1a);
+
+						/*
+						 * Start jar file which copies itself into the program directory.
+						 */
+						iw.appendText("Launching new project file");
+						final String command2a = "java -jar "
+								+ tempDirPaint + "PaintNotes/paint.jar";
+						String ret2a = Util.executeCommandLinux(command2a);
+						iw.appendText("\t" + ret2a);
+
+					} else {
+
+						iw.appendText("\t Git not installed. Manual download." );
+						
+						/*
+						 * Download Program from repository URL
+						 */
+						final String repoURL = 
+								"https://github.com/juliusHuelsmann/paint/archive/master.zip" ;
+						final String zipPath = tempDirPaint + "master.zip";
+
+						
+						try {
+							iw.appendText("Download zip");
+							URL website = new URL(repoURL);
+							ReadableByteChannel rbc = Channels.newChannel(
+									website.openStream());
+							FileOutputStream fos;
+							fos = new FileOutputStream(zipPath);
+							fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);	
+							fos.close();
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+							iw.appendText("Failed download. exit.");
+							
+							try {
+								Thread.sleep(2000);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+							System.exit(1);
+						} catch (IOException e) {
+							e.printStackTrace();
+							iw.appendText("Failed download. exit.");
+							try {
+								Thread.sleep(2000);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+							System.exit(1);
+						}
+						
+						
+						
+						/*
+						 * Unzip the program
+						 */
+						iw.appendText("unzip");
+						/**
+						 * The command which is executed for unzipping the program.
+						 */
+				    	final String commandUnzip = "unzip " + zipPath + " -d " 
+				    			+ tempDirPaint;
+				    	
+				    	/**
+				    	 * The result of the command's execution in terminal.
+				    	 * If the response tells that the command has been executed
+				    	 * successfully, there is nothing to do. Otherwise 
+				    	 * perform rotation done by program and print a warning.
+				    	 */
+				    	final String resultUnzip = Util.executeCommandLinux(commandUnzip);
+						iw.appendText("\t " + resultUnzip);
+				    	if (resultUnzip.startsWith(Util.EXECUTION_SUCCESS)) {
+				    		
+				    		//print success information
+				    		model.settings.State.getLogger().info("Download and execution successfull");
+				    	} else if (resultUnzip.startsWith(Util.EXECUTION_FAILED)) {
+			//
+				    		model.settings.State.getLogger().severe("Download and execution failed" 
+				    				+ resultUnzip);
+				    		try {
+								Thread.sleep(2000);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+							System.exit(1);
+				    	}
+						
+			//
+				    	
+						/**
+						 * Command for removing zip download file.
+						 */
+						iw.appendText("Remove zip file");
+				    	final String commandMv = "rm " + zipPath;
+				    	final String resultClear = Util.executeCommandLinux(commandMv);
+						iw.appendText("\t " + resultClear);
+						
+
+						/*
+						 * Start jar file which copies itself into the program directory.
+						 */
+						iw.appendText("Launching new project file");
+						final String command2a = "java -jar "
+								+ tempDirPaint + "paint-master/PaintNotes/paint.jar";
+						String ret2a = Util.executeCommandLinux(command2a);
+						iw.appendText("\t" + ret2a);
+				    	
+					}
+
+					
+					
+					
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					System.exit(1);
+	//
+//					
+//					/*
+//					 * Check for version number
+//					 */
+//					final String command1 = "git clone "
+//							+ "https://github.com/juliusHuelsmann/paint.git "
+//							+ tempDirPaint;
+//					String ret2 = Util.executeCommandLinux(command1);
+//					model.settings.State.getLogger().severe("Executed"
+//							+ "\nC1:\t" + command0 + "\n\t" + ret0_a 
+//							+ "\nC2:\t" + command1 + "\n\t" + ret1
+//							+ "\nC3:\t" + command2 + "\n\t" + ret2);
+					
+				}
+				
+			}
+		}.start();
 	}
+	
+	
 	
 	private static void printInformation() {
 		

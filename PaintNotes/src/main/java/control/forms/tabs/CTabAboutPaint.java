@@ -31,6 +31,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 
 import model.settings.Constants;
+import model.settings.ReadSettings;
 import model.settings.State;
 import model.util.Util;
 import model.util.html.HtmlDoc;
@@ -95,7 +96,7 @@ public class CTabAboutPaint implements ActionListener {
 
 		if (_event.getSource().equals(
 				getAbout().getI1b_checkForUpdates().getActionCause())) {
-			checkForUpdates();
+			ReadSettings.update(cp.getView());
 		} else if (_event.getSource().equals(getAbout().getI1b_settings()
 				.getActionCause())) {
 			if (cp.getView().getTabs().getTabbedPaneOpenState() 
@@ -113,246 +114,202 @@ public class CTabAboutPaint implements ActionListener {
 
 	
 
-
-	/**
-	 * Method for checking for program updates.
-	 * @return whether there is a valid program update.
-	 */
-	private static boolean checkForUpdates() {
-
-		final int defaultLocationPathLenght = 3;
-
-		HtmlDoc document = new HtmlDoc(Constants.URL_UPDATE_PAGE);
-
-		document = new HtmlDoc("http://juliushuelsmann.github.io/paint/index.html");
-		try {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			String s = document.getHl().getText(0, 2);
-			System.out.println(s);
-		} catch (BadLocationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			Element[] el = document.getRootElements();;
-			for (int i = 0; i < el.length; i++) {
-				System.out.println(el[i].getName());
-			}
-			System.out.println(document.getRootElements()[1].getElementCount());
-			System.out.println(document.getRootElements()[1].getElement(0).getName());
-			System.out.println(document.getRootElements()[1].getElement(0).getElementCount());
-			return true;
-			
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			return false;
-		}	
-	}	
-	
-	public static void main(String[]args) {
-		checkForUpdates();
-	}
 	
 	/**
 	 * Method for checking for program updates.
 	 * @return whether there is a valid program update.
 	 */
-	public boolean performDownloadForUpdate() {
-
-		final int defaultLocationPathLenght = 3;
-		
-		URL website;
-		try {
-			
-			if (defaultTempLoadPath.length != defaultLocationPathLenght) {
-			
-				State.getLogger().severe(
-						"implementation error: wrong default temp load path");
-				return false;
-			}
-			
-			
-			String tempLoadPath = "";
-			/*
-			 * Check whether where the download is to be saved exists.
-			 * Otherwise create a folder in case the root folder exists.
-			 * If it does not, download the program temporarily in the location
-			 * the program is called.
-			 */
-			File f = new File(
-					System.getProperty("file.separator") 
-					+ defaultTempLoadPath[0]);
-			if (f.exists() && !f.isFile()) {
-				
-				tempLoadPath = 
-						System.getProperty("file.separator") 
-						+ defaultTempLoadPath[0] 
-						+ System.getProperty("file.separator") 
-						+ defaultTempLoadPath[1];
-				
-				File f2 = new File(tempLoadPath);
-				
-				if (f2.exists() && !f2.isFile()) {
-					
-					
-					tempLoadPath +=  
-							System.getProperty("file.separator") 
-							+ defaultTempLoadPath[2];
-					
-					
-					
-					//clear all stuff inserted in this file
-					
-					/**
-					 * The command which is executed in terminal for rotating 
-					 * the screen.
-					 */
-			    	final String commandUnzip = "rm -r " 
-					 + tempLoadPath.substring(0, tempLoadPath.length() 
-							 - defaultTempLoadPath[2].length()) + "*";
-			    	System.out.println(commandUnzip);
-
-			    	/**
-			    	 * The result of the command's execution in terminal.
-			    	 * If the response tells that the command has been executed
-			    	 * successfully, there is nothing to do.
-			    	 */
-			    	final String resultUnzip = Util.executeCommandLinux(
-			    			commandUnzip);
-			    	System.out.println(resultUnzip);
-			    	if (resultUnzip.startsWith(Util.EXECUTION_SUCCESS)) {
-			    		
-			    		//print success information
-			    		State.getLogger().info("remove successful");
-			    	} else if (resultUnzip.startsWith(Util.EXECUTION_FAILED)) {
-
-			    		State.getLogger().severe("remove failed" 
-			    				+ resultUnzip);
-			        }
-					
-				} else if (f2.exists()) {
-
-					tempLoadPath =  
-							System.getProperty("file.separator") 
-							+ defaultTempLoadPath[0] 
-							+ System.getProperty("file.separator") 
-							+ defaultTempLoadPath[2];
-				} else {
-					if (f2.mkdirs())  {
-
-						tempLoadPath +=  
-								System.getProperty("file.separator") 
-								+ defaultTempLoadPath[2];
-					} else {
-
-						tempLoadPath =  
-								System.getProperty("file.separator") 
-								+ defaultTempLoadPath[0] 
-								+ System.getProperty("file.separator") 
-								+ defaultTempLoadPath[2];
-					}
-				}
-				
-			} else {
-				tempLoadPath = defaultTempLoadPath[2];
-			}
-			
-			
-			/*
-			 * Download Program from repository URL
-			 */
-			website = new URL(repoURL);
-			ReadableByteChannel rbc = Channels.newChannel(
-					website.openStream());
-			FileOutputStream fos = new FileOutputStream(tempLoadPath);
-			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);	
-			fos.close();
-			
-			
-			/*
-			 * Unzip the program
-			 */
-			System.out.println("hier");
-	
-			/**
-			 * The command which is executed in terminal for rotating the
-			 * screen.
-			 */
-	    	final String commandUnzip = "unzip " + tempLoadPath + " -d " 
-			 + tempLoadPath.substring(0, tempLoadPath.length()
-					 - defaultTempLoadPath[2].length());
-
-	    	/**
-	    	 * The result of the command's execution in terminal.
-	    	 * If the response tells that the command has been executed
-	    	 * successfully, there is nothing to do. Otherwise 
-	    	 * perform rotation done by program and print a warning.
-	    	 */
-	    	final String resultUnzip = Util.executeCommandLinux(commandUnzip);
-	    	if (resultUnzip.startsWith(Util.EXECUTION_SUCCESS)) {
-	    		
-	    		//print success information
-	    		State.getLogger().info("Download and execution successfull");
-	    	} else if (resultUnzip.startsWith(Util.EXECUTION_FAILED)) {
-
-	    		State.getLogger().severe("Download and execution failed" 
-	    				+ resultUnzip);
-	    		return false;
-	        }
-			
-
-	    	
-			/**
-			 * The command which is executed in terminal for rotating the
-			 * screen.
-			 */
-	    	final String commandMv = "rm " + tempLoadPath;
-	    	System.out.println(commandMv);
-	    	/**
-	    	 * The result of the command's execution in terminal.
-	    	 * If the response tells that the command has been executed
-	    	 * successfully, there is nothing to do. Otherwise 
-	    	 * perform rotation done by program and print a warning.
-	    	 */
-	    	final String result = Util.executeCommandLinux(commandMv);
-	    	System.out.println(result);
-	    	if (result.startsWith(Util.EXECUTION_SUCCESS)) {
-
-	    		//print success information
-	    		State.getLogger().info("Entered successfully");
-	    	} else if (result.startsWith(Util.EXECUTION_FAILED)) {
-
-	    		State.getLogger().severe("Enter and remove failed " + result);
-	    		return false;
-	        }
-	    	
-	    	/*
-	    	 * Check the info file containing the version number
-	    	 */
-	    	return true;
-	    	
-			
-		} catch (MalformedURLException e1) {
-			
-			//if the URL can not be found
-			
-			e1.printStackTrace();
-			return false;
-		} catch (FileNotFoundException e1) {
-			
-			
-			e1.printStackTrace();
-			return false;
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			return false;
-		}	
-	}	
+//	public boolean performDownloadForUpdate() {
+//
+//		final int defaultLocationPathLenght = 3;
+//		
+//		URL website;
+//		try {
+//			
+//			if (defaultTempLoadPath.length != defaultLocationPathLenght) {
+//			
+//				State.getLogger().severe(
+//						"implementation error: wrong default temp load path");
+//				return false;
+//			}
+//			
+//			
+//			String tempLoadPath = "";
+//			/*
+//			 * Check whether where the download is to be saved exists.
+//			 * Otherwise create a folder in case the root folder exists.
+//			 * If it does not, download the program temporarily in the location
+//			 * the program is called.
+//			 */
+//			File f = new File(
+//					System.getProperty("file.separator") 
+//					+ defaultTempLoadPath[0]);
+//			if (f.exists() && !f.isFile()) {
+//				
+//				tempLoadPath = 
+//						System.getProperty("file.separator") 
+//						+ defaultTempLoadPath[0] 
+//						+ System.getProperty("file.separator") 
+//						+ defaultTempLoadPath[1];
+//				
+//				File f2 = new File(tempLoadPath);
+//				
+//				if (f2.exists() && !f2.isFile()) {
+//					
+//					
+//					tempLoadPath +=  
+//							System.getProperty("file.separator") 
+//							+ defaultTempLoadPath[2];
+//					
+//					
+//					
+//					//clear all stuff inserted in this file
+//					
+//					/**
+//					 * The command which is executed in terminal for rotating 
+//					 * the screen.
+//					 */
+//			    	final String commandUnzip = "rm -r " 
+//					 + tempLoadPath.substring(0, tempLoadPath.length() 
+//							 - defaultTempLoadPath[2].length()) + "*";
+//			    	System.out.println(commandUnzip);
+//
+//			    	/**
+//			    	 * The result of the command's execution in terminal.
+//			    	 * If the response tells that the command has been executed
+//			    	 * successfully, there is nothing to do.
+//			    	 */
+//			    	final String resultUnzip = Util.executeCommandLinux(
+//			    			commandUnzip);
+//			    	System.out.println(resultUnzip);
+//			    	if (resultUnzip.startsWith(Util.EXECUTION_SUCCESS)) {
+//			    		
+//			    		//print success information
+//			    		State.getLogger().info("remove successful");
+//			    	} else if (resultUnzip.startsWith(Util.EXECUTION_FAILED)) {
+//
+//			    		State.getLogger().severe("remove failed" 
+//			    				+ resultUnzip);
+//			        }
+//					
+//				} else if (f2.exists()) {
+//
+//					tempLoadPath =  
+//							System.getProperty("file.separator") 
+//							+ defaultTempLoadPath[0] 
+//							+ System.getProperty("file.separator") 
+//							+ defaultTempLoadPath[2];
+//				} else {
+//					if (f2.mkdirs())  {
+//
+//						tempLoadPath +=  
+//								System.getProperty("file.separator") 
+//								+ defaultTempLoadPath[2];
+//					} else {
+//
+//						tempLoadPath =  
+//								System.getProperty("file.separator") 
+//								+ defaultTempLoadPath[0] 
+//								+ System.getProperty("file.separator") 
+//								+ defaultTempLoadPath[2];
+//					}
+//				}
+//				
+//			} else {
+//				tempLoadPath = defaultTempLoadPath[2];
+//			}
+//			
+//			
+//			/*
+//			 * Download Program from repository URL
+//			 */
+//			website = new URL(repoURL);
+//			ReadableByteChannel rbc = Channels.newChannel(
+//					website.openStream());
+//			FileOutputStream fos = new FileOutputStream(tempLoadPath);
+//			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);	
+//			fos.close();
+//			
+//			
+//			/*
+//			 * Unzip the program
+//			 */
+//			System.out.println("hier");
+//	
+//			/**
+//			 * The command which is executed in terminal for rotating the
+//			 * screen.
+//			 */
+//	    	final String commandUnzip = "unzip " + tempLoadPath + " -d " 
+//			 + tempLoadPath.substring(0, tempLoadPath.length()
+//					 - defaultTempLoadPath[2].length());
+//
+//	    	/**
+//	    	 * The result of the command's execution in terminal.
+//	    	 * If the response tells that the command has been executed
+//	    	 * successfully, there is nothing to do. Otherwise 
+//	    	 * perform rotation done by program and print a warning.
+//	    	 */
+//	    	final String resultUnzip = Util.executeCommandLinux(commandUnzip);
+//	    	if (resultUnzip.startsWith(Util.EXECUTION_SUCCESS)) {
+//	    		
+//	    		//print success information
+//	    		State.getLogger().info("Download and execution successfull");
+//	    	} else if (resultUnzip.startsWith(Util.EXECUTION_FAILED)) {
+//
+//	    		State.getLogger().severe("Download and execution failed" 
+//	    				+ resultUnzip);
+//	    		return false;
+//	        }
+//			
+//
+//	    	
+//			/**
+//			 * The command which is executed in terminal for rotating the
+//			 * screen.
+//			 */
+//	    	final String commandMv = "rm " + tempLoadPath;
+//	    	System.out.println(commandMv);
+//	    	/**
+//	    	 * The result of the command's execution in terminal.
+//	    	 * If the response tells that the command has been executed
+//	    	 * successfully, there is nothing to do. Otherwise 
+//	    	 * perform rotation done by program and print a warning.
+//	    	 */
+//	    	final String result = Util.executeCommandLinux(commandMv);
+//	    	System.out.println(result);
+//	    	if (result.startsWith(Util.EXECUTION_SUCCESS)) {
+//
+//	    		//print success information
+//	    		State.getLogger().info("Entered successfully");
+//	    	} else if (result.startsWith(Util.EXECUTION_FAILED)) {
+//
+//	    		State.getLogger().severe("Enter and remove failed " + result);
+//	    		return false;
+//	        }
+//	    	
+//	    	/*
+//	    	 * Check the info file containing the version number
+//	    	 */
+//	    	return true;
+//	    	
+//			
+//		} catch (MalformedURLException e1) {
+//			
+//			//if the URL can not be found
+//			
+//			e1.printStackTrace();
+//			return false;
+//		} catch (FileNotFoundException e1) {
+//			
+//			
+//			e1.printStackTrace();
+//			return false;
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//			return false;
+//		}	
+//	}	
 	
 	
 	

@@ -53,24 +53,6 @@ import control.ControlPaint;
 public class CTabAboutPaint implements ActionListener {
 
 	
-	/**
-	 * The current version number.
-	 */
-	private final int currentVersion = -1;
-	
-	/**
-	 * The URL of the repository release for the next version.
-	 */
-	private final String repoURL = 
-			"https://github.com/juliusHuelsmann/paint/archive/release" 
-					+ (currentVersion + 1) + ".zip";
-	
-	/**
-	 * The default path for saving the download as .ZIP file. Saved as 
-	 * n-dimensional array; split into directory names and the file name.
-	 */
-	private final String [] defaultTempLoadPath = 
-		{"tmp", "Paint", "program.zip"};
 
 	/**
 	 * An instance of the root controller class.
@@ -112,7 +94,7 @@ public class CTabAboutPaint implements ActionListener {
 
 		if (_event.getSource().equals(
 				getAbout().getI1b_checkForUpdates().getActionCause())) {
-			ReadSettings.update(cp.getView());
+			ReadSettings.update(cp.getView(), true);
 		} else if (_event.getSource().equals(getAbout().getI1b_settings()
 				.getActionCause())) {
 			if (cp.getView().getTabs().getTabbedPaneOpenState() 
@@ -130,6 +112,7 @@ public class CTabAboutPaint implements ActionListener {
 
 	
 
+	
 	
 	/**
 	 * Method for checking for program updates.

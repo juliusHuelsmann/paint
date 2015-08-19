@@ -589,8 +589,9 @@ public final class ReadSettings {
 			 */
 
 			final String command1 = 
-					"cp " + orig_jar_file + " " + dest_jar_file;
+					"cp " + "\"" + orig_jar_file + "\"" +  " " + "\"" +  dest_jar_file + "\"";
 			String ret1 = Util.executeCommandLinux(command1);
+			System.out.println(command1 + "" + ret1);
 			
 			
 			final String content = "#!/bin/bash \n"

@@ -794,9 +794,8 @@ public final class ReadSettings {
 					iw.appendText("Checking operating system:");
 					final String temp;
 					if (propertyContent.equals(propertyLinux)) {
-						temp = "";
+						temp = System.getenv().get("TMPDIR");
 						iw.appendText("\tLinux");
-						throw new UnsupportedOperationException("not impl. yet.");
 					} else if (propertyContent.equals(propertyWindows)) {
 						temp = "";
 						iw.appendText("\tWindows");

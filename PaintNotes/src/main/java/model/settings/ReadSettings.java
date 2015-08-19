@@ -366,6 +366,8 @@ public final class ReadSettings {
 	 */
 	private static void installOSX() {
 		
+		// /usr/share/applications
+		// /usr/bin/paint
 		
 		try {
 

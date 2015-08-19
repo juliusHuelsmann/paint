@@ -31,9 +31,13 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -43,6 +47,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 import org.apache.tools.ant.listener.AnsiColorLogger;
 
@@ -235,9 +241,102 @@ public final class Util {
                 return null;
         	}
 		}
-    	
-
 	}  
+    
+    
+    /**
+     * Export resource from out of jar file.
+     * 
+     *      
+     * @param _path_jar		the path of the file inside the jar file.
+     * @param _path_out		the export destination
+     * @return 				the path of the exported file.
+     * @throws Exception	
+     */
+    public static void exportResource(
+    		final String _path_jar, 
+    		final String _path_out)  {
+    	
+        try {
+
+        	//initialize streams and values
+            
+            final InputStream stream = Start.class.getResourceAsStream(
+            		_path_jar);
+            if(stream == null) {
+                State.getLogger().warning("Error (1) exporting \""
+                		+ _path_jar 
+                		+ "\".");
+            }
+
+            int readBytes;
+            byte[] buffer = new byte[4096];
+            final OutputStream resStreamOut = new FileOutputStream(_path_out);
+            while ((readBytes = stream.read(buffer)) > 0) {
+                resStreamOut.write(buffer, 0, readBytes);
+            }
+            stream.close();
+            resStreamOut.close();
+        } catch (Exception ex) {
+
+            State.getLogger().warning("Error (2) exporting \""
+            		+ _path_jar 
+            		+ "\":\n" + ex);
+        } 
+
+    }
+    
+    
+    
+    
+    public static String requestSudoRights(final String _sudoCmd) {
+    	JPasswordField passwordField = new JPasswordField(10);
+        passwordField.setEchoChar('*');
+        passwordField.requestFocus();
+        int d = JOptionPane.showConfirmDialog(
+                null,
+                new Object[] {
+                		"The os demands sudo privileges for the installation "
+                		+ "of paint.\n"
+                		+ "Either relaunch the program by calling \n",
+                		new JTextField("sudo java -jar paint.jar"),
+                		 "or enter the sudoer's password.", 
+                		passwordField,
+
+    			},
+    			"Request sudo privileges",
+                JOptionPane.OK_OPTION);
+        
+        if (d == JOptionPane.YES_OPTION) {
+
+        	char[] passwd = passwordField.getPassword();
+
+        	String pw = "";
+        	for (int i = 0; i < passwd.length; i++) {
+    			pw += passwd[i];
+    		}
+        	execSudoCommand(_sudoCmd, pw);
+    		return pw;
+        } else {
+        	return "";
+        }
+    }
+    
+    
+
+    public static void execSudoCommand(final String _sudoCmd, 
+    		final String _pw) {
+
+
+        	String[] cmd = {"/bin/bash","-c", "echo " + _pw + "| sudo -S "
+            		+ _sudoCmd};
+    		try {
+    			Runtime.getRuntime().exec(cmd);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    		
+    }
     
     
     /**

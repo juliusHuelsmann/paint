@@ -33,6 +33,7 @@ import javax.swing.text.Element;
 import model.settings.Constants;
 import model.settings.ReadSettings;
 import model.settings.State;
+import model.settings.Version;
 import model.util.Util;
 import model.util.html.HtmlDoc;
 import view.tabs.AboutPaint;
@@ -85,6 +86,21 @@ public class CTabAboutPaint implements ActionListener {
 	 */
 	public CTabAboutPaint(final ControlPaint _cp) {
 		this.cp = _cp;
+		
+	}
+	
+	
+	/**
+	 * Demand information.
+	 */
+	public static String demandInformation() {
+		return
+				"Paint Program maintained by "
+				+ "Julius Hülsmann.\n\n"
+				+ Version.generateVersionNumber()
+				+ ", released " + Version.RELEASE_DATE 
+				+ ", state " + Version.STATUS + "\n"
+				+ "Visit https://github.com/juliusHuelsmann/paint";
 	}
 	
 

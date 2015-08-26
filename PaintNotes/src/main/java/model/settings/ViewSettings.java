@@ -892,5 +892,20 @@ public final class ViewSettings {
 		return 100;
 	}
 
+
+
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static Rectangle getView_bounds_jbtn_minimize() {
+    	return new Rectangle(
+                getView_bounds_jbtn_fullscreen().x 
+                - getView_bounds_jbtn_fullscreen().width, 
+                getView_bounds_jbtn_fullscreen().y, 
+                TWENTY_FIFE * 2 + FIVE, 2  * TEN);
+    }
+
     
 }

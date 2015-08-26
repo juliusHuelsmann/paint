@@ -65,6 +65,13 @@ public final class Constants {
 	        VIEW_JBTN_FULLSCREEN_PRESSED_PATH 
 	        = "/res/img/icon/fullscreen/pressed.png", 
 	        
+	        VIEW_JBTN_MINIMIZE_NORMAL_PATH 
+	        = "/res/img/icon/minimize/normal.png", 
+	        VIEW_JBTN_MINIMIZE_MOUSEOVER_PATH 
+	        = "/res/img/icon/minimize/mouseover.png", 
+	        VIEW_JBTN_MINIMIZE_PRESSED_PATH 
+	        = "/res/img/icon/minimize/pressed.png", 
+	        
 	        VIEW_QA_JBTN_RESIZE = "/res/img/centerResize.png",
 	        
 	        VIEW_CURSOR_PATH = "/res/img/cursor.png",

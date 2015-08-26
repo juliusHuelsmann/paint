@@ -182,17 +182,6 @@ MouseListener, Serializable {
 
 	
 	/**
-	 * Check whether the currently used operating system does not support a 
-	 * resize possiblity.
-	 * 
-	 * @return whether there is no resize functionality delivered by the OS.
-	 */
-	private static boolean noResizeFunctionality() {
-		return System.getProperty("os.name") != "Mac OS X";
-	}
-
-
-	/**
 	 * {@inheritDoc}
 	 */
     public final void mouseReleased(final MouseEvent _event) {
@@ -474,5 +463,17 @@ MouseListener, Serializable {
 		}
 		
 		return cOperation;
+	}
+
+
+	/**
+	 * Check whether the currently used operating system does not support a 
+	 * resize possiblity.
+	 * 
+	 * @return whether there is no resize functionality delivered by the OS.
+	 */
+	private static boolean noResizeFunctionality() {
+		return System.getProperty("os.name").equals("Mac OS X") 
+				|| System.getProperty("os.name").equals("Windows");
 	}
 }

@@ -68,7 +68,7 @@ public final class Version {
 	/**
 	 * Percentage of milestone done.
 	 */
-	public static final String PERCENTAGE_DONE = "22";
+	public static final String PERCENTAGE_DONE = "23";
 	
 	
 	/**

@@ -22,6 +22,7 @@ package control.util;
 
 //import declarations
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -47,7 +48,6 @@ MouseListener, Serializable {
 	/**
 	 * The activityListener.
 	 */
-	@SuppressWarnings("unused")
 	private ActivityListener al;
 	
 	
@@ -71,16 +71,36 @@ MouseListener, Serializable {
 	/**
 	 * the position from where the drag started.
 	 */
-	@SuppressWarnings("unused")
 	private Point pnt_startPosition, pnt_diff2, pnt_origSize, pnt_origLoc;
 
+	/**
+	 * Bytes indicating the current operation.
+	 */
+	private final byte 
+	operationTop = 0, 
+	operationTopRight = 1, 
+	operationRight = 2, 
+	operationRightBottom = 3, 
+	operationBottom = 4, 
+	operationBottomLeft = 5, 
+	operationLeft = 6, 
+	operationLeftTop = 7,
+	operationNo = -1;
+
+	/**
+	 * The current operation indicated by the above-declared IDs.
+	 */
+	private byte currentOperation = operationNo;
+
 	
-	
+	/**
+	 * Previous image identifier.
+	 */
+	private byte prevImage = operationNo;
 	
 	/**
 	 * Marge.
 	 */
-	@SuppressWarnings("unused")
 	private final int marge = 10;
 	
 	/**
@@ -108,7 +128,18 @@ MouseListener, Serializable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void mouseMoved(final MouseEvent _event) { }
+	public final void mouseMoved(final MouseEvent _event) { 
+
+		if (!ViewSettings.isFullscreen()) {
+
+			byte cOperation = getOperation(_event);
+			if (cOperation != prevImage) {
+
+				setCursor(cOperation);
+				prevImage = cOperation;
+			}
+		}
+	}
 
 
 	
@@ -125,6 +156,12 @@ MouseListener, Serializable {
 
 		if (!ViewSettings.isFullscreen()) {
 
+			
+			// if the operating system does not maintain a resize functionality
+			if (noResizeFunctionality()) {
+
+				currentOperation = getOperation(_event);
+			}
 			
 			
 			//save start position and set pressed
@@ -143,6 +180,18 @@ MouseListener, Serializable {
 		}
 	}
 
+	
+	/**
+	 * Check whether the currently used operating system does not support a 
+	 * resize possiblity.
+	 * 
+	 * @return whether there is no resize functionality delivered by the OS.
+	 */
+	private static boolean noResizeFunctionality() {
+		return System.getProperty("os.name") != "Mac OS X";
+	}
+
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -153,7 +202,11 @@ MouseListener, Serializable {
 			//set not pressed and repaint component if mouse is released
 			pressed = false;
 			cmp_moved.repaint();
-			
+
+			if (al != null && currentOperation != operationNo) {
+				
+				al.activityOccurred(_event);
+			}
 
 		}
 	}
@@ -168,16 +221,258 @@ MouseListener, Serializable {
 
 			//if pressed change location
 			if (pressed) {
-					
-					int newX = _event.getXOnScreen() - pnt_startPosition.x;
-					int newY = _event.getYOnScreen() - pnt_startPosition.y;
-					cmp_moved.setLocation(newX, newY);
+				
+
+					switch (currentOperation) {
+
+					case operationNo:
+
+						
+						int newX = _event.getXOnScreen() - pnt_startPosition.x;
+						int newY = _event.getYOnScreen() - pnt_startPosition.y;
+						cmp_moved.setLocation(newX, newY);
+						
+						
+						break;
+					case operationTop:
+
+						cmp_moved.setLocation(
+								(int) pnt_origLoc.getX(),
+								(int) (pnt_origLoc.getY() 
+										- pnt_diff2.getY() + _event.getYOnScreen())
+								);
+						
+						cmp_moved.setSize(
+								(int) pnt_origSize.getX(),
+								(int) (pnt_origSize.getY() 
+										+ pnt_diff2.getY() - _event.getYOnScreen())
+								);
+						break;
+					case operationBottom:
+
+						
+						cmp_moved.setSize(
+								(int) pnt_origSize.getX(),
+								(int) (pnt_origSize.getY() - pnt_diff2.getY() 
+										+ _event.getYOnScreen())
+								);
+						break;
+					case operationRight:
+						
+
+						
+						cmp_moved.setSize(
+								(int) (pnt_origSize.getX() - pnt_diff2.getX() 
+										+ _event.getXOnScreen()),
+								(int) pnt_origSize.getY()
+								);
+						break;
+					case operationLeft:
+						cmp_moved.setLocation(
+								(int) (pnt_origLoc.getX() - pnt_diff2.getX() 
+										+ _event.getXOnScreen()),
+								(int) pnt_origLoc.getY()
+								);
+						
+						cmp_moved.setSize(
+								(int) (pnt_origSize.getX() + pnt_diff2.getX()
+										- _event.getXOnScreen()),
+								(int) pnt_origSize.getY()
+								);
+						break;
+
+					case operationTopRight:
+
+						
+						cmp_moved.setLocation(
+								(int) pnt_origLoc.getX(),
+								(int) (pnt_origLoc.getY() 
+										- pnt_diff2.getY() + _event.getYOnScreen())
+								);
+						
+						cmp_moved.setSize(
+								(int) (pnt_origSize.getX() - pnt_diff2.getX() 
+										+ _event.getXOnScreen()),
+								(int) (pnt_origSize.getY() 
+										+ pnt_diff2.getY() - _event.getYOnScreen())
+								);
+						break;
+					case operationRightBottom:
+
+
+						
+						cmp_moved.setSize(
+								(int) (pnt_origSize.getX() - pnt_diff2.getX() 
+										+ _event.getXOnScreen()),
+										(int) (pnt_origSize.getY() - pnt_diff2.getY() 
+												+ _event.getYOnScreen())
+								);
+
+						
+						break;
+					case operationBottomLeft:
+
+
+						cmp_moved.setLocation(
+								(int) (pnt_origLoc.getX() - pnt_diff2.getX() 
+										+ _event.getXOnScreen()),
+								(int) pnt_origLoc.getY()
+								);
+						
+						cmp_moved.setSize(
+								(int) (pnt_origSize.getX() + pnt_diff2.getX()
+										- _event.getXOnScreen()),
+								(int) (pnt_origSize.getY() - pnt_diff2.getY() 
+										+ _event.getYOnScreen())
+								);
+
+						
+						break;
+					case operationLeftTop:
+
+						cmp_moved.setLocation(
+								(int) (pnt_origLoc.getX() - pnt_diff2.getX() 
+										+ _event.getXOnScreen()),
+								(int) (pnt_origLoc.getY() 
+										- pnt_diff2.getY() + _event.getYOnScreen())
+								);
+						
+						cmp_moved.setSize(
+								(int) (pnt_origSize.getX() + pnt_diff2.getX()
+										- _event.getXOnScreen()),
+								(int) (pnt_origSize.getY() 
+										+ pnt_diff2.getY() - _event.getYOnScreen())
+								);
+
+						break;
+					default: break;
+					}
+				}
+
+				//repaint
+				cmp_moved.repaint();
 			}
 
 			//repaint
 			cmp_moved.repaint();
-		}
-
 	}
+
 	
+	
+	
+	
+	
+	
+	
+
+	/**
+	 * set the cursor.
+	 * @param 	_operation the operation
+	 */
+	private void setCursor(final byte _operation) {
+
+		switch(_operation) {
+		case operationTop:
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.N_RESIZE_CURSOR));
+			break;
+		case operationTopRight:
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.NE_RESIZE_CURSOR));
+			break;
+		case operationRight:
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.E_RESIZE_CURSOR));
+			break;
+		case operationRightBottom:
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.SE_RESIZE_CURSOR));
+			break;
+		case operationBottom:
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.S_RESIZE_CURSOR));
+			break;
+		case operationBottomLeft:
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.SW_RESIZE_CURSOR));
+			break;
+		case operationLeft:
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.W_RESIZE_CURSOR));
+			break;
+		case operationLeftTop:
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.NW_RESIZE_CURSOR));
+			break;
+		default:
+		    cmp_moved.setCursor(Cursor.getPredefinedCursor(
+		    		Cursor.DEFAULT_CURSOR));
+			break;
+		}
+	}
+
+	
+	/**
+	 * 
+	 * @param _event the mouseEvent
+	 * @return the operation
+	 */
+	private byte getOperation(final MouseEvent _event) {
+
+		//reset current operation
+		byte cOperation = operationNo;
+		
+		//if the click is in the right area
+		if (
+				
+				//Left corner
+				_event.getX() <= marge) {
+			cOperation = operationLeft;
+		} else if (
+				
+				//right corner
+				_event.getX() >= cmp_moved.getWidth() - marge) {
+			cOperation = operationRight;
+		} else {
+			
+			// either not resizing or N or S.
+			cOperation = operationNo;
+		}
+	
+		// N, NE, NW
+		if (_event.getY() <= marge) {
+			
+			switch(cOperation) {
+			case operationNo:
+				cOperation = operationTop;
+				break;
+			case operationLeft:
+				cOperation = operationLeftTop;
+				break;
+			case operationRight:
+				cOperation = operationTopRight;
+				break;
+			default:
+				cOperation = operationTop;
+				break;
+			}
+		} else if (_event.getY() >= cmp_moved.getHeight() - marge) {
+			switch(cOperation) {
+			case operationNo:
+				cOperation = operationBottom;
+				break;
+			case operationLeft:
+				cOperation = operationBottomLeft;
+				break;
+			case operationRight:
+				cOperation = operationRightBottom;
+				break;
+			default:
+				cOperation = operationBottom;
+				break;
+			}
+		}
+		
+		return cOperation;
+	}
 }

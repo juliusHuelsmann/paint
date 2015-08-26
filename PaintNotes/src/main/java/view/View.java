@@ -63,7 +63,7 @@ import control.util.WindowMover;
 	/**
 	 * close button.
 	 */
-	private MButton jbtn_exit, jbtn_fullscreen;
+	private MButton jbtn_exit, jbtn_fullscreen, jbtn_minimize;
 
     /**
      * The maximum counter for design. Is used for fade in and out
@@ -185,6 +185,16 @@ import control.util.WindowMover;
         jbtn_fullscreen.setBorder(null);
         jbtn_fullscreen.setFocusable(false);
         super.add(jbtn_fullscreen);
+        
+        //exit
+        jbtn_minimize = new MButton();
+        jbtn_minimize.setContentAreaFilled(false);
+        jbtn_minimize.setOpaque(false);
+        jbtn_minimize.addMouseListener(cv);
+        jbtn_minimize.addActionListener(cv);
+        jbtn_minimize.setBorder(null);
+        jbtn_minimize.setFocusable(false);
+        super.add(jbtn_minimize);
 
 //        loading = new Loading();
 //        super.add(loading);
@@ -620,7 +630,12 @@ import control.util.WindowMover;
         jbtn_fullscreen.setIcon(new ImageIcon(Utils.resizeImage(
         		jbtn_exit.getWidth(), jbtn_exit.getHeight(), 
         		Constants.VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
-	        	
+        
+        jbtn_minimize.setBounds(
+        		ViewSettings.getView_bounds_jbtn_minimize());
+        jbtn_minimize.setIcon(new ImageIcon(Utils.resizeImage(
+        		jbtn_fullscreen.getWidth(), jbtn_fullscreen.getHeight(), 
+        		Constants.VIEW_JBTN_MINIMIZE_NORMAL_PATH)));
 	        	
 	        //the page flip is done directly inside the set size method
 //	        Remove
@@ -682,6 +697,13 @@ import control.util.WindowMover;
      */
     public MButton getJbtn_fullscreen() {
         return jbtn_fullscreen;
+    }
+
+    /**
+     * @return the jbtn_fullscreen
+     */
+    public MButton getJbtn_minimize() {
+        return jbtn_minimize;
     }
 
 	/**

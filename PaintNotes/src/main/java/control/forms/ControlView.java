@@ -25,6 +25,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import control.forms.tabs.CTabTools;
@@ -166,6 +167,13 @@ ActivityListener, MouseListener {
 							view.getJbtn_exit().getHeight(),
 							Constants
 							.VIEW_JBTN_FULLSCREEN_MOUSEOVER_PATH)));
+		} else if (_event.getSource().equals(
+				view.getJbtn_minimize())) {
+			view.getJbtn_minimize().setIcon(new ImageIcon(Utils
+					.resizeImage(view.getJbtn_exit().getWidth(), 
+							view.getJbtn_exit().getHeight(),
+							Constants
+							.VIEW_JBTN_MINIMIZE_MOUSEOVER_PATH)));
 		}
 	}
 
@@ -189,7 +197,14 @@ ActivityListener, MouseListener {
 								view.getJbtn_exit().getHeight(),
 								Constants
 								.VIEW_JBTN_FULLSCREEN_NORMAL_PATH)));
-			}		
+			} else if (_event.getSource().equals(
+					view.getJbtn_minimize())) {
+				view.getJbtn_minimize().setIcon(new ImageIcon(Utils
+						.resizeImage(view.getJbtn_exit().getWidth(), 
+								view.getJbtn_exit().getHeight(),
+								Constants
+								.VIEW_JBTN_MINIMIZE_NORMAL_PATH)));
+			}	
 	}
 
 
@@ -217,7 +232,14 @@ ActivityListener, MouseListener {
 					view.getJbtn_exit().getWidth(), 
 					view.getJbtn_exit().getHeight(),
 					Constants.VIEW_JBTN_FULLSCREEN_PRESSED_PATH)));
-		}
+		} else if (_event.getSource().equals(
+				view.getJbtn_minimize())) {
+			view.getJbtn_minimize().setIcon(new ImageIcon(Utils
+					.resizeImage(view.getJbtn_exit().getWidth(), 
+							view.getJbtn_exit().getHeight(),
+							Constants
+							.VIEW_JBTN_MINIMIZE_PRESSED_PATH)));
+		}	
 	}
 
 
@@ -229,8 +251,7 @@ ActivityListener, MouseListener {
 
 		// source: exit button at the top of the window
 		if (_event.getSource().equals(view.getJbtn_exit())) {
-		
-		
+
 			//reset icon of the exit button
 			view.getJbtn_exit().setIcon(new ImageIcon(Utils.resizeImage(
 					view.getJbtn_exit().getWidth(), 
@@ -239,7 +260,7 @@ ActivityListener, MouseListener {
 		 
 		
 		} else if (_event.getSource().equals(view.getJbtn_fullscreen())) {
-		
+
 			//change the boolean which contains whether the current session
 			//is a fullscreen or a normal window session
 			ViewSettings.setFULLSCREEN(!ViewSettings.isFullscreen());
@@ -255,7 +276,7 @@ ActivityListener, MouseListener {
 						ViewSettings.getSizeViewFullscreen());
 			view.setFullscreen();
 		 } else {
-		
+
 			//if the new window state is not fullscreen, apply custom size
 			//of JFrame.
 			ViewSettings.setSize_jframe(
@@ -264,7 +285,10 @@ ActivityListener, MouseListener {
 		 }
 			sizeChanged();
 		
-		} 
+		} else if (_event.getSource().equals(view.getJbtn_minimize())) {
+
+			 view.setState(JFrame.ICONIFIED);
+		 } 
 	}
 
 	

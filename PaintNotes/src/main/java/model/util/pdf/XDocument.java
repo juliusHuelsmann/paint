@@ -22,22 +22,17 @@ package model.util.pdf;
 
 //import declarations
 import java.awt.Dimension;
-import java.awt.HeadlessException;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import model.objects.Project;
 import model.objects.painting.po.PaintObjectPdf;
 import model.settings.Constants;
-
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.ResourceCache;
 import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
@@ -46,7 +41,6 @@ import org.apache.pdfbox.pdmodel.interactive.digitalsignature.PDSignature;
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.SignatureInterface;
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.SignatureOptions;
 import org.apache.pdfbox.pdmodel.interactive.form.PDSignatureField;
-import org.apache.pdfbox.tools.PDFToImage;
 /**
  * 
  * @author Julius Huelsmann
@@ -117,7 +111,7 @@ public class XDocument {
 		for (int i = 0; i < pdfPages.length; i++) {
 			
 			//TODO: hier muss das Bild als bfuferedimage exportiert werden.
-			PDPage page = document.getPage(i);
+//			PDPage page = document.getPage(i);
 //			pdfPages[i] = _project.getPicture(i).createPPF(); 
 
 			if (document != null) {

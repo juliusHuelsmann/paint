@@ -19,12 +19,9 @@ package view.tabs.settings;
  */
 
 
-import java.awt.Color;
 import java.awt.Font;
-
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-
 import view.util.mega.MLabel;
 
 @SuppressWarnings("serial")

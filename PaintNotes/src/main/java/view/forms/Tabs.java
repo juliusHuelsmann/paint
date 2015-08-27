@@ -22,12 +22,8 @@ package view.forms;
 
 //import declarations
 import java.awt.Toolkit;
-
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 import view.tabs.Project;
-
 import model.settings.ViewSettings;
 import control.ControlPaint;
 import control.util.CItem;

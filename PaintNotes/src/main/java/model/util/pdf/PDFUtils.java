@@ -254,8 +254,7 @@ public final class PDFUtils {
                 boolean success = true;
                 endPage = Math.min(endPage, document.getNumberOfPages());
                 PDFRenderer renderer = new PDFRenderer(document);
-                for (int i = startPage - 1; i < endPage; i++)
-                {
+                for (int i = startPage - 1; i < endPage; ) {
                     BufferedImage image = renderer.renderImageWithDPI(i, dpi, imageType);
                     String fileName = outputPrefix + (i + 1) + "." + imageFormat;
                     success &= ImageIOUtil.writeImage(image, fileName, dpi);

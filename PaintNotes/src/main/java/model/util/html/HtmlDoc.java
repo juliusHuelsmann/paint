@@ -29,7 +29,6 @@ import javax.swing.text.Element;
 import javax.swing.text.ElementIterator;
 import javax.swing.text.html.HTMLDocument;
 
-import model.settings.Constants;
 
 
 /**

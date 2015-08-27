@@ -21,10 +21,7 @@ package model.settings;
 
 
 import java.awt.Dimension;
-
 import javax.imageio.ImageIO;
-import javax.swing.text.html.HTMLDocument;
-
 import model.util.Util;
 
 

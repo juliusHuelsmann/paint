@@ -23,30 +23,18 @@ package model.objects;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.awt.image.CropImageFilter;
-import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.graphics.PDXObject;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-
 import model.objects.history.HistorySession;
 import model.objects.painting.Picture;
-import model.objects.painting.po.PaintObjectImage;
-import model.objects.painting.po.PaintObjectPdf;
 import model.settings.State;
 import model.util.DPoint;
-import model.util.Util;
-import model.util.adt.list.SecureList;
 import model.util.paint.Utils;
-import model.util.pdf.PDFUtils;
 import model.util.pdf.XDocument;
 
 /**
@@ -169,7 +157,7 @@ public class Project {
 	 * @return the size of the image
 	 */
 	public DPoint load(final String _wsLoc) {
-		BufferedImage bi_normalSize;
+//		BufferedImage bi_normalSize;
 			
 			if (_wsLoc.endsWith(".pdf")) {
 

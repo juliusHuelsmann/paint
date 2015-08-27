@@ -708,24 +708,35 @@ implements MouseMotionListener, MouseListener, KeyListener, MouseWheelListener {
     }
 
 
+    
+    
+    /**
+     * Listener for mouse wheel. 
+     * @param _event the MouseWheelEvent.
+     */
 	public void mouseWheelMoved(final MouseWheelEvent _event) {
 
-    	int de = _event.getUnitsToScroll();
-        int absde = Math.abs(de);
+		// if view is visible scroll. otherwise there is no scrollPane,
+		// thus ignore scrolling.
+		if (view.isDisplayed()) {
 
-      //up button and vertical scroll
-      if (de > 0 && !_event.isShiftDown()
-              && view.isVerticalScroll()) {
-          addYLocation(absde);
-      } else if (de < 0 && !_event.isShiftDown()
-              && view.isVerticalScroll()) {
-          removeYLocation(absde);
-      } else if (de > 0 && _event.isShiftDown()
-              && !view.isVerticalScroll()) {
-              addXLocation(absde);   
-      } else if (de < 0 && _event.isShiftDown()
-              && !view.isVerticalScroll()) {
-          removeXLocation(absde);
-      }
+	    	int de = _event.getUnitsToScroll();
+	        int absde = Math.abs(de);
+
+	      //up button and vertical scroll
+	      if (de > 0 && !_event.isShiftDown()
+	              && view.isVerticalScroll()) {
+	          addYLocation(absde);
+	      } else if (de < 0 && !_event.isShiftDown()
+	              && view.isVerticalScroll()) {
+	          removeYLocation(absde);
+	      } else if (de > 0 && _event.isShiftDown()
+	              && !view.isVerticalScroll()) {
+	              addXLocation(absde);   
+	      } else if (de < 0 && _event.isShiftDown()
+	              && !view.isVerticalScroll()) {
+	          removeXLocation(absde);
+	      }
+		}
     }
 }

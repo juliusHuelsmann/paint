@@ -10,8 +10,7 @@ It is possible to execute the program right away by either double-clicking at th
 ```
 java -jar paint.jar
 ```
-
-For being able to adapt the code and to contribute to the project, the working environment has to be set up:
+having a java runtime environment installed. For being able to adapt the code and to contribute to the project, the working environment has to be set up:
 
 
 

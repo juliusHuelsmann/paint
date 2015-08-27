@@ -27,14 +27,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
-
 import javax.swing.ImageIcon;
-
-import org.apache.pdfbox.pdmodel.PDDocument;
-
 import control.forms.CLoading;
 import control.forms.CNew;
 import control.forms.CPaintStatus;
@@ -2629,9 +2623,12 @@ MenuListener {
 	private void performPreprint(final int _x, final int _y) {
 
 		//call remove preprint which removes a preprint if it exists
-		
 		removePreprint();
-        
+
+		if (project.getCurrentPicture().getPen_current() == null) {
+			return;
+		}
+
         /*
          * Perform preprinting and update values.
          */

@@ -34,9 +34,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-
-import java.util.Random;
-
 //import java.swing components
 import javax.swing.BorderFactory;
 

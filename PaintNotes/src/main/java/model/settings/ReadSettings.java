@@ -765,8 +765,15 @@ public final class ReadSettings {
 					 * dispose current version of paint that is currently running.
 					 */
 					
-					InformationWindow iw = new InformationWindow("Update Process.");
-					
+					InformationWindow iw = new InformationWindow("Update current version of Paint");
+					iw.setText("\t\t\tPaint update\n"
+							+ "This window will give information on the\n"
+							+ " update process of the paint - program.\n\n"
+							+ "The Program is directly pulled from the github\n"
+							+ "update page which can be found at\n"
+							+ "https://github.com/juliusHuelsmann/paint.git.\n"
+							+ "\nThe update-performance depends on your\n"
+							+ " internet connection.\n\n");
 					
 					/*
 					 * Property name for getting operating system identifier.
@@ -792,21 +799,22 @@ public final class ReadSettings {
 					 * Compute TEMP directory path depending on the currently 
 					 * used operating system.
 					 */
-					iw.appendText("Checking operating system:");
+					iw.appendNewOperation("Checking operating system:");
+					iw.startWaiting(true);
 					final String temp;
 					if (propertyContent.equals(propertyLinux)) {
 						temp = System.getenv().get("TMPDIR");
-						iw.appendText("\tLinux");
+						iw.appendNewResult("Linux");
 					} else if (propertyContent.equals(propertyWindows)) {
 						temp = "";
-						iw.appendText("\tWindows");
+						iw.appendNewResult("Windows");
 						throw new UnsupportedOperationException("not impl. yet.");
 					} else if (propertyContent.equals(propertyOSX)) {
 						temp = System.getenv().get("TMPDIR");
-						iw.appendText("\tOS X");
+						iw.appendNewResult("OS X");
 					} else {
 						temp = "";
-						iw.appendText("\t Not found!");
+						iw.appendNewResult("Not found!");
 						throw new UnsupportedOperationException("not impl. yet.");
 					}
 
@@ -816,63 +824,65 @@ public final class ReadSettings {
 					 */
 					final String tempDirPaint = temp + "paint/";
 					final String ret0_a, command0 = "mkdir " + tempDirPaint;
+					iw.appendNewOperation("Check whether sub-temp dir exists");
 					if (new File(tempDirPaint).exists()) {
 
 						
-						ret0_a = "The file already exists: " + tempDirPaint + "." ;
-						iw.appendText("\t" + ret0_a);
+						ret0_a = "The file already exists: ";
+//						+ tempDirPaint + "." ;
+						iw.appendNewResult(ret0_a);
 						
 						
 						// remove file
-						iw.appendText("Remove old temp file.");
+						iw.appendNewOperation("Remove old temp file.");
 						final String ret0_b, command0_b = "rm -r -f " + tempDirPaint ;
 						ret0_b = Util.executeCommandLinux(command0_b);
 
-						iw.appendText("\t" + ret0_b);
+						iw.appendNewResult(ret0_b);
 						
 					} 
 
-					iw.appendText("Create sub-TEMP directory");
+					iw.appendNewOperation("Create sub-TEMP directory");
 					final String ret0 = Util.executeCommandLinux(command0);
-					iw.appendText("\t" + ret0);
+					iw.appendNewResult(ret0);
 
 					
 					/*
 					 * Check whether git is installted at the machine.
 					 */
 
-					iw.appendText("Clone Project into TEMP directory.");
-					iw.appendText("Check whether git is installed.");
+					iw.appendNewOperation("Clone Project into TEMP directory.");
+					iw.appendNewOperation("Check whether git is installed.");
 					final String command1 = "git version";
 					String ret1 = Util.executeCommandLinux(command1);
 					boolean installed = ret1.contains(Util.EXECUTION_SUCCESS);
 					
 					if (installed) {
 						
-						iw.appendText("\t Git installed." );
+						iw.appendNewResult("Git installed." );
 
 						/*
 						 * Clone project into TEMP directory
 						 */
-						iw.appendText("Clone Project into TEMP directory.");
+						iw.appendNewOperation("Clone Project into TEMP directory.");
 						final String command1a = "git clone "
 								+ "https://github.com/juliusHuelsmann/paint.git "
 								+ tempDirPaint;
 						String ret1a = Util.executeCommandLinux(command1a);
-						iw.appendText("\t" + ret1a);
+						iw.appendNewResult(ret1a);
 
 						/*
 						 * Start jar file which copies itself into the program directory.
 						 */
-						iw.appendText("Launching new project file");
+						iw.appendNewOperation("Launching new project file");
 						final String command2a = "java -jar "
 								+ tempDirPaint + "PaintNotes/paint.jar";
 						String ret2a = Util.executeCommandLinux(command2a);
-						iw.appendText("\t" + ret2a);
+						iw.appendNewResult( ret2a);
 
 					} else {
 
-						iw.appendText("\t Git not installed. Manual download." );
+						iw.appendNewOperation("\t Git not installed. Manual download." );
 						
 						/*
 						 * Download Program from repository URL
@@ -883,7 +893,7 @@ public final class ReadSettings {
 
 						
 						try {
-							iw.appendText("Download zip");
+							iw.appendNewResult("Download zip");
 							URL website = new URL(repoURL);
 							ReadableByteChannel rbc = Channels.newChannel(
 									website.openStream());
@@ -893,7 +903,7 @@ public final class ReadSettings {
 							fos.close();
 						} catch (FileNotFoundException e) {
 							e.printStackTrace();
-							iw.appendText("Failed download. exit.");
+							iw.appendNewResult("Failed download. exit.");
 							
 							try {
 								Thread.sleep(2000);
@@ -903,7 +913,7 @@ public final class ReadSettings {
 							System.exit(1);
 						} catch (IOException e) {
 							e.printStackTrace();
-							iw.appendText("Failed download. exit.");
+							iw.appendNewResult("Failed download. exit.");
 							try {
 								Thread.sleep(2000);
 							} catch (InterruptedException e1) {
@@ -917,7 +927,7 @@ public final class ReadSettings {
 						/*
 						 * Unzip the program
 						 */
-						iw.appendText("unzip");
+						iw.appendNewOperation("unzip");
 						/**
 						 * The command which is executed for unzipping the program.
 						 */
@@ -931,7 +941,7 @@ public final class ReadSettings {
 				    	 * perform rotation done by program and print a warning.
 				    	 */
 				    	final String resultUnzip = Util.executeCommandLinux(commandUnzip);
-						iw.appendText("\t " + resultUnzip);
+						iw.appendNewResult(resultUnzip);
 				    	if (resultUnzip.startsWith(Util.EXECUTION_SUCCESS)) {
 				    		
 				    		//print success information
@@ -953,25 +963,25 @@ public final class ReadSettings {
 						/**
 						 * Command for removing zip download file.
 						 */
-						iw.appendText("Remove zip file");
+						iw.appendNewOperation("Remove zip file");
 				    	final String commandMv = "rm " + zipPath;
 				    	final String resultClear = Util.executeCommandLinux(commandMv);
-						iw.appendText("\t " + resultClear);
+						iw.appendNewResult(resultClear);
 						
 
 						/*
 						 * Start jar file which copies itself into the program directory.
 						 */
-						iw.appendText("Launching new project file");
+						iw.appendNewOperation("Launching new project file");
 						final String command2a = "java -jar "
 								+ tempDirPaint + "paint-master/PaintNotes/paint.jar";
 						String ret2a = Util.executeCommandLinux(command2a);
-						iw.appendText("\t" + ret2a);
+						iw.appendNewResult(ret2a);
 				    	
 					}
 
 					
-					
+					iw.stopWaiting();
 					
 					try {
 						Thread.sleep(2000);

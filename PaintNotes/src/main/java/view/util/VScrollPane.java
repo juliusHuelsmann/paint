@@ -456,10 +456,24 @@ public class VScrollPane extends MPanel {
         }
     }
     
+    
+    
+    
 	/*
 	 * getter and setter methods
 	 */
 
+    
+    /**
+     * Return whether the components are visible.
+     * @return whether the components are visible.
+     */
+    public final boolean isDisplayed() {
+    	return jbtn_center.isVisible();
+    }
+    
+    
+    
     /**
      * @return the icon_size
      */

@@ -288,11 +288,11 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
         				0, 0,
         				bi_image.getWidth(), bi_image.getHeight());
         	} else {
-        		r = _r;
+        		r = new DRect(_r.getRectangle());
         	}
         	
             if (r == null || r.getHeight() <= 0 || r.getWidth() <= 0) {
-            	return _bi_final;
+            	return _bi_notFinal;
             }
             
             // Because the this seems to be due to rounding (while method call).
@@ -312,7 +312,7 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 
             // these values contain the location of the selection inside 
             // the currently displayed section of the page (location
-            // at the JLabel).Therefore it is in [Show-Size].
+            // at the JLabel). Therefore it is in [Show-Size].
             // 
             // The shift is saved as a negative integer (points from the
             // upper left corner to the origin of the page (somewhere
@@ -334,7 +334,17 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
                 locY_at_label = Math.max(0, locY_at_label);
             }
 
-
+            
+            // This will contain the location of the painted stuff
+            // inside the PaintObjectImage's BufferedImage.
+            // Thus, after the initialization of this value, the
+            // following section of the BufferedImage is painted:
+            //
+            //		bi_image.getRGB(	locX_at_bi_poi, 
+            //							locY_at_bi_poi, 
+            //							...)
+            //
+            // In other, more complicated words:
             // This is the location of the visible scope's location
             // from the origin of the PaintObjectImage's BufferedImage:
             //
@@ -356,35 +366,64 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             //			(2) locationOfImage (Model-Size),
             // thus comparable. The computed size should be [Model-Size].
             //
-            // TODO: This seems to be a little bit bull-shitty.
-            // if locXPOI is less than zero, the paint object is displayed
-            // somewhere outside
             int locX_at_bi_poi = (int) (r.getIX() - pnt_locationOfImage.x);
             int locY_at_bi_poi = (int) (r.getIY() - pnt_locationOfImage.y);
             if (locX_at_bi_poi < 0) {
             	
+            	// adapt the repaint width to the image.
             	r.setWidth(r.getWidth() + locX_at_bi_poi);
+            	
+            	// Adapt the location of the repainting scope at the 
+            	// JLabel.
                 locX_at_label -= locX_at_bi_poi * cZoomFactorWidth;
 
+                // Adapt the location at the POI's BufferedImage.
             	locX_at_bi_poi = 0;
             }
             
             
             if (locY_at_bi_poi < 0) {
-            	System.out.println("leg 0");
-            	r.setWidth(r.getHeight() + locY_at_bi_poi);
+
+            	// adapt the repaint width to the image.
+            	r.setHeight(r.getHeight() + locY_at_bi_poi);
+
+            	// Adapt the location of the repainting scope at the 
+            	// JLabel.
                 locY_at_label -= locY_at_bi_poi * cZoomFactorHeight;
+
+                // Adapt the location at the POI's BufferedImage.
             	locY_at_bi_poi = 0;
             }
-            
+
             
 
+            /*
+             * Step B3	Adapt the repaint size to the visible scope.
+             * 			if locX_at_bi_poi != 0 it is > 0. Then, the 
+             * 			POI starts in front of the visible scope:
+             * 
+             * ____________________________________________________
+             * |                           visible scope start    |
+             * |              |                     x             |
+             * |          image start                             |
+             * |__________________________________________________|
+             * | GRAPHIC: Displays situation if width is changed. |
+             * |__________________________________________________|
+             * 
+             * 			Thus, if the painted scope does not start at
+             * 			the image's origin, it is necessary to change
+             * 			the size of the scope that is to be extracted
+             * 			from image.
+             */
 
             // adapt the width of the selection to the size of the 
             // paint-object-image.
-            // 
             r.setWidth(Math.min(
+            		
+            		// if image is greater than scope.
             		bi_image.getWidth() - locX_at_bi_poi,
+            		
+            		// if scope grater than image.
             		r.getIWidth()));
             r.setHeight(Math.min(
             		bi_image.getHeight() - locY_at_bi_poi,
@@ -396,16 +435,11 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             	return _bi_notFinal;
             }
             
+
             /* 
              * now a sub-image containing the newly painted stuff is created
              * and filled with the image values
              */
-            
-            // create sub-BufferedImage for the selection and fill it with
-            // the pixel from image
-            BufferedImage bi_section = new BufferedImage(
-            		r.getIWidth(), r.getIHeight(), 
-            		BufferedImage.TYPE_INT_ARGB);
             
             // for filling the BufferedImage, the RGB-alpha values are written 
             // into an integer array
@@ -435,6 +469,32 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             			+ "\nheight:\t" + bi_image.getHeight());
             	return bi_image.getContent();
             }
+
+
+            /*
+             * Compute the new size of the image in [Display-Size].
+             */
+            int newWidth = (int) Math.max(0, 
+            		(r.getWidth()) * cZoomFactorWidth);
+            int newHeight = (int) Math.max(0, 
+            		(r.getHeight()) * cZoomFactorHeight);
+
+            newWidth = Math.min(
+            		newWidth,
+            		_bi_notFinal.getWidth() - locX_at_label);
+            newHeight = Math.min(
+            		newHeight,
+            		_bi_notFinal.getHeight() - locY_at_label);
+            
+            if (newWidth <= 0 || newHeight <= 0) {
+            	return _bi_notFinal;
+            }
+            
+            // create sub-BufferedImage for the selection and fill it with
+            // the pixel from image
+            BufferedImage bi_section = new BufferedImage(
+            		r.getIWidth(), r.getIHeight(), 
+            		BufferedImage.TYPE_INT_ARGB);
             
             // write the RGB-Alpha values from the integer array to the 
             // section-BufferedImage.
@@ -445,17 +505,28 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             		rgbA, 0, r.getIWidth());
             
 
-            final Graphics g = _bi_notFinal.getGraphics();
-            int newWidth = (int) Math.max(1, (r.getWidth()) * cZoomFactorWidth);
-            int newHeight = (int) Math.max(1, (r.getHeight()) * cZoomFactorHeight);
-            g.drawImage(Utils.resizeImageQuick(
-                    newWidth, 
-                    newHeight , 
-                    bi_section),
-                    (int) (locX_at_label), 
-                    (int) (locY_at_label), 
-                    newWidth,
-                    newHeight, null);
+            bi_section = Utils.resizeImageQuick(
+                    newWidth, newHeight, 
+                    bi_section);
+            rgbA = new int[newWidth * newHeight];
+            rgbA = bi_section.getRGB(
+            		0, 0, 
+            		newWidth, newHeight,
+            		rgbA, 0, newWidth);
+            _bi_notFinal.setRGB(
+            		locX_at_label, locY_at_label, 
+            		newWidth, newHeight,
+            		rgbA, 0, newWidth);
+            
+//            final Graphics g = _bi_notFinal.getGraphics();
+//            g.drawImage(Utils.resizeImageQuick(
+//                    newWidth, 
+//                    newHeight , 
+//                    bi_section),
+//                    (int) (locX_at_label), 
+//                    (int) (locY_at_label), 
+//                    newWidth,
+//                    newHeight, null);
 
             return _bi_notFinal;
         }

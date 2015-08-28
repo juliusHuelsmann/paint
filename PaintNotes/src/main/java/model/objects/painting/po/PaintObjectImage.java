@@ -152,34 +152,138 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
      * {@inheritDoc}
      */
     @Override public final BufferedImage paint(
-    		final BufferedImage _bi, 
-    		final boolean _final, 
-    		final BufferedImage _g, 
+    		
+    		// The BufferedImage which is exported in case of
+    		// _final.
+    		// if _final, paint to this BufferedImage.
+    		// The BufferedImage's scale is [Model-Size]
+    		final BufferedImage _bi_final, 
+    		
+    		// if _final, the image is painted without adapting to a 
+    		// show size. Final images are exported as image files
+    		// to the hard drive.
+    		// 
+    		// if not _final, the scroll size and the scale have 
+    		// to be considered.
+    		final boolean _final,
+
+    		// The BufferedImage of which the displayed section of the 
+    		// picture consists.
+    		// if not _final, paint to this BufferedImage.
+    		// The BufferedImage's scale is [Show-Size]
+    		final BufferedImage _bi_notFinal, 
+    		
+    		// The _x and _y indicate the location of the JLabel which displays
+    		// the BufferedImage. Therefore they are none-positive and scaled
+    		// in [Show-Size]
     		final int _x, final int _y, 
+    		
+    		// The Rectangle which gives the current location of the section
+    		// which is to be repainted. This section is a part of the 
+    		// currently displayed Picture. It is scaled [Model-Size]
     		final DRect _r) {
 
     	
-    	// _x, _y ^			scroll location (dependent of the current zoom size)
-    	// -> transform to image size
-
-        //if final only paint at BufferedImage
-        //if not final only paint at graphics
+    	/*
+    	 * Check whether to paint 
+    	 * 
+    	 * 	A)	_final 	(which is much easier because one does not have to take
+    	 * 				into account the shifting and the difference between 
+    	 * 				image- and show- size scaling.
+    	 * 
+    	 *  B) !_final	which is linked to more computations.
+    	 */
         if (_final) {
-            //print image to BufferedImage.
+           
+        	
+        	/*
+        	 * print image to the export-buffered-Image. The location of the
+        	 * current PaintObject is given by pnt_locationOfImage.
+        	 * The shift values _x and _y should be always equal to 
+        	 * zero. 
+        	 */
+        	
             int[] rgb = null;
-            _bi.setRGB(pnt_locationOfImage.x + _x, pnt_locationOfImage.y + _y, 
-                    bi_image.getWidth(), bi_image.getHeight(), 
-                    bi_image.getRGB(0, 0, bi_image.getWidth(), 
-                            bi_image.getHeight(), rgb, 0, bi_image.getWidth()),
+            _bi_final.setRGB(
+            		
+            		
+            		/*
+            		 * Step A.1)	Adapt the location to the size of the 
+            		 * 				picture. It may be possible that the
+            		 *				current PaintObject is shifted to 
+            		 *				somewhere outside the displayable area
+            		 *				(pnt_locationOfImage < 0 or 
+            		 *				pnt_locationOfImage + PO_size > image 
+            		 */
+            		
+            		
+            		
+            		//TODO: if the image exists the displayed size, this
+            		// will lead to an error.
+            		
+            		// location of the current PaintObject
+            		pnt_locationOfImage.x, // + _x
+            		pnt_locationOfImage.y, // + _y
+            		
+            		// size of the current PaintObject
+                    bi_image.getWidth(), 
+                    bi_image.getHeight(), 
+                    
+                    // get the RGB - values out of the current image
+                    bi_image.getRGB(
+                    		
+                    		//start location in image (0, 0)
+                    		0, 0, 
+                    		
+                    		// width and height
+                    		bi_image.getWidth(), 
+                            bi_image.getHeight(), 
+                            
+                            // RGB array 
+                            rgb, 
+                            
+                            // export settings which equal those 
+                            // for import
+                            0, bi_image.getWidth()),
+                            
+                            // import settings.
                             0, bi_image.getWidth());
         } else {
 
 
+        	/*
+        	 * Step B1: 	First of all, the values in different size have to be 
+        	 * 			adjusted. It is possible that a half-pixel is to 
+        	 *			be displayed in [Show-Size] scaled coordinates.
+        	 *
+        	 *			If it is rounded to pixel, there is a little gap between
+        	 *			the already displayed stuff and the newly painted
+        	 *			area.
+        	 */
+        	
+        	
+        	/* 
+        	 * Compute stretch - factors
+        	 */
+        	//fetch the zoom factors for stretching the image if necessary.
+            final double cZoomFactorWidth = 1.0 
+                    * State.getImageShowSize().width
+                    / State.getImageSize().width;
+            final double cZoomFactorHeight = 1.0 
+                    * State.getImageShowSize().height
+                    / State.getImageSize().height;
+
+            /*
+             * Adapt values for performing step B1.
+             */
+            // rounded x and y values.
+            int rounded_x = (int)((int)(_x / cZoomFactorWidth) * cZoomFactorWidth);
+            int rounded_y = (int)((int)(_y / cZoomFactorHeight) * cZoomFactorHeight);
+            
             // interrupt if the given values are illegal if the size of 
         	// the area which is to be repainted is equal to zero.
         	final DRect r;
         	if (_r == null) {
-        		System.out.println(getClass() + "r0");
         		r = new DRect(
         				0, 0,
         				bi_image.getWidth(), bi_image.getHeight());
@@ -188,20 +292,10 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
         	}
         	
             if (r == null || r.getHeight() <= 0 || r.getWidth() <= 0) {
-            	return _bi;
+            	return _bi_final;
             }
-
-        	
-        	//fetch the zoom factors for stretching the image if necessary.
-            final double cZoomFactorWidth = 1.0 
-                    * State.getImageShowSize().width
-                    / State.getImageSize().width;
-            final double cZoomFactorHeight = 1.0 
-                    * State.getImageShowSize().height
-                    / State.getImageSize().height;
             
-            
-            // TODO: this seems to be due to rounding (while method call).
+            // Because the this seems to be due to rounding (while method call).
             if (cZoomFactorWidth > 1) {
             	r.setWidth(r.getWidth() +  2);
             	r.setX(r.getX() - 1);
@@ -209,31 +303,78 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             	r.setHeight(r.getHeight() + 2);
             	r.setY(r.getY() - 1);
             }
+
             
+            /*
+             * Step B2	Compute necessary values for applying painting of 
+             * 			image. 
+             */
+
             // these values contain the location of the selection inside 
-            // the small page image 
-            int locXSmallPageImage = (int) ((r.getX()) 
-            		* cZoomFactorWidth) + _x;
-            int locYSmallPageImage = ((int) ((r.getY())
-            		* cZoomFactorHeight)) + _y;
+            // the currently displayed section of the page (location
+            // at the JLabel).Therefore it is in [Show-Size].
+            // 
+            // The shift is saved as a negative integer (points from the
+            // upper left corner to the origin of the page (somewhere
+            // at the upper - left of the upper left corner).
+            //
+            // Thus the current location of the user in image is subtracted
+            // of the location of the repainted rectangle.
+            int locX_at_label = (int) ((r.getX()) 
+            		* cZoomFactorWidth) + rounded_x;
+            int locY_at_label = ((int) ((r.getY())
+            		* cZoomFactorHeight)) + rounded_y;
             
-            locXSmallPageImage = Math.max(0, locXSmallPageImage);
-            locYSmallPageImage = Math.max(0, locYSmallPageImage);
+            // error-checking. The location of the small page image should 
+            // never be not displayable (less than zero, greater than the
+            // image width respectively height).
+            // This may occur because of the rounding done above.
+            if (locX_at_label < 0|| locY_at_label < 0) {
+                locX_at_label = Math.max(0, locX_at_label);
+                locY_at_label = Math.max(0, locY_at_label);
+            }
 
+
+            // This is the location of the visible scope's location
+            // from the origin of the PaintObjectImage's BufferedImage:
+            //
+            // ____________________________________________________
+            // |                           image start            |
+            // |              |<------------------|               |
+            // |          vis. scope                              |
+            // |__________________________________________________|
+            // | GRAPHIC: Displays the defined vector (negative)  |
+            // |__________________________________________________|
+            // If the image starts somewhere right from the visible
+            // scope's location (see graphic), 
+            //
+            // Then its value is negative and the display - image size
+            // has to be adapted to the displayable area's size.
+            // 
+            // used:		
+            //			(1)	Rectangle r (Model-Size),
+            //			(2) locationOfImage (Model-Size),
+            // thus comparable. The computed size should be [Model-Size].
+            //
+            // TODO: This seems to be a little bit bull-shitty.
+            // if locXPOI is less than zero, the paint object is displayed
+            // somewhere outside
+            int locX_at_bi_poi = (int) (r.getIX() - pnt_locationOfImage.x);
+            int locY_at_bi_poi = (int) (r.getIY() - pnt_locationOfImage.y);
+            if (locX_at_bi_poi < 0) {
+            	
+            	r.setWidth(r.getWidth() + locX_at_bi_poi);
+                locX_at_label -= locX_at_bi_poi * cZoomFactorWidth;
+
+            	locX_at_bi_poi = 0;
+            }
             
-            int locXPOI = r.getIX() - pnt_locationOfImage.x;
-            int locYPOI = r.getIY() - pnt_locationOfImage.y;
-            if (locXPOI < 0) {
-
-            	r.setWidth(r.getWidth() + locXPOI);
-                locXSmallPageImage -= locXPOI * cZoomFactorWidth;
-
-            	locXPOI = 0;
-                
-            }if (locYPOI < 0) {
-            	r.setWidth(r.getHeight() + locYPOI);
-                locYSmallPageImage -= locYPOI * cZoomFactorHeight;
-            	locYPOI = 0;
+            
+            if (locY_at_bi_poi < 0) {
+            	System.out.println("leg 0");
+            	r.setWidth(r.getHeight() + locY_at_bi_poi);
+                locY_at_label -= locY_at_bi_poi * cZoomFactorHeight;
+            	locY_at_bi_poi = 0;
             }
             
             
@@ -242,21 +383,17 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             // adapt the width of the selection to the size of the 
             // paint-object-image.
             // 
-            // TODO: Find a better solution?
-            // to the normal width, 2 * zoom-factor is added 
-            // because if zoomed in, there are gaps between the painted
-            // sub-images.
             r.setWidth(Math.min(
-            		bi_image.getWidth() - locXPOI,
+            		bi_image.getWidth() - locX_at_bi_poi,
             		r.getIWidth()));
             r.setHeight(Math.min(
-            		bi_image.getHeight() - locYPOI,
+            		bi_image.getHeight() - locY_at_bi_poi,
             		r.getIHeight()));
             
             // interrupt if the given values are illegal if the size of 
         	// the area which is to be repainted is equal to zero.
             if (r == null || r.getIHeight() <= 0 || r.getIWidth() <= 0) {
-            	return _bi;
+            	return _bi_notFinal;
             }
             
             /* 
@@ -274,13 +411,13 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             // into an integer array
             int[] rgbA = new int[r.getIHeight() * r.getIWidth()];
             if (
-            		locXPOI >= 0 
-            		&& locYPOI >= 0
-            		&& locXPOI + r.getIWidth() <= bi_image.getWidth()
-            		&& locYPOI + r.getIHeight() <= bi_image.getHeight()) {
+            		locX_at_bi_poi >= 0 
+            		&& locY_at_bi_poi >= 0
+            		&& locX_at_bi_poi + r.getIWidth() <= bi_image.getWidth()
+            		&& locY_at_bi_poi + r.getIHeight() <= bi_image.getHeight()) {
 
                 rgbA = bi_image.getRGB(
-                		locXPOI, locYPOI, 
+                		locX_at_bi_poi, locY_at_bi_poi, 
                 		r.getIWidth(), r.getIHeight(), 
                 		rgbA,
                 		0, 
@@ -289,10 +426,10 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 
             	State.getLogger().severe("fatal move error: \n" 
             			+ "Section out of scope."
-            			+ "x\t" + locXPOI + "\n"
-            			+ "y\t" + locYPOI + "\n"
-            			+ "x+w\t" + locXPOI + r.getWidth() + "\n"
-            			+ "y+h\t" + locYPOI + r.getHeight() + "\n"
+            			+ "x\t" + locX_at_bi_poi + "\n"
+            			+ "y\t" + locY_at_bi_poi + "\n"
+            			+ "x+w\t" + locX_at_bi_poi + r.getWidth() + "\n"
+            			+ "y+h\t" + locY_at_bi_poi + r.getHeight() + "\n"
             			+ "\n@image\n"
             			+ "width:\t" + bi_image.getWidth()
             			+ "\nheight:\t" + bi_image.getHeight());
@@ -308,19 +445,19 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
             		rgbA, 0, r.getIWidth());
             
 
-            final Graphics g = _g.getGraphics();
+            final Graphics g = _bi_notFinal.getGraphics();
             int newWidth = (int) Math.max(1, (r.getWidth()) * cZoomFactorWidth);
             int newHeight = (int) Math.max(1, (r.getHeight()) * cZoomFactorHeight);
             g.drawImage(Utils.resizeImageQuick(
                     newWidth, 
                     newHeight , 
                     bi_section),
-                    (int) (locXSmallPageImage), 
-                    (int) (locYSmallPageImage), 
+                    (int) (locX_at_label), 
+                    (int) (locY_at_label), 
                     newWidth,
                     newHeight, null);
 
-            return _g;
+            return _bi_notFinal;
         }
         
         return bi_image.getContent();

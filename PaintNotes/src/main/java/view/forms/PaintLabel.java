@@ -103,12 +103,22 @@ public class PaintLabel extends MLabel {
      */
     @Override public final synchronized void setLocation(
     		final int _x, final int _y) {
+    	
+    	
+    	// The values have to be adapted to the grid which is given by
+    	// the zoom size for not having to cope with partial pixel.
+    	final double zoomWidth = 1.0 * State.getImageSize().width 
+    			/ State.getImageShowSize().width;
+    	final double zoomHeight = 1.0 * State.getImageSize().width 
+    			/ State.getImageShowSize().width;
+    	final int newX = (int) (((int) (_x * zoomWidth)) / zoomWidth);
+    	final int newY = (int) (((int) (_y * zoomHeight)) / zoomHeight);
 
         //Forward the set location event to the instance of paintListener
         //if it has been set.
         if (paintListener != null) {
         	paintListener.beforeLocationChange(
-        			new MoveEvent(new Point(_x, _y)), 
+        			new MoveEvent(new Point(newX, newY)), 
         			new MoveEvent(new Point(x, y)));
         } else {
         	State.getLogger().severe("PaintListener not set.");
@@ -120,22 +130,22 @@ public class PaintLabel extends MLabel {
         final int lastY = y;
         
         //save the new location
-        this.x = _x;
-        this.y = _y;
+        this.x = newX;
+        this.y = newY;
 
-        jpnl_toMove.setBounds(_x, _y, jpnl_toMove.getWidth(), 
+        jpnl_toMove.setBounds(newX, newY, jpnl_toMove.getWidth(), 
                 jpnl_toMove.getHeight());
         
 
         //Forward the set location event to the instance of paintListener
         //if it has been set.
         if (paintListener != null) {
-        	paintListener.afterLocationChange(new MoveEvent(new Point(_x, _y)),
+        	paintListener.afterLocationChange(
+        			new MoveEvent(new Point(newX, newY)),
         			new MoveEvent(new Point(lastX, lastY)));
         } else {
         	State.getLogger().severe("PaintListener not set.");
         }
-        
     }
     
 
@@ -162,17 +172,27 @@ public class PaintLabel extends MLabel {
      */
     @Override public final void setLocation(final Point _p) {
 
+    	// The values have to be adapted to the grid which is given by
+    	// the zoom size for not having to cope with partial pixel.
+    	final double zoomWidth = 1.0 * State.getImageSize().width 
+    			/ State.getImageShowSize().width;
+    	final double zoomHeight = 1.0 * State.getImageSize().width 
+    			/ State.getImageShowSize().width;
+    	final Point p = new Point(
+    			(int) (((int) (_p.x * zoomWidth)) / zoomWidth),
+    			(int) (((int) (_p.y * zoomHeight)) / zoomHeight));
+
         //Forward the set location event to the instance of paintListener
         //if it has been set.
         if (paintListener != null) {
-        	paintListener.beforeExternalLocationChange(new MoveEvent(_p));
+        	paintListener.beforeExternalLocationChange(new MoveEvent(p));
         } else {
         	State.getLogger().severe("PaintListener not set.");
         }
         
         //save the new location
-        this.x = _p.x;
-        this.y = _p.y;
+        this.x = p.x;
+        this.y = p.y;
 
         //update the JPanel location because the ScrollPane fetches information
         //out of that panel
@@ -183,7 +203,7 @@ public class PaintLabel extends MLabel {
         //Forward the set location event to the instance of paintListener
         //if it has been set.
         if (paintListener != null) {
-        	paintListener.afterExternalLocationChange(new MoveEvent(_p));
+        	paintListener.afterExternalLocationChange(new MoveEvent(p));
         } else {
         	State.getLogger().severe("PaintListener not set.");
         }

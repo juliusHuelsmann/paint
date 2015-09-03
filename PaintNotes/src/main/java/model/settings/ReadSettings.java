@@ -730,8 +730,11 @@ public final class ReadSettings {
 			
 			
        } catch (Exception e) {
-			e.printStackTrace();
-			return false;
+    	   
+    	   // update page not found, probably due to network problems.
+    	   State.getLogger().warning("Connection to update page failed. "
+    	   		+ "No internet connection?");
+    	   return false;
 		}
 	}
 	

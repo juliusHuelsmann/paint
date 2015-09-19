@@ -296,7 +296,7 @@ public final class PDFUtils {
 
     	int dpi = 0;
         try {
-            dpi = Toolkit.getDefaultToolkit().getScreenResolution() * 1;
+            dpi = Toolkit.getDefaultToolkit().getScreenResolution() ;
             dpi = 130;
         } catch( HeadlessException e ) {
             dpi = 96;

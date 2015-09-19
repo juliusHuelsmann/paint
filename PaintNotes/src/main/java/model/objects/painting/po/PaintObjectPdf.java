@@ -22,6 +22,8 @@ package model.objects.painting.po;
 import java.awt.image.BufferedImage;
 
 import model.objects.painting.Picture;
+import model.util.pdf.PDFUtils;
+import model.util.pdf.XDocument;
 
 
 /**
@@ -32,14 +34,26 @@ import model.objects.painting.Picture;
  */
 @SuppressWarnings("serial")
 public class PaintObjectPdf extends PaintObjectImage {
-
-	
+final int pageNumber;
+	final XDocument xD;
 	public PaintObjectPdf(
-			final int _elementId, final BufferedImage _bi, 
+			final int _elementId, final XDocument _xd, final int _pageNr, 
 			final Picture _picture) {
+		super(_elementId, null, _picture);
+		this.xD = _xd;
+		this.pageNumber = _pageNr;
 		
-		super(_elementId, _bi, _picture);
-		
+	}
+
+	public void remember() {
+
+		setImage(PDFUtils.pdf2image(
+				xD.getPDDocument(), pageNumber));
+	}
+
+	public void forget() {
+
+		setImage(null);
 	}
 	
 }

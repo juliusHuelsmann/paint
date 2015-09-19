@@ -157,7 +157,6 @@ public class Project {
 	 * @return the size of the image
 	 */
 	public DPoint load(final String _wsLoc) {
-//		BufferedImage bi_normalSize;
 			
 			if (_wsLoc.endsWith(".pdf")) {
 
@@ -235,12 +234,16 @@ public class Project {
 		if (document != null 
 				&& currentlyDisplayedPage < document.getNumberOfPages() - 1) {
 
+
+			document.getPdfPages()[currentlyDisplayedPage].forget();
+			
 			currentlyDisplayedPage++;
 
 			// fetch zoom factor
 			double zW = 1.0 * State.getImageSize().getWidth() / State.getImageShowSize().getWidth();
 			double zH = 1.0 * State.getImageSize().getHeight() / State.getImageShowSize().getHeight();
-			
+
+			document.getPdfPages()[currentlyDisplayedPage].remember();
 			Rectangle r = document.getPdfPages()[currentlyDisplayedPage].getSnapshotBounds();
 			
 			State.setImageSize(r.getSize());
@@ -252,15 +255,17 @@ public class Project {
 	
 	public void decreaseCurrentPage() {
 
-		if (currentlyDisplayedPage > 0) {
+		if (document != null && currentlyDisplayedPage > 0) {
 
-			
+
+			document.getPdfPages()[currentlyDisplayedPage].forget();
 			currentlyDisplayedPage--;
 
 			// fetch zoom factor
 			double zW = 1.0 * State.getImageSize().getWidth() / State.getImageShowSize().getWidth();
 			double zH = 1.0 * State.getImageSize().getHeight() / State.getImageShowSize().getHeight();
-			
+
+			document.getPdfPages()[currentlyDisplayedPage].remember();
 			Rectangle r = document.getPdfPages()[currentlyDisplayedPage].getSnapshotBounds();
 			
 			State.setImageSize(r.getSize());

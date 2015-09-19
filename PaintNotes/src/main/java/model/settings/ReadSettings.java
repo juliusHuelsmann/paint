@@ -722,19 +722,53 @@ public final class ReadSettings {
 				
 			} catch(NumberFormatException _nex) {
 				
-				//error
+				// received version number corrupted.
+				final String err_msg = "Failed to check for updates, \n"
+						+ "the fetched version number is currupted.\n"
+						+ "This error is server-related and will be \n"
+						+ "fixed after it has been noticed by the \n"
+						+ "programmer ;).";
+
+				// report error via logger.
 				model.settings.State.getLogger()
-				.severe("Failed to update: version number currupted.");
+				.severe(err_msg);
+				
+				// notify the user if this the message call isn't silent.
+				if (_showNoUpdateMSG) {
+
+					JOptionPane.showMessageDialog(_view, 
+							err_msg,
+							"Update", 
+							JOptionPane.INFORMATION_MESSAGE);
+					
+				}
 				return false;
 			}
 			
 			
-       } catch (Exception e) {
-    	   
+       } catch (Exception e) { 
+
     	   // update page not found, probably due to network problems.
-    	   State.getLogger().warning("Connection to update page failed. "
-    	   		+ "No internet connection?");
-    	   return false;
+    	   final String err_msg = "Connection to update page failed. \n"
+	    	   		+ "Either you are not corrected to the internet or \n"
+	    	   		+ "the update page has been removed accidently. \n"
+					+ "If you are able to connect to any other web-page,\n"
+					+ "the error is server-related and will be \n"
+					+ "fixed after being noticed by the \n"
+					+ "programmer ;).";
+    	   
+    	   // report error via logger.
+    	   State.getLogger().warning(err_msg);
+    	   
+    	   // notify the user if this the message call isn't silent.
+			if (_showNoUpdateMSG) {
+
+					JOptionPane.showMessageDialog(_view, 
+							err_msg,
+							"Update", 
+							JOptionPane.INFORMATION_MESSAGE);
+			}
+			return false;
 		}
 	}
 	
@@ -763,7 +797,7 @@ public final class ReadSettings {
 					InformationWindow iw = new InformationWindow("Update current version of Paint");
 					iw.setText("\t\t\tPaint update\n"
 							+ "This window will give information on the\n"
-							+ " update process of the paint - program.\n\n"
+							+ "update process of the paint - program.\n\n"
 							+ "The Program is directly pulled from the github\n"
 							+ "update page which can be found at\n"
 							+ "https://github.com/juliusHuelsmann/paint.git.\n"

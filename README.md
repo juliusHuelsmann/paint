@@ -4,7 +4,7 @@ This is a touch-based paint application for personal computers developed with Ja
 It is possible to alter and create image and pdf files. This program is used for writing down lecturenotes at university.
 
 The user is able to select different pens for being able to differ between diverse types of text. It is possible to focus the painted elements, to change their size and to remove them. The image can be exported into the most popular formats like PNG, JPEG, PDF, GIF and lots more. It is possible to change the type of the painted text afterwards. Copy and Paste functionality works cutting across programs.
-Just added the possibility to load and alter PDF documents and save certain pages as image files. The implementation of the feature has not finished yet, thus usability-related issues and certain tasks have not been implemented.
+Just added the possibility to load and alter PDF documents and save certain pages as image files. The implementation of the feature has not finished yet, thus usability-related issues and certain tasks have not been implemented. After scrolling in image and pdf files there may occur white stripes in the displayed image. This is just a display bug and will be fixed soon.
 
 It is possible to execute the program right away by either double-clicking at the file paint.jar or by executing
 ```

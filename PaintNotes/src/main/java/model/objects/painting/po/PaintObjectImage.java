@@ -684,7 +684,7 @@ public class PaintObjectImage extends PaintObject implements Cloneable {
 
         //if the image does not exist it is not inside the rectangle; thus 
         //return false
-        if (bi_image == null) {
+        if (bi_image == null || bi_image.getContent() == null) {
             
             return new Rectangle(0, 0, 0, 0);
         }

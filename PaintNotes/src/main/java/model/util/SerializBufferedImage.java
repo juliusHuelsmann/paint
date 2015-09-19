@@ -159,6 +159,10 @@ public class SerializBufferedImage implements Serializable {
 	 * @return the height.
 	 */
 	public final int getHeight() {
+		if (getContent() == null) {
+			return 0;
+		}
+		
 		return getContent().getHeight();
 	}
 	
@@ -166,6 +170,11 @@ public class SerializBufferedImage implements Serializable {
 	 * @return the width
 	 */
 	public final int getWidth() {
+		
+		if (getContent() == null) {
+			return 0;
+		}
+		
 		return getContent().getWidth();
 	}
 
@@ -203,6 +212,11 @@ public class SerializBufferedImage implements Serializable {
 			final int _startX, final int _startY, final int _w, 
 			final int _h, final int[] _rgbArray, 
 			final int _offset, final int _scansize) {
+		
+		if (bi_content == null) {
+			return null;
+		}
+		
 		return bi_content.getRGB(
 				_startX, _startY, _w, _h, _rgbArray, _offset, _scansize);
 	}

@@ -759,10 +759,18 @@ public final class Picture implements Serializable {
 							<= myXLocationRepaintEnd
 							&& ls_po_sortedByY.getItem().isInSelectionImage(
 									r_selection.getRectangle())) {
+						
+						
+						// if the current paint object is a "normal" paint object
+						// or it is not final.
+						if (!(_final && ls_po_sortedByY.getItem() 
+								instanceof PaintObjectPdf)) {
 
-						ls_poChronologic.insertSorted(ls_po_sortedByY.getItem(),
-								ls_po_sortedByY.getItem().getElementId(),
-								SecureList.ID_NO_PREDECESSOR);
+							ls_poChronologic.insertSorted(ls_po_sortedByY.getItem(),
+									ls_po_sortedByY.getItem().getElementId(),
+									SecureList.ID_NO_PREDECESSOR);
+						}
+
 					}
 				} else {
 

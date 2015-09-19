@@ -313,16 +313,29 @@ public class Project {
 //	    				State.getImageSize().height ));
 	    		
 	    	}
+	    	
+	    	
 
-		        PDPageContentStream content = new PDPageContentStream(_doc, page);
-		        
-		        int width = (int) page.getCropBox().getWidth();
-		        int height = (int) page.getCropBox().getHeight();
-		        PDImageXObject ximage =  LosslessFactory.createFromImage(_doc, 
-//		        		_bi);
-		        		Utils.resizeImage(width, height, _bi));
-		        content.drawImage(ximage, 0, 0);
-		        content.close();
+	        int width = (int) page.getCropBox().getWidth();
+	        int height = (int) page.getCropBox().getHeight();
+	        
+	        
+	        PDImageXObject ximage =  LosslessFactory.createFromImage(_doc, 
+//	        		_bi);
+	        		Utils.resizeImage(width, height, _bi));
+
+		        PDPageContentStream content = new PDPageContentStream(_doc, page, true, true);
+
+	            // contentStream.drawImage(ximage, 20, 20 );
+	            // better method inspired by http://stackoverflow.com/a/22318681/535646
+	            // reduce this value if the image is too large
+	            float scale = 1f;
+	            content.drawImage(ximage, 20, 20, ximage.getWidth()*scale, ximage.getHeight()*scale);
+
+	            content.close();
+		        //  LosslessFactory.createFromImage(doc, bim)
+//		        content.drawImage(ximage, 0, 0);
+//		        content.close();
 	    }
 	    catch (IOException ie){
 	        //handle exception
@@ -374,7 +387,7 @@ public class Project {
         {
             if( doc != null )
             {
-                doc.close();
+//                doc.close();
             }
         }
     }

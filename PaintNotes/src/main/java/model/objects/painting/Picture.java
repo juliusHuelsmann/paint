@@ -36,6 +36,7 @@ import java.io.Serializable;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.xml.ws.Dispatch;
 
 import control.ContorlPicture;
 import control.ControlSelectionTransform;
@@ -74,6 +75,7 @@ import model.util.Util;
 import model.util.adt.list.SecureList;
 import model.util.adt.list.SecureListSort;
 import model.util.paint.Utils;
+import model.util.pdf.XDocument;
 
 /**
  * Picture class which contains all the not selected and selected painted items
@@ -216,8 +218,8 @@ public final class Picture implements Serializable {
 	 * 
 	 * @return the new created PaintObjectImage.
 	 */
-	public PaintObjectPdf createPDF(final BufferedImage _bi) {
-		return new PaintObjectPdf(getIncreaseCID(), _bi, this);
+	public PaintObjectPdf createPDF(final XDocument _xD, final int _pageNr) {
+		return new PaintObjectPdf(getIncreaseCID(), _xD, _pageNr, this);
 	}
 
 	/**
@@ -305,6 +307,35 @@ public final class Picture implements Serializable {
 		}
 	}
 	
+	
+	
+	/**
+	 * Set whether this page currently is displayed (is necessary
+	 * for projects consisting of more than one single page).
+	 * 
+	 * In a pdf, it is only necessary to load the pdf- background image
+	 * from pdf file, if the current page is selected. That saves
+	 * time and space in the RAM - drive.
+	 * 
+	 * @param _displayed	whether the current page is displayed.
+	 */
+	public void setDisplayed(final boolean _displayed) {
+		
+		if (_displayed) {
+			pdf_background.remember();
+		} else {
+			pdf_background.forget();
+		}
+	}
+	
+	
+	
+	/**
+	 * The background - pdf image of the pdf document the current picture
+	 * is part of.
+	 */
+	private PaintObjectPdf pdf_background = null;
+	
 
 	/**
 	 * adds a new PaintObject to list.
@@ -312,7 +343,7 @@ public final class Picture implements Serializable {
 	 * @param _bi
 	 *            the BufferedImage which is to be transformed into ImagePO.
 	 */
-	public PaintObjectPdf addPaintObjectPDF(final BufferedImage _bi) {
+	public PaintObjectPdf addPaintObjectPDF(final XDocument _xD, final int _pageNr) {
 
 		if (po_current != null) {
 
@@ -327,14 +358,20 @@ public final class Picture implements Serializable {
 
 		}
 
-		if (_bi == null) {
-			State.getLogger().warning("nothing on clipboard.");
+		if (_xD == null) {
+			State.getLogger().warning("pdf is null.");
 		} else {
 
 			// create new PaintObject and insert it into list of
-			PaintObjectPdf poi = createPDF(_bi);
-			ls_po_sortedByY.insertSorted(poi, poi.getSnapshotBounds().y,
+			PaintObjectPdf poi = createPDF(_xD, _pageNr);
+			ls_po_sortedByY.insertSorted(poi, 0,
 					SecureList.ID_NO_PREDECESSOR);
+			
+			if (pdf_background != null) {
+				State.getLogger().severe("Overwriting pdf background image.");
+			}
+			pdf_background = poi;
+			
 			return poi;
 
 		}

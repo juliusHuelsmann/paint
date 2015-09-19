@@ -42,7 +42,7 @@ public final class Version {
 	 * This final static string contains the release-date of the current 
 	 * version.
 	 */
-	public static final String RELEASE_DATE = "2015 08 19";
+	public static final String RELEASE_DATE = "2015 09 19";
 	
 	/**
 	 * This final, static string contains information on the state of the 
@@ -68,7 +68,7 @@ public final class Version {
 	/**
 	 * Percentage of milestone done.
 	 */
-	public static final String PERCENTAGE_DONE = "23";
+	public static final String PERCENTAGE_DONE = "24";
 	
 	
 	/**

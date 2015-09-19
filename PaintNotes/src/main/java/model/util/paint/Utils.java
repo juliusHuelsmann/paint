@@ -457,6 +457,23 @@ public final class Utils {
             final int _fromY, final int _untilX, final int _untilY, 
             final int _graphiX, final int _graphiY) {
 
+    	
+    	if (State.getBorderBottomPercentExport() == 0 
+        			&& State.getBorderRightPercentExport() == 0
+        			&& State.getBorderLeftPercentExport() == 0
+        			&& State.getBorderTopPercentExport() == 0
+        			&& State.getIndexPageBackgroundExport() 
+        			== Constants.CONTROL_PAGE_BACKGROUND_NONE) {
+    		return _f;
+    	}
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
         Dimension d = new Dimension(State.getImageShowSize());
         State.setImageShowSize(new Dimension(State.getImageSize()));
         

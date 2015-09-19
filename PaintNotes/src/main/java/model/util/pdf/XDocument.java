@@ -25,9 +25,12 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
+
 import model.objects.Project;
 import model.objects.painting.po.PaintObjectPdf;
 import model.settings.Constants;
+
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
@@ -46,12 +49,14 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDSignatureField;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class XDocument {
+public class XDocument implements Serializable {
 
 	/**
 	 * 
 	 */
 	private PDDocument document; 
+	
+	
 	
 	
 	/**

@@ -117,19 +117,19 @@ public class XDocument {
 			if (document != null) {
 				
 				
-				BufferedImage bi = PDFUtils.pdf2image(
-						document, i);
-
-				if (bi != null) {
 
 					
-					pdfPages[i] = project.getPicture(i).addPaintObjectPDF(bi);
+					pdfPages[i] = project.getPicture(i).addPaintObjectPDF(this, i);
 
+					
+					// get size of the current page of the document.
 					if (project.getCurrentPageNumber() == i) {
+						BufferedImage bi = PDFUtils.pdf2image(
+								document, i);
 						bi_saved = bi;
+						pdfPages[i].remember();
 					}
 					
-				}
 			}
 //			 BufferedImage buffImage = convertToImage(page, 8, 12);
 

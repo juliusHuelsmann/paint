@@ -41,7 +41,7 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import model.objects.history.HistorySession;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
-import model.objects.painting.po.PaintObjectImage;
+import model.objects.painting.po.PaintObjectDrawImage;
 import model.settings.State;
 import model.util.DPoint;
 import model.util.adt.list.SecureList;

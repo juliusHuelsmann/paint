@@ -40,7 +40,7 @@ import control.ContorlPicture;
 import control.ControlPaint;
 import model.objects.Project;
 import model.objects.painting.po.PaintObject;
-import model.objects.painting.po.PaintObjectImage;
+import model.objects.painting.po.PaintObjectDrawImage;
 import model.objects.painting.po.PaintObjectWriting;
 import model.settings.Constants;
 import model.settings.State;
@@ -366,7 +366,7 @@ public final class CTabTools implements ActionListener, MouseListener {
         
         Object o = MyClipboard.getInstance().paste();
         if (o instanceof BufferedImage) {
-            PaintObjectImage poi = controlPaint.getPicture().createPOI(
+            PaintObjectDrawImage poi = controlPaint.getPicture().createPOI(
                     (BufferedImage) o);
             controlPaint.getPicture().insertIntoSelected(
             		poi, controlPaint.getView().getTabs().getTab_debug());
@@ -428,9 +428,9 @@ public final class CTabTools implements ActionListener, MouseListener {
             while (!ls.isEmpty() && !ls.isBehind()) {
                 PaintObject po = ls.getItem();
                 
-                if (po instanceof PaintObjectImage) {
-                    PaintObjectImage poi = (PaintObjectImage) po;
-                    PaintObjectImage poi_new = controlPaint.getPicture()
+                if (po instanceof PaintObjectDrawImage) {
+                    PaintObjectDrawImage poi = (PaintObjectDrawImage) po;
+                    PaintObjectDrawImage poi_new = controlPaint.getPicture()
                     		.createPOI(poi.getSnapshot());
                     controlPaint.getPicture().insertIntoSelected(
                     		poi_new, controlPaint.getView().getTabs()
@@ -478,12 +478,12 @@ public final class CTabTools implements ActionListener, MouseListener {
             //finish insertion into selected.
             controlPaint.getPicture().finishSelection(
             		controlPaint.getcTabSelection());
-        } else if (o instanceof PaintObjectImage) {
+        } else if (o instanceof PaintObjectDrawImage) {
 
         	//theoretically unused because everything is stored
         	//inside lists.
             controlPaint.getPicture().insertIntoSelected(
-                    (PaintObjectImage) o, 
+                    (PaintObjectDrawImage) o, 
                     controlPaint.getView().getTabs().getTab_debug());
 
             //finish insertion into selected.

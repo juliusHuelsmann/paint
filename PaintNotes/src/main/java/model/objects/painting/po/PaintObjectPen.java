@@ -303,4 +303,9 @@ public abstract class PaintObjectPen extends PaintObject implements Cloneable {
 		return pen;
 	}
 
+	@Override
+	public boolean isEditable() {
+		return true;
+	}
+
 }

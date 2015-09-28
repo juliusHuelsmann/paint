@@ -1815,7 +1815,8 @@ MenuListener {
             //sorted by x coordinate; thus it is possible that one PaintObject 
             //is not suitable for the specified rectangle but some of its 
             //predecessors in sorted list do.
-            if (po_current.isInSelectionImage(_r_size)) {
+            if (po_current.isInSelectionImage(_r_size)
+            		&& po_current.isEditable()) {
 
 
                 //remove item out of PictureOverview and paint and refresh paint
@@ -1943,7 +1944,8 @@ MenuListener {
                 //sorted by x coordinate; thus it is possible that one 
                 //PaintObject is not suitable for the specified rectangle but 
                 //some of its predecessors in sorted list do.
-                if (po_current.isInSelectionImage(_r_sizeField)) {
+                if (po_current.isInSelectionImage(_r_sizeField)
+                		&& po_current.isEditable()) {
 
                     // get item; remove it out of lists and add it to
                     // selection list
@@ -2146,7 +2148,8 @@ MenuListener {
                     //is not suitable for the specified 
                 	//rectangle but some of its 
                     //predecessors in sorted list do.
-                    if (po_current.isInSelectionImage(r_sizeField)) {
+                    if (po_current.isInSelectionImage(r_sizeField)
+                    		&& po_current.isEditable()) {
 
 
                         //remove item out of PictureOverview and 
@@ -2204,7 +2207,8 @@ MenuListener {
 	                //PaintObject is not suitable for the specified 
 	            	//rectangle but 
 	                //some of its predecessors in sorted list do.
-	                if (po_current.isInSelectionImage(r_sizeField)) {
+	                if (po_current.isInSelectionImage(r_sizeField)
+	                		&& po_current.isEditable()) {
 	
 	                    // get item; remove it out of lists and add it to
 	                    // selection list

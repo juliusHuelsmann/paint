@@ -2550,7 +2550,7 @@ MenuListener {
         	//where the preprint has been.
         	final int maxRGB = 255;
         	final int rgbWhiteAlpha = new Color(
-        			maxRGB, maxRGB, maxRGB, 0).getRGB();
+        			10, maxRGB, maxRGB, 0).getRGB();
 //        			255, 0, 0).getRGB();
         	
         	//write the preprint to the rgb.

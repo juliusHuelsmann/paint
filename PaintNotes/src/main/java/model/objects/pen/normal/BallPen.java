@@ -353,7 +353,7 @@ public class BallPen extends Pen {
 	        final DPoint _pnt_shift, final BufferedImage _g, 
 	        final Rectangle _r_visibleScope) {
 
-	    for (int i = -getThickness() / 2 + getSizeBorder();
+	    for (int i = -getThickness() / 2 + getSizeBorder() ;
                 i < (getThickness() / 2) + (getThickness() % 2) - getSizeBorder(); i++) {
             
             for (int j = -getThickness() / 2 + getSizeBorder();

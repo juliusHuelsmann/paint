@@ -22,8 +22,11 @@ package control;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
+
 import control.forms.BorderThread;
+import control.forms.ControlView;
 import control.interfaces.MoveEvent;
 import control.interfaces.PaintListener;
 import model.objects.painting.PaintBI;
@@ -917,6 +920,32 @@ public class ContorlPicture implements PaintListener {
 
 		if (getPaintLabel().isVisible()) {
 			
+
+			cp.setBi_preprint(
+					new BufferedImage(
+							Math.max(ViewSettings.getView_bounds_page()
+									.getSize().width, 1),
+							Math.max(ViewSettings.getView_bounds_page()
+									.getSize().height,
+									1),
+							BufferedImage.TYPE_INT_ARGB));
+			cp.getControlPic().setBi_background(
+					new BufferedImage(
+							Math.max(ViewSettings.getView_bounds_page()
+									.getSize().width, 1),
+							Math.max(ViewSettings.getView_bounds_page()
+									.getSize().height,
+									1),
+							BufferedImage.TYPE_INT_ARGB));
+			cp.getControlPic().setBi(new BufferedImage(
+							Math.max(ViewSettings.getView_bounds_page()
+									.getSize().width, 1),
+							Math.max(ViewSettings.getView_bounds_page()
+									.getSize().height, 
+									1),
+							BufferedImage.TYPE_INT_ARGB));
+
+			
 			//set changed
 			refreshPaint();
 		}		
@@ -943,6 +972,32 @@ public class ContorlPicture implements PaintListener {
 	public final void afterExternalSizeChange(final MoveEvent _ev) {
 
 		if (getPaintLabel().isVisible()) {
+
+
+			//re-initialize the image with the correct size
+			cp.setBi_preprint(
+					new BufferedImage(
+							Math.max(ViewSettings.getView_bounds_page()
+									.getSize().width, 1),
+							Math.max(ViewSettings.getView_bounds_page()
+									.getSize().height,
+									1),
+							BufferedImage.TYPE_INT_ARGB));
+			cp.getControlPic().setBi_background(
+					new BufferedImage(
+							Math.max(ViewSettings.getView_bounds_page()
+									.getSize().width, 1),
+							Math.max(ViewSettings.getView_bounds_page()
+									.getSize().height,
+									1),
+							BufferedImage.TYPE_INT_ARGB));
+			cp.getControlPic().setBi(new BufferedImage(
+							Math.max(ViewSettings.getView_bounds_page()
+									.getSize().width, 1),
+							Math.max(ViewSettings.getView_bounds_page()
+									.getSize().height, 
+									1),
+							BufferedImage.TYPE_INT_ARGB));
 			
 			//set changed
 			refreshPaint();

@@ -375,13 +375,21 @@ import view.util.mega.MButton;
         jlbl_backgroundAlpha.setIcon(new ImageIcon(
         		State.getBi_transparency()));
 
+        
+        int paintWidth = getWidth() - 1;
+        int paintHeight = getHeight() - 1;
+//        final int maxZoom = (int) Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
+//                ViewSettings.MAX_ZOOM_IN);
+//        paintWidth = (int)((int) (paintWidth / maxZoom) * maxZoom);
+//        paintHeight = (int)((int) (paintHeight / maxZoom) * maxZoom);
+        
 		//the order of painting is important! It is necessary that the 
         //paintinglabel's bounds and the locations of the ScrollPanes are 
         //set here
         jlbl_painting.setBounds(
         		(int) jlbl_painting.getLocation().getX(),
         		(int) jlbl_painting.getLocation().getY(), 
-        		getWidth() - 1, getHeight() - 1);
+        		paintWidth, paintHeight);
 		sp_ub.setLocation(ViewSettings.getSizeJFrame().width 
 				- sp_ub.getWidth() - ViewSettings.DISTANCE_TO_WINDOW,
 				ViewSettings.VIEW_SIZE_SP);

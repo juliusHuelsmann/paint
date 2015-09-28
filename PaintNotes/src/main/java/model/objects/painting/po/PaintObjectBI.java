@@ -227,21 +227,22 @@ public abstract class PaintObjectBI extends PaintObject implements Cloneable, Se
         				0, 0,
         				bi_image.getWidth(), bi_image.getHeight());
         	} else {
-        		r = new DRect(_r.getRectangle());
+//        		r = new DRect(_r.getRectangle());
+        		r = new DRect(_r.getIX(), _r.getIY(), _r.getIWidth(), _r.getIHeight());
         	}
         	
             if (r == null || r.getHeight() <= 0 || r.getWidth() <= 0) {
             	return _bi_notFinal;
             }
             
-            // Because the this seems to be due to rounding (while method call).
-            if (cZoomFactorWidth > 1) {
-            	r.setWidth(r.getWidth() +  2);
-            	r.setX(r.getX() - 1);
-            }if (cZoomFactorHeight > 1) {
-            	r.setHeight(r.getHeight() + 2);
-            	r.setY(r.getY() - 1);
-            }
+            //  this seems to be due to rounding (while method call).
+//            if (cZoomFactorWidth > 1) {
+//            	r.setWidth(r.getWidth() +  2);
+//            	r.setX(r.getX() - 1);
+//            }if (cZoomFactorHeight > 1) {
+//            	r.setHeight(r.getHeight() + 2);
+//            	r.setY(r.getY() - 1);
+//            }
 
             
             /*
@@ -355,12 +356,14 @@ public abstract class PaintObjectBI extends PaintObject implements Cloneable, Se
              * 			from image.
              */
 
+            //
             // adapt the width of the selection to the size of the 
             // paint-object-image.
+            //
             r.setWidth(Math.min(
             		
             		// if image is greater than scope.
-            		bi_image.getWidth() - locX_at_bi_poi,
+            		(bi_image.getWidth() - locX_at_bi_poi),
             		
             		// if scope grater than image.
             		r.getIWidth()));
@@ -368,6 +371,7 @@ public abstract class PaintObjectBI extends PaintObject implements Cloneable, Se
             		bi_image.getHeight() - locY_at_bi_poi,
             		r.getIHeight()));
             
+
             // interrupt if the given values are illegal if the size of 
         	// the area which is to be repainted is equal to zero.
             if (r == null || r.getIHeight() <= 0 || r.getIWidth() <= 0) {

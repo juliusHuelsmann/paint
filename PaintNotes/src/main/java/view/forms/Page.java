@@ -299,6 +299,7 @@ import view.util.mega.MButton;
     			/ State.getImageSize().width;
     	final double zoomHeight = 1.0 * State.getImageShowSize().width 
     			/ State.getImageSize().width;
+    	
     	final int factor = 20;
     	
     	sp_ub.setMoveStep((int) Math.max(factor, factor * zoomWidth));

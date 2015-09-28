@@ -26,7 +26,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JFrame;
+
 import start.test.BufferedViewer;
 import model.objects.painting.PaintBI;
 import model.objects.painting.Picture;
@@ -2145,5 +2147,6 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
     protected final void setMaxY(final int _maxY) {
         this.maxY = _maxY;
     }
+
 
 }

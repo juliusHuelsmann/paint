@@ -51,7 +51,7 @@ import model.objects.Project;
 import model.objects.history.HistorySession;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
-import model.objects.painting.po.PaintObjectImage;
+import model.objects.painting.po.PaintObjectDrawImage;
 import model.objects.painting.po.PaintObjectPdf;
 import model.objects.painting.po.PaintObjectPen;
 import model.objects.painting.po.PaintObjectWriting;
@@ -205,8 +205,8 @@ public final class Picture implements Serializable {
 	 * 
 	 * @return the new created PaintObjectImage.
 	 */
-	public PaintObjectImage createPOI(final BufferedImage _bi) {
-		return new PaintObjectImage(getIncreaseCID(), _bi, this);
+	public PaintObjectDrawImage createPOI(final BufferedImage _bi) {
+		return new PaintObjectDrawImage(getIncreaseCID(), _bi, this);
 	}
 
 	/**
@@ -296,7 +296,7 @@ public final class Picture implements Serializable {
 		} else {
 
 			// create new PaintObject and insert it into list of
-			PaintObjectImage poi = new PaintObjectImage(currentId, _bi, this);
+			PaintObjectDrawImage poi = new PaintObjectDrawImage(currentId, _bi, this);
 			ls_po_sortedByY.insertSorted(poi, poi.getSnapshotBounds().y,
 					SecureList.ID_NO_PREDECESSOR);
 
@@ -1116,8 +1116,8 @@ public final class Picture implements Serializable {
 				pow.paint(bi, false, bi, -_recSelection.getIX(), 
 						-_recSelection.getIY(), null);
 
-			} else if (po instanceof PaintObjectImage) {
-				PaintObjectImage poi = (PaintObjectImage) po;
+			} else if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage poi = (PaintObjectDrawImage) po;
 				poi.paint(bi, false, bi, -_recSelection.getIX(), 
 						-_recSelection.getIY(), null);
 
@@ -1291,8 +1291,8 @@ public final class Picture implements Serializable {
 			ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
 			while (!ls_po_sortedByY.isBehind()) {
-				if (ls_po_sortedByY.getItem() instanceof PaintObjectImage) {
-					((PaintObjectImage) ls_po_sortedByY.getItem())
+				if (ls_po_sortedByY.getItem() instanceof PaintObjectDrawImage) {
+					((PaintObjectDrawImage) ls_po_sortedByY.getItem())
 					.prepareForSaving();
 				}
 				ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR, 
@@ -1311,8 +1311,8 @@ public final class Picture implements Serializable {
 			ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
 			while (!ls_po_sortedByY.isBehind()) {
-				if (ls_po_sortedByY.getItem() instanceof PaintObjectImage) {
-					((PaintObjectImage) ls_po_sortedByY.getItem()).restore();
+				if (ls_po_sortedByY.getItem() instanceof PaintObjectDrawImage) {
+					((PaintObjectDrawImage) ls_po_sortedByY.getItem()).restore();
 				}
 				ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
@@ -1401,8 +1401,8 @@ public final class Picture implements Serializable {
 			ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
 			while (!ls_po_sortedByY.isBehind()) {
-				if (ls_po_sortedByY.getItem() instanceof PaintObjectImage) {
-					((PaintObjectImage) ls_po_sortedByY.getItem()).restore();
+				if (ls_po_sortedByY.getItem() instanceof PaintObjectDrawImage) {
+					((PaintObjectDrawImage) ls_po_sortedByY.getItem()).restore();
 				}
 				ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
@@ -1424,7 +1424,7 @@ public final class Picture implements Serializable {
 	 * @param _poi
 	 *            the PaintObjectImage which is altered
 	 */
-	public void darken(final PaintObjectImage _poi) {
+	public void darken(final PaintObjectDrawImage _poi) {
 
 		BufferedImage bi_snapshot = _poi.getSnapshot();
 		for (int i = 0; i < bi_snapshot.getWidth(); i++) {
@@ -1457,7 +1457,7 @@ public final class Picture implements Serializable {
 	 * @param _poi
 	 *            the PaintObjectImage which is altered
 	 */
-	public void transformToAlpha(final PaintObjectImage _poi) {
+	public void transformToAlpha(final PaintObjectDrawImage _poi) {
 
 		BufferedImage bi_snapshot = _poi.getSnapshot();
 		for (int i = 0; i < bi_snapshot.getWidth(); i++) {
@@ -1519,9 +1519,9 @@ public final class Picture implements Serializable {
 			
 			ls_po_sortedByY.toFirst(transaction, closedAction);
 			while (!ls_po_sortedByY.isBehind() && !ls_po_sortedByY.isEmpty()) {
-				if (ls_po_sortedByY.getItem() instanceof PaintObjectImage) {
+				if (ls_po_sortedByY.getItem() instanceof PaintObjectDrawImage) {
 
-					whiteToAlpha((PaintObjectImage) ls_po_sortedByY.getItem());
+					whiteToAlpha((PaintObjectDrawImage) ls_po_sortedByY.getItem());
 				}
 				ls_po_sortedByY.next(transaction, closedAction);
 			}
@@ -1541,7 +1541,7 @@ public final class Picture implements Serializable {
 	 * @param _poi
 	 *            the PaintObjectImage which is altered
 	 */
-	private void whiteToAlpha(final PaintObjectImage _poi) {
+	private void whiteToAlpha(final PaintObjectDrawImage _poi) {
 
 		BufferedImage bi_snapshot = _poi.getSnapshot();
 
@@ -1578,7 +1578,7 @@ public final class Picture implements Serializable {
 	 * @param _poi
 	 *            the PaintObjectImage which is altered
 	 */
-	public void blackWhite(final PaintObjectImage _poi) {
+	public void blackWhite(final PaintObjectDrawImage _poi) {
 
 		BufferedImage bi_snapshot = _poi.getSnapshot();
 
@@ -1757,9 +1757,9 @@ public final class Picture implements Serializable {
 						.getItem();
 				pow = movePaintObjectWriting(pow, _dX, _dY);
 
-			} else if (ls_poSelected.getItem() instanceof PaintObjectImage) {
+			} else if (ls_poSelected.getItem() instanceof PaintObjectDrawImage) {
 
-				PaintObjectImage p = (PaintObjectImage) ls_poSelected.getItem();
+				PaintObjectDrawImage p = (PaintObjectDrawImage) ls_poSelected.getItem();
 				p.move(new Point(_dX, _dY));
 			} else if (ls_poSelected.getItem() instanceof POLine) {
 
@@ -2271,8 +2271,8 @@ public final class Picture implements Serializable {
 				new PictureOverview(_paintObjects).add(pow);
 				ls_po_sortedByY.insertSorted(pow, pow.getSnapshotBounds().y,
 						SecureList.ID_NO_PREDECESSOR);
-			} else if (po instanceof PaintObjectImage) {
-				PaintObjectImage poi = (PaintObjectImage) po;
+			} else if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage poi = (PaintObjectDrawImage) po;
 				new PictureOverview(_paintObjects).add(poi);
 
 				ls_po_sortedByY.insertSorted(poi, poi.getSnapshotBounds().y,
@@ -2382,7 +2382,7 @@ public final class Picture implements Serializable {
 						"load", 
 						SecureList.ID_NO_PREDECESSOR);
 				ls_po_sortedByY.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
-				PaintObjectImage poi_current = createPOI(bi_normalSize);
+				PaintObjectDrawImage poi_current = createPOI(bi_normalSize);
 				ls_po_sortedByY.insertSorted(poi_current,
 						poi_current.getSnapshotBounds().y, transaction);
 

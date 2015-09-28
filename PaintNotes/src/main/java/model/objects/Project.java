@@ -465,6 +465,7 @@ public class Project implements Serializable {
     	
     	
     	PDDocument doc = document.getPDDocument();
+    	System.out.println(doc);
         try
         {
         	

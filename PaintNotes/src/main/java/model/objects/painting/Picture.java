@@ -91,7 +91,7 @@ public final class Picture implements Serializable {
      * load it or whether important features have been added so that the
      * saved file is out-dated.
 	 */
-	private static final long serialVersionUID = 29882073145378042L;
+	private static final long serialVersionUID = 1L;
 
 
 	/**

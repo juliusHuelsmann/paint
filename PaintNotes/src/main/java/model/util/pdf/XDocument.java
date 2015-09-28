@@ -55,6 +55,14 @@ public class XDocument implements Serializable {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 1L;
+
+
+
+
+	/**
+	 * 
+	 */
 	private PDDocument document; 
 	
 	
@@ -101,6 +109,24 @@ public class XDocument implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+
+	/**
+	 * Restore the XDocument file from the path which is saved in the
+	 * class-variable pathToPDF.
+	 * 
+	 * @see setSerializable()
+	 */
+	public final boolean restoreFormSerializable(final PDDocument _xD) {
+		if (_xD != null) {
+
+			this.document = _xD;
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 
 	/**
 	 * Call super-class constructor and initialize extra-

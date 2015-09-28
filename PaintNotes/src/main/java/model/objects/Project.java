@@ -241,6 +241,8 @@ public class Project implements Serializable {
 	public final void restoreFormSerializable() {
 			document.restoreFormSerializable(pathToPDF);
 
+			
+			// get size of the first picture.
 			BufferedImage bi = PDFUtils.pdf2image(
 					document.getPDDocument(), 1);
 			
@@ -254,13 +256,11 @@ public class Project implements Serializable {
 	 * 
 	 * @see setSerializable()
 	 */
-	public final void restoreFormSerializable(final XDocument _xD) {
-		if (_xD != null) {
-
-			this.document = _xD;
-		} else {
+	public final void restoreFormSerializable(final PDDocument _xD) {
+		if (!document.restoreFormSerializable(_xD)) {
 			restoreFormSerializable();
 		}
+		
 	}
 	
 	
@@ -438,7 +438,7 @@ public class Project implements Serializable {
 			}
 
 			// pack project
-			XDocument temp = document;
+			PDDocument temp = document.getPDDocument();
 			this.setSerializable();
 			
 			

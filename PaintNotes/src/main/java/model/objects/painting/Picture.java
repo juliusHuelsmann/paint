@@ -28,16 +28,11 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.xml.ws.Dispatch;
-
 import control.ContorlPicture;
 import control.ControlSelectionTransform;
 import control.forms.tabs.CTabSelection;
@@ -77,7 +72,6 @@ import model.util.Util;
 import model.util.adt.list.SecureList;
 import model.util.adt.list.SecureListSort;
 import model.util.paint.Utils;
-import model.util.pdf.XDocument;
 
 /**
  * Picture class which contains all the not selected and selected painted items

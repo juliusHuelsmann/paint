@@ -118,8 +118,8 @@ public class PaintLabel extends MLabel {
     	// the zoom size for not having to cope with partial pixel.
     	final double zoomWidth = 1.0 * State.getImageSize().width 
     			/ State.getImageShowSize().width;
-    	final double zoomHeight = 1.0 * State.getImageSize().width 
-    			/ State.getImageShowSize().width;
+    	final double zoomHeight = 1.0 * State.getImageSize().height 
+    			/ State.getImageShowSize().height;
     	
     	int newX = (int) Math.round ((Math.round(_x * zoomWidth)) / zoomWidth);
     	int newY = (int) Math.round ((Math.round(_y * zoomHeight)) / zoomHeight);

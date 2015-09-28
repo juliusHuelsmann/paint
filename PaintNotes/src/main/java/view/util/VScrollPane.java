@@ -91,6 +91,8 @@ public class VScrollPane extends MPanel {
      */
     private final int rgbBorderHighlight = 204, rgbBorderShadow = 124;
 
+	private int minCenterSize = 50;
+
 	
 	/**
 	 * Constructor. Initialize components.
@@ -291,8 +293,10 @@ public class VScrollPane extends MPanel {
             //center MButton
             float percentage = Constants.MAX_PERCENTAGE 
                     * jpnl_owner.getHeight() / jpnl_toLocate.getHeight();
-            jbtn_center.setSize(icon_size, (int) (jpnl_owner.getHeight() 
-                    * percentage / Constants.MAX_PERCENTAGE));
+            jbtn_center.setSize(icon_size, 
+            		
+            		Math.max((int) (jpnl_owner.getHeight() 
+                    * percentage / Constants.MAX_PERCENTAGE), minCenterSize));
             
             /*
              * set location of the MButton jbtn_center
@@ -305,8 +309,12 @@ public class VScrollPane extends MPanel {
             //center MButton
             float percentage = Constants.MAX_PERCENTAGE * jpnl_owner.getWidth() 
                     / jpnl_toLocate.getWidth();
-            jbtn_center.setSize((int) (jpnl_owner.getWidth() * percentage 
-                    / Constants.MAX_PERCENTAGE), jbtn_center.getHeight());
+            jbtn_center.setSize(
+            		
+            		Math.max((int) (jpnl_owner.getWidth() * percentage 
+                    / Constants.MAX_PERCENTAGE), minCenterSize), 
+                    
+                    icon_size);
             
             /*
              * set location of the MButton jbtn_center
@@ -545,4 +553,19 @@ public class VScrollPane extends MPanel {
     public final MPanel getJpnl_owner() {
         return jpnl_owner;
     }
+
+	/**
+	 * @return the moveStep
+	 */
+	public int getMoveStep() {
+		return control.getMoveStep();
+	}
+
+
+	/**
+	 * @param moveStep the moveStep to set
+	 */
+	public void setMoveStep(int moveStep) {
+		control.setMoveStep(moveStep);
+	}
 }

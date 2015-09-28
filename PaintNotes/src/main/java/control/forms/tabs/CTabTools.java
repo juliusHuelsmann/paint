@@ -718,8 +718,6 @@ public final class CTabTools implements ActionListener, MouseListener {
             if (retval == JFileChooser.APPROVE_OPTION) {
                 File file = jfc.getSelectedFile();
 
-                System.out.println(Constants.endsWithSaveFormat(file.getName()) + ".." + file.getName()
-                		);
                 if (file.getName().toLowerCase().endsWith(".pic")) {
                     controlPaint.loadProject(
                     		file.getAbsolutePath());
@@ -761,7 +759,10 @@ public final class CTabTools implements ActionListener, MouseListener {
                             JOptionPane.ERROR_MESSAGE);
                     mr_save();
                     State.setUncommittedChanges(false);
+                    return;
                 }
+
+    			
             }
         
         
@@ -796,12 +797,16 @@ public final class CTabTools implements ActionListener, MouseListener {
             	controlPaint.getView().getPage().getJpnl_new().setVisible(true);
                 controlPaint.getPicture().reload();
                 State.setUncommittedChanges(false);
+
+    			
             }
         } else {
 
         	controlPaint.getView().getPage().getJpnl_new().setVisible(true);
             controlPaint.getPicture().reload();
             State.setUncommittedChanges(false);
+
+			
 
         }
     }

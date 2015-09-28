@@ -333,7 +333,7 @@ ActivityListener, MouseListener {
 						BufferedImage.TYPE_INT_ARGB));
 		view.getPage().setSize(
 				(int) ViewSettings.getView_bounds_page().getWidth(),
-		 (int) ViewSettings.getView_bounds_page().getHeight());
+				(int) ViewSettings.getView_bounds_page().getHeight());
 	}
 
 	

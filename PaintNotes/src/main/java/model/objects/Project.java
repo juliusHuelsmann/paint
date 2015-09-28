@@ -490,7 +490,7 @@ public class Project implements Serializable {
         			index = -1;
         		}
         		
-        		attatchToPDF(doc, pictures[i].getBufferedImage(0, 0), index);
+        		attatchToPDF(doc, pictures[i].getBufferedImage(0, 0, false), index);
 			}
 
 

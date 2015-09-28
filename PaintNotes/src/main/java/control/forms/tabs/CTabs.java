@@ -70,21 +70,30 @@ public class CTabs implements TabbedListener {
 		ViewSettings.setView_bounds_page(
 				new Rectangle(ViewSettings.getView_bounds_page()));
 
-		
 		//re-initialize the image with the correct size
-
-		cp.getControlPic().setBi_background(new BufferedImage(
-				ViewSettings.getView_bounds_page().getSize().width,
-				ViewSettings.getView_bounds_page().getSize().height,
-				BufferedImage.TYPE_INT_ARGB));
+		cp.setBi_preprint(
+				new BufferedImage(
+						Math.max(ViewSettings.getView_bounds_page()
+								.getSize().width, 1),
+						Math.max(ViewSettings.getView_bounds_page()
+								.getSize().height,
+								1),
+						BufferedImage.TYPE_INT_ARGB));
+		cp.getControlPic().setBi_background(
+				new BufferedImage(
+						Math.max(ViewSettings.getView_bounds_page()
+								.getSize().width, 1),
+						Math.max(ViewSettings.getView_bounds_page()
+								.getSize().height,
+								1),
+						BufferedImage.TYPE_INT_ARGB));
 		cp.getControlPic().setBi(new BufferedImage(
-				ViewSettings.getView_bounds_page().getSize().width,
-				ViewSettings.getView_bounds_page().getSize().height,
-				BufferedImage.TYPE_INT_ARGB));
-		cp.setBi_preprint(new BufferedImage(
-				ViewSettings.getView_bounds_page().getSize().width,
-				ViewSettings.getView_bounds_page().getSize().height,
-				BufferedImage.TYPE_INT_ARGB));
+						Math.max(ViewSettings.getView_bounds_page()
+								.getSize().width, 1),
+						Math.max(ViewSettings.getView_bounds_page()
+								.getSize().height, 
+								1),
+						BufferedImage.TYPE_INT_ARGB));
 
 		//apply new size in view
         //takes some time and repaints the image.

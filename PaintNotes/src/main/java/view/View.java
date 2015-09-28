@@ -645,6 +645,8 @@ import control.util.WindowMover;
 
             page.setLocation(
                     ViewSettings.getView_bounds_page().getLocation());
+            
+            
             page.setSize(ViewSettings.getView_bounds_page().width, 
                     ViewSettings.getView_bounds_page().height);
         } else {

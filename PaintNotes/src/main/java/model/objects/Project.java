@@ -23,18 +23,31 @@ package model.objects;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+
 import model.objects.history.HistorySession;
 import model.objects.painting.Picture;
+import model.objects.painting.po.PaintObject;
+import model.objects.painting.po.PaintObjectImage;
 import model.settings.State;
 import model.util.DPoint;
+import model.util.adt.list.SecureList;
+import model.util.adt.list.SecureListSort;
 import model.util.paint.Utils;
+import model.util.pdf.PDFUtils;
 import model.util.pdf.XDocument;
 
 /**
@@ -47,9 +60,15 @@ import model.util.pdf.XDocument;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class Project {
+public class Project implements Serializable {
 
 	
+	/**
+	 * Serial version UID.
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	/**
 	 * The PDF document on which the current project is based.
 	 */
@@ -72,6 +91,17 @@ public class Project {
 	 */
 	private Picture[] pictures;
 
+	public int getAmountPages() {
+		if (pictures == null) {
+			return 0;
+		}
+		return pictures.length;
+	}
+	
+	/**
+	 * If the document is saved, the path to the PDF file is saved in here.
+	 */
+	private String pathToPDF;
 
 	/**
 	 * Constructor of project: 
@@ -102,8 +132,8 @@ public class Project {
 
 		try {
 			this.document = new XDocument(_pString, this);
+			this.pathToPDF = _pString;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (document != null) {
@@ -148,6 +178,8 @@ public class Project {
 	}
 	
 	
+	
+
 
 	/**
 	 * load an image to the picture. and write it into bi_resized.
@@ -180,6 +212,54 @@ public class Project {
 		for (int i = 0; i < history.length; i++) {
 			pictures[i].initialize(history[i]);
 			
+		}
+	}
+	
+	
+	
+	/**
+	 * Set the project class serializable by removing the XDocument.
+	 * The path to the PDF file that has been edited is saved in the 
+	 * String pathToPDF.
+	 * 
+	 * For being able to restore the PDF file, it is necessary that
+	 * the original PDF file has not been removed.
+	 */
+	public final void setSerializable() {
+		
+		document.setSerializable();
+	}
+	
+	
+	
+	/**
+	 * Restore the XDocument file from the path which is saved in the
+	 * class-variable pathToPDF.
+	 * 
+	 * @see setSerializable()
+	 */
+	public final void restoreFormSerializable() {
+			document.restoreFormSerializable(pathToPDF);
+
+			BufferedImage bi = PDFUtils.pdf2image(
+					document.getPDDocument(), 1);
+			
+			State.setImageSize(new Dimension(bi.getWidth(), bi.getHeight()));
+			State.setImageShowSize(new Dimension(bi.getWidth(), bi.getHeight()));
+	}
+	
+	/**
+	 * Restore the XDocument file from the path which is saved in the
+	 * class-variable pathToPDF.
+	 * 
+	 * @see setSerializable()
+	 */
+	public final void restoreFormSerializable(final XDocument _xD) {
+		if (_xD != null) {
+
+			this.document = _xD;
+		} else {
+			restoreFormSerializable();
 		}
 	}
 	
@@ -233,7 +313,6 @@ public class Project {
 	public void increaseCurrentPage() {
 		if (document != null 
 				&& currentlyDisplayedPage < document.getNumberOfPages() - 1) {
-
 
 			document.getPdfPages()[currentlyDisplayedPage].forget();
 			
@@ -344,6 +423,41 @@ public class Project {
 	
 	
 	
+	public final void saveProject(final String _wsLoc) {
+		try {
+			FileOutputStream fos = new FileOutputStream(new File(_wsLoc));
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+			// store the content of the BufferedImages elsewhere and delete 
+			// it afterwards because it is not serializable. After saving 
+			// operation has been completed, the bufferedImages are 
+			// automatically loaded.
+			// pack images
+			for (int i = 0; i < pictures.length; i++) {
+				pictures[i].pack();
+			}
+
+			// pack project
+			XDocument temp = document;
+			this.setSerializable();
+			
+			
+			oos.writeObject(this);
+			
+			this.restoreFormSerializable(temp);
+
+			for (int i = 0; i < pictures.length; i++) {
+				pictures[i].unpack();
+			}
+			oos.flush();
+			oos.close();
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
 	
 	
 	public void savePDF(final String firstPath) throws IOException {
@@ -391,5 +505,13 @@ public class Project {
             }
         }
     }
+
+
+	/**
+	 * @return the document
+	 */
+	public XDocument getDocument() {
+		return document;
+	}
 
 }

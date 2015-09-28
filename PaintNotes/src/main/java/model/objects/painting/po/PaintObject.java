@@ -278,14 +278,6 @@ public abstract class PaintObject implements Serializable, Cloneable {
 
 
 
-	/**
-	 * Setter method. Is necessary because if a file is restored,
-	 * the instance of picture is to be replaced by the new picture instance.
-	 * @param _picture the picture to set
-	 */
-	public final void setPicture(final Picture _picture) {
-		this.picture = _picture;
-	}
 
 
 

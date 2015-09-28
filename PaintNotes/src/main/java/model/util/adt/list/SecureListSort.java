@@ -540,7 +540,7 @@ public class SecureListSort<SecureListType> implements Serializable {
     
     
     /**
-     * Use the list with bubble-sort algorithm.
+     * Sort the list with bubble-sort algorithm.
      * 
      */
     @SuppressWarnings("unchecked")

@@ -97,7 +97,7 @@ implements MouseMotionListener, MouseListener, KeyListener, MouseWheelListener {
     /**
      * the amount of pixel to move.
      */
-    private final int moveStep = 15;
+    private int moveStep = 20;
     
     /*
      * settings values
@@ -573,7 +573,7 @@ implements MouseMotionListener, MouseListener, KeyListener, MouseWheelListener {
     private void removeXLocation(final int _factor) {
         
 
-            int x = view.getJpnl_toLocate().getLocation().x - moveStep * _factor;
+            int x = view.getJpnl_toLocate().getLocation().x - getMoveStep() * _factor;
             if (x < -view.getJpnl_toLocate().getWidth()
                     + view.getJpnl_owner().getWidth()) {
                 x = -view.getJpnl_toLocate().getWidth()
@@ -595,7 +595,7 @@ implements MouseMotionListener, MouseListener, KeyListener, MouseWheelListener {
         
         
 
-            int x = view.getJpnl_toLocate().getLocation().x + moveStep * _factor;
+            int x = view.getJpnl_toLocate().getLocation().x + getMoveStep() * _factor;
             if (x > 0) {
                 x = 0;
             }
@@ -611,7 +611,7 @@ implements MouseMotionListener, MouseListener, KeyListener, MouseWheelListener {
      */
     private void removeYLocation(final int _factor) {
 
-        int y = view.getJpnl_toLocate().getLocation().y - moveStep * _factor;
+        int y = view.getJpnl_toLocate().getLocation().y - getMoveStep() * _factor;
             if (y < -view.getJpnl_toLocate().getHeight()
                     + view.getJpnl_owner().getHeight()) {
                 y = -view.getJpnl_toLocate().getHeight()
@@ -629,7 +629,7 @@ implements MouseMotionListener, MouseListener, KeyListener, MouseWheelListener {
      * increase y location.
      */
     private void addYLocation(final int _factor) {
-        int y = view.getJpnl_toLocate().getLocation().y + moveStep * _factor;
+        int y = view.getJpnl_toLocate().getLocation().y + getMoveStep() * _factor;
         
 
             if (y > 0) {
@@ -739,4 +739,20 @@ implements MouseMotionListener, MouseListener, KeyListener, MouseWheelListener {
 	      }
 		}
     }
+
+
+	/**
+	 * @return the moveStep
+	 */
+	public int getMoveStep() {
+		return moveStep;
+	}
+
+
+	/**
+	 * @param moveStep the moveStep to set
+	 */
+	public void setMoveStep(int moveStep) {
+		this.moveStep = moveStep;
+	}
 }

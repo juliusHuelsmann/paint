@@ -291,6 +291,20 @@ import view.util.mega.MButton;
      * without using the ScrollPanes).
      */
     public void refrehsSps() {
+    	
+    	//
+    	// recalculate the scrolling-step
+    	//
+    	final double zoomWidth = 1.0 * State.getImageShowSize().width 
+    			/ State.getImageSize().width;
+    	final double zoomHeight = 1.0 * State.getImageShowSize().width 
+    			/ State.getImageSize().width;
+    	final int factor = 20;
+    	
+    	sp_ub.setMoveStep((int) Math.max(factor, factor * zoomWidth));
+    	sp_ub.setMoveStep((int) Math.max(factor, factor * zoomHeight));
+    	
+    	// recalculate center bounds.
         sp_ub.recalculateCenterBounds();
         sp_lr.recalculateCenterBounds();
     }

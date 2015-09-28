@@ -566,7 +566,7 @@ public final class Picture implements Serializable {
 		
 		
 		ret = repaintRectangle(_x, _y, _width, _height, _graphicX,
-				_graphiY, ret, false);
+				_graphiY, ret, false, true);
 
 		return ret;
 	}
@@ -655,7 +655,8 @@ public final class Picture implements Serializable {
 			final int _xBi,
 			final int _yBi,
 			
-			final BufferedImage _bi, final boolean _final) {
+			final BufferedImage _bi, final boolean _final,
+			final boolean _paintPDFImage) {
 
 		// If the sorted list of PaintObjects has not been initialized yet,
 		// the list is empty or the given bufferedImage is equal to NULL
@@ -759,7 +760,7 @@ public final class Picture implements Serializable {
 						
 						// if the current paint object is a "normal" paint object
 						// or it is not final.
-						if (!(_final && ls_po_sortedByY.getItem() 
+						if (_paintPDFImage || !(_final && ls_po_sortedByY.getItem() 
 								instanceof PaintObjectPdf)) {
 
 							ls_poChronologic.insertSorted(ls_po_sortedByY.getItem(),
@@ -1146,7 +1147,7 @@ public final class Picture implements Serializable {
 			final int _y,
 			final String _type) {
 
-		BufferedImage bi = getBufferedImage(_x, _y);
+		BufferedImage bi = getBufferedImage(_x, _y, true);
 		try {
 			if (_type == "") {
 
@@ -1167,10 +1168,14 @@ public final class Picture implements Serializable {
 	 *            
 	 *            @param _x the location of the PaintLabel.
 	 *            @param _y the location of the PaintLabel.
+	 *            @param _paintPDFIMage if it is true, the pdf image is painted.
+	 *            						thus this variable has to be false if called
+	 *            						from out of project.
 	 */
 	public BufferedImage getBufferedImage(
 			final int _x,
-			final int _y) {
+			final int _y,
+			final boolean _paintPDFImage) {
 
 		BufferedImage bi;
 		if (State.isExportAlpha()) {
@@ -1184,7 +1189,7 @@ public final class Picture implements Serializable {
 				State.getImageSize().height, 0, 0);
 
 		bi = repaintRectangle(-_x + 0, -_y + 0, State.getImageSize().width,
-				State.getImageSize().height, -_x + 0, -_y + 0, bi, true);
+				State.getImageSize().height, -_x + 0, -_y + 0, bi, true, _paintPDFImage);
 
 		return bi;
 	}
@@ -1235,7 +1240,7 @@ public final class Picture implements Serializable {
 				State.getImageSize().width,
 				State.getImageSize().height,
 				0, 0,
-				bi, true);
+				bi, true, true);
 
 		return bi;
 

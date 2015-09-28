@@ -504,4 +504,28 @@ public abstract class PaintObjectBI extends PaintObject implements Cloneable, Se
 	public void setPnt_locationOfImage(Point pnt_locationOfImage) {
 		this.pnt_locationOfImage = pnt_locationOfImage;
 	}
+
+	
+	/**
+	 * Because the BufferedImage is not serializable, it is necessary
+	 * to remove the BufferedImage for saving and to store its content outwards.
+	 */
+	public final void prepareForSaving() {
+		if (getBi_image().getContent() != null) {
+
+			getBi_image().pack();
+		}
+	}
+	
+	
+	/**
+	 * Restore has to be done after saving.
+	 */
+	public final void restore() {
+		if (getBi_image().getContent() != null) {
+
+			getBi_image().restore();
+		}
+	}
+
 }

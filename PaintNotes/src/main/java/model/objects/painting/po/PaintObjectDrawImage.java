@@ -754,26 +754,13 @@ public class PaintObjectDrawImage extends PaintObjectBI implements Cloneable, Se
 		
 	}
 
-	
-	
-	/**
-	 * Because the BufferedImage is not serializable, it is necessary
-	 * to remove the BufferedImage for saving and to store its content outwards.
-	 */
-	public final void prepareForSaving() {
-		super.getBi_image().pack();
-	}
-	
-	
-	/**
-	 * Restore has to be done after saving.
-	 */
-	public final void restore() {
-		super.getBi_image().restore();
-	}
 
 	@Override
 	public boolean isEditable() {
 		return true;
 	}
+
+	
+	
+	
 }

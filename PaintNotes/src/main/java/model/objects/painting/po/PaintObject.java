@@ -249,6 +249,8 @@ public abstract class PaintObject implements Serializable, Cloneable {
     		List<PaintObjectWriting> _l);
     
     
+    public abstract boolean isEditable();
+    
     
     /**
      * Clone this paint object.

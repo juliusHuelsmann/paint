@@ -38,7 +38,7 @@ import javax.swing.JLabel;
 
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
-import model.objects.painting.po.PaintObjectImage;
+import model.objects.painting.po.PaintObjectDrawImage;
 import model.objects.painting.po.PaintObjectWriting;
 import model.settings.State;
 import model.util.DPoint;
@@ -152,9 +152,9 @@ public final class MyClipboard implements ClipboardOwner {
         while (!_lsPoSelected.isBehind() && !_lsPoSelected.isEmpty()) {
             
             PaintObject po = _lsPoSelected.getItem();
-            if (po instanceof PaintObjectImage) {
-                PaintObjectImage poi = (PaintObjectImage) po;
-                PaintObjectImage poi_new = _picture.createPOI(
+            if (po instanceof PaintObjectDrawImage) {
+                PaintObjectDrawImage poi = (PaintObjectDrawImage) po;
+                PaintObjectDrawImage poi_new = _picture.createPOI(
                 		poi.getSnapshot());
 
                 ls_new.insertBehind(poi_new);

@@ -47,6 +47,7 @@ import view.forms.Page;
 import view.tabs.Insert;
 import view.tabs.Debug;
 import model.objects.PictureOverview;
+import model.objects.Project;
 import model.objects.history.HistorySession;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
@@ -218,8 +219,8 @@ public final class Picture implements Serializable {
 	 * 
 	 * @return the new created PaintObjectImage.
 	 */
-	public PaintObjectPdf createPDF(final XDocument _xD, final int _pageNr) {
-		return new PaintObjectPdf(getIncreaseCID(), _xD, _pageNr, this);
+	public PaintObjectPdf createPDF(final Project _pro, final int _pageNr) {
+		return new PaintObjectPdf(getIncreaseCID(), _pro, _pageNr, this);
 	}
 
 	/**
@@ -343,7 +344,7 @@ public final class Picture implements Serializable {
 	 * @param _bi
 	 *            the BufferedImage which is to be transformed into ImagePO.
 	 */
-	public PaintObjectPdf addPaintObjectPDF(final XDocument _xD, final int _pageNr) {
+	public PaintObjectPdf addPaintObjectPDF(final Project _pro, final int _pageNr) {
 
 		if (po_current != null) {
 
@@ -358,12 +359,12 @@ public final class Picture implements Serializable {
 
 		}
 
-		if (_xD == null) {
+		if (_pro == null) {
 			State.getLogger().warning("pdf is null.");
 		} else {
 
 			// create new PaintObject and insert it into list of
-			PaintObjectPdf poi = createPDF(_xD, _pageNr);
+			PaintObjectPdf poi = createPDF(_pro, _pageNr);
 			ls_po_sortedByY.insertSorted(poi, 0,
 					SecureList.ID_NO_PREDECESSOR);
 			
@@ -1276,39 +1277,33 @@ public final class Picture implements Serializable {
 	}
 
 	/**
-	 * save the picture.
+	 * Pack for saving the picture.
 	 * 
 	 * @param _wsLoc
 	 *            the path of the location.
 	 */
-	public void savePicture(final String _wsLoc) {
-		try {
-			FileOutputStream fos = new FileOutputStream(new File(_wsLoc));
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-
-			// store the content of the BufferedImages elsewhere and delete 
-			// it afterwards because it is not serializable. After saving 
-			// operation has been completed, the bufferedImages are 
-			// automatically loaded.
-			if (ls_po_sortedByY != null) {
-				ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR, 
-						SecureList.ID_NO_PREDECESSOR);
-				while (!ls_po_sortedByY.isBehind()) {
-					if (ls_po_sortedByY.getItem() instanceof PaintObjectImage) {
-						((PaintObjectImage) ls_po_sortedByY.getItem())
-						.prepareForSaving();
-					}
-					ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR, 
-						SecureList.ID_NO_PREDECESSOR);
+	public void pack() {
+		// store the content of the BufferedImages elsewhere and delete 
+		// it afterwards because it is not serializable. After saving 
+		// operation has been completed, the bufferedImages are 
+		// automatically loaded.
+		if (ls_po_sortedByY != null) {
+			ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR, 
+					SecureList.ID_NO_PREDECESSOR);
+			while (!ls_po_sortedByY.isBehind()) {
+				if (ls_po_sortedByY.getItem() instanceof PaintObjectImage) {
+					((PaintObjectImage) ls_po_sortedByY.getItem())
+					.prepareForSaving();
 				}
+				ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR, 
+					SecureList.ID_NO_PREDECESSOR);
 			}
-			oos.writeObject(ls_po_sortedByY);
-			oos.flush();
-			oos.close();
-			fos.close();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+
+	}
+	
+	
+	public final void unpack() {
 
 		// re - load the bufferedImage to file (which is not serializable, thus
 		// it had to be packed for saving.
@@ -1325,13 +1320,46 @@ public final class Picture implements Serializable {
 		}
 	}
 
+	
+	
+	
+
+	/**
+	 * Resets closedAction and Transactions after loading and resorts the 
+	 * list's elements.
+	 */
+	public final void loadPicture() {
+
+		//reset current action
+		ls_po_sortedByY.resetTransaction();
+		ls_po_sortedByY.resetClosedAction();
+
+		//convert: is done for old version of .pic because
+		// sorted by x coordinate.
+		ls_po_sortedByY.toFirst(SecureListSort.ID_NO_PREDECESSOR, 
+				SecureListSort.ID_NO_PREDECESSOR);
+		while(!ls_po_sortedByY.isBehind()) {
+			if (ls_po_sortedByY.getItem() != null 
+					&& ls_po_sortedByY.getItem().getSnapshotBounds() != null) {
+
+				
+				ls_po_sortedByY.getElement().setSortedIndex(
+						ls_po_sortedByY.getItem().getSnapshotBounds().y);
+			}
+			ls_po_sortedByY.next(SecureListSort.ID_NO_PREDECESSOR, 
+					SecureListSort.ID_NO_PREDECESSOR);
+		}
+
+		ls_po_sortedByY.resort(null);
+	}
 	/**
 	 * save the picture.
 	 * 
 	 * @param _wsLoc
 	 *            the path of the location.
 	 */
-	public void loadPicture(final String _wsLoc) {
+	@Deprecated
+	public void loadPictureOld(final String _wsLoc) {
 		try {
 			FileInputStream fos = new FileInputStream(new File(_wsLoc));
 			ObjectInputStream oos = new ObjectInputStream(fos);
@@ -1376,7 +1404,6 @@ public final class Picture implements Serializable {
 				if (ls_po_sortedByY.getItem() instanceof PaintObjectImage) {
 					((PaintObjectImage) ls_po_sortedByY.getItem()).restore();
 				}
-				ls_po_sortedByY.getItem().setPicture(this);
 				ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
 			}

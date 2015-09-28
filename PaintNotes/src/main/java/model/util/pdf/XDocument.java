@@ -30,6 +30,7 @@ import java.io.Serializable;
 import model.objects.Project;
 import model.objects.painting.po.PaintObjectPdf;
 import model.settings.Constants;
+import model.settings.State;
 
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -66,7 +67,40 @@ public class XDocument implements Serializable {
 	
 	
 	private Project project;
+
 	
+	/**
+	 * Set the project class serializable by removing the XDocument.
+	 * The path to the PDF file that has been edited is saved in the 
+	 * String pathToPDF.
+	 * 
+	 * For being able to restore the PDF file, it is necessary that
+	 * the original PDF file has not been removed.
+	 */
+	public final void setSerializable() {
+		
+		this.document = null;
+	}
+	
+	
+	
+	/**
+	 * Restore the XDocument file from the path which is saved in the
+	 * class-variable pathToPDF.
+	 * 
+	 * @see setSerializable()
+	 */
+	public final void restoreFormSerializable(final String _pString) {
+		try {
+			//
+			// load the document.
+			//
+			this.document = PDDocument.load(new File(_pString));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Call super-class constructor and initialize extra-
@@ -124,7 +158,7 @@ public class XDocument implements Serializable {
 				
 
 					
-					pdfPages[i] = project.getPicture(i).addPaintObjectPDF(this, i);
+					pdfPages[i] = project.getPicture(i).addPaintObjectPDF(project, i);
 
 					
 					// get size of the current page of the document.

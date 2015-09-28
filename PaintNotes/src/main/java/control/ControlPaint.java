@@ -27,8 +27,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.logging.Level;
+
 import javax.swing.ImageIcon;
+
 import control.forms.CLoading;
 import control.forms.CNew;
 import control.forms.CPaintStatus;
@@ -2438,6 +2444,43 @@ MenuListener {
 
     }
 
+	
+	
+	
+
+	/**
+	 * save the picture.
+	 * 
+	 * @param _wsLoc
+	 *            the path of the location.
+	 */
+	public void loadProject(final String _wsLoc) {
+		try {
+			FileInputStream fos = new FileInputStream(new File(_wsLoc));
+			ObjectInputStream oos = new ObjectInputStream(fos);
+			
+			Project p = (Project) oos.readObject();
+			project = p;
+			project.restoreFormSerializable();
+			// reset transactions etc., resort.
+			for (int i = 0; i < project.getAmountPages(); i++) {
+				project.getPicture(i).loadPicture();
+			}
+
+			oos.close();
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+
+		for (int i = 0; i < project.getAmountPages(); i++) {
+			project.getPicture(i).unpack();
+		}
+		
+	}
 
 
 

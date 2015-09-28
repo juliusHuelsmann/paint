@@ -27,7 +27,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -35,6 +38,7 @@ import javax.swing.border.LineBorder;
 
 import control.ContorlPicture;
 import control.ControlPaint;
+import model.objects.Project;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectImage;
 import model.objects.painting.po.PaintObjectWriting;
@@ -562,7 +566,7 @@ public final class CTabTools implements ActionListener, MouseListener {
                     controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
             	}
             } 
-            controlPaint.getPicture().savePicture(firstPath + ".pic");
+            controlPaint.getProject().saveProject(firstPath + ".pic");
 
             State.setUncommittedChanges(false);
             controlPaint.getView().getPage().repaint();
@@ -676,13 +680,16 @@ public final class CTabTools implements ActionListener, MouseListener {
                     controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
             	}
             } 
-            controlPaint.getPicture().savePicture(firstPath + ".pic");
+            controlPaint.getProject().saveProject(firstPath + ".pic");
 
 
             State.setUncommittedChanges(false);
             controlPaint.getView().getPage().repaint();
         }
     }
+    
+
+    
     
     /**
      * MouseReleased method for button press at button load.
@@ -714,7 +721,7 @@ public final class CTabTools implements ActionListener, MouseListener {
                 System.out.println(Constants.endsWithSaveFormat(file.getName()) + ".." + file.getName()
                 		);
                 if (file.getName().toLowerCase().endsWith(".pic")) {
-                    controlPaint.getPicture().loadPicture(
+                    controlPaint.loadProject(
                     		file.getAbsolutePath());
                     State.setUncommittedChanges(false);
                     getControlPicture().refreshPaint();
@@ -1106,6 +1113,11 @@ public final class CTabTools implements ActionListener, MouseListener {
 		}
 	}
 
+	
+	
+	
+	
+	
 
 	/**
 	 * @return the controlPaint

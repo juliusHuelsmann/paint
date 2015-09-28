@@ -19,11 +19,9 @@ package model.objects.painting.po;
  */
 
 
-import java.awt.image.BufferedImage;
-
+import model.objects.Project;
 import model.objects.painting.Picture;
 import model.util.pdf.PDFUtils;
-import model.util.pdf.XDocument;
 
 
 /**
@@ -34,13 +32,41 @@ import model.util.pdf.XDocument;
  */
 @SuppressWarnings("serial")
 public class PaintObjectPdf extends PaintObjectImage {
-final int pageNumber;
-	final XDocument xD;
+	
+	
+	
+	
+	/**
+	 * The page number inside the XDocument.
+	 */
+	final int pageNumber;
+	
+	/**
+	 * Link to the Project for being able to fetch the XDocument. 
+	 * The XDocument is not saved directly because it is not serializable.
+	 * 
+	 * For saving, the XDocument is removed out of the project class and
+	 * restored afterwards.
+	 */
+	final Project pro;
+	
+	
+	/**
+	 * Constructor: calls super-constructor and saves instances of important 
+	 * classes.
+	 * 
+	 * @param _elementId
+	 * @param _project
+	 * @param _pageNr
+	 * @param _picture
+	 */
 	public PaintObjectPdf(
-			final int _elementId, final XDocument _xd, final int _pageNr, 
+			final int _elementId, final Project _project, final int _pageNr, 
 			final Picture _picture) {
+		
+		// call super constructor and save variables.
 		super(_elementId, null, _picture);
-		this.xD = _xd;
+		this.pro = _project;
 		this.pageNumber = _pageNr;
 		
 	}
@@ -48,7 +74,7 @@ final int pageNumber;
 	public void remember() {
 
 		setImage(PDFUtils.pdf2image(
-				xD.getPDDocument(), pageNumber));
+				pro.getDocument().getPDDocument(), pageNumber));
 	}
 
 	public void forget() {

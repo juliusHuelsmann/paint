@@ -51,6 +51,7 @@ import model.objects.Project;
 import model.objects.history.HistorySession;
 import model.objects.painting.po.POInsertion;
 import model.objects.painting.po.PaintObject;
+import model.objects.painting.po.PaintObjectBI;
 import model.objects.painting.po.PaintObjectDrawImage;
 import model.objects.painting.po.PaintObjectPdf;
 import model.objects.painting.po.PaintObjectPen;
@@ -1291,8 +1292,8 @@ public final class Picture implements Serializable {
 			ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
 			while (!ls_po_sortedByY.isBehind()) {
-				if (ls_po_sortedByY.getItem() instanceof PaintObjectDrawImage) {
-					((PaintObjectDrawImage) ls_po_sortedByY.getItem())
+				if (ls_po_sortedByY.getItem() instanceof PaintObjectBI) {
+					((PaintObjectBI) ls_po_sortedByY.getItem())
 					.prepareForSaving();
 				}
 				ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR, 
@@ -1311,8 +1312,8 @@ public final class Picture implements Serializable {
 			ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
 			while (!ls_po_sortedByY.isBehind()) {
-				if (ls_po_sortedByY.getItem() instanceof PaintObjectDrawImage) {
-					((PaintObjectDrawImage) ls_po_sortedByY.getItem()).restore();
+				if (ls_po_sortedByY.getItem() instanceof PaintObjectBI) {
+					((PaintObjectBI) ls_po_sortedByY.getItem()).restore();
 				}
 				ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
@@ -1401,8 +1402,8 @@ public final class Picture implements Serializable {
 			ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);
 			while (!ls_po_sortedByY.isBehind()) {
-				if (ls_po_sortedByY.getItem() instanceof PaintObjectDrawImage) {
-					((PaintObjectDrawImage) ls_po_sortedByY.getItem()).restore();
+				if (ls_po_sortedByY.getItem() instanceof PaintObjectBI) {
+					((PaintObjectBI) ls_po_sortedByY.getItem()).restore();
 				}
 				ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR, 
 					SecureList.ID_NO_PREDECESSOR);

@@ -403,7 +403,6 @@ MenuListener {
             State.getLogger().info("initialization process completed.\n\n"
                     + "-------------------------------------------------\n");
 
-            
 
     		/*
     		 * Call update procedure.
@@ -1326,7 +1325,7 @@ MenuListener {
         case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
         	double d = System.currentTimeMillis();
             if (_event.getButton() == MouseEvent.BUTTON1) {
-                mr_zoom(_event);
+                mr_zoomIn(_event);
                 cTabPaint.updateResizeLocation();
             } else if (_event.getButton() == MouseEvent.BUTTON3) {
             	cTabPaint.mr_zoomOut();
@@ -1386,23 +1385,27 @@ MenuListener {
     /**
      * The MouseReleased event for zoom.
      * @param _event the event.
+     * 
+     * @see CTabTools.#mr_zoomOut()
      */
-    private void mr_zoom(final MouseEvent _event) {
+    private void mr_zoomIn(final MouseEvent _event) {
 
     	// If the maximal zoom in - size is not reached yet execute the zoom
     	// -in. 
     	// Otherwise the user is informed, that it is impossible to zoom-in.
-        if (State.getImageShowSize().width
-                / State.getImageSize().width 
-                < Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
-                        ViewSettings.MAX_ZOOM_IN)) {
-            
-        	
+    	// if allowed to zoom out (has not already reached the max zoom out 
+    	// level
+        if (State.getZoomState() <  ViewSettings.MAX_ZOOM_IN) {
+
+        	// Change the value which is used for computing the current 
+        	// <code> imageShowSize</code>.
+        	State.zoomStateZoomIn();
+
         	// Calculate the new size of the page.
-            int newWidth = State.getImageShowSize().width
-                    * ViewSettings.ZOOM_MULITPLICATOR, 
-                    newHeight = State.getImageShowSize().height
-                    * ViewSettings.ZOOM_MULITPLICATOR;
+            int newWidth = (int) (State.getImageSize().width
+            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
+            int newHeight = (int) (State.getImageSize().height
+            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
 
             Point oldLocation = new Point(getPage()
                     .getJlbl_painting().getLocation().x, getPage()
@@ -1422,21 +1425,6 @@ MenuListener {
 
             
             // check if the bounds are valid
-
-//            // not smaller than the
-//            newX = Math.max(newX, -(Status.getImageShowSize().width 
-//                    - getPage().getJlbl_painting()
-//                    .getWidth()));
-//            newY = Math.max(newY,
-//                    -(Status.getImageShowSize().height 
-//                    		- getPage().getJlbl_painting()
-//                    		.getHeight()));
-//            
-//            
-//            // not greater than 0
-//            newX = Math.min(newX, 0);
-//            newY = Math.min(newY, 0);
-
             // not smaller than the negative image size.
             newX = Math.max(newX,
             		(int) -(State.getImageShowSize().width

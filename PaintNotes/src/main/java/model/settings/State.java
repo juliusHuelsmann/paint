@@ -214,6 +214,48 @@ public final class State {
     private static Dimension imageSize;
 
     
+    /**
+     * The current zoom is equal to 
+     * <code> imageSize 
+     * 		.* ViewSettings.ZOOM_MULITPLICATOR ^ State.getZoomState();</code>.
+     */
+    private static int zoomState = 0;
+    
+
+    /**
+     * Returns the <code>zoomState</code>. The image size can be extracted
+     * out of the current <code>zoomState</code> by applying the following
+     * formula: <br>
+     * <code> imageSize 
+     * 		.* ViewSettings.ZOOM_MULITPLICATOR ^ State.getZoomState();</code>.
+     * 
+     * @see #zoomState
+     * @see #zoomStateZoomIn()
+     * @see #zoomStateZoomOut()
+     */
+    public static final int getZoomState() {
+    	return zoomState;
+    }
+
+    /**
+     * Increases the <code>zoomState</code>.
+     * @see #zoomState
+     * @see #zoomStateZoomOut()
+     * @see #getZoomState()
+     */
+    public static final void zoomStateZoomIn() {
+    	zoomState++;
+    }
+    
+    /**
+     * Decreases the <code>zoomState</code>.
+     * @see #zoomState
+     * @see #zoomStateZoomIn()
+     * @see #getZoomState()
+     */
+    public static final void zoomStateZoomOut() {
+    	zoomState--;
+    }
 
     /**
      * Initialize the values that depend on the standard state (depending

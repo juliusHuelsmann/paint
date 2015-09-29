@@ -63,7 +63,7 @@ import control.util.WindowMover;
 	/**
 	 * close button.
 	 */
-	private MButton jbtn_exit, jbtn_fullscreen, jbtn_minimize;
+	private MButton jbtn_exit, jbtn_fullscreen, jbtn_minimize, jbtn_pinLeft, jbtn_pinRight;
 
     /**
      * The maximum counter for design. Is used for fade in and out
@@ -186,7 +186,7 @@ import control.util.WindowMover;
         jbtn_fullscreen.setFocusable(false);
         super.add(jbtn_fullscreen);
         
-        //exit
+        //minimize
         jbtn_minimize = new MButton();
         jbtn_minimize.setContentAreaFilled(false);
         jbtn_minimize.setOpaque(false);
@@ -195,6 +195,27 @@ import control.util.WindowMover;
         jbtn_minimize.setBorder(null);
         jbtn_minimize.setFocusable(false);
         super.add(jbtn_minimize);
+
+        //pin left
+        jbtn_pinLeft = new MButton();
+        jbtn_pinLeft.setContentAreaFilled(false);
+        jbtn_pinLeft.setOpaque(false);
+        jbtn_pinLeft.addMouseListener(cv);
+        jbtn_pinLeft.addActionListener(cv);
+        jbtn_pinLeft.setBorder(null);
+        jbtn_pinLeft.setFocusable(false);
+        super.add(jbtn_pinLeft);
+
+        //pin right
+        jbtn_pinRight = new MButton();
+        jbtn_pinRight.setContentAreaFilled(false);
+        jbtn_pinRight.setOpaque(false);
+        jbtn_pinRight.addMouseListener(cv);
+        jbtn_pinRight.addActionListener(cv);
+        jbtn_pinRight.setBorder(null);
+        jbtn_pinRight.setFocusable(false);
+        super.add(jbtn_pinRight);
+
 
 //        loading = new Loading();
 //        super.add(loading);
@@ -636,6 +657,20 @@ import control.util.WindowMover;
         jbtn_minimize.setIcon(new ImageIcon(Utils.resizeImage(
         		jbtn_fullscreen.getWidth(), jbtn_fullscreen.getHeight(), 
         		Constants.VIEW_JBTN_MINIMIZE_NORMAL_PATH)));
+        
+        jbtn_pinRight.setBounds(
+        		ViewSettings.getView_bounds_jbtn_pinRight());
+        jbtn_pinRight.setIcon(new ImageIcon(Utils.resizeImage(
+        		jbtn_fullscreen.getWidth(), jbtn_fullscreen.getHeight(), 
+        		Constants.VIEW_JBTN_MINIMIZE_NORMAL_PATH)));
+
+        jbtn_pinLeft.setBounds(
+        		ViewSettings.getView_bounds_jbtn_pinLeft());
+        jbtn_pinLeft.setIcon(new ImageIcon(Utils.resizeImage(
+        		jbtn_fullscreen.getWidth(), jbtn_fullscreen.getHeight(), 
+        		Constants.VIEW_JBTN_MINIMIZE_NORMAL_PATH)));
+        
+        
 	        	
 	        //the page flip is done directly inside the set size method
 //	        Remove
@@ -743,5 +778,21 @@ import control.util.WindowMover;
 	public InfoForm getInfo_form() {
 		return info_form;
 	}
+
+	/**
+	 * @return the jbtn_pinLeft
+	 */
+	public MButton getJbtn_pinLeft() {
+		return jbtn_pinLeft;
+	}
+
+
+	/**
+	 * @return the jbtn_pinRight
+	 */
+	public MButton getJbtn_pinRight() {
+		return jbtn_pinRight;
+	}
+
 
 }

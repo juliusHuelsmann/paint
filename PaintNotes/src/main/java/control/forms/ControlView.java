@@ -18,6 +18,10 @@ package control.forms;
  */
 
 //import declarations
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -174,6 +178,20 @@ ActivityListener, MouseListener {
 							view.getJbtn_exit().getHeight(),
 							Constants
 							.VIEW_JBTN_MINIMIZE_MOUSEOVER_PATH)));
+		} else if (_event.getSource().equals(
+				view.getJbtn_pinLeft())) {
+			view.getJbtn_pinLeft().setIcon(new ImageIcon(Utils
+					.resizeImage(view.getJbtn_exit().getWidth(), 
+							view.getJbtn_exit().getHeight(),
+							Constants
+							.VIEW_JBTN_PIN_LEFT_MOUSEOVER_PATH)));
+		} else if (_event.getSource().equals(
+				view.getJbtn_pinRight())) {
+			view.getJbtn_pinRight().setIcon(new ImageIcon(Utils
+					.resizeImage(view.getJbtn_exit().getWidth(), 
+							view.getJbtn_exit().getHeight(),
+							Constants
+							.VIEW_JBTN_PIN_RIGHT_MOUSEOVER_PATH)));
 		}
 	}
 
@@ -204,7 +222,21 @@ ActivityListener, MouseListener {
 								view.getJbtn_exit().getHeight(),
 								Constants
 								.VIEW_JBTN_MINIMIZE_NORMAL_PATH)));
-			}	
+			}	else if (_event.getSource().equals(
+					view.getJbtn_pinLeft())) {
+				view.getJbtn_pinLeft().setIcon(new ImageIcon(Utils
+						.resizeImage(view.getJbtn_exit().getWidth(), 
+								view.getJbtn_exit().getHeight(),
+								Constants
+								.VIEW_JBTN_PIN_LEFT_NORMAL_PATH)));
+			} else if (_event.getSource().equals(
+					view.getJbtn_pinRight())) {
+				view.getJbtn_pinRight().setIcon(new ImageIcon(Utils
+						.resizeImage(view.getJbtn_exit().getWidth(), 
+								view.getJbtn_exit().getHeight(),
+								Constants
+								.VIEW_JBTN_PIN_RIGHT_NORMAL_PATH)));
+			}
 	}
 
 
@@ -239,7 +271,21 @@ ActivityListener, MouseListener {
 							view.getJbtn_exit().getHeight(),
 							Constants
 							.VIEW_JBTN_MINIMIZE_PRESSED_PATH)));
-		}	
+		}	else if (_event.getSource().equals(
+				view.getJbtn_pinLeft())) {
+			view.getJbtn_pinLeft().setIcon(new ImageIcon(Utils
+					.resizeImage(view.getJbtn_exit().getWidth(), 
+							view.getJbtn_exit().getHeight(),
+							Constants
+							.VIEW_JBTN_PIN_LEFT_PRESSED_PATH)));
+		} else if (_event.getSource().equals(
+				view.getJbtn_pinRight())) {
+			view.getJbtn_pinRight().setIcon(new ImageIcon(Utils
+					.resizeImage(view.getJbtn_exit().getWidth(), 
+							view.getJbtn_exit().getHeight(),
+							Constants
+							.VIEW_JBTN_PIN_RIGHT_PRESSED_PATH)));
+		}
 	}
 
 
@@ -288,7 +334,52 @@ ActivityListener, MouseListener {
 		} else if (_event.getSource().equals(view.getJbtn_minimize())) {
 
 			 view.setState(JFrame.ICONIFIED);
-		 } 
+		 } else if (_event.getSource().equals(
+					view.getJbtn_pinLeft())) {
+
+			 if (ViewSettings.isFullscreen()) {
+				 
+				 view.setNotFullscreen();
+				 ViewSettings.setFULLSCREEN(!ViewSettings.isFullscreen());
+			 }
+			 Rectangle r = getAvailableScreenBounds();
+			 view.setSize(
+					 (int) r.width / 2,
+					 (int) r.height);
+			 view.setLocation(r.x, r.y);
+			 sizeChanged();
+			 
+		 } else if (_event.getSource().equals(
+					view.getJbtn_pinRight())) {
+
+			 if (ViewSettings.isFullscreen()) {
+
+				 view.setNotFullscreen();
+				 ViewSettings.setFULLSCREEN(!ViewSettings.isFullscreen());
+			 }
+			 Rectangle r = getAvailableScreenBounds();
+			 view.setSize(
+					 (int) r.width / 2,
+					 (int) r.height);
+			 view.setLocation(
+					 r.x + (int) r.width / 2, r.y);
+				sizeChanged();
+
+		 }
+	}
+	
+	
+	private Rectangle getAvailableScreenBounds() {
+		//size of the screen
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+		//height of the task bar
+		Insets scnMax = Toolkit.getDefaultToolkit().getScreenInsets(view.getGraphicsConfiguration());
+
+		//available size of the screen 
+		return new Rectangle(scnMax.left, scnMax.top, 
+				screenSize.width - scnMax.right - scnMax.left, 
+				screenSize.height - scnMax.bottom - scnMax.top);
 	}
 
 	

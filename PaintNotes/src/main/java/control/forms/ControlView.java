@@ -181,15 +181,15 @@ ActivityListener, MouseListener {
 		} else if (_event.getSource().equals(
 				view.getJbtn_pinLeft())) {
 			view.getJbtn_pinLeft().setIcon(new ImageIcon(Utils
-					.resizeImage(view.getJbtn_exit().getWidth(), 
-							view.getJbtn_exit().getHeight(),
+					.resizeImage(view.getJbtn_pinLeft().getWidth(), 
+							view.getJbtn_pinLeft().getHeight(),
 							Constants
 							.VIEW_JBTN_PIN_LEFT_MOUSEOVER_PATH)));
 		} else if (_event.getSource().equals(
 				view.getJbtn_pinRight())) {
 			view.getJbtn_pinRight().setIcon(new ImageIcon(Utils
-					.resizeImage(view.getJbtn_exit().getWidth(), 
-							view.getJbtn_exit().getHeight(),
+					.resizeImage(view.getJbtn_pinRight().getWidth(), 
+							view.getJbtn_pinRight().getHeight(),
 							Constants
 							.VIEW_JBTN_PIN_RIGHT_MOUSEOVER_PATH)));
 		}
@@ -225,15 +225,15 @@ ActivityListener, MouseListener {
 			}	else if (_event.getSource().equals(
 					view.getJbtn_pinLeft())) {
 				view.getJbtn_pinLeft().setIcon(new ImageIcon(Utils
-						.resizeImage(view.getJbtn_exit().getWidth(), 
-								view.getJbtn_exit().getHeight(),
+						.resizeImage(view.getJbtn_pinLeft().getWidth(), 
+								view.getJbtn_pinLeft().getHeight(),
 								Constants
 								.VIEW_JBTN_PIN_LEFT_NORMAL_PATH)));
 			} else if (_event.getSource().equals(
 					view.getJbtn_pinRight())) {
 				view.getJbtn_pinRight().setIcon(new ImageIcon(Utils
-						.resizeImage(view.getJbtn_exit().getWidth(), 
-								view.getJbtn_exit().getHeight(),
+						.resizeImage(view.getJbtn_pinRight().getWidth(), 
+								view.getJbtn_pinRight().getHeight(),
 								Constants
 								.VIEW_JBTN_PIN_RIGHT_NORMAL_PATH)));
 			}
@@ -274,15 +274,15 @@ ActivityListener, MouseListener {
 		}	else if (_event.getSource().equals(
 				view.getJbtn_pinLeft())) {
 			view.getJbtn_pinLeft().setIcon(new ImageIcon(Utils
-					.resizeImage(view.getJbtn_exit().getWidth(), 
-							view.getJbtn_exit().getHeight(),
+					.resizeImage(view.getJbtn_pinLeft().getWidth(), 
+							view.getJbtn_pinLeft().getHeight(),
 							Constants
 							.VIEW_JBTN_PIN_LEFT_PRESSED_PATH)));
 		} else if (_event.getSource().equals(
 				view.getJbtn_pinRight())) {
 			view.getJbtn_pinRight().setIcon(new ImageIcon(Utils
-					.resizeImage(view.getJbtn_exit().getWidth(), 
-							view.getJbtn_exit().getHeight(),
+					.resizeImage(view.getJbtn_pinRight().getWidth(), 
+							view.getJbtn_pinRight().getHeight(),
 							Constants
 							.VIEW_JBTN_PIN_RIGHT_PRESSED_PATH)));
 		}

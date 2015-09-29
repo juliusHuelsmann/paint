@@ -661,14 +661,14 @@ import control.util.WindowMover;
         jbtn_pinRight.setBounds(
         		ViewSettings.getView_bounds_jbtn_pinRight());
         jbtn_pinRight.setIcon(new ImageIcon(Utils.resizeImage(
-        		jbtn_fullscreen.getWidth(), jbtn_fullscreen.getHeight(), 
-        		Constants.VIEW_JBTN_MINIMIZE_NORMAL_PATH)));
+        		jbtn_pinRight.getWidth(), jbtn_pinRight.getHeight(), 
+        		Constants.VIEW_JBTN_PIN_RIGHT_NORMAL_PATH)));
 
         jbtn_pinLeft.setBounds(
         		ViewSettings.getView_bounds_jbtn_pinLeft());
         jbtn_pinLeft.setIcon(new ImageIcon(Utils.resizeImage(
-        		jbtn_fullscreen.getWidth(), jbtn_fullscreen.getHeight(), 
-        		Constants.VIEW_JBTN_MINIMIZE_NORMAL_PATH)));
+        		jbtn_pinLeft.getWidth(), jbtn_pinLeft.getHeight(), 
+        		Constants.VIEW_JBTN_PIN_LEFT_NORMAL_PATH)));
         
         
 	        	

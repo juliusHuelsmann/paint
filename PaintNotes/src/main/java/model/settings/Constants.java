@@ -71,19 +71,19 @@ public final class Constants {
 	        
 
 	        VIEW_JBTN_PIN_LEFT_NORMAL_PATH 
-	        = "/res/img/icon/minimize/normal.png", 
+	        = "/res/img/icon/topLeft/normal.png", 
 	        VIEW_JBTN_PIN_LEFT_MOUSEOVER_PATH 
-	        = "/res/img/icon/minimize/mouseover.png", 
+	        = "/res/img/icon/topLeft/mouseover.png", 
 	        VIEW_JBTN_PIN_LEFT_PRESSED_PATH 
-	        = "/res/img/icon/minimize/pressed.png",
+	        = "/res/img/icon/topLeft/pressed.png",
 	        
 
 	        VIEW_JBTN_PIN_RIGHT_NORMAL_PATH 
-	        = "/res/img/icon/minimize/normal.png", 
+	        = "/res/img/icon/topRight/normal.png", 
 	        VIEW_JBTN_PIN_RIGHT_MOUSEOVER_PATH 
-	        = "/res/img/icon/minimize/mouseover.png", 
+	        = "/res/img/icon/topRight/mouseover.png", 
 	        VIEW_JBTN_PIN_RIGHT_PRESSED_PATH 
-	        = "/res/img/icon/minimize/pressed.png",
+	        = "/res/img/icon/topRight/pressed.png",
 	        
 	        
 	        VIEW_QA_JBTN_RESIZE = "/res/img/centerResize.png",

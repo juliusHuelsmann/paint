@@ -204,7 +204,6 @@ public final class ReadSettings {
 			//try to read 
 			try {
 				wsLocation = readFromFile(PROGRAM_SETTINGS_LOCATION);
-				System.out.println(wsLocation);
 				
 				installed = new File(wsLocation).exists();
 				if (!installed) {
@@ -343,6 +342,8 @@ public final class ReadSettings {
 			installOSX();
 		} else if (System.getProperty("os.name").equals("Linux")) {
 			installLinux();
+		} else if (System.getProperty("os.name").equals("Windows")) {
+			installWindows();
 		}
 	
 		
@@ -361,6 +362,175 @@ public final class ReadSettings {
 //	public static void main(String[] _args) {
 //		installOSX();
 //	}
+
+	private static void installWindows() {
+
+		
+		
+		
+		/*
+		 * setting up "open with" links for paint.
+		 * Therefore request SUDO rights.
+		 */
+		try {
+			final String userHome = System.getProperty("user.home");
+			
+			final boolean openWith = false;
+
+			// not implemented yet.
+			if (openWith) {
+				
+			final String localDest = userHome + "/paint.desktop";
+			final String finalDest = "/usr/share/applications/paint.desktop";
+			Util.exportResource("/res/files/paint.desktop", localDest);
+			
+			String passwd = "";
+
+			/*
+			 * Check whether the execution was successfully (and the password
+			 * was correct) or the file already exists
+			 */
+			while (!new File(finalDest).exists()) {
+
+				/*
+				 * Request SUDO privileges.
+				 */
+				passwd 
+				= Util.requestSudoRights("mv " + localDest + " " + finalDest);
+				
+				if (passwd.equals("")) {
+					JOptionPane.showMessageDialog(null, 
+							"installation failed due to lack of privileges.");
+					return;
+				}
+				
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			}
+			String 
+			passwd 
+			= Util.requestSudoRights("echo hier");
+			
+			/*
+			 * Copy jar file
+			 */
+
+			/////////////////////////Path for jar file.///////////////////
+			// /usr/lib/paint/paint.jar requests sudo rights.
+			// because of this, each time an update is done these rights 
+			// have to be requested. Thus chose another path:
+			// ~/.PaintUni/paint.jar
+			// (PROGRAM_LOCATION/paint.jar)
+			
+			
+
+			
+			/*
+			 * STEP 2:	Create (executable) file which is called if the 
+			 * 			application is run.
+			 */
+			
+			final String dest_jar_file = PROGRAM_LOCATION + "paint.jar";
+			final String dest_exec = "/usr/bin/paint";
+			String orig_jar_file = URLDecoder.decode(
+					ClassLoader.getSystemClassLoader().getResource(".")
+					.getPath(), "UTF-8");
+			
+			// if Eclipse on-the-fly-compiling
+			final String eclipseSubstring = "target/classes/";
+			if (orig_jar_file.endsWith(eclipseSubstring)) {
+				orig_jar_file = orig_jar_file.substring(
+						0,
+						orig_jar_file.length() - eclipseSubstring.length());
+				
+			}
+			orig_jar_file += "paint.jar";
+			
+
+			/*
+			 * Step 3:	Copy .jar file to the destination.
+			 */
+
+			final String command1 = 
+					"cp " + "\"" + orig_jar_file + "\"" +  " " + "\"" +  dest_jar_file + "\"";
+			String ret1 = Util.executeCommandLinux(command1);
+			System.out.println(command1 + "" + ret1);
+			
+			
+			final String content = "#!/bin/bash \n"
+					+ "java -jar " + dest_jar_file + " $1";
+			
+			PrintWriter writer = new PrintWriter( userHome + "/paint", "UTF-8");
+			writer.println(content);
+			writer.close();
+
+			final String command = "mv " + userHome + "/paint " + dest_exec;
+			Util.execSudoCommand(command, passwd);
+			// if the password was not correct / no sudo rights
+			if (!new File(dest_exec).exists()) {
+				while (!new File(dest_exec).exists()) {
+
+					/*
+					 * Request SUDO privileges.
+					 */
+					passwd 
+					= Util.requestSudoRights(command);
+					
+					if (passwd.equals("")) {
+						JOptionPane.showMessageDialog(null, 
+								"installation failed due to lack of privileges.");
+						return;
+					}
+					
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+			
+			Util.execSudoCommand("chmod a+x " + dest_exec, passwd);
+			
+
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+	}
+
 
 	/**
 	 * Set up paint as program in OSX.
@@ -835,15 +1005,15 @@ public final class ReadSettings {
 						temp = System.getenv().get("TMPDIR");
 						iw.appendNewResult("Linux");
 					} else if (propertyContent.equals(propertyWindows)) {
-						temp = "";
+						temp = System.getenv().get("TMPDIR");
 						iw.appendNewResult("Windows");
-						throw new UnsupportedOperationException("not impl. yet.");
 					} else if (propertyContent.equals(propertyOSX)) {
 						temp = System.getenv().get("TMPDIR");
 						iw.appendNewResult("OS X");
 					} else {
-						temp = "";
-						iw.appendNewResult("Not found!");
+						temp = System.getenv().get("TMPDIR");
+						iw.appendNewResult("Not found, System not implemented "
+								+ "yet. \nThis may cause errors.");
 						throw new UnsupportedOperationException("not impl. yet.");
 					}
 

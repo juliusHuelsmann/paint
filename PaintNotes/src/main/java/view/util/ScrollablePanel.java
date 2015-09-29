@@ -3,16 +3,23 @@ package view.util;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.AbstractBorder;
 
+import model.settings.Constants;
+import model.settings.ViewSettings;
+import model.util.paint.Utils;
 import view.util.mega.MPanel;
 
 
@@ -28,6 +35,14 @@ import view.util.mega.MPanel;
 @SuppressWarnings("serial")
 public class ScrollablePanel extends MPanel {
 
+	
+	/**
+	 * The height of the scrollButtons {@link #jbtn_scrollLeft} and 
+	 * {@link #jbtn_scrollRight}. By default (if equal to 
+	 * <code>-1</code>), it is set as the height of the 
+	 * {@link #ScrollablePanel()}.
+	 */
+	private int heightScrollButtons = -1;
 	
 	/**
 	 * For not being forced to recalculate the size of contents each time it
@@ -87,12 +102,15 @@ public class ScrollablePanel extends MPanel {
 		jpnl_container.setOpaque(false);
 		super.add(jpnl_container);
 		
+		final int speed = 30;
+		
 		jpnl_content = new JPanel();
 		jpnl_content.setLayout(null);
 		jpnl_content.setOpaque(false);
 		jpnl_container.add(jpnl_content);
 
-		jbtn_scrollLeft = new JButton();
+		jbtn_scrollLeft = new JButton("<");
+		jbtn_scrollLeft.setFont(new Font("", Font.PLAIN, 9));
 		jbtn_scrollLeft.setFocusable(false);
 		jbtn_scrollLeft.setContentAreaFilled(false);
 		jbtn_scrollLeft.addMouseListener(new MouseListener() {
@@ -115,7 +133,7 @@ public class ScrollablePanel extends MPanel {
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
-							scroll(10);
+							scroll(speed);
 						}
 					}
 				}.start();				
@@ -134,9 +152,15 @@ public class ScrollablePanel extends MPanel {
 		jbtn_scrollLeft.setOpaque(false);
 		super.add(jbtn_scrollLeft);
 
-		jbtn_scrollRight = new JButton();
+		jbtn_scrollRight = new JButton(">");
+		jbtn_scrollRight.setFont(new Font("", Font.PLAIN, 9));
 		jbtn_scrollRight.setFocusable(false);
 		jbtn_scrollRight.setContentAreaFilled(false);
+		
+        AbstractBorder brdr = new MyRoundedBorder(Color.lightGray,1,15,0);
+
+        jbtn_scrollRight.setBorder(brdr);
+        jbtn_scrollLeft.setBorder(brdr);
 		jbtn_scrollRight.setOpaque(false);
 		jbtn_scrollRight.addMouseListener(new MouseListener() {
 			
@@ -158,7 +182,7 @@ public class ScrollablePanel extends MPanel {
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
-							scroll(-10);
+							scroll(-speed);
 						}
 					}
 				}.start();				
@@ -265,11 +289,18 @@ public class ScrollablePanel extends MPanel {
 		if (size_wanted.width > getWidth()) {
 
 			
-			final int widthScroll = 20;
+			final int widthScroll = 37;
+			final int heightScroll;
+			if(heightScrollButtons == -1) {
+				heightScroll = getHeight();
+			} else {
+				heightScroll = heightScrollButtons;
+			}
+			
 			jpnl_content.setSize(size_wanted);
 			
-			jbtn_scrollLeft.setBounds(0, 0, widthScroll, getHeight());
-			jbtn_scrollRight.setBounds(getWidth() - widthScroll, 0, widthScroll, getHeight());
+			jbtn_scrollLeft.setBounds(0, 0, widthScroll, heightScroll);
+			jbtn_scrollRight.setBounds(getWidth() - widthScroll, 0, widthScroll, heightScroll);
 			jbtn_scrollLeft.setVisible(true);
 			jbtn_scrollRight.setVisible(true);
 			
@@ -314,7 +345,7 @@ public class ScrollablePanel extends MPanel {
 	 * Main method for testing.
 	 * @param _args
 	 */
-	public static void main(final String[]_args) {
+	public static void mains(final String[]_args) {
 		JFrame jf = new JFrame();
 		jf.setSize(400, 150);
 		jf.setLocationRelativeTo(null);
@@ -346,5 +377,16 @@ public class ScrollablePanel extends MPanel {
 		});
 		jf.add(jbtn_add);
 		jf.setVisible(true);
+	}
+
+
+
+
+
+	/**
+	 * @param _heightScrollButtons the heightScrollButtons to set
+	 */
+	public void setHeightScrollButtons(final int _heightScrollButtons) {
+		this.heightScrollButtons = _heightScrollButtons;
 	}
 }

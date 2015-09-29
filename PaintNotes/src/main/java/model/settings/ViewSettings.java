@@ -907,5 +907,31 @@ public final class ViewSettings {
                 TWENTY_FIFE * 2 + FIVE, 2  * TEN);
     }
 
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static Rectangle getView_bounds_jbtn_pinRight() {
+    	return new Rectangle(
+    			getView_bounds_jbtn_minimize().x 
+                - getView_bounds_jbtn_minimize().width, 
+                getView_bounds_jbtn_minimize().y, 
+                TWENTY_FIFE * 2 + FIVE, 2  * TEN);
+    }
+
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static Rectangle getView_bounds_jbtn_pinLeft() {
+    	return new Rectangle(
+    			getView_bounds_jbtn_pinRight().x 
+                - getView_bounds_jbtn_pinRight().width, 
+                getView_bounds_jbtn_pinRight().y, 
+                TWENTY_FIFE * 2 + FIVE, 2  * TEN);
+    }
+
     
 }

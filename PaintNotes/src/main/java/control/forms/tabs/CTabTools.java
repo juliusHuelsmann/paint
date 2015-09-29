@@ -824,35 +824,36 @@ public final class CTabTools implements ActionListener, MouseListener {
     
     /**
      * MouseReleased method for button press at button zoom out.
+     * 
+     * @see ControlPaint.#mr_zoomIn()
      */
     public void mr_zoomOut() {
 
-    	//TODO: adjust this one.
-        //if able to zoom out
-        if (State.getImageSize().width
-                / State.getImageShowSize().width 
-                < Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
-                        ViewSettings.MAX_ZOOM_OUT)) {
+    	// if allowed to zoom out (has not already reached the max zoom out 
+    	// level
+        if (-State.getZoomState() + 1 <  ViewSettings.MAX_ZOOM_OUT) {
         	
-            int newWidth = State.getImageShowSize().width
-            / ViewSettings.ZOOM_MULITPLICATOR, 
-            
-            newHeight = State
-            .getImageShowSize().height
-            / ViewSettings.ZOOM_MULITPLICATOR;
+        	// Change the value which is used for computing the current 
+        	// <code> imageShowSize</code>.
+        	State.zoomStateZoomOut();
+        	
+            int newWidth = (int) (State.getImageSize().width
+            		* Math.pow(ViewSettings.ZOOM_MULITPLICATOR, State.getZoomState()));
+            int newHeight = (int) (State.getImageSize().height
+            		* Math.pow(ViewSettings.ZOOM_MULITPLICATOR, State.getZoomState()));
 
-            //TODO: ich glaube das ist unlogisch und funktioniert nru weil
-            // zoom - multiplicator == 2.
+            // contains the not shifted new location of the paint-JLabel.
+            // the formula is okay.
             Point oldLocation = new Point(
-            		getPage().getJlbl_painting().getLocation().x 
-            		- getPage().getJlbl_painting().getWidth() / 2
+            		
+            		// location of the JLabel (negative)
+            		(int) (getPage().getJlbl_painting().getLocation().x 
             		+ getPage().getJlbl_painting().getWidth() 
-            		* ViewSettings.ZOOM_MULITPLICATOR / 2, 
-
-                    getPage().getJlbl_painting().getLocation().y 
-            		- getPage().getJlbl_painting().getHeight() / 2
+            		* (ViewSettings.ZOOM_MULITPLICATOR / 2.0 - 1.0/2.0)),
+            				
+            		(int) (getPage().getJlbl_painting().getLocation().y 
             		+ getPage().getJlbl_painting().getHeight() 
-            		* ViewSettings.ZOOM_MULITPLICATOR / 2);
+            		* (ViewSettings.ZOOM_MULITPLICATOR / 2.0 - 1.0/2.0)));
 
             
             // not smaller than the negative image size.
@@ -870,22 +871,30 @@ public final class CTabTools implements ActionListener, MouseListener {
             oldLocation.x = Math.min(oldLocation.x, 0);
             oldLocation.y = Math.min(oldLocation.y, 0); 
      
-            //set new image size and adapt the page by flipping
-            //TODO: previously used getpage.getjlbl-p.setLoc(),
-            //why? 
-            //transformed into setLocation. works too by now.
-
+            // apply the new image size.
             State.setImageShowSize(new Dimension(newWidth, newHeight));
 
             getPage().flip();
-            getPage().getJlbl_painting()
-            .setBounds(
+            getPage().getJlbl_painting().setBounds(
+            		
+            		// adapt the shifted location to the new image size.
+            		// The rounding at entire pixels is performed inside the
+            		// setBounds-method. Thus we don't have to cope with it
+            		// in here.
             		(oldLocation.x) / ViewSettings.ZOOM_MULITPLICATOR , 
             		(oldLocation.y) / ViewSettings.ZOOM_MULITPLICATOR,
+            		
+            		// the old width and height.
             		getPage().getJlbl_painting().getWidth(),
             		getPage().getJlbl_painting().getHeight());
+            
+            // refresh scrollPanes which have changed because of the zooming
+            // process.
             getPage().refrehsSps();
 
+            
+            // release all selected items. If this is not done, the
+            // painted selection size is too big.
             if (controlPaint.getPicture().isSelected()) {
 
                 getControlPicture().releaseSelected();
@@ -898,13 +907,18 @@ public final class CTabTools implements ActionListener, MouseListener {
             			controlPaint.getView().getPage().getJlbl_painting()
             			.getLocation().y);
             }
+            
+            // update the location of the resize buttons for resizing the entire
+            // page.
             updateResizeLocation();
         } else {
+        	
+        	// if the max zoom in level has been reached, print an information
+        	// message and update the resize buttons.
             Message.showMessage(Message.MESSAGE_ID_INFO, 
                     "max zoom out reached");
             updateResizeLocation();
         }
-        // TODO: hier die location aktualisieren.
     }
     
 

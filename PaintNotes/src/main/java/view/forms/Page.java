@@ -280,6 +280,7 @@ import view.util.mega.MButton;
 
         
         removeButtons();
+        
 
 	}
 	
@@ -399,6 +400,7 @@ import view.util.mega.MButton;
             	
 
         refrehsSps();
+
 	}
 	
 	

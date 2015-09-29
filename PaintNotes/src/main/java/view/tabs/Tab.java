@@ -20,11 +20,14 @@ package view.tabs;
 
 
 import java.awt.Color;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
+
 import model.settings.ViewSettings;
 import view.forms.Help;
+import view.util.ScrollablePanel;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 
@@ -36,7 +39,7 @@ import view.util.mega.MPanel;
  *
  */
 @SuppressWarnings("serial")
-public abstract class Tab extends MPanel {
+public abstract class Tab extends ScrollablePanel {
 
     /**
      * JLabels for the separation, linked with information.
@@ -71,6 +74,10 @@ public abstract class Tab extends MPanel {
 
         super.setSize(ViewSettings.getView_widthTb(), 
                 ViewSettings.getView_heightTab());
+        final int titleHeight = getHeight() / ViewSettings
+                .TABBED_PANE_TITLE_PROPORTION_HEIGHT;
+        super.setHeightScrollButtons(ViewSettings.getView_heightTB_visible()
+        		- titleHeight - ViewSettings.getDistanceBetweenItems() * 2);
     }
     
     

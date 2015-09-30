@@ -21,6 +21,7 @@ package view.tabs;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Component;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -83,11 +84,16 @@ public final class Insert extends Tab {
 
     
     /**
-     * Empty utility class constructor.
+     * 
+	 * @param _cmp_toRepaint the component which is to repaint if the
+	 * 			scrolling is performed. (is necessary if the
+	 * 			{@link #ScrollablePanel(Component)} is inserted above
+	 * 			some opaque component.
      */
 	public Insert(final CPaintStatus _cps, 
-			final ControlPaint _cp) { 
-	    super(2 + 2);
+			final ControlPaint _cp,
+			final Component _cmp_toRepaint) { 
+	    super(2 + 2, _cmp_toRepaint);
 
 
 		//initialize JPanel and alter settings

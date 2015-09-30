@@ -19,6 +19,7 @@ package view.tabs;
  */
 
 
+import java.awt.Component;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
@@ -46,9 +47,14 @@ public class Project extends Tab {
     /**
      * Constructor. Call super-constructor with the amount of sections the 
      * project tab contains.
+	 * @param _cmp_toRepaint the component which is to repaint if the
+	 * 			scrolling is performed. (is necessary if the
+	 * 			{@link #ScrollablePanel(Component)} is inserted above
+	 * 			some opaque component.
      */
-    public Project(final ActionListener _cp) {
-        super(0);
+    public Project(final ActionListener _cp,
+			final Component _cmp_toRepaint) {
+        super(0, _cmp_toRepaint);
 		super.setOpaque(false);
 		super.setLayout(null);
 		

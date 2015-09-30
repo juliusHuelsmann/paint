@@ -22,6 +22,7 @@ package view.tabs;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
@@ -110,13 +111,18 @@ public final class Tools extends Tab {
     
 	/**
 	 * Constructor of Paint.
+	 * @param _cmp_toRepaint the component which is to repaint if the
+	 * 			scrolling is performed. (is necessary if the
+	 * 			{@link #ScrollablePanel(Component)} is inserted above
+	 * 			some opaque component.
 	 */
 	public Tools(final ControlPaint _controlPaint,
 			final CTabTools _paint, final MenuListener _ml,
-			final CPaintStatus _controlPaintStatus) {
+			final CPaintStatus _controlPaintStatus,
+			final Component _cmp_toRepaint) {
 
 		//initialize JPanel and alter settings
-		super((2 + 1) * 2);
+		super((2 + 1) * 2, _cmp_toRepaint);
 		super.setOpaque(false);
 		super.setLayout(null);
 		

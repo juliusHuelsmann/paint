@@ -21,6 +21,8 @@ package view.tabs;
 
 
 //import declarations
+import java.awt.Component;
+
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 
@@ -99,9 +101,14 @@ public final class Export extends Tab {
     
     /**
      * Empty utility class constructor.
+     * 
+	 * @param _cmp_toRepaint the component which is to repaint if the
+	 * 			scrolling is performed. (is necessary if the
+	 * 			{@link #ScrollablePanel(Component)} is inserted above
+	 * 			some opaque component.
      */
-    public Export() {
-        super(2);
+    public Export(final Component _cmp_toRepaint) {
+        super(2, _cmp_toRepaint);
         //initialize JPanel and alter settings
         super.setOpaque(false);
         super.setLayout(null);

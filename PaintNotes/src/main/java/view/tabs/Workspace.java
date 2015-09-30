@@ -19,6 +19,8 @@ package view.tabs;
  */
 
 
+import java.awt.Component;
+
 import javax.swing.JFrame;
 
 import view.forms.Help;
@@ -36,9 +38,13 @@ public class Workspace extends Tab {
     /**
      * Constructor: calls super-constructor with the amount of sections that
      * are contained in tab Workspace.
+	 * @param _cmp_toRepaint the component which is to repaint if the
+	 * 			scrolling is performed. (is necessary if the
+	 * 			{@link #ScrollablePanel(Component)} is inserted above
+	 * 			some opaque component.
      */
-    public Workspace() {
-        super(0);
+    public Workspace(final Component _cmp_toRepaint) {
+        super(0, _cmp_toRepaint);
     }
 	//change workspace location
 	//default values

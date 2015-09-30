@@ -21,8 +21,11 @@ package view.tabs;
 
 
 //import declarations
+import java.awt.Component;
+
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
+
 import control.forms.tabs.CTabAboutPaint;
 import control.interfaces.HelpMouseListener;
 import view.forms.Help;
@@ -55,11 +58,16 @@ public final class AboutPaint extends Tab {
 	 * Constructor: initialize instances of Components and add special 
 	 * MouseMotionListener.
 	 * @param _controlTabAbout instance of controller class for this view item
+	 * @param _cmp_toRepaint the component which is to repaint if the
+	 * 			scrolling is performed. (is necessary if the
+	 * 			{@link #ScrollablePanel(Component)} is inserted above
+	 * 			some opaque component.
 	 */
-	public AboutPaint(final CTabAboutPaint _controlTabAbout) {
+	public AboutPaint(final CTabAboutPaint _controlTabAbout, 
+			final Component _cmp_toRepaint) {
 		
 		//initialize JPanel and alter settings
-		super(0);
+		super(0, _cmp_toRepaint);
 		super.setLayout(null);
 		super.setOpaque(false);
 

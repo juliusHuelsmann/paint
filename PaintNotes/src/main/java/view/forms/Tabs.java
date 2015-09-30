@@ -203,7 +203,7 @@ public final class Tabs extends VTabbedPane {
         super.addTab("Tools");
         tab_paint =  new Tools(
         		_cp, _cp.getcTabPaint(), _cp,
-        		_cp.getcTabPaintStatus());
+        		_cp.getcTabPaintStatus(), _view);
         super.addToTab(tabNumber, tab_paint);
 
         set_tools = new SettingsTools();
@@ -219,7 +219,7 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Write");
-        tab_write = new Write(_cp.getcTabWrite());
+        tab_write = new Write(_cp.getcTabWrite(), _view);
         super.addToTab(tabNumber, tab_write);
 
         set_write = new SettingsWrite();
@@ -234,7 +234,7 @@ public final class Tabs extends VTabbedPane {
          * tab insert
          */
         super.addTab("Insert");
-        tab_insert = new Insert(_cp.getcTabPaintStatus(), _cp);
+        tab_insert = new Insert(_cp.getcTabPaintStatus(), _cp, _view);
         super.addToTab(tabNumber, tab_insert);
 
         set_insert = new SettingsInsert();
@@ -249,7 +249,7 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Selection");
-        tab_selection = new Selection();
+        tab_selection = new Selection(_view);
         tab_selection.initialize(
         		_cp.getcTabPaint(), _cp.getcTabSelection(), _cp, 
         		_cp.getcTabPaintStatus());
@@ -265,7 +265,7 @@ public final class Tabs extends VTabbedPane {
          * tab view
          */
         super.addTab("View");   //view
-        tab_look = new Look(_cp.getcTabLook());
+        tab_look = new Look(_cp.getcTabLook(), _view);
         super.addToTab(tabNumber, tab_look);
 
         set_view = new SettingsLook();
@@ -279,7 +279,7 @@ public final class Tabs extends VTabbedPane {
          * 
          */
         super.addTab("Export");
-        tab_export = new Export();
+        tab_export = new Export(_view);
         tab_export.initialize(_cp.getcTabExport());
         super.addToTab(tabNumber, tab_export);
 
@@ -297,7 +297,7 @@ public final class Tabs extends VTabbedPane {
          * tab print
          */
         super.addTab("Print");
-        tab_print = new Print(_cp.getcTabPrint());
+        tab_print = new Print(_cp.getcTabPrint(), _view);
         super.addToTab(tabNumber, tab_print);
         set_print = new SettingsPrint();
         set_print.setSize(
@@ -311,7 +311,7 @@ public final class Tabs extends VTabbedPane {
          * tab project
          */
         super.addTab("Project");
-        tab_project = new Project(_cp.getcTabProject());
+        tab_project = new Project(_cp.getcTabProject(), _view);
         super.addToTab(tabNumber, tab_project);
 //        set_print = new SettingsPrint();
 //        set_print.setSize(
@@ -322,7 +322,7 @@ public final class Tabs extends VTabbedPane {
 
 
         super.addTab("Debug");
-        tab_pos = new Debug(_cp.getcTabPaintObjects());
+        tab_pos = new Debug(_cp.getcTabPaintObjects(), _view);
         tab_pos.setSize(
                 (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
                 ViewSettings.getView_heightTB());
@@ -355,7 +355,7 @@ public final class Tabs extends VTabbedPane {
          * tab print
          */
         super.addTab("Paint");
-        tab_about = new AboutPaint(_cp.getcTabAbout());
+        tab_about = new AboutPaint(_cp.getcTabAbout(), _view);
         tab_about.setSize(
                 (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
                 ViewSettings.getView_heightTB());

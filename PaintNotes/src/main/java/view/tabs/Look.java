@@ -21,6 +21,8 @@ package view.tabs;
 
 
 //import declarations
+import java.awt.Component;
+
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 
@@ -80,10 +82,15 @@ public final class Look extends Tab {
      * 				adding listeners to components.
      * 
      * @param _clook		the controller class for this class that is used
-     * 						for adding listeners to componetns.
+     * 						for adding listeners to components.
+	 * @param _cmp_toRepaint the component which is to repaint if the
+	 * 			scrolling is performed. (is necessary if the
+	 * 			{@link #ScrollablePanel(Component)} is inserted above
+	 * 			some opaque component.
      */
-    public Look(final CTabLook _clook) { 
-        super(2);
+    public Look(final CTabLook _clook,
+			final Component _cmp_toRepaint) { 
+        super(2, _cmp_toRepaint);
         //initialize JPanel and alter settings
         super.setOpaque(false);
         super.setLayout(null);

@@ -89,23 +89,29 @@ public class ScrollablePanel extends MPanel {
 	
 	/**
 	 * Constructor: calls super constructor and initializes values.
+	 * @param _cmp_toRepaint the component which is to repaint if the
+	 * 			scrolling is performed. (is necessary if the
+	 * 			{@link #ScrollablePanel(Component)} is inserted above
+	 * 			some opaque component.
 	 */
-	public ScrollablePanel() {
+	public ScrollablePanel(final Component _cmp_toRepaint) {
 		super();
 		super.setLayout(null);
 		super.setOpaque(false);
 		
 		this.lastCalculatedSizeOfContents = new Dimension(0, 0);
 		
-		jpnl_container = new JPanel();
+		jpnl_container = new MPanel();
 		jpnl_container.setLayout(null);
 		jpnl_container.setOpaque(false);
+		jpnl_container.setFocusable(false);
 		super.add(jpnl_container);
 		
 		final int speed = 30;
 		
-		jpnl_content = new JPanel();
+		jpnl_content = new MPanel();
 		jpnl_content.setLayout(null);
+		jpnl_content.setFocusable(false);
 		jpnl_content.setOpaque(false);
 		jpnl_container.add(jpnl_content);
 
@@ -118,11 +124,18 @@ public class ScrollablePanel extends MPanel {
 			private boolean pressed = false;
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				jpnl_content.setSize(jpnl_content.getWidth(), 
+						getHeight());
 				pressed = false;
+				_cmp_toRepaint.repaint();
 			}
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
+//				jpnl_content.setSize(jpnl_content.getWidth(), 
+//						lastCalculatedSizeOfContents.height);
+//				_cmp_toRepaint.repaint();
+				
 				pressed = true;
 				new Thread() {
 					public void run() {
@@ -134,6 +147,7 @@ public class ScrollablePanel extends MPanel {
 								e.printStackTrace();
 							}
 							scroll(speed);
+							_cmp_toRepaint.repaint();
 						}
 					}
 				}.start();				
@@ -167,11 +181,19 @@ public class ScrollablePanel extends MPanel {
 			private boolean pressed = false;
 			@Override
 			public void mouseReleased(MouseEvent e) {
+//				jpnl_content.setSize(jpnl_content.getWidth(), 
+//						getHeight());
 				pressed = false;
+				_cmp_toRepaint.repaint();
 			}
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
+				
+
+//				jpnl_content.setSize(jpnl_content.getWidth(), 
+//						lastCalculatedSizeOfContents.height);
+				
 				pressed = true;
 				new Thread() {
 					public void run() {
@@ -183,9 +205,11 @@ public class ScrollablePanel extends MPanel {
 								e.printStackTrace();
 							}
 							scroll(-speed);
+							_cmp_toRepaint.repaint();
 						}
 					}
-				}.start();				
+				}.start();	
+
 
 			}
 			
@@ -202,6 +226,9 @@ public class ScrollablePanel extends MPanel {
 		
 	}
 	
+	public void setSuperSize(int _w, int _h) {
+		super.setSize(_w,_h);
+	}
 	
 	
 
@@ -297,7 +324,7 @@ public class ScrollablePanel extends MPanel {
 				heightScroll = heightScrollButtons;
 			}
 			
-			jpnl_content.setSize(size_wanted);
+			jpnl_content.setSize(size_wanted.width, getHeight());
 			
 			jbtn_scrollLeft.setBounds(0, 0, widthScroll, heightScroll);
 			jbtn_scrollRight.setBounds(getWidth() - widthScroll, 0, widthScroll, heightScroll);
@@ -352,7 +379,7 @@ public class ScrollablePanel extends MPanel {
 		jf.setLayout(null);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		final ScrollablePanel sp = new ScrollablePanel();
+		final ScrollablePanel sp = new ScrollablePanel(jf);
 		sp.setSize(300, 120);
 		sp.setOpaque(true);
 		sp.setBackground(Color.darkGray);

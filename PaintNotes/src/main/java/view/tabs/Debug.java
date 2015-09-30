@@ -157,11 +157,17 @@ public final class Debug extends Tab implements Observer {
 	 * Constructor: initialize instances of Components and add special 
 	 * MouseMotionListener.
 	 * @param 	_cps		the controller class for the tab debug.
+	 * 
+	 * @param _cmp_toRepaint the component which is to repaint if the
+	 * 			scrolling is performed. (is necessary if the
+	 * 			{@link #ScrollablePanel(Component)} is inserted above
+	 * 			some opaque component.
 	 */
-	public Debug(final CTabDebug _cps) {
+	public Debug(final CTabDebug _cps,
+			final Component _cmp_toRepaint) {
 		
 		//initialize JPanel and alter settings
-		super(0);
+		super(0, _cmp_toRepaint);
 		super.setLayout(null);
 		super.setOpaque(false);
 

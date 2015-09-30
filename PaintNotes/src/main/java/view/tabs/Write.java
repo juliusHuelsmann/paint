@@ -21,11 +21,13 @@ package view.tabs;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.border.LineBorder;
+
 
 
 
@@ -54,9 +56,14 @@ public final class Write extends Tab {
     /**
      * Empty utility class constructor.
      * @param _cw the CWrite ActionListener
+	 * @param _cmp_toRepaint the component which is to repaint if the
+	 * 			scrolling is performed. (is necessary if the
+	 * 			{@link #ScrollablePanel(Component)} is inserted above
+	 * 			some opaque component.
      */
-	public Write(final ActionListener _cw) { 
-	    super(2);
+	public Write(final ActionListener _cw,
+			final Component _cmp_toRepaint) { 
+	    super(2, _cmp_toRepaint);
 	    
 
 

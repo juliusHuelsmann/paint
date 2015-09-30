@@ -22,10 +22,13 @@ package view.tabs;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.border.LineBorder;
+
 import model.settings.Constants;
 import model.settings.ViewSettings;
 import view.forms.Help;
@@ -49,9 +52,14 @@ public final class Print extends Tab {
 	 /**
 	  * Constructor: initializes view.
 	  * @param _cp the control paint.
+	 * @param _cmp_toRepaint the component which is to repaint if the
+	 * 			scrolling is performed. (is necessary if the
+	 * 			{@link #ScrollablePanel(Component)} is inserted above
+	 * 			some opaque component.
 	  */
-	public Print(final ActionListener _cp) {
-		super(0);
+	public Print(final ActionListener _cp,
+			final Component _cmp_toRepaint) {
+		super(0, _cmp_toRepaint);
 		super.setOpaque(false);
 		super.setLayout(null);
 

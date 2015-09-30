@@ -22,6 +22,7 @@ package view.tabs;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
@@ -81,10 +82,14 @@ public final class Selection extends Tab {
     
     /**
      * Empty Utility class Constructor.
+	 * @param _cmp_toRepaint the component which is to repaint if the
+	 * 			scrolling is performed. (is necessary if the
+	 * 			{@link #ScrollablePanel(Component)} is inserted above
+	 * 			some opaque component.
      */
-	public Selection() {
+	public Selection(final Component _cmp_toRepaint) {
 		
-	    super(2);
+	    super(2, _cmp_toRepaint);
         super.setOpaque(false);
         super.setLayout(null);
 

@@ -256,6 +256,7 @@ import control.util.WindowMover;
          */
         super.add(new Message());
         
+        
         super.add(tabs);
         super.add(page);
 

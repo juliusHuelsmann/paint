@@ -20,6 +20,7 @@ package view.tabs;
 
 
 import java.awt.Color;
+import java.awt.Component;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -56,9 +57,16 @@ public abstract class Tab extends ScrollablePanel {
      * Constructor: initializes the separation and information stuff.
      * @param _amount the amount of different sections separated by separation
      * and linked to information.
+	 * @param _cmp_toRepaint the component which is to repaint if the
+	 * 			scrolling is performed. (is necessary if the
+	 * 			{@link #ScrollablePanel(Component)} is inserted above
+	 * 			some opaque component.
      */
-    public Tab(final int _amount) {
+    public Tab(final int _amount, final Component _cmp_toRepaint) {
         
+    	// call super constructor
+    	super(_cmp_toRepaint);
+    	
         //initialize the Labels
         jlbl_information = new MLabel[_amount];
         jlbl_separation = new MLabel[_amount];

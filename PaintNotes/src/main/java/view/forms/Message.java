@@ -100,9 +100,10 @@ public final class Message extends MPanel {
         super.setLocation(ViewSettings.getMessagelocation());
         super.setOpaque(true);
         super.setLayout(null);
-        super.setBackground(Color.darkGray);
-        super.setBorder(new RoundedBorder());
+        super.setBackground(new Color(30, 30, 30, 111));
+//        super.setBorder(new RoundedBorder());
         super.setVisible(false);
+        instance = this;
     
         jbtn_hide = new MButton("OK");
         jbtn_hide.setContentAreaFilled(false);
@@ -155,15 +156,16 @@ public final class Message extends MPanel {
         }
 
         instance.jta_text.setText(_errorMessage);
-        instance.setVisible(true);
         
         if (instance.t_show != null) {
             
             instance.t_show.interrupt();
         }
+        instance.setVisible(true);
         instance.t_show = new Thread() {
             @Override public void run() {
                 
+            	instance.setVisible(true);
                 try {
                     for (int i = 0; i < instance.sleepTime; i++) {
                         Thread.sleep(1);
@@ -173,6 +175,7 @@ public final class Message extends MPanel {
                 } catch (InterruptedException e) { 
                     e = null;
                 }
+            	instance.setVisible(false);
             }
         };
         

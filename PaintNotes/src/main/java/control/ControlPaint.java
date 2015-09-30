@@ -379,6 +379,7 @@ MenuListener {
             System.err.println(System.currentTimeMillis() - startTime);
             view.setVisible(true);	// 400MS
             System.err.println(System.currentTimeMillis() - startTime);
+            
 
 //            cl = new CLoading(view.getLoading());
             

@@ -81,8 +81,12 @@ public final class Util {
     
     
     
+    
+    
+    
+    
     /**
-     * Function for getting stack trace out of an exception and printiing a 
+     * Function for getting stack trace out of an exception and printing a 
      * message to the user.
      * 
      * @param _title				the title of the exception

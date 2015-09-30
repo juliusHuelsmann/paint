@@ -22,6 +22,7 @@ package view.forms;
 
 //import declarations
 import java.awt.Color;
+import java.awt.dnd.DropTarget;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -180,6 +181,7 @@ import view.util.mega.MButton;
             }
         };
         jlbl_painting = new PaintLabel(jpnl_toMove);
+        new DropTarget(jlbl_painting, _controlPaint.getcTabPaint());
 
         //ScrollPanel for up and down
         sp_ub = new VScrollPane(jpnl_toMove, this, true, jlbl_painting);

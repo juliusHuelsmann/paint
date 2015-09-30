@@ -48,6 +48,7 @@ import model.settings.StateStandard;
 import model.settings.ViewSettings;
 import model.util.DPoint;
 import model.util.DRect;
+import model.util.DragAndDrop;
 import model.util.Util;
 import model.util.adt.list.List;
 import model.util.paint.MyClipboard;
@@ -65,7 +66,7 @@ import view.util.VButtonWrapper;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class CTabTools implements ActionListener, MouseListener {
+public final class CTabTools extends DragAndDrop implements ActionListener, MouseListener {
 
 
 	/**
@@ -1152,5 +1153,54 @@ public final class CTabTools implements ActionListener, MouseListener {
 	public void setControlPaint(final ControlPaint _controlPaint) {
 		this.controlPaint = _controlPaint;
 	}
+
+
+	@Override
+	public void dropHandler(final java.util.List<File> _files) {
+
+    	int i;
+    	
+    	if (State.isUncommittedChanges()) {
+
+            i = JOptionPane.showConfirmDialog(getView(),
+                    "Do you want to save the committed changes? ",
+                    "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
+    	} else {
+    		i = 1;
+    	}
+    	
+        // no uncommitted changes
+        if (i == 1) {
+
+                File file = _files.get(0);
+
+                if (file.getName().toLowerCase().endsWith(".pic")) {
+                    controlPaint.loadProject(
+                    		file.getAbsolutePath());
+                    State.setUncommittedChanges(false);
+                    getControlPicture().refreshPaint();
+
+                    State.setSavePath(file.getAbsolutePath());
+                    
+                } else if (Constants.endsWithSaveFormat(file.getName())) {
+                    
+                        controlPaint.getPicture().emptyImage();
+                    	controlPaint.getProject().load(file.getAbsolutePath());
+                        getControlPicture().refreshPaint();
+                        
+
+                } else {
+
+                    JOptionPane.showMessageDialog(getView(),
+                            "Select a .png file.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+        
+        } else if (i == 0) {
+            // yes
+            mr_save();
+        }        
+    }
 
 }

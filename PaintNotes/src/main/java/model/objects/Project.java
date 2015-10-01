@@ -192,10 +192,11 @@ public class Project implements Serializable {
 			
 			if (_wsLoc.endsWith(".pdf")) {
 
+				this.currentlyDisplayedPage = 0;
 	            initialize(_wsLoc);
 	            return null;
 			} else {
-
+				this.currentlyDisplayedPage = 0;
 				return 	pictures[0].load(_wsLoc);
 
 			} 
@@ -248,6 +249,8 @@ public class Project implements Serializable {
 			
 			State.setImageSize(new Dimension(bi.getWidth(), bi.getHeight()));
 			State.setImageShowSize(new Dimension(bi.getWidth(), bi.getHeight()));
+			
+			currentlyDisplayedPage = 0;
 	}
 	
 	/**

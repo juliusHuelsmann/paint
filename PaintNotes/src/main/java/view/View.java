@@ -120,6 +120,7 @@ import control.util.WindowMover;
 	public void initialize(final ControlPaint _cp) {
 	    
         //initialize JFrame and alter settings
+		super.setTitle("Paint");
         super.setAlwaysOnTop(false);
         super.setFocusable(false);
         super.setLayout(null);

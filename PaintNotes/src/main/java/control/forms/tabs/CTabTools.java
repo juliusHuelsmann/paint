@@ -711,7 +711,6 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
         if (i == 1) {
 
 
-
             JFileChooser jfc = new JFileChooser();
             jfc.setCurrentDirectory(new java.io.File(StateStandard.getWsLocation()));
             jfc.setDialogTitle("Select load location");

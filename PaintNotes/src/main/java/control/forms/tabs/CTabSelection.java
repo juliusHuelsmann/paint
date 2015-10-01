@@ -106,6 +106,12 @@ public final class CTabSelection implements ActionListener {
 
             this.selectionPenID = Constants.PEN_ID_MATHS;
             selectPenOp(Constants.PEN_ID_MATHS);
+        } else if (_event.getSource().equals(getSelection().getTb_erase())) {
+
+        } else if (_event.getSource().equals(getSelection().getTb_changePen())) {
+
+        } else if (_event.getSource().equals(getSelection().getTb_changeSize())) {
+
         } else {
             for (int i = 0; i < getSelection().getJbtn_colors().length; i++) {
 

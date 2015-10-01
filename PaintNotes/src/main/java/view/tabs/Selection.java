@@ -23,6 +23,7 @@ package view.tabs;
 //import declarations
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
@@ -62,7 +63,7 @@ public final class Selection extends Tab {
     /**
      * Buttons for the second and the first color.
      */
-    private Item1Button tb_color, tb_erase;
+    private Item1Button tb_color, tb_erase, tb_changePen, tb_changeSize, i1b_rotate;
     
     /**
      * Color fetcher.
@@ -107,7 +108,7 @@ public final class Selection extends Tab {
 
         int x = initCololrs(distance, false, null, null, null, null);
         x = initPen(x, false, null);
-        initOthers(x, false, null, null);
+        initOthers(x, false, null, null, null);
 	}
 	
 	/**
@@ -137,7 +138,7 @@ public final class Selection extends Tab {
         int x = initCololrs(distance, true, _cPaint, _cts, _ml, 
         		_controlPaintStatus);
         x = initPen(x, true, _cts);
-        initOthers(x, true, _ml, _controlPaintStatus);
+        initOthers(x, true, _ml, _controlPaintStatus, _cts);
 	}
 	
 	
@@ -424,16 +425,11 @@ public final class Selection extends Tab {
         
 	}
 	
-	/**
-	 * The Item1Button for chainging pen and.
-	 */
-	private Item1Button tb_changePen, tb;
-	
 	
 	/**
 	 * The item1Menu for the first pen.
 	 */
-	private Item1Menu it_stift1;
+	private Item1Menu it_rotate_right;
 	
 	/**
 	 * initialize other items.
@@ -447,7 +443,8 @@ public final class Selection extends Tab {
 	 */
 	private void initOthers(final int _x, final boolean _paint,
 			final MenuListener _ml,
-			final CPaintStatus _controlPaintStatus) {
+			final CPaintStatus _controlPaintStatus,
+			final ActionListener _cts) {
 		
 
 		
@@ -475,21 +472,21 @@ public final class Selection extends Tab {
 		
 		if (_paint) {
 
-	        tb = new Item1Button(null);
-	        tb.setOpaque(true);
+	        tb_changeSize = new Item1Button(null);
+	        tb_changeSize.setOpaque(true);
 		}
-        tb.setSize(ViewSettings.getItemMenu1Width(), 
+        tb_changeSize.setSize(ViewSettings.getItemMenu1Width(), 
                 ViewSettings.getItemMenu1Height());
-        tb.setLocation(tb_erase.getWidth() + tb_erase.getX() + distance, distance);
+        tb_changeSize.setLocation(tb_erase.getWidth() + tb_erase.getX() + distance, distance);
 		if (_paint) {
 
-        tb.setText("Groesse aendern");
-        tb.setBorder(BorderFactory.createCompoundBorder(
+        tb_changeSize.setText("Groesse aendern");
+        tb_changeSize.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(Color.black),
                 new LineBorder(Color.white)));
-        tb.setActivable(false);
-        tb.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
-        super.add(tb);
+        tb_changeSize.setActivable(false);
+        tb_changeSize.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
+        super.add(tb_changeSize);
 
         tb_changePen = new Item1Button(null);
         tb_changePen.setOpaque(true);
@@ -497,8 +494,8 @@ public final class Selection extends Tab {
 		
         tb_changePen.setSize(ViewSettings.getItemMenu1Width(), 
                 ViewSettings.getItemMenu1Height());
-        tb_changePen.setLocation(tb.getX() + tb.getWidth() + distance, 
-                tb.getY());
+        tb_changePen.setLocation(tb_changeSize.getX() + tb_changeSize.getWidth() + distance, 
+                tb_changeSize.getY());
 		if (_paint) {
 
         
@@ -511,31 +508,50 @@ public final class Selection extends Tab {
         tb_changePen.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
 		if (_paint) {
 
-        super.add(tb_changePen);
+	        super.add(tb_changePen);
+	
+	        //pen 1
+	        it_rotate_right = new Item1Menu(false);
+	        it_rotate_right.setMenuListener(_ml);
+	        it_rotate_right.addMouseListener(_controlPaintStatus);
+	        it_rotate_right.setBorder(null);
 
-        //pen 1
-        it_stift1 = new Item1Menu(false);
-        it_stift1.setMenuListener(_ml);
-        it_stift1.addMouseListener(_controlPaintStatus);
-        it_stift1.setBorder(null);
-        it_stift1.setBorder(false);
-        it_stift1.setText("Drehen/Spiegeln");
+	        it_rotate_right.setBorder(false);
+	        it_rotate_right.setText("Drehen/Spiegeln");
+	        
+            i1b_rotate = new Item1Button(null);
+            i1b_rotate.addActionListener(_cts);
+            i1b_rotate.setBorder(false);
+            it_rotate_right.add(i1b_rotate);
+            i1b_rotate.setActivable(true);
+            i1b_rotate.setOpaque(false);
 		}
-        it_stift1.setLocation(tb_changePen.getX() 
+        final Dimension sizeOpen = new Dimension(
+        		ViewSettings.getItemMenu1Width() * (2 + 1), 
+        		ViewSettings.getItemMenu1Height() * (2 + 2) + 5);
+        
+//        it_rotate_right.setText("Rotate 45° Clockwise");
+        it_rotate_right.changeClosedSizes(ViewSettings.getItemMenu1Width(), 
+                ViewSettings.getItemMenu1Height());
+//        it_rotate_right.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        it_rotate_right.setSize(sizeOpen);
+        it_rotate_right.setSizeHeight(ViewSettings.getItemWidth());
+        it_rotate_right.setLocation(tb_changePen.getX() 
                 + tb_changePen.getWidth() + distance, 
                 tb_changePen.getY());
-        it_stift1.setSize(hf,  hf + hf);
-        it_stift1.removeScroll();
+        i1b_rotate.setSize(it_rotate_right.getWidth(), 
+        		it_rotate_right.getHeight());
+        it_rotate_right.removeScroll();
 		if (_paint) {
-
-        it_stift1.setActivable();
-        it_stift1.setItemsInRow((byte) 1);
-        it_stift1.setBorder(false);
-        super.add(it_stift1);
+	
+	        it_rotate_right.setActivable();
+	        it_rotate_right.setItemsInRow((byte) 1);
+	        it_rotate_right.setBorder(false);
+	        super.add(it_rotate_right);
 		}
         
 
-        int xLocationSeparation = it_stift1.getWidth() + it_stift1.getX()
+        int xLocationSeparation = it_rotate_right.getWidth() + it_rotate_right.getX()
                 + ViewSettings.getDistanceBeforeLine();
         insertSectionStuff("Farben", _x, xLocationSeparation, 1, _paint);
 //        return xLocationSeparation + ViewSettings.getDistanceBetweenItems();
@@ -590,4 +606,47 @@ public final class Selection extends Tab {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+	/**
+	 * @return the tb_erase
+	 */
+	public Item1Button getTb_erase() {
+		return tb_erase;
+	}
+
+
+
+
+
+	/**
+	 * @return the tb_changePen
+	 */
+	public Item1Button getTb_changePen() {
+		return tb_changePen;
+	}
+
+
+
+	/**
+	 * @return the tb_changeSize
+	 */
+	public Item1Button getTb_changeSize() {
+		return tb_changeSize;
+	}
+
+
+
+	/**
+	 * @return the it_rotate
+	 */
+	public Item1Menu getIt_rotate() {
+		return it_rotate_right;
+	}
+
+
+
+
+
 }

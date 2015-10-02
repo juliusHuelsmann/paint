@@ -238,9 +238,7 @@ MouseMotionListener, MouseListener {
                 getPage().getJlbl_resizeSelectionSize().setLocation(
                         (-jrssW), 
                         (-jrssH));
-                if (wholeImageSelected) {
-                    mr_stretchPicture(_event);
-                } else {
+                if (!wholeImageSelected) {
 
                     mr_stretchImage(_event);
                 }
@@ -623,15 +621,6 @@ MouseMotionListener, MouseListener {
                 j[0][0].getY() + size, j[2][0].getX() - j[0][0].getX(),
                 j[0][2].getY() - j[0][0].getY());
     
-        
-    }
-    
-
-    /**
-     * Method for stretching the whole picture.
-     * @param _event the passed MouseEvent
-     */
-    private void mr_stretchPicture(final MouseEvent _event) {
         
     }
 

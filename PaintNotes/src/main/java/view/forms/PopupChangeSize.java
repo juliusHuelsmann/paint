@@ -3,12 +3,15 @@ package view.forms;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
 import control.forms.tabs.CTabSelection;
 import model.settings.ViewSettings;
+import view.util.NumberField;
 import view.util.mega.MButton;
 import view.util.mega.MLabel;
 import view.util.mega.MPanel;
@@ -44,7 +47,7 @@ public class PopupChangeSize extends MPanel {
 	 * The MTextFields the user enters information on the new size of the
 	 * selection.
 	 */
-	private MTextField mtf_width, mtf_height;
+	private NumberField mtf_width, mtf_height;
 	
 	
 	/**
@@ -76,7 +79,7 @@ public class PopupChangeSize extends MPanel {
 	 * Initializes the components of the {@link #PopupChangeSize()}
 	 * @param _cts ActionListener for the MButtons.
 	 */
-	public void initialize(final ActionListener _cts) {
+	public void initialize(final CTabSelection _cts) {
 
 		super.setBorder(new LineBorder(Color.gray));
 		super.setLayout(null);
@@ -107,13 +110,43 @@ public class PopupChangeSize extends MPanel {
 		jta_description.setOpaque(false);
 		super.add(jta_description);
 		
+
+		KeyListener kl = new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				final int ENTER = KeyEvent.VK_ENTER, TAB = KeyEvent.VK_TAB;
+				if (e.getKeyCode() == ENTER) {
+					_cts.applyPopupChangeSize();
+					setVisible(false);
+					
+				} else if (e.getKeyCode() == TAB) {
+
+					if (e.getSource().equals(mtf_width)) {
+						mtf_height.requestFocus();
+					} else {
+						mtf_width.requestFocus();
+					}
+				}
+			 }
+		};
+		
+		
 		mlbl_width = new MLabel("Width");
 		mlbl_width.setSize(getWidth() / 2 - distanceToBorder, height);
 		mlbl_width.setLocation(distanceToBorder, jta_description.getY() + jta_description.getHeight());
 		super.add(mlbl_width);
 
-		mtf_width = new MTextField();
+		mtf_width = new NumberField();
+		mtf_width.setFocusTraversalKeysEnabled(false);
 		mtf_width.setOpaque(false);
+		mtf_width.addKeyListener(kl);
 		mtf_width.setSize(mlbl_width.getSize());
 		mtf_width.setLocation(getWidth() / 2, mlbl_width.getY());
 		super.add(mtf_width);
@@ -125,8 +158,10 @@ public class PopupChangeSize extends MPanel {
 				+ distanceBetweenItems);
 		super.add(mlbl_height);
 
-		mtf_height = new MTextField();
+		mtf_height = new NumberField();
 		mtf_height.setOpaque(false);
+		mtf_height.addKeyListener(kl);
+		mtf_height.setFocusTraversalKeysEnabled(false);
 		mtf_height.setSize(mlbl_height.getSize());
 		mtf_height.setLocation(getWidth() / 2, mlbl_height.getY());
 		super.add(mtf_height);
@@ -146,6 +181,13 @@ public class PopupChangeSize extends MPanel {
 				+ distanceBetweenItems, mbtn_reset.getY());
 		super.add(mbtn_apply);
 		
+	}
+	
+	
+	public void setVisible(final boolean _vis) {
+		super.setVisible(_vis);
+		mtf_width.setFocusable(_vis);
+		mtf_height.setFocusable(_vis);
 	}
 	
 	/**
@@ -183,6 +225,7 @@ public class PopupChangeSize extends MPanel {
 			instance.mtf_width.setText(_origWidth + "");
 			instance.mtf_height.setText(_origHeight + "");
 			instance.setVisible(true);
+			instance.mtf_width.requestFocus();
 		}
 	}
 

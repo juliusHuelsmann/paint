@@ -924,6 +924,7 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
      */
     public void updateResizeLocation() {
 
+    	// only perform this action if nothing is selected.
 		if (!controlPaint.getPicture().isSelected()) {
 
 			// change the location of the resize - buttons. Now that the selection

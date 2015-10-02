@@ -19,6 +19,7 @@ package control.forms.tabs;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,8 +28,11 @@ import control.ControlPaint;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectPen;
 import model.settings.Constants;
+import model.settings.State;
+import model.settings.ViewSettings;
 import model.util.adt.list.SecureList;
 import view.forms.InfoForm;
+import view.forms.Message;
 import view.forms.PopupChangeSize;
 import view.tabs.Selection;
 
@@ -125,48 +129,7 @@ public final class CTabSelection implements ActionListener {
     		
     	} else if (_event.getSource().equals(
     			PopupChangeSize.getInstance().getMbtn_apply())){
-
-    		if (cp.getPicture().isSelected()) {
-
-    			Rectangle r = cp.getControlPaintSelection().getR_selection();
-    			if (r != null) {
-    				final int newWidth = Integer.parseInt(PopupChangeSize.getInstance()
-							.getMtf_width().getText());
-    				final int newHeight = Integer.parseInt(PopupChangeSize.getInstance()
-							.getMtf_height().getText());
-    				final int widthChange = newWidth - r.width;
-    				final int heightChange = newHeight - r.height;
-    				r.setSize(newWidth, newHeight);
-
-        			cp.getControlPaintSelection().setR_selection(r);
-        			
-
-                    for (int h = 0; h <= 2; h++) {
-                        for (int w = 0; w <= 2; w++) {
-
-                        	cp.getView().getPage().getJbtn_resize()[h][w].setLocation(
-                            		cp.getControlPaintSelection()
-                            		.getR_selection().x
-                            		+ cp.getControlPaintSelection()
-                            		.getR_selection().width * (h) / 2
-                            		- cp.getView().getPage()
-                            		.getJbtn_resize()[h][w].getWidth() / 2,
-                            		cp.getControlPaintSelection()
-                            		.getR_selection().y 
-                            		+ cp.getControlPaintSelection()
-                            		.getR_selection().height * w / 2
-                            		- cp.getView().getPage()
-                            		.getJbtn_resize()[h][w].getHeight()
-                            		/ 2);
-
-        				}
-        			}
-        			cp.getControlPaintSelection().mr_stretchImage(widthChange, heightChange);
-    			}
-    		}
-
-    			
-    		
+    		applyPopupChangeSize();
     	} else if (
     			//
     			// Components from the View Selection tab.
@@ -209,6 +172,11 @@ public final class CTabSelection implements ActionListener {
 
                 	PopupChangeSize.show(0, 0);
     			}
+    		} else {
+    			
+    			// change size of the entire image
+            	PopupChangeSize.show(State.getImageSize().width, 
+            			State.getImageSize().height);
     		}
         	
         } else {
@@ -226,7 +194,98 @@ public final class CTabSelection implements ActionListener {
     }
     
     
-    public void setSelectionColor(final int _selectionColor) {
+    public void applyPopupChangeSize() {
+
+
+		
+		if (PopupChangeSize.getInstance()
+				.getMtf_width().getText().equals("")) {
+
+			Message.showMessage(Message.MESSAGE_ID_ERROR, "Width has to be positive.");
+		} else if (PopupChangeSize.getInstance()
+				.getMtf_width().getText().equals("")) {
+			
+			Message.showMessage(Message.MESSAGE_ID_ERROR, "Height has to be positive.");
+		} else {
+
+			final int newWidth = Integer.parseInt(PopupChangeSize.getInstance()
+					.getMtf_width().getText());
+			final int newHeight = Integer.parseInt(PopupChangeSize.getInstance()
+					.getMtf_height().getText());
+			
+			if (newWidth == 0) {
+
+				Message.showMessage(Message.MESSAGE_ID_ERROR, "Width has to be positive.");
+			} else if (newHeight == 0) {
+
+				Message.showMessage(Message.MESSAGE_ID_ERROR, "Height has to be positive.");
+			} else {
+
+				if (cp.getPicture().isSelected()) {
+
+        			Rectangle r = cp.getControlPaintSelection().getR_selection();
+        			if (r == null) {
+        				Message.showMessage(Message.MESSAGE_ID_ERROR, "No selection available.");
+        			} 
+				
+    				
+    				final int widthChange = newWidth - r.width;
+    				final int heightChange = newHeight - r.height;
+    				r.setSize(newWidth, newHeight);
+
+        			cp.getControlPaintSelection().setR_selection(r);
+        			
+
+                    for (int h = 0; h <= 2; h++) {
+                        for (int w = 0; w <= 2; w++) {
+
+                        	cp.getView().getPage().getJbtn_resize()[h][w].setLocation(
+                            		cp.getControlPaintSelection()
+                            		.getR_selection().x
+                            		+ cp.getControlPaintSelection()
+                            		.getR_selection().width * (h) / 2
+                            		- cp.getView().getPage()
+                            		.getJbtn_resize()[h][w].getWidth() / 2,
+                            		cp.getControlPaintSelection()
+                            		.getR_selection().y 
+                            		+ cp.getControlPaintSelection()
+                            		.getR_selection().height * w / 2
+                            		- cp.getView().getPage()
+                            		.getJbtn_resize()[h][w].getHeight()
+                            		/ 2);
+
+        				}
+                    }
+        			cp.getControlPaintSelection().mr_stretchImage(widthChange, heightChange);
+        			
+    			} else {
+     	           final double factorW = 1.0 * State.getImageSize().width 
+   	                    / State.getImageShowSize().width;
+    	           final double factorH = 1.0 * State.getImageSize().height 
+   	                    / State.getImageShowSize().height;
+    				// change size of image.
+    				State.setImageSize(new Dimension(newWidth, newHeight));
+    				State.setImageShowSize(new Dimension(
+    	                (int) (newWidth / factorW),
+    	                (int) (newHeight / factorH)));
+	        
+
+		        cp.getControlPic().refreshPaint();
+	
+		        cp.getView().getPage().refrehsSps();
+    			cp.getcTabPaint().updateResizeLocation();
+    			}
+			}
+	        
+		}
+
+			
+		
+			
+	}
+
+
+	public void setSelectionColor(final int _selectionColor) {
 
     	if (cp.getPicture().isSelected()) {
     		this.selectionColor = _selectionColor;

@@ -1569,6 +1569,11 @@ MenuListener {
         }
         controlPic.refreshPaint();
 
+        // open selection tab
+        if (getPicture().isSelected()) {
+
+            getTabs().openTab(State.getIdTabSelection());	
+        }
 
         
     }
@@ -1731,6 +1736,13 @@ MenuListener {
             State.setPen_selectedReplaced(null);
         }
         controlPic.refreshPaint();
+
+        // open selection tab
+        if (getPicture().isSelected()) {
+
+            getTabs().openTab(State.getIdTabSelection());	
+        }
+
     }
     
     /**
@@ -1866,6 +1878,14 @@ MenuListener {
 //                  _r_size);
         }
         getPage().getJlbl_backgroundStructure().repaint();
+        
+
+        // open selection tab
+        if (getPicture().isSelected()) {
+
+            getTabs().openTab(State.getIdTabSelection());	
+        }
+
         
 
     }
@@ -2061,6 +2081,13 @@ MenuListener {
 
 
         getPage().getJlbl_backgroundStructure().repaint();
+        
+
+        // open selection tab
+        if (getPicture().isSelected()) {
+
+            getTabs().openTab(State.getIdTabSelection());	
+        }
 
     }
     

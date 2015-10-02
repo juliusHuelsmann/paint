@@ -496,6 +496,14 @@ public class ContorlPicture implements PaintListener {
 		
 		// refresh painting at selected area.
 		refreshPaint();
+		
+		//open the first tab if the currently opened tab is the selection tab.
+        // open selection tab
+		if (getTabs().getOpenTab() == State.getIdTabSelection()) {
+
+	        // open selection tab
+	        getTabs().openTab(0);
+		}
 	}
 	
 	

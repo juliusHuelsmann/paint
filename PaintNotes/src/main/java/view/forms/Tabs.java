@@ -22,8 +22,11 @@ package view.forms;
 
 //import declarations
 import java.awt.Toolkit;
+
 import javax.swing.JFrame;
+
 import view.tabs.Project;
+import model.settings.State;
 import model.settings.ViewSettings;
 import control.ControlPaint;
 import control.util.CItem;
@@ -253,6 +256,7 @@ public final class Tabs extends VTabbedPane {
         tab_selection.initialize(
         		_cp.getcTabPaint(), _cp.getcTabSelection(), _cp, 
         		_cp.getcTabPaintStatus());
+        State.setIdTabSelection(tabNumber);
         super.addToTab(tabNumber, tab_selection);
 
         set_selection = new SettingsSelection();

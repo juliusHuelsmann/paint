@@ -160,9 +160,6 @@ public final class CTabSelection implements ActionListener {
         	} else {
         		Message.showMessage(Message.MESSAGE_ID_INFO, "Nothing selected.");
         	}
-        } else if (_event.getSource().equals(getSelection().getTb_changePen()
-        		.getActionCause())) {
-
         } else if (_event.getSource().equals(getSelection().getTb_changeSize()
         		.getActionCause())) {
         	

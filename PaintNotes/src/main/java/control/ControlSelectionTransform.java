@@ -639,7 +639,7 @@ MouseMotionListener, MouseListener {
      * Method for stretching image.
      * @param _event the passed MouseEvent
      */
-    private void mr_stretchImage(final MouseEvent _event) {
+    public void mr_stretchImage(final MouseEvent _event) {
 
         double distanceX = _event.getXOnScreen() - pnt_start.getX();
         double distanceY = _event.getYOnScreen() - pnt_start.getY();
@@ -667,6 +667,7 @@ MouseMotionListener, MouseListener {
         } else if (_event.getSource().equals(j[2][0])) {
             pnt_stretchFrom = new DPoint(j[0][2].getX() + height, j[0][2].getY() + height);
             pnt_totalStretch = new DPoint(distanceXY2, distanceXY2);
+        
 
         } else if (_event.getSource().equals(j[0][1])) {
             pnt_stretchFrom = new DPoint(j[2][1].getX() + height, j[2][1].getY() + height);
@@ -704,6 +705,15 @@ MouseMotionListener, MouseListener {
             pnt_size.setY(minSize);
         }
         
+        stretchImage(pnt_stretchFrom, pnt_totalStretch, pnt_size);
+
+    }
+    
+    
+    private void stretchImage(final DPoint _pnt_stretchFrom,
+    		final DPoint _pnt_totalStretch,
+    		final DPoint _pnt_size) {
+
         if (cv.getPicture().getLs_poSelected() != null 
         		&& !cv.getPicture().getLs_poSelected().isEmpty()) {
 
@@ -721,7 +731,7 @@ MouseMotionListener, MouseListener {
 
 
                 cv.getPicture().getLs_poSelected().getItem().stretch(
-                        pnt_stretchFrom, pnt_totalStretch, pnt_size);
+                        _pnt_stretchFrom, _pnt_totalStretch, _pnt_size);
                 cv.getPicture().getLs_poSelected().next(
                 		transaction, closedAction);
             }
@@ -738,6 +748,37 @@ MouseMotionListener, MouseListener {
             		cv.getControlPic(),
             		cv.getControlPaintSelection());        	
         }
+    }
+    
+    
+    public void mr_stretchImage(final int distanceX, final int distanceY) {
+
+        MButton[][] j = getPage().getJbtn_resize();
+        double distanceXY, distanceXY2;
+        if (Math.abs(distanceX) < Math.abs(distanceY)) {
+            distanceXY = distanceX;
+            distanceXY2 = -distanceX;
+        } else {
+            distanceXY = distanceY;
+            distanceXY2 = distanceY;
+        }
+        
+        final int height = j[2][2].getHeight() / 2;
+        final DPoint pnt_stretchFrom1, pnt_totalStretch1;
+        final DPoint pnt_size1 = new DPoint(
+        		j[2][2].getX() - j[0][0].getX(), 
+        		j[2][2].getY() - j[0][0].getY());
+
+        pnt_stretchFrom1 = new DPoint(j[1][0].getX() + height, j[1][0].getY() + height);
+        pnt_totalStretch1 = new DPoint(0, -distanceY);
+        stretchImage(pnt_stretchFrom1, pnt_totalStretch1, pnt_size1);
+
+        final DPoint pnt_stretchFrom2, pnt_totalStretch2;
+        pnt_stretchFrom2 = new DPoint(j[0][1].getX() + height, j[0][1].getY() + height);
+        pnt_totalStretch2 = new DPoint(-distanceX, 0);
+        stretchImage(pnt_stretchFrom2, pnt_totalStretch2, pnt_size1);
+        
+        
 
     }
 

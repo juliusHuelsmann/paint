@@ -130,15 +130,39 @@ public final class CTabSelection implements ActionListener {
 
     			Rectangle r = cp.getControlPaintSelection().getR_selection();
     			if (r != null) {
-    				r.setSize(
-    						Integer.parseInt(PopupChangeSize.getInstance()
-    								.getMtf_width().getText()),
-    						Integer.parseInt(PopupChangeSize.getInstance()
-    								.getMtf_height().getText()));
+    				final int newWidth = Integer.parseInt(PopupChangeSize.getInstance()
+							.getMtf_width().getText());
+    				final int newHeight = Integer.parseInt(PopupChangeSize.getInstance()
+							.getMtf_height().getText());
+    				final int widthChange = newWidth - r.width;
+    				final int heightChange = newHeight - r.height;
+    				r.setSize(newWidth, newHeight);
 
         			cp.getControlPaintSelection().setR_selection(r);
+        			
+
+                    for (int h = 0; h <= 2; h++) {
+                        for (int w = 0; w <= 2; w++) {
+
+                        	cp.getView().getPage().getJbtn_resize()[h][w].setLocation(
+                            		cp.getControlPaintSelection()
+                            		.getR_selection().x
+                            		+ cp.getControlPaintSelection()
+                            		.getR_selection().width * (h) / 2
+                            		- cp.getView().getPage()
+                            		.getJbtn_resize()[h][w].getWidth() / 2,
+                            		cp.getControlPaintSelection()
+                            		.getR_selection().y 
+                            		+ cp.getControlPaintSelection()
+                            		.getR_selection().height * w / 2
+                            		- cp.getView().getPage()
+                            		.getJbtn_resize()[h][w].getHeight()
+                            		/ 2);
+
+        				}
+        			}
+        			cp.getControlPaintSelection().mr_stretchImage(widthChange, heightChange);
     			}
-    			
     		}
 
     			

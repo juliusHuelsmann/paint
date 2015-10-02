@@ -927,8 +927,12 @@ public final class Tools extends Tab {
 	/**
 	 * add pens .
 	 */
-	private void addPens(final ControlPaint _controlPaint, 
+	public void addPens(final ControlPaint _controlPaint, 
+			
+			// for focus animation
 			final CTabTools _cp,
+			
+			
 			final CPaintStatus _controlPaintStatus) {
 
 
@@ -947,7 +951,7 @@ public final class Tools extends Tab {
 			//mouse listener and changeListener
 			i1.addMouseListener(_cp);
 			CPen cpen = new CPen(_controlPaint, _cp, i1, it_stift1, 
-					Pen.clonePen(pen_available), 1, _controlPaintStatus);
+					Pen.clonePen(pen_available), 1, _controlPaintStatus, false);
 			i1.addChangeListener(cpen);
 			i1.addMouseListener(cpen);
 
@@ -967,7 +971,7 @@ public final class Tools extends Tab {
 			//mouse listener and changeListener
 			i2.addMouseListener(_cp);
 			CPen cpen2 = new CPen(_controlPaint, _cp, i2, it_stift2,
-					Pen.clonePen(pen_available), 2, _controlPaintStatus);
+					Pen.clonePen(pen_available), 2, _controlPaintStatus, false);
 			i2.addChangeListener(cpen2);
 			i2.addMouseListener(cpen2);
 

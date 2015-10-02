@@ -85,6 +85,12 @@ public class CPen implements ChangeListener, MouseListener {
 	
 	
 	/**
+	 * Whether to change the selection or the currently used pen on 
+	 * selection.
+	 */
+	private boolean changeSelection;
+	
+	/**
 	 * Constructor.
 	 * @param _controlPaint
 	 * @param _cp
@@ -101,7 +107,8 @@ public class CPen implements ChangeListener, MouseListener {
 			final Item1Menu _i1m_toSet,
 			final Pen _pen,
 			final int _penSelection,
-			final CPaintStatus _cps) {
+			final CPaintStatus _cps, 
+			final boolean _changeSelection) {
 		this. controlPaint = _controlPaint;
 		this.penSelection = _penSelection;
 		this.cp = _cp;
@@ -109,6 +116,7 @@ public class CPen implements ChangeListener, MouseListener {
 		this.pen = _pen;
 		this.i1m_toSet = _i1m_toSet;
 		this.cps = _cps;
+		this.changeSelection = changeSelection;
 	}
 
 	
@@ -254,6 +262,12 @@ public class CPen implements ChangeListener, MouseListener {
 	 * {@inheritDoc}
 	 */
 	public final void mouseReleased(final MouseEvent _event) {
-		mouseReleasedPenChange(_event);		
+		
+		if (changeSelection) {
+			
+		} else {
+
+			mouseReleasedPenChange(_event);	
+		}	
 	}
 }

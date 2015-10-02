@@ -33,15 +33,20 @@ import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import model.objects.pen.Pen;
 import model.settings.Constants;
+import model.settings.State;
 import model.settings.ViewSettings;
+import control.ControlPaint;
 import control.forms.CPaintStatus;
 import control.forms.tabs.CTabTools;
 import control.forms.tabs.CTabSelection;
 import control.interfaces.MenuListener;
+import control.util.CPen;
 import view.forms.Help;
 import view.util.Item1Menu;
 import view.util.Item1Button;
+import view.util.Item1PenSelection;
 import view.util.VColorPanel;
 import view.util.mega.MButton;
 
@@ -63,13 +68,14 @@ public final class Selection extends Tab {
     /**
      * Buttons for the second and the first color.
      */
-    private Item1Button tb_color, tb_erase, tb_changePen, tb_changeSize,
-    i1b_rotateClockwise, i1b_rotateCounterclockwise;
+    private Item1Button tb_color, tb_erase, tb_changeSize,
+    i1b_rotateClockwise, i1b_rotateCounterclockwise, i1b_mirrorHoriz, 
+    i1b_rotateFree, i1b_mirrorVert;
     
     /**
      * Color fetcher.
      */
-    private Item1Menu it_color;
+    private Item1Menu it_color, it_changePen;
 
     /**
      * integer values.
@@ -109,7 +115,7 @@ public final class Selection extends Tab {
 
         int x = initCololrs(distance, false, null, null, null, null);
         x = initPen(x, false, null);
-        initOthers(x, false, null, null, null);
+        initOthers(x, false, null, null, null, null);
 	}
 	
 	/**
@@ -133,13 +139,13 @@ public final class Selection extends Tab {
 	public void initialize(
 			final CTabTools _cPaint, 
 			final CTabSelection _cts,
-			final MenuListener _ml,
+			final ControlPaint _cp,
 			final CPaintStatus _controlPaintStatus) {
 
-        int x = initCololrs(distance, true, _cPaint, _cts, _ml, 
+        int x = initCololrs(distance, true, _cPaint, _cts, _cp, 
         		_controlPaintStatus);
         x = initPen(x, true, _cts);
-        initOthers(x, true, _ml, _controlPaintStatus, _cts);
+        initOthers(x, true, _cp, _controlPaintStatus, _cts, _cp);
 	}
 	
 	
@@ -445,7 +451,8 @@ public final class Selection extends Tab {
 	private void initOthers(final int _x, final boolean _paint,
 			final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus,
-			final ActionListener _cts) {
+			final ActionListener _cts,
+			final ControlPaint _cp) {
 		
 
 		
@@ -463,7 +470,7 @@ public final class Selection extends Tab {
 			tb_erase.setText("Delete");
 			tb_erase.setActivable(false);
 			tb_erase.addActionListener(_cts);
-			tb_erase.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
+			tb_erase.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
 			tb_erase.setBorder(BorderFactory.createCompoundBorder(
                     new LineBorder(Color.black),
                     new LineBorder(Color.white)));
@@ -491,41 +498,45 @@ public final class Selection extends Tab {
 	        tb_changeSize.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
 	        super.add(tb_changeSize);
 	
-	        tb_changePen = new Item1Button(null);
-	        tb_changePen.setOpaque(true);
+            it_changePen = new Item1Menu(false);
+            it_changePen.removeScroll();
+            it_changePen.setMenuListener(_ml);
+            it_changePen.addMouseListener(_controlPaintStatus);
+
 		}
-		
-        tb_changePen.setSize(ViewSettings.getItemMenu1Width(), 
-                ViewSettings.getItemMenu1Height());
-        tb_changePen.setLocation(tb_changeSize.getX() + tb_changeSize.getWidth() + distance, 
+
+
+        final Dimension sizeIT = new Dimension(550, 550);
+		it_changePen.setSize(sizeIT);
+		it_changePen.setSizeHeight(50);
+		it_changePen.setLocation(tb_changeSize.getX() + tb_changeSize.getWidth() + distance, 
                 tb_changeSize.getY());
 		if (_paint) {
 
-        
-	        tb_changePen.setText("Stift aendern");
-	        tb_changePen.setBorder(BorderFactory.createCompoundBorder(
-	                new LineBorder(Color.black),
-	                new LineBorder(Color.white)));
-	        tb_changePen.addActionListener(_cts);
-	        tb_changePen.setActivable(false);
+			it_changePen.setBorder(null);
+			it_changePen.setText("Change pen");
+			it_changePen.setItemsInRow((byte) 1);
+			it_changePen.setActivable();
+			it_changePen.setBorder(false);
 		}
-        tb_changePen.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
+		it_changePen.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
 		if (_paint) {
+			addPens(_cp, _cp.getcTabPaint(), _controlPaintStatus);
+        	super.add(it_changePen);
 
-	        super.add(tb_changePen);
 	
 	        //pen 1
 	        it_rotate = new Item1Menu(false);
 	        it_rotate.setMenuListener(_ml);
 	        it_rotate.addMouseListener(_controlPaintStatus);
 	        it_rotate.setBorder(null);
-
 	        it_rotate.setBorder(false);
 	        it_rotate.setText("Drehen/Spiegeln");
 	        
             i1b_rotateClockwise = new Item1Button(null);
             i1b_rotateClockwise.addActionListener(_cts);
             i1b_rotateClockwise.setBorder(false);
+            i1b_rotateClockwise.setShifted();
             i1b_rotateClockwise.setText("Rotate 45° Clockwise");
             i1b_rotateClockwise.setActivable(true);
             i1b_rotateClockwise.setOpaque(false);
@@ -534,48 +545,75 @@ public final class Selection extends Tab {
             i1b_rotateCounterclockwise = new Item1Button(null);
             i1b_rotateCounterclockwise.addActionListener(_cts);
             i1b_rotateCounterclockwise.setBorder(false);
+            i1b_rotateCounterclockwise.setShifted();
             i1b_rotateCounterclockwise.setText("Rotate 45° Counter-clockwise");
             i1b_rotateCounterclockwise.setActivable(true);
             i1b_rotateCounterclockwise.setOpaque(false);
+
+            i1b_rotateFree = new Item1Button(null);
+            i1b_rotateFree.addActionListener(_cts);
+            i1b_rotateFree.setBorder(false);
+            i1b_rotateFree.setShifted();
+            i1b_rotateFree.setText("Rotation custom degree");
+            i1b_rotateFree.setActivable(true);
+            i1b_rotateFree.setOpaque(false);
+	        
+            i1b_mirrorVert = new Item1Button(null);
+            i1b_mirrorVert.addActionListener(_cts);
+            i1b_mirrorVert.setBorder(false);
+            i1b_mirrorVert.setShifted();
+            i1b_mirrorVert.setText("Mirror vertically");
+            i1b_mirrorVert.setActivable(true);
+            i1b_mirrorVert.setOpaque(false);
+
+            i1b_mirrorHoriz = new Item1Button(null);
+            i1b_mirrorHoriz.addActionListener(_cts);
+            i1b_mirrorHoriz.setBorder(false);
+            i1b_mirrorHoriz.setShifted();
+            i1b_mirrorHoriz.setText("Mirror horizontally");
+            i1b_mirrorHoriz.setActivable(true);
+            i1b_mirrorHoriz.setOpaque(false);
 		}
 		final int distance = 5;
         final int contentHeight = ViewSettings.getItemMenu1Height() - 2 * distance;
         final Dimension sizeOpen = new Dimension(
-        		ViewSettings.getItemMenu1Width() * (2 + 1), 
+        		ViewSettings.getItemMenu1Width() * (2 + 2), 
         		 contentHeight * (2 + 2) + 5);
         
         it_rotate.changeClosedSizes(ViewSettings.getItemMenu1Width(), 
                 ViewSettings.getItemMenu1Height());
-        
+
         it_rotate.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         it_rotate.setSize(sizeOpen);
         it_rotate.setSizeHeight(ViewSettings.getItemWidth());
-        it_rotate.setLocation(tb_changePen.getX() 
-                + tb_changePen.getWidth() + distance, 
-                tb_changePen.getY());
+        it_rotate.setLocation(it_changePen.getX() 
+                + it_changePen.getWidth() + distance, 
+                it_changePen.getY());
+        
         i1b_rotateClockwise.setSize(
-        		it_rotate.getWidth(), contentHeight);
-        it_rotate.removeScroll();
-        i1b_rotateClockwise.setIconLabelX(5);
-        i1b_rotateClockwise.setIconLabelY(5);
-        i1b_rotateClockwise.setImageWidth(contentHeight);
-        i1b_rotateClockwise.setImageHeight(contentHeight);
-        i1b_rotateClockwise.setIcon("/res/img/icon/save.png");
-        i1b_rotateClockwise.setIconLabelX(5);
-        i1b_rotateClockwise.setIconLabelY(5);
-        i1b_rotateClockwise.setImageWidth(contentHeight);
-        i1b_rotateClockwise.setImageHeight(contentHeight);
-        i1b_rotateCounterclockwise.setSize(
-        		it_rotate.getWidth(), 
-        		it_rotate.getHeight());
+        		it_rotate.getWidth(), i1b_rotateClockwise.getHeight());
+        i1b_rotateCounterclockwise.setSize(i1b_rotateClockwise.getSize());
+        i1b_rotateFree.setSize(i1b_rotateClockwise.getSize());
+        i1b_mirrorHoriz.setSize(i1b_rotateClockwise.getSize());
+        i1b_mirrorVert.setSize(i1b_rotateClockwise.getSize());
+
+        i1b_rotateClockwise.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_rotateCounterclockwise.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_rotateFree.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_mirrorHoriz.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_mirrorVert.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
 		if (_paint) {
 
             it_rotate.add(i1b_rotateClockwise);
             it_rotate.add(i1b_rotateCounterclockwise);
+            it_rotate.add(i1b_rotateFree);
+            it_rotate.add(i1b_mirrorHoriz);
+            it_rotate.add(i1b_mirrorVert);
 	        it_rotate.setActivable();
 	        it_rotate.setItemsInRow((byte) 1);
 	        it_rotate.setBorder(false);
 	        super.add(it_rotate);
+	        it_rotate.removeScroll();
 		}
         
 
@@ -585,7 +623,43 @@ public final class Selection extends Tab {
 //        return xLocationSeparation + ViewSettings.getDistanceBetweenItems();
 	}
 	
-	
+
+	/**
+	 * add pens .
+	 */
+	private void addPens(final ControlPaint _controlPaint, 
+			
+			// for focus animation
+			final CTabTools _cp,
+			
+			
+			final CPaintStatus _controlPaintStatus) {
+
+
+		
+		for (Pen pen_available : State.getPen_available()) {
+			
+			/*
+			 * The pen which is inserted into the first penMenu
+			 */
+			Item1PenSelection i1 = new Item1PenSelection(
+					pen_available.getName(),
+					pen_available.getIconPath(),
+					pen_available,
+					1);
+			
+			//mouse listener and changeListener
+			i1.addMouseListener(_cp);
+			CPen cpen = new CPen(_controlPaint, _cp, i1, it_changePen, 
+					Pen.clonePen(pen_available), 1, _controlPaintStatus, true);
+			i1.addChangeListener(cpen);
+			i1.addMouseListener(cpen);
+
+			//add to first pen
+			it_changePen.add(i1);
+		}
+    
+	}
 
 
     /**
@@ -647,13 +721,6 @@ public final class Selection extends Tab {
 
 
 
-
-	/**
-	 * @return the tb_changePen
-	 */
-	public Item1Button getTb_changePen() {
-		return tb_changePen;
-	}
 
 
 

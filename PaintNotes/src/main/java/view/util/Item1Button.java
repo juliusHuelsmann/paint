@@ -353,12 +353,26 @@ public class Item1Button extends MPanel {
 	    jlbl_title.setFont(ViewSettings.GENERAL_FONT_ITEM1_BUTTON);
 	    //set size of color - and title MLabel
 	    if (imageWidth == -1 || imageHeight == -1) {
-	    	jlbl_color.setBounds(distance * (2 + 1), distance, 
-	    			getWidth() - colorSize, getWidth() - colorSize);
+	    	
+	    	if (shifted) {
 
-	    	jlbl_title.setBounds(0, jlbl_color.getHeight() 
-	    			+ jlbl_color.getY(), getWidth(), getHeight() 
-	    			- jlbl_color.getHeight() - jlbl_color.getY());
+		    	jlbl_color.setBounds(distance, distance, 
+		    			getHeight() - 2 * distance, getHeight() - 2 * distance);
+		    	
+		    	jlbl_title.setBounds(
+		    			jlbl_color.getWidth() + jlbl_color.getX() + distance, 
+		    			jlbl_color.getY(),
+		    			getWidth() - jlbl_color.getWidth() - jlbl_color.getX() - distance,
+		    			getHeight() - 2 * distance);
+	    	} else {
+
+		    	jlbl_color.setBounds(distance * (2 + 1), distance, 
+		    			getWidth() - colorSize, getWidth() - colorSize);
+
+		    	jlbl_title.setBounds(0, jlbl_color.getHeight() 
+		    			+ jlbl_color.getY(), getWidth(), getHeight() 
+		    			- jlbl_color.getHeight() - jlbl_color.getY());
+	    	}
 	    } else if (textEnabled) {
 
 	    	jlbl_title.setBounds(0, (jlbl_color.getHeight() 
@@ -367,6 +381,19 @@ public class Item1Button extends MPanel {
 	    }
 	}
 	
+	/**
+	 * If shifted, text is placed at the right side of the image. Otherwise
+	 * underneath.
+	 */
+	private boolean shifted = false;
+	
+	/**
+	 * Places the text at the right side of the image and not
+	 * underneath it.
+	 */
+	public final void setShifted() {
+		shifted = true;
+	}
 	
 	
 	/**

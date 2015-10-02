@@ -641,8 +641,8 @@ MouseMotionListener, MouseListener {
             distanceXY = distanceY;
             distanceXY2 = distanceY;
         }
-        
-        final int height = j[2][2].getHeight() / 2;
+
+        final int height = (int) (j[2][2].getHeight() / 2);
         
         DPoint pnt_stretchFrom = null, pnt_size, pnt_totalStretch = null;
         if (_event.getSource().equals(j[0][0])) {
@@ -699,9 +699,31 @@ MouseMotionListener, MouseListener {
     }
     
     
-    private void stretchImage(final DPoint _pnt_stretchFrom,
+    
+    /**
+     * The values need to be stretched.
+     * @param _pnt_stretchFrom
+     * @param _pnt_totalStretch
+     * @param _pnt_size
+     */
+    private void stretchImage(
+    		final DPoint _pnt_stretchFrom,
     		final DPoint _pnt_totalStretch,
     		final DPoint _pnt_size) {
+
+    	final double stretchWidth = 1.0 *  State.getImageSize().width
+    			/ State.getImageShowSize().width;
+    	final double stretchHeight = 1.0 * State.getImageSize().height 
+    			/ State.getImageShowSize().height;
+    	
+    	_pnt_stretchFrom.setX((_pnt_stretchFrom.getX() - getPage().getJlbl_painting().getLocation().getX()) *  stretchWidth );
+    	_pnt_stretchFrom.setY((_pnt_stretchFrom.getY() - getPage().getJlbl_painting().getLocation().getY()) *  stretchHeight );
+
+    	_pnt_totalStretch.setX(_pnt_totalStretch.getX() *  stretchWidth);
+    	_pnt_totalStretch.setY(_pnt_totalStretch.getY() *  stretchHeight);
+
+    	_pnt_size.setX(_pnt_size.getX() *  stretchWidth);
+    	_pnt_size.setY(_pnt_size.getY() *  stretchHeight);
 
         if (cv.getPicture().getLs_poSelected() != null 
         		&& !cv.getPicture().getLs_poSelected().isEmpty()) {

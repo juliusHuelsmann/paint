@@ -780,8 +780,11 @@ public class ContorlPicture implements PaintListener {
 				}
 			}
 			
-			// update the location of the resize buttons
-			cp.getcTabPaint().updateResizeLocation();
+			if (!cp.getPicture().isSelected()) {
+
+				// update the location of the resize buttons
+				cp.getcTabPaint().updateResizeLocation();	
+			}
 		}
 	}
 
@@ -949,9 +952,12 @@ public class ContorlPicture implements PaintListener {
 			
 			//set changed
 			refreshPaint();
-			
-			// update the location of the resize buttons
-			cp.getcTabPaint().updateResizeLocation();
+
+			if (cp.getPicture().isSelected()) {
+
+				// update the location of the resize buttons
+				cp.getcTabPaint().updateResizeLocation();	
+			}
 		}		
 	}
 
@@ -966,8 +972,11 @@ public class ContorlPicture implements PaintListener {
 			//set changed
 			refreshPaint();
 
-			// update the location of the resize buttons
-			cp.getcTabPaint().updateResizeLocation();
+			if (!cp.getPicture().isSelected()) {
+
+				// update the location of the resize buttons
+				cp.getcTabPaint().updateResizeLocation();	
+			}
 		}		
 	}
 
@@ -1008,9 +1017,12 @@ public class ContorlPicture implements PaintListener {
 			
 			//set changed
 			refreshPaint();
-			
-			// update the location of the resize buttons
-			cp.getcTabPaint().updateResizeLocation();
+
+			if (!cp.getPicture().isSelected()) {
+
+				// update the location of the resize buttons
+				cp.getcTabPaint().updateResizeLocation();	
+			}
 		}		
 	}
 

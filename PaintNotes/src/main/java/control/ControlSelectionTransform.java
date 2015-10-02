@@ -754,14 +754,6 @@ MouseMotionListener, MouseListener {
     public void mr_stretchImage(final int distanceX, final int distanceY) {
 
         MButton[][] j = getPage().getJbtn_resize();
-        double distanceXY, distanceXY2;
-        if (Math.abs(distanceX) < Math.abs(distanceY)) {
-            distanceXY = distanceX;
-            distanceXY2 = -distanceX;
-        } else {
-            distanceXY = distanceY;
-            distanceXY2 = distanceY;
-        }
         
         final int height = j[2][2].getHeight() / 2;
         final DPoint pnt_stretchFrom1, pnt_totalStretch1;

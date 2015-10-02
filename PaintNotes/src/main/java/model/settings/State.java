@@ -47,6 +47,34 @@ import model.util.paint.Utils;
  * @version %I%, %U%
  */
 public final class State {
+	/**
+	 * The identifier of the selection tab in the TabbedPane. If this value
+	 * is known, the selection tab can be opened by typing
+	 * <code> getTabs().openTab</code>.
+	 */
+	private static int idTabSelection;
+
+
+
+
+
+
+	/**
+	 * @return the idTabSelection
+	 */
+	public static int getIdTabSelection() {
+		return idTabSelection;
+	}
+
+
+
+
+	/**
+	 * @param _idTabSelection the idTabSelection to set
+	 */
+	public static void setIdTabSelection(int _idTabSelection) {
+		State.idTabSelection = _idTabSelection;
+	}
 
 
 	/*

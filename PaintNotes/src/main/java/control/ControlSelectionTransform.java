@@ -754,10 +754,12 @@ MouseMotionListener, MouseListener {
         			closedAction);
             
             //release selected and paint them
-            cv.getControlPic().releaseSelected();
+        	
+        	// release selected causes the tab to open tab 1. therefore iterrupt that action.
+            cv.getControlPic().releaseSelected(false);
             cv.getPicture().paintSelected(getPage(),
             		cv.getControlPic(),
-            		cv.getControlPaintSelection());        	
+            		cv.getControlPaintSelection());    
         }
     }
     

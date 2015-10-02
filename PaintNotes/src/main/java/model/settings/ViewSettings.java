@@ -865,6 +865,8 @@ public final class ViewSettings {
 
 
 
+
+
 	/**
 	 * @return the size of the JFrame.
 	 */

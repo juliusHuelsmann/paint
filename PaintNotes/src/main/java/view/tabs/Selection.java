@@ -462,6 +462,7 @@ public final class Selection extends Tab {
 
 			tb_erase.setText("Delete");
 			tb_erase.setActivable(false);
+			tb_erase.addActionListener(_cts);
 			tb_erase.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
 			tb_erase.setBorder(BorderFactory.createCompoundBorder(
                     new LineBorder(Color.black),
@@ -481,16 +482,17 @@ public final class Selection extends Tab {
         tb_changeSize.setLocation(tb_erase.getWidth() + tb_erase.getX() + distance, distance);
 		if (_paint) {
 
-        tb_changeSize.setText("Groesse aendern");
-        tb_changeSize.setBorder(BorderFactory.createCompoundBorder(
-                new LineBorder(Color.black),
-                new LineBorder(Color.white)));
-        tb_changeSize.setActivable(false);
-        tb_changeSize.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
-        super.add(tb_changeSize);
-
-        tb_changePen = new Item1Button(null);
-        tb_changePen.setOpaque(true);
+	        tb_changeSize.setText("Groesse aendern");
+	        tb_changeSize.setBorder(BorderFactory.createCompoundBorder(
+	                new LineBorder(Color.black),
+	                new LineBorder(Color.white)));
+	        tb_changeSize.setActivable(false);
+	        tb_changeSize.addActionListener(_cts);
+	        tb_changeSize.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
+	        super.add(tb_changeSize);
+	
+	        tb_changePen = new Item1Button(null);
+	        tb_changePen.setOpaque(true);
 		}
 		
         tb_changePen.setSize(ViewSettings.getItemMenu1Width(), 
@@ -500,11 +502,12 @@ public final class Selection extends Tab {
 		if (_paint) {
 
         
-        tb_changePen.setText("Stift aendern");
-        tb_changePen.setBorder(BorderFactory.createCompoundBorder(
-                new LineBorder(Color.black),
-                new LineBorder(Color.white)));
-        tb_changePen.setActivable(false);
+	        tb_changePen.setText("Stift aendern");
+	        tb_changePen.setBorder(BorderFactory.createCompoundBorder(
+	                new LineBorder(Color.black),
+	                new LineBorder(Color.white)));
+	        tb_changePen.addActionListener(_cts);
+	        tb_changePen.setActivable(false);
 		}
         tb_changePen.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
 		if (_paint) {

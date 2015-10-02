@@ -22,13 +22,8 @@ package control;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import javax.swing.ImageIcon;
-
-import org.apache.lucene.util.RollingBuffer.Resettable;
-
 import control.forms.BorderThread;
-import control.forms.ControlView;
 import control.interfaces.MoveEvent;
 import control.interfaces.PaintListener;
 import model.objects.painting.PaintBI;

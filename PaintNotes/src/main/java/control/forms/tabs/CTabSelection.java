@@ -151,33 +151,44 @@ public final class CTabSelection implements ActionListener {
         } else if (_event.getSource().equals(getSelection().getTb_erase()
         		.getActionCause())) {
 
-        	// remove model
-        	cp.getControlPic().releaseSelected();
-        	cp.getPicture().deleteSelected(cp.getView().getTabs().getTab_debug(), this);
-        	cp.getcTabPaint().updateResizeLocation();
+        	if (cp.getPicture().isSelected()) {
+
+            	// remove model
+            	cp.getControlPic().releaseSelected();
+            	cp.getPicture().deleteSelected(cp.getView().getTabs().getTab_debug(), this);
+            	cp.getcTabPaint().updateResizeLocation();
+        	} else {
+        		Message.showMessage(Message.MESSAGE_ID_INFO, "Nothing selected.");
+        	}
         } else if (_event.getSource().equals(getSelection().getTb_changePen()
         		.getActionCause())) {
 
         } else if (_event.getSource().equals(getSelection().getTb_changeSize()
         		.getActionCause())) {
+        	
+        	if (PopupChangeSize.getInstance().isVisible()) {
+        		PopupChangeSize.getInstance().setVisible(false);
+        	} else {
 
-    		if (cp.getPicture().isSelected()) {
+        		if (cp.getPicture().isSelected()) {
 
-            	// fetch selection rectangle
-    			Rectangle r = cp.getControlPaintSelection().getR_selection();
-    			if (r != null) {
+                	// fetch selection rectangle
+        			Rectangle r = cp.getControlPaintSelection().getR_selection();
+        			if (r != null) {
 
-                	PopupChangeSize.show(r.width, r.height);
-    			} else {
+                    	PopupChangeSize.show(r.width, r.height);
+        			} else {
 
-                	PopupChangeSize.show(0, 0);
-    			}
-    		} else {
-    			
-    			// change size of the entire image
-            	PopupChangeSize.show(State.getImageSize().width, 
-            			State.getImageSize().height);
-    		}
+                    	PopupChangeSize.show(0, 0);
+        			}
+        		} else {
+        			
+        			// change size of the entire image
+                	PopupChangeSize.show(State.getImageSize().width, 
+                			State.getImageSize().height);
+        		}
+        	}
+
         	
         } else {
             for (int i = 0; i < getSelection().getJbtn_colors().length; i++) {

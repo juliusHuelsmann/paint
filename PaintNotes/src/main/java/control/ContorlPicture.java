@@ -476,6 +476,12 @@ public class ContorlPicture implements PaintListener {
 	 * Release selected items and add them to normal list.
 	 */
 	public final void releaseSelected() {
+		releaseSelected(true);
+	}
+	
+	
+	
+	public void releaseSelected(final boolean _changeTab) {
 
 		// change the location of the resize - buttons. Now that the selection
 		// is released, the entire page can be resized.
@@ -499,11 +505,12 @@ public class ContorlPicture implements PaintListener {
 		
 		//open the first tab if the currently opened tab is the selection tab.
         // open selection tab
-		if (getTabs().getOpenTab() == State.getIdTabSelection()) {
+		if (_changeTab && getTabs().getOpenTab() == State.getIdTabSelection()) {
 
 	        // open selection tab
 	        getTabs().openTab(0);
 		}
+		
 	}
 	
 	

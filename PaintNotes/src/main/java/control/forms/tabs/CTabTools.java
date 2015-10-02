@@ -924,27 +924,30 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
      */
     public void updateResizeLocation() {
 
-		// change the location of the resize - buttons. Now that the selection
-		// is released, the entire page can be resized.
-        for (int h = 0; h <= 2; h++) {
-            for (int w = 0; w <= 2; w++) {
-                //that are not necessary buttons
-                if (h + w <= 2) {
+		if (!controlPaint.getPicture().isSelected()) {
 
-                    getPage().getJbtn_resize()[h][w].setLocation(
-                    		-getPage().getJbtn_resize()[h][w].getWidth() - 1,
-                    		-getPage().getJbtn_resize()[h][w].getHeight() - 1);
-                } else {
-
-                	//necessary buttons
-                    getPage().getJbtn_resize()[h][w].setLocation(
-                    		+ State.getImageShowSize().width * (h) / 2
-                    		+ getPage().getJlbl_painting().getLocation().x
-                    		- getPage().getJbtn_resize()[h][w].getWidth() / 2,
-                    		+ State.getImageShowSize().height * (w) / 2
-                    		+ getPage().getJlbl_painting().getLocation().y
-                    		- getPage().getJbtn_resize()[h][w].getWidth() / 2);
-                }
+			// change the location of the resize - buttons. Now that the selection
+			// is released, the entire page can be resized.
+	        for (int h = 0; h <= 2; h++) {
+	            for (int w = 0; w <= 2; w++) {
+	                //that are not necessary buttons
+	                if (h + w <= 2) {
+	
+	                    getPage().getJbtn_resize()[h][w].setLocation(
+	                    		-getPage().getJbtn_resize()[h][w].getWidth() - 1,
+	                    		-getPage().getJbtn_resize()[h][w].getHeight() - 1);
+	                } else {
+	
+	                	//necessary buttons
+	                    getPage().getJbtn_resize()[h][w].setLocation(
+	                    		+ State.getImageShowSize().width * (h) / 2
+	                    		+ getPage().getJlbl_painting().getLocation().x
+	                    		- getPage().getJbtn_resize()[h][w].getWidth() / 2,
+	                    		+ State.getImageShowSize().height * (w) / 2
+	                    		+ getPage().getJlbl_painting().getLocation().y
+	                    		- getPage().getJbtn_resize()[h][w].getWidth() / 2);
+	                }
+				}
 			}
 		}
     }

@@ -25,6 +25,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
+import org.apache.lucene.util.RollingBuffer.Resettable;
+
 import control.forms.BorderThread;
 import control.forms.ControlView;
 import control.interfaces.MoveEvent;
@@ -546,6 +548,7 @@ public class ContorlPicture implements PaintListener {
 	 */
 	public final synchronized void afterLocationChange(
 			final MoveEvent _evNew, final MoveEvent _evOld) {
+		
 
 
 		int xNew = (int) _evNew.getPnt_bottomLocation().getX();
@@ -781,6 +784,9 @@ public class ContorlPicture implements PaintListener {
 					}
 				}
 			}
+			
+			// update the location of the resize buttons
+			cp.getcTabPaint().updateResizeLocation();
 		}
 	}
 
@@ -948,6 +954,9 @@ public class ContorlPicture implements PaintListener {
 			
 			//set changed
 			refreshPaint();
+			
+			// update the location of the resize buttons
+			cp.getcTabPaint().updateResizeLocation();
 		}		
 	}
 
@@ -961,6 +970,9 @@ public class ContorlPicture implements PaintListener {
 
 			//set changed
 			refreshPaint();
+
+			// update the location of the resize buttons
+			cp.getcTabPaint().updateResizeLocation();
 		}		
 	}
 
@@ -1001,6 +1013,9 @@ public class ContorlPicture implements PaintListener {
 			
 			//set changed
 			refreshPaint();
+			
+			// update the location of the resize buttons
+			cp.getcTabPaint().updateResizeLocation();
 		}		
 	}
 

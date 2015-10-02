@@ -63,7 +63,8 @@ public final class Selection extends Tab {
     /**
      * Buttons for the second and the first color.
      */
-    private Item1Button tb_color, tb_erase, tb_changePen, tb_changeSize, i1b_rotate;
+    private Item1Button tb_color, tb_erase, tb_changePen, tb_changeSize,
+    i1b_rotateClockwise, i1b_rotateCounterclockwise;
     
     /**
      * Color fetcher.
@@ -429,7 +430,7 @@ public final class Selection extends Tab {
 	/**
 	 * The item1Menu for the first pen.
 	 */
-	private Item1Menu it_rotate_right;
+	private Item1Menu it_rotate;
 	
 	/**
 	 * initialize other items.
@@ -511,47 +512,71 @@ public final class Selection extends Tab {
 	        super.add(tb_changePen);
 	
 	        //pen 1
-	        it_rotate_right = new Item1Menu(false);
-	        it_rotate_right.setMenuListener(_ml);
-	        it_rotate_right.addMouseListener(_controlPaintStatus);
-	        it_rotate_right.setBorder(null);
+	        it_rotate = new Item1Menu(false);
+	        it_rotate.setMenuListener(_ml);
+	        it_rotate.addMouseListener(_controlPaintStatus);
+	        it_rotate.setBorder(null);
 
-	        it_rotate_right.setBorder(false);
-	        it_rotate_right.setText("Drehen/Spiegeln");
+	        it_rotate.setBorder(false);
+	        it_rotate.setText("Drehen/Spiegeln");
 	        
-            i1b_rotate = new Item1Button(null);
-            i1b_rotate.addActionListener(_cts);
-            i1b_rotate.setBorder(false);
-            it_rotate_right.add(i1b_rotate);
-            i1b_rotate.setActivable(true);
-            i1b_rotate.setOpaque(false);
+            i1b_rotateClockwise = new Item1Button(null);
+            i1b_rotateClockwise.addActionListener(_cts);
+            i1b_rotateClockwise.setBorder(false);
+            i1b_rotateClockwise.setText("Rotate 45° Clockwise");
+            i1b_rotateClockwise.setActivable(true);
+            i1b_rotateClockwise.setOpaque(false);
+
+	        
+            i1b_rotateCounterclockwise = new Item1Button(null);
+            i1b_rotateCounterclockwise.addActionListener(_cts);
+            i1b_rotateCounterclockwise.setBorder(false);
+            i1b_rotateCounterclockwise.setText("Rotate 45° Counter-clockwise");
+            i1b_rotateCounterclockwise.setActivable(true);
+            i1b_rotateCounterclockwise.setOpaque(false);
 		}
+		final int distance = 5;
+        final int contentHeight = ViewSettings.getItemMenu1Height() - 2 * distance;
         final Dimension sizeOpen = new Dimension(
         		ViewSettings.getItemMenu1Width() * (2 + 1), 
-        		ViewSettings.getItemMenu1Height() * (2 + 2) + 5);
+        		 contentHeight * (2 + 2) + 5);
         
-//        it_rotate_right.setText("Rotate 45° Clockwise");
-        it_rotate_right.changeClosedSizes(ViewSettings.getItemMenu1Width(), 
+        it_rotate.changeClosedSizes(ViewSettings.getItemMenu1Width(), 
                 ViewSettings.getItemMenu1Height());
-//        it_rotate_right.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
-        it_rotate_right.setSize(sizeOpen);
-        it_rotate_right.setSizeHeight(ViewSettings.getItemWidth());
-        it_rotate_right.setLocation(tb_changePen.getX() 
+        
+        it_rotate.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        it_rotate.setSize(sizeOpen);
+        it_rotate.setSizeHeight(ViewSettings.getItemWidth());
+        it_rotate.setLocation(tb_changePen.getX() 
                 + tb_changePen.getWidth() + distance, 
                 tb_changePen.getY());
-        i1b_rotate.setSize(it_rotate_right.getWidth(), 
-        		it_rotate_right.getHeight());
-        it_rotate_right.removeScroll();
+        i1b_rotateClockwise.setSize(
+        		it_rotate.getWidth(), contentHeight);
+        it_rotate.removeScroll();
+        i1b_rotateClockwise.setIconLabelX(5);
+        i1b_rotateClockwise.setIconLabelY(5);
+        i1b_rotateClockwise.setImageWidth(contentHeight);
+        i1b_rotateClockwise.setImageHeight(contentHeight);
+        i1b_rotateClockwise.setIcon("/res/img/icon/save.png");
+        i1b_rotateClockwise.setIconLabelX(5);
+        i1b_rotateClockwise.setIconLabelY(5);
+        i1b_rotateClockwise.setImageWidth(contentHeight);
+        i1b_rotateClockwise.setImageHeight(contentHeight);
+        i1b_rotateCounterclockwise.setSize(
+        		it_rotate.getWidth(), 
+        		it_rotate.getHeight());
 		if (_paint) {
-	
-	        it_rotate_right.setActivable();
-	        it_rotate_right.setItemsInRow((byte) 1);
-	        it_rotate_right.setBorder(false);
-	        super.add(it_rotate_right);
+
+            it_rotate.add(i1b_rotateClockwise);
+            it_rotate.add(i1b_rotateCounterclockwise);
+	        it_rotate.setActivable();
+	        it_rotate.setItemsInRow((byte) 1);
+	        it_rotate.setBorder(false);
+	        super.add(it_rotate);
 		}
         
 
-        int xLocationSeparation = it_rotate_right.getWidth() + it_rotate_right.getX()
+        int xLocationSeparation = it_rotate.getWidth() + it_rotate.getX()
                 + ViewSettings.getDistanceBeforeLine();
         insertSectionStuff("Farben", _x, xLocationSeparation, 1, _paint);
 //        return xLocationSeparation + ViewSettings.getDistanceBetweenItems();
@@ -642,7 +667,7 @@ public final class Selection extends Tab {
 	 * @return the it_rotate
 	 */
 	public Item1Menu getIt_rotate() {
-		return it_rotate_right;
+		return it_rotate;
 	}
 
 

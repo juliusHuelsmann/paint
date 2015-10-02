@@ -485,8 +485,8 @@ public final class CPaintStatus implements MouseListener {
     						.getJlbl_painting().getLocation().x,
     						controlPaint.getView().getPage()
     						.getJlbl_painting().getLocation().y);
-                        	getControlPicture().releaseSelected();
-                        	getPage().removeButtons();
+    				getControlPicture().releaseSelected();
+    		        controlPaint.getcTabPaint().updateResizeLocation();
     			}	
     			
     			switch (operationID) {

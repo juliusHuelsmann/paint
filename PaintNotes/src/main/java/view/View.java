@@ -220,7 +220,8 @@ import control.util.WindowMover;
 
 //        loading = new Loading();
 //        super.add(loading);
-        page = new Page(_cp);
+        page = new Page();
+        page.initialize(_cp);
         tabs = new Tabs(this);
         
 

@@ -27,18 +27,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
-
 import control.ContorlPicture;
 import control.ControlPaint;
-import model.objects.Project;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectDrawImage;
 import model.objects.painting.po.PaintObjectWriting;

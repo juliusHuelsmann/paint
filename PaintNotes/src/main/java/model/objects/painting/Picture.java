@@ -1741,10 +1741,10 @@ public final class Picture implements Serializable {
 
     	//start transaction and closed action.
     	final int transaction = getLs_po_sortedByY()
-    			.startTransaction("stretch image", 
+    			.startTransaction("move image", 
     					SecureList.ID_NO_PREDECESSOR);
     	final int closedAction = getLs_po_sortedByY()
-    			.startClosedAction("stretch image", 
+    			.startClosedAction("move image", 
     					SecureList.ID_NO_PREDECESSOR);
         
 		ls_poSelected.toFirst(transaction, closedAction);

@@ -161,6 +161,7 @@ import view.util.mega.MButton;
                         BorderFactory.createMatteBorder(
                                 0, 0, 1, 1, Color.white))));
         super.setVisible(false);
+        super.add(PopupChangeSize.getInstance(_controlPaint.getcTabSelection(), this));
 
         //form for creating new page.
         jpnl_new = new New(_controlPaint.getControlnew());
@@ -169,7 +170,7 @@ import view.util.mega.MButton;
         
         quickAccess = new QuickAccess(_controlPaint.getControlQuickAccess());
         super.add(quickAccess);
-        
+
         //initialize JPanel jpnl_toMove
         jpnl_toMove = new MPanel() {
             
@@ -262,7 +263,7 @@ import view.util.mega.MButton;
         jlbl_backgroundStructure.setBorder(null);
         jlbl_backgroundStructure.setOpaque(false);
         super.add(jlbl_backgroundStructure); 
-        
+
         //MLabel for the painting and the raster
         jlbl_painting.setFocusable(false);
         jlbl_painting.setBorder(null);

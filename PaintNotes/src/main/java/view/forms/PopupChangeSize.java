@@ -10,6 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
 import control.forms.tabs.CTabSelection;
+import control.util.MousePositionTracker;
 import model.settings.ViewSettings;
 import view.util.NumberField;
 import view.util.mega.MButton;
@@ -85,6 +86,9 @@ public class PopupChangeSize extends MPanel {
 		super.setLayout(null);
 		super.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK_X);
 		super.setVisible(false);
+		MousePositionTracker mpt = new MousePositionTracker(this);
+		super.addMouseMotionListener(mpt);
+		super.addMouseListener(mpt);
 		
 		final int height = 20;
 		final int distanceToBorder = 5;
@@ -107,6 +111,8 @@ public class PopupChangeSize extends MPanel {
 		jta_description.setLocation(distanceToBorder, distanceToBorder);
 		jta_description.setEditable(false);
 		jta_description.setFocusable(false);
+		jta_description.addMouseMotionListener(mpt);
+		jta_description.addMouseListener(mpt);
 		jta_description.setOpaque(false);
 		super.add(jta_description);
 		
@@ -121,7 +127,8 @@ public class PopupChangeSize extends MPanel {
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				final int ENTER = KeyEvent.VK_ENTER, TAB = KeyEvent.VK_TAB;
+				final int ENTER = KeyEvent.VK_ENTER, TAB = KeyEvent.VK_TAB,
+						ESC = KeyEvent.VK_ESCAPE;
 				if (e.getKeyCode() == ENTER) {
 					_cts.applyPopupChangeSize();
 					setVisible(false);
@@ -133,6 +140,8 @@ public class PopupChangeSize extends MPanel {
 					} else {
 						mtf_width.requestFocus();
 					}
+				} else if (e.getKeyCode() == ESC) {
+					setVisible(false);
 				}
 			 }
 		};

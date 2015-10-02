@@ -652,37 +652,40 @@ MouseMotionListener, MouseListener {
             distanceXY = distanceY;
             distanceXY2 = distanceY;
         }
+        
+        final int height = j[2][2].getHeight() / 2;
+        
         DPoint pnt_stretchFrom = null, pnt_size, pnt_totalStretch = null;
         if (_event.getSource().equals(j[0][0])) {
             
-            pnt_stretchFrom = new DPoint(j[2][2].getLocation());
+            pnt_stretchFrom = new DPoint(j[2][2].getX() + height, j[2][2].getY() + height);
             pnt_totalStretch = new DPoint(distanceXY, distanceXY);
         } else if (_event.getSource().equals(j[1][0])) {
-            pnt_stretchFrom = new DPoint(j[1][2].getLocation());
+            pnt_stretchFrom = new DPoint(j[1][2].getX() + height, j[1][2].getY() + height);
             pnt_totalStretch = new DPoint(0, distanceY);
 
         } else if (_event.getSource().equals(j[2][0])) {
-            pnt_stretchFrom = new DPoint(j[0][2].getLocation());
+            pnt_stretchFrom = new DPoint(j[0][2].getX() + height, j[0][2].getY() + height);
             pnt_totalStretch = new DPoint(distanceXY2, distanceXY2);
 
         } else if (_event.getSource().equals(j[0][1])) {
-            pnt_stretchFrom = new DPoint(j[2][1].getLocation());
+            pnt_stretchFrom = new DPoint(j[2][1].getX() + height, j[2][1].getY() + height);
             pnt_totalStretch = new DPoint(distanceX, 0);
 
         } else if (_event.getSource().equals(j[1][2])) {
-            pnt_stretchFrom = new DPoint(j[1][0].getLocation());
+            pnt_stretchFrom = new DPoint(j[1][0].getX() + height, j[1][0].getY() + height);
             pnt_totalStretch = new DPoint(0, -distanceY);
 
         } else if (_event.getSource().equals(j[0][2])) {
-            pnt_stretchFrom = new DPoint(j[2][0].getLocation());
+            pnt_stretchFrom = new DPoint(j[2][0].getX() + height, j[2][0].getY() + height);
             pnt_totalStretch = new DPoint(-distanceXY2, -distanceXY2);
 
         } else if (_event.getSource().equals(j[2][1])) {
-            pnt_stretchFrom = new DPoint(j[0][1].getLocation());
+            pnt_stretchFrom = new DPoint(j[0][1].getX() + height, j[0][1].getY() + height);
             pnt_totalStretch = new DPoint(-distanceX, 0);
 
         } else if (_event.getSource().equals(j[2][2])) {
-            pnt_stretchFrom = new DPoint(j[0][0].getLocation());
+            pnt_stretchFrom = new DPoint(j[0][0].getX() + height, j[0][0].getY() + height);
             pnt_totalStretch = new DPoint(-distanceXY, -distanceXY);
 
         } 

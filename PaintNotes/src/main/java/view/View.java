@@ -41,6 +41,7 @@ import view.forms.InfoForm;
 import view.forms.Loading;
 import view.forms.Message;
 import view.forms.Page;
+import view.forms.PopupChangeSize;
 import view.forms.Tabs;
 import view.util.mega.MButton;
 import view.util.mega.MFrame;
@@ -137,6 +138,7 @@ import control.util.WindowMover;
 
         help = new Help(this);
         super.add(help);
+        
 
         jlbl_border = new MLabel();
         jlbl_border.setOpaque(false);
@@ -253,13 +255,13 @@ import control.util.WindowMover;
         flip();
         repaint();
 
+        
+
         /*
          * add Message form, tab, overview about paintObjects and Page
          */
-        super.add(new Message());
-        
-        
         super.add(tabs);
+        super.add(Message.getInstance());
         super.add(page);
 
         tabs.setVisible(true);

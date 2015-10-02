@@ -20,14 +20,22 @@ package view.forms;
 
 
 import java.awt.Color;
+import java.awt.DisplayMode;
+import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
+
 import control.forms.CMessage;
 import view.util.RoundedBorder;
 import view.util.mega.MButton;
+import view.util.mega.MLabel;
 import view.util.mega.MPanel;
 import model.settings.ViewSettings;
+import model.util.Util;
+import model.util.paint.Utils;
 
 
 /**
@@ -84,10 +92,22 @@ public final class Message extends MPanel {
     
     
     /**
+     * JLabel for stroke.
+     */
+    private JLabel jlbl_stroke;
+
+    
+    /**
+     * Whether already displayed or not. Is used for painting the stroke to the
+     * {@link #jlbl_stroke} which can only be done if the {@link #Message()} is
+     * visible.
+     */
+    private boolean displayed = false;
+    
+    /**
      * Empty utility class constructor.
      */
-    public Message() { 
-    	initialize();
+    private Message() { 
     }
     
     
@@ -98,13 +118,10 @@ public final class Message extends MPanel {
 
         super.setSize(ViewSettings.getSizeMessage());
         super.setLocation(ViewSettings.getMessagelocation());
-        super.setOpaque(true);
         super.setLayout(null);
-        super.setBackground(new Color(30, 30, 30, 111));
-//        super.setBorder(new RoundedBorder());
+        super.setOpaque(true);
         super.setVisible(false);
-        instance = this;
-    
+        
         jbtn_hide = new MButton("OK");
         jbtn_hide.setContentAreaFilled(false);
         jbtn_hide.setOpaque(false);
@@ -118,19 +135,26 @@ public final class Message extends MPanel {
         jbtn_hide.setFocusable(false);
         jbtn_hide.setForeground(Color.lightGray);
         super.add(jbtn_hide);
-        
+
         jta_text = new JTextArea();
         jta_text.setVisible(true);
         jta_text.setOpaque(false);
         jta_text.setBorder(null);
         jta_text.setEditable(false);
         jta_text.setFocusable(false);
-        jta_text.setForeground(Color.white);
+        jta_text.setForeground(Color.black);
         jta_text.setSize(getWidth() - jbtn_hide.getWidth() - borderDistance * 2,
                 getHeight());
         jta_text.setLocation(borderDistance, 0);
         jta_text.setFont(ViewSettings.GENERAL_FONT_ITEM_PLAIN);
         super.add(jta_text);
+
+        jlbl_stroke = new MLabel();
+        jlbl_stroke.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_DARK_X);
+        jlbl_stroke.setBorder(BorderFactory.createLineBorder(Color.gray));
+        jlbl_stroke.setOpaque(true);
+        jlbl_stroke.setSize(getWidth(), getHeight());
+        super.add(jlbl_stroke);
     
     }
     
@@ -142,6 +166,16 @@ public final class Message extends MPanel {
     
     
     
+    public final static Message getInstance() {
+
+        if (instance == null) { 
+            instance = new Message();
+            instance.initialize();
+        }
+        return instance;
+    }
+    
+    
     /**
      * Print message of specified messageType to graphical user interface.
      * 
@@ -150,18 +184,24 @@ public final class Message extends MPanel {
      */
     public static void showMessage(final int _messageType,
             final String _errorMessage) {
-        if (instance == null) { 
-            instance = new Message();
-            instance.initialize();
-        }
+
+    	// make sure that the instance is initialized
+    	getInstance();
 
         instance.jta_text.setText(_errorMessage);
+    	
         
         if (instance.t_show != null) {
             
             instance.t_show.interrupt();
         }
+
         instance.setVisible(true);
+        if (!instance.displayed) {
+        	instance.displayed = true;
+        	Util.getStroke(instance.jlbl_stroke);
+        	instance.jta_text.repaint();
+        }
         instance.t_show = new Thread() {
             @Override public void run() {
                 

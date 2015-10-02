@@ -19,13 +19,17 @@ package control.forms.tabs;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import control.ControlPaint;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectPen;
 import model.settings.Constants;
 import model.util.adt.list.SecureList;
+import view.forms.InfoForm;
+import view.forms.PopupChangeSize;
 import view.tabs.Selection;
 
 /**
@@ -92,7 +96,58 @@ public final class CTabSelection implements ActionListener {
      */
     public void actionPerformed(final ActionEvent _event) {
 
-        if (_event.getSource().equals(getSelection().getJcb_points())) {
+    	
+    	//
+    	// Components from PopupChangeSize which is displayed by the selection
+    	// tab.
+    	// 
+    	if (_event.getSource().equals(
+    			PopupChangeSize.getInstance().getMbtn_reset())) {
+    		
+    		if (cp.getPicture().isSelected()) {
+
+            	// fetch selection rectangle
+    			Rectangle r = cp.getControlPaintSelection().getR_selection();
+    			if (r != null) {
+
+                	PopupChangeSize.show(r.width, r.height);
+    			} else {
+
+                	PopupChangeSize.show(0, 0);
+    			}
+    		} else {
+    			PopupChangeSize.getInstance().setVisible(false);
+    		}
+    		
+    	} else if (_event.getSource().equals(
+    			PopupChangeSize.getInstance().getMbtn_exit())){
+    		PopupChangeSize.getInstance().setVisible(false);
+    		
+    	} else if (_event.getSource().equals(
+    			PopupChangeSize.getInstance().getMbtn_apply())){
+
+    		if (cp.getPicture().isSelected()) {
+
+    			Rectangle r = cp.getControlPaintSelection().getR_selection();
+    			if (r != null) {
+    				r.setSize(
+    						Integer.parseInt(PopupChangeSize.getInstance()
+    								.getMtf_width().getText()),
+    						Integer.parseInt(PopupChangeSize.getInstance()
+    								.getMtf_height().getText()));
+
+        			cp.getControlPaintSelection().setR_selection(r);
+    			}
+    			
+    		}
+
+    			
+    		
+    	} else if (
+    			//
+    			// Components from the View Selection tab.
+    			//
+    			_event.getSource().equals(getSelection().getJcb_points())) {
 
             this.selectionPenID = Constants.PEN_ID_POINT;
             selectPenOp(Constants.PEN_ID_POINT);
@@ -106,22 +161,32 @@ public final class CTabSelection implements ActionListener {
 
             this.selectionPenID = Constants.PEN_ID_MATHS;
             selectPenOp(Constants.PEN_ID_MATHS);
-        } else if (_event.getSource().equals(getSelection().getTb_erase())) {
+        } else if (_event.getSource().equals(getSelection().getTb_erase()
+        		.getActionCause())) {
 
         	// remove model
         	cp.getControlPic().releaseSelected();
-        	cp.getPicture().releaseSelected(
-        			cp.getControlPaintSelection(),
-        			cp.getcTabSelection(),
-        			cp.getView().getTabs().getTab_debug(),
-        			cp.getView().getPage().getJlbl_painting()
-        			.getLocation().x,
-        			cp.getView().getPage().getJlbl_painting()
-        			.getLocation().y);
-        } else if (_event.getSource().equals(getSelection().getTb_changePen())) {
+        	cp.getPicture().deleteSelected(cp.getView().getTabs().getTab_debug(), this);
+        	cp.getcTabPaint().updateResizeLocation();
+        } else if (_event.getSource().equals(getSelection().getTb_changePen()
+        		.getActionCause())) {
 
-        } else if (_event.getSource().equals(getSelection().getTb_changeSize())) {
+        } else if (_event.getSource().equals(getSelection().getTb_changeSize()
+        		.getActionCause())) {
 
+    		if (cp.getPicture().isSelected()) {
+
+            	// fetch selection rectangle
+    			Rectangle r = cp.getControlPaintSelection().getR_selection();
+    			if (r != null) {
+
+                	PopupChangeSize.show(r.width, r.height);
+    			} else {
+
+                	PopupChangeSize.show(0, 0);
+    			}
+    		}
+        	
         } else {
             for (int i = 0; i < getSelection().getJbtn_colors().length; i++) {
 

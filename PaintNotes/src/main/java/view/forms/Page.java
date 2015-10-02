@@ -134,8 +134,8 @@ import view.util.mega.MButton;
 	 * Constructor which initializes the page with use of the ControlPaint.
 	 * @param _cv		the ControlPaint. 
 	 */
-	public Page(final ControlPaint _cv) {
-		initialize(_cv);
+	public Page() {
+
 	}
 
 	
@@ -144,7 +144,7 @@ import view.util.mega.MButton;
      * and thus creates view. Called directly after creation.
      * @param _controlPaint the basic controller class.
 	 */
-	private void initialize(final ControlPaint _controlPaint) {
+	public void initialize(final ControlPaint _controlPaint) {
 
         //alter settings
         super.setOpaque(true);
@@ -280,8 +280,8 @@ import view.util.mega.MButton;
         jlbl_backgroundAlpha.setOpaque(true);
         super.add(jlbl_backgroundAlpha); 
 
-        
-        removeButtons();
+
+        _controlPaint.getcTabPaint().updateResizeLocation();
         
 
 	}
@@ -318,7 +318,7 @@ import view.util.mega.MButton;
     /**
      * hide the buttons.
      */
-    public void removeButtons() { 
+    public void removeButtonss() { 
         final int newLocation = -100;
         for (int a = 0; a < jbtn_resize.length; a++) {
             for (int b = 0; b < jbtn_resize[a].length; b++) {

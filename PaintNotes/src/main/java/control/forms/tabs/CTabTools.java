@@ -944,8 +944,10 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
                 	//necessary buttons
                     getPage().getJbtn_resize()[h][w].setLocation(
                     		+ State.getImageShowSize().width * (h) / 2
+                    		+ getPage().getJlbl_painting().getLocation().x
                     		- getPage().getJbtn_resize()[h][w].getWidth() / 2,
                     		+ State.getImageShowSize().height * (w) / 2
+                    		+ getPage().getJlbl_painting().getLocation().y
                     		- getPage().getJbtn_resize()[h][w].getWidth() / 2);
                 }
 			}

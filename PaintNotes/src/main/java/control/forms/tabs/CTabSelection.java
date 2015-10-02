@@ -108,6 +108,16 @@ public final class CTabSelection implements ActionListener {
             selectPenOp(Constants.PEN_ID_MATHS);
         } else if (_event.getSource().equals(getSelection().getTb_erase())) {
 
+        	// remove model
+        	cp.getControlPic().releaseSelected();
+        	cp.getPicture().releaseSelected(
+        			cp.getControlPaintSelection(),
+        			cp.getcTabSelection(),
+        			cp.getView().getTabs().getTab_debug(),
+        			cp.getView().getPage().getJlbl_painting()
+        			.getLocation().x,
+        			cp.getView().getPage().getJlbl_painting()
+        			.getLocation().y);
         } else if (_event.getSource().equals(getSelection().getTb_changePen())) {
 
         } else if (_event.getSource().equals(getSelection().getTb_changeSize())) {

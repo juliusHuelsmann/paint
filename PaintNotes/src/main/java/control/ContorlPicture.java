@@ -20,9 +20,15 @@ package control;
 
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
+
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.tools.ant.property.GetProperty;
+
 import control.forms.BorderThread;
 import control.interfaces.MoveEvent;
 import control.interfaces.PaintListener;
@@ -33,6 +39,7 @@ import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
+import model.util.pdf.PDFUtils;
 import view.forms.Page;
 import view.forms.PaintLabel;
 import view.forms.Tabs;
@@ -249,12 +256,99 @@ public class ContorlPicture implements PaintListener {
 				+ "\n\t" + "_width\t\t" + _width
 				+ "\n\t" + "_height\t\t" + _height + "\n");
 
-		//paint the painted stuff at graphics
-		setBi(cp.getPicture().updateRectangle(
+		//
+		// save values
+		//
+		final Point pnt_start = new Point(
 				-getPaintLabel().getLocation().x + _x, 
-				-getPaintLabel().getLocation().y + _y, 
-				_width, _height, _x, _y, getBi(), 
-				cp.getControlPic()));
+				-getPaintLabel().getLocation().y + _y);
+		final Point pnt_end = new Point(
+				pnt_start.x + _width,
+				pnt_start.y + _height);
+		final double zoomStretchW = 1.0 * State.getImageSize().width 
+				/ State.getImageShowSize().width,
+				zoomStretchH = 1.0 * State.getImageSize().height 
+				/ State.getImageShowSize().height;
+		
+		// 
+		// Check which pages need to be painted. Therefore, the saved values 
+		// have to be converted into [model-size]
+		//
+		final int firstPrintedPage = cp.getProject().getPageFromPX(
+				new Point((int) (pnt_start.x * zoomStretchW), 
+						(int) (pnt_start.y * zoomStretchH)));
+		final int lastPrintedPage = cp.getProject().getPageFromPX(
+				new Point((int) (pnt_end.x * zoomStretchW), 
+						(int) (pnt_end.y * zoomStretchH)));
+		
+		Rectangle[] pagePrintScope = new Rectangle[lastPrintedPage 
+		                                           - firstPrintedPage + 1];
+		
+		pagePrintScope[0] = cp.getProject().getPageRectanlgeinProject(firstPrintedPage);
+		pagePrintScope[0].height = pagePrintScope[0].height - (int) (pnt_start.y * zoomStretchH);
+		pagePrintScope[0].y = (int) (pnt_start.y * zoomStretchH) - pagePrintScope[0].y;
+		pagePrintScope[0].x = (int) (pnt_start.x * zoomStretchW);
+		pagePrintScope[0].width = (int) (_width * zoomStretchW);
+		for (int i = 1; i < pagePrintScope.length; i++) {
+			
+			//
+			// get size of current page.
+			//
+			final int currentPage = firstPrintedPage + i;
+			PDRectangle b = cp.getProject().getDocument().getPage(currentPage).getBBox();
+			// TODO: width has to be adapted to page width because page width may variy.
+//			final int width = Math.round(b.getWidth() 
+//					* PDFUtils.dpi / 72);
+			final int height = Math.round(b.getHeight() 
+					* PDFUtils.dpi / 72);
+			
+			pagePrintScope[i] = new Rectangle(
+					(int) (pnt_start.x * zoomStretchW), 
+					pagePrintScope[i - 1].y + pagePrintScope[i - 1].height,
+					(int) (_width * zoomStretchW), height);
+			
+		}
+		
+		
+//		if (pagePrintScope.length != 1) {
+
+			// bei dem letzten Element die height korrigieren
+			pagePrintScope[pagePrintScope.length - 1].height = 
+					(int) (_height * zoomStretchH
+					- pagePrintScope[pagePrintScope.length - 1].y
+					+ pagePrintScope[0].y);
+			
+//		}
+
+		//
+		// paint the painted stuff at graphics
+		//
+
+		//TODO: update page number in project (currentPage).
+		for (int i = 0; i < pagePrintScope.length; i++) {
+
+			final int currentPage = firstPrintedPage + i;
+			
+			// if the pdfpage object has to be reminded of its function, do so.
+			if (!cp.getProject().getDocument().getPdfPages()[currentPage].checkRemember()) {
+
+				cp.getProject().getDocument().getPdfPages()[currentPage].remind();
+			}
+			
+			
+			setBi(cp.getProject().getPicture(currentPage).updateRectangle(
+					(int) (pagePrintScope[i].x 		/ zoomStretchW),
+					(int) (pagePrintScope[i].y 		/ zoomStretchH),
+					(int) (pagePrintScope[i].width  / zoomStretchW),
+					(int) (pagePrintScope[i].height / zoomStretchH),
+					_x, _y, getBi(), 
+					cp.getControlPic()));
+		}
+		
+//		setBi(cp.getPicture().updateRectangle(
+//				pnt_start.x, pnt_start.y,
+//				_width, _height, _x, _y, getBi(), 
+//				cp.getControlPic()));
 		
 		return getBi();
 	}

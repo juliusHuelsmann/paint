@@ -23,6 +23,8 @@ package view.forms;
 //import declarations
 import java.awt.Color;
 import java.awt.dnd.DropTarget;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -42,7 +44,7 @@ import view.util.mega.MButton;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-@SuppressWarnings("serial") public final class Page extends MPanel {
+@SuppressWarnings("serial") public final class Page extends MPanel implements Observer {
 
     
     /*
@@ -283,7 +285,7 @@ import view.util.mega.MButton;
 
 
         _controlPaint.getcTabPaint().updateResizeLocation();
-        
+        sizeChangedImage();
 
 	}
 	
@@ -334,26 +336,40 @@ import view.util.mega.MButton;
 	 */
 	@Override public void setSize(final int _width, final int _height) {
 		
-	    //set standard size
-	    super.setSize(_width, _height);
-	    flip();
+		//
+		// if either the width or the height has changed, update the contained
+		// component's size and apply the new size to the #Page.
+		//
+		if (_width != getWidth() || _height != getHeight()) {
+
+		    //set standard size
+		    super.setSize(_width, _height);
+		    
+		    this.sizeChangedPage();
+		}
+		
 	}
 	
+	
+	
+	public void changeBackgroundAlpha() {
 
-	
-	
-	/**
-	 * .
-	 */
-	public void flip() {
+        //
+        // update the image the JLabel jlbl_backgroundAlpha displays. This has
+        // to be called each time the size of the entire Page (not those of 
+        // the image) is changed or the way displaying alpha values is 
+        // switched.
+        //
+        jlbl_backgroundAlpha.setIcon(new ImageIcon(
+        		State.getBi_transparency()));
+        
 		
+	}
+	
+	
+	public void sizeChangedPage() {
 
-		jpnl_toMove.setBounds(0, 0,
-				State.getImageShowSize().width,
-				State.getImageShowSize().height);
 
-//		if (sp_ub.getWidth() == 0 || sp_ub.getHeight() == 0) {
-			
 		sp_ub.setSize(ViewSettings.VIEW_SIZE_SP, 
 				ViewSettings.getSizeJFrame().height 
 				- ViewSettings.VIEW_SIZE_SP
@@ -362,32 +378,24 @@ import view.util.mega.MButton;
         		+ sp_ub.getWidth() * 1 - ViewSettings.DISTANCE_TO_WINDOW * 2, 
                 ViewSettings.VIEW_SIZE_SP
                 - ViewSettings.DISTANCE_TO_WINDOW);
-//        jpnl_toMove.setLocation(
-//        		(int) jlbl_painting.getLocation().getX(), 
-//        		(int) jpnl_toMove.getLocation().getY());
-//		}
 
+        
+        
+        //
+        // update size of the JLabels the Page contains.
+        //
         jlbl_backgroundAlpha.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_backgroundStructure.setBounds(
         		0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionBG.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
-//        jlbl_selectionBG.setBackground(new Color(50, 50, 250, 0));
-//        jlbl_selectionBG.setIcon(null);
-//        jlbl_selectionBG.setOpaque(true);
-        jlbl_selectionPainting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
-        
-        jlbl_backgroundAlpha.setIcon(new ImageIcon(
-        		State.getBi_transparency()));
 
+        jlbl_selectionPainting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
+		changeBackgroundAlpha();
         
         int paintWidth = getWidth() - 1;
         int paintHeight = getHeight() - 1;
-//        final int maxZoom = (int) Math.pow(ViewSettings.ZOOM_MULITPLICATOR, 
-//                ViewSettings.MAX_ZOOM_IN);
-//        paintWidth = (int)((int) (paintWidth / maxZoom) * maxZoom);
-//        paintHeight = (int)((int) (paintHeight / maxZoom) * maxZoom);
         
-		//the order of painting is important! It is necessary that the 
+        //the order of painting is important! It is necessary that the 
         //paintinglabel's bounds and the locations of the ScrollPanes are 
         //set here
         jlbl_painting.setBounds(
@@ -404,11 +412,23 @@ import view.util.mega.MButton;
 
         refrehsSps();
 
+	
+
+        
+	}
+
+	
+	
+	public void sizeChangedImage() {
+
+		jpnl_toMove.setBounds(0, 0,
+				State.getImageShowSize().width,
+				State.getProjectShowSize().height);
+		
+        refrehsSps();
 	}
 	
 	
-
-
 	
 	/*
 	 * getter methods
@@ -511,6 +531,13 @@ import view.util.mega.MButton;
 	 */
 	public MPanel getJpnl_toMove() {
 		return jpnl_toMove;
+	}
+
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

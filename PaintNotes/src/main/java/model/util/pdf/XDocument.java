@@ -32,6 +32,7 @@ import model.objects.painting.po.PaintObjectPdf;
 import model.settings.Constants;
 import model.settings.State;
 
+import org.apache.fontbox.util.BoundingBox;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
@@ -39,6 +40,7 @@ import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.ResourceCache;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
 import org.apache.pdfbox.pdmodel.encryption.PDEncryption;
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.PDSignature;
@@ -160,7 +162,7 @@ public class XDocument implements Serializable {
 	}
 	
 	
-	public Dimension initialize() {
+	public Dimension[] initialize() {
 
 		// initialize the paintObjectPdf array which is saved
 		// for being able to modify them just after inserting
@@ -170,6 +172,8 @@ public class XDocument implements Serializable {
 		//
 		BufferedImage bi_saved = null;
 		
+		
+		int documentHeight = 0, documentWidth = 0;
 		//
 		// initialize the pages
 		//
@@ -180,31 +184,36 @@ public class XDocument implements Serializable {
 //			pdfPages[i] = _project.getPicture(i).createPPF(); 
 
 			if (document != null) {
-				
-				
 
 					
-					pdfPages[i] = project.getPicture(i).addPaintObjectPDF(project, i);
+				// save page object pdf.
+				pdfPages[i] = project.getPicture(i).addPaintObjectPDF(project, i);
+
+				
+				// compute size
+				PDRectangle b = document.getPage(i).getBBox();
+				final int realPageWidth = Math.round(b.getWidth() * PDFUtils.dpi / 72);
+				final int realPageHeight = Math.round(b.getHeight() * PDFUtils.dpi / 72);
+				documentHeight += realPageHeight;
+				documentWidth = Math.max(realPageWidth, documentWidth);
 
 					
 					// get size of the current page of the document.
 					if (project.getCurrentPageNumber() == i) {
-						BufferedImage bi = PDFUtils.pdf2image(
-								document, i);
-						bi_saved = bi;
-						pdfPages[i].remember();
+
+						bi_saved = pdfPages[i].remind();
 					}
 					
 			}
-//			 BufferedImage buffImage = convertToImage(page, 8, 12);
-
-//					new PaintObjectPdf(_elementId, _bi, _picture)
 		}
 
 		if (bi_saved == null) {
-			return Constants.SIZE_A4;
+			return new Dimension[]{Constants.SIZE_A4, 
+					new Dimension(documentWidth, documentHeight)};
 		}
-		return new Dimension(bi_saved.getWidth(), bi_saved.getHeight());
+		return new Dimension[]{
+				new Dimension(bi_saved.getWidth(), bi_saved.getHeight()),
+				new Dimension(documentWidth, documentHeight)};
 		
 	}
 	

@@ -291,24 +291,17 @@ public final class PDFUtils {
     }
     
     
+    public static final int dpi = 150;
+    
     
     public static BufferedImage pdf2image(PDDocument _document, int _pageNumber) {
 
-    	int dpi = 0;
-        try {
-            dpi = Toolkit.getDefaultToolkit().getScreenResolution() ;
-            dpi = 130;
-        } catch( HeadlessException e ) {
-            dpi = 96;
-            dpi = 130;
-        }
     	PDFRenderer renderer = new PDFRenderer(_document);
     	BufferedImage image;
 		try {
 			image = renderer.renderImageWithDPI(_pageNumber, dpi, ImageType.RGB);
 	    	return image;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();	
 			return null;
 		}

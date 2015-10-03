@@ -31,6 +31,7 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -39,6 +40,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -47,6 +49,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
 import start.Start;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
@@ -141,6 +144,28 @@ public final class Util {
     	_t.printStackTrace(pw);
     	return sw.toString(); 
     }
+    
+    /**
+     * Remove file or folder (recursive strategy).
+     * @param _file	the root file or folder which contents are to be removed.
+     * @return		whether successful or not.
+     */
+    public static boolean deleteFile(File _file) { 
+    	
+    	// if the current file is a directory recursively remove its contents
+    	if (_file.isDirectory()) { 
+    		for (String content : _file.list()){ 
+    			boolean success = deleteFile(new File(_file, content)); 
+    			if (!success) {  
+    				return false; 
+    			} 
+    		} 
+    	}  
+
+    	// no error occurred until now, thus it is possible to remove the
+    	// current root element (which may also be a file).
+    	return _file.delete(); 
+    } 
 
     /**
      * Function for printing image.

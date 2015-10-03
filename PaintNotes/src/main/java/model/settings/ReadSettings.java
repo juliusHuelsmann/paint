@@ -34,11 +34,18 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import org.apache.commons.io.FileUtils;
+
 import view.View;
+import view.forms.Message;
 import view.util.InformationWindow;
 import model.util.Util;
 
@@ -187,6 +194,38 @@ public final class ReadSettings {
 		bw.close();
 		fw.close();
 	}
+	
+	
+	/**
+	 * Complete uninstall routine for windows, Linux or OS X.
+	 * @param _inform	whether to give feedback via the Message class.
+	 */
+	public static void uninstallComplete(final boolean _inform) {
+		State.getLogger().severe("Not implemented yet");
+
+		if (_inform) {
+			final boolean success = false;
+			Message.showMessage(Message.MESSAGE_ID_INFO,
+					"Complete uninstall successfull: " + success);
+		}
+	}
+	
+	
+	/**
+	 * Remove old installation for being able to repeat installation process.
+	 * @param _inform	whether to give feedback via the Message class.
+	 */
+	public static void uninstall(final boolean _inform) {
+		
+		final boolean success = Util.deleteFile(new File(PROGRAM_LOCATION));
+		
+		
+		if (_inform) {
+			Message.showMessage(Message.MESSAGE_ID_INFO,
+					"Uninstall successfull: " + success);
+		}
+	}
+	
 	
 	
 	/**
@@ -705,7 +744,6 @@ public final class ReadSettings {
 				try {
 					Thread.sleep(200);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -749,11 +787,18 @@ public final class ReadSettings {
 			/*
 			 * Step 3:	Copy .jar file to the destination.
 			 */
+			try {
+				Files.copy(Paths.get(orig_jar_file), 
+						Paths.get(dest_jar_file), 
+						java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+				
+			} catch (IOException e) {
 
-			final String command1 = 
-					"cp " + "\"" + orig_jar_file + "\"" +  " " + "\"" +  dest_jar_file + "\"";
-			String ret1 = Util.executeCommandLinux(command1);
-			System.out.println(command1 + "" + ret1);
+				final String command1 = 
+						"cp " + "\"" + orig_jar_file + "\"" +  " " + "\"" +  dest_jar_file + "\"";
+				String ret1 = Util.executeCommandLinux(command1);
+				System.out.println(command1 + "" + ret1);
+			}
 			
 			
 			final String content = "#!/bin/bash \n"

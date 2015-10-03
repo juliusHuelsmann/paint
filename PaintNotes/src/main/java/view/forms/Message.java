@@ -82,7 +82,7 @@ public final class Message extends MPanel {
     /**
      * The time of visibility after message is printed.
      */
-    private final int sleepTime = 7000;
+    private final int sleepTime = 3000;
     
     
     /**

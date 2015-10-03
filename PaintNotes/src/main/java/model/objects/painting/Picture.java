@@ -663,7 +663,9 @@ public final class Picture implements Serializable {
 		// return the given BufferedImage because there is nothing to do
 		if (ls_po_sortedByY == null 
 				|| ls_po_sortedByY.isEmpty() 
-				|| _bi == null) {
+				|| _bi == null
+				|| _width <= 0
+				|| _height <= 0) {
 			return _bi;
 		}
 		

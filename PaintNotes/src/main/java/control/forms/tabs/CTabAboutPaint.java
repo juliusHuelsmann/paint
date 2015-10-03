@@ -18,9 +18,11 @@ package control.forms.tabs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import model.settings.ReadSettings;
 import model.settings.State;
 import model.settings.Version;
+import view.forms.Message;
 import view.tabs.AboutPaint;
 import view.util.VTabbedPane;
 import control.ControlPaint;
@@ -80,6 +82,16 @@ public class CTabAboutPaint implements ActionListener {
 		if (_event.getSource().equals(
 				getAbout().getI1b_checkForUpdates().getActionCause())) {
 			ReadSettings.update(cp.getView(), true);
+		} else if (_event.getSource().equals(
+				getAbout().getI1b_uninstall().getActionCause())) {
+			ReadSettings.uninstallComplete(true);
+		} else if (_event.getSource().equals(
+				getAbout().getI1b_reinstall().getActionCause())) {
+			ReadSettings.uninstall(true);
+			ReadSettings.install();
+			Message.showMessage(Message.MESSAGE_ID_INFO, 
+					"Installation successfull");
+
 		} else if (_event.getSource().equals(getAbout().getI1b_settings()
 				.getActionCause())) {
 			if (cp.getView().getTabs().getTabbedPaneOpenState() 

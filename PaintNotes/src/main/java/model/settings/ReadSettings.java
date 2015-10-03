@@ -36,6 +36,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Random;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -804,11 +805,19 @@ public final class ReadSettings {
 			final String content = "#!/bin/bash \n"
 					+ "java -jar " + dest_jar_file + " $1";
 			
-			PrintWriter writer = new PrintWriter( userHome + "/paint", "UTF-8");
+			// rather dirty solution. Creating a temporary file which is copied
+			// to another location which requests sudoer rights.
+			// If the temporary file already exists, randomly change the name.
+			String temporaryLocation = userHome + "/paint_tmp_0123";
+			while (new File(temporaryLocation).exists()) {
+				temporaryLocation += "" + new Random().nextInt(10);
+			}
+			
+			PrintWriter writer = new PrintWriter( temporaryLocation, "UTF-8");
 			writer.println(content);
 			writer.close();
 
-			final String command = "mv " + userHome + "/paint " + dest_exec;
+			final String command = "mv " + temporaryLocation + " " + dest_exec;
 			Util.execSudoCommand(command, passwd);
 			// if the password was not correct / no sudo rights
 			if (!new File(dest_exec).exists()) {

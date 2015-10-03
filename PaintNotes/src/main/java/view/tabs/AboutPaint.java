@@ -52,7 +52,8 @@ public final class AboutPaint extends Tab {
 	/**
 	 * Button for checking for program updates.
 	 */
-	private Item1Button i1b_checkForUpdates, i1b_settings;
+	private Item1Button i1b_checkForUpdates, i1b_settings, i1b_reinstall, 
+	i1b_uninstall;
 	
 	/**
 	 * Constructor: initialize instances of Components and add special 
@@ -102,6 +103,28 @@ public final class AboutPaint extends Tab {
         i1b_settings.addActionListener(_controlTabAbout);
         i1b_settings.setActivable(false);
 		super.add(i1b_settings);
+
+		i1b_uninstall = new Item1Button(null);
+		i1b_uninstall.setLocation(
+				i1b_settings.getX() 
+				+ i1b_settings.getWidth()
+				+ ViewSettings.getDistanceBetweenItems(), 
+        		ViewSettings.getDistanceBetweenItems());
+		i1b_uninstall.setBorder(false);
+		i1b_uninstall.addActionListener(_controlTabAbout);
+		i1b_uninstall.setActivable(false);
+		super.add(i1b_uninstall);
+
+		i1b_reinstall = new Item1Button(null);
+		i1b_reinstall.setLocation(
+				i1b_uninstall.getX() 
+				+ i1b_uninstall.getWidth()
+				+ ViewSettings.getDistanceBetweenItems(), 
+        		ViewSettings.getDistanceBetweenItems());
+		i1b_reinstall.setBorder(false);
+		i1b_reinstall.addActionListener(_controlTabAbout);
+		i1b_reinstall.setActivable(false);
+		super.add(i1b_reinstall);
 		
 		
 	}
@@ -141,13 +164,43 @@ public final class AboutPaint extends Tab {
                 
                 
 		i1b_checkForUpdates.setActivable(false);
-        jta_about.setLocation(i1b_settings.getX() 
+
+		i1b_uninstall.setActivable(false);
+		i1b_uninstall.setLocation(i1b_settings.getX() 
         		+ i1b_settings.getWidth() 
+        		+ ViewSettings.getDistanceBetweenItems() , 
+        		ViewSettings.getDistanceBetweenItems());
+		i1b_uninstall.setSize(ViewSettings.getItemMenu1Width(), 
+                ViewSettings.getItemMenu1Height());
+		
+
+		i1b_reinstall.setActivable(false);
+		i1b_reinstall.setLocation(i1b_uninstall.getX() 
+        		+ i1b_uninstall.getWidth() 
+        		+ ViewSettings.getDistanceBetweenItems() , 
+        		ViewSettings.getDistanceBetweenItems());
+		i1b_reinstall.setSize(ViewSettings.getItemMenu1Width(), 
+                ViewSettings.getItemMenu1Height());
+		
+
+        Print.initializeTextButtonOhneAdd(i1b_uninstall,
+                "Uninstall",
+                Constants.VIEW_TB_NEW_PATH);
+
+        Print.initializeTextButtonOhneAdd(i1b_reinstall,
+                "Reinstall",
+                Constants.VIEW_TB_NEW_PATH);
+
+        jta_about.setLocation(i1b_reinstall.getX() 
+        		+ i1b_reinstall.getWidth() 
         		+ ViewSettings.getDistanceBetweenItems() , 
         		ViewSettings.getDistanceBetweenItems());
         
         jta_about.setSize(350, ViewSettings.getView_heightTB_visible() 
         		- 5 * 2 - 40);
+        
+        
+        
 	}
 
 	/**
@@ -179,6 +232,12 @@ public final class AboutPaint extends Tab {
 	}
 
 
+	/**
+	 * Initialize the helpListeners
+	 * 
+	 * @param _jf	the JFrame
+	 * @param _c	the Help class
+	 */
 	@Override
 	public void initializeHelpListeners(final JFrame _jf, final Help _c) {
 		i1b_checkForUpdates.addMouseListener(new HelpMouseListener(
@@ -189,6 +248,7 @@ public final class AboutPaint extends Tab {
 
 
 	/**
+	 * Returns the {@link #i1b_settings}.
 	 * @return the i1b_settings
 	 */
 	public Item1Button getI1b_settings() {
@@ -196,6 +256,21 @@ public final class AboutPaint extends Tab {
 	}
 
 
-	
-	
+	/**
+	 * Returns the {@link #i1b_reinstall}.
+	 * @return the i1b_reinstall
+	 */
+	public Item1Button getI1b_reinstall() {
+		return i1b_reinstall;
+	}
+
+
+	/**
+	 * Returns the {@link #i1b_uninstall}.
+	 * @return the i1b_uninstall
+	 */
+	public Item1Button getI1b_uninstall() {
+		return i1b_uninstall;
+	}
+
 }

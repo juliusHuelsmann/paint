@@ -40,6 +40,7 @@ import model.settings.ViewSettings;
 import model.util.Util;
 import model.util.paint.Utils;
 import model.util.pdf.PDFUtils;
+import view.forms.Console;
 import view.forms.Page;
 import view.forms.PaintLabel;
 import view.forms.Tabs;
@@ -256,6 +257,7 @@ public class ContorlPicture implements PaintListener {
 				+ "\n\t" + "_width\t\t" + _width
 				+ "\n\t" + "_height\t\t" + _height + "\n");
 
+		
 		//
 		// save values
 		//
@@ -333,6 +335,11 @@ public class ContorlPicture implements PaintListener {
 		for (int i = 0; i < pagePrintScope.length; i++) {
 
 			final int currentPage = firstPrintedPage + i;
+			String d = (currentPage + "..." + i);
+			Console.log(d, 
+					Console.ID_INFO_UNIMPORTANT, 
+					getClass(), "before repaintRectangle");
+			
 			
 			// if the pdfpage object has to be reminded of its function, do so.
 			if (!cp.getProject().getDocument().getPdfPages()[currentPage].checkRemember()) {

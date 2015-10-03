@@ -21,6 +21,7 @@ package model.objects;
 
 //import declarations
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -151,10 +152,13 @@ public class Project implements Serializable {
 			}
 
 			initialize();
-			Dimension d = document.initialize();
+			Dimension[] d = document.initialize();
 
-			State.setImageSize(d);
-			State.setImageShowSize(d);
+			System.out.println(d.length);
+			State.setImageSize(d[0]);
+			State.setImageShowSize(d[0]);
+			State.setProjectSize(d[1]);
+			State.setProjectShowSize(d[1]);
 
 			
 			
@@ -325,7 +329,7 @@ public class Project implements Serializable {
 			double zW = 1.0 * State.getImageSize().getWidth() / State.getImageShowSize().getWidth();
 			double zH = 1.0 * State.getImageSize().getHeight() / State.getImageShowSize().getHeight();
 
-			document.getPdfPages()[currentlyDisplayedPage].remember();
+			document.getPdfPages()[currentlyDisplayedPage].remind();
 			Rectangle r = document.getPdfPages()[currentlyDisplayedPage].getSnapshotBounds();
 			
 			State.setImageSize(r.getSize());
@@ -347,7 +351,7 @@ public class Project implements Serializable {
 			double zW = 1.0 * State.getImageSize().getWidth() / State.getImageShowSize().getWidth();
 			double zH = 1.0 * State.getImageSize().getHeight() / State.getImageShowSize().getHeight();
 
-			document.getPdfPages()[currentlyDisplayedPage].remember();
+			document.getPdfPages()[currentlyDisplayedPage].remind();
 			Rectangle r = document.getPdfPages()[currentlyDisplayedPage].getSnapshotBounds();
 			
 			State.setImageSize(r.getSize());
@@ -386,7 +390,9 @@ public class Project implements Serializable {
 	    PDPage page = null;
 	    try {
 	    	if (_pageindex == -1) {
-	    		page = new PDPage(new PDRectangle(State.getImageSize().width, State.getImageSize().height));
+	    		page = new PDPage(new PDRectangle(
+	    				State.getImageSize().width, 
+	    				State.getImageSize().height));
 
 		        _doc.addPage(page);
 	    	} else {
@@ -516,6 +522,64 @@ public class Project implements Serializable {
 	 */
 	public XDocument getDocument() {
 		return document;
+	}
+
+
+	
+	/**
+	 * Return the location of the page.
+	 * @param _pageNumber
+	 * @return
+	 */
+	public Rectangle getPageRectanlgeinProject(final int _pageNumber) {
+
+		int y = 0;
+		for (int j = 0; j < _pageNumber; j++) {
+
+			// compute size
+			PDRectangle b = document.getPage(j).getBBox();
+			final int realPageHeight = Math.round(b.getHeight() 
+					* PDFUtils.dpi / 72);
+
+			y += realPageHeight;
+		}
+
+		PDRectangle b = document.getPage(_pageNumber).getBBox();
+		final int width = Math.round(b.getWidth() 
+				* PDFUtils.dpi / 72);
+		final int height = Math.round(b.getHeight() 
+				* PDFUtils.dpi / 72);
+		
+		return new Rectangle(0, y, width, height);
+	}
+	
+	
+	/**
+	 * Calculate number of page which contains a certain pixel. 
+	 * 
+	 * @param _px	the pixel
+	 * @return		the page's number
+	 */
+	public int getPageFromPX(final Point _px) {
+		
+		int sumHeight = 0;
+		
+		for (int i = 0; i < document.getNumberOfPages(); i++) {
+
+			// compute size
+			PDRectangle b = document.getPage(i).getBBox();
+//			final int realPageWidth = Math.round(b.getWidth() 
+//					* PDFUtils.dpi / 72);
+			final int realPageHeight = Math.round(b.getHeight() 
+					* PDFUtils.dpi / 72);
+			
+			sumHeight += realPageHeight;
+			
+			if (_px.y <= sumHeight) {
+				return i;
+			}
+		}
+		return document.getNumberOfPages();
 	}
 
 }

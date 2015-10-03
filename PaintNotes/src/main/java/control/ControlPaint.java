@@ -1413,7 +1413,6 @@ MenuListener {
                     .getJlbl_painting().getLocation().y);
 
             State.setImageShowSize(new Dimension(newWidth, newHeight));
-            getPage().flip();
            
             /*
              * set the location of the panel.

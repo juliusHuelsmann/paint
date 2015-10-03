@@ -98,7 +98,7 @@ public final class CTabLook implements ActionListener {
 		            if (getPage().getWidth() > 0) {
 	
 		                
-		            	getPage().flip();
+		            	getPage().changeBackgroundAlpha();
 		            }
 		            
 		        } else if (_event.getSource().equals(getLook()

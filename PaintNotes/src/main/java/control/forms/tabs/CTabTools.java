@@ -869,7 +869,6 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
             // apply the new image size.
             State.setImageShowSize(new Dimension(newWidth, newHeight));
 
-            getPage().flip();
             getPage().getJlbl_painting().setBounds(
             		
             		// adapt the shifted location to the new image size.

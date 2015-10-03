@@ -318,7 +318,7 @@ public final class Picture implements Serializable {
 	public void setDisplayed(final boolean _displayed) {
 		
 		if (_displayed) {
-			pdf_background.remember();
+			pdf_background.remind();
 		} else {
 			pdf_background.forget();
 		}

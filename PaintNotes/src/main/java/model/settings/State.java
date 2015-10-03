@@ -236,6 +236,12 @@ public final class State {
     penSelected2;
 
     /**
+     * The size of the project which consists of multiple pages having diverse
+     * imageSizes.
+     */
+    private static Dimension projectSize;
+    
+    /**
      * the size of the image. (depends on start image width and start image 
      * height, those values are determined by settings).
      */
@@ -360,7 +366,10 @@ public final class State {
     			StateStandard.getStandardimageheight()
     			[startupIdentifier]);
     	
-    	imageShowSize = imageSize;
+    	imageShowSize = new Dimension(imageSize);
+    	
+    	projectSize = new Dimension(imageSize);
+    	projectShowSize = new Dimension(imageSize);
     	
     }
     
@@ -394,9 +403,15 @@ public final class State {
 	private static Pen pen_selectedReplaced;
 
     /**
-     * the size of the shown image (zoom).
+     * the size of the shown image (is equal to {@link #imageSize} * zoom).
      */
     private static Dimension imageShowSize;
+
+    /**
+     * the size of the shown project (is equal to {@link #projectSize} * zoom).
+     */
+    private static Dimension projectShowSize;
+    
 	
 	
 	/**
@@ -755,7 +770,7 @@ public final class State {
     public static void setImageShowSize(final Dimension _imageShowSize) {
         State.imageShowSize = _imageShowSize;
         //frefresh sps due to the new size of the image.
-        controlPaint.getView().getPage().flip();
+        controlPaint.getView().getPage().sizeChangedImage();
         controlPaint.getView().getPage().refrehsSps();
     }
 
@@ -1339,5 +1354,46 @@ public final class State {
 				|| borderRightPercentShow != 0
 				|| borderBottomPercentShow != 0
 				|| borderLeftPercentShow != 0);
+	}
+
+
+
+
+	/**
+	 * @return the projectShowSize
+	 */
+	public static Dimension getProjectShowSize() {
+		return projectShowSize;
+	}
+
+
+
+
+	/**
+	 * @param projectShowSize the projectShowSize to set
+	 */
+	public static void setProjectShowSize(Dimension projectShowSize) {
+		State.projectShowSize = projectShowSize;
+		controlPaint.getView().getPage().sizeChangedImage();
+	}
+
+
+
+
+	/**
+	 * @return the projectSize
+	 */
+	public static Dimension getProjectSize() {
+		return projectSize;
+	}
+
+
+
+
+	/**
+	 * @param _projectSize the projectSize to set
+	 */
+	public static void setProjectSize(Dimension _projectSize) {
+		State.projectSize = _projectSize;
 	}
 }

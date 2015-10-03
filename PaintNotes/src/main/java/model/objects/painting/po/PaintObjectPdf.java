@@ -306,15 +306,25 @@ public class PaintObjectPdf extends PaintObjectBI implements Serializable {
 		
 	}
 
-	public void remember() {
+	public BufferedImage remind() {
 
 		super.getBi_image().setContent(PDFUtils.pdf2image(
 				pro.getDocument().getPDDocument(), pageNumber));
+		return super.getBi_image().getContent();
 	}
 
 	public void forget() {
 
 		getBi_image().setContent(null);
+	}
+	
+	
+	/**
+	 * Check whether the paintObjectPDF remembers its content.
+	 * @return
+	 */
+	public boolean checkRemember() {
+		return getBi_image().getContent() != null;
 	}
 
 

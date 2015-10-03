@@ -283,8 +283,11 @@ public class ContorlPicture implements PaintListener {
 		
 		Rectangle[] pagePrintScope = new Rectangle[lastPrintedPage 
 		                                           - firstPrintedPage + 1];
+		Point [] yOfPageScope = new Point [lastPrintedPage 
+                                       - firstPrintedPage + 1];
 		
 		pagePrintScope[0] = cp.getProject().getPageRectanlgeinProject(firstPrintedPage);
+		yOfPageScope[0] = new Point(pagePrintScope[0].y, pagePrintScope[0].height);
 		pagePrintScope[0].height = pagePrintScope[0].height - (int) (pnt_start.y * zoomStretchH);
 		pagePrintScope[0].y = (int) (pnt_start.y * zoomStretchH) - pagePrintScope[0].y;
 		pagePrintScope[0].x = (int) (pnt_start.x * zoomStretchW);
@@ -301,13 +304,15 @@ public class ContorlPicture implements PaintListener {
 //					* PDFUtils.dpi / 72);
 			final int height = Math.round(b.getHeight() 
 					* PDFUtils.dpi / 72);
-			
+
+			yOfPageScope[i] = new Point(yOfPageScope[i - 1].x + yOfPageScope[i - 1].y, (int) b.getHeight()) ;
 			pagePrintScope[i] = new Rectangle(
 					(int) (pnt_start.x * zoomStretchW), 
 					pagePrintScope[i - 1].y + pagePrintScope[i - 1].height,
 					(int) (_width * zoomStretchW), height);
 			
 		}
+		
 		
 		
 //		if (pagePrintScope.length != 1) {
@@ -335,6 +340,25 @@ public class ContorlPicture implements PaintListener {
 				cp.getProject().getDocument().getPdfPages()[currentPage].remind();
 			}
 			
+			if (i < pagePrintScope.length - 1) {
+				
+				final int y = (int) getPaintLabel().getLocation().getY() - _y
+						+ (int) ((
+								
+								// this is the height of the current page.
+								+ yOfPageScope[i].y
+								
+								// this is the y coordinate of the page.
+								+ yOfPageScope[i].x
+								) / zoomStretchW);
+				System.out.println("y" + y);
+
+				for (int j = 0; j < bi.getWidth(); j++) {
+
+					bi.setRGB(j, y,
+							Color.black.getRGB());
+				}
+			}
 			
 			setBi(cp.getProject().getPicture(currentPage).updateRectangle(
 					(int) (pagePrintScope[i].x 		/ zoomStretchW),

@@ -23,8 +23,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.text.AttributeSet;
 import javax.swing.JScrollBar;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.Highlighter.HighlightPainter;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 import control.util.MousePositionTracker;
 import model.settings.ViewSettings;
@@ -43,7 +52,7 @@ public final class Console extends MPanel {
 	/**
 	 * JTextArea which contains the logged stuff.
 	 */
-	private JTextArea jta_console;
+	private JTextPane jta_console;
 	
 	/**
 	 * ScrollPane for textArea.
@@ -110,8 +119,8 @@ public final class Console extends MPanel {
 		jpnl_container.setFocusable(false);
 		super.add(jpnl_container);
 		
-		jta_console = new JTextArea("Console output:");
-		jta_console.setEditable(false);
+		jta_console = new JTextPane();
+		jta_console.setEditable(true);
 		jta_console.setOpaque(true);
 		jta_console.setFocusable(false);
 		jta_console.setBorder(null);
@@ -120,8 +129,8 @@ public final class Console extends MPanel {
 		jta_console.setForeground(Color.white);
 		jta_console.setBackground(Color.black);
 		jta_console.setFont(new Font("Droid Sans Mono", Font.ITALIC, fontSize));
-		jta_console.setTabSize(2 + 2);
-		jta_console.setLineWrap(true);
+//		jta_console.setTabSize(2 + 2);
+//		jta_console.setLineWrap(true);
 		jta_console.setFont(ViewSettings.GENERAL_FONT_ITEM_SMALL);
 
 		scrollPane = new MScrollPane(jta_console);
@@ -159,34 +168,19 @@ public final class Console extends MPanel {
 			
 			switch (_messageType) {
 			case ID_ERROR:
-				getInstance().jta_console.append(STRG_ID_ERROR
-						+ timestamp + ":\t" + message 
-						+ "\n@Class" + _callClass.getSimpleName() 
-						+ "." + _methodName + "\n");
+				append(STRG_ID_ERROR, timestamp, _callClass.getSimpleName() , _methodName, message);
 				break;
 			case ID_WARNING:
-				getInstance().jta_console.append(STRG_ID_WARNING
-						+ timestamp + ":\t" + message
-						+ "\n@Class" + _callClass.getSimpleName()
-						+ "." + _methodName + "\n");
+				append(STRG_ID_WARNING, timestamp, _callClass.getSimpleName() , _methodName, message);
 				break;
 			case ID_INFO_IMPORTANT: 
-				getInstance().jta_console.append(STRG_ID_INFO_IMPORTANT
-						+ timestamp + ":\t" + message
-						+ "\n@Class" + _callClass.getSimpleName()
-						+ "." + _methodName + "\n");
+				append(STRG_ID_INFO_IMPORTANT, timestamp, _callClass.getSimpleName() , _methodName, message);
 				break;
 			case ID_INFO_MEDIUM: 
-				getInstance().jta_console.append(STRG_ID_INFO_MEDIUM
-						+ timestamp + ":\t" + message
-						+ "\n@Class" + _callClass.getSimpleName()
-						+ "." + _methodName + "\n");
+				append(STRG_ID_INFO_MEDIUM, timestamp, _callClass.getSimpleName() , _methodName, message);
 				break;
 			case ID_INFO_UNIMPORTANT: 
-				getInstance().jta_console.append(STRG_ID_INFO_UNIMPORTANT
-						+ timestamp + ":\t" + message
-						+ "\n@Class" + _callClass.getSimpleName()
-						+ "." + _methodName + "\n");
+				append(STRG_ID_INFO_UNIMPORTANT, timestamp, _callClass.getSimpleName() , _methodName, message);
 				break;
 			default:
 				log("Warning: wrong identifier", 
@@ -205,6 +199,63 @@ public final class Console extends MPanel {
 		}
 	}
 	
+	
+	
+	private static void append(final String _identifier,
+			final String _timestamp, final String _classname, 
+			final String _methodName, final String _message) {
+		
+
+		//
+		// the colors for the different types of text
+		//
+		final Color clr_id = Color.red, clr_time = Color.gray, 
+				clr_loc = Color.darkGray, clr_txt = Color.white;
+		
+		
+		
+		//
+		// identifier which gives the importance of the message
+		//
+		insertColoredText(_identifier, clr_id);
+
+		
+		//
+		// the time the message has been logged.
+		//
+		insertColoredText(_timestamp + ":\n", clr_time);
+		
+		
+		//
+		// The message which is logged.
+		//
+		insertColoredText(_message + "\n", clr_txt);
+		
+		
+		//
+		// The location in program code.
+		//
+
+		insertColoredText("@" + _classname
+				+ "." + _methodName + "\n", clr_loc);
+	}
+	
+	private static void insertColoredText(
+			final String _text,
+			final Color _c) {
+
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, _c);
+        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+        
+        
+        int len = instance.jta_console.getDocument().getLength();
+        instance.jta_console.setCaretPosition(len);
+        instance.jta_console.setCharacterAttributes(aset, false);
+        instance.jta_console.replaceSelection(_text);
+	}
 	
 	
 	/**
@@ -239,9 +290,14 @@ public final class Console extends MPanel {
 		
 		// if the last logged stuff is mouse text, remove it
 		if (id_mouse > id_others) {
-			text = text.substring(0, id_mouse );
+	        instance.jta_console.setSelectionStart(id_mouse);
+	        instance.jta_console.setSelectionEnd(text.length());
+	        instance.jta_console.replaceSelection(STRG_ID_POSITION + "IMAGE"+ "\n" + _x + "." + _y + "\n");
+		} else {
+
+	        instance.jta_console.setCaretPosition(text.length());
+	        instance.jta_console.replaceSelection(STRG_ID_POSITION + "IMAGE"+ "\n" + _x + "." + _y + "\n");
 		}
-		
-		jta_console.setText(text + STRG_ID_POSITION + "IMAGE"+ "\n" + _x + "." + _y + "\n");
+
 	}
 }

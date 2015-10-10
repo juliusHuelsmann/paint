@@ -1427,10 +1427,10 @@ MenuListener {
             // check if the bounds are valid
             // not smaller than the negative image size.
             newX = Math.max(newX,
-            		(int) -(State.getImageShowSize().width
+            		(int) -(State.getProjectShowSize().width
             				- getPage().getWidth()));
             newY = Math.max(newY,
-                    -(State.getImageShowSize().height
+                    -(State.getProjectShowSize().height
                     		- getPage().getHeight()));
             
             // not greater than 0, these calculations prevent the zoom-out 

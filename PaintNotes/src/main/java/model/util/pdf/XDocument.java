@@ -89,6 +89,14 @@ public class XDocument implements Serializable {
 	 */
 	public final void setSerializable() {
 		
+		if (document != null) {
+
+			try {
+				document.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		this.document = null;
 	}
 	
@@ -105,6 +113,16 @@ public class XDocument implements Serializable {
 			//
 			// load the document.
 			//
+			
+			// document should always be equal to NULL.
+			if (document != null) {
+
+				try {
+					document.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 			this.document = PDDocument.load(new File(_pString));
 
 		} catch (IOException e) {
@@ -134,10 +152,11 @@ public class XDocument implements Serializable {
 	 * Call super-class constructor and initialize extra-
 	 * settings.
 	 */
-	public XDocument() {
+	public XDocument(final Project _project) {
 		
 		// call super constructor.
 		super();
+		this.project = _project;
 		this.document = new PDDocument();
 	}
 
@@ -217,12 +236,28 @@ public class XDocument implements Serializable {
 		
 	}
 	
+
 	/**
-	 * {@inheritDoc}
+	 * Buggy. 
+	 * @param _page
 	 */
 	public void addPage(final PDPage _page) {
+
+		// add page to PDF. As i understood the javadoc, it is inserted as new
+		// root element at the beginning. Thus its index is equal to 0.
 		document.addPage(_page);
+		
+		PaintObjectPdf[] pdfPagesNew = new PaintObjectPdf[document
+		                                                  .getNumberOfPages()];
+		// update the pdfPages array.
+		for (int i = 0; pdfPages != null && i < pdfPages.length; i++) {
+			pdfPagesNew[pdfPages[i].getPageNumberProject()] = pdfPages[i];
+		}
+		
+		pdfPagesNew[0] = new PaintObjectPdf(0, project, project.getPicture(0));
+		pdfPages = pdfPagesNew;
 	}
+	
 	
 
 	
@@ -268,11 +303,20 @@ public class XDocument implements Serializable {
 
 	
 	/**
-	 * {@inheritDoc}
+	 * @see PDDocument.#close()
 	 * @throws IOException 
 	 */
-	public void close() throws IOException {
-		document.close();
+	public boolean close()  {
+		if (document != null) {
+
+			try {
+				document.close();
+				return true;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 	
 	
@@ -349,7 +393,17 @@ public class XDocument implements Serializable {
 	 * @return 
 	 */
 	public PDPage getPage(final int _pageIndex) {
-		return document.getPage(_pageIndex);
+		
+		if (document.getNumberOfPages() > _pageIndex) {
+			return document.getPages().get(_pageIndex);
+		}
+		
+		// an error occurred.
+		State.getLogger().severe("Demanded page which does not exist:\n"
+				+  _pageIndex + " while the amount of pages is equal to "
+				+ document.getNumberOfPages() + ".");
+		
+		return null;
 	}
 	
 	/**

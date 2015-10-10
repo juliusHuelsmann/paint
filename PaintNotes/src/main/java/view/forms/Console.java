@@ -103,7 +103,7 @@ public final class Console extends MPanel {
 		//initialize MPanel and add a MousePosition tracker.
 		super();
 		super.setLayout(null);
-		final int width = 250, height = 300, fontSize = 12;
+		final int width = 600, height = 300, fontSize = 12;
 		final MousePositionTracker mpt = new MousePositionTracker(this);
 		super.addMouseListener(mpt);
 		super.addMouseMotionListener(mpt);
@@ -157,6 +157,13 @@ public final class Console extends MPanel {
 			final String _message, final int _messageType, 
 			@SuppressWarnings("rawtypes") final Class _callClass, 
 			final String _methodName) {
+		
+		// if the instance of console is not visible, do not log (this 
+		// increases the painting speed.
+		if (!getInstance().isVisible()) {
+			return;
+		}
+		
 		final String message = _message.replaceAll("\t", " ");
 		
 		//if the message is important enough for the current configuration

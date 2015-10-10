@@ -853,11 +853,11 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
             
             // not smaller than the negative image size.
             oldLocation.x = Math.max(oldLocation.x,
-            		-(State.getImageShowSize().width
+            		-(State.getProjectShowSize().width
             				- getPage().getWidth()
             				* ViewSettings.ZOOM_MULITPLICATOR));
             oldLocation.y = Math.max(oldLocation.y,
-                    -(State.getImageShowSize().height
+                    -(State.getProjectShowSize().height
                     		- getPage().getHeight() 
                     		* ViewSettings.ZOOM_MULITPLICATOR));
             

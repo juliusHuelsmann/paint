@@ -86,34 +86,6 @@ public class ContorlPicture implements PaintListener {
 	
 	
 	/**
-	 * Refresh the entire image.
-	 */
-	public final void refreshPaint() {
-
-		State.getLogger().finest("refreshing entire PaintLabel. \nValues: "
-				+ "\n\tgetSize:\t" + getPaintLabel().getSize() + " vs. " 
-				+ getJPnlToMove().getSize()
-				+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
-				+ " vs. " + getJPnlToMove().getLocation()
-				+ "\n\t" + "_x:\t\t"
-				+ "\n\t" + "_y\t\t"
-				+ "\n\t" + "_width\t\t" + getPaintLabel().getWidth()
-				+ "\n\t" + "_height\t\t" + getPaintLabel().getHeight() + "\n");
-
-		//paint the painted stuff at graphics
-		setBi(cp.getPicture().updateRectangle(
-				-getPaintLabel().getLocation().x, 
-				-getPaintLabel().getLocation().y, getPaintLabel().getWidth() ,
-				getPaintLabel().getHeight(), 0, 0, getBi(), 
-				cp.getControlPic()));
-
-		
-		refreshPaintBackground();
-		getPaintLabel().setIcon(new ImageIcon(getBi()));
-	}
-
-
-	/**
 	 * Return the page.
 	 * @return the page.
 	 */
@@ -237,6 +209,41 @@ public class ContorlPicture implements PaintListener {
 	
 	
 	/**
+	 * Refresh the entire image.
+	 */
+	public final void refreshPaint() {
+	
+		State.getLogger().finest("refreshing entire PaintLabel. \nValues: "
+				+ "\n\tgetSize:\t" + getPaintLabel().getSize() + " vs. " 
+				+ getJPnlToMove().getSize()
+				+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
+				+ " vs. " + getJPnlToMove().getLocation()
+				+ "\n\t" + "_x:\t\t"
+				+ "\n\t" + "_y\t\t"
+				+ "\n\t" + "_width\t\t" + getPaintLabel().getWidth()
+				+ "\n\t" + "_height\t\t" + getPaintLabel().getHeight() + "\n");
+	
+		refreshRectangle(
+				-getPaintLabel().getLocation().x, 
+				-getPaintLabel().getLocation().y, getPaintLabel().getWidth() ,
+				getPaintLabel().getHeight());
+//		//paint the painted stuff at graphics
+//		setBi(cp.getPicture().updateRectangle(
+//				-getPaintLabel().getLocation().x, 
+//				-getPaintLabel().getLocation().y, getPaintLabel().getWidth() ,
+//				getPaintLabel().getHeight(), 0, 0, getBi(), 
+//				cp.getControlPic()));
+	
+		
+		refreshPaintBackground();
+		getPaintLabel().setIcon(new ImageIcon(getBi()));
+	}
+
+
+
+
+
+	/**
 	 * repaint a special rectangle.
 	 * @param _x the x coordinate in view
 	 * @param _y the y coordinate in view
@@ -247,7 +254,7 @@ public class ContorlPicture implements PaintListener {
 	public final BufferedImage refreshRectangle(final int _x, final int _y, 
 			final int _width, final int _height) {
 
-		State.getLogger().finest("refreshing PaintLabel. \nValues: "
+		Console.log("refreshing PaintLabel. \nValues: "
 				+ "\n\tgetSize:\t" + getPaintLabel().getSize()
 				+ " vs. " + getJPnlToMove().getSize()
 				+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
@@ -255,7 +262,9 @@ public class ContorlPicture implements PaintListener {
 				+ "\n\t" + "_x:\t\t" + _x
 				+ "\n\t" + "_y\t\t" + _y
 				+ "\n\t" + "_width\t\t" + _width
-				+ "\n\t" + "_height\t\t" + _height + "\n");
+				+ "\n\t" + "_height\t\t" + _height + "\n",
+				Console.ID_INFO_UNIMPORTANT, ContorlPicture.class, 
+				"refreshRanctangle");
 
 		
 		//
@@ -335,7 +344,7 @@ public class ContorlPicture implements PaintListener {
 		for (int i = 0; i < pagePrintScope.length; i++) {
 
 			final int currentPage = firstPrintedPage + i;
-			String d = (currentPage + "..." + i);
+			String d = ("page" + currentPage + " of " + (pagePrintScope.length + firstPrintedPage - 1));
 			Console.log(d, 
 					Console.ID_INFO_UNIMPORTANT, 
 					getClass(), "before repaintRectangle");
@@ -358,7 +367,6 @@ public class ContorlPicture implements PaintListener {
 								// this is the y coordinate of the page.
 								+ yOfPageScope[i].x
 								) / zoomStretchW);
-				System.out.println("y" + y);
 
 				for (int j = 0; j < bi.getWidth(); j++) {
 

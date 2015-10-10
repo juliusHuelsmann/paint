@@ -116,13 +116,10 @@ public class PaintLabel extends MLabel {
 
     	// The values have to be adapted to the grid which is given by
     	// the zoom size for not having to cope with partial pixel.
-    	final double zoomWidth = 1.0 * State.getImageSize().width 
-    			/ State.getImageShowSize().width;
-    	final double zoomHeight = 1.0 * State.getImageSize().height 
-    			/ State.getImageShowSize().height;
+    	final double zoomSize = State.getZoomFactorToModelSize();
     	
-    	int newX = (int) Math.round ((Math.round(_x * zoomWidth)) / zoomWidth);
-    	int newY = (int) Math.round ((Math.round(_y * zoomHeight)) / zoomHeight);
+    	int newX = (int) Math.round ((Math.round(_x * zoomSize)) / zoomSize);
+    	int newY = (int) Math.round ((Math.round(_y * zoomSize)) / zoomSize);
     	
     	return new Point(newX, newY);
     }

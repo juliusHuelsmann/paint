@@ -29,6 +29,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -40,6 +42,7 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import model.objects.history.HistorySession;
 import model.objects.painting.Picture;
 import model.settings.State;
+import model.settings.StateStandard;
 import model.settings.ViewSettings;
 import model.util.DPoint;
 import model.util.paint.Utils;
@@ -56,7 +59,7 @@ import model.util.pdf.XDocument;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public class Project implements Serializable {
+public class Project extends Observable implements Serializable {
 
 	
 	/**
@@ -84,6 +87,43 @@ public class Project implements Serializable {
 
 	
 	
+	/**
+	 * If the document is saved, the path to the PDF file is saved in here.
+	 */
+	private String pathToPDF;
+
+	
+    /**
+     * The size of the project which consists of multiple pages having diverse
+     * imageSizes.
+     */
+    private Dimension size;
+
+
+	/**
+	 * Constructor of project: 
+	 * Initializes the sub-classes Picture and History.
+	 */
+	public Project() {
+		
+		// create new instances of picture and history.
+		pictures = new Picture[1];
+		history  = new HistorySession[1];
+	
+		// initialize picture and history
+		pictures[0] = new Picture();
+		history [0] = new HistorySession(pictures[0]);
+		
+		// store the default project size
+    	size = new Dimension(
+    			StateStandard.getStandardImageWidth()
+    			[State.getStartupIdentifier()],
+    			StateStandard.getStandardimageheight()
+    			[State.getStartupIdentifier()]);
+	}
+
+
+
 	/**
 	 * Returns the amount of pages which is indicated by the length of the 
 	 * array containing the pages {@link #pictures} which should be equal
@@ -171,27 +211,6 @@ public class Project implements Serializable {
 	}
 	
 	/**
-	 * If the document is saved, the path to the PDF file is saved in here.
-	 */
-	private String pathToPDF;
-
-	/**
-	 * Constructor of project: 
-	 * Initializes the sub-classes Picture and History.
-	 */
-	public Project() {
-		
-		// create new instances of picture and history.
-		pictures = new Picture[1];
-		history  = new HistorySession[1];
-
-		// initialize picture and history
-		pictures[0] = new Picture();
-		history [0] = new HistorySession(pictures[0]);
-	}
-
-
-	/**
 	 * initialize the history of the picture and the document.
 	 */
 	public final void initialize() {
@@ -207,7 +226,10 @@ public class Project implements Serializable {
 		}
 		
 		document = new XDocument(this);
+		PDPage page = new PDPage();
+		page.setCropBox();
 		document.addPage(new PDPage());
+		
 	}
 
 
@@ -247,7 +269,7 @@ public class Project implements Serializable {
 
 			//set the Picture into Status and set history to the picture.
 			for (int i = 0; i < history.length; i++) {
-				pictures[i].initialize(history[i]);
+				pictures[i].initialize(history[i], document.get);
 			}
 
 			
@@ -670,5 +692,34 @@ public class Project implements Serializable {
 	public Picture getCurrentPicture(final int _x, final int _y) {
 		return pictures[getPictureID(_x, _y)];
 	}
+
+
+
+	/**
+	 * @return the size
+	 */
+	public Dimension getSize() {
+		return size;
+	}
+
+
+
+	/**
+	 * @param size the size to set
+	 */
+	public void setSize(Dimension size) {
+		this.size = size;
+	}
+
+	/**
+	 * @return the projectShowSize
+     * the size of the shown project (is equal to {@link #projectSize} * zoom).
+     *
+	 */
+	public Dimension getShowSize() {
+		return new Dimension(size.width * zoom);
+	}
+
+
 
 }

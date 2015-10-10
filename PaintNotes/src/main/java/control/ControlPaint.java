@@ -503,13 +503,11 @@ MenuListener {
         	final Point imgCoord = new Point(
         			-(int) ((getPage().getJlbl_painting().getLocation().getX() 
         			- _event.getX())
-        			* State.getImageSize().width 
-        			/ State.getImageShowSize().width
+        			* State.getZoomFactorToModelSize()
         			),
         			-(int) ((getPage().getJlbl_painting().getLocation().getY() 
         			- _event.getY())
-        			* State.getImageSize().height 
-        			/ State.getImageShowSize().height));
+        			* State.getZoomFactorToModelSize()));
 			final String actionName = "mousePressed at Picture."
         			+ "\n\t\tActionName:\t\t"
         			+ State.getIndexName(State.getIndexOperation())
@@ -600,7 +598,6 @@ MenuListener {
             	final boolean rectangleOperation = true;
             	
             	if (!rectangleOperation) {
-//            		mr_eraseNew();
             		mr_erase(_event.getPoint());
                 				
                 					
@@ -613,8 +610,8 @@ MenuListener {
                 						//the value if the border of the picture
                 						//is not displayed (because not enough
                 						//zoom out)
-                						1.0 * State.getImageSize().width
-                						/ State.getImageShowSize().width
+                						1.0 
+                	        			* State.getZoomFactorToModelSize()
                 						/ State.getEraseRadius(),
 
                 						//value if border is visible on screen; 
@@ -629,8 +626,8 @@ MenuListener {
                 						//the value if the border of the picture
                 						//is not displayed (because not enough
                 						//zoom out)
-                						1.0 * State.getImageSize().height
-                						/ State.getImageShowSize().height
+                						1.0 
+                	        			* State.getZoomFactorToModelSize()
                 						/ State.getEraseRadius(),
 
                 						//value if border is visible on screen; 
@@ -644,12 +641,10 @@ MenuListener {
                 					[(int) (_event.getPoint().y * factorHeight)]
                 							= PaintBI.FREE;
 
-                		final int displayHeight = State.getEraseRadius()
-                				* State.getImageShowSize().height
-                				/ State.getImageSize().height;
-                		final int displayWidth = State.getEraseRadius()
-                				* State.getImageShowSize().width
-                				/ State.getImageSize().width;
+                		final int displayHeight = (int) (State.getEraseRadius()
+                    			* State.getZoomFactorToShowSize());
+                		final int displayWidth = (int) (State.getEraseRadius()
+                    			* State.getZoomFactorToShowSize());
                 		
                 		controlPic.clrRectangle(
                         		_event.getX() - displayWidth / 2, 
@@ -703,13 +698,11 @@ MenuListener {
         	final Point imgCoord = new Point(
         			-(int) ((getPage().getJlbl_painting().getLocation().getX() 
         			- _event.getX())
-        			* State.getImageSize().width 
-        			/ State.getImageShowSize().width
+        			* State.getZoomFactorToModelSize()
         			),
         			-(int) ((getPage().getJlbl_painting().getLocation().getY() 
         			- _event.getY())
-        			* State.getImageSize().height 
-        			/ State.getImageShowSize().height));
+        			* State.getZoomFactorToModelSize());
 			final String actionName = "mouseReleased at Picture."
         			+ "\n\t\tActionName:\t\t"
         			+ State.getIndexName(State.getIndexOperation())
@@ -775,8 +768,8 @@ MenuListener {
                 						//the value if the border of the picture
                 						//is not displayed (because not enough
                 						//zoom out)
-                						1.0 * State.getImageSize().width
-                						/ State.getImageShowSize().width
+                						1.0 
+                	        			* State.getZoomFactorToModelSize()
                 						/ State.getEraseRadius(),
 
                 						//value if border is visible on screen; 
@@ -791,8 +784,8 @@ MenuListener {
                 						//the value if the border of the picture
                 						//is not displayed (because not enough
                 						//zoom out)
-                						1.0 * State.getImageSize().height
-                						/ State.getImageShowSize().height
+                						1.0 
+                	        			* State.getZoomFactorToModelSize()
                 						/ State.getEraseRadius(),
 
                 						//value if border is visible on screen; 
@@ -806,12 +799,10 @@ MenuListener {
                 					[(int) (_event.getPoint().y * factorHeight)]
                 							= PaintBI.FREE;
 
-                		final int displayHeight = State.getEraseRadius()
-                				* State.getImageShowSize().height
-                				/ State.getImageSize().height;
-                		final int displayWidth = State.getEraseRadius()
-                				* State.getImageShowSize().width
-                				/ State.getImageSize().width;
+                		final int displayHeight = (int) (State.getEraseRadius()
+                    			* State.getZoomFactorToShowSize());
+                		final int displayWidth = (int) (State.getEraseRadius()
+                    			* State.getZoomFactorToModelSize());
                 		
                 		controlPic.clrRectangle(
                         		_event.getX() - displayWidth / 2, 

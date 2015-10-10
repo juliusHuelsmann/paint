@@ -370,9 +370,9 @@ public final class Debug extends Tab implements Observer {
 
 		jlbl_detailedPosition.setLocation(jpnl_owner.getX() + distance
 		        + jpnl_owner.getWidth(), jpnl_owner.getY());
-		jlbl_detailedPosition.setSize(
-		        (availableHeight - jlbl_detailedPosition.getY()) 
-		        * State.getImageSize().width / State.getImageSize().height, 
+		jlbl_detailedPosition.setSize((int)
+		        ((availableHeight - jlbl_detailedPosition.getY()) 
+    			* State.getZoomFactorToShowSize()), 
 		        availableHeight - jlbl_detailedPosition.getY());
 
         sp_up.setLocation(jpnl_owner.getWidth() - twentyFife, 0);

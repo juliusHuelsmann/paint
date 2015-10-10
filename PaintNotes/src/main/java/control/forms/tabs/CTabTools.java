@@ -1,5 +1,6 @@
 //package declaration
 package control.forms.tabs;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -33,7 +34,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
-
 import control.ContorlPicture;
 import control.ControlPaint;
 import model.objects.painting.Picture;
@@ -64,7 +64,8 @@ import view.util.VButtonWrapper;
  * @author Julius Huelsmann
  * @version %I%, %U%
  */
-public final class CTabTools extends DragAndDrop implements ActionListener, MouseListener {
+public final class CTabTools extends DragAndDrop 
+implements ActionListener, MouseListener {
 
 
 	/**
@@ -942,8 +943,20 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
      */
     public void updateResizeLocation() {
 
+    	final int zoomWidth = State.getImageSize().width / State.getImageShowSize().width;
+    	final int zoomHeight = State.getImageSize().height / State.getImageShowSize().height;
+    	
+    	final Point p = controlPaint.getProject().getPageAndPageStartFromPX(
+    			new Point(
+    					(int) (getPage().getJlbl_painting().getLocation().getX() * zoomWidth),
+    					(int) (getPage().getJlbl_painting().getLocation().getY() * zoomHeight)));
+    	final Picture pic = controlPaint.getProject().getPicture(p.x);
+//    	final int yEnd = p.y + controlPaint.getProject().get;
+    	
+    	
+    	// TODO: move selection to project and not to picture.
     	// only perform this action if nothing is selected.
-		if (!controlPaint.getPicture().isSelected()) {
+		if (!pic.isSelected()) {
 
 			// change the location of the resize - buttons. Now that the selection
 			// is released, the entire page can be resized.

@@ -143,6 +143,11 @@ public final class Picture implements Serializable {
 	private HistorySession history; 
 	
 	/**
+	 * Contains the size of the current instance of Picture.
+	 */
+	private Dimension size;
+	
+	/**
 	 * Empty utility class constructor because the Picture instance has to exist
 	 * in process of initialization of Picture attributes.
 	 */
@@ -153,8 +158,10 @@ public final class Picture implements Serializable {
 	 * creates a new instance of sorted PaintObject list and sets up the
 	 * currentID.
 	 */
-	public void initialize(final HistorySession _history) {
+	public void initialize(final HistorySession _history,
+			final Dimension _size) {
 		this.history = _history;
+		this.size = _size;
 		reload();
 	}
 	
@@ -1625,7 +1632,8 @@ public final class Picture implements Serializable {
 	 * @param _po
 	 *            the paintObject to be inserted.
 	 */
-	public synchronized void insertIntoSelected(final PaintObject _po,
+	public synchronized void insertIntoSelected(
+			final PaintObject _po,
 			final Debug _paintObjects) {
 
 		// deactivates to change operations of selected items
@@ -2497,5 +2505,32 @@ public final class Picture implements Serializable {
 	public void setHistory(final HistorySession _history) {
 		this.history = _history;
 	}
+
+	/**
+	 * @return the size
+	 */
+	public Dimension getSize() {
+		return size;
+	}
+
+	/**
+	 * @param size the size to set
+	 */
+	public void setSize(Dimension size) {
+		this.size = size;
+	}
+	
+	
+	
+
+	/**
+	 * @return the projectShowSize
+     * the size of the shown project (is equal to {@link #projectSize} * zoom).
+     *
+	 */
+	public static Dimension getShowSize() {
+		return new Dimension(size.width * zoom);
+	}
+
 
 }

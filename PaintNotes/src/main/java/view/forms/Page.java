@@ -22,6 +22,7 @@ package view.forms;
 
 //import declarations
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.dnd.DropTarget;
 import java.util.Observable;
 import java.util.Observer;
@@ -285,7 +286,7 @@ import view.util.mega.MButton;
 
 
         _controlPaint.getcTabPaint().updateResizeLocation();
-        sizeChangedImage();
+        sizeChangedImage(_controlPaint.getProject().getShowSize());
 
 	}
 	
@@ -301,15 +302,12 @@ import view.util.mega.MButton;
     	//
     	// recalculate the scrolling-step
     	//
-    	final double zoomWidth = 1.0 * State.getImageShowSize().width 
-    			/ State.getImageSize().width;
-    	final double zoomHeight = 1.0 * State.getImageShowSize().width 
-    			/ State.getImageSize().width;
-    	
+
+    	final double zoomSize = State.getZoomFactorToShowSize();
     	final int factor = 20;
     	
-    	sp_ub.setMoveStep((int) Math.max(factor, factor * zoomWidth));
-    	sp_ub.setMoveStep((int) Math.max(factor, factor * zoomHeight));
+    	sp_ub.setMoveStep((int) Math.max(factor, factor * zoomSize));
+    	sp_ub.setMoveStep((int) Math.max(factor, factor * zoomSize));
     	
     	// recalculate center bounds.
         sp_ub.recalculateCenterBounds();
@@ -419,11 +417,11 @@ import view.util.mega.MButton;
 
 	
 	
-	public void sizeChangedImage() {
+	public void sizeChangedImage(final Dimension _proShowSize) {
 
 		jpnl_toMove.setBounds(0, 0,
-				State.getImageShowSize().width,
-				State.getProjectShowSize().height);
+				_proShowSize.width,
+				_proShowSize.height);
 		
         refrehsSps();
 	}
@@ -535,9 +533,16 @@ import view.util.mega.MButton;
 
 
 	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
+	public void update(Observable _o, Object _arg) {
+
 		
+		if (_arg instanceof Dimension) {
+
+			sizeChangedImage((Dimension) _arg);
+		} else {
+			State.getLogger().severe("observable pattern mismatch" 
+					+ _arg + " @ " +  _o);
+		}
 	}
 }
 

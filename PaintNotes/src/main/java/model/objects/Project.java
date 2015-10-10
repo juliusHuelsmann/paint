@@ -92,11 +92,92 @@ public class Project implements Serializable {
 	 */
 	private Picture[] pictures;
 
+	
+	
+	/**
+	 * Returns the amount of pages which is indicated by the length of the 
+	 * array containing the pages {@link #pictures} which should be equal
+	 * to those of the {@link #history} and of the {@link #document}'s
+	 * amount of pages. <br>
+	 * 
+	 * Thus, if those values differ, a terminal notification
+	 * is thrown. Always return the length of the {@link #pictures} array.
+	 * 
+	 * @see #pictures
+	 * @see #history
+	 * @see #document
+	 * @return 			the amount of pages contained by the project.
+	 */
 	public int getAmountPages() {
+		
+		//
+		// fetch the amount of pictures.
+		//
+		final int amountPictures;
 		if (pictures == null) {
-			return 0;
+			amountPictures = 0;
+		} else {
+			amountPictures = pictures.length;
 		}
-		return pictures.length;
+
+		//
+		// fetch the amount of histories.
+		//
+		final int amountHistories;
+		if (history == null) {
+			amountHistories = 0;
+		} else {
+			amountHistories = history.length;
+		}
+
+		//
+		// fetch the amount of pages added to the PDF document.
+		//
+		final int amountPDFPages;
+		if (document == null) {
+			amountPDFPages = 0;
+		} else {
+			amountPDFPages = document.getNumberOfPages();
+		}
+		
+		
+		//
+		// if the three values are not equal, throw a notification.
+		//
+		if (amountPDFPages != amountPictures || amountPictures != amountHistories) {
+			State.getLogger().severe("Error: the amount of PDF pages,"
+					+ " pictures or history sessions do not match:\n"
+					+ "pic " + amountPictures + "\n"
+					+ "his " + amountHistories + "\n"
+					+ "PDF " + amountPDFPages + "\n");
+		}
+		
+		return amountPictures;
+	}
+	
+	
+	
+	/**
+	 * Returns the page number of given picture.
+	 * @see #pictures
+	 * 
+	 * @param _pic	the picture which page number is returned
+	 * @return		the page number of the picture.
+	 */
+	public int getPictureNumber(final Picture _pic) {
+		
+		if (pictures == null) {
+			return -1;
+		}
+		
+		for (int i = 0; i < pictures.length; i++) {
+			if (_pic.equals(pictures[i])) {
+				return i;
+			}
+		}
+		
+		// not found, return -1
+		return -1;
 	}
 	
 	/**
@@ -124,14 +205,40 @@ public class Project implements Serializable {
 
 
 	/**
+	 * initialize the history of the picture and the document.
+	 */
+	public final void initialize() {
+		
+		//set the Picture into Status and set history to the picture.
+		for (int i = 0; i < history.length; i++) {
+			pictures[i].initialize(history[i]);
+		}
+
+		
+		if (document != null) {
+			document.close();
+		}
+		
+		document = new XDocument(this);
+		document.addPage(new PDPage());
+	}
+
+
+
+	/**
 	 * Constructor of project: 
 	 * Initializes the sub-classes Picture and History.
 	 */
 	public void initialize(final String _pString) {
-
 		
 
+		if (document != null) {
+
+			document.close();
+		}
+
 		try {
+			
 			this.document = new XDocument(_pString, this);
 			this.pathToPDF = _pString;
 		} catch (IOException e) {
@@ -151,10 +258,15 @@ public class Project implements Serializable {
 				
 			}
 
-			initialize();
+			//set the Picture into Status and set history to the picture.
+			for (int i = 0; i < history.length; i++) {
+				pictures[i].initialize(history[i]);
+			}
+
+			
+			
 			Dimension[] d = document.initialize();
 
-			System.out.println(d.length);
 			State.setImageSize(d[0]);
 			State.setImageShowSize(d[0]);
 			State.setProjectSize(d[1]);
@@ -171,6 +283,9 @@ public class Project implements Serializable {
 			// initialize picture and history
 			pictures[0] = new Picture();
 			history [0] = new HistorySession(pictures[0]);
+			
+			document = new XDocument(this);
+			document.addPage(new PDPage());
 
 			initialize();
 		}
@@ -194,33 +309,19 @@ public class Project implements Serializable {
 	 */
 	public DPoint load(final String _wsLoc) {
 			
-			if (_wsLoc.endsWith(".pdf")) {
+		if (_wsLoc.endsWith(".pdf")) {
 
-				this.currentlyDisplayedPage = 0;
-	            initialize(_wsLoc);
-	            return null;
-			} else {
-				this.currentlyDisplayedPage = 0;
-				return 	pictures[0].load(_wsLoc);
+			this.currentlyDisplayedPage = 0;
+			initialize(_wsLoc);
+			return null;
+		} else {
+			this.currentlyDisplayedPage = 0;
+			return 	pictures[0].load(_wsLoc);	
 
-			} 
+		} 
 	}
 
 
-	
-	/**
-	 * initialize the history of the picture.
-	 */
-	public final void initialize() {
-		
-		//set the Picture into Status and set history to the picture.
-		for (int i = 0; i < history.length; i++) {
-			pictures[i].initialize(history[i]);
-			
-		}
-	}
-	
-	
 	
 	/**
 	 * Set the project class serializable by removing the XDocument.
@@ -544,7 +645,13 @@ public class Project implements Serializable {
 			y += realPageHeight;
 		}
 
-		PDRectangle b = document.getPage(_pageNumber).getBBox();
+		PDRectangle b;
+		if (document.getPage(_pageNumber) == null) {
+			b = new PDRectangle(State.getImageShowSize().width, 
+					State.getImageShowSize().height);
+		} else {
+			b = document.getPage(_pageNumber).getBBox();
+		}
 		final int width = Math.round(b.getWidth() 
 				* PDFUtils.dpi / 72);
 		final int height = Math.round(b.getHeight() 
@@ -562,6 +669,10 @@ public class Project implements Serializable {
 	 */
 	public int getPageFromPX(final Point _px) {
 		
+		
+		if (document == null) {
+			return 0;
+		}
 		int sumHeight = 0;
 		
 		for (int i = 0; i < document.getNumberOfPages(); i++) {
@@ -579,7 +690,7 @@ public class Project implements Serializable {
 				return i;
 			}
 		}
-		return document.getNumberOfPages();
+		return document.getNumberOfPages() - 1;
 	}
 
 }

@@ -23,12 +23,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
-
 import model.objects.Project;
 import model.objects.painting.Picture;
 import model.settings.Error;
 import model.util.DPoint;
-import model.util.SerializBufferedImage;
 import model.util.adt.list.List;
 import model.util.pdf.PDFUtils;
 
@@ -43,8 +41,6 @@ public class PaintObjectPdf extends PaintObjectBI implements Serializable {
 	
 	
 
-
-
     /**
      * Default serial version UID for being able to identify the list's 
      * version if saved to the disk and check whether it is possible to 
@@ -54,12 +50,94 @@ public class PaintObjectPdf extends PaintObjectBI implements Serializable {
     private static final long serialVersionUID = -3730582547146097485L;
 
     
-    
-    
-    
-
-    
     /**
+	 * The page number inside the XDocument.
+	 */
+	private int pageNumberPDF;
+
+	
+	/**
+	 * If this object has not got a corresponding page inside the saved PDF
+	 * document, {@link #pageNumberPDF} stores {@link #ID_NO_PAGE_NUMBER} which 
+	 * is equal to {@value #ID_NO_PAGE_NUMBER}.
+	 */
+	private static final int ID_NO_PAGE_NUMBER = -1;
+	
+	/**
+	 * Link to the Project for being able to fetch the XDocument. 
+	 * The XDocument is not saved directly because it is not serializable.
+	 * 
+	 * For saving, the XDocument is removed out of the project class and
+	 * restored afterwards.
+	 */
+	private final Project pro;
+
+
+
+	/**
+	 * Constructor: calls super-constructor and saves instances of important 
+	 * classes.
+	 * 
+	 * @see #pro
+	 * @see #pageNumberPDF
+	 * @see #remind()
+	 * @see #forget()
+	 * 
+	 * @param _elementId	the id of the current element which is unique in 
+	 * 						the entire picture
+	 * @param _project		the project which stores the PDF document
+	 * @param _pageNr		the pageNumber inside PDF document
+	 * @param _picture		instance of the model class picture to which the
+	 * 						document is added.
+	 */
+	public PaintObjectPdf(
+			final int _elementId, final Project _project, final int _pageNr, 
+			final Picture _picture) {
+		
+		// call super constructor and save variables.
+	
+		super(_elementId, null, _picture);
+	    this.pro = _project;
+		this.pageNumberPDF = _pageNr;
+		
+	}
+
+	
+
+	/**
+	 * Constructor: calls super-constructor and saves instances of important 
+	 * classes. Is called if the instance of 
+	 * {@link #PaintObjectPdf(int, Project, int, Picture)} has not got a 
+	 * corresponding page inside the PDF document stored in {@link #pro}.
+	 * 
+	 * @see #pro
+	 * @see #pageNumberPDF
+	 * @see #ID_NO_PAGE_NUMBER
+	 * @see #remind()
+	 * @see #forget()
+	 * 
+	 * @param _elementId	the id of the current element which is unique in 
+	 * 						the entire picture
+	 * @param _project		the project which stores the PDF document
+	 * @param _picture		instance of the model class picture to which the
+	 * 						document is added.
+	 */
+	public PaintObjectPdf(
+			final int _elementId, final Project _project, 
+			final Picture _picture) {
+		
+		// call super constructor and save variables.
+	
+		super(_elementId, null, _picture);
+	    this.pro = _project;
+		this.pageNumberPDF = ID_NO_PAGE_NUMBER;
+		
+	}
+
+
+
+
+	/**
      * {@inheritDoc}
      */
     @Override
@@ -96,6 +174,22 @@ public class PaintObjectPdf extends PaintObjectBI implements Serializable {
     }
 
 
+    
+    /**
+     * Returns the page number inside the project, thus the corresponding 
+     * picture identifier. <br>
+     * Does not have anything to do with {@link #pageNumberPDF} which 
+     * indicates the page number inside the PDF document which may differ
+     * from those inside the project.
+     * 
+     * @see Project.#getPictureNumber(Picture)
+     * 
+     * @return 		the page number inside the project.
+     */
+    public final int getPageNumberProject() {
+    
+    	return pro.getPictureNumber(super.getPicture());
+    }
     
     
     /**
@@ -269,48 +363,29 @@ public class PaintObjectPdf extends PaintObjectBI implements Serializable {
 	
 	
 	
-	
 	/**
-	 * The page number inside the XDocument.
-	 */
-	final int pageNumber;
-	
-	/**
-	 * Link to the Project for being able to fetch the XDocument. 
-	 * The XDocument is not saved directly because it is not serializable.
+	 * Reload the content of the PDF Document saved in {@link #pro} at page
+	 * {@link #pageNumberPDF} and store it as bufferedImage inside this 
+	 * {@link #PaintObjectPdf(int, Project, int, Picture)}.
 	 * 
-	 * For saving, the XDocument is removed out of the project class and
-	 * restored afterwards.
+	 * @see #pageNumberPDF
+	 * @see #pro
+	 * @return			the restored BufferedImage.
 	 */
-	final Project pro;
-	
-	
-	/**
-	 * Constructor: calls super-constructor and saves instances of important 
-	 * classes.
-	 * 
-	 * @param _elementId
-	 * @param _project
-	 * @param _pageNr
-	 * @param _picture
-	 */
-	public PaintObjectPdf(
-			final int _elementId, final Project _project, final int _pageNr, 
-			final Picture _picture) {
-		
-		// call super constructor and save variables.
-
-		super(_elementId, null, _picture);
-        this.pro = _project;
-		this.pageNumber = _pageNr;
-		
-	}
-
 	public BufferedImage remind() {
+		
+		// if the page number is equal to NO_PAGE_NUMBER, this object has not
+		// a corresponding PDF page which is to be loaded. Thus it has not to 
+		// be reminded of its content.
+		if (pageNumberPDF == ID_NO_PAGE_NUMBER) {
+			
+			return null;
+		} else {
 
-		super.getBi_image().setContent(PDFUtils.pdf2image(
-				pro.getDocument().getPDDocument(), pageNumber));
-		return super.getBi_image().getContent();
+			super.getBi_image().setContent(PDFUtils.pdf2image(
+					pro.getDocument().getPDDocument(), pageNumberPDF));
+			return super.getBi_image().getContent();
+		}
 	}
 
 	public void forget() {

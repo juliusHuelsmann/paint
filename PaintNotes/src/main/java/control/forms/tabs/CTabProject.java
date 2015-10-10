@@ -53,11 +53,11 @@ public class CTabProject implements ActionListener {
 		if (_event.getSource().equals(
 				cp.getView().getTabs().getTab_project().getTb_next_page()
 				.getActionCause())) {
-			cp.getProject().increaseCurrentPage();
+//			cp.getProject().increaseCurrentPage();
 		} else if (_event.getSource().equals(
 				cp.getView().getTabs().getTab_project().getTb_previous_page()
 				.getActionCause())) {
-			cp.getProject().decreaseCurrentPage();
+//			cp.getProject().decreaseCurrentPage();
 		}
         cp.getControlPic().refreshPaint();
         cp.getView().repaint();

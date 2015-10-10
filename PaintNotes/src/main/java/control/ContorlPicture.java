@@ -224,8 +224,10 @@ public class ContorlPicture implements PaintListener {
 				+ "\n\t" + "_height\t\t" + getPaintLabel().getHeight() + "\n");
 	
 		refreshRectangle(
-				-getPaintLabel().getLocation().x, 
-				-getPaintLabel().getLocation().y, getPaintLabel().getWidth() ,
+				0,0,
+//				-getPaintLabel().getLocation().x, 
+//				-getPaintLabel().getLocation().y, 
+				getPaintLabel().getWidth() ,
 				getPaintLabel().getHeight());
 //		//paint the painted stuff at graphics
 //		setBi(cp.getPicture().updateRectangle(
@@ -234,7 +236,11 @@ public class ContorlPicture implements PaintListener {
 //				getPaintLabel().getHeight(), 0, 0, getBi(), 
 //				cp.getControlPic()));
 	
-		
+
+//		setBi(cp.getPicture().updateRectangle(
+//				pnt_start.x, pnt_start.y,
+//				_width, _height, _x, _y, getBi(), 
+//				cp.getControlPic()));
 		refreshPaintBackground();
 		getPaintLabel().setIcon(new ImageIcon(getBi()));
 	}

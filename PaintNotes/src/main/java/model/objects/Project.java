@@ -25,28 +25,20 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-
 import model.objects.history.HistorySession;
 import model.objects.painting.Picture;
-import model.objects.painting.po.PaintObject;
-import model.objects.painting.po.PaintObjectDrawImage;
 import model.settings.State;
 import model.util.DPoint;
-import model.util.adt.list.SecureList;
-import model.util.adt.list.SecureListSort;
 import model.util.paint.Utils;
 import model.util.pdf.PDFUtils;
 import model.util.pdf.XDocument;
@@ -75,11 +67,6 @@ public class Project implements Serializable {
 	 */
 	private XDocument document;
 	
-	
-	/**
-	 * The index of the displayed page.
-	 */
-	private int currentlyDisplayedPage;
 	
 	/**
 	 * HistorySession of one Pictureclass.
@@ -198,9 +185,6 @@ public class Project implements Serializable {
 		// initialize picture and history
 		pictures[0] = new Picture();
 		history [0] = new HistorySession(pictures[0]);
-		
-		// set current display page
-		this.currentlyDisplayedPage = 0;
 	}
 
 
@@ -291,9 +275,6 @@ public class Project implements Serializable {
 		}
 		
 
-		// set current display page
-		this.currentlyDisplayedPage = 0;
-	
 	}
 	
 	
@@ -311,11 +292,9 @@ public class Project implements Serializable {
 			
 		if (_wsLoc.endsWith(".pdf")) {
 
-			this.currentlyDisplayedPage = 0;
 			initialize(_wsLoc);
 			return null;
 		} else {
-			this.currentlyDisplayedPage = 0;
 			return 	pictures[0].load(_wsLoc);	
 
 		} 
@@ -355,7 +334,6 @@ public class Project implements Serializable {
 			State.setImageSize(new Dimension(bi.getWidth(), bi.getHeight()));
 			State.setImageShowSize(new Dimension(bi.getWidth(), bi.getHeight()));
 			
-			currentlyDisplayedPage = 0;
 	}
 	
 	/**
@@ -371,94 +349,50 @@ public class Project implements Serializable {
 		
 	}
 	
-	
-	/**
-	 * 
-	 * @return the current page of the PDF document.
-	 */
-	public final PDPage getCurrentPage() {
-		if (document != null) {
-			return document.getPage(currentlyDisplayedPage);	
-		}
-		return null;
-	}
-
-
-
-	/**
-	 * @return the history
-	 */
-	public final HistorySession getCurrentHistory() {
-		
-		if (currentlyDisplayedPage < history.length) {
-
-			return history[currentlyDisplayedPage];
-		}
-		return null;
-	}
-
-
-
-
-	/**
-	 * @return the picture
-	 */
-	public final Picture getCurrentPicture() {
-
-		if (currentlyDisplayedPage < pictures.length) {
-
-			return pictures[currentlyDisplayedPage];
-		}
-		return null;
-	}
 
 
 	
-	public void resetCurrentPage() {
-		currentlyDisplayedPage = 0;
-	}
-	
-	public void increaseCurrentPage() {
-		if (document != null 
-				&& currentlyDisplayedPage < document.getNumberOfPages() - 1) {
-
-			document.getPdfPages()[currentlyDisplayedPage].forget();
-			
-			currentlyDisplayedPage++;
-
-			// fetch zoom factor
-			double zW = 1.0 * State.getImageSize().getWidth() / State.getImageShowSize().getWidth();
-			double zH = 1.0 * State.getImageSize().getHeight() / State.getImageShowSize().getHeight();
-
-			document.getPdfPages()[currentlyDisplayedPage].remind();
-			Rectangle r = document.getPdfPages()[currentlyDisplayedPage].getSnapshotBounds();
-			
-			State.setImageSize(r.getSize());
-			State.setImageShowSize(new Dimension((int) (r.getWidth() / zW), (int) (r.getHeight() / zH)));
-
-		}
-	}
+//	public void increaseCurrentPage() {
+//		if (document != null 
+//				&& currentlyDisplayedPage < document.getNumberOfPages() - 1) {
+//
+//			document.getPdfPages()[currentlyDisplayedPage].forget();
+//			
+//			currentlyDisplayedPage++;
+//
+//			// fetch zoom factor
+//			double zW = 1.0 * State.getImageSize().getWidth() / State.getImageShowSize().getWidth();
+//			double zH = 1.0 * State.getImageSize().getHeight() / State.getImageShowSize().getHeight();
+//
+//			document.getPdfPages()[currentlyDisplayedPage].remind();
+//			Rectangle r = document.getPdfPages()[currentlyDisplayedPage].getSnapshotBounds();
+//			
+//			State.setImageSize(r.getSize());
+//			State.setImageShowSize(new Dimension((int) (r.getWidth() / zW), (int) (r.getHeight() / zH)));
+//
+//		}
+//	}
 	
 	
-	public void decreaseCurrentPage() {
-
-		if (document != null && currentlyDisplayedPage > 0) {
-
-
-			document.getPdfPages()[currentlyDisplayedPage].forget();
-			currentlyDisplayedPage--;
-
-			// fetch zoom factor
-			double zW = 1.0 * State.getImageSize().getWidth() / State.getImageShowSize().getWidth();
-			double zH = 1.0 * State.getImageSize().getHeight() / State.getImageShowSize().getHeight();
-
-			document.getPdfPages()[currentlyDisplayedPage].remind();
-			Rectangle r = document.getPdfPages()[currentlyDisplayedPage].getSnapshotBounds();
-			
-			State.setImageSize(r.getSize());
-			State.setImageShowSize(new Dimension((int) (r.getWidth() / zW), (int) (r.getHeight() / zH)));
-		}
-	}
+//	public void decreaseCurrentPage() {
+//
+//		if (document != null && currentlyDisplayedPage > 0) {
+//
+//
+//			document.getPdfPages()[currentlyDisplayedPage].forget();
+//			currentlyDisplayedPage--;
+//
+//			// fetch zoom factor
+//			double zW = 1.0 * State.getImageSize().getWidth() / State.getImageShowSize().getWidth();
+//			double zH = 1.0 * State.getImageSize().getHeight() / State.getImageShowSize().getHeight();
+//
+//			document.getPdfPages()[currentlyDisplayedPage].remind();
+//			Rectangle r = document.getPdfPages()[currentlyDisplayedPage].getSnapshotBounds();
+//			
+//			State.setImageSize(r.getSize());
+//			State.setImageShowSize(new Dimension((int) (r.getWidth() / zW), (int) (r.getHeight() / zH)));
+//		}
+//	}
 	/**
 	 * @return the pictures
 	 */
@@ -466,13 +400,6 @@ public class Project implements Serializable {
 		return pictures[_pictureID];
 	}
 
-
-	/**
-	 * @return the currentlyDisplayedPage
-	 */
-	public int getCurrentPageNumber() {
-		return currentlyDisplayedPage;
-	}
 
 
 	/**
@@ -691,6 +618,14 @@ public class Project implements Serializable {
 			}
 		}
 		return document.getNumberOfPages() - 1;
+	}
+
+
+
+	public Picture getCurrentPicture(final Point _p) {
+		
+		
+		return pictures[getPageFromPX(_p)];
 	}
 
 }

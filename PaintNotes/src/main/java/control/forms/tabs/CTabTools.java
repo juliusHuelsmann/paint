@@ -273,7 +273,10 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
             	File s = jfc.getSelectedFile();
             	
             	if (s != null) {
-                	controlPaint.getProject().getCurrentPicture().addPaintObjectImage(Utils.readImageFromOutiseJar(s.getPath()));
+                	controlPaint.getProject().getCurrentPicture(controlPaint
+                			.getView().getPage().getJlbl_painting()
+                			.getLocation()).addPaintObjectImage(
+                			Utils.readImageFromOutiseJar(s.getPath()));
                 	controlPaint.getControlPic().refreshPaint();
             	}
             }

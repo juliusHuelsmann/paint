@@ -26,13 +26,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-
 import model.objects.Project;
 import model.objects.painting.po.PaintObjectPdf;
 import model.settings.Constants;
 import model.settings.State;
-
-import org.apache.fontbox.util.BoundingBox;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
@@ -210,11 +207,9 @@ public class XDocument implements Serializable {
 
 				
 				// compute size
-				PDRectangle b = document.getPage(i).getBBox();
-				final int realPageWidth = Math.round(b.getWidth() * PDFUtils.dpi / 72);
-				final int realPageHeight = Math.round(b.getHeight() * PDFUtils.dpi / 72);
-				documentHeight += realPageHeight;
-				documentWidth = Math.max(realPageWidth, documentWidth);
+				Dimension x = getPageSize(i);
+				documentHeight += x.height;
+				documentWidth = Math.max(x.width, documentWidth);
 
 					
 					// get size of the current page of the document.
@@ -236,6 +231,21 @@ public class XDocument implements Serializable {
 		
 	}
 	
+
+	/**
+	 * Return the size of a PDF document.
+	 * @param _i
+	 * @return
+	 */
+	public Dimension getPageSize(final int _i) {
+
+		PDRectangle b = document.getPage(_i).getBBox();
+		final int realPageWidth = Math.round(b.getWidth() * PDFUtils.dpi / 72);
+		final int realPageHeight = Math.round(b.getHeight() * PDFUtils.dpi / 72);
+		return new Dimension(realPageWidth, realPageHeight);
+	}
+
+
 
 	/**
 	 * Buggy. 

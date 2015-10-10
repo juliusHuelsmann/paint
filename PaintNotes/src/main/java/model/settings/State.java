@@ -1,6 +1,5 @@
 package model.settings;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,15 +17,11 @@ package model.settings;
  * limitations under the License.
  */
 
-
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
-
 import javax.swing.JOptionPane;
-
 import control.ControlPaint;
 import control.forms.tabs.CTabWrite;
 import view.View;
@@ -47,6 +42,8 @@ import model.util.paint.Utils;
  * @version %I%, %U%
  */
 public final class State {
+	
+	
 	/**
 	 * The identifier of the selection tab in the TabbedPane. If this value
 	 * is known, the selection tab can be opened by typing
@@ -54,19 +51,13 @@ public final class State {
 	 */
 	private static int idTabSelection;
 
-
-
-
-
-
+	
 	/**
 	 * @return the idTabSelection
 	 */
 	public static int getIdTabSelection() {
 		return idTabSelection;
 	}
-
-
 
 
 	/**
@@ -103,19 +94,6 @@ public final class State {
     private static BufferedImage biTransparency;
     
     
-    
-    
-    
-    
-    
-    
-    
-	
-    
-    
-    
-    
-    
 	/*
 	 * Instance of the main controller class for being able to inform the
 	 * rest of the program if the status has changed somehow and instance
@@ -137,7 +115,7 @@ public final class State {
     /**
      * Identifier for startup.
      */
-	private final int startupIdentifier;
+	private static int startupIdentifier = Constants.ID_STARTUP_NORMAL;
     
     
     
@@ -235,18 +213,7 @@ public final class State {
     penSelected1,
     penSelected2;
 
-    /**
-     * The size of the project which consists of multiple pages having diverse
-     * imageSizes.
-     */
-    private static Dimension projectSize;
     
-    /**
-     * the size of the image. (depends on start image width and start image 
-     * height, those values are determined by settings).
-     */
-    private static Dimension imageSize;
-
     
     /**
      * The current zoom is equal to 
@@ -257,11 +224,14 @@ public final class State {
     
 
     /**
+     * 
      * Returns the <code>zoomState</code>. The image size can be extracted
      * out of the current <code>zoomState</code> by applying the following
      * formula: <br>
      * <code> imageSize 
-     * 		.* ViewSettings.ZOOM_MULITPLICATOR ^ State.getZoomState();</code>.
+     * 		.* ViewSettings.ZOOM_MULITPLICATOR ^ {@link #getZoomState()};</code>.
+     * 
+     * 
      * 
      * @see #zoomState
      * @see #zoomStateZoomIn()
@@ -269,6 +239,36 @@ public final class State {
      */
     public static final int getZoomState() {
     	return zoomState;
+    }
+    
+    /**
+     * Return the zoom factor in width and height.
+     * <br><br>
+ 	 * <code>showSize = size * factor;</code><br>
+	 * <code>showSize / size = factor</code> <br>
+     * @see #zoomState
+     * @see #zoomStateZoomIn()
+     * @see #zoomStateZoomOut()
+     * @return	the zoom factor in width and height
+     */
+    public static final double getZoomFactorToShowSize() {
+
+    	return Math.pow(ViewSettings.ZOOM_MULITPLICATOR, State.getZoomState());
+    }
+
+    /**
+     * Return the zoom factor in width and height.
+     * <br><br>
+ 	 * <code>size = showSize * factor;</code><br>
+	 * <code>size / showSize = factor</code> <br>
+     * @see #zoomState
+     * @see #zoomStateZoomIn()
+     * @see #zoomStateZoomOut()
+     * @return	the zoom factor in width and height
+     */
+    public static final double getZoomFactorToModelSize() {
+
+    	return Math.pow(ViewSettings.ZOOM_MULITPLICATOR, -State.getZoomState());
     }
 
     /**
@@ -360,17 +360,6 @@ public final class State {
     			[startupIdentifier];
     	
     	
-    	imageSize = new Dimension(
-    			StateStandard.getStandardImageWidth()
-    			[startupIdentifier],
-    			StateStandard.getStandardimageheight()
-    			[startupIdentifier]);
-    	
-    	imageShowSize = new Dimension(imageSize);
-    	
-    	projectSize = new Dimension(imageSize);
-    	projectShowSize = new Dimension(imageSize);
-    	
     }
     
     
@@ -402,15 +391,7 @@ public final class State {
 	 */
 	private static Pen pen_selectedReplaced;
 
-    /**
-     * the size of the shown image (is equal to {@link #imageSize} * zoom).
-     */
-    private static Dimension imageShowSize;
 
-    /**
-     * the size of the shown project (is equal to {@link #projectSize} * zoom).
-     */
-    private static Dimension projectShowSize;
     
 	
 	
@@ -506,7 +487,8 @@ public final class State {
         final int min = 1;
         final int normal = 10;
         
-        return Math.max(min, normal * imageShowSize.width / imageSize.width);
+        return Math.max(min, (int) (normal 
+        		* getZoomFactorToShowSize()));
     }
     
     
@@ -519,7 +501,7 @@ public final class State {
     public static int getRasterBorderFront() {
         
         final int maxPercent = 100;
-        return State.getImageShowSize().width 
+        return controlPaint.getProject().getShowSize().width 
                 * borderLeftPercentShow / maxPercent;
     }
 
@@ -533,9 +515,9 @@ public final class State {
 
         final int maxPercent = 100;
 
-        int lastBorder = State.getImageShowSize().width 
+        int lastBorder = controlPaint.getProject().getSize().width 
                 * borderRightPercentShow / maxPercent;
-        int size = imageShowSize.width - getRasterBorderFront() - lastBorder;
+        int size = controlPaint.getProject().getShowSize().width - getRasterBorderFront() - lastBorder;
         
         return lastBorder
                 //thus, it is impossible that the last boxes do not
@@ -554,7 +536,7 @@ public final class State {
     public static int getRasterBorderTop() {
         
         final int maxPercent = 100;
-        return State.getImageShowSize().height
+        return controlPaint.getProject().getSize().height
                 * borderTopPercentShow / maxPercent;
     }
 
@@ -568,9 +550,9 @@ public final class State {
 
         final int maxPercent = 100;
 
-        int lastBorder = State.getImageShowSize().height 
+        int lastBorder = controlPaint.getProject().getSize().height 
                 * borderBottomPercentShow / maxPercent;
-        int size = imageShowSize.height - getRasterBorderTop() - lastBorder;
+        int size = controlPaint.getProject().getSize().height - getRasterBorderTop() - lastBorder;
         
         return lastBorder
                 //thus, it is impossible that the last boxes do not
@@ -584,8 +566,13 @@ public final class State {
      * @return the border size.
      */
     public static int getMargeLeft() {
+    	
+    	
+    	//TODO: give page 
         final int hundred = 100;
-        return borderLeftPercentShow * getImageSize().width / hundred;
+        return borderLeftPercentShow
+        		* controlPaint.getProject().getSize().width
+        		/ hundred;
     }
 
     /**
@@ -594,7 +581,9 @@ public final class State {
      */
     public static int getMargeRight() {
         final int hundred = 100;
-        return borderRightPercentShow * getImageSize().width / hundred;
+        return borderRightPercentShow 
+        		* controlPaint.getProject().getSize().width
+        		/ hundred;
     }
     /**
      * Get the border size.
@@ -602,7 +591,9 @@ public final class State {
      */
     public static int getMargeTop() {
         final int hundred = 100;
-        return borderTopPercentShow * getImageSize().height / hundred;
+        return borderTopPercentShow 
+        		* controlPaint.getProject().getSize().height
+        		/ hundred;
     }
     /**
      * Get the border size.
@@ -610,7 +601,9 @@ public final class State {
      */
     public static int getMargeBottom() {
         final int hundred = 100;
-        return borderBottomPercentShow * getImageSize().height / hundred;
+        return borderBottomPercentShow 
+        		* controlPaint.getProject().getSize().height
+        		/ hundred;
     }
     
     /**
@@ -698,21 +691,6 @@ public final class State {
     }
 
     /**
-     * @return the imageSize
-     */
-    public static Dimension getImageSize() {
-        return imageSize;
-    }
-
-    /**
-     * @param _imageSize the imageSize to set
-     */
-    public static void setImageSize(final Dimension _imageSize) {
-        
-        State.imageSize = _imageSize;
-    }
-
-    /**
      * @return the normalRotation
      */
     public static boolean isNormalRotation() {
@@ -757,22 +735,7 @@ public final class State {
         getControlTabWrite().penChanged();
     }
 
-    /**
-     * @return the imageShowSize
-     */
-    public static Dimension getImageShowSize() {
-        return imageShowSize;
-    }
 
-    /**
-     * @param _imageShowSize the imageShowSize to set
-     */
-    public static void setImageShowSize(final Dimension _imageShowSize) {
-        State.imageShowSize = _imageShowSize;
-        //frefresh sps due to the new size of the image.
-        controlPaint.getView().getPage().sizeChangedImage();
-        controlPaint.getView().getPage().refrehsSps();
-    }
 
     /**
      * @return the debug
@@ -1359,41 +1322,12 @@ public final class State {
 
 
 
-	/**
-	 * @return the projectShowSize
-	 */
-	public static Dimension getProjectShowSize() {
-		return projectShowSize;
-	}
-
-
 
 
 	/**
-	 * @param projectShowSize the projectShowSize to set
+	 * @return the startupIdentifier
 	 */
-	public static void setProjectShowSize(Dimension projectShowSize) {
-		State.projectShowSize = projectShowSize;
-		controlPaint.getView().getPage().sizeChangedImage();
-	}
-
-
-
-
-	/**
-	 * @return the projectSize
-	 */
-	public static Dimension getProjectSize() {
-		return projectSize;
-	}
-
-
-
-
-	/**
-	 * @param _projectSize the projectSize to set
-	 */
-	public static void setProjectSize(Dimension _projectSize) {
-		State.projectSize = _projectSize;
+	public static final int getStartupIdentifier() {
+		return startupIdentifier;
 	}
 }

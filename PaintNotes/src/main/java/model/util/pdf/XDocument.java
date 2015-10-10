@@ -218,7 +218,7 @@ public class XDocument implements Serializable {
 
 					
 					// get size of the current page of the document.
-					if (project.getCurrentPageNumber() == i) {
+					if (0 == i) {
 
 						bi_saved = pdfPages[i].remind();
 					}

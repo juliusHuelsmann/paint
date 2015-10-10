@@ -1429,11 +1429,17 @@ MenuListener {
             int newHeight = (int) (State.getImageSize().height
             		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
 
+            int proW = (int) (State.getProjectSize().width
+            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
+            int proH = (int) (State.getProjectSize().height
+            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
+
             Point oldLocation = new Point(getPage()
                     .getJlbl_painting().getLocation().x, getPage()
                     .getJlbl_painting().getLocation().y);
 
             State.setImageShowSize(new Dimension(newWidth, newHeight));
+            State.setProjectShowSize(new Dimension(proW, proH));
            
             /*
              * set the location of the panel.

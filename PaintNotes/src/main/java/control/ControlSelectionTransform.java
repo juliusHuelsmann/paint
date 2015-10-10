@@ -26,6 +26,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import model.objects.painting.Picture;
 import model.settings.State;
 import model.util.DPoint;
 import model.util.adt.list.SecureList;
@@ -172,10 +173,11 @@ MouseMotionListener, MouseListener {
     public final void mousePressed(final MouseEvent _event) {
         pnt_start = new DPoint(_event.getLocationOnScreen());
         
+        final Picture pic = cv.getPicture();
         //nothing selected means resize whole image
         if (r_selection == null 
-        		|| cv.getPicture().getLs_poSelected() == null
-        		|| cv.getPicture().getLs_poSelected().isEmpty()) {
+        		|| pic.getLs_poSelected() == null
+        		|| pic.getLs_poSelected().isEmpty()) {
 
             dim_imageSizeOld = new Dimension(State.getImageSize());
             factorW = 1.0 * State.getImageSize().width 
@@ -710,6 +712,7 @@ MouseMotionListener, MouseListener {
     		final DPoint _pnt_stretchFrom,
     		final DPoint _pnt_totalStretch,
     		final DPoint _pnt_size) {
+    	final Picture pic = cv.getPicture();
 
     	final double stretchWidth = 1.0 *  State.getImageSize().width
     			/ State.getImageShowSize().width;
@@ -725,39 +728,39 @@ MouseMotionListener, MouseListener {
     	_pnt_size.setX(_pnt_size.getX() *  stretchWidth);
     	_pnt_size.setY(_pnt_size.getY() *  stretchHeight);
 
-        if (cv.getPicture().getLs_poSelected() != null 
-        		&& !cv.getPicture().getLs_poSelected().isEmpty()) {
+        if (pic.getLs_poSelected() != null 
+        		&& !pic.getLs_poSelected().isEmpty()) {
 
         	//start transaction and closed action.
-        	final int transaction = cv.getPicture().getLs_poSelected()
+        	final int transaction = pic.getLs_poSelected()
         			.startTransaction("stretch image", 
         					SecureList.ID_NO_PREDECESSOR);
-        	final int closedAction = cv.getPicture().getLs_poSelected()
+        	final int closedAction = pic.getLs_poSelected()
         			.startClosedAction("stretch image", 
         					SecureList.ID_NO_PREDECESSOR);
             
-            cv.getPicture().getLs_poSelected().toFirst(
+            pic.getLs_poSelected().toFirst(
             		transaction, closedAction);
-            while (!cv.getPicture().getLs_poSelected().isBehind()) {
+            while (!pic.getLs_poSelected().isBehind()) {
 
 
-                cv.getPicture().getLs_poSelected().getItem().stretch(
+                pic.getLs_poSelected().getItem().stretch(
                         _pnt_stretchFrom, _pnt_totalStretch, _pnt_size);
-                cv.getPicture().getLs_poSelected().next(
+                pic.getLs_poSelected().next(
                 		transaction, closedAction);
             }
 
         	//close transaction and closed action.
-        	cv.getPicture().getLs_poSelected().finishTransaction(
+        	pic.getLs_poSelected().finishTransaction(
         			transaction);
-        	cv.getPicture().getLs_poSelected().finishClosedAction(
+        	pic.getLs_poSelected().finishClosedAction(
         			closedAction);
             
             //release selected and paint them
         	
         	// release selected causes the tab to open tab 1. therefore iterrupt that action.
             cv.getControlPic().releaseSelected(false);
-            cv.getPicture().paintSelected(getPage(),
+            pic.paintSelected(getPage(),
             		cv.getControlPic(),
             		cv.getControlPaintSelection());    
         }

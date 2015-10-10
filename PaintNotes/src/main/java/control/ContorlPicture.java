@@ -23,12 +23,8 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import javax.swing.ImageIcon;
-
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.tools.ant.property.GetProperty;
-
 import control.forms.BorderThread;
 import control.interfaces.MoveEvent;
 import control.interfaces.PaintListener;

@@ -28,12 +28,15 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
+
 import control.ContorlPicture;
 import control.ControlPaint;
+import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectDrawImage;
 import model.objects.painting.po.PaintObjectWriting;
@@ -273,9 +276,12 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
             	File s = jfc.getSelectedFile();
             	
             	if (s != null) {
-                	controlPaint.getProject().getCurrentPicture(controlPaint
+                	controlPaint.getProject().getCurrentPicture(-controlPaint
                 			.getView().getPage().getJlbl_painting()
-                			.getLocation()).addPaintObjectImage(
+                			.getLocation().x, 
+                			-controlPaint
+                			.getView().getPage().getJlbl_painting()
+                			.getLocation().y).addPaintObjectImage(
                 			Utils.readImageFromOutiseJar(s.getPath()));
                 	controlPaint.getControlPic().refreshPaint();
             	}
@@ -331,14 +337,15 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
      * MouseReleased method for button press at button cut.
      */
     public void mr_cut() {
+    	final Picture pic = controlPaint.getPicture();
 
         MyClipboard.getInstance().copyPaintObjects(
-        		controlPaint.getPicture(),
-                controlPaint.getPicture().getLs_poSelected(), 
-                controlPaint.getPicture().paintSelectedBI(new DRect(controlPaint
+        		pic,
+        		pic.getLs_poSelected(), 
+        		pic.paintSelectedBI(new DRect(controlPaint
                 		.getControlPaintSelection().getR_selection())));
         
-        controlPaint.getPicture().deleteSelected(
+        pic.deleteSelected(
         		controlPaint.getView().getTabs().getTab_debug(),
         		controlPaint.getcTabSelection());
         getControlPicture().releaseSelected();
@@ -352,8 +359,10 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
      */
     public void mr_paste() {
 
+    	final Picture pic = controlPaint.getPicture();
+    	
     	getControlPicture().releaseSelected();
-        controlPaint.getPicture().releaseSelected(
+        pic.releaseSelected(
     			controlPaint.getControlPaintSelection(),
     			controlPaint.getcTabSelection(),
     			controlPaint.getView().getTabs().getTab_debug(),
@@ -361,19 +370,19 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
     			.getLocation().x,
     			controlPaint.getView().getPage().getJlbl_painting()
     			.getLocation().y);
-        controlPaint.getPicture().createSelected();
+        pic.createSelected();
         
         Object o = MyClipboard.getInstance().paste();
         if (o instanceof BufferedImage) {
-            PaintObjectDrawImage poi = controlPaint.getPicture().createPOI(
+            PaintObjectDrawImage poi = pic.createPOI(
                     (BufferedImage) o);
-            controlPaint.getPicture().insertIntoSelected(
+            pic.insertIntoSelected(
             		poi, controlPaint.getView().getTabs().getTab_debug());
             //finish insertion into selected.
-            controlPaint.getPicture().finishSelection(
+            pic.finishSelection(
             		controlPaint.getcTabSelection());
             
-            controlPaint.getPicture().paintSelected(getPage(),
+            pic.paintSelected(getPage(),
         			controlPaint.getControlPic(),
         			controlPaint.getControlPaintSelection());
             getPage().getJlbl_backgroundStructure().repaint();
@@ -429,20 +438,20 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
                 
                 if (po instanceof PaintObjectDrawImage) {
                     PaintObjectDrawImage poi = (PaintObjectDrawImage) po;
-                    PaintObjectDrawImage poi_new = controlPaint.getPicture()
+                    PaintObjectDrawImage poi_new = pic
                     		.createPOI(poi.getSnapshot());
-                    controlPaint.getPicture().insertIntoSelected(
+                    pic.insertIntoSelected(
                     		poi_new, controlPaint.getView().getTabs()
                     		.getTab_debug());
 
                     //finish insertion into selected.
-                    controlPaint.getPicture().finishSelection(
+                    pic.finishSelection(
                     		controlPaint.getcTabSelection());
                     
                 } else if (po instanceof PaintObjectWriting) {
                     PaintObjectWriting pow = (PaintObjectWriting) po;
                     PaintObjectWriting pow_new 
-                    = controlPaint.getPicture().createPOW(pow.getPen());
+                    = pic.createPOW(pow.getPen());
                     
                     pow.getPoints().toFirst();
                     while (!pow.getPoints().isEmpty() 
@@ -451,7 +460,7 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
                                 pow.getPoints().getItem()));
                         pow.getPoints().next();
                     }
-                    controlPaint.getPicture().insertIntoSelected(pow_new, 
+                    pic.insertIntoSelected(pow_new, 
                     		controlPaint.getView().getTabs().getTab_debug());
 
                 
@@ -462,38 +471,38 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
                 ls.next();
             }
             //finish insertion into selected.
-            controlPaint.getPicture().finishSelection(
+            pic.finishSelection(
             		controlPaint.getcTabSelection());
-            controlPaint.getPicture().moveSelected(pnt_move.x, pnt_move.y);
+            pic.moveSelected(pnt_move.x, pnt_move.y);
             
         } else if (o instanceof PaintObjectWriting) {
         	
         	//theoretically unused because everything is stored
         	//inside lists.
-            controlPaint.getPicture().insertIntoSelected(
+            pic.insertIntoSelected(
                     (PaintObjectWriting) o, 
                     controlPaint.getView().getTabs().getTab_debug());
 
             //finish insertion into selected.
-            controlPaint.getPicture().finishSelection(
+            pic.finishSelection(
             		controlPaint.getcTabSelection());
         } else if (o instanceof PaintObjectDrawImage) {
 
         	//theoretically unused because everything is stored
         	//inside lists.
-            controlPaint.getPicture().insertIntoSelected(
+            pic.insertIntoSelected(
                     (PaintObjectDrawImage) o, 
                     controlPaint.getView().getTabs().getTab_debug());
 
             //finish insertion into selected.
-            controlPaint.getPicture().finishSelection(
+            pic.finishSelection(
             		controlPaint.getcTabSelection());
             new Exception("hier").printStackTrace();
         } else {
             State.getLogger().warning("unknown return type of clipboard"
             		+ "\ncontent: " + o);
         }
-        controlPaint.getPicture().paintSelected(getPage(),
+        pic.paintSelected(getPage(),
     			controlPaint.getControlPic(),
     			controlPaint.getControlPaintSelection());
         getPage().getJlbl_backgroundStructure().repaint();
@@ -505,10 +514,11 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
      */
     public void mr_copy() {
 
+    	final Picture pic  = controlPaint.getPicture();
         MyClipboard.getInstance().copyPaintObjects(
-        		controlPaint.getPicture(),
-                controlPaint.getPicture().getLs_poSelected(), 
-                controlPaint.getPicture().paintSelectedBI(new DRect(
+        		pic,
+        		pic.getLs_poSelected(), 
+                pic.paintSelectedBI(new DRect(
                 		controlPaint
                 		.getControlPaintSelection().getR_selection())));
             
@@ -889,13 +899,14 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
             // process.
             getPage().refrehsSps();
 
+        	final Picture pic = controlPaint.getPicture();
             
             // release all selected items. If this is not done, the
             // painted selection size is too big.
-            if (controlPaint.getPicture().isSelected()) {
+            if (pic.isSelected()) {
 
                 getControlPicture().releaseSelected();
-                controlPaint.getPicture().releaseSelected(
+                pic.releaseSelected(
             			controlPaint.getControlPaintSelection(),
             			controlPaint.getcTabSelection(),
             			controlPaint.getView().getTabs().getTab_debug(),

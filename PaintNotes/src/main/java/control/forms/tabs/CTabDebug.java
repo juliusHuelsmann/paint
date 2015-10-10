@@ -23,12 +23,15 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
+
 import control.ContorlPicture;
 import control.ControlPaint;
 import model.debug.ActionManager;
 import model.debug.debugTools.DebugUtil;
 import model.objects.PictureOverview;
+import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectDrawImage;
 import model.objects.painting.po.PaintObjectWriting;
@@ -117,7 +120,10 @@ public final class CTabDebug implements ActionListener {
     		State.getLogger().warning("not implemented yet.");
     		
     	} else {
-    		
+
+            // important to save because otherwise it is recalculated
+            // each time getPicture is called.
+            Picture pic = cp.getPicture();
     		
     		//action for elements that represent paintObjects.
     		 Component[] c 
@@ -139,7 +145,8 @@ public final class CTabDebug implements ActionListener {
     	                    i1b.setActivated(false);
     	                    showPaintObjectInformation(po_cu);
     	                    
-    	                    cp.getPicture().releaseSelected(
+    	                    
+    	                    pic.releaseSelected(
     	                			cp.getControlPaintSelection(),
     	                			cp.getcTabSelection(),
     	                			cp.getView().getTabs().getTab_debug(),
@@ -157,13 +164,13 @@ public final class CTabDebug implements ActionListener {
     	                    //decativate other menuitems and activate the 
     	                    //current one
     	                    //(move)
-    	                    cp.getPicture().createSelected();
+    	                    pic.createSelected();
     	                    getPaintObjects().deactivate();
-    	                    cp.getPicture().insertIntoSelected(po_cu, 
+    	                    pic.insertIntoSelected(po_cu, 
     	                    		cp.getView().getTabs().getTab_debug());
     	                    new PictureOverview(getPaintObjects()).remove(
     	                    		po_cu);
-    	                    cp.getPicture().getLs_po_sortedByY().remove(
+    	                    pic.getLs_po_sortedByY().remove(
     	                    		SecureList.ID_NO_PREDECESSOR);
     	                    
     	                }
@@ -175,9 +182,9 @@ public final class CTabDebug implements ActionListener {
     	        }
     	        
     	        //finish insertion into selected.
-    	        cp.getPicture().finishSelection(cp.getcTabSelection());
+    	        pic.finishSelection(cp.getcTabSelection());
     	        
-    	        cp.getPicture().paintSelected(getPage(),
+    	        pic.paintSelected(getPage(),
     	    			cp.getControlPic(),
     	    			cp.getControlPaintSelection());
     	        getControlPicture().refreshPaint();

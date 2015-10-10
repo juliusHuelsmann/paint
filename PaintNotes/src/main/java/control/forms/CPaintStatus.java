@@ -29,6 +29,7 @@ import javax.swing.ImageIcon;
 
 import control.ContorlPicture;
 import control.ControlPaint;
+import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.settings.Constants;
 import model.settings.State;
@@ -466,6 +467,7 @@ public final class CPaintStatus implements MouseListener {
     			
     			
     		int operationID = getOperation(_event);
+    		final Picture pic = controlPaint.getPicture();
     		    
     		//if operation id is valid; thus operation has been found
     		if (operationID != -1) {
@@ -474,10 +476,10 @@ public final class CPaintStatus implements MouseListener {
     			State.setIndexOperation(operationID);
     			deactivate();
     			
-    			if (controlPaint.getPicture().isSelected()) {
+    			if (pic.isSelected()) {
     				
     				//if there was selection before, release it to Picture
-    				controlPaint.getPicture().releaseSelected(
+    				pic.releaseSelected(
     						controlPaint.getControlPaintSelection(),
     						controlPaint.getcTabSelection(),
     						controlPaint.getView().getTabs().getTab_debug(),
@@ -510,7 +512,7 @@ public final class CPaintStatus implements MouseListener {
     				paint.getIt_stift1().getTb_open()
     				.setActivated(true);
     				paint.getTb_color1().setActivated(true);
-    				controlPaint.getPicture().changePen(
+    				pic.changePen(
     						State.getPenSelected1());
                         	
     				//set cursor
@@ -522,7 +524,7 @@ public final class CPaintStatus implements MouseListener {
     				//enable buttons
     				paint.getIt_stift2().getTb_open().setActivated(true);
     				paint.getTb_color2().setActivated(true);
-    				controlPaint.getPicture().changePen(
+    				pic.changePen(
     						State.getPenSelected2());
                         	
     				//set cursor

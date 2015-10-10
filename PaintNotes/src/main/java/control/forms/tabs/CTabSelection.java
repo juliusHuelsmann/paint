@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import control.ControlPaint;
+import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectPen;
 import model.settings.Constants;
@@ -151,11 +152,12 @@ public final class CTabSelection implements ActionListener {
         } else if (_event.getSource().equals(getSelection().getTb_erase()
         		.getActionCause())) {
 
-        	if (cp.getPicture().isSelected()) {
+        	final Picture pic = cp.getPicture();
+        	if (pic.isSelected()) {
 
             	// remove model
             	cp.getControlPic().releaseSelected();
-            	cp.getPicture().deleteSelected(cp.getView().getTabs().getTab_debug(), this);
+            	pic.deleteSelected(cp.getView().getTabs().getTab_debug(), this);
             	cp.getcTabPaint().updateResizeLocation();
         	} else {
         		Message.showMessage(Message.MESSAGE_ID_INFO, "Nothing selected.");
@@ -295,13 +297,14 @@ public final class CTabSelection implements ActionListener {
 
 	public void setSelectionColor(final int _selectionColor) {
 
-    	if (cp.getPicture().isSelected()) {
+		final Picture pic = cp.getPicture();
+    	if (pic.isSelected()) {
     		this.selectionColor = _selectionColor;
             setColor(cp, new Color(selectionColor));
             getSelection().getTb_color().setBackground(
                     new Color(selectionColor));
 
-            cp.getPicture().paintSelectedInline(
+            pic.paintSelectedInline(
         			cp.getControlPaintSelection(),
         			cp.getView().getPage(),
         			cp.getControlPic());
@@ -468,34 +471,34 @@ public final class CTabSelection implements ActionListener {
     private static synchronized void setPen(final ControlPaint _cp, 
     		final int _id_operation) {
     	
-
+    	final Picture pic = _cp.getPicture();
 
     	//start transaction and closed action.
-    	final int transaction = _cp.getPicture().getLs_poSelected()
+    	final int transaction = pic.getLs_poSelected()
     			.startTransaction("set pen", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = _cp.getPicture().getLs_poSelected()
+    	final int closedAction = pic.getLs_poSelected()
     			.startClosedAction("set pen", 
     					SecureList.ID_NO_PREDECESSOR);
     	
-        _cp.getPicture().getLs_poSelected().toFirst(
+        pic.getLs_poSelected().toFirst(
         		transaction, closedAction);
-        while (!_cp.getPicture().getLs_poSelected().isBehind() 
-                && !_cp.getPicture().getLs_poSelected().isEmpty()) {
-            PaintObject o = _cp.getPicture().getLs_poSelected().getItem();
+        while (!pic.getLs_poSelected().isBehind() 
+                && !pic.getLs_poSelected().isEmpty()) {
+            PaintObject o = pic.getLs_poSelected().getItem();
             if (o instanceof PaintObjectPen) {
                 PaintObjectPen pow = (PaintObjectPen) o;
                 pow.getPen().setId_operation(_id_operation);
             }
-            _cp.getPicture().getLs_poSelected().next(
+            pic.getLs_poSelected().next(
             		transaction, closedAction);
         }
         
 
     	//close transaction and closed action.
-    	_cp.getPicture().getLs_poSelected().finishTransaction(
+    	pic.getLs_poSelected().finishTransaction(
     			transaction);
-    	_cp.getPicture().getLs_poSelected().finishClosedAction(
+    	pic.getLs_poSelected().finishClosedAction(
     			closedAction);
         
     }
@@ -507,36 +510,37 @@ public final class CTabSelection implements ActionListener {
     private static synchronized void setColor(
     		final ControlPaint _cp, final Color _clr) {
 
+    	final Picture pic = _cp.getPicture();
 
     	//start transaction and closed action.
-    	final int transaction = _cp.getPicture().getLs_poSelected()
+    	final int transaction = pic.getLs_poSelected()
     			.startTransaction("set color", 
     					SecureList.ID_NO_PREDECESSOR);
-    	final int closedAction = _cp.getPicture().getLs_poSelected()
+    	final int closedAction = pic.getLs_poSelected()
     			.startClosedAction("set color", 
     					SecureList.ID_NO_PREDECESSOR);
     	
-        if (_cp.getPicture().getLs_poSelected() != null) {
+        if (pic.getLs_poSelected() != null) {
 
-            _cp.getPicture().getLs_poSelected().toFirst(
+            pic.getLs_poSelected().toFirst(
             		transaction, closedAction);
-            while (!_cp.getPicture().getLs_poSelected().isBehind() 
-                    && !_cp.getPicture().getLs_poSelected().isEmpty()) {
-                PaintObject o = _cp.getPicture().getLs_poSelected()
+            while (!pic.getLs_poSelected().isBehind() 
+                    && !pic.getLs_poSelected().isEmpty()) {
+                PaintObject o = pic.getLs_poSelected()
                         .getItem();
                 if (o instanceof PaintObjectPen) {
                     PaintObjectPen pow = (PaintObjectPen) o;
                     pow.getPen().setClr_foreground(new Color(_clr.getRGB()));
                 }
-                _cp.getPicture().getLs_poSelected().next(
+                pic.getLs_poSelected().next(
                 		transaction, closedAction);
             }
         }
 
     	//close transaction and closed action.
-    	_cp.getPicture().getLs_poSelected().finishTransaction(
+    	pic.getLs_poSelected().finishTransaction(
     			transaction);
-    	_cp.getPicture().getLs_poSelected().finishClosedAction(
+    	pic.getLs_poSelected().finishClosedAction(
     			closedAction);
         
     }

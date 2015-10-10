@@ -29,15 +29,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+
 import model.objects.history.HistorySession;
 import model.objects.painting.Picture;
 import model.settings.State;
+import model.settings.ViewSettings;
 import model.util.DPoint;
 import model.util.paint.Utils;
 import model.util.pdf.PDFUtils;
@@ -619,13 +622,53 @@ public class Project implements Serializable {
 		}
 		return document.getNumberOfPages() - 1;
 	}
+	
+	
 
-
-
-	public Picture getCurrentPicture(final Point _p) {
+	/**
+	 * Calculate number of page which contains a certain pixel. 
+	 * 
+	 * @param _px	the pixel
+	 * @return		the page's number
+	 */
+	public Point getPageAndPageStartFromPX(final Point _px) {
 		
 		
-		return pictures[getPageFromPX(_p)];
+		if (document == null) {
+			return new Point(0, 0);
+		}
+		int sumHeight = 0;
+		int pageY = 0;
+		
+		for (int i = 0; i < document.getNumberOfPages(); i++) {
+
+			// compute size
+			PDRectangle b = document.getPage(i).getBBox();
+//			final int realPageWidth = Math.round(b.getWidth() 
+//					* PDFUtils.dpi / 72);
+			final int realPageHeight = Math.round(b.getHeight() 
+					* PDFUtils.dpi / 72);
+			
+			pageY = sumHeight;
+			sumHeight += realPageHeight;
+			
+			if (_px.y <= sumHeight) {
+				return new Point(i, pageY);
+			}
+		}
+		return new Point(document.getNumberOfPages() - 1, pageY);
+	}
+
+
+	public int getPictureID(final int _x, final int _y) {
+		final int id = getPageFromPX(new Point(
+				_x * State.getImageSize().width / State.getImageShowSize().width,
+				_y * State.getImageSize().height / State.getImageShowSize().height));
+		return id;
+	}
+
+	public Picture getCurrentPicture(final int _x, final int _y) {
+		return pictures[getPictureID(_x, _y)];
 	}
 
 }

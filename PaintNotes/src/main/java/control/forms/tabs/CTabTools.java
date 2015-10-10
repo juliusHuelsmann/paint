@@ -850,6 +850,10 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
             int newHeight = (int) (State.getImageSize().height
             		* Math.pow(ViewSettings.ZOOM_MULITPLICATOR, State.getZoomState()));
 
+            int proW = (int) (State.getProjectSize().width
+            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
+            int proH = (int) (State.getProjectSize().height
+            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
             // contains the not shifted new location of the paint-JLabel.
             // the formula is okay.
             Point oldLocation = new Point(
@@ -881,6 +885,7 @@ public final class CTabTools extends DragAndDrop implements ActionListener, Mous
      
             // apply the new image size.
             State.setImageShowSize(new Dimension(newWidth, newHeight));
+            State.setProjectShowSize(new Dimension(proW, proH));
 
             getPage().getJlbl_painting().setBounds(
             		

@@ -381,15 +381,10 @@ public class PaintObjectDrawImage extends PaintObjectBI implements Cloneable, Se
             final DPoint _pnt_totalStretch, final DPoint _pnt_size) {
 
         //print image to graphical user interface
-        final double cZoomFactorWidth = 1.0 
-                * State.getImageSize().width
-                / State.getImageShowSize().width;
-        final double cZoomFactorHeight = 1.0 
-                * State.getImageSize().height
-                / State.getImageShowSize().height;
+        final double zoomFactor = State.getZoomFactorToModelSize();
         super.getBi_image().setContent(Utils.resizeImage(
-                (int) (_pnt_size.getX() * cZoomFactorWidth), 
-                (int) (_pnt_size.getY() * cZoomFactorHeight), 
+                (int) (_pnt_size.getX() * zoomFactor), 
+                (int) (_pnt_size.getY() * zoomFactor), 
                 super.getBi_image().getContent()));
         setPnt_locationOfImage(new Point(
                 (int) _pnt_from.getX(), (int) _pnt_from.getY()));

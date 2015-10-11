@@ -1415,11 +1415,8 @@ public abstract class Pen implements Serializable {
     		final BufferedImage _biEmtpy,
     		final JLabel _jlbl_selectionBG) {
 
-        final double factorW = 1.0 * State.getImageSize().width 
-                / State.getImageShowSize().width;
-        final double factorH = 1.0 * State.getImageSize().height
-                / State.getImageShowSize().height;
-        paintPoint(new DPoint(_x * factorW, _y * factorH), _biEmtpy, false, 
+    	paintPoint(new DPoint(_x * State.getZoomFactorToModelSize(), 
+    			_y * State.getZoomFactorToModelSize()), _biEmtpy, false, 
                 new DPoint(0, 0),
                 _biEmtpy, null);
         

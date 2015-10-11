@@ -415,19 +415,16 @@ implements ActionListener, MouseListener {
             pnt_centerInImage.x /= amount;
             pnt_centerInImage.y /= amount;
             
-            final double stretchWidth = 1.0 * State.getImageSize().getWidth()
-            		/ State.getImageShowSize().getWidth(),
-            		stretchHeight = 1.0 * State.getImageSize().getHeight()
-            		/ State.getImageShowSize().getHeight();
+            final double stretch = State.getZoomFactorToModelSize();
             // calculate the wanted result for the center, thus the coordinates
             // of the currently displayed image-scope's center.
             Point pnt_wanted = new Point(
             		(int) ((-getPage().getJlbl_painting().getLocation().getX()
             				+ getPage().getJlbl_painting().getWidth() / 2)
-            				* stretchWidth),
+            				* stretch),
             		(int) ((-getPage().getJlbl_painting().getLocation().getY()
             				+ getPage().getJlbl_painting().getHeight() / 2)
-            				* stretchHeight)
+            				* stretch)
             			);
            Point pnt_move = new Point(
         		   -pnt_centerInImage.x + pnt_wanted.x,
@@ -846,15 +843,6 @@ implements ActionListener, MouseListener {
         	// <code> imageShowSize</code>.
         	State.zoomStateZoomOut();
         	
-            int newWidth = (int) (State.getImageSize().width
-            		* Math.pow(ViewSettings.ZOOM_MULITPLICATOR, State.getZoomState()));
-            int newHeight = (int) (State.getImageSize().height
-            		* Math.pow(ViewSettings.ZOOM_MULITPLICATOR, State.getZoomState()));
-
-            int proW = (int) (State.getProjectSize().width
-            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
-            int proH = (int) (State.getProjectSize().height
-            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
             // contains the not shifted new location of the paint-JLabel.
             // the formula is okay.
             Point oldLocation = new Point(
@@ -871,11 +859,11 @@ implements ActionListener, MouseListener {
             
             // not smaller than the negative image size.
             oldLocation.x = Math.max(oldLocation.x,
-            		-(State.getProjectShowSize().width
+            		-(controlPaint.getProject().getShowSize().width
             				- getPage().getWidth()
             				* ViewSettings.ZOOM_MULITPLICATOR));
             oldLocation.y = Math.max(oldLocation.y,
-                    -(State.getProjectShowSize().height
+                    -(controlPaint.getProject().getShowSize().height
                     		- getPage().getHeight() 
                     		* ViewSettings.ZOOM_MULITPLICATOR));
             
@@ -883,10 +871,10 @@ implements ActionListener, MouseListener {
             // location to be at the upper left of the page.
             oldLocation.x = Math.min(oldLocation.x, 0);
             oldLocation.y = Math.min(oldLocation.y, 0); 
-     
-            // apply the new image size.
-            State.setImageShowSize(new Dimension(newWidth, newHeight));
-            State.setProjectShowSize(new Dimension(proW, proH));
+//     
+//            // apply the new image size.
+//            State.setImageShowSize(new Dimension(newWidth, newHeight));
+//            State.setProjectShowSize(new Dimension(proW, proH));
 
             getPage().getJlbl_painting().setBounds(
             		
@@ -943,16 +931,14 @@ implements ActionListener, MouseListener {
      */
     public void updateResizeLocation() {
 
-    	final int zoomWidth = State.getImageSize().width / State.getImageShowSize().width;
-    	final int zoomHeight = State.getImageSize().height / State.getImageShowSize().height;
+    	final double zoom = State.getZoomFactorToModelSize();
     	
     	final Point p = controlPaint.getProject().getPageAndPageStartFromPX(
     			new Point(
-    					(int) (getPage().getJlbl_painting().getLocation().getX() * zoomWidth),
-    					(int) (getPage().getJlbl_painting().getLocation().getY() * zoomHeight)));
+    					(int) (getPage().getJlbl_painting().getLocation().getX() * zoom),
+    					(int) (getPage().getJlbl_painting().getLocation().getY() * zoom)));
     	final Picture pic = controlPaint.getProject().getPicture(p.x);
 //    	final int yEnd = p.y + controlPaint.getProject().get;
-    	
     	
     	// TODO: move selection to project and not to picture.
     	// only perform this action if nothing is selected.
@@ -970,12 +956,13 @@ implements ActionListener, MouseListener {
 	                    		-getPage().getJbtn_resize()[h][w].getHeight() - 1);
 	                } else {
 	
+	                	
 	                	//necessary buttons
 	                    getPage().getJbtn_resize()[h][w].setLocation(
-	                    		+ State.getImageShowSize().width * (h) / 2
+	                    		+ pic.getShowSize().width * (h) / 2
 	                    		+ getPage().getJlbl_painting().getLocation().x
 	                    		- getPage().getJbtn_resize()[h][w].getWidth() / 2,
-	                    		+ State.getImageShowSize().height * (w) / 2
+	                    		+ pic.getShowSize().height * (w) / 2
 	                    		+ getPage().getJlbl_painting().getLocation().y
 	                    		- getPage().getJbtn_resize()[h][w].getWidth() / 2);
 	                }

@@ -87,24 +87,21 @@ public final class Zoom {
         //      [x] [a] [ ]         (x is the pixel which is 
         //      [a] [a] [ ]         already printed, a are those
         //      [ ] [ ] [ ]         which are added to avoid gaps.
-        int imagePixelSizeX = State.getImageShowSize().width 
-                / State.getImageSize().width,
-                imagePixelSizeY = State.getImageShowSize().height 
-                / State.getImageSize().height;
+        int imagePixelSize = (int) State.getZoomFactorToShowSize();
 
         int xNewAligned, yNewAligned;
         
-        if (imagePixelSizeX != 0 && imagePixelSizeY != 0) {
+        if (imagePixelSize != 0 && imagePixelSize != 0) {
             int shiftAlinedX = -_page.getJlbl_painting()
-                    .getLocation().x % imagePixelSizeX,
+                    .getLocation().x % imagePixelSize,
                     shiftAlinedY = -_page.getJlbl_painting()
-                    .getLocation().y % imagePixelSizeY;
+                    .getLocation().y % imagePixelSize;
 
             xNewAligned = _x + shiftAlinedX;
             yNewAligned = _y + shiftAlinedY;
             
-            xNewAligned = xNewAligned - (xNewAligned % imagePixelSizeX);
-            yNewAligned = yNewAligned - (yNewAligned % imagePixelSizeY);
+            xNewAligned = xNewAligned - (xNewAligned % imagePixelSize);
+            yNewAligned = yNewAligned - (yNewAligned % imagePixelSize);
         } else {
             xNewAligned = _x;
             yNewAligned = _y;

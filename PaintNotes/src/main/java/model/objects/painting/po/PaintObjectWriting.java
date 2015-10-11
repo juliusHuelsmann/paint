@@ -90,7 +90,7 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
 	 */
 	@Override public final boolean isInSelectionImage(final Rectangle _r) {
 
-        /*
+		/*
          * check whether firstDPoint is in rectangle.
          */
 
@@ -254,15 +254,15 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
 		
 
 		int x = rect.x, y = rect.y;
-        if (x > State.getImageSize().width) {
-            x = State.getImageSize().width;
+        if (x > getPicture().getSize().width) {
+            x = getPicture().getSize().width;
         }
 
         if (x < 0) {
             x = 0;
         } 
-        if (y > State.getImageSize().height) {
-            y = State.getImageSize().height;
+        if (y > getPicture().getSize().height) {
+            y = getPicture().getSize().height;
         }
 
         if (y < 0) {
@@ -272,21 +272,21 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
         int width = rect.width;
         int height = rect.height;
 
-        if (x + width > State.getImageSize().width) {
-            width = State.getImageSize().width - x;
+        if (x + width > getPicture().getSize().width) {
+            width = getPicture().getSize().width - x;
         }
-        if (y + height > State.getImageSize().height) {
-            height = State.getImageSize().height - y;
+        if (y + height > getPicture().getSize().height) {
+            height = getPicture().getSize().height - y;
         }
         
         if (width == 0 || height == 0) {
 
-            if (State.getImageSize().width >= 1 
-                    && State.getImageSize().height >= 1) {
+            if (getPicture().getSize().width >= 1 
+                    && getPicture().getSize().height >= 1) {
 
                 return paint(new BufferedImage(
-                        State.getImageSize().width, 
-                        State.getImageSize().height, 
+                        getPicture().getSize().width, 
+                        getPicture().getSize().height, 
                         BufferedImage.TYPE_INT_ARGB), 
                         true, null, 
 //                        Page.getInstance().getJlbl_painting().getLocation().x,
@@ -303,8 +303,8 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
         } else {
 
             return paint(new BufferedImage(
-                    State.getImageSize().width, 
-                    State.getImageSize().height, 
+                    getPicture().getSize().width, 
+                    getPicture().getSize().height, 
                     BufferedImage.TYPE_INT_ARGB), 
                     true, null, 
 //                  Page.getInstance().getJlbl_painting().getLocation().x,

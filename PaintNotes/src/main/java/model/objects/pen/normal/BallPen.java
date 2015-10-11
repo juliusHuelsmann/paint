@@ -217,47 +217,44 @@ public class BallPen extends Pen {
                     //      [x] [a] [ ]         (x is the pixel which is 
                     //      [a] [a] [ ]         already printed, a are those
                     //      [ ] [ ] [ ]         which are added to avoid gaps.
-                    double imagePixelSizeX = 1.0 * State.getImageShowSize().width 
-                            / State.getImageSize().width,
-                            imagePixelSizeY = 1.0 * State.getImageShowSize().height 
-                            / State.getImageSize().height;
+                	int imagePixelSize = (int) State.getZoomFactorToShowSize();
 
                     //error prevention (divide by zero if zoomed out a little 
                     //bit too much)
-                    if (imagePixelSizeX == 0) {
-                        imagePixelSizeX = 1;
+                    if (imagePixelSize == 0) {
+                        imagePixelSize = 1;
                     }
-                    if (imagePixelSizeY == 0) {
-                        imagePixelSizeY = 1;
+                    if (imagePixelSize == 0) {
+                        imagePixelSize = 1;
                     }
                     
                     //adjust the location at the zoom.
                     //add the shift coordinates for painting.
-                    x = (int) (((_p.getX() + i) * imagePixelSizeX + _pnt_shift.getX()));
-                    y = (int) (((_p.getY() + j) * imagePixelSizeY + _pnt_shift.getY()));
+                    x = (int) (((_p.getX() + i) * imagePixelSize + _pnt_shift.getX()));
+                    y = (int) (((_p.getY() + j) * imagePixelSize + _pnt_shift.getY()));
                     
                     //the color which is printed.
                     Color clr_pixel = null;
 
                     //if the data is displayed paint lines to graphics. 
                     //otherwise nothing to do.
-                    if (x / imagePixelSizeX >= 0 && y / imagePixelSizeY >= 0
+                    if (x / imagePixelSize >= 0 && y / imagePixelSize >= 0
                             
                             //if the x coordinates are in range (displayed
                             //at the right edge of the screen)
-                            && (int) x / imagePixelSizeX + 1 
+                            && (int) x / imagePixelSize + 1 
                             <= (int) ViewSettings.getView_bounds_page().width
                             
 //                            Page.getInstance().getJlbl_painting()
 //                            .getWidth() 
-                            / imagePixelSizeX
+                            / imagePixelSize
 
                             //if the x coordinates are in range (displayed
                             //at the bottom edge of the screen)
-                            && (int) y / imagePixelSizeY + 1 
+                            && (int) y / imagePixelSize + 1 
                             <= (int) ViewSettings.getView_bounds_page().height
 //                            Page.getInstance().getJlbl_painting().getHeight() 
-                            / imagePixelSizeY) {
+                            / imagePixelSize) {
                         
                         State.setCounter_paintedPoints(State
                                 .getCounter_paintedPoints() + 1);
@@ -272,9 +269,9 @@ public class BallPen extends Pen {
 
 				        	final Color clr_item = new Color(
 				        			_g.getRGB((int) ((_p.getX() + i + 0) 
-	                        		* imagePixelSizeX + _pnt_shift.getX()),
+	                        		* imagePixelSize + _pnt_shift.getX()),
 	                        		(int) ((_p.getY() + j + 0) 
-			                        		* imagePixelSizeY + _pnt_shift.getY())), true); 
+			                        		* imagePixelSize + _pnt_shift.getY())), true); 
 	        					
 				        	if (!(clr_item.getRed() == getClr_foreground().getRed()
 				        			&& clr_item.getGreen() == getClr_foreground().getGreen()
@@ -290,9 +287,9 @@ public class BallPen extends Pen {
 				        			for (int dY = 0; dY <= 1; dY++) {
 
 				                        int cpx = (int) ((_p.getX() + i + dX) 
-				                        		* imagePixelSizeX + _pnt_shift.getX());
+				                        		* imagePixelSize + _pnt_shift.getX());
 				                        int cpy = (int) ((_p.getY() + j + dY) 
-				                        		* imagePixelSizeY + _pnt_shift.getY());
+				                        		* imagePixelSize + _pnt_shift.getY());
 
 				        				//if in range
 				        				if (cpx >= 0 && cpy >= 0 
@@ -327,8 +324,8 @@ public class BallPen extends Pen {
                         
                         //for loop because i want to paint the gaps between the 
                         //pixel if zoomed in.
-                        for (int kx = 0; kx < imagePixelSizeX; kx++) {
-                            for (int ky = 0; ky < imagePixelSizeY; ky++) {
+                        for (int kx = 0; kx < imagePixelSize; kx++) {
+                            for (int ky = 0; ky < imagePixelSize; ky++) {
 
                                 try {
                                     _g.setRGB(x + kx, y + ky, 
@@ -390,11 +387,11 @@ public class BallPen extends Pen {
                 if (!_final) {
 
                     //adjust the location at the zoom.
-                    x = ((x) * State.getImageShowSize().width)
-                            / State.getImageSize().width;
-                    y = ((y) * State.getImageShowSize().height)
-                            / State.getImageSize().height;
-
+                	final double zoomToShow = State.getZoomFactorToShowSize();
+                    //adjust the location at the zoom.
+                    x = (int) ((x) * zoomToShow);
+                    y = (int) ((y) * zoomToShow);
+                    
                     //add the shift coordinates for painting.
                     x +=  _pnt_shift.getX();
                     y +=  _pnt_shift.getY();
@@ -407,40 +404,37 @@ public class BallPen extends Pen {
                     //      [x] [a] [ ]         (x is the pixel which is 
                     //      [a] [a] [ ]         already printed, a are those
                     //      [ ] [ ] [ ]         which are added to avoid gaps.
-                    double imagePixelSizeX = 1.0 * State.getImageShowSize().width 
-                            / State.getImageSize().width,
-                            imagePixelSizeY = 1.0 * State.getImageShowSize().height 
-                            / State.getImageSize().height;
+                    int imagePixelSize = (int) zoomToShow;   
                     
 
                     //error prevention (divide by zero if zoomed out a little 
                     //bit too much)
-                    if (imagePixelSizeX == 0) {
-                        imagePixelSizeX = 1;
+                    if (imagePixelSize == 0) {
+                        imagePixelSize = 1;
                     }
-                    if (imagePixelSizeY == 0) {
-                        imagePixelSizeY = 1;
+                    if (imagePixelSize == 0) {
+                        imagePixelSize = 1;
                     }
                     
                     //if the data is displayed paint lines to graphics. 
                     //otherwise nothing to do.
-                    if (x / imagePixelSizeX >= 0 && y / imagePixelSizeY >= 0
+                    if (x / imagePixelSize >= 0 && y / imagePixelSize >= 0
                             
                             //if the x coordinates are in range (displayed
                             //at the right edge of the screen)
-                            && (int) x / imagePixelSizeX + 1 
+                            && (int) x / imagePixelSize + 1 
                             <= (int) ViewSettings.getView_bounds_page().width
                             
 //                            Page.getInstance().getJlbl_painting()
 //                            .getWidth() 
-                            / imagePixelSizeX
+                            / imagePixelSize
 
                             //if the x coordinates are in range (displayed
                             //at the bottom edge of the screen)
-                            && (int) y / imagePixelSizeY + 1 
+                            && (int) y / imagePixelSize + 1 
                             <= (int) ViewSettings.getView_bounds_page().height
 //                            Page.getInstance().getJlbl_painting().getHeight() 
-                            / imagePixelSizeY) {
+                            / imagePixelSize) {
                         
                         State.setCounter_paintedPoints(State
                                 .getCounter_paintedPoints() + 1);
@@ -460,8 +454,8 @@ public class BallPen extends Pen {
                         
                         //for loop because i want to paint the gaps between the 
                         //pixel if zoomed in.
-                        for (int kx = 0; kx < imagePixelSizeX; kx++) {
-                            for (int ky = 0; ky < imagePixelSizeY; ky++) {
+                        for (int kx = 0; kx < imagePixelSize; kx++) {
+                            for (int ky = 0; ky < imagePixelSize; ky++) {
 
                                 try {
                                     _g.setRGB(x + kx, y + ky, 

@@ -411,22 +411,24 @@ public final class Utils {
      * @return the transformed BufferedImage
      */
     public static synchronized BufferedImage getBackground(
-            final BufferedImage _f, final int _fromX, 
-            final int _fromY, final int _untilX, final int _untilY, 
-            final int _graphiX, final int _graphiY) {
+            final BufferedImage _f, 
+            final int _fromX, final int _fromY, 
+            final int _untilX, final int _untilY, 
+            final int _graphiX, final int _graphiY,
+            final Dimension _imageShowSize) {
         
         switch (State.getIndexPageBackground()) {
         case Constants.CONTROL_PAGE_BACKGROUND_LINES:
             return getLinedImage(_f, _fromX, _fromY, _untilX, _untilY, 
-                    _graphiX, _graphiY);
+                    _graphiX, _graphiY, _imageShowSize);
 
         case Constants.CONTROL_PAGE_BACKGROUND_NONE:
             return getWhiteBackground(_f, _fromX, _fromY, _untilX, _untilY, 
-                    _graphiX, _graphiY);
+                    _graphiX, _graphiY, _imageShowSize);
             
         case Constants.CONTROL_PAGE_BACKGROUND_RASTAR:
             return getRastarImage(_f, _fromX, _fromY, _untilX, _untilY, 
-                    _graphiX, _graphiY);
+                    _graphiX, _graphiY, _imageShowSize);
             
         default:
             State.getLogger().warning("unknown background type.");
@@ -455,7 +457,8 @@ public final class Utils {
     public static BufferedImage getBackgroundExport(
             final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
-            final int _graphiX, final int _graphiY) {
+            final int _graphiX, final int _graphiY,
+            final Dimension _imageShowSize) {
 
     	
     	if (State.getBorderBottomPercentExport() == 0 
@@ -469,14 +472,17 @@ public final class Utils {
     	
     	
     	
+    	//
+    	// For exporting, not the image-show-size with pre-applied zoom 
+    	// is used, but the image-size (for computing the location of the
+    	// borders). For that reason compute the image size [MODEL-SIZE].
+    	//
+    	final Dimension dim_imageSize = new Dimension(
+    			(int) (_imageShowSize.width * State.getZoomFactorToModelSize()),
+    			(int) (_imageShowSize.height * State.getZoomFactorToModelSize()));
+    	State.zoomStateZoomIn();
     	
     	
-    	
-    	
-    	
-        Dimension d = new Dimension(State.getImageShowSize());
-        State.setImageShowSize(new Dimension(State.getImageSize()));
-        
         //fetch show percentages; thus able to reset them because the 
         //called methods work with show - percentages; thus save the export
         //percentages inside the show percentages.
@@ -491,27 +497,21 @@ public final class Utils {
         State.setBorderTopPercent(	 State.getBorderTopPercentExport());
         State.setBorderBottomPercent(State.getBorderBottomPercentExport());
         
-        System.out.println("background values:\n");
-        System.out.println(State.getBorderLeftPercentExport());
-        System.out.println(State.getBorderRightPercentExport());
-        System.out.println(State.getBorderTopPercent());
-        System.out.println(State.getBorderBottomPercent());
-
         BufferedImage bi = null;
         switch (State.getIndexPageBackgroundExport()) {
         case Constants.CONTROL_PAGE_BACKGROUND_LINES:
             bi = getLinedImage(_f, _fromX, _fromY, _untilX, _untilY, 
-                    _graphiX, _graphiY);
+                    _graphiX, _graphiY, dim_imageSize);
             break;
 
         case Constants.CONTROL_PAGE_BACKGROUND_NONE:
             bi = getWhiteBackground(_f, _fromX, _fromY, _untilX, _untilY, 
-                    _graphiX, _graphiY);
+                    _graphiX, _graphiY, dim_imageSize);
             break;
             
         case Constants.CONTROL_PAGE_BACKGROUND_RASTAR:
             bi = getRastarImage(_f, _fromX, _fromY, _untilX, _untilY, 
-                    _graphiX, _graphiY);
+                    _graphiX, _graphiY, dim_imageSize);
             break;
         default:
             State.getLogger().warning("unknown background type.");
@@ -527,8 +527,6 @@ public final class Utils {
         State.setBorderTopPercent(borderTShow);
         State.setBorderBottomPercent(borderBShow);
 
-        State.setImageShowSize(d);
-        
         // return the image that has been painted.
         return bi;
     }
@@ -611,7 +609,8 @@ public final class Utils {
     		final int _x_paintingLocation, 
     		final int _y_paintingLocation,
     		final int _width_page, 
-    		final int _height_page) {
+    		final int _height_page,
+    		final Dimension _imageShowSize) {
         
         //the start and end values of the image rectangle which has
         //to be printed.
@@ -620,7 +619,7 @@ public final class Utils {
         int untilX = fromX + _width_page;
         int untilY = fromY + _height_page;
 
-        return getRastarImage(_g, fromX, fromY, untilX, untilY, 0, 0);
+        return getRastarImage(_g, fromX, fromY, untilX, untilY, 0, 0, _imageShowSize);
         
     }
     
@@ -655,14 +654,16 @@ public final class Utils {
      * @return the transformed BufferedImage
      */
     private static synchronized BufferedImage getWhiteBackground(
-            final BufferedImage _f, final int _fromX, 
-            final int _fromY, final int _untilX, final int _untilY, 
-            final int _graphiX, final int _graphiY) {
+            final BufferedImage _f, 
+            final int _fromX, final int _fromY, 
+            final int _untilX, final int _untilY, 
+            final int _graphiX, final int _graphiY,
+            final Dimension _imageShowSize) {
         
         //the width and the height of the entire image, of which the parts
         //are painted.
-        int width  = State.getImageShowSize().width;
-        int height = State.getImageShowSize().height;
+        int width  = _imageShowSize.width;
+        int height = _imageShowSize.height;
 
         //the merge of the page which is not filled with raster but entirely
         //white. distancePoints is not the right expression. distance between 
@@ -911,12 +912,13 @@ public final class Utils {
     private static synchronized BufferedImage getRastarImage(
             final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
-            final int _graphiX, final int _graphiY) {
+            final int _graphiX, final int _graphiY,
+            final Dimension _imageShowSize) {
         
         //the width and the height of the entire image, of which the parts
         //are painted.
-        int width  = State.getImageShowSize().width;
-        int height = State.getImageShowSize().height;
+        int width  = _imageShowSize.width;
+        int height = _imageShowSize.height;
 
         //the merge of the page which is not filled with raster but entirely
         //white. distancePoints is not the right expression. distance between 
@@ -1165,12 +1167,13 @@ public final class Utils {
     private static BufferedImage getLinedImage(
             final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
-            final int _graphiX, final int _graphiY) {
+            final int _graphiX, final int _graphiY,
+            final Dimension _imageShowSize) {
         
         //the width and the height of the entire image, of which the parts
         //are painted.
-        int width = State.getImageShowSize().width;
-        int height = State.getImageShowSize().height;
+        int width = _imageShowSize.width;
+        int height = _imageShowSize.height;
 
         //the merge of the page which is not filled with raster but entirely
         //white. distancePoints is not the right expression. distance between 
@@ -1409,13 +1412,14 @@ public final class Utils {
     public static BufferedImage printWhiteBackgroundOld(
             final BufferedImage _f, final int _fromX, 
             final int _fromY, final int _untilX, final int _untilY, 
-            final int _graphiX, final int _graphiY) {
+            final int _graphiX, final int _graphiY,
+            final Dimension _imageShowSize) {
     	
 
         //the width and the height of the entire image, of which the parts
         //are painted.
-        int width = State.getImageShowSize().width;
-        int height = State.getImageShowSize().height;
+        int width = _imageShowSize.width;
+        int height = _imageShowSize.height;
 
         //the merge of the page which is not filled with raster but entirely
         //white. distancePoints is not the right expression. distance between 

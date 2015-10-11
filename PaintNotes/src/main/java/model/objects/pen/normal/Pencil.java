@@ -150,12 +150,11 @@ public class Pencil extends Pen {
                 }
 
                 if (!_final) {
+                	final double zoomToShow = State.getZoomFactorToShowSize();
 
                     //adjust the location at the zoom.
-                    int rx = ((x + i) * State.getImageShowSize().width)
-                            / State.getImageSize().width;
-                    int ry = ((y + j) * State.getImageShowSize().height)
-                            / State.getImageSize().height;
+                    int rx = (int) ((x + i) * zoomToShow);
+                    int ry = (int) ((y + j) * zoomToShow);
 
                     //add the shift coordinates for painting.
                     rx +=  _pnt_shift.getX();
@@ -169,40 +168,36 @@ public class Pencil extends Pen {
                     //      [x] [a] [ ]         (x is the pixel which is 
                     //      [a] [a] [ ]         already printed, a are those
                     //      [ ] [ ] [ ]         which are added to avoid gaps.
-                    int imagePixelSizeX = State.getImageShowSize().width 
-                            / State.getImageSize().width,
-                            imagePixelSizeY = State.getImageShowSize().height 
-                            / State.getImageSize().height;
-                    
+                    int imagePixelSize = (int) zoomToShow;
 
                     //error prevention (divide by zero if zoomed out a little 
                     //bit too much)
-                    if (imagePixelSizeX == 0) {
-                        imagePixelSizeX = 1;
+                    if (imagePixelSize == 0) {
+                        imagePixelSize = 1;
                     }
-                    if (imagePixelSizeY == 0) {
-                        imagePixelSizeY = 1;
+                    if (imagePixelSize == 0) {
+                        imagePixelSize = 1;
                     }
                     
                     //if the data is displayed paint lines to graphics. 
                     //otherwise nothing to do.
-                    if (rx / imagePixelSizeX >= 0 && ry / imagePixelSizeY >= 0
+                    if (rx / imagePixelSize >= 0 && ry / imagePixelSize >= 0
                             
                             //if the x coordinates are in range (displayed
                             //at the right edge of the screen)
-                            && (int) rx / imagePixelSizeX + 1 
+                            && (int) rx / imagePixelSize + 1 
                             <= (int) ViewSettings.getView_bounds_page().width
 //                            <= (int) Page.getInstance().getJlbl_painting()
 //                            .getWidth() 
-                            / imagePixelSizeX
+                            / imagePixelSize
 
                             //if the x coordinates are in range (displayed
                             //at the bottom edge of the screen)
-                            && (int) ry / imagePixelSizeY + 1 
+                            && (int) ry / imagePixelSize + 1 
                             <= (int) ViewSettings.getView_bounds_page().height
 //                            <= (int) Page.getInstance().getJlbl_painting()
 //                            .getHeight() 
-                            / imagePixelSizeY) {
+                            / imagePixelSize) {
 
                         int rbg = 0;
                         if (rx >= 0 && rx < _g.getWidth()
@@ -222,8 +217,8 @@ public class Pencil extends Pen {
                         
                         //for loop because i want to paint the gaps between the 
                         //pixel if zoomed in.
-                        for (int kx = 0; kx < imagePixelSizeX; kx++) {
-                            for (int ky = 0; ky < imagePixelSizeY; ky++) {
+                        for (int kx = 0; kx < imagePixelSize; kx++) {
+                            for (int ky = 0; ky < imagePixelSize; ky++) {
 
                                 if (rx + kx >= 0 && rx + kx < _g.getWidth()
                                         && ry + ky >= 0 

@@ -213,11 +213,11 @@ public class Project extends Observable implements Serializable {
 	/**
 	 * initialize the history of the picture and the document.
 	 */
-	public final void initialize() {
+	public final void initialize(final Dimension _dim_page) {
 		
 		//set the Picture into Status and set history to the picture.
 		for (int i = 0; i < history.length; i++) {
-			pictures[i].initialize(history[i]);
+			pictures[i].initialize(history[i], _dim_page);
 		}
 
 		
@@ -227,7 +227,7 @@ public class Project extends Observable implements Serializable {
 		
 		document = new XDocument(this);
 		PDPage page = new PDPage();
-		page.setCropBox();
+		page.setCropBox(new PDRectangle(_dim_page.width, _dim_page.height));
 		document.addPage(new PDPage());
 		
 	}
@@ -599,8 +599,10 @@ public class Project extends Observable implements Serializable {
 
 		PDRectangle b;
 		if (document.getPage(_pageNumber) == null) {
-			b = new PDRectangle(State.getImageShowSize().width, 
-					State.getImageShowSize().height);
+			
+			b = new PDRectangle(
+					pictures[_pageNumber].getShowSize().width, 
+					pictures[_pageNumber].getShowSize().height);
 		} else {
 			b = document.getPage(_pageNumber).getBBox();
 		}
@@ -683,9 +685,10 @@ public class Project extends Observable implements Serializable {
 
 
 	public int getPictureID(final int _x, final int _y) {
+		final double zoomToModel = State.getZoomFactorToModelSize();
 		final int id = getPageFromPX(new Point(
-				_x * State.getImageSize().width / State.getImageShowSize().width,
-				_y * State.getImageSize().height / State.getImageShowSize().height));
+				(int) (_x * zoomToModel),
+				(int) (_y * zoomToModel)));
 		return id;
 	}
 
@@ -717,9 +720,19 @@ public class Project extends Observable implements Serializable {
      *
 	 */
 	public Dimension getShowSize() {
-		return new Dimension(size.width * zoom);
+		return new Dimension(
+				(int) (size.width * State.getZoomFactorToShowSize()),
+				(int) (size.height * State.getZoomFactorToShowSize()));
 	}
 
 
 
+	/**
+	 * Re-initialize the project with one page with the size of 
+	 * @param _dim_page
+	 */
+	public void reload(final Dimension _dim_page) {
+		
+		initialize(_dim_page);
+	}
 }

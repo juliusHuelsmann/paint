@@ -91,7 +91,7 @@ MouseMotionListener, MouseListener {
     /**
      * and the zoom factor (if whole image selected).
      */
-    private double factorW, factorH;
+    private double factor, factorH;
     
     
     /**
@@ -179,11 +179,8 @@ MouseMotionListener, MouseListener {
         		|| pic.getLs_poSelected() == null
         		|| pic.getLs_poSelected().isEmpty()) {
 
-            dim_imageSizeOld = new Dimension(State.getImageSize());
-            factorW = 1.0 * State.getImageSize().width 
-                    / State.getImageShowSize().width;
-            factorH = 1.0 * State.getImageSize().height 
-                    / State.getImageShowSize().height;
+            dim_imageSizeOld = new Dimension(pic.getSize());
+            factor = State.getZoomFactorToModelSize();
             wholeImageSelected = true;
             r_selection = null;
         } else {
@@ -343,14 +340,11 @@ MouseMotionListener, MouseListener {
 	    if (_applyChanges) {
 	
 	    	//compute the current zoom - factor
-	        final double cZoomFactorWidth = 1.0 * State.getImageSize().width
-	                / State.getImageShowSize().width;
-	        final double cZoomFactorHeight = 1.0 * State.getImageSize().height
-	                / State.getImageShowSize().height;
+	        final double zoomFactor = State.getZoomFactorToModelSize();
 	        
 	        cv.getPicture().moveSelected(
-	                (int) (1.0 * dX * cZoomFactorWidth), 
-	                (int) (1.0 * dY * cZoomFactorHeight));
+	                (int) (1.0 * dX * zoomFactor), 
+	                (int) (1.0 * dY * zoomFactor));
 	        
 	        cv.getControlPic().paintEntireSelectionRect(
 	                r_selection);
@@ -387,7 +381,7 @@ MouseMotionListener, MouseListener {
         }
         Dimension newDim = null;
         
-            
+        Picture pic = cv.getPicture();
         
         //bottom
         if (_event.getSource().equals(j[1][2])) {
@@ -408,7 +402,7 @@ MouseMotionListener, MouseListener {
             j[2][2].setLocation((int) (p[2][2].getX() + distanceX), 
                     (int) (p[2][2].getY()));
             newDim = new Dimension(
-                    (int) (dim_imageSizeOld.width + distanceX * factorW), 
+                    (int) (dim_imageSizeOld.width + distanceX * factor), 
                     (int) (dim_imageSizeOld.getHeight()));
             
         } else if (_event.getSource().equals(j[2][2])) {
@@ -424,7 +418,7 @@ MouseMotionListener, MouseListener {
             //center 
 
             newDim = new Dimension(
-                    (int) (dim_imageSizeOld.width + distanceXY * factorW), 
+                    (int) (dim_imageSizeOld.width + distanceXY * factor), 
                     (int) (dim_imageSizeOld.height + distanceXY * factorH));
         } 
 
@@ -432,10 +426,10 @@ MouseMotionListener, MouseListener {
                 j[1][2].getY());
         j[2][1].setLocation(j[2][1].getX(), 
                 j[2][2].getY() / 2 - j[2][1].getHeight() / 2);
-        State.setImageSize(newDim);
-        State.setImageShowSize(new Dimension(
-                (int) (newDim.width / factorW),
-                (int) (newDim.height / factorH)));
+        pic.setSize(newDim);
+//        State.setImageShowSize(new Dimension(
+//                (int) (newDim.width / factor),
+//                (int) (newDim.height / factorH)));
         
 
         cv.getControlPic().refreshPaint();
@@ -714,19 +708,16 @@ MouseMotionListener, MouseListener {
     		final DPoint _pnt_size) {
     	final Picture pic = cv.getPicture();
 
-    	final double stretchWidth = 1.0 *  State.getImageSize().width
-    			/ State.getImageShowSize().width;
-    	final double stretchHeight = 1.0 * State.getImageSize().height 
-    			/ State.getImageShowSize().height;
+    	final double stretch = 1.0 *  State.getZoomFactorToModelSize();
     	
-    	_pnt_stretchFrom.setX((_pnt_stretchFrom.getX() - getPage().getJlbl_painting().getLocation().getX()) *  stretchWidth );
-    	_pnt_stretchFrom.setY((_pnt_stretchFrom.getY() - getPage().getJlbl_painting().getLocation().getY()) *  stretchHeight );
+    	_pnt_stretchFrom.setX((_pnt_stretchFrom.getX() - getPage().getJlbl_painting().getLocation().getX()) *  stretch );
+    	_pnt_stretchFrom.setY((_pnt_stretchFrom.getY() - getPage().getJlbl_painting().getLocation().getY()) *  stretch );
 
-    	_pnt_totalStretch.setX(_pnt_totalStretch.getX() *  stretchWidth);
-    	_pnt_totalStretch.setY(_pnt_totalStretch.getY() *  stretchHeight);
+    	_pnt_totalStretch.setX(_pnt_totalStretch.getX() *  stretch);
+    	_pnt_totalStretch.setY(_pnt_totalStretch.getY() *  stretch);
 
-    	_pnt_size.setX(_pnt_size.getX() *  stretchWidth);
-    	_pnt_size.setY(_pnt_size.getY() *  stretchHeight);
+    	_pnt_size.setX(_pnt_size.getX() *  stretch);
+    	_pnt_size.setY(_pnt_size.getY() *  stretch);
 
         if (pic.getLs_poSelected() != null 
         		&& !pic.getLs_poSelected().isEmpty()) {

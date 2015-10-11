@@ -155,11 +155,11 @@ public final class CNew implements ActionListener, MouseListener, KeyListener {
                 State.getLogger().warning("no background selected.");
                 backgroundID = Constants.CONTROL_PAGE_BACKGROUND_NONE;
             }
+            
+            
 
-            State.setImageSize(new Dimension(width, height));
-            State.setImageShowSize(new Dimension(width, height));
             State.setIndexPageBackground(backgroundID);
-            cp.getPicture().reload();
+            cp.getProject().initialize(new Dimension(width, height));
             State.setOpenProject(project);
             cp.getView().getPage().getJpnl_new().setVisible(false);
             

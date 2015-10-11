@@ -107,7 +107,7 @@ public class HistorySession implements Serializable {
 	/**
 	 * Instance of picture.
 	 */
-	private Picture picture;
+	private Picture pi;
 	
 	/**
 	 * Constructor of history session.
@@ -117,11 +117,10 @@ public class HistorySession implements Serializable {
 	 * @param _picture	instance of Picture e.g. for being able to apply 
 	 * 					previous states of the picture.
 	 */
-	public HistorySession(final Picture _picture) {
+	public HistorySession() {
 		
 		//initialize secure list.
 		ls_history = new SecureList<HistoryObject>();
-		this.picture = _picture;
 	}
 	
 	
@@ -200,8 +199,9 @@ public class HistorySession implements Serializable {
 	 * @return the new created History Object.
 	 */
 	public final HistoryObject createAddItem(final PaintObject _poPrev,
-			final PaintObject _poNext) {
-		return new HistoryObject(this, ID_HISTORY_PO_ADD, _poPrev, _poNext);
+			final PaintObject _poNext, final Picture _pic) {
+		return new HistoryObject(this, ID_HISTORY_PO_ADD, _poPrev, _poNext, 
+				_pic);
 	}
 
 	/**
@@ -212,8 +212,9 @@ public class HistorySession implements Serializable {
 	 * @return the new created History Object.
 	 */
 	public final HistoryObject createRemoveItem(final PaintObject _poPrev,
-			final PaintObject _poNext) {
-		return new HistoryObject(this, ID_HISTORY_PO_REMOVE, _poPrev, _poNext);
+			final PaintObject _poNext, final Picture _pic) {
+		return new HistoryObject(this, ID_HISTORY_PO_REMOVE, _poPrev, 
+				_poNext, _pic);
 	}
 
 	/**
@@ -225,8 +226,9 @@ public class HistorySession implements Serializable {
 	 */
 	public final HistoryObject createMoveItem(
 			final SecureList<PaintObject> _poPrev,
-			final SecureList<PaintObject> _poNext) {
-		return new HistoryObject(this, ID_HISTORY_PO_MOVE, _poPrev, _poNext);
+			final SecureList<PaintObject> _poNext, final Picture _pic) {
+		return new HistoryObject(this, ID_HISTORY_PO_MOVE, _poPrev, 
+				_poNext, _pic);
 	}
 
 	/**
@@ -237,8 +239,9 @@ public class HistorySession implements Serializable {
 	 * @return the new created History Object.
 	 */
 	public final HistoryObject createResizeItem(final PaintObject _poPrev,
-			final PaintObject _poNext) {
-		return new HistoryObject(this, ID_HISTORY_PO_RESIZE, _poPrev, _poNext);
+			final PaintObject _poNext, final Picture _pic) {
+		return new HistoryObject(this, ID_HISTORY_PO_RESIZE, _poPrev,
+				_poNext, _pic);
 	}
 
 
@@ -251,8 +254,9 @@ public class HistorySession implements Serializable {
 	 */
 	public final HistoryObject createResizeItem(
 			final SecureList<PaintObject> _poPrev,
-			final SecureList<PaintObject> _poNext) {
-		return new HistoryObject(this, ID_HISTORY_ERASE, _poPrev, _poNext);
+			final SecureList<PaintObject> _poNext, final Picture _pic) {
+		return new HistoryObject(this, ID_HISTORY_ERASE, _poPrev, _poNext, 
+				_pic);
 	}
 	
 	/**
@@ -264,9 +268,9 @@ public class HistorySession implements Serializable {
 	 */
 	public final HistoryObject createSelectionDestroyItem(
 			final SecureList<PaintObject> _poPrev,
-			final SecureList<PaintObject> _poNext) {
+			final SecureList<PaintObject> _poNext, final Picture _pic) {
 		return new HistoryObject(
-				this, ID_HISTORY_SELECTION_DESTORY, _poPrev, _poNext);
+				this, ID_HISTORY_SELECTION_DESTORY, _poPrev, _poNext, _pic);
 	}
 	
 	
@@ -311,20 +315,5 @@ public class HistorySession implements Serializable {
 
 
 
-	/**
-	 * @return the picture
-	 */
-	public final Picture getPicture() {
-		return picture;
-	}
-
-
-
-	/**
-	 * @param _picture the picture to set
-	 */
-	public final void setPicture(final Picture _picture) {
-		this.picture = _picture;
-	}
 }
 

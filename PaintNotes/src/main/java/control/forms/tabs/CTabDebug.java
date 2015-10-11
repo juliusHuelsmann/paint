@@ -411,8 +411,8 @@ public final class CTabDebug implements ActionListener {
                     + ", " + pe.getClr_foreground().getBlue()
                     + ")\nBounds    " + r.x + "." + r.y + ";" 
                     + r.width + "." + r.height + "\nimageSize  "
-                    + State.getImageSize().width + "." 
-                    + State.getImageSize().height 
+                    + pow.getPicture().getSize().width + "." 
+                    + pow.getPicture().getSize().height 
                     + "\nPoints";
             ls_point.toFirst();
             int currentLine = 0;
@@ -452,13 +452,13 @@ public final class CTabDebug implements ActionListener {
         
         //fetch rectangle
         int x = r.x * bi.getWidth() 
-                / State.getImageSize().width;
+                / _po_cu.getPicture().getSize().width;
         int y = r.y * bi.getHeight() 
-                / State.getImageSize().height;
+                / _po_cu.getPicture().getSize().height;
         int width = r.width * bi.getWidth() 
-                / State.getImageSize().width;
+                / _po_cu.getPicture().getSize().width;
         int height = r.height * bi.getHeight() 
-                / State.getImageSize().height;
+                / _po_cu.getPicture().getSize().height;
 
         int border = 2;
         int highlightX = x - border;

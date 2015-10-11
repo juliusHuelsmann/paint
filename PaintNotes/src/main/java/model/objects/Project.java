@@ -77,7 +77,7 @@ public class Project extends Observable implements Serializable {
 	/**
 	 * HistorySession of one Pictureclass.
 	 */
-	private HistorySession[] history;
+	private HistorySession history;
 	
 	
 	/**
@@ -108,11 +108,10 @@ public class Project extends Observable implements Serializable {
 		
 		// create new instances of picture and history.
 		pictures = new Picture[1];
-		history  = new HistorySession[1];
+		history  = new HistorySession();
 	
 		// initialize picture and history
 		pictures[0] = new Picture();
-		history [0] = new HistorySession(pictures[0]);
 		
 		// store the default project size
     	size = new Dimension(
@@ -151,16 +150,6 @@ public class Project extends Observable implements Serializable {
 		}
 
 		//
-		// fetch the amount of histories.
-		//
-		final int amountHistories;
-		if (history == null) {
-			amountHistories = 0;
-		} else {
-			amountHistories = history.length;
-		}
-
-		//
 		// fetch the amount of pages added to the PDF document.
 		//
 		final int amountPDFPages;
@@ -174,12 +163,13 @@ public class Project extends Observable implements Serializable {
 		//
 		// if the three values are not equal, throw a notification.
 		//
-		if (amountPDFPages != amountPictures || amountPictures != amountHistories) {
-			State.getLogger().severe("Error: the amount of PDF pages,"
+		if (amountPDFPages != amountPictures) {
+			State.getLogger().info("Error: the amount of PDF pages,"
 					+ " pictures or history sessions do not match:\n"
 					+ "pic " + amountPictures + "\n"
-					+ "his " + amountHistories + "\n"
-					+ "PDF " + amountPDFPages + "\n");
+					+ "PDF " + amountPDFPages + "\n"
+					+ "This may be possible because pages are inserted "
+					+ "and removed.");
 		}
 		
 		return amountPictures;
@@ -216,8 +206,8 @@ public class Project extends Observable implements Serializable {
 	public final void initialize(final Dimension _dim_page) {
 		
 		//set the Picture into Status and set history to the picture.
-		for (int i = 0; i < history.length; i++) {
-			pictures[i].initialize(history[i], _dim_page);
+		for (int i = 0; i < pictures.length; i++) {
+			pictures[i].initialize(history, _dim_page);
 		}
 
 		
@@ -227,7 +217,8 @@ public class Project extends Observable implements Serializable {
 		
 		document = new XDocument(this);
 		PDPage page = new PDPage();
-		page.setCropBox(new PDRectangle(_dim_page.width, _dim_page.height));
+		page.setCropBox(new PDRectangle(_dim_page.width, 
+				_dim_page.height));
 		document.addPage(new PDPage());
 		
 	}
@@ -235,51 +226,68 @@ public class Project extends Observable implements Serializable {
 
 
 	/**
-	 * Constructor of project: 
-	 * Initializes the sub-classes Picture and History.
+	 * Initializes the components of project by loading a PDF image from 
+	 * given path
+	 * @param _location 	the path to the PDF image.
 	 */
-	public void initialize(final String _pString) {
+	public void initialize(final String _location) {
 		
 
+		// 
+		// if a document is already initialized, close it. 
+		//
 		if (document != null) {
-
 			document.close();
 		}
 
+		
+		// 
+		// Load new PDF document.
+		//
 		try {
-			
-			this.document = new XDocument(_pString, this);
-			this.pathToPDF = _pString;
+			this.document = new XDocument(_location, this);
+			this.pathToPDF = _location;
 		} catch (IOException e) {
-			e.printStackTrace();
+			State.getLogger().severe("Could not load pdf image at " 
+					+ _location);
 		}
+		
+		//
+		// initialization of the other components of the Project.
+		//
 		if (document != null) {
 
+			//
 			// create new instances of picture and history.
+			//
 			final int amount = document.getNumberOfPages();
 			pictures = new Picture[amount];
-			history  = new HistorySession[amount];
+			history  = new HistorySession();
 
-			// initialize picture and history
-			for (int i = 0; i < history.length; i++) {
+			//
+			// Instantiation of picture 
+			//
+			for (int i = 0; i < pictures.length; i++) {
 				pictures[i] = new Picture();
-				history [i] = new HistorySession(pictures[0]);
-				
 			}
 
+			//
+			// Initialization of picture.
 			//set the Picture into Status and set history to the picture.
-			for (int i = 0; i < history.length; i++) {
-				pictures[i].initialize(history[i], document.get);
+			//
+			for (int i = 0; i < pictures.length; i++) {
+				pictures[i].initialize(history, new Dimension(
+						StateStandard.getStandardImageWidth()
+						[State.getStartupIdentifier()],
+						StateStandard.getStandardimageheight()
+						[State.getStartupIdentifier()]));
+				
 			}
 
 			
 			
 			Dimension[] d = document.initialize();
-
-			State.setImageSize(d[0]);
-			State.setImageShowSize(d[0]);
-			State.setProjectSize(d[1]);
-			State.setProjectShowSize(d[1]);
+			this.size = d[1];
 
 			
 			
@@ -287,19 +295,16 @@ public class Project extends Observable implements Serializable {
 
 			// create new instances of picture and history.
 			pictures = new Picture[1];
-			history  = new HistorySession[1];
+			history  = new HistorySession();
 
 			// initialize picture and history
 			pictures[0] = new Picture();
-			history [0] = new HistorySession(pictures[0]);
-			
-			document = new XDocument(this);
-			document.addPage(new PDPage());
-
-			initialize();
+			initialize(new Dimension(
+						StateStandard.getStandardImageWidth()
+						[State.getStartupIdentifier()],
+						StateStandard.getStandardimageheight()
+						[State.getStartupIdentifier()]));
 		}
-		
-
 	}
 	
 	
@@ -352,12 +357,11 @@ public class Project extends Observable implements Serializable {
 			document.restoreFormSerializable(pathToPDF);
 
 			
-			// get size of the first picture.
-			BufferedImage bi = PDFUtils.pdf2image(
-					document.getPDDocument(), 1);
+//			// get size of the first picture.
+//			BufferedImage bi = PDFUtils.pdf2image(
+//					document.getPDDocument(), 1);
 			
-			State.setImageSize(new Dimension(bi.getWidth(), bi.getHeight()));
-			State.setImageShowSize(new Dimension(bi.getWidth(), bi.getHeight()));
+			State.resetZoomState();
 			
 	}
 	
@@ -444,8 +448,8 @@ public class Project extends Observable implements Serializable {
 	    try {
 	    	if (_pageindex == -1) {
 	    		page = new PDPage(new PDRectangle(
-	    				State.getImageSize().width, 
-	    				State.getImageSize().height));
+	    				(int) StateStandard.getStandardImageWidth()[State.getStartupIdentifier()],
+	    				(int) StateStandard.getStandardimageheight()[State.getStartupIdentifier()]));
 
 		        _doc.addPage(page);
 	    	} else {

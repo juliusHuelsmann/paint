@@ -246,6 +246,7 @@ public final class State {
     	return Math.pow(ViewSettings.ZOOM_MULITPLICATOR, State.getZoomState());
     }
 
+    
     /**
      * Return the zoom factor in width and height.
      * <br><br>
@@ -259,6 +260,20 @@ public final class State {
     public static final double getZoomFactorToModelSize() {
 
     	return Math.pow(ViewSettings.ZOOM_MULITPLICATOR, -State.getZoomState());
+    }
+    
+    
+    /**
+     * Resets zoomState to standard zoom in.
+     * <br><br>
+ 	 * <code>size = showSize * factor;</code><br>
+	 * <code>size / showSize = factor</code> <br>
+     * @see #zoomState
+     * @see #zoomStateZoomIn()
+     * @see #zoomStateZoomOut()
+     */
+    public static final void resetZoomState() {
+    	zoomState = 0;
     }
 
     /**

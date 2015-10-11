@@ -992,7 +992,7 @@ public final class Picture implements Serializable {
 			//add a new history item that indicates an add operation.
 			history.addHistoryItem(
 					history.createAddItem(po_current.clone(),
-							po_current.clone()));
+							po_current.clone(), this));
 
 			// insert into sorted lists sorted by x and y positions.
 			final Rectangle b = po_current.getSnapshotBounds();
@@ -1781,7 +1781,7 @@ public final class Picture implements Serializable {
 		= cloneSecureListPaintObject(ls_poSelected);
 
 		history.addHistoryItem(history.createMoveItem(
-				sl_oldMove, sl_newMoved));
+				sl_oldMove, sl_newMoved, this));
 		
     	//close transaction and closed action.
     	getLs_po_sortedByY().finishTransaction(

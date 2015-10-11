@@ -205,19 +205,14 @@ public abstract class PaintObjectBI extends PaintObject implements Cloneable, Se
         	 * Compute stretch - factors
         	 */
         	//fetch the zoom factors for stretching the image if necessary.
-            final double cZoomFactorWidth = 1.0 
-                    * State.getImageShowSize().width
-                    / State.getImageSize().width;
-            final double cZoomFactorHeight = 1.0 
-                    * State.getImageShowSize().height
-                    / State.getImageSize().height;
+            final double zoomFactor = State.getZoomFactorToShowSize();
 
             /*
              * Adapt values for performing step B1.
              */
             // rounded x and y values.
-            int rounded_x = (int)((int)(_x / cZoomFactorWidth) * cZoomFactorWidth);
-            int rounded_y = (int)((int)(_y / cZoomFactorHeight) * cZoomFactorHeight);
+            int rounded_x = (int)((int)(_x / zoomFactor) * zoomFactor);
+            int rounded_y = (int)((int)(_y / zoomFactor) * zoomFactor);
             
             // interrupt if the given values are illegal if the size of 
         	// the area which is to be repainted is equal to zero.
@@ -261,9 +256,9 @@ public abstract class PaintObjectBI extends PaintObject implements Cloneable, Se
             // Thus the current location of the user in image is subtracted
             // of the location of the repainted rectangle.
             int locX_at_label = (int) ((r.getX()) 
-            		* cZoomFactorWidth) + rounded_x;
+            		* zoomFactor) + rounded_x;
             int locY_at_label = ((int) ((r.getY())
-            		* cZoomFactorHeight)) + rounded_y;
+            		* zoomFactor)) + rounded_y;
             
             // error-checking. The location of the small page image should 
             // never be not displayable (less than zero, greater than the
@@ -315,7 +310,7 @@ public abstract class PaintObjectBI extends PaintObject implements Cloneable, Se
             	
             	// Adapt the location of the repainting scope at the 
             	// JLabel.
-                locX_at_label -= locX_at_bi_poi * cZoomFactorWidth;
+                locX_at_label -= locX_at_bi_poi * zoomFactor;
 
                 // Adapt the location at the POI's BufferedImage.
             	locX_at_bi_poi = 0;
@@ -329,7 +324,7 @@ public abstract class PaintObjectBI extends PaintObject implements Cloneable, Se
 
             	// Adapt the location of the repainting scope at the 
             	// JLabel.
-                locY_at_label -= locY_at_bi_poi * cZoomFactorHeight;
+                locY_at_label -= locY_at_bi_poi * zoomFactor;
 
                 // Adapt the location at the POI's BufferedImage.
             	locY_at_bi_poi = 0;
@@ -418,9 +413,9 @@ public abstract class PaintObjectBI extends PaintObject implements Cloneable, Se
              * Compute the new size of the image in [Display-Size].
              */
             int newWidth = (int) Math.max(0, 
-            		(r.getWidth()) * cZoomFactorWidth);
+            		(r.getWidth()) * zoomFactor);
             int newHeight = (int) Math.max(0, 
-            		(r.getHeight()) * cZoomFactorHeight);
+            		(r.getHeight()) * zoomFactor);
 
             newWidth = Math.min(
             		newWidth,

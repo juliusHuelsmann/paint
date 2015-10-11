@@ -182,9 +182,11 @@ public final class CTabSelection implements ActionListener {
         			}
         		} else {
         			
+        			Picture pic = cp.getPicture();
         			// change size of the entire image
-                	PopupChangeSize.show(State.getImageSize().width, 
-                			State.getImageSize().height);
+                	PopupChangeSize.show(
+                			(int) pic.getSize().getWidth(),
+                			(int) pic.getSize().getHeight());
         		}
         	}
 
@@ -269,29 +271,13 @@ public final class CTabSelection implements ActionListener {
         			cp.getControlPaintSelection().mr_stretchImage(widthChange, heightChange);
         			
     			} else {
-     	           final double factorW = 1.0 * State.getImageSize().width 
-   	                    / State.getImageShowSize().width;
-    	           final double factorH = 1.0 * State.getImageSize().height 
-   	                    / State.getImageShowSize().height;
-    				// change size of image.
-    				State.setImageSize(new Dimension(newWidth, newHeight));
-    				State.setImageShowSize(new Dimension(
-    	                (int) (newWidth / factorW),
-    	                (int) (newHeight / factorH)));
-	        
-
-		        cp.getControlPic().refreshPaint();
+    				cp.getControlPic().refreshPaint();
 	
-		        cp.getView().getPage().refrehsSps();
-    			cp.getcTabPaint().updateResizeLocation();
+    				cp.getView().getPage().refrehsSps();
+    				cp.getcTabPaint().updateResizeLocation();
     			}
 			}
-	        
 		}
-
-			
-		
-			
 	}
 
 

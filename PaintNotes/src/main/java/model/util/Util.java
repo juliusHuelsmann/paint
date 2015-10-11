@@ -21,6 +21,7 @@ package model.util;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.IllegalComponentStateException;
@@ -969,10 +970,11 @@ public final class Util {
      * 
      * @return the BufferedImage
      */
-    public static BufferedImage getEmptyBITransparent() {
+    public static BufferedImage getEmptyBITransparent(
+    		final Dimension _size) {
         BufferedImage bi = new BufferedImage(
-                State.getImageSize().width, 
-                State.getImageSize().height, BufferedImage.TYPE_INT_ARGB);
+        		_size.width, 
+                _size.height, BufferedImage.TYPE_INT_ARGB);
         final int maxRGB = 255;
         
         int rgba = new Color(maxRGB, maxRGB, maxRGB, 0).getRGB();
@@ -990,10 +992,11 @@ public final class Util {
      * 
      * @return the BufferedImage
      */
-    public static BufferedImage getEmptyBIWhite() {
+    public static BufferedImage getEmptyBIWhite(
+    		final Dimension _size) {
         BufferedImage bi = new BufferedImage(
-                State.getImageSize().width, 
-                State.getImageSize().height, BufferedImage.TYPE_INT_RGB);
+                _size.width, 
+               	_size.height, BufferedImage.TYPE_INT_RGB);
         
         final int max = 255;
         int rgb = new Color(max, max, max).getRGB();

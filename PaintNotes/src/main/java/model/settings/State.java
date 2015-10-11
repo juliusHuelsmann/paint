@@ -117,16 +117,6 @@ public final class State {
      */
 	private static int startupIdentifier = Constants.ID_STARTUP_NORMAL;
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	
 
 	/*
 	 * Status values that often change during the execution of the program
@@ -290,7 +280,8 @@ public final class State {
     public static final void zoomStateZoomOut() {
     	zoomState--;
     }
-
+    
+    
     /**
      * Initialize the values that depend on the standard state (depending
      * on the way the program is opened (open image file/ launch program

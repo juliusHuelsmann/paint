@@ -131,10 +131,10 @@ public class BallPenBackup extends Pen {
                 if (!_final) {
 
                     //adjust the location at the zoom.
-                    x = ((x) * State.getImageShowSize().width)
-                            / State.getImageSize().width;
-                    y = ((y) * State.getImageShowSize().height)
-                            / State.getImageSize().height;
+                	final double zoomToShow = State.getZoomFactorToShowSize();
+                    //adjust the location at the zoom.
+                    x = (int) ((x) * zoomToShow);
+                    y = (int) ((y) * zoomToShow);
 
                     //add the shift coordinates for painting.
                     x +=  _pnt_shift.getX();
@@ -148,40 +148,36 @@ public class BallPenBackup extends Pen {
                     //      [x] [a] [ ]         (x is the pixel which is 
                     //      [a] [a] [ ]         already printed, a are those
                     //      [ ] [ ] [ ]         which are added to avoid gaps.
-                    double imagePixelSizeX = 1.0 * State.getImageShowSize().width 
-                            / State.getImageSize().width,
-                            imagePixelSizeY = 1.0 * State.getImageShowSize().height 
-                            / State.getImageSize().height;
-                    
+                    int imagePixelSize = (int) zoomToShow;                    
 
                     //error prevention (divide by zero if zoomed out a little 
                     //bit too much)
-                    if (imagePixelSizeX == 0) {
-                        imagePixelSizeX = 1;
+                    if (imagePixelSize == 0) {
+                        imagePixelSize = 1;
                     }
-                    if (imagePixelSizeY == 0) {
-                        imagePixelSizeY = 1;
+                    if (imagePixelSize == 0) {
+                        imagePixelSize = 1;
                     }
                     
                     //if the data is displayed paint lines to graphics. 
                     //otherwise nothing to do.
-                    if (x / imagePixelSizeX >= 0 && y / imagePixelSizeY >= 0
+                    if (x / imagePixelSize >= 0 && y / imagePixelSize >= 0
                             
                             //if the x coordinates are in range (displayed
                             //at the right edge of the screen)
-                            && (int) x / imagePixelSizeX + 1 
+                            && (int) x / imagePixelSize + 1 
                             <= (int) ViewSettings.getView_bounds_page().width
                             
 //                            Page.getInstance().getJlbl_painting()
 //                            .getWidth() 
-                            / imagePixelSizeX
+                            / imagePixelSize
 
                             //if the x coordinates are in range (displayed
                             //at the bottom edge of the screen)
-                            && (int) y / imagePixelSizeY + 1 
+                            && (int) y / imagePixelSize + 1 
                             <= (int) ViewSettings.getView_bounds_page().height
 //                            Page.getInstance().getJlbl_painting().getHeight() 
-                            / imagePixelSizeY) {
+                            / imagePixelSize) {
                         
                         State.setCounter_paintedPoints(State
                                 .getCounter_paintedPoints() + 1);
@@ -201,8 +197,8 @@ public class BallPenBackup extends Pen {
                         
                         //for loop because i want to paint the gaps between the 
                         //pixel if zoomed in.
-                        for (int kx = 0; kx < imagePixelSizeX; kx++) {
-                            for (int ky = 0; ky < imagePixelSizeY; ky++) {
+                        for (int kx = 0; kx < imagePixelSize; kx++) {
+                            for (int ky = 0; ky < imagePixelSize; ky++) {
 
                                 try {
                                     _g.setRGB(x + kx, y + ky, 

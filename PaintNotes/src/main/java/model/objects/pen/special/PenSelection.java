@@ -79,13 +79,8 @@ public class PenSelection extends Pen implements Serializable {
 		
 		//TODO: apply the final Rectangle _r_visibleScope update!
 
-		final double factorWidth = 1.0 * State.getImageSize().width
-				/ State.getImageShowSize().width;
-		final double factorHeight = 1.0 * State.getImageSize().height
-				/ State.getImageShowSize().height;
-
-		final int x = (int) (_pnt_shift.getX() + _p.getX() / factorWidth);
-		final int y = (int) (_pnt_shift.getY() + _p.getY() / factorHeight);
+		final int x = (int) (_pnt_shift.getX() + _p.getX() / State.getZoomFactorToModelSize());
+		final int y = (int) (_pnt_shift.getY() + _p.getY() / State.getZoomFactorToModelSize());
 		
 	    //first printed point
 	    if (pnt_lastPrinted == null) {

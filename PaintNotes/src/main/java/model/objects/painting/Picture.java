@@ -606,12 +606,12 @@ public final class Picture implements Serializable {
 		// image which is not to be emptied and then repainted.
 		// If that's the case, the rectangle width or height are decreased.
 		int rectWidth = _width, rectHeight = _height;
-		if (_x + _width > State.getImageShowSize().width) {
-			rectWidth = State.getImageShowSize().width - _x;
+		if (_x + _width > getShowSize().width) {
+			rectWidth = getShowSize().width - _x;
 		}
 
-		if (_y + _height > State.getImageShowSize().height) {
-			rectHeight = State.getImageShowSize().height - _y;
+		if (_y + _height > getShowSize().height) {
+			rectHeight = getShowSize().height - _y;
 
 		}
 
@@ -703,30 +703,25 @@ public final class Picture implements Serializable {
 		/**
 		 * Stretch factor by width and height.
 		 */
-		final double factorW, factorH;
+		final double factor;
 		if (_final) {
-			factorW = 1;
-			factorH = 1;
+			factor = 1;
 		} else {
-			factorW = 1.0 * State.getImageSize().width
-					/ State.getImageShowSize().width;
-			factorH = 1.0 * State.getImageSize().width 
-					/ State.getImageShowSize().width;
-
+			factor = State.getZoomFactorToModelSize();
 		}
 		
 		/**
 		 * The location of the page end needed for checking roughly whether a
 		 * paintObject may be inside the repaint rectangle.
 		 */
-		final int myYLocationRepaintEnd = (int) (factorH * (_y + _height)), 
-				myXLocationRepaintEnd = (int) (factorW * (_x + _width));
+		final int myYLocationRepaintEnd = (int) (factor * (_y + _height)), 
+				myXLocationRepaintEnd = (int) (factor * (_x + _width));
 		/**
 		 * The repaint rectangle.
 		 */
 		final DRect r_selection = new DRect(
-				(factorW * _x), (factorH * _y), 
-				(factorW * _width), (factorH * _height));
+				(factor * _x), (factor * _y), 
+				(factor * _width), (factor * _height));
 
 		/*
 		 * Find out which items are inside the given repaint rectangle and
@@ -866,8 +861,8 @@ public final class Picture implements Serializable {
 					"Es soll ein nicht existentes Objekt veraendert werden.\n"
 							+ "Programm wird beendet.");
 		}
-		if (_pnt.getX() > State.getImageSize().getWidth() || _pnt.getX() < 0
-				|| _pnt.getY() > State.getImageSize().getHeight()
+		if (_pnt.getX() > size.getWidth() || _pnt.getX() < 0
+				|| _pnt.getY() > size.getHeight()
 				|| _pnt.getY() < 0) {
 			return;
 		}
@@ -1189,16 +1184,16 @@ public final class Picture implements Serializable {
 		BufferedImage bi;
 		if (State.isExportAlpha()) {
 
-			bi = Util.getEmptyBITransparent();
+			bi = Util.getEmptyBITransparent(getShowSize());
 		} else {
-			bi = Util.getEmptyBIWhite();
+			bi = Util.getEmptyBIWhite(getShowSize());
 		}
 
-		bi = Utils.getBackgroundExport(bi, 0, 0, State.getImageSize().width,
-				State.getImageSize().height, 0, 0);
+		bi = Utils.getBackgroundExport(bi, 0, 0, size.width,
+				size.height, 0, 0, getShowSize());
 
-		bi = repaintRectangle(-_x + 0, -_y + 0, State.getImageSize().width,
-				State.getImageSize().height, -_x + 0, -_y + 0, bi, true, _paintPDFImage);
+		bi = repaintRectangle(-_x + 0, -_y + 0, size.width,
+				size.height, -_x + 0, -_y + 0, bi, true, _paintPDFImage);
 
 		return bi;
 	}
@@ -1233,21 +1228,21 @@ public final class Picture implements Serializable {
 		BufferedImage bi;
 		if (State.isExportAlpha()) {
 
-			bi = Util.getEmptyBITransparent();
+			bi = Util.getEmptyBITransparent(getShowSize());
 		} else {
-			bi = Util.getEmptyBIWhite();
+			bi = Util.getEmptyBIWhite(getShowSize());
 		}
 
-		bi = Utils.getBackgroundExport(bi, 0, 0, State.getImageSize().width,
-				State.getImageSize().height, 0, 0);
+		bi = Utils.getBackgroundExport(bi, 0, 0, size.width,
+				size.height, 0, 0, getShowSize());
 
 		bi = repaintRectangle(
 				
 				0, 0,
 //				-Page.getInstance().getJlbl_painting().getLocation().x + 0,
 //				-Page.getInstance().getJlbl_painting().getLocation().y + 0,
-				State.getImageSize().width,
-				State.getImageSize().height,
+				size.width,
+				size.height,
 				0, 0,
 				bi, true, true);
 
@@ -1983,14 +1978,11 @@ public final class Picture implements Serializable {
 					- r_max.x, r_max.height - r_max.y);
 
 			// adapt the rectangle to the currently used zoom factor.
-			final double cZoomFactorWidth = 1.0 * State.getImageSize().width
-					/ State.getImageShowSize().width;
-			final double cZoomFactorHeight = 1.0 * State.getImageSize().height
-					/ State.getImageShowSize().height;
-			realRect.x = (int) (1.0 * realRect.x / cZoomFactorWidth);
-			realRect.width = (int) (1.0 * realRect.width / cZoomFactorWidth);
-			realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
-			realRect.height = (int) (1.0 * realRect.height / cZoomFactorHeight);
+			final double zoomFactor = State.getZoomFactorToModelSize();
+			realRect.x = (int) (1.0 * realRect.x / zoomFactor);
+			realRect.width = (int) (1.0 * realRect.width / zoomFactor);
+			realRect.y = (int) (1.0 * realRect.y / zoomFactor);
+			realRect.height = (int) (1.0 * realRect.height / zoomFactor);
 
 			realRect.x += _page.getJlbl_painting().getLocation().x;
 			realRect.y += _page.getJlbl_painting().getLocation().y;
@@ -2093,14 +2085,11 @@ public final class Picture implements Serializable {
 					- r_max.x, r_max.height - r_max.y);
 
 			// adapt the rectangle to the currently used zoom factor.
-			final double cZoomFactorWidth = 1.0 * State.getImageSize().width
-					/ State.getImageShowSize().width;
-			final double cZoomFactorHeight = 1.0 * State.getImageSize().height
-					/ State.getImageShowSize().height;
-			realRect.x = (int) (1.0 * realRect.x / cZoomFactorWidth);
-			realRect.width = (int) (1.0 * realRect.width / cZoomFactorWidth);
-			realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
-			realRect.height = (int) (1.0 * realRect.height / cZoomFactorHeight);
+			final double zoomFactor = State.getZoomFactorToModelSize();
+			realRect.x = (int) (1.0 * realRect.x / zoomFactor);
+			realRect.width = (int) (1.0 * realRect.width / zoomFactor);
+			realRect.y = (int) (1.0 * realRect.y / zoomFactor);
+			realRect.height = (int) (1.0 * realRect.height / zoomFactor);
 
 			realRect.x += _page.getJlbl_painting().getLocation().x;
 			realRect.y += _page.getJlbl_painting().getLocation().y;
@@ -2218,14 +2207,11 @@ public final class Picture implements Serializable {
 					- r_max.x, r_max.height - r_max.y);
 
 			// adapt the rectangle to the currently used zoom factor.
-			final double cZoomFactorWidth = 1.0 * State.getImageSize().width
-					/ State.getImageShowSize().width;
-			final double cZoomFactorHeight = 1.0 * State.getImageSize().height
-					/ State.getImageShowSize().height;
-			realRect.x = (int) (1.0 * realRect.x / cZoomFactorWidth);
-			realRect.width = (int) (1.0 * realRect.width / cZoomFactorWidth);
-			realRect.y = (int) (1.0 * realRect.y / cZoomFactorHeight);
-			realRect.height = (int) (1.0 * realRect.height / cZoomFactorHeight);
+			final double zoomFactor = State.getZoomFactorToModelSize();
+			realRect.x = (int) (1.0 * realRect.x / zoomFactor);
+			realRect.width = (int) (1.0 * realRect.width / zoomFactor);
+			realRect.y = (int) (1.0 * realRect.y / zoomFactor);
+			realRect.height = (int) (1.0 * realRect.height / zoomFactor);
 
 			realRect.x += _page.getJlbl_painting().getLocation().x;
 			realRect.y += _page.getJlbl_painting().getLocation().y;
@@ -2378,9 +2364,7 @@ public final class Picture implements Serializable {
 					}
 				}
 
-				State.setImageSize(new Dimension(bi_normalSize.getWidth(),
-						bi_normalSize.getHeight()));
-				State.setImageShowSize(new Dimension(bi_normalSize.getWidth(),
+				setSize(new Dimension(bi_normalSize.getWidth(),
 						bi_normalSize.getHeight()));
 
 				if (ls_po_sortedByY == null) {
@@ -2409,8 +2393,7 @@ public final class Picture implements Serializable {
 			
 			
 		}
-		return new DPoint(State.getImageSize().getWidth(), State
-				.getImageSize().getHeight());
+		return new DPoint(size.width, size.height);
 	}
 
 
@@ -2528,9 +2511,8 @@ public final class Picture implements Serializable {
      * the size of the shown project (is equal to {@link #projectSize} * zoom).
      *
 	 */
-	public static Dimension getShowSize() {
-		return new Dimension(size.width * zoom);
+	public Dimension getShowSize() {
+		final double val = State.getZoomFactorToShowSize();
+		return new Dimension((int) (size.width * val), (int) (size.height * val));
 	}
-
-
 }

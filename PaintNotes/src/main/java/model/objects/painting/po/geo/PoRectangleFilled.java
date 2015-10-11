@@ -122,16 +122,13 @@ public class PoRectangleFilled extends POInsertion {
                     new Rectangle(cMinX, cMinY, cMaxX - cMinX, cMaxY - cMinY));
         } else {
             
+        	final double zoomToShow = State.getZoomFactorToShowSize();
 
             //adjust the location at the zoom.
-            cMinX = ((cMinX) * State.getImageShowSize().width)
-                    / State.getImageSize().width;
-            cMinY = ((cMinY) * State.getImageShowSize().height)
-                    / State.getImageSize().height;
-            cMaxX = ((cMaxX) * State.getImageShowSize().width)
-                    / State.getImageSize().width;
-            cMaxY = ((cMaxY) * State.getImageShowSize().height)
-                    / State.getImageSize().height;
+            cMinX = (int) ((cMinX) * zoomToShow);
+            cMinY = (int) ((cMinY) * zoomToShow);
+            cMaxX = (int) ((cMaxX) * zoomToShow);
+            cMaxY = (int) ((cMaxY) * zoomToShow);
 
             //add the shift coordinates for painting.
             cMinX +=  _x;

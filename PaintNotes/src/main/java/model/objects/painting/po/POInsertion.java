@@ -151,8 +151,8 @@ public abstract class POInsertion extends PaintObjectPen implements Cloneable {
 		
 	
 		return paint(new BufferedImage(
-		        State.getImageSize().width, 
-				State.getImageSize().height, 
+		        getPicture().getSize().width, 
+		        getPicture().getSize().height, 
 				BufferedImage.TYPE_INT_ARGB), 
 				true, null, 
 //                Page.getInstance().getJlbl_painting().getLocation().x,

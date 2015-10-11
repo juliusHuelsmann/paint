@@ -118,10 +118,9 @@ public class CTabs implements TabbedListener {
         
         //check whether location is okay.
 		final int d = (int) (ViewSettings.getView_bounds_page().getHeight() 
-        		/ State.getImageShowSize().height 
-        		* State.getImageSize().height
+        		* State.getZoomFactorToModelSize()
         		- page.getJlbl_painting().getLocation().getY()
-        		- State.getImageSize().height);
+        		- cp.getProject().getSize().height);
         if (d > 0) {
         	page.getJlbl_painting().setLocation(
         			(int) page.getJlbl_painting().getLocation().getX(),

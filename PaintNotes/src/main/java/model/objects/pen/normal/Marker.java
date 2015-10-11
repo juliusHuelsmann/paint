@@ -119,11 +119,10 @@ public class Marker extends Pen {
 
                 if (!_final) {
 
+                	final double zoomToShow = State.getZoomFactorToShowSize();
                     //adjust the location at the zoom.
-                    x = ((x) * State.getImageShowSize().width)
-                            / State.getImageSize().width;
-                    y = ((y) * State.getImageShowSize().height)
-                            / State.getImageSize().height;
+                    x = (int) ((x) * zoomToShow);
+                    y = (int) ((y) * zoomToShow);
 
                     //add the shift coordinates for painting.
                     x +=  _pnt_shift.getX();
@@ -137,41 +136,38 @@ public class Marker extends Pen {
                     //      [x] [a] [ ]         (x is the pixel which is 
                     //      [a] [a] [ ]         already printed, a are those
                     //      [ ] [ ] [ ]         which are added to avoid gaps.
-                    int imagePixelSizeX = State.getImageShowSize().width 
-                            / State.getImageSize().width,
-                            imagePixelSizeY = State.getImageShowSize().height 
-                            / State.getImageSize().height;
+                    int imagePixelSize = (int) zoomToShow;
                     
 
                     //error prevention (divide by zero if zoomed out a little 
                     //bit too much)
-                    if (imagePixelSizeX == 0) {
-                        imagePixelSizeX = 1;
+                    if (imagePixelSize == 0) {
+                        imagePixelSize = 1;
                     }
-                    if (imagePixelSizeY == 0) {
-                        imagePixelSizeY = 1;
+                    if (imagePixelSize == 0) {
+                        imagePixelSize = 1;
                     }
                     
                     //if the data is displayed paint lines to graphics. 
                     //otherwise nothing to do.
-                    if (x / imagePixelSizeX >= 0 && y / imagePixelSizeY >= 0
+                    if (x / imagePixelSize >= 0 && y / imagePixelSize >= 0
                             
                             //if the x coordinates are in range (displayed
                             //at the right edge of the screen)
-                            && (int) x / imagePixelSizeX + 1 
+                            && (int) x / imagePixelSize + 1 
 
                             <= (int) ViewSettings.getView_bounds_page().width
 //                            <= (int) Page.getInstance().getJlbl_painting()
 //                            .getWidth() 
-                            / imagePixelSizeX
+                            / imagePixelSize
 
                             //if the x coordinates are in range (displayed
                             //at the bottom edge of the screen)
-                            && (int) y / imagePixelSizeY + 1 
+                            && (int) y / imagePixelSize + 1 
                             <= (int) ViewSettings.getView_bounds_page().height
 //                            <= (int) Page.getInstance().getJlbl_painting()
 //                            .getHeight() 
-                            / imagePixelSizeY) {
+                            / imagePixelSize) {
                         
                         State.setCounter_paintedPoints(State
                                 .getCounter_paintedPoints() + 1);
@@ -179,9 +175,9 @@ public class Marker extends Pen {
                         //for loop because i want to paint the gaps between the 
                         //pixel if zoomed in.
                         for (int kx = 0; 
-                                kx < Math.max(imagePixelSizeX, 1); kx++) {
+                                kx < Math.max(imagePixelSize, 1); kx++) {
                             for (int ky = 0; 
-                                    ky < Math.max(imagePixelSizeY, 1); ky++) {
+                                    ky < Math.max(imagePixelSize, 1); ky++) {
 
                                 try {
                                     Color c = new Color(

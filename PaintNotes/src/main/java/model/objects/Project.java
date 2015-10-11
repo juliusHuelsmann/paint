@@ -114,11 +114,11 @@ public class Project extends Observable implements Serializable {
 		pictures[0] = new Picture();
 		
 		// store the default project size
-    	size = new Dimension(
+    	setSize(new Dimension(
     			StateStandard.getStandardImageWidth()
     			[State.getStartupIdentifier()],
     			StateStandard.getStandardimageheight()
-    			[State.getStartupIdentifier()]);
+    			[State.getStartupIdentifier()]));
 	}
 
 
@@ -287,7 +287,7 @@ public class Project extends Observable implements Serializable {
 			
 			
 			Dimension[] d = document.initialize();
-			this.size = d[1];
+			setSize(d[1]);
 
 			
 			
@@ -712,10 +712,15 @@ public class Project extends Observable implements Serializable {
 
 
 	/**
-	 * @param size the size to set
+	 * @param _size the size to set
 	 */
-	public void setSize(Dimension size) {
-		this.size = size;
+	public void setSize(final Dimension _size) {
+
+		this.size = _size;
+
+		setChanged();
+		notifyObservers(getShowSize());
+        
 	}
 
 	/**
@@ -725,7 +730,7 @@ public class Project extends Observable implements Serializable {
 	 */
 	public Dimension getShowSize() {
 		return new Dimension(
-				(int) (size.width * State.getZoomFactorToShowSize()),
+				(int) (size.width  * State.getZoomFactorToShowSize()),
 				(int) (size.height * State.getZoomFactorToShowSize()));
 	}
 

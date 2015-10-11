@@ -396,7 +396,8 @@ MenuListener {
             //initialize help listeners
             view.getTabs().initializeHelpListeners(
             		view, view.getHelp());
-            
+
+            project.addObserver(view.getPage());
             /*
              * Initialize control
              */

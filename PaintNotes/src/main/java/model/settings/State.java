@@ -274,6 +274,8 @@ public final class State {
      */
     public static final void resetZoomState() {
     	zoomState = 0;
+    	
+    	zoomChanged();
     }
 
     /**
@@ -283,7 +285,10 @@ public final class State {
      * @see #getZoomState()
      */
     public static final void zoomStateZoomIn() {
+
     	zoomState++;
+    	
+    	zoomChanged();
     }
     
     /**
@@ -293,7 +298,19 @@ public final class State {
      * @see #getZoomState()
      */
     public static final void zoomStateZoomOut() {
+
     	zoomState--;
+    	
+    	zoomChanged();
+    }
+    
+    
+    private static final void zoomChanged() {
+
+
+        //frefresh sps due to the new size of the image.
+        controlPaint.getView().getPage().sizeChangedImage(controlPaint.getProject().getShowSize());
+        controlPaint.getView().getPage().refrehsSps();
     }
     
     
@@ -521,7 +538,7 @@ public final class State {
 
         final int maxPercent = 100;
 
-        int lastBorder = controlPaint.getProject().getSize().width 
+        int lastBorder = controlPaint.getProject().getShowSize().width 
                 * borderRightPercentShow / maxPercent;
         int size = controlPaint.getProject().getShowSize().width - getRasterBorderFront() - lastBorder;
         
@@ -542,7 +559,7 @@ public final class State {
     public static int getRasterBorderTop() {
         
         final int maxPercent = 100;
-        return controlPaint.getProject().getSize().height
+        return controlPaint.getProject().getShowSize().height
                 * borderTopPercentShow / maxPercent;
     }
 
@@ -556,7 +573,7 @@ public final class State {
 
         final int maxPercent = 100;
 
-        int lastBorder = controlPaint.getProject().getSize().height 
+        int lastBorder = controlPaint.getProject().getShowSize().height 
                 * borderBottomPercentShow / maxPercent;
         int size = controlPaint.getProject().getSize().height - getRasterBorderTop() - lastBorder;
         
@@ -577,7 +594,7 @@ public final class State {
     	//TODO: give page 
         final int hundred = 100;
         return borderLeftPercentShow
-        		* controlPaint.getProject().getSize().width
+        		* controlPaint.getProject().getShowSize().width
         		/ hundred;
     }
 
@@ -588,7 +605,7 @@ public final class State {
     public static int getMargeRight() {
         final int hundred = 100;
         return borderRightPercentShow 
-        		* controlPaint.getProject().getSize().width
+        		* controlPaint.getProject().getShowSize().width
         		/ hundred;
     }
     /**
@@ -598,7 +615,7 @@ public final class State {
     public static int getMargeTop() {
         final int hundred = 100;
         return borderTopPercentShow 
-        		* controlPaint.getProject().getSize().height
+        		* controlPaint.getProject().getShowSize().height
         		/ hundred;
     }
     /**
@@ -608,7 +625,7 @@ public final class State {
     public static int getMargeBottom() {
         final int hundred = 100;
         return borderBottomPercentShow 
-        		* controlPaint.getProject().getSize().height
+        		* controlPaint.getProject().getShowSize().height
         		/ hundred;
     }
     

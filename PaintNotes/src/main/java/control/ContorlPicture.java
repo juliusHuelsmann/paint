@@ -23,12 +23,16 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
+
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+
 import control.forms.BorderThread;
 import control.interfaces.MoveEvent;
 import control.interfaces.PaintListener;
 import model.objects.painting.PaintBI;
+import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.special.PenSelection;
 import model.settings.State;
@@ -123,6 +127,7 @@ public class ContorlPicture implements PaintListener {
 					bi_background.getWidth(), 
 					bi_background.getHeight(), bi_background);
 			
+			Picture pic = cp.getPicture();
 			bi_background = Utils.getBackground(
 					bi_background, 
 					-getPaintLabel().getLocation().x, 
@@ -131,7 +136,7 @@ public class ContorlPicture implements PaintListener {
 					+ getPaintLabel().getWidth(), 
 					-getPaintLabel().getLocation().y 
 					+ getPaintLabel().getHeight(),
-					0, 0);
+					0, 0, pic.getShowSize());
 			getPage().getJlbl_backgroundStructure().setIcon(
 					new ImageIcon(bi_background));  
 		}
@@ -278,21 +283,18 @@ public class ContorlPicture implements PaintListener {
 		final Point pnt_end = new Point(
 				pnt_start.x + _width,
 				pnt_start.y + _height);
-		final double zoomStretchW = 1.0 * State.getImageSize().width 
-				/ State.getImageShowSize().width,
-				zoomStretchH = 1.0 * State.getImageSize().height 
-				/ State.getImageShowSize().height;
+		final double zoomStretch = State.getZoomFactorToModelSize();
 		
 		// 
 		// Check which pages need to be painted. Therefore, the saved values 
 		// have to be converted into [model-size]
 		//
 		final int firstPrintedPage = cp.getProject().getPageFromPX(
-				new Point((int) (pnt_start.x * zoomStretchW), 
-						(int) (pnt_start.y * zoomStretchH)));
+				new Point((int) (pnt_start.x * zoomStretch), 
+						(int) (pnt_start.y * zoomStretch)));
 		final int lastPrintedPage = cp.getProject().getPageFromPX(
-				new Point((int) (pnt_end.x * zoomStretchW), 
-						(int) (pnt_end.y * zoomStretchH)));
+				new Point((int) (pnt_end.x * zoomStretch), 
+						(int) (pnt_end.y * zoomStretch)));
 		
 		Rectangle[] pagePrintScope = new Rectangle[lastPrintedPage 
 		                                           - firstPrintedPage + 1];
@@ -301,10 +303,10 @@ public class ContorlPicture implements PaintListener {
 		
 		pagePrintScope[0] = cp.getProject().getPageRectanlgeinProject(firstPrintedPage);
 		yOfPageScope[0] = new Point(pagePrintScope[0].y, pagePrintScope[0].height);
-		pagePrintScope[0].height = pagePrintScope[0].height - (int) (pnt_start.y * zoomStretchH);
-		pagePrintScope[0].y = (int) (pnt_start.y * zoomStretchH) - pagePrintScope[0].y;
-		pagePrintScope[0].x = (int) (pnt_start.x * zoomStretchW);
-		pagePrintScope[0].width = (int) (_width * zoomStretchW);
+		pagePrintScope[0].height = pagePrintScope[0].height - (int) (pnt_start.y * zoomStretch);
+		pagePrintScope[0].y = (int) (pnt_start.y * zoomStretch) - pagePrintScope[0].y;
+		pagePrintScope[0].x = (int) (pnt_start.x * zoomStretch);
+		pagePrintScope[0].width = (int) (_width * zoomStretch);
 		for (int i = 1; i < pagePrintScope.length; i++) {
 			
 			//
@@ -320,9 +322,9 @@ public class ContorlPicture implements PaintListener {
 
 			yOfPageScope[i] = new Point(yOfPageScope[i - 1].x + yOfPageScope[i - 1].y, (int) b.getHeight()) ;
 			pagePrintScope[i] = new Rectangle(
-					(int) (pnt_start.x * zoomStretchW), 
+					(int) (pnt_start.x * zoomStretch), 
 					pagePrintScope[i - 1].y + pagePrintScope[i - 1].height,
-					(int) (_width * zoomStretchW), height);
+					(int) (_width * zoomStretch), height);
 			
 		}
 		
@@ -332,7 +334,7 @@ public class ContorlPicture implements PaintListener {
 
 			// bei dem letzten Element die height korrigieren
 			pagePrintScope[pagePrintScope.length - 1].height = 
-					(int) (_height * zoomStretchH
+					(int) (_height * zoomStretch
 					- pagePrintScope[pagePrintScope.length - 1].y
 					+ pagePrintScope[0].y);
 			
@@ -368,7 +370,7 @@ public class ContorlPicture implements PaintListener {
 								
 								// this is the y coordinate of the page.
 								+ yOfPageScope[i].x
-								) / zoomStretchW);
+								) / zoomStretch);
 
 				for (int j = 0; j < bi.getWidth(); j++) {
 
@@ -378,10 +380,10 @@ public class ContorlPicture implements PaintListener {
 			}
 			
 			setBi(cp.getProject().getPicture(currentPage).updateRectangle(
-					(int) (pagePrintScope[i].x 		/ zoomStretchW),
-					(int) (pagePrintScope[i].y 		/ zoomStretchH),
-					(int) (pagePrintScope[i].width  / zoomStretchW),
-					(int) (pagePrintScope[i].height / zoomStretchH),
+					(int) (pagePrintScope[i].x 		/ zoomStretch),
+					(int) (pagePrintScope[i].y 		/ zoomStretch),
+					(int) (pagePrintScope[i].width  / zoomStretch),
+					(int) (pagePrintScope[i].height / zoomStretch),
 					_x, _y, getBi(), 
 					cp.getControlPic()));
 		}
@@ -423,14 +425,15 @@ public class ContorlPicture implements PaintListener {
 				_width + 0, 
 				_height +  0, bi_background);
 
-		
+
+		Picture pic = cp.getPicture();
 		bi_background = Utils.getBackground(
 				bi_background, 
 				-getPaintLabel().getLocation().x + _x,
 				-getPaintLabel().getLocation().y + _y,
 				-getPaintLabel().getLocation().x + _x + _width,
 				-getPaintLabel().getLocation().y + _y + _height, 
-				_x, _y);
+				_x, _y, pic.getShowSize());
 		getPage().getJlbl_backgroundStructure().setIcon(
 				new ImageIcon(bi_background));
 								
@@ -469,7 +472,8 @@ public class ContorlPicture implements PaintListener {
 				+ "\n\t" + "_width\t\t" + _width
 				+ "\n\t" + "_height\t\t" + _height + "\n");
 
-		
+
+		Picture pic = cp.getPicture();
 		BufferedImage bi_background = _bi_origin;
 		bi_background = Utils.getBackground(
 				bi_background, 
@@ -477,7 +481,7 @@ public class ContorlPicture implements PaintListener {
 				-getPaintLabel().getLocation().y + _y,
 				-getPaintLabel().getLocation().x + _x + _width,
 				-getPaintLabel().getLocation().y + _y + _height, 
-				_x, _y);
+				_x, _y, pic.getShowSize());
 		
 		getPage().getJlbl_painting().setIcon(
 				new ImageIcon(bi_background));

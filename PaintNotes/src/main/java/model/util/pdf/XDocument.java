@@ -204,10 +204,10 @@ public class XDocument implements Serializable {
 					
 				// save page object pdf.
 				pdfPages[i] = project.getPicture(i).addPaintObjectPDF(project, i);
-
 				
 				// compute size
 				Dimension x = getPageSize(i);
+				project.getPicture(i).setSize(x);
 				documentHeight += x.height;
 				documentWidth = Math.max(x.width, documentWidth);
 

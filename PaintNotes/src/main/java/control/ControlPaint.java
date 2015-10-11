@@ -342,7 +342,11 @@ MenuListener {
 
             State.setControlPaint(this);
             project = new Project();
-            project.initialize();
+            project.initialize(new Dimension(
+						StateStandard.getStandardImageWidth()
+						[State.getStartupIdentifier()],
+						StateStandard.getStandardimageheight()
+						[State.getStartupIdentifier()]));
             
 
             utilityControlScrollPane = new ScrollPaneActivityListener(this);
@@ -603,6 +607,16 @@ MenuListener {
                 					
                 	//(_event.getPoint());
                 	if (field_erase != null) {
+                		
+                		final int picID = project.getPictureID(
+                				(int) ((_event.getX() - getPage()
+                						.getJlbl_painting().getLocation().x) 
+                						* State.getZoomFactorToModelSize()),
+                				(int) ((_event.getX() - getPage()
+                						.getJlbl_painting().getLocation().x)
+                						* State.getZoomFactorToModelSize()));
+                		
+                		final Picture usedPic = project.getPicture(picID);
 
                 		final double factorWidth = 
                 				1.0 * Math.min(
@@ -616,7 +630,7 @@ MenuListener {
 
                 						//value if border is visible on screen; 
                 						//zoomed out
-                						1.0 * State.getImageSize().width
+                						1.0 * usedPic.getSize().width
                 						/ getPage().getJlbl_painting()
                 						.getWidth()
                 						/ State.getEraseRadius());
@@ -632,7 +646,7 @@ MenuListener {
 
                 						//value if border is visible on screen; 
                 						//zoomed out
-                						1.0 * State.getImageSize().height
+                						1.0 * usedPic.getSize().height
                 						/ getPage().getJlbl_painting()
                 						.getHeight()
                 						/ State.getEraseRadius());
@@ -702,7 +716,7 @@ MenuListener {
         			),
         			-(int) ((getPage().getJlbl_painting().getLocation().getY() 
         			- _event.getY())
-        			* State.getZoomFactorToModelSize());
+        			* State.getZoomFactorToModelSize()));
 			final String actionName = "mouseReleased at Picture."
         			+ "\n\t\tActionName:\t\t"
         			+ State.getIndexName(State.getIndexOperation())
@@ -762,6 +776,16 @@ MenuListener {
                 	//(_event.getPoint());
                 	if (field_erase != null) {
 
+                		final int picID = project.getPictureID(
+                				(int) ((_event.getX() - getPage()
+                						.getJlbl_painting().getLocation().x) 
+                						* State.getZoomFactorToModelSize()),
+                				(int) ((_event.getX() - getPage()
+                						.getJlbl_painting().getLocation().x)
+                						* State.getZoomFactorToModelSize()));
+                		
+                		final Picture usedPic = project.getPicture(picID);
+
                 		final double factorWidth = 
                 				1.0 * Math.min(
                 						
@@ -774,7 +798,7 @@ MenuListener {
 
                 						//value if border is visible on screen; 
                 						//zoomed out
-                						1.0 * State.getImageSize().width
+                						1.0 * usedPic.getSize().width
                 						/ getPage().getJlbl_painting()
                 						.getWidth()
                 						/ State.getEraseRadius());
@@ -790,7 +814,7 @@ MenuListener {
 
                 						//value if border is visible on screen; 
                 						//zoomed out
-                						1.0 * State.getImageSize().height
+                						1.0 * usedPic.getSize().height
                 						/ getPage().getJlbl_painting()
                 						.getHeight()
                 						/ State.getEraseRadius());
@@ -841,10 +865,10 @@ MenuListener {
 
                         // not greater than the entire shown image - 
                         // the width of zoom
-                        int xSize = Math.min(State.getImageShowSize().width
+                        int xSize = Math.min(project.getShowSize().width
                                 - xLocation, 
                                 Math.abs(pnt_start.x - _event.getX()));
-                        int ySize = Math.min(State.getImageShowSize().height
+                        int ySize = Math.min(project.getShowSize().height
                                 - yLocation, 
                                 Math.abs(pnt_start.y - _event.getY()));
 
@@ -899,18 +923,18 @@ MenuListener {
                         y = pnt_startLocation.y -  _event.getY() + pnt_start.y;
                     }
                     
-                    if (x < -State.getImageShowSize().width 
+                    if (x < -project.getShowSize().width 
                     		+ getPage().getJlbl_painting().getWidth()) {
                     	
-                        x = -State.getImageShowSize().width 
+                        x = -project.getShowSize().width 
                         		+ getPage().getJlbl_painting().getWidth();
                     }
                     if (x > 0) {
                         x = 0;
                     }
-                    if (y < -State.getImageShowSize().height 
+                    if (y < -project.getShowSize().height 
                     		+ getPage().getJlbl_painting().getHeight()) {
-                        y = -State.getImageShowSize().height 
+                        y = -project.getShowSize().height 
                         		+ getPage().getJlbl_painting().getHeight();
                     }
                     if (y >= 0) {
@@ -1063,9 +1087,9 @@ MenuListener {
 	
 	                // not greater than the entire shown image - 
 	                // the width of zoom
-	                xLocation = Math.min(State.getImageShowSize().width
+	                xLocation = Math.min(project.getShowSize().width
 	                        - ViewSettings.ZOOM_SIZE.width, xLocation);
-	                yLocation = Math.min(State.getImageShowSize().height
+	                yLocation = Math.min(project.getShowSize().height
 	                        - ViewSettings.ZOOM_SIZE.height, yLocation);
 	
 	                // apply new location
@@ -1121,14 +1145,11 @@ MenuListener {
         /*
          * Log location information.
          */
-        final double zoomWidth = State.getImageSize().width 
-        		/ State.getImageShowSize().width;
-        final double zoomHeight = State.getImageSize().height 
-        		/ State.getImageShowSize().height;
+        final double zoomFactor = State.getZoomFactorToModelSize();
         Console.getInstance().logPosition(
-        		(int) (zoomWidth * (_event.getX() 
+        		(int) (zoomFactor * (_event.getX() 
         				- getPage().getJlbl_painting().getLocation().getX())),
-        		(int) (zoomHeight * (_event.getY() 
+        		(int) (zoomFactor * (_event.getY() 
         				- getPage().getJlbl_painting().getLocation().getY())));
     		
 	}
@@ -1164,21 +1185,18 @@ MenuListener {
 	 */
 	private void changePO(final MouseEvent _event) {
 
-    	final double widthFactor = 1.0 * State.getImageSize().width
-        		/ State.getImageShowSize().width;
+    	final double zoomFactor = State.getZoomFactorToModelSize();
 
-    	final double heightFactor = 1.0 * State.getImageSize().height
-        		/ State.getImageShowSize().height;
 		
 		// get the picture which corresponds to the very picture element.
 		final Point pnt_p = getProject().getPageAndPageStartFromPX(
 				new Point(
         		(int) ((_event.getX() 
         		- getPage().getJlbl_painting().getLocation().x)
-        		* widthFactor), 
+        		* zoomFactor), 
         		(int) ((_event.getY() 
         		- getPage().getJlbl_painting().getLocation().y)
-        		* heightFactor)));
+        		* zoomFactor)));
 		final int pageNumber = pnt_p.x;
 		final int pageY = pnt_p.y;
 		final Picture pic = project.getPicture(pageNumber);
@@ -1189,10 +1207,10 @@ MenuListener {
 	        pic.changePaintObject(new DPoint(
 	        		(_event.getX() 
 	        		- getPage().getJlbl_painting().getLocation().x)
-	        		* widthFactor, 
+	        		* zoomFactor, 
 	        		(_event.getY() 
 	        		- getPage().getJlbl_painting().getLocation().y)
-	        		* heightFactor - pageY),
+	        		* zoomFactor - pageY),
 	        		getPage(),
 	        		controlPic);
 	    } else {
@@ -1204,15 +1222,13 @@ MenuListener {
 	                        + getPage()
 	                        .getJlbl_painting().getLocation().x
 	                        )
-	                        * State.getImageSize().width
-	                        / State.getImageShowSize().width, 
+	                        * zoomFactor, 
 	                        getPage().getJlbl_painting().getHeight()
 	                        - (_event.getY() 
 	                        + getPage().getJlbl_painting()
 	                        .getLocation().y
 	                        )
-	                        * State.getImageSize().height
-	                        / State.getImageShowSize().height),
+	                        * zoomFactor),
 	                        getPage(),
 	                        controlPic
 	                        );
@@ -1414,23 +1430,21 @@ MenuListener {
         	// <code> imageShowSize</code>.
         	State.zoomStateZoomIn();
 
-        	// Calculate the new size of the page.
-            int newWidth = (int) (State.getImageSize().width
-            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
-            int newHeight = (int) (State.getImageSize().height
-            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
-
-            int proW = (int) (State.getProjectSize().width
-            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
-            int proH = (int) (State.getProjectSize().height
-            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
+//        	// Calculate the new size of the page.
+//            int newWidth = (int) (State.getImageSize().width
+//            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
+//            int newHeight = (int) (State.getImageSize().height
+//            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
+//
+//            int proW = (int) (State.getProjectSize().width
+//            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
+//            int proH = (int) (State.getProjectSize().height
+//            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
 
             Point oldLocation = new Point(getPage()
                     .getJlbl_painting().getLocation().x, getPage()
                     .getJlbl_painting().getLocation().y);
 
-            State.setImageShowSize(new Dimension(newWidth, newHeight));
-            State.setProjectShowSize(new Dimension(proW, proH));
            
             /*
              * set the location of the panel.
@@ -1445,10 +1459,10 @@ MenuListener {
             // check if the bounds are valid
             // not smaller than the negative image size.
             newX = Math.max(newX,
-            		(int) -(State.getProjectShowSize().width
+            		(int) -(project.getShowSize().width
             				- getPage().getWidth()));
             newY = Math.max(newY,
-                    -(State.getProjectShowSize().height
+                    -(project.getShowSize().height
                     		- getPage().getHeight()));
             
             // not greater than 0, these calculations prevent the zoom-out 
@@ -1818,14 +1832,11 @@ MenuListener {
         int currentY = po_current.getSnapshotBounds().y;
 
         //adapt the rectangle to the currently used zoom factor.
-        final double cZoomFactorWidth = 1.0 * State.getImageSize().width
-                / State.getImageShowSize().width;
-        final double cZoomFactorHeight = 1.0 * State.getImageSize().height
-                / State.getImageShowSize().height;
-        _r_size.x *= cZoomFactorWidth;
-        _r_size.width *= cZoomFactorWidth;
-        _r_size.y *= cZoomFactorHeight;
-        _r_size.height *= cZoomFactorHeight;
+        final double cZoomFactor = State.getZoomFactorToModelSize();
+        _r_size.x *= cZoomFactor;
+        _r_size.width *= cZoomFactor;
+        _r_size.y *= cZoomFactor;
+        _r_size.height *= cZoomFactor;
         
         // go through list. until either list is empty or it is
         // impossible for the paintSelection to paint inside the
@@ -1954,14 +1965,11 @@ MenuListener {
             List<PaintObject> ls_toInsert = new List<PaintObject>();
 
             //adapt the rectangle to the currently used zoom factor.
-            final double cZoomFactorWidth = 1.0 * State.getImageSize().width
-                    / State.getImageShowSize().width;
-            final double cZoomFactorHeight = 1.0 * State.getImageSize().height
-                    / State.getImageShowSize().height;
-            _r_sizeField.x *= cZoomFactorWidth;
-            _r_sizeField.width *= cZoomFactorWidth;
-            _r_sizeField.y *= cZoomFactorHeight;
-            _r_sizeField.height *= cZoomFactorHeight;
+            final double cZoomFactor = State.getZoomFactorToModelSize();
+            _r_sizeField.x *= cZoomFactor;
+            _r_sizeField.width *= cZoomFactor;
+            _r_sizeField.y *= cZoomFactor;
+            _r_sizeField.height *= cZoomFactor;
             
             
 
@@ -2081,10 +2089,10 @@ MenuListener {
             }
 
 
-            _r_sizeField.x /= cZoomFactorWidth;
-            _r_sizeField.width /= cZoomFactorWidth;
-            _r_sizeField.y /= cZoomFactorHeight;
-            _r_sizeField.height /= cZoomFactorHeight;
+            _r_sizeField.x /= cZoomFactor;
+            _r_sizeField.width /= cZoomFactor;
+            _r_sizeField.y /= cZoomFactor;
+            _r_sizeField.height /= cZoomFactor;
 
             _r_sizeField.x += getPage().getJlbl_painting()
             		.getLocation().getX();
@@ -2159,14 +2167,11 @@ MenuListener {
             
 
             //adapt the rectangle to the currently used zoom factor.
-            final double cZoomFactorWidth = 1.0 * State.getImageSize().width
-                    / State.getImageShowSize().width;
-            final double cZoomFactorHeight = 1.0 * State.getImageSize().height
-                    / State.getImageShowSize().height;
-            r_sizeField.x *= cZoomFactorWidth;
-            r_sizeField.width *= cZoomFactorWidth;
-            r_sizeField.y *= cZoomFactorHeight;
-            r_sizeField.height *= cZoomFactorHeight;
+            final double cZoomFactor = State.getZoomFactorToModelSize();
+            r_sizeField.x *= cZoomFactor;
+            r_sizeField.width *= cZoomFactor;
+            r_sizeField.y *= cZoomFactor;
+            r_sizeField.height *= cZoomFactor;
             List<PaintObjectWriting> ls_separatedPO = null;
             
             
@@ -2328,10 +2333,10 @@ MenuListener {
 	            	controlPic.refreshPaint();
 	            }
 	
-	            r_sizeField.x /= cZoomFactorWidth;
-	            r_sizeField.width /= cZoomFactorWidth;
-	            r_sizeField.y /= cZoomFactorHeight;
-	            r_sizeField.height /= cZoomFactorHeight;
+	            r_sizeField.x /= cZoomFactor;
+	            r_sizeField.width /= cZoomFactor;
+	            r_sizeField.y /= cZoomFactor;
+	            r_sizeField.height /= cZoomFactor;
 	
 	        	break;
 			default:
@@ -2410,10 +2415,10 @@ MenuListener {
                             .getLocation().y 
                             - _mmSP.y * i / max;
 
-                    if (x < -model.settings.State.getImageShowSize().width 
+                    if (x < -project.getShowSize().width 
                             + getPage().getJlbl_painting()
                             .getWidth()) {
-                        x = -model.settings.State.getImageShowSize().width
+                        x = -project.getShowSize().width
                                 + getPage()
                                 .getJlbl_painting().getWidth();
                     }
@@ -2421,10 +2426,10 @@ MenuListener {
                         x = 0;
                     }
                     
-                    if (y < -model.settings.State.getImageShowSize().height
+                    if (y < -project.getShowSize().height
                             + getPage().getJlbl_painting()
                             .getHeight()) {
-                        y = -model.settings.State.getImageShowSize().height
+                        y = -project.getShowSize().height
                                 + getPage()
                                 .getJlbl_painting().getHeight();
                     }
@@ -2465,10 +2470,10 @@ MenuListener {
             
             // not greater than the entire shown image - 
             // the width of zoom
-            int xSize = Math.min(State.getImageShowSize().width
+            int xSize = Math.min(project.getShowSize().width
                     - xLocation, 
                     Math.abs(pnt_start.x - _event.getX()));
-            int ySize = Math.min(State.getImageShowSize().height
+            int ySize = Math.min(project.getShowSize().height
                     - yLocation, 
                     Math.abs(pnt_start.y - _event.getY()));
 
@@ -2732,23 +2737,20 @@ MenuListener {
         
         
         //zoom factor
-        double zoomFactorX = State.getImageShowSize().width
-                / State.getImageSize().width, 
-                zoomFactorY = State.getImageShowSize().height
-                        / State.getImageSize().height; 
+        double zoomFactor = State.getZoomFactorToShowSize();
         
         //fetch the preprintSize and divide it by two.
         int preprintX =
         		Math.max(
         				(int) Math.ceil(
         						pic.getPen_current()
-        						.getThickness()  * zoomFactorX / 2),
+        						.getThickness()  * zoomFactor / 2),
         						1);
         int preprintY =
         		Math.max(
         				(int) Math.ceil(
         						pic.getPen_current()
-        						.getThickness()  * zoomFactorY / 2),
+        						.getThickness()  * zoomFactor / 2),
         						1);
         
         int recX = _x - preprintX * 2;

@@ -286,7 +286,7 @@ public abstract class PaintObject implements Serializable, Cloneable {
 	/**
 	 * @return the instance of Picture for the implementations of PaintObject.
 	 */
-	protected final Picture getPicture() {
+	public final Picture getPicture() {
 		return this.picture;
 	}
     

@@ -422,7 +422,7 @@ import view.util.mega.MButton;
 		jpnl_toMove.setBounds(0, 0,
 				_proShowSize.width,
 				_proShowSize.height);
-		
+
         refrehsSps();
 	}
 	
@@ -535,7 +535,6 @@ import view.util.mega.MButton;
 	@Override
 	public void update(Observable _o, Object _arg) {
 
-		
 		if (_arg instanceof Dimension) {
 
 			sizeChangedImage((Dimension) _arg);

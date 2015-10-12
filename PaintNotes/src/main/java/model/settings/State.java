@@ -510,8 +510,8 @@ public final class State {
      * @return the size.
      */
     public static int getRasterSize() {
-        final int min = 1;
-        final int normal = 10;
+        final int min = 10;
+        final int normal = 19;
         
         return Math.max(min, (int) (normal 
         		* getZoomFactorToShowSize()));

@@ -858,11 +858,11 @@ implements ActionListener, MouseListener {
 
             
             // not smaller than the negative image size.
-            oldLocation.x = Math.max(oldLocation.x,
+            oldLocation.x = (int) Math.max(oldLocation.x,
             		-(controlPaint.getProject().getShowSize().width
             				- getPage().getWidth()
             				* ViewSettings.ZOOM_MULITPLICATOR));
-            oldLocation.y = Math.max(oldLocation.y,
+            oldLocation.y = (int) Math.max(oldLocation.y,
                     -(controlPaint.getProject().getShowSize().height
                     		- getPage().getHeight() 
                     		* ViewSettings.ZOOM_MULITPLICATOR));
@@ -882,8 +882,8 @@ implements ActionListener, MouseListener {
             		// The rounding at entire pixels is performed inside the
             		// setBounds-method. Thus we don't have to cope with it
             		// in here.
-            		(oldLocation.x) / ViewSettings.ZOOM_MULITPLICATOR , 
-            		(oldLocation.y) / ViewSettings.ZOOM_MULITPLICATOR,
+            		(int) ((oldLocation.x) / ViewSettings.ZOOM_MULITPLICATOR), 
+            		(int) ((oldLocation.y) / ViewSettings.ZOOM_MULITPLICATOR),
             		
             		// the old width and height.
             		getPage().getJlbl_painting().getWidth(),

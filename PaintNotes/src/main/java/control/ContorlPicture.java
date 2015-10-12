@@ -425,7 +425,8 @@ public class ContorlPicture implements PaintListener {
 //						(int) ((pagePrintScope[i].y + pagePrintScope[i].height) / zoomStretch - getPaintLabel().getLocation().y),
 //						_x, _y, cp.getProject().getPicture(currentPage).getShowSize()));
 
-				final int adaptedPageLocationY = getPaintLabel().getLocation().y + yOfPageScope[0].x ;
+				final int adaptedPageLocationY = getPaintLabel().getLocation().y + 
+						(int) (yOfPageScope[0].x * State.getZoomFactorToShowSize());
 				bi_progress = (Utils.getBackground(
 						bi_progress, 
 						-getPaintLabel().getLocation().x + _x,

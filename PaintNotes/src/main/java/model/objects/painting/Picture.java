@@ -31,8 +31,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.Random;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
 import control.ContorlPicture;
 import control.ControlSelectionTransform;
 import control.forms.tabs.CTabSelection;
@@ -625,6 +628,61 @@ public final class Picture implements Serializable {
 
 		final int maxRGB = 255;
 		PaintBI.fillRectangleQuick(bi, new Color(maxRGB, maxRGB, maxRGB, 0), 
+				new Rectangle(_graphicX, _graphiY, rectWidth, rectHeight));
+
+		return bi;
+
+	}
+
+	/**
+	 * repaint the items that are in a rectangle to the (view) page (e.g. if the
+	 * JLabel is moved))..
+	 * 
+	 * @param _x
+	 *            the x coordinate
+	 * @param _y
+	 *            the y coordinate
+	 * @param _width
+	 *            the width
+	 * @param _height
+	 *            the height
+	 * @param _graphicX
+	 *            the graphics x
+	 * @param _graphiY
+	 *            the graphics y.
+	 * @param _bi
+	 *            the BufferedImage
+	 * @return the graphics
+	 */
+	public synchronized BufferedImage highlightRect(final int _x,
+			final int _y, final int _width, final int _height,
+			final int _graphicX, final int _graphiY, final BufferedImage _bi) {
+
+		// check whether the rectangle concerns the blue border of the
+		// image which is not to be emptied and then repainted.
+		// If that's the case, the rectangle width or height are decreased.
+		int rectWidth = _width, rectHeight = _height;
+		if (_x + _width > getShowSize().width) {
+			rectWidth = getShowSize().width - _x;
+		}
+
+		if (_y + _height > getShowSize().height) {
+			rectHeight = getShowSize().height - _y;
+
+		}
+
+		BufferedImage bi = _bi;
+		// alle die in Frage kommen neu laden.
+		if (ls_po_sortedByY == null || bi == null) {
+			bi = new BufferedImage(_width, _height, BufferedImage
+					.TYPE_INT_ARGB);
+//			return _bi;
+		}
+
+		final int r = new Random().nextInt(255),
+				g = new Random().nextInt(255),
+				b = new Random().nextInt(255);
+		PaintBI.fillRectangleQuick(_bi, new Color(r,g,b), 
 				new Rectangle(_graphicX, _graphiY, rectWidth, rectHeight));
 
 		return bi;

@@ -386,7 +386,7 @@ implements ActionListener, MouseListener {
             pic.paintSelected(getPage(),
         			controlPaint.getControlPic(),
         			controlPaint.getControlPaintSelection());
-            getPage().getJlbl_backgroundStructure().repaint();
+            getPage().getJlbl_background().repaint();
 
         } else if (o instanceof List) {
             @SuppressWarnings("unchecked")
@@ -503,7 +503,7 @@ implements ActionListener, MouseListener {
         pic.paintSelected(getPage(),
     			controlPaint.getControlPic(),
     			controlPaint.getControlPaintSelection());
-        getPage().getJlbl_backgroundStructure().repaint();
+        getPage().getJlbl_background().repaint();
         getControlPicture().refreshPaint();
     }
 

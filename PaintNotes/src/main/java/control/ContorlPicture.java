@@ -427,51 +427,116 @@ public class ContorlPicture implements PaintListener {
 		final Dimension [] dim_size_bi = new Dimension[lastPrintedPage 
 		                                               - firstPrintedPage + 1];
 		
-		// Utility; contains the bounds of each affected page..
+		// Utility; contains the bounds of each affected page. [MODEL_SIZE]
 		Rectangle[] pageScope = new Rectangle[lastPrintedPage 
 		                                           - firstPrintedPage + 1];
-		Point [] yOfPageScope = new Point [lastPrintedPage 
-                                       - firstPrintedPage + 1];
-		
+		// Utility; the location of the scope in model coordinates; is computed
+		// as (location of Page + location of bi @ scope) * zoomFactor
+		// location of the page is negative because of the relation to the 
+		// location of gui element.
+		final Point pnt_locScopeMDL = new Point(
+				(int) ((-getPage().getJlbl_background().getLocation().x
+				+ pnt_start.x) * zoomStretch),
+				(int) ((-getPage().getJlbl_background().getLocation().y
+				+ pnt_start.y) * zoomStretch));
 		
 		//
-		// Compute the values for the pagePrintScope
+		// Compute the first value. Afterwards, the rest of the values are 
+		// calculated inside a for-loop.
 		//
 		pageScope[0] = cp.getProject().getPageRectanlgeinProject(firstPrintedPage);
-		yOfPageScope  [0] = new Point(pageScope[0].y, pageScope[0].height);
-		pageScope[0].height = pageScope[0].height - (int) (pnt_start.y * zoomStretch);
-		pageScope[0].y = (int) (pnt_start.y * zoomStretch) - pageScope[0].y;
-		pageScope[0].x = (int) (pnt_start.x * zoomStretch);
-		pageScope[0].width = (int) (_width * zoomStretch);
+
+		// The location inside the BufferedImage is pnt_start.
+		pnt_loc_bi[0] = new Point(
+				(int) (pnt_start.x),
+				(int) (pnt_start.y));
+		
+		// The location inside the (first) picture inside the currently active 
+		// space is equal to 
+		// pnt_locScopeMDL - pageScope[0].y
+		// 
+		//
+		pnt_loc_pic[0] = new Point(
+				
+				// for the sake of abstractness, the x coordinate of the page-
+				// scope is contained inside the computation; for now, the 
+				// page x- location is equal to 0 because there is only one 
+				// page layout
+				pnt_locScopeMDL.x - pageScope[0].x,
+				pnt_locScopeMDL.y - pageScope[0].y);
+		
+		// for now, it is possible that the scope consists of more than one
+		// page. Thus, the size of the section inside the BufferedImage is
+		// set as the entire page size of the first page inside the section.
+		// If the section does only consist of one page, the first dimension
+		// inside the Dimension-array is also the very last one, which size
+		// is adapted to the scope-size after the for-loop has terminated.
+		dim_size_bi[0] = new Dimension(pageScope[0].getSize());
+		
+		
+		
+		
+		//
+		// Inside the for-loop, the values of the four arrays
+		// - (Rectangle[])	pageScope
+		// - (Point[])	 	pnt_loc_pic
+		// - (Point[])	 	pnt_loc_bi
+		// - (Dimension[]) 	dim_size_bi
+		// are computed for the succeeding pictures inside the scope. If the
+		// scope does only consist of one single picture, the for loop is never
+		// entered.
 		for (int i = 1; i < pageScope.length; i++) {
 			
 			//
 			// get size of current page.
 			//
 			final int currentPage = firstPrintedPage + i;
+			
+			// the size of the current page.
 			PDRectangle b = cp.getProject().getDocument().getPage(currentPage).getBBox();
+			
 			// TODO: width has to be adapted to page width because page width may variy.
-//			final int width = Math.round(b.getWidth() 
-//					* PDFUtils.dpi / 72);
 			final int height = Math.round(b.getHeight() 
 					* PDFUtils.dpi / 72);
+			final int width = Math.round(b.getWidth() 
+					* PDFUtils.dpi / 72);
 
-			yOfPageScope[i] = new Point(yOfPageScope[i - 1].x + yOfPageScope[i - 1].y, (int) b.getHeight()) ;
 			pageScope[i] = new Rectangle(
-					(int) (pnt_start.x * zoomStretch), 
+					0, 
 					pageScope[i - 1].y + pageScope[i - 1].height,
-					(int) (_width * zoomStretch), height);
+					width,
+					height);
 			
+
+			pnt_loc_bi[i] = new Point(
+					pnt_loc_bi[i - 1].x,
+					(int) (pnt_loc_bi[i - 1].y + pageScope[i - 1].height
+							/ zoomStretch));
+
+			pnt_loc_pic[i] = new Point(
+					
+					// for the sake of abstractness, the x coordinate of the page-
+					// scope is contained inside the computation; for now, the 
+					// page x- location is equal to 0 because there is only one 
+					// page layout
+					pnt_locScopeMDL.x - pageScope[i].x,
+					pnt_locScopeMDL.y - pageScope[i].y);
+			
+			dim_size_bi[0] = new Dimension(pageScope[i].getSize());
 		}
+
+		// If the section does only consist of one page, the first dimension
+		// inside the Dimension-array is also the very last one, which size
+		// is adapted to the scope-size after the for-loop has terminated.
+		// Adapt the very last size inside BufferdImage.
+		dim_size_bi[0].height = 
+				(int) (_height * zoomStretch
+						- pageScope[pageScope.length - 1].y
+						+ pageScope[0].y);
 		
 
 //		if (pagePrintScope.length != 1) {
 
-		// bei dem letzten Element die height korrigieren
-		pageScope[pageScope.length - 1].height = 
-				(int) (_height * zoomStretch
-						- pageScope[pageScope.length - 1].y
-						+ pageScope[0].y);
 		
 //		}
 		for (int i = 0; i < pageScope.length; i++) {
@@ -528,14 +593,15 @@ public class ContorlPicture implements PaintListener {
 			
 			if (i < pageScope.length - 1) {
 				
+				// paint the lines between pages.
 				final int y = (int) getPaintLabel().getLocation().getY() - _y
 						+ (int) ((
 								
 								// this is the height of the current page.
-								+ yOfPageScope[i].y
+								+ pageScope[i].y
 								
 								// this is the y coordinate of the page.
-								+ yOfPageScope[i].x
+								+ pageScope[i].x
 								) / zoomStretch);
 
 				for (int j = 0; j < bi.getWidth(); j++) {
@@ -550,11 +616,14 @@ public class ContorlPicture implements PaintListener {
 			// Perform foreground- printing
 			//
 			bi_progress = cp.getProject().getPicture(currentPage).updateRectangle(
-					new Point((int) (pageScope[i].x 		/ zoomStretch),
-							(int) (pageScope[i].y 		/ zoomStretch)),
-					new Point(_x, _y),
-					new Dimension((int) (pageScope[i].width  / zoomStretch),
-							(int) (pageScope[i].height / zoomStretch)),
+					pnt_loc_pic[currentPage],
+					pnt_loc_bi[currentPage],
+					dim_size_bi[currentPage],
+//					new Point((int) (pageScope[i].x 		/ zoomStretch),
+//							(int) (pageScope[i].y 		/ zoomStretch)),
+//					new Point(_x, _y),
+//					new Dimension((int) (pageScope[i].width  / zoomStretch),
+//							(int) (pageScope[i].height / zoomStretch)),
 					bi_progress);
 			
 			
@@ -579,14 +648,14 @@ public class ContorlPicture implements PaintListener {
 //						_x, _y, cp.getProject().getPicture(currentPage).getShowSize()));
 
 				final int adaptedPageLocationY = getPaintLabel().getLocation().y + 
-						(int) (yOfPageScope[0].x * State.getZoomFactorToShowSize());
-				bi_progress = (Utils.getBackground(
-						bi_progress, 
-						-getPaintLabel().getLocation().x + _x,
-						-adaptedPageLocationY + _y ,
-						-getPaintLabel().getLocation().x + _x + _width,
-						-adaptedPageLocationY + _y + _height, 
-						_x, _y, cp.getProject().getPicture(currentPage).getShowSize()));
+						(int) (pageScope[0].y * State.getZoomFactorToShowSize());
+//				bi_progress = (Utils.getBackground(
+//						bi_progress, 
+//						-getPaintLabel().getLocation().x + _x,
+//						-adaptedPageLocationY + _y ,
+//						-getPaintLabel().getLocation().x + _x + _width,
+//						-adaptedPageLocationY + _y + _height, 
+//						_x, _y, cp.getProject().getPicture(currentPage).getShowSize()));
 			}
 
 			

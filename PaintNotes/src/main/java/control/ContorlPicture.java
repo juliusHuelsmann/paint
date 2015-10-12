@@ -20,6 +20,7 @@ package control;
 
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -475,12 +476,12 @@ public class ContorlPicture implements PaintListener {
 			// Perform foreground- printing
 			//
 			bi_progress = (cp.getProject().getPicture(currentPage).updateRectangle(
-					(int) (pagePrintScope[i].x 		/ zoomStretch),
-					(int) (pagePrintScope[i].y 		/ zoomStretch),
-					(int) (pagePrintScope[i].width  / zoomStretch),
-					(int) (pagePrintScope[i].height / zoomStretch),
-					_x, _y, bi_progress, 
-					cp.getControlPic()));
+					new Point((int) (pagePrintScope[i].x 		/ zoomStretch),
+							(int) (pagePrintScope[i].y 		/ zoomStretch)),
+					new Point(_x, _y),
+					new Dimension((int) (pagePrintScope[i].width  / zoomStretch),
+							(int) (pagePrintScope[i].height / zoomStretch)),
+					bi_progress));
 			
 			
 			//
@@ -536,58 +537,58 @@ public class ContorlPicture implements PaintListener {
 		return getBi();
 	}
 
-	
-	/**
-	 * repaint a special rectangle.
-	 * @param _x the x coordinate in view
-	 * @param _y the y coordinate in view
-	 * @param _width the width
-	 * @param _height the height
-	 * @return the graphics
-	 */
-	private final synchronized void refreshRectangleBackground(
-			final int _x, final int _y, 
-			final int _width, final int _height) {
-
-		final boolean backgroundEnabled 
-		= State.isBorder();
-		if (backgroundEnabled) {
-
-			State.getLogger().finest("refreshing rectangle background. \nValues: "
-					+ "\n\tgetSize:\t" + getPaintLabel().getSize()
-					+ " vs. " + getJPnlToMove().getSize()
-					+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
-					+ " vs. " + getJPnlToMove().getLocation()
-					+ "\n\t" + "_x:\t\t" + _x
-					+ "\n\t" + "_y\t\t" + _y
-					+ "\n\t" + "_width\t\t" + _width
-					+ "\n\t" + "_height\t\t" + _height + "\n");
-
-			
-//			setBi(highlightRect(
-//					_x , _y , 
-//					_width + 0, 
-//					_height +  0, getBi()));
-
-
-			Picture pic = cp.getPicture();
-			setBi(Utils.getBackground(
-					getBi(), 
-					-getPaintLabel().getLocation().x + _x,
-					-getPaintLabel().getLocation().y + _y,
-					-getPaintLabel().getLocation().x + _x + _width,
-					-getPaintLabel().getLocation().y + _y + _height, 
-					_x, _y, pic.getShowSize()));
-			//paint the painted stuff at graphics
-			///setBi(cp.getPicture().updateRectangle(
-//					-getPaintLabel().getLocation().x + _x, 
-//					-getPaintLabel().getLocation().y + _y, 
-//					_width, _height, _x, _y, getBi(), 
-//					cp.getControlPic()));
-			
-		}
-		
-	}
+//	
+//	/**
+//	 * repaint a special rectangle.
+//	 * @param _x the x coordinate in view
+//	 * @param _y the y coordinate in view
+//	 * @param _width the width
+//	 * @param _height the height
+//	 * @return the graphics
+//	 */
+//	private final synchronized void refreshRectangleBackground(
+//			final int _x, final int _y, 
+//			final int _width, final int _height) {
+//
+//		final boolean backgroundEnabled 
+//		= State.isBorder();
+//		if (backgroundEnabled) {
+//
+//			State.getLogger().finest("refreshing rectangle background. \nValues: "
+//					+ "\n\tgetSize:\t" + getPaintLabel().getSize()
+//					+ " vs. " + getJPnlToMove().getSize()
+//					+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
+//					+ " vs. " + getJPnlToMove().getLocation()
+//					+ "\n\t" + "_x:\t\t" + _x
+//					+ "\n\t" + "_y\t\t" + _y
+//					+ "\n\t" + "_width\t\t" + _width
+//					+ "\n\t" + "_height\t\t" + _height + "\n");
+//
+//			
+////			setBi(highlightRect(
+////					_x , _y , 
+////					_width + 0, 
+////					_height +  0, getBi()));
+//
+//
+//			Picture pic = cp.getPicture();
+//			setBi(Utils.getBackground(
+//					getBi(), 
+//					-getPaintLabel().getLocation().x + _x,
+//					-getPaintLabel().getLocation().y + _y,
+//					-getPaintLabel().getLocation().x + _x + _width,
+//					-getPaintLabel().getLocation().y + _y + _height, 
+//					_x, _y, pic.getShowSize()));
+//			//paint the painted stuff at graphics
+//			///setBi(cp.getPicture().updateRectangle(
+////					-getPaintLabel().getLocation().x + _x, 
+////					-getPaintLabel().getLocation().y + _y, 
+////					_width, _height, _x, _y, getBi(), 
+////					cp.getControlPic()));
+//			
+//		}
+//		
+//	}
 
 	
 
@@ -697,10 +698,11 @@ public class ContorlPicture implements PaintListener {
 				+ "\n\t" + "_height\t\t" + _height + "\n");
 
 		//paint the painted stuff at graphics
-		setBi(cp.getPicture().emptyRectangle(
-				-getPaintLabel().getLocation().x + _x, 
-				-getPaintLabel().getLocation().y + _y, _width, 
-				_height, _x, _y, getBi()));
+		cp.getPicture().emptyRectangle(
+				new Point(-getPaintLabel().getLocation().x + _x, 
+						-getPaintLabel().getLocation().y + _y), 
+				new Point(_x, _y),
+				new Dimension(_width, _height), getBi());
 
 		getPaintLabel().setIcon(new ImageIcon(getBi()));
 		

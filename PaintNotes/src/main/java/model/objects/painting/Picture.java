@@ -534,158 +534,233 @@ public final class Picture implements Serializable {
 	}
 
 	/**
-	 * repaint the items that are in a rectangle to the (view) page (e.g. if the
-	 * JLabel is moved))..
+	 * Entirely updates the given are inside the BufferedImage. That includes 
+	 * emptying the <code>BufferedImage's</code> section, that is to be 
+	 * updated and repainting the affected <code>PaintObjects</code>.
 	 * 
-	 * @param _x
-	 *            the x coordinate
-	 * @param _y
-	 *            the y coordinate
-	 * @param _width
-	 *            the width
-	 * @param _height
-	 *            the height
-	 * @param _graphicX
-	 *            the graphics x
-	 * @param _graphiY
-	 *            the graphics y.
-	 * @param _bi
-	 *            the bufferedImage
-	 * @return the graphics
+	 * @param _loc_picture	the location of the selection inside the entire
+	 * 						page. The BufferedImage which is given to this
+	 * 						very method is only the section, which is 
+	 * 						currently visible on screen for the user.
+	 * 						
+	 * 						This value is necessary for adapting the location
+	 * 						inside the BufferedImage to the location of the
+	 * 						page for not removing pixel that are not part of
+	 * 						the painted image.
+	 * 						
+	 * @param _loc_bi		The location of the rectangle which is to be 
+	 * 						filled with white and alpha pixels inside the 
+	 * 						BufferdImage. Its value has to be in the range
+	 * 						of <br><code>([0, _bi.getWidth()]
+	 * 						\times[0, _bi.getHeight()]) </code>.
+	 * 
+	 * @param _size_bi		The size of the rectangle that is to be filled
+	 * 						with white, alpha pixels inside the BufferedImage.
+	 * 						Is adapted to the entire size of the Picture.
+	 * 						Therefore, the _loc_picture values are used.
+	 * 
+	 * @param _bi			The BufferedImage to which the changes are written.
+	 * 						Should be the one located in ControlPicture.
+	 * 
+	 * @see #emptyRectangle(Point, Point, Dimension, BufferedImage)
+	 * @see {@link #repaintRectangle(Point, Point, Dimension, BufferedImage, boolean, boolean)}
+	 * 
+	 * @return the BufferedImage.
 	 */
 	public synchronized BufferedImage updateRectangle(
-			final int _x, final int _y, 
-			
-			final int _width, final int _height,
-			
-			final int _graphicX, final int _graphiY, 
-			
-			final BufferedImage _bi,
-			final ContorlPicture _controlPicture) {
-		
-		
-		BufferedImage ret = emptyRectangle(
-				_x, _y, _width, _height, _graphicX,
-				_graphiY, _bi);
+			final Point _loc_picture, 
+			final Point _loc_bi, 
+			final Dimension _size_bi,
+			final BufferedImage _bi) {
 
 		// if the graphical user interface is not set up yet.
-		if (ret == null) {
-			return new BufferedImage(_width, _height,
+		if (_bi == null) {
+			return new BufferedImage(_size_bi.width, _size_bi.height,
 					BufferedImage.TYPE_INT_ARGB);
 		}
 		
+		emptyRectangle(
+				_loc_picture, 
+				_loc_bi,
+				_size_bi, _bi);
 		
-		ret = repaintRectangle(_x, _y, _width, _height, _graphicX,
-				_graphiY, ret, false, true);
-
-		return ret;
+		repaintRectangle(_loc_picture, 
+				_loc_bi,
+				_size_bi, _bi, false, true);
+		
+		return _bi;
 	}
-
+	
+	
+	
+	
 	/**
-	 * repaint the items that are in a rectangle to the (view) page (e.g. if the
-	 * JLabel is moved))..
+	 * Empties a given rectangle in given BufferedImage and returns the 
+	 * resulting BufferedImage.
 	 * 
-	 * @param _x
-	 *            the x coordinate
-	 * @param _y
-	 *            the y coordinate
-	 * @param _width
-	 *            the width
-	 * @param _height
-	 *            the height
-	 * @param _graphicX
-	 *            the graphics x
-	 * @param _graphiY
-	 *            the graphics y.
-	 * @param _bi
-	 *            the BufferedImage
-	 * @return the graphics
+	 * For doing that, firstly check whether the given width and height are 
+	 * not greater than the maximum size of the image contained
+	 * in {@link #getShowSize()}.
+	 * 
+	 * 
+	 * @param _loc_picture	the location of the selection inside the entire
+	 * 						page. The BufferedImage which is given to this
+	 * 						very method is only the section, which is 
+	 * 						currently visible on screen for the user.
+	 * 						
+	 * 						This value is necessary for adapting the location
+	 * 						inside the BufferedImage to the location of the
+	 * 						page for not removing pixel that are not part of
+	 * 						the painted image.
+	 * 						
+	 * @param _loc_bi		The location of the rectangle which is to be 
+	 * 						filled with white and alpha pixels inside the 
+	 * 						BufferdImage. Its value has to be in the range
+	 * 						of <br><code>([0, _bi.getWidth()]
+	 * 						\times[0, _bi.getHeight()]) </code>.
+	 * 
+	 * @param _size_bi		The size of the rectangle that is to be filled
+	 * 						with white, alpha pixels inside the BufferedImage.
+	 * 						Is adapted to the entire size of the Picture.
+	 * 						Therefore, the _loc_picture values are used.
+	 * 
+	 * @param _bi			The BufferedImage to which the changes are written.
+	 * 						Should be the one located in ControlPicture.
+	 * 						
 	 */
-	public synchronized BufferedImage emptyRectangle(final int _x,
-			final int _y, final int _width, final int _height,
-			final int _graphicX, final int _graphiY, final BufferedImage _bi) {
+	private synchronized void fillRectangle(
+			final Point _loc_picture, 
+			final Point _loc_bi, 
+			final Dimension _size_bi,
+			final BufferedImage _bi,
+			final Color _clr) {
 
 		// check whether the rectangle concerns the blue border of the
 		// image which is not to be emptied and then repainted.
 		// If that's the case, the rectangle width or height are decreased.
-		int rectWidth = _width, rectHeight = _height;
-		if (_x + _width > getShowSize().width) {
-			rectWidth = getShowSize().width - _x;
+		int rectWidth = _size_bi.width, rectHeight = _size_bi.height;
+		if (_loc_picture.x + _size_bi.width > getShowSize().width) {
+			rectWidth = getShowSize().width - _loc_picture.x;
 		}
 
-		if (_y + _height > getShowSize().height) {
-			rectHeight = getShowSize().height - _y;
+		if (_loc_picture.y + _size_bi.height > getShowSize().height) {
+			rectHeight = getShowSize().height - _loc_picture.y;
 
 		}
 
 		BufferedImage bi = _bi;
-		// alle die in Frage kommen neu laden.
-		if (ls_po_sortedByY == null || bi == null) {
-			bi = new BufferedImage(_width, _height, BufferedImage
-					.TYPE_INT_ARGB);
-//			return _bi;
-		}
+		
+		PaintBI.fillRectangleQuick(bi, _clr, 
+				new Rectangle(_loc_bi.x, _loc_bi.y, rectWidth, rectHeight));
+
+	}
+
+	/**
+	 * This is just an utility method which calls
+	 * {@link #fillRectangle(Point, Point, Dimension, BufferedImage, Color)}
+	 * with the specific alpha-white color.
+	 * 
+	 * Empties a given rectangle in given BufferedImage and returns the 
+	 * resulting BufferedImage.
+	 * 
+	 * For doing that, firstly check whether the given width and height are 
+	 * not greater than the maximum size of the image contained
+	 * in {@link #getShowSize()}.
+	 * 
+	 * @see #fillRectangle(Point, Point, Dimension, BufferedImage, Color)
+	 * 
+	 * @param _loc_picture	the location of the selection inside the entire
+	 * 						page. The BufferedImage which is given to this
+	 * 						very method is only the section, which is 
+	 * 						currently visible on screen for the user.
+	 * 						
+	 * 						This value is necessary for adapting the location
+	 * 						inside the BufferedImage to the location of the
+	 * 						page for not removing pixel that are not part of
+	 * 						the painted image.
+	 * 						
+	 * @param _loc_bi		The location of the rectangle which is to be 
+	 * 						filled with white and alpha pixels inside the 
+	 * 						BufferdImage. Its value has to be in the range
+	 * 						of <br><code>([0, _bi.getWidth()]
+	 * 						\times[0, _bi.getHeight()]) </code>.
+	 * 
+	 * @param _size_bi		The size of the rectangle that is to be filled
+	 * 						with white, alpha pixels inside the BufferedImage.
+	 * 						Is adapted to the entire size of the Picture.
+	 * 						Therefore, the _loc_picture values are used.
+	 * 
+	 * @param _bi			The BufferedImage to which the changes are written.
+	 * 						Should be the one located in ControlPicture.
+	 * 
+	 * 
+	 * 						
+	 */
+	public synchronized void emptyRectangle(
+			final Point _loc_picture, 
+			final Point _loc_bi, 
+			final Dimension _size_bi,
+			final BufferedImage _bi) {
 
 		final int maxRGB = 255;
-		PaintBI.fillRectangleQuick(bi, new Color(maxRGB, maxRGB, maxRGB, 0), 
-				new Rectangle(_graphicX, _graphiY, rectWidth, rectHeight));
-
-		return bi;
+		fillRectangle(_loc_picture, _loc_bi, _size_bi, _bi, new Color(maxRGB, maxRGB, maxRGB, 0));
 
 	}
 
 	/**
-	 * repaint the items that are in a rectangle to the (view) page (e.g. if the
-	 * JLabel is moved))..
+	 * This is just an utility method which calls
+	 * {@link #fillRectangle(Point, Point, Dimension, BufferedImage, Color)}
+	 * with a random-generated color for highlighting different refresh
+	 * areas.
 	 * 
-	 * @param _x
-	 *            the x coordinate
-	 * @param _y
-	 *            the y coordinate
-	 * @param _width
-	 *            the width
-	 * @param _height
-	 *            the height
-	 * @param _graphicX
-	 *            the graphics x
-	 * @param _graphiY
-	 *            the graphics y.
-	 * @param _bi
-	 *            the BufferedImage
-	 * @return the graphics
+	 * Empties a given rectangle in given BufferedImage and returns the 
+	 * resulting BufferedImage.
+	 * 
+	 * For doing that, firstly check whether the given width and height are 
+	 * not greater than the maximum size of the image contained
+	 * in {@link #getShowSize()}.
+	 * 
+	 * @see #fillRectangle(Point, Point, Dimension, BufferedImage, Color)
+	 * 
+	 * @param _loc_picture	the location of the selection inside the entire
+	 * 						page. The BufferedImage which is given to this
+	 * 						very method is only the section, which is 
+	 * 						currently visible on screen for the user.
+	 * 						
+	 * 						This value is necessary for adapting the location
+	 * 						inside the BufferedImage to the location of the
+	 * 						page for not removing pixel that are not part of
+	 * 						the painted image.
+	 * 						
+	 * @param _loc_bi		The location of the rectangle which is to be 
+	 * 						filled with white and alpha pixels inside the 
+	 * 						BufferdImage. Its value has to be in the range
+	 * 						of <br><code>([0, _bi.getWidth()]
+	 * 						\times[0, _bi.getHeight()]) </code>.
+	 * 
+	 * @param _size_bi		The size of the rectangle that is to be filled
+	 * 						with white, alpha pixels inside the BufferedImage.
+	 * 						Is adapted to the entire size of the Picture.
+	 * 						Therefore, the _loc_picture values are used.
+	 * 
+	 * @param _bi			The BufferedImage to which the changes are written.
+	 * 						Should be the one located in ControlPicture.
+	 * 
+	 * 
+	 * 						
 	 */
-	public synchronized BufferedImage highlightRect(final int _x,
-			final int _y, final int _width, final int _height,
-			final int _graphicX, final int _graphiY, final BufferedImage _bi) {
+	public synchronized void highlightRect(
+			final Point _loc_picture, 
+			final Point _loc_bi, 
+			final Dimension _size_bi,
+			final BufferedImage _bi) {
 
-		// check whether the rectangle concerns the blue border of the
-		// image which is not to be emptied and then repainted.
-		// If that's the case, the rectangle width or height are decreased.
-		int rectWidth = _width, rectHeight = _height;
-		if (_x + _width > getShowSize().width) {
-			rectWidth = getShowSize().width - _x;
-		}
+		final int maxRGB = 255;
+		final int r = new Random().nextInt(maxRGB);
+		final int g = new Random().nextInt(maxRGB);
+		final int b = new Random().nextInt(maxRGB);
+		fillRectangle(_loc_picture, _loc_bi, _size_bi, _bi, new Color(r, g, b));
 
-		if (_y + _height > getShowSize().height) {
-			rectHeight = getShowSize().height - _y;
-
-		}
-
-		BufferedImage bi = _bi;
-		// alle die in Frage kommen neu laden.
-		if (ls_po_sortedByY == null || bi == null) {
-			bi = new BufferedImage(_width, _height, BufferedImage
-					.TYPE_INT_ARGB);
-//			return _bi;
-		}
-
-		final int r = new Random().nextInt(255),
-				g = new Random().nextInt(255),
-				b = new Random().nextInt(255);
-		PaintBI.fillRectangleQuick(_bi, new Color(r,g,b), 
-				new Rectangle(_graphicX, _graphiY, rectWidth, rectHeight));
-
-		return bi;
 
 	}
 
@@ -693,32 +768,62 @@ public final class Picture implements Serializable {
 	 * Repaint a rectangle without clearing the screen. The state of the list of
 	 * paintObjects is not changed by this process.
 	 * 
-	 * @param _x
-	 *            the x coordinate of the repainted rectangle
-	 * @param _y
-	 *            the y coordinate
-	 * @param _width
-	 *            the width
-	 * @param _height
-	 *            the height
+	 * Empties a given rectangle in given BufferedImage and returns the 
+	 * resulting BufferedImage.
 	 * 
-	 * @param _bi
-	 *            the BufferedImage
-	 * @param _final
-	 *            whether to paint finally to BufferedImage or not.
+	 * For doing that, firstly check whether the given width and height are 
+	 * not greater than the maximum size of the image contained
+	 * in {@link #getShowSize()}.
+	 * 
+	 * @see #fillRectangle(Point, Point, Dimension, BufferedImage, Color)
+	 * 
+	 * @param _loc_picture		the location of the selection inside the entire
+	 * 							page. The BufferedImage which is given to this
+	 * 							very method is only the section, which is 
+	 * 							currently visible on screen for the user.
+	 * 						
+	 * 							This value is necessary for adapting the 
+	 * 							location inside the BufferedImage to the 
+	 * 							location of the page for not removing pixel 
+	 * 							that are not part of the painted image.
+	 * 						
+	 * @param _loc_bi			The location of the rectangle which is to be 
+	 * 							filled with white and alpha pixels inside the 
+	 * 							BufferdImage. Its value has to be in the range
+	 * 							of <br><code>([0, _bi.getWidth()]
+	 * 							\times[0, _bi.getHeight()]) </code>.
+	 * 
+	 * @param _size_bi			The size of the rectangle that is to be filled
+	 * 							with white, alpha pixels inside the 
+	 * 							<code>BufferedImage</code>.
+	 * 							Is adapted to the entire size of the Picture.
+	 * 							Therefore, the _loc_picture values are used.
+	 * 
+	 * @param _bi				The BufferedImage to which the changes are 
+	 * 							written.
+	 * 							Should be the one located in ControlPicture.
+	 * 
+	 * @param _final			whether to paint finally to BufferedImage or
+	 * 							not.
+	 * 
+	 * @param _paintPDFImage	whether the resulting image is saved as PDF 
+	 * 							image. If that is the case, the 
+	 * 							<code>PaintObjectPDF</code> are not painted
+	 * 							because their content is already stored
+	 * 							in pixel graphics quality inside the PDF
+	 * 							document. 
+	 * 
+	 * 							This kind of <code>PaintObject</code> has 
+	 * 							to be painted, if not _final, or the
+	 * 							document is exported into a pixel graphics
+	 * 							format like PNG or JPEG.
 	 * 
 	 * @return the BufferedImage with painted PaintObjects on it.
 	 */
 	public synchronized BufferedImage repaintRectangle(
-			
-			final int _x,
-			final int _y,
-			
-			final int _width, 
-			final int _height,
-			
-			final int _xBi,
-			final int _yBi,
+			final Point _loc_picture, 
+			final Point _loc_bi, 
+			final Dimension _size_bi,
 			
 			final BufferedImage _bi, final boolean _final,
 			final boolean _paintPDFImage) {
@@ -729,8 +834,8 @@ public final class Picture implements Serializable {
 		if (ls_po_sortedByY == null 
 				|| ls_po_sortedByY.isEmpty() 
 				|| _bi == null
-				|| _width <= 0
-				|| _height <= 0) {
+				|| _size_bi.width <= 0
+				|| _size_bi.height <= 0) {
 			return _bi;
 		}
 		
@@ -772,14 +877,14 @@ public final class Picture implements Serializable {
 		 * The location of the page end needed for checking roughly whether a
 		 * paintObject may be inside the repaint rectangle.
 		 */
-		final int myYLocationRepaintEnd = (int) (factor * (_y + _height)), 
-				myXLocationRepaintEnd = (int) (factor * (_x + _width));
+		final int myYLocationRepaintEnd = (int) (factor * (_loc_picture.y + _size_bi.height)), 
+				myXLocationRepaintEnd = (int) (factor * (_loc_picture.x + _size_bi.width));
 		/**
 		 * The repaint rectangle.
 		 */
 		final DRect r_selection = new DRect(
-				(factor * _x), (factor * _y), 
-				(factor * _width), (factor * _height));
+				(factor * _loc_picture.x), (factor * _loc_picture.y), 
+				(factor * _size_bi.width), (factor * _size_bi.height));
 
 		/*
 		 * Find out which items are inside the given repaint rectangle and
@@ -869,7 +974,7 @@ public final class Picture implements Serializable {
 //							_x, _y,
 //							_paintLocationX,
 //							_paintLocationY,
-							-_x + _xBi, -_y + _yBi,
+							-_loc_picture.x + _loc_bi.x, -_loc_picture.y + _loc_bi.y,
 //							Page.getInstance().getJlbl_painting().getBi(),
 //							Page.getInstance().getJlbl_painting().getLocation().x,
 //							Page.getInstance().getJlbl_painting().getLocation().y,
@@ -885,8 +990,8 @@ public final class Picture implements Serializable {
 		//log repainting action in console.
 		if (counter > 0) {
 			Console.log(counter
-					+ " Item painted in rectanlge (" + _x + ", " + _y + ", "
-					+ _width + ", " + _height + "). Final: " + _final, 
+					+ " Item painted in rectanlge (" + _loc_picture.x + ", " + _loc_picture.y + ", "
+					+ _size_bi.width + ", " + _size_bi.height + "). Final: " + _final, 
 					Console.ID_INFO_UNIMPORTANT, 
 					getClass(), "repaintRectangle");
 		}
@@ -1250,8 +1355,10 @@ public final class Picture implements Serializable {
 		bi = Utils.getBackgroundExport(bi, 0, 0, size.width,
 				size.height, 0, 0, getShowSize());
 
-		bi = repaintRectangle(-_x + 0, -_y + 0, size.width,
-				size.height, -_x + 0, -_y + 0, bi, true, _paintPDFImage);
+		bi = repaintRectangle(new Point(-_x + 0, -_y + 0), 
+				new Point(-_x + 0, -_y + 0),
+				new Dimension(size.width, size.height),
+				bi, true, _paintPDFImage);
 
 		return bi;
 	}
@@ -1294,14 +1401,9 @@ public final class Picture implements Serializable {
 		bi = Utils.getBackgroundExport(bi, 0, 0, size.width,
 				size.height, 0, 0, getShowSize());
 
-		bi = repaintRectangle(
-				
-				0, 0,
-//				-Page.getInstance().getJlbl_painting().getLocation().x + 0,
-//				-Page.getInstance().getJlbl_painting().getLocation().y + 0,
-				size.width,
-				size.height,
-				0, 0,
+		bi = repaintRectangle(new Point(0, 0), 
+				new Point(0, 0),
+				new Dimension(size.width, size.height),
 				bi, true, true);
 
 		return bi;

@@ -29,6 +29,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.tools.ant.property.GetProperty;
 import org.omg.CORBA._PolicyStub;
 
 import control.forms.BorderThread;
@@ -264,8 +265,23 @@ public class ContorlPicture implements PaintListener {
 	 * <code> v_model = (v_param + jlbl_picture.getLocation().getY())
 	 * 						* State.getZoomFactorToModelSize()</code>
 	 * 
+	 * The following functions are essential for the method:
+	 * @see Project.#getPictureID(int, int) <br>
+	 * 		for getting the affected Pictures.
+	 * 
+	 * @see Utils.#getBackground(BufferedImage, int, int, int, int, int,
+	 * 		int, Dimension) <br>
+	 * 		for getting the background image of the given scope.
+	 * 
+	 * @see Picture.#repaintRectangle(Point, Point, Dimension, BufferedImage,
+	 * 		boolean, boolean) <br>
+	 * 		for repainting the <code>PaintObjects</code> inside the repaint
+	 * 		scope.
+	 * 
+	 * 
+	 * 
 	 * @param _x 		the x coordinate of the rectangle that is to be 
-	 * 					repainted in [view-size]. This is the exact view-
+	 * 					repainted in [view-size]. This is the exact vew-
 	 * 					coordinate, thus the model-shift of the JLabel
 	 * 					which displays the painting is not added to the
 	 * 					parameter. Thus this value should be inside the
@@ -302,6 +318,50 @@ public class ContorlPicture implements PaintListener {
 			final int _x, final int _y, 
 			final int _width, final int _height) {
 
+		/*
+		 * This function has to call the functions 
+		 * - <code>Picture.updateRectangle</code> 
+		 * 			of the Picture classes that
+		 * 			are inside the visible scope for updating the painted 
+		 * 			<code>PaintObjects</code>
+		 * - <code> Utils.getBackground</code>
+		 * 			which paints the background the user selected onto
+		 * 			the updated BufferedImage.
+		 * 
+		 * 1) For that purpose, it is necessary to get the affected Pages.
+		 * That is done in the first step by calling the method
+		 * <code>Project.#getPageFromPX(int, int)</code>.
+		 * 
+		 * The index of the first, and last page are stored inside the 
+		 * following variables:
+		 * - firstPrintedPage,
+		 * - lastPrintedPage.
+		 * 
+		 * 2) After the identifiers for the pictures have been computed, it is 
+		 * necessary to get the following values for each displayed page:
+		 * 
+		 * 	- loc_picture	the location of the selection inside the entire
+		 * 					page. The BufferedImage which is given to this
+		 * 					very method is only the section, which is 
+		 * 					currently visible on screen for the user.
+		 * 
+		 * 	- loc_bi		The location of the rectangle which is to be 
+		 * 					repainted inside the BufferdImage. 
+		 * 
+		 * 	- _size_bi		The size of the rectangle that is to be 
+		 * 					repainted inside the BufferedImage.
+		 * 
+		 * They are stored in arrays named
+		 * 	- Point[] loc_picture,
+		 * 	- Point[] loc_bi,
+		 * 	- Point[] size_bi.
+		 * 
+		 * Finally, the BufferedImage is reset by calling the 
+		 * #setBi(BufferedImage) method, which updates the view classes.
+		 * 
+		 */
+		
+		
 		
 		//
 		// Log information on what is painted.
@@ -320,12 +380,11 @@ public class ContorlPicture implements PaintListener {
 
 		
 		//
-		// Compute important values such as
+		// Step 1) Compute important values such as
 		// 	- the first printed point							[VIEW-SIZE]
 		// 	      last
 		// 	- the index of the first affected page
 		// 	                   last
-		//	- the scope of each affected page which is printed 	[MODEL-SIZE]
 		
 		// the start- and end-location applied to the shift of the paint-JLabel
 		// in [VIEW-SIZE].
@@ -352,12 +411,21 @@ public class ContorlPicture implements PaintListener {
 						(int) (pnt_end.y * zoomStretch)));
 		
 		
+
+		// Step 2)
+		// Compute the following variables.
+		// - Point[] loc_picture 	[MODEL-SIZE],
+		// - Point[] loc_bi			[VIEW-SIZE],
+		// - Point[] size_bi		[VIEW-SIZE].
+		
 		// Rectangle which contains the page-print-scope of each affected
 		// page (thus the pages from firstPrintPage until lastPrintedPage).
 		Rectangle[] pagePrintScope = new Rectangle[lastPrintedPage 
 		                                           - firstPrintedPage + 1];
 		Point [] yOfPageScope = new Point [lastPrintedPage 
                                        - firstPrintedPage + 1];
+		
+		
 		
 		
 		//

@@ -549,13 +549,13 @@ public final class Picture implements Serializable {
 	 * 						the painted image.
 	 * 						
 	 * @param _loc_bi		The location of the rectangle which is to be 
-	 * 						filled with white and alpha pixels inside the 
-	 * 						BufferdImage. Its value has to be in the range
+	 * 						repainted inside the BufferdImage. 
+	 * 						Its value has to be in the range
 	 * 						of <br><code>([0, _bi.getWidth()]
 	 * 						\times[0, _bi.getHeight()]) </code>.
 	 * 
-	 * @param _size_bi		The size of the rectangle that is to be filled
-	 * 						with white, alpha pixels inside the BufferedImage.
+	 * @param _size_bi		The size of the rectangle that is to be repainted
+	 * 						inside the BufferedImage.
 	 * 						Is adapted to the entire size of the Picture.
 	 * 						Therefore, the _loc_picture values are used.
 	 * 
@@ -788,14 +788,13 @@ public final class Picture implements Serializable {
 	 * 							that are not part of the painted image.
 	 * 						
 	 * @param _loc_bi			The location of the rectangle which is to be 
-	 * 							filled with white and alpha pixels inside the 
-	 * 							BufferdImage. Its value has to be in the range
+	 * 							repainted inside the BufferdImage. 
+	 * 							Its value has to be in the range
 	 * 							of <br><code>([0, _bi.getWidth()]
 	 * 							\times[0, _bi.getHeight()]) </code>.
 	 * 
-	 * @param _size_bi			The size of the rectangle that is to be filled
-	 * 							with white, alpha pixels inside the 
-	 * 							<code>BufferedImage</code>.
+	 * @param _size_bi			The size of the rectangle that is to be 
+	 * 							repainted inside the BufferedImage.
 	 * 							Is adapted to the entire size of the Picture.
 	 * 							Therefore, the _loc_picture values are used.
 	 * 

@@ -1451,10 +1451,10 @@ MenuListener {
              * set the location of the panel.
              */
             // save new coordinates
-            int newX = (oldLocation.x - zoom.getX())
-                    * ViewSettings.ZOOM_MULITPLICATOR;
-            int newY = (oldLocation.y - zoom.getY())
-                    * ViewSettings.ZOOM_MULITPLICATOR;
+            int newX = (int) ((oldLocation.x - zoom.getX())
+                    * ViewSettings.ZOOM_MULITPLICATOR);
+            int newY = (int) ((oldLocation.y - zoom.getY())
+                    * ViewSettings.ZOOM_MULITPLICATOR);
 
             
             // check if the bounds are valid

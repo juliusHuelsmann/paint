@@ -330,8 +330,7 @@ public class ContorlPicture implements PaintListener {
 			
 		}
 		
-		
-		
+
 //		if (pagePrintScope.length != 1) {
 
 		// bei dem letzten Element die height korrigieren
@@ -339,8 +338,28 @@ public class ContorlPicture implements PaintListener {
 				(int) (_height * zoomStretch
 						- pagePrintScope[pagePrintScope.length - 1].y
 						+ pagePrintScope[0].y);
-			
+		
 //		}
+		for (int i = 0; i < pagePrintScope.length; i++) {
+			
+//			if (i > 0)
+//			pagePrintScope[i].y = 0;
+			if (pagePrintScope[i].width != 0 && pagePrintScope[i].height != 0) {
+				
+				if (pagePrintScope.length >= 2) {
+
+					System.err.println(i + ":\t" + pagePrintScope[i]);
+					System.err.println(_height * zoomStretch);
+//					System.err.println("ih" + cp.getProject().getPicture(i).getSize().height);
+				} else {
+
+					System.out.println(i + ":\t" + pagePrintScope[i]);
+					System.out.println(_height * zoomStretch);
+//					System.out.println("ih" + cp.getProject().getPicture(i).getSize().height);
+				}
+			}
+		}
+		
 
 		//
 		// paint the painted stuff at graphics

@@ -28,6 +28,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.omg.CORBA._PolicyStub;
 
 import control.forms.BorderThread;
 import control.interfaces.MoveEvent;
@@ -333,18 +334,29 @@ public class ContorlPicture implements PaintListener {
 		
 //		if (pagePrintScope.length != 1) {
 
-			// bei dem letzten Element die height korrigieren
-			pagePrintScope[pagePrintScope.length - 1].height = 
-					(int) (_height * zoomStretch
-					- pagePrintScope[pagePrintScope.length - 1].y
-					+ pagePrintScope[0].y);
+		// bei dem letzten Element die height korrigieren
+		pagePrintScope[pagePrintScope.length - 1].height = 
+				(int) (_height * zoomStretch
+						- pagePrintScope[pagePrintScope.length - 1].y
+						+ pagePrintScope[0].y);
 			
 //		}
 
 		//
 		// paint the painted stuff at graphics
 		//
+			
+		// The painted BufferedImage is not directly printed to view each time 
+		// is changed, but stored inside the BufferedImage bi. That would be 
+		// possible by typing
+		//	<code> 	bi = ... </code>
+		// instead of using the setter method which directly updates the view
+		// classes, but for the sake of readability, the changes are stored 
+		// inside the following reference to bi.
+		BufferedImage bi_progress = getBi();
 
+		final boolean backgroundEnabled 
+		= State.isBorder();
 		//TODO: update page number in project (currentPage).
 		for (int i = 0; i < pagePrintScope.length; i++) {
 
@@ -380,17 +392,61 @@ public class ContorlPicture implements PaintListener {
 				}
 			}
 			
-			setBi(cp.getProject().getPicture(currentPage).updateRectangle(
+			
+			//
+			// Perform foreground- printing
+			//
+			bi_progress = (cp.getProject().getPicture(currentPage).updateRectangle(
 					(int) (pagePrintScope[i].x 		/ zoomStretch),
 					(int) (pagePrintScope[i].y 		/ zoomStretch),
 					(int) (pagePrintScope[i].width  / zoomStretch),
 					(int) (pagePrintScope[i].height / zoomStretch),
-					_x, _y, getBi(), 
+					_x, _y, bi_progress, 
 					cp.getControlPic()));
+			
+			
+			//
+			// Perform background-printing.
+			//
+//			bi_progress = (Utils.getBackground(
+//					bi_progress, 
+//					-getPaintLabel().getLocation().x + _x,
+//					-getPaintLabel().getLocation().y + _y,
+//					-getPaintLabel().getLocation().x + _x + _width,
+//					-getPaintLabel().getLocation().y + _y + _height, 
+//					_x, _y, cp.getProject().getPicture(currentPage).getShowSize()));
+
+			if (backgroundEnabled) {
+//				bi_progress = (Utils.getBackground(
+//						bi_progress, 
+//						(int) (pagePrintScope[i].x 		/ zoomStretch) - getPaintLabel().getLocation().x,
+//						(int) (pagePrintScope[i].y 	+ _y	/ zoomStretch) - getPaintLabel().getLocation().y,
+//						(int) ((pagePrintScope[i].x + pagePrintScope[i].width) / zoomStretch - getPaintLabel().getLocation().x),
+//						(int) ((pagePrintScope[i].y + pagePrintScope[i].height) / zoomStretch - getPaintLabel().getLocation().y),
+//						_x, _y, cp.getProject().getPicture(currentPage).getShowSize()));
+
+				final int adaptedPageLocationY = getPaintLabel().getLocation().y + yOfPageScope[0].x ;
+				bi_progress = (Utils.getBackground(
+						bi_progress, 
+						-getPaintLabel().getLocation().x + _x,
+						-adaptedPageLocationY + _y ,
+						-getPaintLabel().getLocation().x + _x + _width,
+						-adaptedPageLocationY + _y + _height, 
+						_x, _y, cp.getProject().getPicture(currentPage).getShowSize()));
+			}
+
+			
+				
 		}
 		
+		// _x      -> pnt_start.x
+		// _y      -> pnt_start.y
+		// _width  -> _width
+		// _height -> _height
+		//pnt_start.x + 
 
-		refreshRectangleBackground(_x, _y, _width, _height);	
+		setBi(bi_progress);
+//		refreshRectangleBackground(_x, _y, _width, _height);	
 //		refreshRectangleBackground(pnt_start.x, pnt_start.y,
 //		_width, _height);		
 //		setBi(cp.getPicture().updateRectangle(

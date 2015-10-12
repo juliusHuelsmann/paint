@@ -253,16 +253,58 @@ public class ContorlPicture implements PaintListener {
 
 
 	/**
-	 * repaint a special rectangle.
-	 * @param _x the x coordinate in view
-	 * @param _y the y coordinate in view
-	 * @param _width the width
-	 * @param _height the height
-	 * @return the graphics
+	 * Repaint a special rectangle. Repaints both the PaintObjects and
+	 * the selected background (e.g. lines, raster, none).<br>
+	 * The shift of the currently displayed section of the image must
+	 * not be applied to the parameters. <br> <br>
+	 * 
+	 * The parameters are converted inside the method into [MODEL-SIZE]
+	 * by performing the following computation:<br>
+	 * <code> v_model = (v_param + jlbl_picture.getLocation().getY())
+	 * 						* State.getZoomFactorToModelSize()</code>
+	 * 
+	 * @param _x 		the x coordinate of the rectangle that is to be 
+	 * 					repainted in [view-size]. This is the exact view-
+	 * 					coordinate, thus the model-shift of the JLabel
+	 * 					which displays the painting is not added to the
+	 * 					parameter. Thus this value should be inside the
+	 * 					following range:
+	 * 					[0, jlbl_painting.getWidth();]<br>
+	 *
+	 * @param _y 		the x coordinate of the rectangle that is to be 
+	 * 					repainted in [view-size].This is the exact view-
+	 * 					coordinate, thus the model-shift of the JLabel
+	 * 					which displays the painting is not added to the
+	 * 					parameter. Thus this value should be inside the
+	 * 					following range:
+	 * 					[0, jlbl_painting.getHeight();]<br>
+	 * 					
+	 * @param _width	the width of the rectangle that is to be 
+	 * 					repainted in [view-size].This is the exact view-
+	 * 					coordinate, thus the model-shift of the JLabel
+	 * 					which displays the painting is not added to the
+	 * 					parameter. Thus this value should be inside the
+	 * 					following range:
+	 * 					[0, jlbl_painting.getWidth();]<br>
+	 * 
+	 * @param _height	the height of the rectangle that is to be 
+	 * 					repainted in [view-size].This is the exact view-
+	 * 					coordinate, thus the model-shift of the JLabel
+	 * 					which displays the painting is not added to the
+	 * 					parameter. Thus this value should be inside the
+	 * 					following range:
+	 * 					[0, jlbl_painting.getHeight();]<br>
+	 * 
+	 * @return the resulting BufferedImage.
 	 */
-	public final BufferedImage refreshRectangle(final int _x, final int _y, 
+	public final BufferedImage refreshRectangle(
+			final int _x, final int _y, 
 			final int _width, final int _height) {
 
+		
+		//
+		// Log information on what is painted.
+		//
 		Console.log("refreshing PaintLabel. \nValues: "
 				+ "\n\tgetSize:\t" + getPaintLabel().getSize()
 				+ " vs. " + getJPnlToMove().getSize()
@@ -277,20 +319,30 @@ public class ContorlPicture implements PaintListener {
 
 		
 		//
-		// save values
-		//
+		// Compute important values such as
+		// 	- the first printed point							[VIEW-SIZE]
+		// 	      last
+		// 	- the index of the first affected page
+		// 	                   last
+		//	- the scope of each affected page which is printed 	[MODEL-SIZE]
+		
+		// the start- and end-location applied to the shift of the paint-JLabel
+		// in [VIEW-SIZE].
 		final Point pnt_start = new Point(
 				-getPaintLabel().getLocation().x + _x, 
 				-getPaintLabel().getLocation().y + _y);
 		final Point pnt_end = new Point(
 				pnt_start.x + _width,
 				pnt_start.y + _height);
+		
+		// The stretch-factor for converting the above values into 
+		// [MODEL-SIZE]. Is saved for not having to recompute it each
+		// time it is used.
 		final double zoomStretch = State.getZoomFactorToModelSize();
 		
-		// 
-		// Check which pages need to be painted. Therefore, the saved values 
-		// have to be converted into [model-size]
-		//
+		// Check which pages need to be painted. Therefore, the saved values
+		// are converted into [MODEL-SIZE] and given to a method which 
+		// gets the pages from pixel.
 		final int firstPrintedPage = cp.getProject().getPageFromPX(
 				new Point((int) (pnt_start.x * zoomStretch), 
 						(int) (pnt_start.y * zoomStretch)));
@@ -298,13 +350,20 @@ public class ContorlPicture implements PaintListener {
 				new Point((int) (pnt_end.x * zoomStretch), 
 						(int) (pnt_end.y * zoomStretch)));
 		
+		
+		// Rectangle which contains the page-print-scope of each affected
+		// page (thus the pages from firstPrintPage until lastPrintedPage).
 		Rectangle[] pagePrintScope = new Rectangle[lastPrintedPage 
 		                                           - firstPrintedPage + 1];
 		Point [] yOfPageScope = new Point [lastPrintedPage 
                                        - firstPrintedPage + 1];
 		
+		
+		//
+		// Compute the values for the pagePrintScope
+		//
 		pagePrintScope[0] = cp.getProject().getPageRectanlgeinProject(firstPrintedPage);
-		yOfPageScope[0] = new Point(pagePrintScope[0].y, pagePrintScope[0].height);
+		yOfPageScope  [0] = new Point(pagePrintScope[0].y, pagePrintScope[0].height);
 		pagePrintScope[0].height = pagePrintScope[0].height - (int) (pnt_start.y * zoomStretch);
 		pagePrintScope[0].y = (int) (pnt_start.y * zoomStretch) - pagePrintScope[0].y;
 		pagePrintScope[0].x = (int) (pnt_start.x * zoomStretch);

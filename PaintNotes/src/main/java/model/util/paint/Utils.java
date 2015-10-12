@@ -684,20 +684,20 @@ public final class Utils {
         //calculate the border pixel location adapted to the size of the
         //raster
         final int topBorder = 
-        		(int) (State.getRasterBorderTop() / State.getRasterSize())
+        		(int) (State.getRasterBorderTop(_imageShowSize) / State.getRasterSize())
         		* State.getRasterSize();
         
         final int bottomBorder = 
-        		(int) ((height - State.getRasterBorderBottom())
+        		(int) ((height - State.getRasterBorderBottom(_imageShowSize))
         				/ State.getRasterSize())
         				* State.getRasterSize();
 
         final int leftBorder = 
-        		(int) (State.getRasterBorderFront() / State.getRasterSize())
+        		(int) (State.getRasterBorderFront(_imageShowSize) / State.getRasterSize())
         		* State.getRasterSize();
         
         final int rightBorder = 
-        		(int) ((width - State.getRasterBorderEnd())
+        		(int) ((width - State.getRasterBorderEnd(_imageShowSize))
         				/ State.getRasterSize())
         				* State.getRasterSize();
 
@@ -932,35 +932,23 @@ public final class Utils {
         
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-        
-        
         //calculate the border pixel location adapted to the size of the
         //raster
         final int topBorder = 
-        		(int) (State.getRasterBorderTop() / State.getRasterSize())
+        		(int) (State.getRasterBorderTop(_imageShowSize) / State.getRasterSize())
         		* State.getRasterSize();
         
         final int bottomBorder = 
-        		(int) ((height - State.getRasterBorderBottom())
+        		(int) ((height - State.getRasterBorderBottom(_imageShowSize))
         				/ State.getRasterSize())
         				* State.getRasterSize();
 
         final int leftBorder = 
-        		(int) (State.getRasterBorderFront() / State.getRasterSize())
+        		(int) (State.getRasterBorderFront(_imageShowSize) / State.getRasterSize())
         		* State.getRasterSize();
         
         final int rightBorder = 
-        		(int) ((width - State.getRasterBorderEnd())
+        		(int) ((width - State.getRasterBorderEnd(_imageShowSize))
         				/ State.getRasterSize())
         				* State.getRasterSize();
 
@@ -1197,20 +1185,20 @@ public final class Utils {
         //calculate the border pixel location adapted to the size of the
         //raster
         final int topBorder = 
-        		(int) (State.getRasterBorderTop() / State.getRasterSize())
+        		(int) (State.getRasterBorderTop(_imageShowSize) / State.getRasterSize())
         		* State.getRasterSize();
         
         final int bottomBorder = 
-        		(int) ((height - State.getRasterBorderBottom())
+        		(int) ((height - State.getRasterBorderBottom(_imageShowSize))
         				/ State.getRasterSize())
         				* State.getRasterSize();
 
         final int leftBorder = 
-        		(int) (State.getRasterBorderFront() / State.getRasterSize())
+        		(int) (State.getRasterBorderFront(_imageShowSize) / State.getRasterSize())
         		* State.getRasterSize();
         
         final int rightBorder = 
-        		(int) ((width - State.getRasterBorderEnd())
+        		(int) ((width - State.getRasterBorderEnd(_imageShowSize))
         				/ State.getRasterSize())
         				* State.getRasterSize();
 
@@ -1303,8 +1291,8 @@ public final class Utils {
                             RASTAR_COLOR.getRGB());
     
                    //if the loop has reached the last values paint a line.
-                   if (x == State.getRasterBorderFront() 
-                           || x >= width - State.getRasterBorderEnd() 
+                   if (x == State.getRasterBorderFront(_imageShowSize) 
+                           || x >= width - State.getRasterBorderEnd(_imageShowSize) 
                            - State.getRasterSize() + 1) {
                         
                         if (y + 1 < height) {
@@ -1440,21 +1428,21 @@ public final class Utils {
         //                  |                       |
         //                  |                       |
 
-    	if (State.getRasterBorderFront() != 0 
+    	if (State.getRasterBorderFront(_imageShowSize) != 0 
     			|| State.getBorderRightPercentShow() != 0) {
     	
-        for (int x : new int[]{State.getRasterBorderFront(), 
-            width - State.getRasterBorderEnd()}) {
+        for (int x : new int[]{State.getRasterBorderFront(_imageShowSize), 
+            width - State.getRasterBorderEnd(_imageShowSize)}) {
             for (int y = 
                     //the fromX (the window from x)
                     Math.max((_fromY / distancePoints) * distancePoints,
-                            State.getRasterBorderTop()); 
+                            State.getRasterBorderTop(_imageShowSize)); 
                     
                     //either the height merge (the height minus the height
                     //modulo the distance of the different points or until 
                     //x coordinate
                     y < Math.min(Math.min(height -  (height % distancePoints), 
-                            _untilY), height - State.getRasterBorderBottom()); 
+                            _untilY), height - State.getRasterBorderBottom(_imageShowSize)); 
                     
                     //proceeds with the speed of distancePoints
                     y += distancePoints) {
@@ -1471,8 +1459,8 @@ public final class Utils {
                             RASTAR_COLOR.getRGB());
     
                    //if the loop has reached the last values paint a line.
-                   if (x == State.getRasterBorderFront() 
-                           || x >= width - State.getRasterBorderEnd() 
+                   if (x == State.getRasterBorderFront(_imageShowSize) 
+                           || x >= width - State.getRasterBorderEnd(_imageShowSize) 
                            - State.getRasterSize() + 1) {
                         
                         if (y + 1 < height) {
@@ -1495,22 +1483,22 @@ public final class Utils {
         
 
     	if (State.getBorderBottomPercentShow() != 0 
-    			|| State.getRasterBorderTop() != 0) {
+    			|| State.getRasterBorderTop(_imageShowSize) != 0) {
     	
         //horizontal lines  _______________________
         //
         //
         //
         //                  _______________________
-        for (int y = Math.max(State.getRasterBorderTop(),  
+        for (int y = Math.max(State.getRasterBorderTop(_imageShowSize),  
                 (_fromY / State.getRasterSize()) * State.getRasterSize());
                 y < Math.min(Math.min(height -  (height % distancePoints), 
-                        _untilY), height - State.getRasterBorderBottom()); 
+                        _untilY), height - State.getRasterBorderBottom(_imageShowSize)); 
                 y += State.getRasterSize()) {
             
-            for (int x =  Math.max(State.getRasterBorderFront(), 
+            for (int x =  Math.max(State.getRasterBorderFront(_imageShowSize), 
                     _fromX / distancePoints * distancePoints); 
-                    x < Math.min(width - State.getRasterBorderEnd(), _untilX); 
+                    x < Math.min(width - State.getRasterBorderEnd(_imageShowSize), _untilX); 
                     x += distancePoints) {
 
                 //calculate correct coordinate values for the graphics
@@ -1518,8 +1506,8 @@ public final class Utils {
                 final int newY = y - _fromY + _graphiY;
 
                 //if the loop has reached the last values paint a line.
-                if (y == State.getRasterBorderTop() 
-                        || y >= height - State.getRasterBorderBottom() 
+                if (y == State.getRasterBorderTop(_imageShowSize) 
+                        || y >= height - State.getRasterBorderBottom(_imageShowSize) 
                         - State.getRasterSize() + 1) {
                      
                      if (y + 1 < height) {

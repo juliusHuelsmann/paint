@@ -79,14 +79,14 @@ public class CTabs implements TabbedListener {
 								.getSize().height,
 								1),
 						BufferedImage.TYPE_INT_ARGB));
-		cp.getControlPic().setBi_background(
-				new BufferedImage(
-						Math.max(ViewSettings.getView_bounds_page()
-								.getSize().width, 1),
-						Math.max(ViewSettings.getView_bounds_page()
-								.getSize().height,
-								1),
-						BufferedImage.TYPE_INT_ARGB));
+//		cp.getControlPic().setBi_background(
+//				new BufferedImage(
+//						Math.max(ViewSettings.getView_bounds_page()
+//								.getSize().width, 1),
+//						Math.max(ViewSettings.getView_bounds_page()
+//								.getSize().height,
+//								1),
+//						BufferedImage.TYPE_INT_ARGB));
 		cp.getControlPic().setBi(new BufferedImage(
 						Math.max(ViewSettings.getView_bounds_page()
 								.getSize().width, 1),
@@ -154,10 +154,10 @@ public class CTabs implements TabbedListener {
 				new Rectangle(ViewSettings.getView_bounds_page_open()));
 
 		//re-initialize the image with the correct size
-		cp.getControlPic().setBi_background(new BufferedImage(
-				ViewSettings.getView_bounds_page().getSize().width,
-				ViewSettings.getView_bounds_page().getSize().height,
-				BufferedImage.TYPE_INT_ARGB));
+//		cp.getControlPic().setBi_background(new BufferedImage(
+//				ViewSettings.getView_bounds_page().getSize().width,
+//				ViewSettings.getView_bounds_page().getSize().height,
+//				BufferedImage.TYPE_INT_ARGB));
 		cp.getControlPic().setBi(new BufferedImage(
 				ViewSettings.getView_bounds_page().getSize().width,
 				ViewSettings.getView_bounds_page().getSize().height,

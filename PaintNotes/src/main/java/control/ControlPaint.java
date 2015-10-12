@@ -1341,7 +1341,7 @@ MenuListener {
                 State.setIndexOperation(Constants.CONTROL_PAINTING_INDEX_MOVE);
                 cTabPaintStatus.deactivate();
                 view.getTabs().getTab_paint().getTb_move().setActivated(true);
-                getPage().getJlbl_backgroundStructure().repaint();
+                getPage().getJlbl_background().repaint();
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ERASE:
@@ -1912,7 +1912,7 @@ MenuListener {
 //          controlPic.paintEntireSelectionRect(
 //                  _r_size);
         }
-        getPage().getJlbl_backgroundStructure().repaint();
+        getPage().getJlbl_background().repaint();
         
 
         // open selection tab
@@ -2113,7 +2113,7 @@ MenuListener {
                 _r_sizeField.width, _r_sizeField.height);
 
 
-        getPage().getJlbl_backgroundStructure().repaint();
+        getPage().getJlbl_background().repaint();
         
 
         // open selection tab

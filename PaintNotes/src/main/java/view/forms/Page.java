@@ -112,16 +112,16 @@ import view.util.mega.MButton;
     private MLabel jlbl_backgroundAlpha;
     
     
-    
-    /**
-     * MLabel which contains the background that the user selects in the view
-     * tab.
-     * 
-     * This background can either consist of raster or lines. It is possible
-     * to set page margins that determine at which location of the picture
-     * the painting begins and where it ends.
-     */
-    private MLabel jlbl_backgroundStructure;
+//    
+//    /**
+//     * MLabel which contains the background that the user selects in the view
+//     * tab.
+//     * 
+//     * This background can either consist of raster or lines. It is possible
+//     * to set page margins that determine at which location of the picture
+//     * the painting begins and where it ends.
+//     */
+//    private MLabel jlbl_backgroundStructure;
     
     /**
      * 
@@ -259,13 +259,13 @@ import view.util.mega.MButton;
         jlbl_border.setBackground(new Color(0, 0, 0, 2 * 2 * 2 * 2 * 2));
         jlbl_border.setBorder(BorderFactory.createLineBorder(Color.black));
         super.add(jlbl_border);
-
-        jlbl_backgroundStructure = new MLabel();
-        jlbl_backgroundStructure.setBackground(Color.white);
-        jlbl_backgroundStructure.setFocusable(false);
-        jlbl_backgroundStructure.setBorder(null);
-        jlbl_backgroundStructure.setOpaque(false);
-        super.add(jlbl_backgroundStructure); 
+//
+//        jlbl_backgroundStructure = new MLabel();
+//        jlbl_backgroundStructure.setBackground(Color.white);
+//        jlbl_backgroundStructure.setFocusable(false);
+//        jlbl_backgroundStructure.setBorder(null);
+//        jlbl_backgroundStructure.setOpaque(false);
+//        super.add(jlbl_backgroundStructure); 
 
         //MLabel for the painting and the raster
         jlbl_painting.setFocusable(false);
@@ -383,8 +383,8 @@ import view.util.mega.MButton;
         // update size of the JLabels the Page contains.
         //
         jlbl_backgroundAlpha.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
-        jlbl_backgroundStructure.setBounds(
-        		0, 0, getWidth() - 1, getHeight() - 1);
+//        jlbl_backgroundStructure.setBounds(
+//        		0, 0, getWidth() - 1, getHeight() - 1);
         jlbl_selectionBG.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
 
         jlbl_selectionPainting.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
@@ -480,14 +480,14 @@ import view.util.mega.MButton;
         return jlbl_backgroundAlpha;
     }
 
-
-
-    /**
-     * @return the jlbl_background
-     */
-    public MLabel getJlbl_backgroundStructure() {
-        return jlbl_backgroundStructure;
-    }
+//
+//
+//    /**
+//     * @return the jlbl_background
+//     */
+//    public MLabel getJlbl_backgroundStructure() {
+//        return jlbl_backgroundStructure;
+//    }
 
 
     /**

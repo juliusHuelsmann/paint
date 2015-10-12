@@ -18,10 +18,13 @@ package model.settings;
  */
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
+
 import control.ControlPaint;
 import control.forms.tabs.CTabWrite;
 import view.View;
@@ -521,7 +524,7 @@ public final class State {
      * 
      * @return the size
      */
-    public static int getRasterBorderFront() {
+    public static int getRasterBorderFront(final Dimension _imageShowSize) {
         
         final int maxPercent = 100;
         return controlPaint.getProject().getShowSize().width 
@@ -534,13 +537,14 @@ public final class State {
      * 
      * @return the size
      */
-    public static int getRasterBorderEnd() {
+    public static int getRasterBorderEnd(final Dimension _imageShowSize) {
 
         final int maxPercent = 100;
 
-        int lastBorder = controlPaint.getProject().getShowSize().width 
+        int lastBorder = _imageShowSize.width 
                 * borderRightPercentShow / maxPercent;
-        int size = controlPaint.getProject().getShowSize().width - getRasterBorderFront() - lastBorder;
+        int size = _imageShowSize.width 
+        		- getRasterBorderFront(_imageShowSize) - lastBorder;
         
         return lastBorder
                 //thus, it is impossible that the last boxes do not
@@ -556,10 +560,10 @@ public final class State {
      * 
      * @return the size
      */
-    public static int getRasterBorderTop() {
+    public static int getRasterBorderTop(final Dimension _imageShowSize) {
         
         final int maxPercent = 100;
-        return controlPaint.getProject().getShowSize().height
+        return _imageShowSize.height
                 * borderTopPercentShow / maxPercent;
     }
 
@@ -569,13 +573,14 @@ public final class State {
      * 
      * @return the size
      */
-    public static int getRasterBorderBottom() {
+    public static int getRasterBorderBottom(final Dimension _imageShowSize) {
 
         final int maxPercent = 100;
 
-        int lastBorder = controlPaint.getProject().getShowSize().height 
+        int lastBorder = _imageShowSize.height 
                 * borderBottomPercentShow / maxPercent;
-        int size = controlPaint.getProject().getSize().height - getRasterBorderTop() - lastBorder;
+        int size = controlPaint.getProject().getSize().height 
+        		- getRasterBorderTop(_imageShowSize) - lastBorder;
         
         return lastBorder
                 //thus, it is impossible that the last boxes do not
@@ -588,13 +593,13 @@ public final class State {
      * Get the border size.
      * @return the border size.
      */
-    public static int getMargeLeft() {
+    public static int getMargeLeft(final Dimension _imageShowSize) {
     	
     	
     	//TODO: give page 
         final int hundred = 100;
         return borderLeftPercentShow
-        		* controlPaint.getProject().getShowSize().width
+        		* _imageShowSize.width
         		/ hundred;
     }
 
@@ -602,30 +607,30 @@ public final class State {
      * Get the border size.
      * @return the border size.
      */
-    public static int getMargeRight() {
+    public static int getMargeRight(final Dimension _imageShowSize) {
         final int hundred = 100;
         return borderRightPercentShow 
-        		* controlPaint.getProject().getShowSize().width
+        		* _imageShowSize.width
         		/ hundred;
     }
     /**
      * Get the border size.
      * @return the border size.
      */
-    public static int getMargeTop() {
+    public static int getMargeTop(final Dimension _imageShowSize) {
         final int hundred = 100;
         return borderTopPercentShow 
-        		* controlPaint.getProject().getShowSize().height
+        		* _imageShowSize.height
         		/ hundred;
     }
     /**
      * Get the border size.
      * @return the border size.
      */
-    public static int getMargeBottom() {
+    public static int getMargeBottom(final Dimension _imageShowSize) {
         final int hundred = 100;
         return borderBottomPercentShow 
-        		* controlPaint.getProject().getShowSize().height
+        		* _imageShowSize.height
         		/ hundred;
     }
     

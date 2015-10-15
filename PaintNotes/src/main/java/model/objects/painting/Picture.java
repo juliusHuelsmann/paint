@@ -579,6 +579,12 @@ public final class Picture implements Serializable {
 					BufferedImage.TYPE_INT_ARGB);
 		}
 		
+		// update the values.
+		// viewsize: loc_pic. (location inside picture). 
+		
+		
+		
+		
 		emptyRectangle(
 				_loc_picture, 
 				_loc_bi,
@@ -639,14 +645,7 @@ public final class Picture implements Serializable {
 		// image which is not to be emptied and then repainted.
 		// If that's the case, the rectangle width or height are decreased.
 		int rectWidth = _size_bi.width, rectHeight = _size_bi.height;
-		if (_loc_picture.x + _size_bi.width > getShowSize().width) {
-			rectWidth = getShowSize().width - _loc_picture.x;
-		}
 
-		if (_loc_picture.y + _size_bi.height > getShowSize().height) {
-			rectHeight = getShowSize().height - _loc_picture.y;
-
-		}
 
 		BufferedImage bi = _bi;
 		

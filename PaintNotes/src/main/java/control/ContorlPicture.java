@@ -25,18 +25,12 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
-
 import javax.swing.ImageIcon;
-
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.tools.ant.property.GetProperty;
-import org.omg.CORBA._PolicyStub;
-
 import control.forms.BorderThread;
 import control.interfaces.MoveEvent;
 import control.interfaces.PaintListener;
 import model.objects.painting.PaintBI;
-import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.pen.special.PenSelection;
 import model.settings.State;
@@ -420,7 +414,7 @@ public class ContorlPicture implements PaintListener {
 		
 		// Rectangle which contains the page-print-scope of each affected
 		// page (thus the pages from firstPrintPage until lastPrintedPage).
-		final Point[] pnt_loc_bi = new Point[lastPrintedPage //MODEL-SIZE
+		final Point[] pnt_loc_bi = new Point[lastPrintedPage //VIEW-SIZE
 	                                       - firstPrintedPage + 1];
 		final Point[] pnt_loc_pic = new Point[lastPrintedPage //VIEW-SIZE
                                    - firstPrintedPage + 1];
@@ -448,8 +442,8 @@ public class ContorlPicture implements PaintListener {
 
 		// The location inside the BufferedImage is pnt_start.
 		pnt_loc_bi[0] = new Point(
-				(int) (_x * zoomStretch),
-				(int) (_y * zoomStretch));
+				(int) (_x),
+				(int) (_y));
 		
 		// The location inside the (first) picture inside the currently active 
 		// space is equal to 
@@ -472,8 +466,9 @@ public class ContorlPicture implements PaintListener {
 		// inside the Dimension-array is also the very last one, which size
 		// is adapted to the scope-size after the for-loop has terminated.
 		dim_size_bi[0] = new Dimension(
-				(int) Math.min(pageScope[0].getWidth() - pnt_loc_bi[0].x, _width),
-				(int) (pageScope[0].getHeight() - pnt_loc_bi[0].y));
+				(int) (Math.min((pageScope[0].getWidth() - pnt_loc_bi[0].x),
+						_width)),
+				(int) ((pageScope[0].getHeight() - pnt_loc_bi[0].y)));
 		
 		
 		
@@ -512,8 +507,7 @@ public class ContorlPicture implements PaintListener {
 
 			pnt_loc_bi[i] = new Point(
 					pnt_loc_bi[i - 1].x,
-					(int) (pnt_loc_bi[i - 1].y + pageScope[i - 1].height
-							/ zoomStretch));
+					(int) pnt_loc_bi[i - 1].y + (int) (pageScope[i - 1].height));
 
 			pnt_loc_pic[i] = new Point(
 					
@@ -536,7 +530,7 @@ public class ContorlPicture implements PaintListener {
 		dim_size_bi[dim_size_bi.length - 1].height = 
 				(int) (_height 
 						- (pageScope[pageScope.length - 1].y
-						+ pageScope[0].y) / zoomStretch);
+						- pageScope[0].y) / zoomStretch);
 		
 
 //		if (pagePrintScope.length != 1) {
@@ -623,7 +617,9 @@ public class ContorlPicture implements PaintListener {
 							Color.black.getRGB());
 				}
 			}
-			
+
+			pnt_loc_pic[i].x = (int) (pnt_loc_pic[i].x / zoomStretch);
+			pnt_loc_pic[i].y = (int) (pnt_loc_pic[i].y / zoomStretch);
 			
 			//
 			// Perform foreground- printing

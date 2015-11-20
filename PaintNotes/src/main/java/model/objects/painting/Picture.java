@@ -590,7 +590,8 @@ public final class Picture implements Serializable {
 				_loc_bi,
 				_size_bi, _bi);
 		
-		repaintRectangle(_loc_picture, 
+		repaintRectangle(
+				_loc_picture, 
 				_loc_bi,
 				_size_bi, _bi, false, true);
 		
@@ -967,8 +968,9 @@ public final class Picture implements Serializable {
 
 //				if (!_final || !(ls_poChronologic.getItem() instanceof PaintObjectPdf)) {
 
-					ls_poChronologic.getItem().paint(_bi, _final,
-							_bi, 
+				System.out.println("painted something");
+					ls_poChronologic.getItem().paint(
+							_bi, _final, _bi, 
 //							_x, _y,
 //							_paintLocationX,
 //							_paintLocationY,

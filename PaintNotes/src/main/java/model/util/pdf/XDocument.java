@@ -238,9 +238,15 @@ public class XDocument implements Serializable {
 	 * @return
 	 */
 	public Dimension getPageSize(final int _i) {
-
+		PDRectangle mediaBox = document.getPage(_i).getMediaBox();
+		PDRectangle chropBox = document.getPage(_i).getCropBox();
+		System.out.println(chropBox.getWidth() + ".." + chropBox.getHeight());
+		
+		
+		
+		
 		PDRectangle b = document.getPage(_i).getBBox();
-		final int realPageWidth = Math.round(b.getWidth() * PDFUtils.dpi / 72);
+		final int realPageWidth  = Math.round(b.getWidth() * PDFUtils.dpi / 72);
 		final int realPageHeight = Math.round(b.getHeight() * PDFUtils.dpi / 72);
 		return new Dimension(realPageWidth, realPageHeight);
 	}

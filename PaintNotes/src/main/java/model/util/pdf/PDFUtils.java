@@ -295,15 +295,25 @@ public final class PDFUtils {
     
     
     public static BufferedImage pdf2image(PDDocument _document, int _pageNumber) {
+    	return pdf2image(_document, _pageNumber, dpi);
+    }
+    
+    
+
+    public static BufferedImage pdf2image(PDDocument _document, int _pageNumber, final int _dpi) {
 
     	PDFRenderer renderer = new PDFRenderer(_document);
     	BufferedImage image;
 		try {
 			image = renderer.renderImageWithDPI(_pageNumber, dpi, ImageType.RGB);
 	    	return image;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();	
-			return null;
+			if (_dpi < 50) {
+				System.err.println("interrupt loop");
+				return null;
+			}
+			return pdf2image(_document, _pageNumber, _dpi / 2);
 		}
     
     }

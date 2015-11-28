@@ -191,7 +191,259 @@ public final class CTabSelection implements ActionListener {
         	}
 
         	
-        } else {
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_darkBlue2green().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_DARK_BLUE2GREEN);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_darkBlue2lightBlue().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_DARK_BLUE2LIGHT_BLUE);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_darkBlue2pink().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_DARK_BLUE2PINK);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_darkBlue2red().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_DARK_BLUE2RED);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_darkBlue2yellow().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_DARK_BLUE2YELLOW);
+        	cp.getControlPic().refreshPaint();
+        	
+        	
+        	
+        	
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_darkBlue2green().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_DARK_BLUE2GREEN);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_darkBlue2lightBlue().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_DARK_BLUE2LIGHT_BLUE);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_darkBlue2pink().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_DARK_BLUE2PINK);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_darkBlue2red().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_DARK_BLUE2RED);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_darkBlue2yellow().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_DARK_BLUE2YELLOW);
+        	cp.getControlPic().refreshPaint();
+        	
+        	
+        	
+        	
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_green2darkBlue().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_GREEN2DARK_BLUE);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_green2lightBlue().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_GREEN2LIGHT_BLUE);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_green2pink().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_GREEN2PINK);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_green2red().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_GREEN2RED);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_green2yellow().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_GREEN2YELLOW);
+        	cp.getControlPic().refreshPaint();
+        	
+        	
+        	
+        	
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_lightBlue2green().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_LIGHT_BLUE2GREEN);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_lightBlue2darkBlue().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_LIGHT_BLUE2DARK_BLUE);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_lightBlue2pink().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_LIGHT_BLUE2PINK);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_lightBlue2red().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_LIGHT_BLUE2RED);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_lightBlue2yellow().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_LIGHT_BLUE2YELLOW);
+        	cp.getControlPic().refreshPaint();
+        	
+        	
+        	
+        	
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_pink2green().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_PINK2GREEN);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_pink2lightBlue().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_PINK2LIGHT_BLUE);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_pink2darkBlue().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_PINK2DARK_BLUE);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_pink2red().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_PINK2RED);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_pink2yellow().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_PINK2YELLOW);
+        	cp.getControlPic().refreshPaint();
+        	
+        	
+        	
+        	
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_red2green().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_RED2GREEN);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_red2lightBlue().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_RED2LIGHT_BLUE);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_red2pink().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_RED2PINK);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_red2darkBlue().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_RED2DARK_BLUE);
+        	cp.getControlPic().refreshPaint();
+        } else if (_event.getSource().equals(getSelection()
+        		.getI1b_red2yellow().getActionCause())) {
+        	cp.getPicture().executeTraversionOperation(
+        			Picture.ID_TR_RED2YELLOW);
+        	cp.getControlPic().refreshPaint();
+        	
+        	
+        	
+        	
+        
+        } else if (_event.getSource().equals(getSelection()
+	    		.getI1b_yellow2green().getActionCause())) {
+	    	cp.getPicture().executeTraversionOperation(
+	    			Picture.ID_TR_YELLOW2GREEN);
+        	cp.getControlPic().refreshPaint();
+	    } else if (_event.getSource().equals(getSelection()
+	    		.getI1b_yellow2lightBlue().getActionCause())) {
+	    	cp.getPicture().executeTraversionOperation(
+	    			Picture.ID_TR_YELLOW2LIGHT_BLUE);
+        	cp.getControlPic().refreshPaint();
+	    } else if (_event.getSource().equals(getSelection()
+	    		.getI1b_yellow2pink().getActionCause())) {
+	    	cp.getPicture().executeTraversionOperation(
+	    			Picture.ID_TR_YELLOW2PINK);
+        	cp.getControlPic().refreshPaint();
+	    } else if (_event.getSource().equals(getSelection()
+	    		.getI1b_yellow2darkBlue().getActionCause())) {
+	    	cp.getPicture().executeTraversionOperation(
+	    			Picture.ID_TR_YELLOW2DARK_BLUE);
+        	cp.getControlPic().refreshPaint();
+	    } else if (_event.getSource().equals(getSelection()
+	    		.getI1b_yellow2red().getActionCause())) {
+	    	cp.getPicture().executeTraversionOperation(
+	    			Picture.ID_TR_YELLOW2RED);
+        	cp.getControlPic().refreshPaint();
+    	
+    	
+    	
+    	
+    	
+        
+	    } else if (_event.getSource().equals(getSelection()
+	    		.getI1b_grayifyDarkBlue().getActionCause())) {
+	    	cp.getPicture().executeTraversionOperation(
+	    			Picture.ID_TR_GRAYIFY_DARK_BLUE);
+        	cp.getControlPic().refreshPaint();
+	    } else if (_event.getSource().equals(getSelection()
+	    		.getI1b_grayifyGreen().getActionCause())) {
+	    	cp.getPicture().executeTraversionOperation(
+	    			Picture.ID_TR_GRAYIFY_GREEN);
+        	cp.getControlPic().refreshPaint();
+	    } else if (_event.getSource().equals(getSelection()
+	    		.getI1b_grayifyLightBlue().getActionCause())) {
+	    	cp.getPicture().executeTraversionOperation(
+	    			Picture.ID_TR_GRAYIFY_LIGHT_BLUE);
+        	cp.getControlPic().refreshPaint();
+	    } else if (_event.getSource().equals(getSelection()
+	    		.getI1b_grayifyPink().getActionCause())) {
+	    	cp.getPicture().executeTraversionOperation(
+	    			Picture.ID_TR_GRAYIFY_PINK);
+        	cp.getControlPic().refreshPaint();
+	    } else if (_event.getSource().equals(getSelection()
+	    		.getI1b_grayifyRed().getActionCause())) {
+	    	cp.getPicture().executeTraversionOperation(
+	    			Picture.ID_TR_GRAYIFY_RED);
+        	cp.getControlPic().refreshPaint();
+		
+	    } else if (_event.getSource().equals(getSelection()
+	    		.getI1b_grayifyYellow().getActionCause())) {
+	    	cp.getPicture().executeTraversionOperation(
+	    			Picture.ID_TR_GRAYIFY_YELLOW);
+        	cp.getControlPic().refreshPaint();
+		
+		
+		
+		
+	    } 
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        else {
             for (int i = 0; i < getSelection().getJbtn_colors().length; i++) {
 
                 if (_event.getSource().equals(getSelection()

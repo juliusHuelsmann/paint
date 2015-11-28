@@ -146,6 +146,7 @@ public final class Selection extends Tab {
         		_controlPaintStatus);
         x = initPen(x, true, _cts);
         initOthers(x, true, _cp, _controlPaintStatus, _cts, _cp);
+        initBIOperations(x, true, _cp, _controlPaintStatus, _cts, _cp);
 	}
 	
 	
@@ -431,12 +432,51 @@ public final class Selection extends Tab {
         return xLocationSeparation + ViewSettings.getDistanceBetweenItems();
         
 	}
-	
+
 	
 	/**
 	 * The item1Menu for the first pen.
 	 */
 	private Item1Menu it_rotate;
+
+	/**
+	 * The item1Menu for the first pen.
+	 */
+	private Item1Menu it_changeColors;
+
+	/**
+	 * The item1Menu for the first pen.
+	 */
+	private Item1Menu it_grayifyColors;
+	
+	
+	/**
+	 * 
+	 */
+	private Item1Button i1b_red2yellow, i1b_red2green, i1b_red2lightBlue,
+	i1b_red2darkBlue, i1b_red2pink,
+
+	i1b_yellow2red, i1b_yellow2green, i1b_yellow2lightBlue,
+	i1b_yellow2darkBlue, i1b_yellow2pink,
+
+	i1b_green2yellow, i1b_green2red, i1b_green2lightBlue, i1b_green2darkBlue, 
+	i1b_green2pink,
+
+	i1b_lightBlue2yellow, i1b_lightBlue2green, i1b_lightBlue2red,
+	i1b_lightBlue2darkBlue, i1b_lightBlue2pink,
+	
+	i1b_darkBlue2yellow, i1b_darkBlue2green, i1b_darkBlue2lightBlue, 
+	i1b_darkBlue2red, i1b_darkBlue2pink,
+	
+	i1b_pink2yellow, i1b_pink2green, i1b_pink2lightBlue, i1b_pink2darkBlue, 
+	i1b_pink2red;
+	
+
+	/**
+	 * 
+	 */
+	private Item1Button i1b_grayifyRed, i1b_grayifyYellow, i1b_grayifyGreen,
+	i1b_grayifyLightBlue, i1b_grayifyDarkBlue, i1b_grayifyPink;
 	
 	/**
 	 * initialize other items.
@@ -623,6 +663,628 @@ public final class Selection extends Tab {
 //        return xLocationSeparation + ViewSettings.getDistanceBetweenItems();
 	}
 	
+	
+	
+
+	/**
+	 * initialize other items.
+	 * @param _x the x coordinate
+	 * @param _paint whether to paint or not
+	 * @param _ml
+	 * 					implements MenuListener _ml which handles menu
+	 * 					opening and closing events for being able to repaint
+	 * 					or to do other necessary stuff.
+	 * 
+	 */
+	private void initBIOperations(final int _x, final boolean _paint,
+			final MenuListener _ml,
+			final CPaintStatus _controlPaintStatus,
+			final ActionListener _cts,
+			final ControlPaint _cp) {
+
+		final int distance = 5;
+        final int contentHeight = ViewSettings.getItemMenu1Height() - 2 * distance;
+        final Dimension sizeOpen = new Dimension(
+        		ViewSettings.getItemMenu1Width() * (2 + 2), 
+        		 contentHeight * (2 + 2) + 5);
+		
+		
+
+        //pen 1
+        
+        if (_paint) {
+        	
+
+            it_changeColors = new Item1Menu(false);
+            it_changeColors.setMenuListener(_ml);
+            it_changeColors.addMouseListener(_controlPaintStatus);
+            it_changeColors.setBorder(null);
+            it_changeColors.setBorder(false);
+            it_changeColors.setText("switch clr");
+            it_changeColors.changeClosedSizes(ViewSettings.getItemMenu1Width(), 
+                    ViewSettings.getItemMenu1Height());
+
+            /*
+             * red
+             */
+            i1b_red2yellow = new Item1Button(null);
+            i1b_red2yellow.addActionListener(_cts);
+            i1b_red2yellow.setBorder(false);
+            i1b_red2yellow.setShifted();
+            i1b_red2yellow.setText("Red to yellow");
+            i1b_red2yellow.setActivable(true);
+            i1b_red2yellow.setOpaque(false);
+
+            i1b_red2green = new Item1Button(null);
+            i1b_red2green.addActionListener(_cts);
+            i1b_red2green.setBorder(false);
+            i1b_red2green.setShifted();
+            i1b_red2green.setText("Red to green");
+            i1b_red2green.setActivable(true);
+            i1b_red2green.setOpaque(false);
+
+            i1b_red2lightBlue = new Item1Button(null);
+            i1b_red2lightBlue.addActionListener(_cts);
+            i1b_red2lightBlue.setBorder(false);
+            i1b_red2lightBlue.setShifted();
+            i1b_red2lightBlue.setText("Red to lightBlue");
+            i1b_red2lightBlue.setActivable(true);
+            i1b_red2lightBlue.setOpaque(false);
+
+            i1b_red2darkBlue = new Item1Button(null);
+            i1b_red2darkBlue.addActionListener(_cts);
+            i1b_red2darkBlue.setBorder(false);
+            i1b_red2darkBlue.setShifted();
+            i1b_red2darkBlue.setText("Red to darkBlue");
+            i1b_red2darkBlue.setActivable(true);
+            i1b_red2darkBlue.setOpaque(false);
+
+            i1b_red2pink = new Item1Button(null);
+            i1b_red2pink.addActionListener(_cts);
+            i1b_red2pink.setBorder(false);
+            i1b_red2pink.setShifted();
+            i1b_red2pink.setText("Red to pink");
+            i1b_red2pink.setActivable(true);
+            i1b_red2pink.setOpaque(false);
+
+
+            /*
+             * yellow
+             */
+            i1b_yellow2red = new Item1Button(null);
+            i1b_yellow2red.addActionListener(_cts);
+            i1b_yellow2red.setBorder(false);
+            i1b_yellow2red.setShifted();
+            i1b_yellow2red.setText("yellow to red");
+            i1b_yellow2red.setActivable(true);
+            i1b_yellow2red.setOpaque(false);
+
+            i1b_yellow2green = new Item1Button(null);
+            i1b_yellow2green.addActionListener(_cts);
+            i1b_yellow2green.setBorder(false);
+            i1b_yellow2green.setShifted();
+            i1b_yellow2green.setText("yellow to green");
+            i1b_yellow2green.setActivable(true);
+            i1b_yellow2green.setOpaque(false);
+
+            i1b_yellow2lightBlue = new Item1Button(null);
+            i1b_yellow2lightBlue.addActionListener(_cts);
+            i1b_yellow2lightBlue.setBorder(false);
+            i1b_yellow2lightBlue.setShifted();
+            i1b_yellow2lightBlue.setText("yellow to lightBlue");
+            i1b_yellow2lightBlue.setActivable(true);
+            i1b_yellow2lightBlue.setOpaque(false);
+
+            i1b_yellow2darkBlue = new Item1Button(null);
+            i1b_yellow2darkBlue.addActionListener(_cts);
+            i1b_yellow2darkBlue.setBorder(false);
+            i1b_yellow2darkBlue.setShifted();
+            i1b_yellow2darkBlue.setText("yellow to darkBlue");
+            i1b_yellow2darkBlue.setActivable(true);
+            i1b_yellow2darkBlue.setOpaque(false);
+
+            i1b_yellow2pink = new Item1Button(null);
+            i1b_yellow2pink.addActionListener(_cts);
+            i1b_yellow2pink.setBorder(false);
+            i1b_yellow2pink.setShifted();
+            i1b_yellow2pink.setText("yellow to pink");
+            i1b_yellow2pink.setActivable(true);
+            i1b_yellow2pink.setOpaque(false);
+
+            /*
+             * red
+             */
+            i1b_green2yellow = new Item1Button(null);
+            i1b_green2yellow.addActionListener(_cts);
+            i1b_green2yellow.setBorder(false);
+            i1b_green2yellow.setShifted();
+            i1b_green2yellow.setText("green to yellow");
+            i1b_green2yellow.setActivable(true);
+            i1b_green2yellow.setOpaque(false);
+
+            i1b_green2red = new Item1Button(null);
+            i1b_green2red.addActionListener(_cts);
+            i1b_green2red.setBorder(false);
+            i1b_green2red.setShifted();
+            i1b_green2red.setText("green to red");
+            i1b_green2red.setActivable(true);
+            i1b_green2red.setOpaque(false);
+
+            i1b_green2lightBlue = new Item1Button(null);
+            i1b_green2lightBlue.addActionListener(_cts);
+            i1b_green2lightBlue.setBorder(false);
+            i1b_green2lightBlue.setShifted();
+            i1b_green2lightBlue.setText("green to lightBlue");
+            i1b_green2lightBlue.setActivable(true);
+            i1b_green2lightBlue.setOpaque(false);
+
+            i1b_green2darkBlue = new Item1Button(null);
+            i1b_green2darkBlue.addActionListener(_cts);
+            i1b_green2darkBlue.setBorder(false);
+            i1b_green2darkBlue.setShifted();
+            i1b_green2darkBlue.setText("green to darkBlue");
+            i1b_green2darkBlue.setActivable(true);
+            i1b_green2darkBlue.setOpaque(false);
+
+            i1b_green2pink = new Item1Button(null);
+            i1b_green2pink.addActionListener(_cts);
+            i1b_green2pink.setBorder(false);
+            i1b_green2pink.setShifted();
+            i1b_green2pink.setText("green to pink");
+            i1b_green2pink.setActivable(true);
+            i1b_green2pink.setOpaque(false);
+
+            /*
+             * lightBlue
+             */
+            i1b_lightBlue2yellow = new Item1Button(null);
+            i1b_lightBlue2yellow.addActionListener(_cts);
+            i1b_lightBlue2yellow.setBorder(false);
+            i1b_lightBlue2yellow.setShifted();
+            i1b_lightBlue2yellow.setText("lightBlue to yellow");
+            i1b_lightBlue2yellow.setActivable(true);
+            i1b_lightBlue2yellow.setOpaque(false);
+
+            i1b_lightBlue2green = new Item1Button(null);
+            i1b_lightBlue2green.addActionListener(_cts);
+            i1b_lightBlue2green.setBorder(false);
+            i1b_lightBlue2green.setShifted();
+            i1b_lightBlue2green.setText("lightBlue to green");
+            i1b_lightBlue2green.setActivable(true);
+            i1b_lightBlue2green.setOpaque(false);
+
+            i1b_lightBlue2red = new Item1Button(null);
+            i1b_lightBlue2red.addActionListener(_cts);
+            i1b_lightBlue2red.setBorder(false);
+            i1b_lightBlue2red.setShifted();
+            i1b_lightBlue2red.setText("lightBlue to red");
+            i1b_lightBlue2red.setActivable(true);
+            i1b_lightBlue2red.setOpaque(false);
+
+            i1b_lightBlue2darkBlue = new Item1Button(null);
+            i1b_lightBlue2darkBlue.addActionListener(_cts);
+            i1b_lightBlue2darkBlue.setBorder(false);
+            i1b_lightBlue2darkBlue.setShifted();
+            i1b_lightBlue2darkBlue.setText("lightBlue to darkBlue");
+            i1b_lightBlue2darkBlue.setActivable(true);
+            i1b_lightBlue2darkBlue.setOpaque(false);
+
+            i1b_lightBlue2pink = new Item1Button(null);
+            i1b_lightBlue2pink.addActionListener(_cts);
+            i1b_lightBlue2pink.setBorder(false);
+            i1b_lightBlue2pink.setShifted();
+            i1b_lightBlue2pink.setText("lightBlue to pink");
+            i1b_lightBlue2pink.setActivable(true);
+            i1b_lightBlue2pink.setOpaque(false);
+
+            /*
+             * darkBlue
+             */
+            i1b_darkBlue2yellow = new Item1Button(null);
+            i1b_darkBlue2yellow.addActionListener(_cts);
+            i1b_darkBlue2yellow.setBorder(false);
+            i1b_darkBlue2yellow.setShifted();
+            i1b_darkBlue2yellow.setText("darkBlue to yellow");
+            i1b_darkBlue2yellow.setActivable(true);
+            i1b_darkBlue2yellow.setOpaque(false);
+
+            i1b_darkBlue2green = new Item1Button(null);
+            i1b_darkBlue2green.addActionListener(_cts);
+            i1b_darkBlue2green.setBorder(false);
+            i1b_darkBlue2green.setShifted();
+            i1b_darkBlue2green.setText("darkBlue to green");
+            i1b_darkBlue2green.setActivable(true);
+            i1b_darkBlue2green.setOpaque(false);
+
+            i1b_darkBlue2lightBlue = new Item1Button(null);
+            i1b_darkBlue2lightBlue.addActionListener(_cts);
+            i1b_darkBlue2lightBlue.setBorder(false);
+            i1b_darkBlue2lightBlue.setShifted();
+            i1b_darkBlue2lightBlue.setText("darkBlue to lightBlue");
+            i1b_darkBlue2lightBlue.setActivable(true);
+            i1b_darkBlue2lightBlue.setOpaque(false);
+
+            i1b_darkBlue2red = new Item1Button(null);
+            i1b_darkBlue2red.addActionListener(_cts);
+            i1b_darkBlue2red.setBorder(false);
+            i1b_darkBlue2red.setShifted();
+            i1b_darkBlue2red.setText("darkBlue to red");
+            i1b_darkBlue2red.setActivable(true);
+            i1b_darkBlue2red.setOpaque(false);
+
+            i1b_darkBlue2pink = new Item1Button(null);
+            i1b_darkBlue2pink.addActionListener(_cts);
+            i1b_darkBlue2pink.setBorder(false);
+            i1b_darkBlue2pink.setShifted();
+            i1b_darkBlue2pink.setText("darkBlue to pink");
+            i1b_darkBlue2pink.setActivable(true);
+            i1b_darkBlue2pink.setOpaque(false);
+
+
+            /*
+             * pink
+             */
+            i1b_pink2yellow = new Item1Button(null);
+            i1b_pink2yellow.addActionListener(_cts);
+            i1b_pink2yellow.setBorder(false);
+            i1b_pink2yellow.setShifted();
+            i1b_pink2yellow.setText("pink to yellow");
+            i1b_pink2yellow.setActivable(true);
+            i1b_pink2yellow.setOpaque(false);
+
+            i1b_pink2green = new Item1Button(null);
+            i1b_pink2green.addActionListener(_cts);
+            i1b_pink2green.setBorder(false);
+            i1b_pink2green.setShifted();
+            i1b_pink2green.setText("pink to green");
+            i1b_pink2green.setActivable(true);
+            i1b_pink2green.setOpaque(false);
+
+            i1b_pink2lightBlue = new Item1Button(null);
+            i1b_pink2lightBlue.addActionListener(_cts);
+            i1b_pink2lightBlue.setBorder(false);
+            i1b_pink2lightBlue.setShifted();
+            i1b_pink2lightBlue.setText("pink to lightBlue");
+            i1b_pink2lightBlue.setActivable(true);
+            i1b_pink2lightBlue.setOpaque(false);
+
+            i1b_pink2darkBlue = new Item1Button(null);
+            i1b_pink2darkBlue.addActionListener(_cts);
+            i1b_pink2darkBlue.setBorder(false);
+            i1b_pink2darkBlue.setShifted();
+            i1b_pink2darkBlue.setText("pink to darkBlue");
+            i1b_pink2darkBlue.setActivable(true);
+            i1b_pink2darkBlue.setOpaque(false);
+
+            i1b_pink2red = new Item1Button(null);
+            i1b_pink2red.addActionListener(_cts);
+            i1b_pink2red.setBorder(false);
+            i1b_pink2red.setShifted();
+            i1b_pink2red.setText("pink to red");
+            i1b_pink2red.setActivable(true);
+            i1b_pink2red.setOpaque(false);
+
+        }
+        
+        
+        
+
+        it_changeColors.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        it_changeColors.setSize(sizeOpen);
+        it_changeColors.setSizeHeight(ViewSettings.getItemWidth());
+        it_changeColors.setLocation(it_rotate.getX() 
+                + it_rotate.getWidth() + distance, 
+                it_rotate.getY());
+        
+        
+        
+
+
+
+        i1b_red2yellow.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_red2yellow.setSize(
+        		it_changeColors.getWidth(), i1b_red2yellow.getHeight());
+
+        i1b_red2green.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_red2green.setSize(i1b_red2yellow.getSize());
+
+        i1b_red2lightBlue.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_red2lightBlue.setSize(i1b_red2yellow.getSize());
+
+        i1b_red2darkBlue.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_red2darkBlue.setSize(i1b_red2yellow.getSize());
+
+        i1b_red2pink.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_red2pink.setSize(i1b_red2yellow.getSize());
+        
+
+
+
+        i1b_yellow2red.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_yellow2red.setSize(
+        		it_changeColors.getWidth(), i1b_yellow2red.getHeight());
+
+        i1b_yellow2green.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_yellow2green.setSize(i1b_yellow2red.getSize());
+
+        i1b_yellow2lightBlue.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_yellow2lightBlue.setSize(i1b_yellow2red.getSize());
+
+        i1b_yellow2darkBlue.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_yellow2darkBlue.setSize(i1b_yellow2red.getSize());
+
+        i1b_yellow2pink.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_yellow2pink.setSize(i1b_yellow2red.getSize());
+        
+
+
+
+        i1b_green2yellow.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_green2yellow.setSize(
+        		it_changeColors.getWidth(), i1b_green2yellow.getHeight());
+
+        i1b_green2red.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_green2red.setSize(i1b_green2yellow.getSize());
+
+        i1b_green2lightBlue.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_green2lightBlue.setSize(i1b_green2yellow.getSize());
+
+        i1b_green2darkBlue.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_green2darkBlue.setSize(i1b_green2yellow.getSize());
+
+        i1b_green2pink.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_green2pink.setSize(i1b_green2yellow.getSize());
+        
+
+
+
+        i1b_lightBlue2yellow.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_lightBlue2yellow.setSize(
+        		it_changeColors.getWidth(), i1b_lightBlue2yellow.getHeight());
+
+        i1b_lightBlue2green.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_lightBlue2green.setSize(i1b_lightBlue2yellow.getSize());
+
+        i1b_lightBlue2red.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_lightBlue2red.setSize(i1b_lightBlue2yellow.getSize());
+
+        i1b_lightBlue2darkBlue.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_lightBlue2darkBlue.setSize(i1b_lightBlue2yellow.getSize());
+
+        i1b_lightBlue2pink.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_lightBlue2pink.setSize(i1b_lightBlue2yellow.getSize());
+        
+
+
+
+        i1b_darkBlue2yellow.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_darkBlue2yellow.setSize(
+        		it_changeColors.getWidth(), i1b_darkBlue2yellow.getHeight());
+
+        i1b_darkBlue2green.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_darkBlue2green.setSize(i1b_darkBlue2yellow.getSize());
+
+        i1b_darkBlue2lightBlue.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_darkBlue2lightBlue.setSize(i1b_darkBlue2yellow.getSize());
+
+        i1b_darkBlue2red.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_darkBlue2red.setSize(i1b_darkBlue2yellow.getSize());
+
+        i1b_darkBlue2pink.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_darkBlue2pink.setSize(i1b_darkBlue2yellow.getSize());
+        
+
+
+
+        i1b_pink2yellow.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_pink2yellow.setSize(
+        		it_changeColors.getWidth(), i1b_pink2yellow.getHeight());
+
+        i1b_pink2green.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_pink2green.setSize(i1b_pink2yellow.getSize());
+
+        i1b_pink2lightBlue.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_pink2lightBlue.setSize(i1b_pink2yellow.getSize());
+
+        i1b_pink2darkBlue.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_pink2darkBlue.setSize(i1b_pink2yellow.getSize());
+
+        i1b_pink2red.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_pink2red.setSize(i1b_pink2yellow.getSize());
+        
+
+        
+        
+		if (_paint) {
+
+			it_changeColors.add(i1b_red2yellow);
+			it_changeColors.add(i1b_red2green);
+			it_changeColors.add(i1b_red2lightBlue);
+			it_changeColors.add(i1b_red2darkBlue);
+			it_changeColors.add(i1b_red2pink);
+
+			it_changeColors.add(i1b_yellow2red);
+			it_changeColors.add(i1b_yellow2green);
+			it_changeColors.add(i1b_yellow2lightBlue);
+			it_changeColors.add(i1b_yellow2darkBlue);
+			it_changeColors.add(i1b_yellow2pink);
+
+			it_changeColors.add(i1b_green2yellow);
+			it_changeColors.add(i1b_green2red);
+			it_changeColors.add(i1b_green2lightBlue);
+			it_changeColors.add(i1b_green2darkBlue);
+			it_changeColors.add(i1b_green2pink);
+
+			it_changeColors.add(i1b_lightBlue2yellow);
+			it_changeColors.add(i1b_lightBlue2green);
+			it_changeColors.add(i1b_lightBlue2red);
+			it_changeColors.add(i1b_lightBlue2darkBlue);
+			it_changeColors.add(i1b_lightBlue2pink);
+
+			it_changeColors.add(i1b_darkBlue2yellow);
+			it_changeColors.add(i1b_darkBlue2green);
+			it_changeColors.add(i1b_darkBlue2lightBlue);
+			it_changeColors.add(i1b_darkBlue2red);
+			it_changeColors.add(i1b_darkBlue2pink);
+
+			it_changeColors.add(i1b_pink2yellow);
+			it_changeColors.add(i1b_pink2green);
+			it_changeColors.add(i1b_pink2lightBlue);
+			it_changeColors.add(i1b_pink2darkBlue);
+			it_changeColors.add(i1b_pink2red);
+
+
+			it_changeColors.setActivable();
+			it_changeColors.setItemsInRow((byte) 1);
+			it_changeColors.setBorder(false);
+	        super.add(it_changeColors);
+	        //it_changeColors.removeScroll();
+		}
+        
+
+        
+        
+        
+        
+		
+		
+		
+		
+
+		if (_paint) {
+			
+
+	        //pen 1
+	        it_grayifyColors = new Item1Menu(false);
+	        it_grayifyColors.setMenuListener(_ml);
+	        it_grayifyColors.addMouseListener(_controlPaintStatus);
+	        it_grayifyColors.setBorder(null);
+	        it_grayifyColors.setBorder(false);
+	        it_grayifyColors.setText("remove clr");
+	        it_grayifyColors.changeClosedSizes(ViewSettings.getItemMenu1Width(), 
+	                ViewSettings.getItemMenu1Height());
+	        
+			
+            i1b_grayifyRed = new Item1Button(null);
+            i1b_grayifyRed.addActionListener(_cts);
+            i1b_grayifyRed.setBorder(false);
+            i1b_grayifyRed.setShifted();
+            i1b_grayifyRed.setText("red2gray");
+            i1b_grayifyRed.setActivable(true);
+            i1b_grayifyRed.setOpaque(false); 
+            
+            i1b_grayifyYellow = new Item1Button(null);
+            i1b_grayifyYellow.addActionListener(_cts);
+            i1b_grayifyYellow.setBorder(false);
+            i1b_grayifyYellow.setShifted();
+            i1b_grayifyYellow.setText("yellow2gray");
+            i1b_grayifyYellow.setActivable(true);
+            i1b_grayifyYellow.setOpaque(false);
+
+            i1b_grayifyGreen = new Item1Button(null);
+            i1b_grayifyGreen.addActionListener(_cts);
+            i1b_grayifyGreen.setBorder(false);
+            i1b_grayifyGreen.setShifted();
+            i1b_grayifyGreen.setText("green2gray");
+            i1b_grayifyGreen.setActivable(true);
+            i1b_grayifyGreen.setOpaque(false);
+
+            i1b_grayifyLightBlue = new Item1Button(null);
+            i1b_grayifyLightBlue.addActionListener(_cts);
+            i1b_grayifyLightBlue.setBorder(false);
+            i1b_grayifyLightBlue.setShifted();
+            i1b_grayifyLightBlue.setText("lightBlue2gray");
+            i1b_grayifyLightBlue.setActivable(true);
+            i1b_grayifyLightBlue.setOpaque(false);
+
+            i1b_grayifyDarkBlue = new Item1Button(null);
+            i1b_grayifyDarkBlue.addActionListener(_cts);
+            i1b_grayifyDarkBlue.setBorder(false);
+            i1b_grayifyDarkBlue.setShifted();
+            i1b_grayifyDarkBlue.setText("darkBlue2gray");
+            i1b_grayifyDarkBlue.setActivable(true);
+            i1b_grayifyDarkBlue.setOpaque(false);
+
+            i1b_grayifyPink = new Item1Button(null);
+            i1b_grayifyPink.addActionListener(_cts);
+            i1b_grayifyPink.setBorder(false);
+            i1b_grayifyPink.setShifted();
+            i1b_grayifyPink.setText("pink2gray");
+            i1b_grayifyPink.setActivable(true);
+            i1b_grayifyPink.setOpaque(false);
+
+
+		}
+        
+        
+
+        it_grayifyColors.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        it_grayifyColors.setSize(sizeOpen);
+        it_grayifyColors.setSizeHeight(ViewSettings.getItemWidth());
+        it_grayifyColors.setLocation(it_changeColors.getX() 
+                + it_changeColors.getWidth() + distance, 
+                it_changeColors.getY());
+        
+        i1b_rotateClockwise.setSize(
+        		it_grayifyColors.getWidth(), i1b_rotateClockwise.getHeight());
+
+        
+		
+		
+		
+
+        i1b_grayifyRed.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_grayifyRed.setSize(
+        		it_changeColors.getWidth(), i1b_grayifyRed.getHeight());
+		
+
+        i1b_grayifyYellow.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_grayifyYellow.setSize(
+        		it_changeColors.getWidth(), i1b_grayifyYellow.getHeight());
+
+        i1b_grayifyGreen.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_grayifyGreen.setSize(i1b_grayifyYellow.getSize());
+
+        i1b_grayifyLightBlue.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_grayifyLightBlue.setSize(i1b_grayifyYellow.getSize());
+
+        i1b_grayifyDarkBlue.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_grayifyDarkBlue.setSize(i1b_grayifyYellow.getSize());
+
+        i1b_grayifyPink.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        i1b_grayifyPink.setSize(i1b_grayifyYellow.getSize());
+        
+
+		
+		if (_paint) {
+
+			it_grayifyColors.add(i1b_grayifyRed);
+			it_grayifyColors.add(i1b_grayifyYellow);
+			it_grayifyColors.add(i1b_grayifyGreen);
+			it_grayifyColors.add(i1b_grayifyLightBlue);
+			it_grayifyColors.add(i1b_grayifyDarkBlue);
+			it_grayifyColors.add(i1b_grayifyPink);
+			
+			it_grayifyColors.setActivable();
+			it_grayifyColors.setItemsInRow((byte) 1);
+			it_grayifyColors.setBorder(false);
+	        super.add(it_grayifyColors);
+	        //it_changeColors.removeScroll();
+		}
+		
+		
+        
+        
+        
+        
+		
+	}
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * add pens .
@@ -738,6 +1400,330 @@ public final class Selection extends Tab {
 	 */
 	public Item1Menu getIt_rotate() {
 		return it_rotate;
+	}
+
+
+
+	/**
+	 * @return the i1b_red2yellow
+	 */
+	public Item1Button getI1b_red2yellow() {
+		return i1b_red2yellow;
+	}
+
+
+
+	/**
+	 * @return the i1b_red2green
+	 */
+	public Item1Button getI1b_red2green() {
+		return i1b_red2green;
+	}
+
+
+
+	/**
+	 * @return the i1b_red2lightBlue
+	 */
+	public Item1Button getI1b_red2lightBlue() {
+		return i1b_red2lightBlue;
+	}
+
+
+
+	/**
+	 * @return the i1b_red2darkBlue
+	 */
+	public Item1Button getI1b_red2darkBlue() {
+		return i1b_red2darkBlue;
+	}
+
+
+
+	/**
+	 * @return the i1b_red2pink
+	 */
+	public Item1Button getI1b_red2pink() {
+		return i1b_red2pink;
+	}
+
+
+
+	/**
+	 * @return the i1b_yellow2red
+	 */
+	public Item1Button getI1b_yellow2red() {
+		return i1b_yellow2red;
+	}
+
+
+
+	/**
+	 * @return the i1b_yellow2green
+	 */
+	public Item1Button getI1b_yellow2green() {
+		return i1b_yellow2green;
+	}
+
+
+
+	/**
+	 * @return the i1b_yellow2lightBlue
+	 */
+	public Item1Button getI1b_yellow2lightBlue() {
+		return i1b_yellow2lightBlue;
+	}
+
+
+
+	/**
+	 * @return the i1b_yellow2darkBlue
+	 */
+	public Item1Button getI1b_yellow2darkBlue() {
+		return i1b_yellow2darkBlue;
+	}
+
+
+
+	/**
+	 * @return the i1b_yellow2pink
+	 */
+	public Item1Button getI1b_yellow2pink() {
+		return i1b_yellow2pink;
+	}
+
+
+
+	/**
+	 * @return the i1b_green2yellow
+	 */
+	public Item1Button getI1b_green2yellow() {
+		return i1b_green2yellow;
+	}
+
+
+
+	/**
+	 * @return the i1b_green2red
+	 */
+	public Item1Button getI1b_green2red() {
+		return i1b_green2red;
+	}
+
+
+
+	/**
+	 * @return the i1b_green2lightBlue
+	 */
+	public Item1Button getI1b_green2lightBlue() {
+		return i1b_green2lightBlue;
+	}
+
+
+
+	/**
+	 * @return the i1b_green2darkBlue
+	 */
+	public Item1Button getI1b_green2darkBlue() {
+		return i1b_green2darkBlue;
+	}
+
+
+
+	/**
+	 * @return the i1b_green2pink
+	 */
+	public Item1Button getI1b_green2pink() {
+		return i1b_green2pink;
+	}
+
+
+
+	/**
+	 * @return the i1b_lightBlue2yellow
+	 */
+	public Item1Button getI1b_lightBlue2yellow() {
+		return i1b_lightBlue2yellow;
+	}
+
+
+
+	/**
+	 * @return the i1b_lightBlue2green
+	 */
+	public Item1Button getI1b_lightBlue2green() {
+		return i1b_lightBlue2green;
+	}
+
+
+
+	/**
+	 * @return the i1b_lightBlue2red
+	 */
+	public Item1Button getI1b_lightBlue2red() {
+		return i1b_lightBlue2red;
+	}
+
+
+
+	/**
+	 * @return the i1b_lightBlue2darkBlue
+	 */
+	public Item1Button getI1b_lightBlue2darkBlue() {
+		return i1b_lightBlue2darkBlue;
+	}
+
+
+
+	/**
+	 * @return the i1b_lightBlue2pink
+	 */
+	public Item1Button getI1b_lightBlue2pink() {
+		return i1b_lightBlue2pink;
+	}
+
+
+
+	/**
+	 * @return the i1b_darkBlue2yellow
+	 */
+	public Item1Button getI1b_darkBlue2yellow() {
+		return i1b_darkBlue2yellow;
+	}
+
+
+
+	/**
+	 * @return the i1b_darkBlue2green
+	 */
+	public Item1Button getI1b_darkBlue2green() {
+		return i1b_darkBlue2green;
+	}
+
+
+
+	/**
+	 * @return the i1b_darkBlue2lightBlue
+	 */
+	public Item1Button getI1b_darkBlue2lightBlue() {
+		return i1b_darkBlue2lightBlue;
+	}
+
+
+
+	/**
+	 * @return the i1b_darkBlue2red
+	 */
+	public Item1Button getI1b_darkBlue2red() {
+		return i1b_darkBlue2red;
+	}
+
+
+
+	/**
+	 * @return the i1b_darkBlue2pink
+	 */
+	public Item1Button getI1b_darkBlue2pink() {
+		return i1b_darkBlue2pink;
+	}
+
+
+
+	/**
+	 * @return the i1b_pink2yellow
+	 */
+	public Item1Button getI1b_pink2yellow() {
+		return i1b_pink2yellow;
+	}
+
+
+
+	/**
+	 * @return the i1b_pink2green
+	 */
+	public Item1Button getI1b_pink2green() {
+		return i1b_pink2green;
+	}
+
+
+
+	/**
+	 * @return the i1b_pink2lightBlue
+	 */
+	public Item1Button getI1b_pink2lightBlue() {
+		return i1b_pink2lightBlue;
+	}
+
+
+
+	/**
+	 * @return the i1b_pink2darkBlue
+	 */
+	public Item1Button getI1b_pink2darkBlue() {
+		return i1b_pink2darkBlue;
+	}
+
+
+
+	/**
+	 * @return the i1b_pink2red
+	 */
+	public Item1Button getI1b_pink2red() {
+		return i1b_pink2red;
+	}
+
+
+
+	/**
+	 * @return the i1b_grayifyRed
+	 */
+	public Item1Button getI1b_grayifyRed() {
+		return i1b_grayifyRed;
+	}
+
+
+
+	/**
+	 * @return the i1b_grayifyYellow
+	 */
+	public Item1Button getI1b_grayifyYellow() {
+		return i1b_grayifyYellow;
+	}
+
+
+
+	/**
+	 * @return the i1b_grayifyGreen
+	 */
+	public Item1Button getI1b_grayifyGreen() {
+		return i1b_grayifyGreen;
+	}
+
+
+
+	/**
+	 * @return the i1b_grayifyLightBlue
+	 */
+	public Item1Button getI1b_grayifyLightBlue() {
+		return i1b_grayifyLightBlue;
+	}
+
+
+
+	/**
+	 * @return the i1b_grayifyDarkBlue
+	 */
+	public Item1Button getI1b_grayifyDarkBlue() {
+		return i1b_grayifyDarkBlue;
+	}
+
+
+
+	/**
+	 * @return the i1b_grayifyPink
+	 */
+	public Item1Button getI1b_grayifyPink() {
+		return i1b_grayifyPink;
 	}
 
 

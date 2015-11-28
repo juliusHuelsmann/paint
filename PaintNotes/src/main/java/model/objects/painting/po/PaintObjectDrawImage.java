@@ -38,6 +38,7 @@ import model.settings.State;
 import model.util.DPoint;
 import model.util.DRect;
 import model.util.SerializBufferedImage;
+import model.util.Triple;
 import model.util.adt.list.List;
 import model.util.paint.Utils;
 
@@ -669,6 +670,695 @@ public class PaintObjectDrawImage extends PaintObjectBI implements Cloneable, Se
 		BufferedViewer.getInstance().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
+	
+	
+	
+	/**
+	 * Invert the colors of the BufferedImage.
+	 */
+	public final void invertColors() {
+
+		//hysteresis-threshold
+		for (int x = 1; x < super.getBi_image().getWidth() - 1; x++) {
+			for (int y = 1; y < super.getBi_image().getHeight() - 1; y++) {
+
+				final Color c = new Color(getBi_image().getContent().getRGB(
+						x, y));
+				getBi_image().getContent().setRGB(x, y, new Color(
+						255 - c.getRed(), 
+						255 - c.getGreen(), 
+						255 - c.getBlue()).getRGB());
+			}
+		}
+	}
+	
+	/**
+	 * The hue values for colors.
+	 */
+	private final int h_red = 0, h_yellow = 60, h_green = 120, 
+			h_lightBlue = 180, h_darkBlue = 240, h_pink = 300;
+	
+	/**
+	 * The standard deviation values for the given colors:
+	 * 		{@link #h_red}, {@link #h_yellow}, {@link #h_green}, 
+	 * 		{@link #h_lightBlue}, {@link #h_darkBlue}, {@link #h_pink}.
+	 * 
+	 */
+	private final int sigma_red = 60, sigma_yellow = 60, sigma_green = 60,
+			sigma_lightBlue = 60, sigma_darkBlue = 60, sigma_pink = 60;
+
+	/*
+	 * red
+	 */
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting red to yellow color.
+	 */
+	public final void convertRedToYelllow() {
+		convertColorToColor(h_red, sigma_red, h_yellow, sigma_yellow);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting red to green color.
+	 */
+	public final void convertRedToGreen() {
+		convertColorToColor(h_red, sigma_red, h_green, sigma_green);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting red to lightblue color.
+	 */
+	public final void convertRedToLightBlue() {
+		convertColorToColor(h_red, sigma_red, h_lightBlue, sigma_lightBlue);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting red to dark blue color.
+	 */
+	public final void convertRedToDarkBlue() {
+		convertColorToColor(h_red, sigma_red, h_darkBlue, sigma_darkBlue);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting red to pink color.
+	 */
+	public final void convertRedToPink() {
+		convertColorToColor(h_red, sigma_red, h_pink, sigma_pink);
+	}
+
+	/*
+	 * yellow
+	 */
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting red to yellow color.
+	 */
+	public final void convertYellowToRed() {
+		convertColorToColor(h_yellow, sigma_yellow, h_yellow, sigma_yellow);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting Yellow to green color.
+	 */
+	public final void convertYellowToGreen() {
+		convertColorToColor(h_yellow, sigma_yellow, h_green, sigma_green);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting Yellow to lightblue color.
+	 */
+	public final void convertYellowToLightBlue() {
+		convertColorToColor(h_yellow, sigma_yellow, h_lightBlue, sigma_lightBlue);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting Yellow to dark blue color.
+	 */
+	public final void convertYellowToDarkBlue() {
+		convertColorToColor(h_yellow, sigma_yellow, h_darkBlue, sigma_darkBlue);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting Yellow to pink color.
+	 */
+	public final void convertYellowToPink() {
+		convertColorToColor(h_yellow, sigma_yellow, h_pink, sigma_pink);
+	}
+	
+	/*
+	 * green
+	 */
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting Yellow to yellow color.
+	 */
+	public final void convertGreenToYelllow() {
+		convertColorToColor(h_green, sigma_green, h_yellow, sigma_yellow);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting Green to green color.
+	 */
+	public final void convertGreenToRed() {
+		convertColorToColor(h_green, sigma_green, h_red, sigma_red);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting Green to lightblue color.
+	 */
+	public final void convertGreenToLightBlue() {
+		convertColorToColor(h_green, sigma_green, h_lightBlue, sigma_lightBlue);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting Green to dark blue color.
+	 */
+	public final void convertGreenToDarkBlue() {
+		convertColorToColor(h_green, sigma_green, h_darkBlue, sigma_darkBlue);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting Green to pink color.
+	 */
+	public final void convertGreenToPink() {
+		convertColorToColor(h_green, sigma_green, h_pink, sigma_pink);
+	}
+	
+	/*
+	 * lightBlue
+	 */
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting lightBlue to yellow color.
+	 */
+	public final void convertLightBlueToYelllow() {
+		convertColorToColor(h_lightBlue, sigma_lightBlue, h_yellow, sigma_yellow);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting lightBlue to green color.
+	 */
+	public final void convertLightBlueToGreen() {
+		convertColorToColor(h_lightBlue, sigma_lightBlue, h_green, sigma_green);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting lightBlue to lightblue color.
+	 */
+	public final void convertLightBlueToRed() {
+		convertColorToColor(h_lightBlue, sigma_lightBlue, h_red, sigma_red);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting lightBlue to dark blue color.
+	 */
+	public final void convertLightBlueToDarkBlue() {
+		convertColorToColor(h_lightBlue, sigma_lightBlue, h_darkBlue, sigma_darkBlue);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting lightBlue to pink color.
+	 */
+	public final void convertLightBlueToPink() {
+		convertColorToColor(h_lightBlue, sigma_lightBlue, h_pink, sigma_pink);
+	}
+	
+	/*
+	 * darkBlue
+	 */
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting darkBlue to yellow color.
+	 */
+	public final void convertDarkBlueToYelllow() {
+		convertColorToColor(h_darkBlue, sigma_darkBlue, h_yellow, sigma_yellow);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting darkBlue to green color.
+	 */
+	public final void convertDarkBlueToGreen() {
+		convertColorToColor(h_darkBlue, sigma_darkBlue, h_green, sigma_green);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting darkBlue to lightblue color.
+	 */
+	public final void convertDarkBlueToLightBlue() {
+		convertColorToColor(h_darkBlue, sigma_darkBlue, h_lightBlue, sigma_lightBlue);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting darkBlue to dark blue color.
+	 */
+	public final void convertDarkBlueToRed() {
+		convertColorToColor(h_darkBlue, sigma_darkBlue, h_red, sigma_red);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting darkBlue to pink color.
+	 */
+	public final void convertDarkBlueToPink() {
+		convertColorToColor(h_darkBlue, sigma_darkBlue, h_pink, sigma_pink);
+	}
+	
+	/*
+	 * pink
+	 */
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting pink to yellow color.
+	 */
+	public final void convertPinkToYelllow() {
+		convertColorToColor(h_pink, sigma_pink, h_yellow, sigma_yellow);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting pink to green color.
+	 */
+	public final void convertPinkToGreen() {
+		convertColorToColor(h_pink, sigma_pink, h_green, sigma_green);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting pink to lightblue color.
+	 */
+	public final void convertPinkToLightBlue() {
+		convertColorToColor(h_pink, sigma_pink, h_lightBlue, sigma_lightBlue);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting pink to dark blue color.
+	 */
+	public final void convertPinkToDarkBlue() {
+		convertColorToColor(h_pink, sigma_pink, h_darkBlue, sigma_darkBlue);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #convertColorToColor(int, int, int, int)}
+	 * for converting pink to pink color.
+	 */
+	public final void convertPinkToRed() {
+		convertColorToColor(h_pink, sigma_pink, h_red, sigma_red);
+	}
+	
+	
+
+	/**
+	 * Convert pixel of first color with special range to a second color.
+	 * If the hue value h(x, y) of the pixel located at (x, y) is inside the 
+	 * legal range <code>_hue +- _hueSigma</code>, he percentage of the deviation
+	 * 							 <code>h(x, y) - _hue</code> 
+	 * is taken into account at the resulting value.
+	 * 
+	 * @param _hue			the hue value of the color that is to be changed.
+	 * @param _hue2			the hue value of the color that replaces the old 
+	 * 						one.
+	 * @param _hueSigma		the standard deviation of the #_hue.
+	 * @param _hue2Sigma	the standard deviation of the #_hue2.
+	 */
+	public final void convertColorToColor(
+			final int _hue, final int _hueSigma,
+			final int _hue2, final int _hue2Sigma) {
+
+		//hysteresis-threshold
+		for (int x = 1; x < super.getBi_image().getWidth() - 1; x++) {
+			for (int y = 1; y < super.getBi_image().getHeight() - 1; y++) {
+
+				final Color c = new Color(getBi_image().getContent().getRGB(
+						x, y));
+				
+				final Triple rgb = new Triple(
+						c.getRed(), c.getGreen(), c.getBlue());
+				final Triple hsv = rgbToHsv(rgb);
+				
+				// if the current pixel is a red pixel.
+				final double currentHue = hsv.getA();
+				if (Math.abs(currentHue - _hue) <= _hueSigma) {
+					
+					// the percentage may be negative; is element of [-1,1]
+					final double perc = 1.0 * (currentHue - _hue) / _hueSigma;
+					hsv.setA(_hue2 + perc * (_hue2 - _hue2Sigma));
+				}
+				
+				final Triple resultingRGB = hsvToRgb(hsv);
+				
+				getBi_image().getContent().setRGB(x, y, new Color(
+						(int) resultingRGB.getA(),
+						(int) resultingRGB.getB(),
+						(int) resultingRGB.getC()).getRGB());
+			}
+		}
+	}
+
+	/**
+	 * Wrapper for {@link #grayifyColor(int, int)}.
+	 */
+	public void grayifyRed() {
+		grayifyColor(h_red, sigma_red);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #grayifyColor(int, int)}.
+	 */
+	public final void grayifyYellow() {
+		grayifyColor(h_yellow, sigma_yellow);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #grayifyColor(int, int)}.
+	 */
+	public final void grayifyGreen() {
+		grayifyColor(h_green, sigma_green);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #grayifyColor(int, int)}.
+	 */
+	public final void grayifyLightBlue() {
+		grayifyColor(h_lightBlue, sigma_lightBlue);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #grayifyColor(int, int)}.
+	 */
+	public final void grayifyDarkBlue() {
+		grayifyColor(h_darkBlue, sigma_darkBlue);
+	}
+	
+
+	/**
+	 * Wrapper for {@link #grayifyColor(int, int)}.
+	 */
+	public final void grayifyPink() {
+		grayifyColor(h_pink, sigma_pink);
+	}
+
+	
+	
+	/**
+	 * Convert pixel of first color with special range to a second color.
+	 * If the hue value h(x, y) of the pixel located at (x, y) is inside the 
+	 * legal range <code>_hue +- _hueSigma</code>, he percentage of the deviation
+	 * 							 <code>h(x, y) - _hue</code> 
+	 * is taken into account at the resulting value.
+	 * 
+	 * @param _hue			the hue value of the color that is to be changed.
+	 * @param _hue2			the hue value of the color that replaces the old 
+	 * 						one.
+	 * @param _hueSigma		the standard deviation of the #_hue.
+	 * @param _hue2Sigma	the standard deviation of the #_hue2.
+	 */
+	public final void grayifyColor(
+			final int _hue, final int _hueSigma) {
+
+		//hysteresis-threshold
+		for (int x = 1; x < super.getBi_image().getWidth() - 1; x++) {
+			for (int y = 1; y < super.getBi_image().getHeight() - 1; y++) {
+
+				final Color c = new Color(getBi_image().getContent().getRGB(
+						x, y));
+				
+				final Triple rgb = new Triple(
+						c.getRed(), c.getGreen(), c.getBlue());
+				final Triple hsv = rgbToHsv(rgb);
+				
+				// if the current pixel is a red pixel.
+				final double currentHue = hsv.getA();
+				if (Math.abs(currentHue - _hue) <= _hueSigma) {
+					
+					//set saturation to zero.
+					hsv.setB(0);
+				}
+				
+				final Triple resultingRGB = hsvToRgb(hsv);
+				
+				getBi_image().getContent().setRGB(x, y, new Color(
+						(int) resultingRGB.getA(),
+						(int) resultingRGB.getB(),
+						(int) resultingRGB.getC()).getRGB());
+			}
+		}
+	}
+	
+	
+	
+	
+	
+
+	/**
+	 * Convert RGB-triple to HSV-triple.
+	 * @param _rgb 	the RGB triple
+	 * @return 		the HSV triple
+	 */
+	public static Triple rgbToHsv(final Triple _rgb) {
+
+		final Triple hsv;
+		final double r = 1.0 * _rgb.getA() / 255.0;
+		final double g = 1.0 * _rgb.getB() / 255.0;
+		final double b = 1.0 * _rgb.getC() / 255.0;
+
+		double h = 0, s = 0, v = 0;
+
+		double min = Math.min(Math.min(r, g), b);
+		double max = Math.max(Math.max(r, g), b);
+
+		/*
+		 * Computation of hue. Hue is type of the color that displayed
+		 * (red, green, blue, pink etc.)
+		 * It is dependent on the relation between the different colors
+		 */
+	
+		// if _r == g == _b the h value is undefined. Thus, if color is a shade of
+		// gray (white, gray, black) it does not matter which hue to take; by 
+		// convention it is set to be zero.
+		if (max == min) {
+			h = 0;
+		} 
+
+		// if there is a color to be computed:
+		else {
+			if (r == max) {
+				h = (
+						// if the greatest value is red we start at the angle zero
+						// because the color will be in red range
+						0.0
+
+						// difference between other colors:
+						// if the green value is greater than the blue value,
+						// we have to go counterclockwise, otherwise clockwise.
+						// (_g - b)  <= (max - min)
+						// (_g - _b) >= (min - max)
+						+ (g - b) * 1.0
+
+						// divided by the maximal difference between colors (between
+						// r and min)
+						/ (max - min)
+
+						)
+						// (...) in [-1,1]. Multiplied by 60 it takes charge of one
+						// third of the color - circle. 
+						* 60.0;
+			} else if (g == max) {
+				// here we start at 120 and do the 'same' as above
+				// in [60 (= 120-60), 180]
+				h = 120.0 + (b - r) * 1.0 / (max - min) * 60.0;
+			} // blue value
+			else if (b == max) {
+		
+				// in [180, 300]
+				h = 240.0 + (r - g) * 1.0/ (max - min) * 60;
+			}
+		}
+
+		// if we go counterclockwise we have to re-transform the h into an angle
+		// thus we regard h as 5 modulo 360 positive.
+		if (h < 0) {
+			h = h + 360;
+		}
+
+
+		/*
+		 * Computation of saturation (how much color there is)
+		 */
+	
+		// if MAX == 0 (== MIN) the displayed color is black. We do not have to
+		// worry about s, but by convention it is defined to be 0
+		// if MAX == MIN == 255, the displayed color is white and we do not have to
+		// worry about s either, but the following computation formula is well
+		// defined
+		if (max == 0) {
+			s = 0;
+		} 
+		
+		else {
+			//difference between MAX and MIN divided by max
+			s = 100.0 * (max - min) / max;
+		}
+
+
+		/*
+		 * computation of brightness value:
+		 */	
+		v = 100 * max;
+	
+	
+		/*
+		 * Write the result into the content of the pointer.
+		 */
+		hsv = new Triple(h, s, v);
+
+
+		return hsv;
+	}
+	
+	
+	
+	public static void testrgbconversion(String[]args) {
+		System.out.println("hier");
+		Triple start = new Triple(10, 100, 10);
+		System.out.println(start.getA() + ".." + start.getB() + ".." + start.getC());
+		
+		Triple result = rgbToHsv(start);
+		System.out.println(result.getA() + ".." + result.getB() + ".." + result.getC());
+
+		Triple result2 = hsvToRgb(result);
+		System.out.println("final " + result2.getA() + ".." + result2.getB() + ".." + result2.getC());
+
+//		Triple start2 = new Triple(125, 99, 39.2);
+//		Triple result23 = hsvToRgb(start2);
+//		System.out.println(result23.getA() + ".." + result23.getB() + ".." + result23.getC());
+	}
+
+	/**
+	 * Convert HSV triple to RGB triple.
+	 * @param _hsv	the HSV triple
+	 * @return		the RGB triple
+	 */
+	public static Triple hsvToRgb(final Triple _hsv) {
+	
+		//fetch HSV values from triple & initialize RGB values
+		double h = _hsv.getA();
+		double s = _hsv.getB();
+		double v = _hsv.getC();
+		
+		double r = 0, g = 0, b = 0;
+		
+		v =  v / 100.0;
+		s = s / 100.0;
+	
+	
+		// gray
+		if (s == 0) {
+			r = v; 
+			g = v;
+			b = v;
+		} 
+		
+		
+		//color
+		else {
+			int i;
+			double f, p, q, t;
+		
+			//i indicates the image sector. There are 6 sectors from 0 to 360 degree
+			//TODO: e.g. use simple conversion to interger instead of round.
+			i = (int) (1.0 * Math.floor( h  / 60.0));
+			
+			//factorial part of h (degree inside sector)
+			f = 1.0 * h / 60.0 - i;			
+			
+			//value divided by saturatioin
+			p = 1.0 * v * ( 1.0 - s ) ;
+			q = 1.0 * v * ( 1.0 - s * f ) ;
+			t = 1.0 * v * ( 1.0 - s * ( 1 - f ) ) ;
+			
+			// oder 
+	
+			//printf("%f %i %f %f %f %f  ", h, i, f, p, q, t);
+			switch( i ) {
+				case 0:
+					r = v;
+					g = t;
+					b = p;
+					break;
+				case 1:
+					r = q;
+					g = v;
+					b = p;
+					break;
+				case 2:
+					r = p;
+					g = v;
+					b = t;
+					break;
+				case 3:
+					r = p;
+					g = q;
+					b = v;
+					break;
+				case 4:
+					r = t;
+					g = p;
+					b = v;
+					break;
+				default:		// case 5:
+					r = v;
+					g = p;
+					b = q;
+					break;
+			}
+		}
+		
+		
+		r = r * 255.0;
+		g *= 255;
+		b *= 255;
+		
+		return new Triple(r, g, b);
+	
+	}
+	
+	
+
+	
 	
 	
 	public final BufferedImage hysteresisThreshold(

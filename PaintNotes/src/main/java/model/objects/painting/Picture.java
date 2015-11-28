@@ -2675,4 +2675,297 @@ public final class Picture implements Serializable {
 		final double val = State.getZoomFactorToShowSize();
 		return new Dimension((int) (size.width * val), (int) (size.height * val));
 	}
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * identifiers for different traversion operations for list.
+	 */
+	public final static int 
+	ID_TR_RED2YELLOW = 1, ID_TR_RED2GREEN = 2, ID_TR_RED2LIGHT_BLUE = 3, 
+	ID_TR_RED2DARK_BLUE = 4, ID_TR_RED2PINK = 5,
+
+	ID_TR_YELLOW2RED = 6, ID_TR_YELLOW2GREEN = 7, 
+	ID_TR_YELLOW2LIGHT_BLUE = 8,
+	ID_TR_YELLOW2DARK_BLUE = 9, ID_TR_YELLOW2PINK = 10,
+
+	ID_TR_GREEN2YELLOW = 11, ID_TR_GREEN2RED = 12, 
+	ID_TR_GREEN2LIGHT_BLUE = 13,
+	ID_TR_GREEN2DARK_BLUE = 14, ID_TR_GREEN2PINK = 15,
+
+	ID_TR_LIGHT_BLUE2YELLOW = 16, ID_TR_LIGHT_BLUE2GREEN = 17, 
+	ID_TR_LIGHT_BLUE2RED = 18, 
+	ID_TR_LIGHT_BLUE2DARK_BLUE = 19, ID_TR_LIGHT_BLUE2PINK = 20,
+	
+	ID_TR_DARK_BLUE2YELLOW = 21, ID_TR_DARK_BLUE2GREEN = 22, 
+	ID_TR_DARK_BLUE2LIGHT_BLUE = 23, 
+	ID_TR_DARK_BLUE2RED = 24, ID_TR_DARK_BLUE2PINK = 25,
+
+	ID_TR_PINK2YELLOW = 26, ID_TR_PINK2GREEN = 27, ID_TR_PINK2LIGHT_BLUE = 28, 
+	ID_TR_PINK2DARK_BLUE = 29, ID_TR_PINK2RED = 30,
+			
+
+	ID_TR_GRAYIFY_YELLOW = 31, ID_TR_GRAYIFY_GREEN = 32,
+	ID_TR_GRAYIFY_LIGHT_BLUE = 33, ID_TR_GRAYIFY_PINK = 34,
+	ID_TR_GRAYIFY_DARK_BLUE = 35, ID_TR_GRAYIFY_RED = 36;
+	
+	
+	/**
+	 * 
+	 * @param _id_tr_op
+	 */
+	public void executeTraversionOperation(final int _id_tr_op) {
+		
+		ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR, 
+				SecureList.ID_NO_PREDECESSOR);
+		while (!ls_po_sortedByY.isEmpty() && !ls_po_sortedByY.isBehind()) {
+			
+			executeOperation(_id_tr_op);
+			
+			ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR,
+					SecureList.ID_NO_PREDECESSOR);
+			
+		}
+		
+	}
+	
+	
+	private void executeOperation(final int _id_tr_op) {
+		
+		PaintObject po = ls_po_sortedByY.getItem();
+		
+		switch (_id_tr_op) {
+		case ID_TR_RED2YELLOW:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertRedToYelllow();
+			}
+			break;
+		case ID_TR_RED2GREEN:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertRedToGreen();
+			}
+			break;
+		case ID_TR_RED2LIGHT_BLUE:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertRedToLightBlue();
+			}
+			break;
+		case ID_TR_RED2DARK_BLUE:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertRedToDarkBlue();
+			}
+			break;
+		case ID_TR_RED2PINK:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertRedToPink();
+			}
+			break;
+
+			//yellow
+		case ID_TR_YELLOW2RED:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertYellowToRed();
+			}
+			break;
+		case ID_TR_YELLOW2GREEN:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertYellowToGreen();
+			}
+			break;
+		case ID_TR_YELLOW2LIGHT_BLUE:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertYellowToLightBlue();
+			}
+			break;
+		case ID_TR_YELLOW2DARK_BLUE:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertYellowToDarkBlue();
+			}
+			break;
+		case ID_TR_YELLOW2PINK:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertYellowToPink();
+			}
+			break;
+
+			// green
+		case ID_TR_GREEN2YELLOW:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertGreenToYelllow();
+			}
+			break;
+		case ID_TR_GREEN2RED:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertGreenToRed();
+			}
+			break;
+		case ID_TR_GREEN2LIGHT_BLUE:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertGreenToLightBlue();
+			}
+			break;
+		case ID_TR_GREEN2DARK_BLUE:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertGreenToDarkBlue();
+			}
+			break;
+		case ID_TR_GREEN2PINK:
+			break;
+
+			// light blue
+		case ID_TR_LIGHT_BLUE2YELLOW:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertLightBlueToYelllow();
+			}
+			break;
+		case ID_TR_LIGHT_BLUE2GREEN:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertLightBlueToGreen();
+			}
+			break;
+		case ID_TR_LIGHT_BLUE2RED:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertLightBlueToRed();
+			}
+			break;
+		case ID_TR_LIGHT_BLUE2DARK_BLUE:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertLightBlueToDarkBlue();
+			}
+			break;
+		case ID_TR_LIGHT_BLUE2PINK:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertLightBlueToPink();
+			}
+			break;
+
+			// dark blue
+		case ID_TR_DARK_BLUE2YELLOW:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertDarkBlueToYelllow();
+			}
+			break;
+		case ID_TR_DARK_BLUE2GREEN:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertDarkBlueToGreen();
+			}
+			break;
+		case ID_TR_DARK_BLUE2LIGHT_BLUE:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertDarkBlueToLightBlue();
+			}
+			break;
+		case ID_TR_DARK_BLUE2RED:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertDarkBlueToRed();
+			}
+			break;
+		case ID_TR_DARK_BLUE2PINK:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertDarkBlueToPink();
+			}
+			break;
+
+			// pink 
+		case ID_TR_PINK2YELLOW:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertPinkToYelllow();
+			}
+			break;
+		case ID_TR_PINK2GREEN:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertPinkToGreen();
+			}
+			break;
+		case ID_TR_PINK2LIGHT_BLUE:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertPinkToLightBlue();
+			}
+			break;
+		case ID_TR_PINK2DARK_BLUE:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertPinkToDarkBlue();
+			}
+			break;
+		case ID_TR_PINK2RED:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.convertPinkToRed();
+			}
+			break;
+
+			// grayify
+		case ID_TR_GRAYIFY_PINK:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.grayifyPink();
+			}
+			break;
+		case ID_TR_GRAYIFY_YELLOW:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.grayifyYellow();
+			}
+			break;
+		case ID_TR_GRAYIFY_GREEN:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.grayifyGreen();
+			}
+			break;
+		case ID_TR_GRAYIFY_LIGHT_BLUE:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.grayifyLightBlue();
+			}
+			break;
+		case ID_TR_GRAYIFY_DARK_BLUE:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.grayifyDarkBlue();
+			}
+			break;
+		case ID_TR_GRAYIFY_RED:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.grayifyRed();
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	
 }

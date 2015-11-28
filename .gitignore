@@ -44,3 +44,4 @@ analyse.png
 *.out
 *.gz
 *.aux
+/target/

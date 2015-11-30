@@ -538,10 +538,13 @@ public final class Picture implements Serializable {
 	 * emptying the <code>BufferedImage's</code> section, that is to be 
 	 * updated and repainting the affected <code>PaintObjects</code>.
 	 * 
-	 * @param _loc_picture	the location of the selection inside the entire
-	 * 						page. The BufferedImage which is given to this
-	 * 						very method is only the section, which is 
-	 * 						currently visible on screen for the user.
+	 * @param _loc_picture	contains the location of the currently visible
+	 * 						domain inside the entire page. 
+	 * 						Is equal to the location inside the BufferedImage
+	 * 						which is to be painted with new content.
+	 * 						
+	 * 						The BufferedImage which is given to this
+	 * 						method displays the the currently visible section.
 	 * 						
 	 * 						This value is necessary for adapting the location
 	 * 						inside the BufferedImage to the location of the

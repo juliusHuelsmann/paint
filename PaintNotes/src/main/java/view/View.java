@@ -27,10 +27,9 @@ import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-
+import javax.swing.JTextArea;
 import model.settings.Constants;
 import model.settings.State;
 import model.settings.ViewSettings;
@@ -41,7 +40,6 @@ import view.forms.InfoForm;
 import view.forms.Loading;
 import view.forms.Message;
 import view.forms.Page;
-import view.forms.PopupChangeSize;
 import view.forms.Tabs;
 import view.util.mega.MButton;
 import view.util.mega.MFrame;
@@ -113,6 +111,13 @@ import control.util.WindowMover;
 		
 	}
 	
+	
+	/**
+	 * JTextArea which is displayed on mouseOver for the main GUI. 
+	 * Is not set visible onMouseOver for MButtons.
+	 */
+	private JTextArea jta_info;
+	
 	/**
 	 * 
 	 * Constructor: initialize JFrame, alter settings and initialize items.
@@ -127,9 +132,24 @@ import control.util.WindowMover;
         super.setLayout(null);
         super.setUndecorated(true);
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        cv = new ControlView(this, _cp.getcTabPaint());
         
+  
+        
+        cv = new ControlView(this, _cp.getcTabPaint());
+
+        //ml and mml for hover event
+        super.addMouseListener(_cp);
+        super.addMouseMotionListener(_cp);
+        jta_info = new JTextArea("mouse over.");
+        jta_info.setOpaque(true);
+        jta_info.setBorder(BorderFactory.createLineBorder(Color.black));
+        jta_info.setBackground(new Color(200, 255, 240));
+        jta_info.setSize(jta_info.getPreferredSize());
+        jta_info.setVisible(false);
+        jta_info.setTabSize(4);
+        jta_info.addMouseListener(_cp);
+        jta_info.addMouseMotionListener(_cp);
+        super.add(jta_info);
         
         MLabel jlbl_backgroundStroke = new MLabel();
         jlbl_backgroundStroke.setSize(getSize());
@@ -700,6 +720,29 @@ import control.util.WindowMover;
 	}
 	
 	
+	
+	
+	public void onHover(final String _content, final Point _loc) {
+
+		
+		jta_info.setText(_content);
+		jta_info.setSize(jta_info.getPreferredSize());;
+		jta_info.setLocation(_loc);
+		jta_info.setVisible(true);
+	
+	}
+	
+	public void onHoverLost() {
+		jta_info.setVisible(false);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Dimension for checking which size has been reported.
 	 */
@@ -797,6 +840,16 @@ import control.util.WindowMover;
 	public MButton getJbtn_pinRight() {
 		return jbtn_pinRight;
 	}
+
+
+
+	/**
+	 * @return the jta_info
+	 */
+	public final JTextArea getJta_info() {
+		return jta_info;
+	}
+
 
 
 }

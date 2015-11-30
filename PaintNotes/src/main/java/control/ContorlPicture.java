@@ -36,7 +36,6 @@ import model.objects.pen.special.PenSelection;
 import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.Util;
-import model.util.paint.Utils;
 import model.util.pdf.PDFUtils;
 import view.forms.Console;
 import view.forms.Page;
@@ -467,10 +466,8 @@ public class ContorlPicture implements PaintListener {
 		// location of the page is negative because of the relation to the 
 		// location of gui element.
 		final Point pnt_locScopeMDL = new Point(
-				(int) ((
-				pnt_start.x) * zoomStretch),
-				(int) ((
-				+ pnt_start.y) * zoomStretch));
+				(int) ((int) (pnt_start.x * zoomStretch)),
+				(int) ((int) (pnt_start.y * zoomStretch)));
 		
 		//
 		// Compute the first value. Afterwards, the rest of the values are 
@@ -480,8 +477,8 @@ public class ContorlPicture implements PaintListener {
 
 		// The location inside the BufferedImage is pnt_start.
 		pnt_loc_bi[0] = new Point(
-				(int) (_x),
-				(int) (_y));
+				(int) ((int) (_x / zoomStretch) * zoomStretch),
+				(int) ((int) (_y /zoomStretch) * zoomStretch));
 		
 		// The location inside the (first) picture inside the currently active 
 		// space is equal to 
@@ -1313,8 +1310,7 @@ public class ContorlPicture implements PaintListener {
 	 * {@inheritDoc}
 	 */
 	public final void beforeExternalSizeChange(final MoveEvent _ev) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 

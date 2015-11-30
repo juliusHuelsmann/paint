@@ -448,14 +448,77 @@ MenuListener {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void mouseEntered(final MouseEvent _event) { }
+	public void mouseEntered(final MouseEvent _event) {
+		if (_event.getSource().equals(getView()) 
+				|| _event.getSource().equals(getView().getJta_info())) {
+			
 
+			getView().onHover(generateHoverString(), 
+					new Point(_event.getXOnScreen() - getView().getX(),
+					_event.getYOnScreen() - getView().getY()));
+		}
+	}
+
+	/**
+	 * Generates string which contains information on the currently displayed
+	 * section of the entire project.
+	 * 
+	 * The relevant information are:
+	 * 	1) 	size of the painting-JLabel (VIEW) ,
+	 * 	2) 	size of the BufferedImage which is printed to view (equals to (1), showSize),
+	 *  3)	model size of the BufferedImage which is printed to view.
+	 *  
+	 *  
+	 * These information are helpful for debugging. The values have to satisfy
+	 * certain conditions:
+	 * 	a)		(1) == (2)	
+	 * 	b)		(1) * State.getZoomFactorToModelSize == (3)
+	 * 	c)		(3) * State.getZoomFactorToViewSize == (1)
+	 * 
+	 * (b+c) <=> (1) % zFactor == 0 == (1) % (1/zFactor)
+	 * for the current zomm factor (convert to modelsize)
+	 *  
+	 * @return
+	 */
+	private String generateHoverString() {
+
+		// (1): width and height of the JLabel which displays the BufferdImage
+		// (the currently visible section of the project).
+		final int widthPage = getView().getPage().getJlbl_painting().getWidth();
+		final int heightPage = getView().getPage().getJlbl_painting().getHeight();
+		
+		// (2): width and height of the BufferedImage which displays exactly the
+		// currently visible section of the project. The visualization-unit is 
+		// view-size.
+		final int bi_normal_width = controlPic.getBi().getWidth();
+		final int bi_normal_height = controlPic.getBi().getHeight();
+
+		// (3): the 
+		final double bi_zoom_width  = 1.0 * controlPic.getBi().getWidth() * State.getZoomFactorToModelSize();
+		final double bi_zoom_height = 1.0 * controlPic.getBi().getHeight() * State.getZoomFactorToModelSize();
+
+		// (3): the 
+		final double page_zoom_width  = 1.0 * getView().getPage().getJlbl_painting().getWidth() * State.getZoomFactorToModelSize();
+		final double page_zoom_height = 1.0 * getView().getPage().getJlbl_painting().getHeight() * State.getZoomFactorToModelSize();
+		
+		// rounding for better display
+		final double result = Math.abs(((int) bi_zoom_width) - 1.0 * bi_zoom_width)
+				+ Math.abs(((int) bi_zoom_width) - 1.0 * bi_zoom_width);
+		
+		return 
+				  "Size_label[PX]:\t\t" +  widthPage + ",\t" + heightPage + "\n"
+				+ "Size_bi_display[PX]\t" + bi_normal_width + ",\t" + bi_normal_height + "\n"
+				+ "Size_image_total[PX]\t"+ bi_zoom_width + ",\t" + bi_zoom_height+ "\n"
+				+ "Size_label_total[PX]\t"+ page_zoom_width + ",\t" + page_zoom_height + "\n"
+				+ "Difference:\t\t" + (result == 0)
+				+ "\n r = " + result;
+	}
 	/**
 	 * {@inheritDoc}
 	 */
 	public final void mouseExited(final MouseEvent _event) {
 		if (_event.getSource().equals(
-				getPage().getJlbl_painting())) { 
+				getPage().getJlbl_painting())) {
 	        	
 	        	
 			//remove old pen - position - indication - point
@@ -491,7 +554,11 @@ MenuListener {
 					break;
 				}
 			}
-		}		
+		} else if (_event.getSource().equals(getView())) {
+			
+			getView().onHoverLost();
+		}
+	
 	}
 
 	/**
@@ -1140,6 +1207,12 @@ MenuListener {
             	
                 break;
             }
+        } else if (_event.getSource().equals(getView()) 
+				|| _event.getSource().equals(getView().getJta_info())) {
+
+			getView().onHover(generateHoverString(), 
+					new Point(_event.getXOnScreen() - getView().getX(),
+					_event.getYOnScreen() - getView().getY()));
         }
         
         
@@ -1405,6 +1478,87 @@ MenuListener {
     }
 
     
+    /**
+     * Zoom in and adapt view size (always print entire pixel).
+     */
+    public void zoomIn() {
+
+    	// Change the value which is used for computing the current 
+    	// <code> imageShowSize</code>.
+    	State.zoomStateZoomIn();
+    	
+    	// adapt size
+    	adaptSize();
+    	
+    }
+    
+    private void adaptSize() {
+
+    	
+
+		// (1): width and height of the JLabel which displays the BufferdImage
+		// (the currently visible section of the project).
+		final int widthPage = getView().getPage().getJlbl_painting().getWidth();
+		final int heightPage = getView().getPage().getJlbl_painting().getHeight();
+		
+		// (2): width and height of the BufferedImage which displays exactly the
+		// currently visible section of the project. The visualization-unit is 
+		// view-size.
+		final int bi_normal_width = controlPic.getBi().getWidth();
+		final int bi_normal_height = controlPic.getBi().getHeight();
+		
+		
+    	
+		int roundedW = (int) Math.round((int) (Math.round(widthPage / State.getZoomFactorToModelSize())
+				* State.getZoomFactorToModelSize()));
+		roundedW = (int) Math.round((int) Math.round(roundedW * State.getZoomFactorToModelSize())
+				/ State.getZoomFactorToModelSize());
+
+		int roundedH = (int) Math.round((int) Math.round(heightPage / State.getZoomFactorToModelSize())
+				* State.getZoomFactorToModelSize());
+		roundedH = (int) Math.round((int) Math.round(roundedH * State.getZoomFactorToModelSize())
+				/ State.getZoomFactorToModelSize());
+    	
+    	
+    	
+    	
+    	// width and height + 1 jeweils...
+    	final int width = roundedW;
+    	final int height = roundedH;
+    	controlPic.setBi(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
+		setBi_preprint(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
+
+		
+		System.out.println(width - widthPage);
+		System.out.println(height - heightPage);
+		System.out.println("w" + width);
+		System.out.println("h" + height);
+
+		if (width -widthPage + height -heightPage == 0) {
+			
+			for (int i = 0; i < 10; i++) {
+				System.out.println("hier hier");
+			}
+		}
+		
+		getPage().getJlbl_painting().setSize(width, height);
+    	getPage().getJlbl_background().setSize(width, height);
+    	getPage().getJlbl_selectionBG().setSize(width, height);
+    	getPage().getJlbl_selectionPainting().setSize(width, height);
+    }
+    
+    /**
+     * Zoom out and adapt view size (always print entire pixel).
+     */
+    public void zoomOut() {
+
+    	// Change the value which is used for computing the current 
+    	// <code> imageShowSize</code>.
+    	State.zoomStateZoomOut();
+
+    	// adapt size
+    	adaptSize();
+    }
     
     
     
@@ -1427,9 +1581,7 @@ MenuListener {
     	// level
         if (State.getZoomState() <  ViewSettings.MAX_ZOOM_IN) {
 
-        	// Change the value which is used for computing the current 
-        	// <code> imageShowSize</code>.
-        	State.zoomStateZoomIn();
+        	zoomIn();
 
 //        	// Calculate the new size of the page.
 //            int newWidth = (int) (State.getImageSize().width

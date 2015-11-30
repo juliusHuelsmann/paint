@@ -480,7 +480,7 @@ public final class Utils {
     	final Dimension dim_imageSize = new Dimension(
     			(int) (_imageShowSize.width * State.getZoomFactorToModelSize()),
     			(int) (_imageShowSize.height * State.getZoomFactorToModelSize()));
-    	State.zoomStateZoomIn();
+    	State.resetZoomState();
     	
     	
         //fetch show percentages; thus able to reset them because the 

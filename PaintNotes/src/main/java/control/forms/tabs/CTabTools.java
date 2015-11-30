@@ -839,9 +839,7 @@ implements ActionListener, MouseListener {
     	// level
         if (-State.getZoomState() + 1 <  ViewSettings.MAX_ZOOM_OUT) {
         	
-        	// Change the value which is used for computing the current 
-        	// <code> imageShowSize</code>.
-        	State.zoomStateZoomOut();
+        	controlPaint.zoomOut();
         	
             // contains the not shifted new location of the paint-JLabel.
             // the formula is okay.

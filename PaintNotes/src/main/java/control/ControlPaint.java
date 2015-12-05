@@ -454,8 +454,8 @@ MenuListener {
 			
 
 			getView().onHover(generateHoverString(), 
-					new Point(_event.getXOnScreen() - getView().getX(),
-					_event.getYOnScreen() - getView().getY()));
+					new Point(_event.getXOnScreen() - getView().getX() + 5,
+					_event.getYOnScreen() - getView().getY() + 5));
 		}
 	}
 
@@ -1211,8 +1211,8 @@ MenuListener {
 				|| _event.getSource().equals(getView().getJta_info())) {
 
 			getView().onHover(generateHoverString(), 
-					new Point(_event.getXOnScreen() - getView().getX(),
-					_event.getYOnScreen() - getView().getY()));
+					new Point(_event.getXOnScreen() - getView().getX() + 5,
+					_event.getYOnScreen() - getView().getY() + 5));
         }
         
         
@@ -1507,17 +1507,36 @@ MenuListener {
 		final int bi_normal_width = controlPic.getBi().getWidth();
 		final int bi_normal_height = controlPic.getBi().getHeight();
 		
+		// 512 * / 3
 		
-    	
-		int roundedW = (int) Math.round((int) (Math.round(widthPage / State.getZoomFactorToModelSize())
-				* State.getZoomFactorToModelSize()));
-		roundedW = (int) Math.round((int) Math.round(roundedW * State.getZoomFactorToModelSize())
-				/ State.getZoomFactorToModelSize());
+		// state.getzoomFactorToModelSize is not a n
+		//			a * 2/3 
+		//
+		//
+		//TODO: is only for the current configuration of ZoomFactor
+		int shit1 = (int) (widthPage / 36);
+		shit1 = (int) (shit1 * 36);
+		int shit2 = (int) (heightPage / 36);
+		shit2 = 	(int) (shit2 * 36);
+		
 
-		int roundedH = (int) Math.round((int) Math.round(heightPage / State.getZoomFactorToModelSize())
-				* State.getZoomFactorToModelSize());
-		roundedH = (int) Math.round((int) Math.round(roundedH * State.getZoomFactorToModelSize())
-				/ State.getZoomFactorToModelSize());
+		// 1/3
+		
+		
+		
+		
+		int roundedW = shit1;
+		int roundedH = shit2;
+		
+//		int roundedW = (int) Math.round((int) (Math.round(widthPage * State.getZoomFactorToModelSize())
+//				/ State.getZoomFactorToModelSize()));
+//		roundedW = (int) Math.round((int) Math.round(roundedW * State.getZoomFactorToModelSize())
+//				/ State.getZoomFactorToModelSize());
+//
+//		int roundedH = (int) Math.round((int) Math.round(heightPage / State.getZoomFactorToModelSize())
+//				* State.getZoomFactorToModelSize());
+//		roundedH = (int) Math.round((int) Math.round(roundedH * State.getZoomFactorToModelSize())
+//				/ State.getZoomFactorToModelSize());
     	
     	
     	
@@ -1525,6 +1544,17 @@ MenuListener {
     	// width and height + 1 jeweils...
     	final int width = roundedW;
     	final int height = roundedH;
+    	ViewSettings.setView_bounds_page_open(new Rectangle(
+    			ViewSettings.getView_bounds_page_open().x,
+    			ViewSettings.getView_bounds_page_open().y, width, height));
+    	ViewSettings.setView_bounds_page(ViewSettings.getView_bounds_page_open());
+    	
+    	System.out.println("Das bin ICH!!!!!!!!!!" + width + "..2 " + height);
+    	System.out.println(State.getZoomFactorToModelSize());
+    	final double res1 = 1.0 * width * State.getZoomFactorToModelSize();
+    	final double res2 = 1.0 * height * State.getZoomFactorToModelSize();
+    	System.out.println(res1 + ",," + res2);
+    	
     	controlPic.setBi(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
 		setBi_preprint(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
 
@@ -1604,9 +1634,9 @@ MenuListener {
              */
             // save new coordinates
             int newX = (int) ((oldLocation.x - zoom.getX())
-                    * ViewSettings.ZOOM_MULITPLICATOR);
+                    * ViewSettings.getZoomMultiplicator());
             int newY = (int) ((oldLocation.y - zoom.getY())
-                    * ViewSettings.ZOOM_MULITPLICATOR);
+                    * ViewSettings.getZoomMultiplicator());
 
             
             // check if the bounds are valid

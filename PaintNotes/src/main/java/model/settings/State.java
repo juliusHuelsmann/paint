@@ -246,7 +246,7 @@ public final class State {
      */
     public static final double getZoomFactorToShowSize() {
 
-    	return Math.pow(ViewSettings.ZOOM_MULITPLICATOR, State.getZoomState());
+    	return Math.pow(ViewSettings.getZoomMultiplicator(), State.getZoomState());
     }
 
     
@@ -262,7 +262,7 @@ public final class State {
      */
     public static final double getZoomFactorToModelSize() {
 
-    	return Math.pow(ViewSettings.ZOOM_MULITPLICATOR, -State.getZoomState());
+    	return Math.pow(ViewSettings.getZoomMultiplicator(), -State.getZoomState());
     }
     
     

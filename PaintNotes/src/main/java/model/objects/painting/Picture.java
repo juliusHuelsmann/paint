@@ -538,25 +538,19 @@ public final class Picture implements Serializable {
 	 * emptying the <code>BufferedImage's</code> section, that is to be 
 	 * updated and repainting the affected <code>PaintObjects</code>.
 	 * 
-	 * @param _loc_picture	contains the location of the currently visible
-	 * 						domain inside the entire page. 
-	 * 						Is equal to the location inside the BufferedImage
-	 * 						which is to be painted with new content.
+	 * @param _loc_sectionAtPicture	contains the location of the area which is
+	 * 								repainted relative to the page's origin.
 	 * 						
-	 * 						The BufferedImage which is given to this
-	 * 						method displays the the currently visible section.
+	 * 								The BufferedImage which is given to this
+	 * 								method contains the the currently visible
+	 * 								section.
 	 * 						
-	 * 						This value is necessary for adapting the location
-	 * 						inside the BufferedImage to the location of the
-	 * 						page for not removing pixel that are not part of
-	 * 						the painted image.
-	 * 						
-	 * @param _loc_bi		The location of the rectangle which is to be 
-	 * 						repainted inside the BufferdImage. 
-	 * 						Its value has to be in the range
-	 * 						of <br><code>([0, _bi.getWidth()]
-	 * 						\times[0, _bi.getHeight()]) </code>.
-	 * 
+	 * @param _loc_sectionAtBi		The location of the rectangle which is to
+	 * 								be repainted inside the BufferdImage. 
+	 * 								Its value has to be in the range
+	 * 								of <br><code>([0, _bi.getWidth()]
+	 * 								\times[0, _bi.getHeight()]) </code>.
+	 * 	
 	 * @param _size_bi		The size of the rectangle that is to be repainted
 	 * 						inside the BufferedImage.
 	 * 						Is adapted to the entire size of the Picture.
@@ -571,8 +565,8 @@ public final class Picture implements Serializable {
 	 * @return the BufferedImage.
 	 */
 	public synchronized BufferedImage updateRectangle(
-			final Point _loc_picture, 
-			final Point _loc_bi, 
+			final Point _loc_sectionAtPicture, 
+			final Point _loc_sectionAtBi, 
 			final Dimension _size_bi,
 			final BufferedImage _bi) {
 
@@ -589,13 +583,13 @@ public final class Picture implements Serializable {
 		
 		
 		emptyRectangle(
-				_loc_picture, 
-				_loc_bi,
+				_loc_sectionAtPicture, 
+				_loc_sectionAtBi,
 				_size_bi, _bi);
 		
 		repaintRectangle(
-				_loc_picture, 
-				_loc_bi,
+				_loc_sectionAtPicture, 
+				_loc_sectionAtBi,
 				_size_bi, _bi, false, true);
 		
 		return _bi;

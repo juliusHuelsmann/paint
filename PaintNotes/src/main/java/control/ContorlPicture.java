@@ -25,8 +25,12 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+
 import javax.swing.ImageIcon;
+
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.tools.ant.taskdefs.AbstractCvsTask.Module;
+
 import control.forms.BorderThread;
 import control.interfaces.MoveEvent;
 import control.interfaces.PaintListener;
@@ -409,6 +413,38 @@ public class ContorlPicture implements PaintListener {
 				Console.ID_INFO_UNIMPORTANT, ContorlPicture.class, 
 				"refreshRanctangle");
 
+		
+		
+		
+		
+		// helpful values
+		final Point locPX = adaptToSize(-getPage().getJlbl_painting().getLocation().x, false);
+		final Point locPY = adaptToSize(-getPage().getJlbl_painting().getLocation().y, false);
+		// error chekcing
+		if(locPX.y != 0 || locPY.y != 0) {
+			System.out.println(locPX);
+			System.out.println(locPY);
+			System.out.println("error occurred, the value is not rounded (should be...)");
+			System.exit(1);
+		}
+		
+		final Point rx = adaptToSize(_x, false);
+		final Point ry = adaptToSize(_y, false);
+		final Point rwidth = adaptToSize(_width + rx.y, true);
+		final Point rheight = adaptToSize(_height + ry.y, true);
+		
+		
+		
+		// view size
+		final Point loc_sec_pic = new Point(
+				 + _x,
+				-getPage().getJlbl_painting().getLocation().y + _y);
+		
+		final Dimension dim_size = new Dimension(_width, _height);
+		
+		// model size
+		final Point loc_sec_bi = new Point(_x, _y);
+		
 		
 		//
 		// Step 1) Compute important values such as
@@ -796,16 +832,31 @@ public class ContorlPicture implements PaintListener {
 //	}
 
 	
+	
+	/**
+	 * Macht noch zu viel. Aber tut was es soll.
+	 * @return Point, p.x is the resulting size, p.y is the error value.
+	 */
+	public static Point adaptToSize(final int _val, final boolean _ceil) {
+
+    	final int modulo = (int) Math.pow(
+    			ViewSettings.ZOOM_MULTIPLICATOR_DENUMINATOR 
+    			* ViewSettings.ZOOM_MULTIPLICATOR_NUMINATOR,
+    			Math.abs(State.getZoomState()));
+    	
+    	
+    	final int result;
+    	if (_ceil) {
+    		result = ((int) Math.ceil(_val / modulo)) * modulo;
+    	} else {
+    		result = ((int) Math.floor(_val / modulo)) * modulo;
+    	}
+    	
+    	return new Point(result, _val - result);
+	}
+	
 
 	
-	private int adaptToZoomSize(final int _y) {
-
-		final double toModel = State.getZoomFactorToModelSize();
-		int z1 = (int) (((int) _y * toModel) / toModel);
-		z1 = (int) (((int) z1 / toModel) * toModel);
-		
-		return z1;
-	}
 
 
 
@@ -1045,6 +1096,14 @@ public class ContorlPicture implements PaintListener {
 	 * @param _bi the _bi to set
 	 */
 	public final void setBi(final BufferedImage _bi) {
+//
+//		try{
+//			System.out.println("" + 4 / 0);
+//		}catch(Exception e) {
+//			System.out.println("PARAMETER " + _bi.getWidth() + " " + _bi.getHeight());
+//			e.printStackTrace();
+//		}
+		
 		
 		cp.getView().getPage().getJlbl_painting().setIcon(new ImageIcon(_bi));
 		cp.getView().getPage().getJlbl_painting().repaint();

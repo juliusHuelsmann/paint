@@ -365,15 +365,24 @@ public final class ViewSettings {
      * The amount of pieces in which the page is cut in each dimension
      * with each zoom.
      */
-    public static final double ZOOM_MULITPLICATOR = 1.5;
+    public static final double getZoomMultiplicator() {
+    	
+    	return 1.0 * ZOOM_MULTIPLICATOR_NUMINATOR / ZOOM_MULTIPLICATOR_DENUMINATOR;
+    }
+    
+    
+    
+    public static final double ZOOM_MULTIPLICATOR_DENUMINATOR = 2;
+    public static final double ZOOM_MULTIPLICATOR_NUMINATOR = 3;
+    
     
     /**
      * the size of the zoom.
      */
     public static final Dimension ZOOM_SIZE 
     = new Dimension(
-    		(int) (getView_bounds_page().width / ZOOM_MULITPLICATOR), 
-            (int) (getView_bounds_page().height / ZOOM_MULITPLICATOR));
+    		(int) (getView_bounds_page().width / getZoomMultiplicator()), 
+            (int) (getView_bounds_page().height / getZoomMultiplicator()));
     
     
     /**

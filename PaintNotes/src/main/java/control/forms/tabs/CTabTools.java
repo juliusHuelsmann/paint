@@ -848,22 +848,22 @@ implements ActionListener, MouseListener {
             		// location of the JLabel (negative)
             		(int) (getPage().getJlbl_painting().getLocation().x 
             		+ getPage().getJlbl_painting().getWidth() 
-            		* (ViewSettings.ZOOM_MULITPLICATOR / 2.0 - 1.0/2.0)),
+            		* (ViewSettings.getZoomMultiplicator() / 2.0 - 1.0/2.0)),
             				
             		(int) (getPage().getJlbl_painting().getLocation().y 
             		+ getPage().getJlbl_painting().getHeight() 
-            		* (ViewSettings.ZOOM_MULITPLICATOR / 2.0 - 1.0/2.0)));
+            		* (ViewSettings.getZoomMultiplicator() / 2.0 - 1.0/2.0)));
 
             
             // not smaller than the negative image size.
             oldLocation.x = (int) Math.max(oldLocation.x,
             		-(controlPaint.getProject().getShowSize().width
             				- getPage().getWidth()
-            				* ViewSettings.ZOOM_MULITPLICATOR));
+            				* ViewSettings.getZoomMultiplicator()));
             oldLocation.y = (int) Math.max(oldLocation.y,
                     -(controlPaint.getProject().getShowSize().height
                     		- getPage().getHeight() 
-                    		* ViewSettings.ZOOM_MULITPLICATOR));
+                    		* ViewSettings.getZoomMultiplicator()));
             
             // not greater than 0, these calculations prevent the zoom-out 
             // location to be at the upper left of the page.
@@ -880,8 +880,8 @@ implements ActionListener, MouseListener {
             		// The rounding at entire pixels is performed inside the
             		// setBounds-method. Thus we don't have to cope with it
             		// in here.
-            		(int) ((oldLocation.x) / ViewSettings.ZOOM_MULITPLICATOR), 
-            		(int) ((oldLocation.y) / ViewSettings.ZOOM_MULITPLICATOR),
+            		(int) ((oldLocation.x) / ViewSettings.getZoomMultiplicator()), 
+            		(int) ((oldLocation.y) / ViewSettings.getZoomMultiplicator()),
             		
             		// the old width and height.
             		getPage().getJlbl_painting().getWidth(),

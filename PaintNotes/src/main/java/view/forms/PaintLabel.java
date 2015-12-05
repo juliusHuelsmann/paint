@@ -22,9 +22,10 @@ package view.forms;
 //import declarations
 import java.awt.Point;
 import java.awt.Rectangle;
-
 import java.util.Random;
 
+import control.ContorlPicture;
+import control.ControlPaint;
 //
 import control.interfaces.MoveEvent;
 import control.interfaces.PaintListener;
@@ -114,14 +115,8 @@ public class PaintLabel extends MLabel {
      */
     private Point getShift(final int _x, final int _y) {
 
-    	// The values have to be adapted to the grid which is given by
-    	// the zoom size for not having to cope with partial pixel.
-    	final double zoomSize = State.getZoomFactorToModelSize();
-    	
-    	int newX = (int) Math.round ((Math.round(_x * zoomSize)) / zoomSize);
-    	int newY = (int) Math.round ((Math.round(_y * zoomSize)) / zoomSize);
-    	
-    	return new Point(newX, newY);
+    	return new Point(ContorlPicture.adaptToSize(_x, false).x,
+    			ContorlPicture.adaptToSize(_y, false).x);
     }
     
 

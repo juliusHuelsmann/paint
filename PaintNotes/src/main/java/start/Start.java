@@ -188,6 +188,7 @@ public final class Start {
         		
         		double time0 = System.currentTimeMillis();
         		
+        		if (false)
         		JOptionPane.showMessageDialog(
         				null, 
         				"Information message: \n"

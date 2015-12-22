@@ -311,7 +311,7 @@ public class ContorlPicture implements PaintListener {
 	 * 
 	 * @return the resulting BufferedImage.
 	 */
-	public final BufferedImage refreshRectangle(
+	public final BufferedImage refreshRectangleOLD(
 			final int _x, final int _y, 
 			final int _width, final int _height) {
 
@@ -418,18 +418,21 @@ public class ContorlPicture implements PaintListener {
 		
 		
 		// helpful values
-		final Point locPX = adaptToSize(-getPage().getJlbl_painting().getLocation().x, false);
-		final Point locPY = adaptToSize(-getPage().getJlbl_painting().getLocation().y, false);
-		// error chekcing
+		final Point locPX = adaptToSize(
+				-getPage().getJlbl_painting().getLocation().x, false);
+		final Point locPY = adaptToSize(
+				-getPage().getJlbl_painting().getLocation().y, false);
+	
+		//
+		// error checking
+		//
 		if(locPX.y != 0 || locPY.y != 0) {
 			System.out.println(locPX);
 			System.out.println(locPY);
-			System.out.println("error occurred, the value is not rounded (should be...)");
-			System.exit(1);
+			State.getLogger().severe(
+					"error occurred, the value is not rounded (should be...)"
+					+ locPX + "," + locPX);
 		}
-		
-		final Point rx = adaptToSize(_x, false);
-		final Point ry = adaptToSize(_y, false);
 		
 		
 		//
@@ -495,7 +498,8 @@ public class ContorlPicture implements PaintListener {
 		// Compute the first value. Afterwards, the rest of the values are 
 		// calculated inside a for-loop.
 		//
-		pageScope[0] = cp.getProject().getPageRectanlgeinProject(firstPrintedPage);
+		pageScope[0] = cp.getProject().getPageRectanlgeinProject(
+				firstPrintedPage);
 
 		// The location inside the BufferedImage is pnt_start.
 		pnt_loc_bi[0] = new Point(
@@ -772,6 +776,414 @@ public class ContorlPicture implements PaintListener {
 //				_width, _height, _x, _y, getBi(), 
 //				cp.getControlPic()));
 		
+		return getBi();
+	}
+	
+	
+
+
+	/**
+	 * Repaint a special rectangle. Repaints both the PaintObjects and
+	 * the selected background (e.g. lines, raster, none).<br>
+	 * The shift of the currently displayed section of the image must
+	 * not be applied to the parameters. <br> <br>
+	 * 
+	 * The parameters are converted inside the method into [MODEL-SIZE]
+	 * by performing the following computation:<br>
+	 * <code> v_model = (v_param + jlbl_picture.getLocation().getY())
+	 * 						* State.getZoomFactorToModelSize()</code>
+	 * 
+	 * The following functions are essential for the method:
+	 * @see Project.#getPictureID(int, int) <br>
+	 * 		for getting the affected Pictures.
+	 * 
+	 * @see Utils.#getBackground(BufferedImage, int, int, int, int, int,
+	 * 		int, Dimension) <br>
+	 * 		for getting the background image of the given scope.
+	 * 
+	 * @see Picture.#repaintRectangle(Point, Point, Dimension, BufferedImage,
+	 * 		boolean, boolean) <br>
+	 * 		for repainting the <code>PaintObjects</code> inside the repaint
+	 * 		scope.
+	 * 
+	 * 
+	 * 
+	 * @param _x 		the x coordinate of the rectangle that is to be 
+	 * 					repainted in [view-size]. This is the exact vew-
+	 * 					coordinate, thus the model-shift of the JLabel
+	 * 					which displays the painting is not added to the
+	 * 					parameter. Thus this value should be inside the
+	 * 					following range:
+	 * 					[0, jlbl_painting.getWidth();]<br>
+	 *
+	 * @param _y 		the x coordinate of the rectangle that is to be 
+	 * 					repainted in [view-size].This is the exact view-
+	 * 					coordinate, thus the model-shift of the JLabel
+	 * 					which displays the painting is not added to the
+	 * 					parameter. Thus this value should be inside the
+	 * 					following range:
+	 * 					[0, jlbl_painting.getHeight();]<br>
+	 * 					
+	 * @param _width	the width of the rectangle that is to be 
+	 * 					repainted in [view-size].This is the exact view-
+	 * 					coordinate, thus the model-shift of the JLabel
+	 * 					which displays the painting is not added to the
+	 * 					parameter. Thus this value should be inside the
+	 * 					following range:
+	 * 					[0, jlbl_painting.getWidth();]<br>
+	 * 
+	 * @param _height	the height of the rectangle that is to be 
+	 * 					repainted in [view-size].This is the exact view-
+	 * 					coordinate, thus the model-shift of the JLabel
+	 * 					which displays the painting is not added to the
+	 * 					parameter. Thus this value should be inside the
+	 * 					following range:
+	 * 					[0, jlbl_painting.getHeight();]<br>
+	 * 
+	 * 
+	 * SEE: documentation/refreshRectangle/....png
+	 * 
+	 * @return the resulting BufferedImage.
+	 */
+	public final BufferedImage refreshRectangle(
+			final int _x, final int _y, 
+			final int _width, final int _height) {
+
+		/*
+		 * This function has to call the functions 
+		 * - <code>Picture.updateRectangle</code> 
+		 * 			of the Picture classes that
+		 * 			are inside the visible scope for updating the painted 
+		 * 			<code>PaintObjects</code>
+		 * - <code> Utils.getBackground</code>
+		 * 			which paints the background the user selected onto
+		 * 			the updated BufferedImage.
+		 * 
+		 * 1) For that purpose, it is necessary to get the affected Pages.
+		 * That is done in the first step by calling the method
+		 * <code>Project.#getPageFromPX(int, int)</code>.
+		 * 
+		 * The index of the first, and last page are stored inside the 
+		 * following variables:
+		 * - firstPrintedPage,
+		 * - lastPrintedPage.
+		 * 
+		 * 2) After the identifiers for the pictures have been computed, it is 
+		 * necessary to get the following values for each displayed page:
+		 * 
+		 * 	- loc_picture	the location of the selection inside the entire
+		 * 					page. The BufferedImage which is given to this
+		 * 					very method is only the section, which is 
+		 * 					currently visible on screen for the user.
+		 * 
+		 * 	- loc_bi		The location of the rectangle which is to be 
+		 * 					repainted inside the BufferdImage. 
+		 * 
+		 * 	- _size_bi		The size of the rectangle that is to be 
+		 * 					repainted inside the BufferedImage.
+		 * 
+		 * They are stored in arrays named
+		 * 	- Point[] loc_picture,
+		 * 	- Point[] loc_bi,
+		 * 	- Point[] size_bi.
+		 * 
+		 * Finally, the BufferedImage is reset by calling the 
+		 * #setBi(BufferedImage) method, which updates the view classes.
+		 * 
+		 */
+		
+		
+		/*    _______________________________________________
+		 *    |                                             |
+		 *    |              page 5                         |
+		 *    |_____________________________________________|
+		 *    |                                             |
+		 *    |              page 6                         |
+		 *    |                                             |
+		 *    |                                             |
+		 *    |                                             |
+		 *    |                                             |
+		 *    |                                             |
+		 *    |                                             |
+		 *    |      o o o o o o o o o o o o o o o o o o o  |
+		 *    |      o                                   o  |
+		 *    |      o                                   o  |
+		 *    |______o___________________________________o__|
+		 *    |      o                                   o  |
+		 *    |      o                                   o  |
+		 *    |      o X x x x x x x x x x x x x x x x x o  |
+		 *    |      o x x x x x x x x x x x x x x x x x o  |
+		 *    |      o o o o o o o o o o o o o o o o o o o  |
+		 *                      ...
+		 * 
+		 * Repaint scope: 		x
+		 * BufferedImage:		o
+		 * 
+		 * We want to get the location of Point X in BufferedImage 
+		 * and relative to the current page (page 7 in the draft).
+		 * 
+		 * These values and the size of the rectangle have to 
+		 * match and be adapted to match the current zoom size.
+		 * 
+		 * The location inside the Picture (loc_poi) is in model size
+		 * 
+		 *    
+		 */
+		
+		
+		if (_width == 0 || _height == 0)
+			return bi;
+		
+		//
+		// Log information on what is painted.
+		//
+		Console.log("refreshing PaintLabel. \nValues: "
+				+ "\n\tgetSize:\t" + getPaintLabel().getSize()
+				+ " vs. " + getJPnlToMove().getSize()
+				+ "\n\tgetLocation:\t" + getPaintLabel().getLocation() 
+				+ " vs. " + getJPnlToMove().getLocation()
+				+ "\n\t" + "_x:\t\t" + _x
+				+ "\n\t" + "_y\t\t" + _y
+				+ "\n\t" + "_width\t\t" + _width
+				+ "\n\t" + "_height\t\t" + _height + "\n",
+				Console.ID_INFO_UNIMPORTANT, ContorlPicture.class, 
+				"refreshRanctangle");
+
+		
+		
+		
+		
+		// helpful values
+		final Point locPX = adaptToSize(
+				-getPage().getJlbl_painting().getLocation().x, false);
+		final Point locPY = adaptToSize(
+				-getPage().getJlbl_painting().getLocation().y, false);
+	
+		//
+		// error checking
+		//
+		if(locPX.y != 0 || locPY.y != 0) {
+			System.out.println(locPX);
+			System.out.println(locPY);
+			State.getLogger().severe(
+					"error occurred, the value is not rounded (should be...)"
+					+ locPX + "," + locPX);
+		}
+		
+		
+		//
+		// Step 1) Compute important values such as
+		// 	- the first printed point							[VIEW-SIZE]
+		// 	      last
+		// 	- the index of the first affected page
+		// 	                   last
+		
+		// the start- and end-location applied to the shift of the paint-JLabel
+		// in [VIEW-SIZE].
+		final Point pnt_start = new Point(
+				-getPaintLabel().getLocation().x + _x, 
+				-getPaintLabel().getLocation().y + _y);
+		final Point pnt_end = new Point(
+				pnt_start.x + _width,
+				pnt_start.y + _height);
+		
+		// The stretch-factor for converting the above values into 
+		// [MODEL-SIZE]. Is saved for not having to recompute it each
+		// time it is used.
+		final double zoomStretch = State.getZoomFactorToModelSize();
+		
+		// Check which pages need to be painted. Therefore, the saved values
+		// are converted into [MODEL-SIZE] and given to a method which 
+		// gets the pages from pixel.
+		final int firstPrintedPage = cp.getProject().getPageFromPX(
+				new Point((int) (pnt_start.x * zoomStretch), 
+						(int) (pnt_start.y * zoomStretch)));
+		final int lastPrintedPage = cp.getProject().getPageFromPX(
+				new Point((int) (pnt_end.x * zoomStretch), 
+						(int) (pnt_end.y * zoomStretch)));
+		
+		
+
+		// Step 2)
+		// Compute the following variables.
+		// - Point[]     pnt_loc_pic	 	[MODEL-SIZE],
+		// - Point[]     pnt_loc_bi			[VIEW-SIZE],
+		// - Dimension[] dim_size_bi		[VIEW-SIZE].
+		
+		// Rectangle which contains the page-print-scope of each affected
+		// page (thus the pages from firstPrintPage until lastPrintedPage).
+		final Point[] pnt_locAtBi = new Point[lastPrintedPage //VIEW-SIZE
+	                                       - firstPrintedPage + 1];
+		final Point[] pnt_locAtPic = new Point[lastPrintedPage //VIEW-SIZE
+                                   - firstPrintedPage + 1];
+		final Dimension [] dim_size_bi = new Dimension[lastPrintedPage 
+		                                               - firstPrintedPage + 1];
+		
+		// Utility; contains the bounds of each affected page. [MODEL_SIZE]
+		Rectangle[] pageScope = new Rectangle[lastPrintedPage 
+		                                           - firstPrintedPage + 1];
+
+		//
+		// Compute the first value. Afterwards, the rest of the values are 
+		// calculated inside a for-loop.
+		//
+		pageScope[0] = cp.getProject().getPageRectanlgeinProject(
+				firstPrintedPage);
+		
+		
+		
+		// initialize the initial values
+		pnt_locAtBi[0] = new Point(_x, _y);
+		pnt_locAtPic[0] = new Point((int) (-pageScope[0].x 
+				+ State.getZoomFactorToModelSize() * (pnt_locAtBi[0].x
+						- getPage().getJlbl_painting().getLocation().getX())),
+				(int) (-pageScope[0].y  
+				+ State.getZoomFactorToModelSize() * (pnt_locAtBi[0].y
+						- getPage().getJlbl_painting().getLocation().getY())));
+		
+		dim_size_bi[0] = new Dimension(
+				_width,
+				Math.min(_height, (int) State.getZoomFactorToShowSize() 
+						* (pageScope[0].height - pnt_locAtPic[0].y)));
+		int sumHeight = dim_size_bi[0].height;
+		
+		
+//		final int jolo = 0;
+//		System.out.println(
+//				"\nlocAtPic\t" + pnt_locAtPic[jolo].x + ", " + pnt_locAtPic[jolo].y + ", "
+//					+ "\nlocAtBi\t" + pnt_locAtBi[jolo].x + ", " + pnt_locAtBi[jolo].y + ", "
+//					+ "\nsizeBi\t" + dim_size_bi[jolo].width + ", " + dim_size_bi[jolo].height + ", "
+//				);
+		
+		for (int i = 1; i < pageScope.length; i++) {
+
+			//
+			// get size of current page.
+			//
+			final int currentPage = firstPrintedPage + i;
+			
+			// the size of the current page.
+			PDRectangle b = cp.getProject().getDocument().getPage(currentPage).getBBox();
+			
+			// TODO: width has to be adapted to page width because page width may variy.
+			final int height = Math.round(b.getHeight() 
+					* PDFUtils.dpi / 72);
+			final int width = Math.round(b.getWidth() 
+					* PDFUtils.dpi / 72);
+			pageScope[i] = new Rectangle(
+					0, 
+					pageScope[i - 1].y + pageScope[i - 1].height,
+					width,
+					height);
+			pnt_locAtPic[i] = new Point(
+					pnt_locAtPic[i-1].x,
+					0);
+			pnt_locAtBi[i] = new Point(
+					pnt_locAtBi[i-1].x,
+					pnt_locAtBi[i-1].y + sumHeight);
+			dim_size_bi[i] = new Dimension(
+					_width,
+					Math.min(_height - sumHeight, 
+							(int) State.getZoomFactorToShowSize() * (
+									pageScope[i].height - pnt_locAtPic[i].y)));
+			sumHeight += dim_size_bi[i].height;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+		//
+		// paint the painted stuff at graphics
+		//
+			
+		// The painted BufferedImage is not directly printed to view each time 
+		// is changed, but stored inside the BufferedImage bi. That would be 
+		// possible by typing
+		//	<code> 	bi = ... </code>
+		// instead of using the setter method which directly updates the view
+		// classes, but for the sake of readability, the changes are stored 
+		// inside the following reference to bi.
+		BufferedImage bi_progress = getBi();
+
+		final boolean backgroundEnabled = true;
+//		= State.isBorder();
+		//TODO: update page number in project (currentPage).
+		for (int i = 0; i < pageScope.length; i++) {
+
+			final int currentPage = firstPrintedPage + i;
+			String d = ("page" + currentPage + " of " 
+					+ (pageScope.length + firstPrintedPage - 1));
+			Console.log(d, 
+					Console.ID_INFO_UNIMPORTANT, 
+					getClass(), "before repaintRectangle");
+			
+			
+			// if the pdfpage object has to be reminded of its function, do so.
+			if (!cp.getProject().getDocument().getPdfPages()[currentPage]
+					.checkRemember()) {
+
+				cp.getProject().getDocument().getPdfPages()[currentPage].remind();
+			}
+			
+			if (i < pageScope.length - 1) {
+				
+				// paint the lines between pages.
+				final int y = (int) getPaintLabel().getLocation().getY() - _y
+						+ (int) ((
+								
+								// this is the height of the current page.
+								+ pageScope[i].height
+								
+								// this is the y coordinate of the page.
+								+ pageScope[i].y
+								) / zoomStretch);
+
+				for (int j = 0; j < bi.getWidth(); j++) {
+
+					bi.setRGB(j, y,
+							Color.black.getRGB());
+				}
+			}
+
+			pnt_locAtPic[i].x = (int) (pnt_locAtPic[i].x / zoomStretch);
+			pnt_locAtPic[i].y = (int) (pnt_locAtPic[i].y / zoomStretch);
+			
+			//
+			// Perform foreground- printing
+			//
+			bi_progress = cp.getProject().getPicture(currentPage).updateRectangle(
+					pnt_locAtPic[i],
+					pnt_locAtBi[i],
+					dim_size_bi[i],
+					bi_progress);
+			setBi(bi_progress);
+
+			if (backgroundEnabled) {
+
+				final int adaptedPageLocationY = getPaintLabel().getLocation().y + 
+						(int) (pageScope[0].y * State.getZoomFactorToShowSize());
+				bi_progress = (Utils.getBackground(
+						bi_progress, 
+						-getPaintLabel().getLocation().x + _x,
+						-adaptedPageLocationY + _y ,
+						-getPaintLabel().getLocation().x + _x + _width,
+						-adaptedPageLocationY + _y + _height, 
+						_x, _y, cp.getProject().getPicture(currentPage).getShowSize()));
+			}
+
+			
+				
+		}
+		
+		setBi(bi_progress);
 		return getBi();
 	}
 

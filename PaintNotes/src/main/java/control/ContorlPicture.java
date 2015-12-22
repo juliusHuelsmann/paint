@@ -648,8 +648,8 @@ public class ContorlPicture implements PaintListener {
 		// inside the following reference to bi.
 		BufferedImage bi_progress = getBi();
 
-		final boolean backgroundEnabled 
-		= State.isBorder();
+		final boolean backgroundEnabled = true;
+//		= State.isBorder();
 		//TODO: update page number in project (currentPage).
 		for (int i = 0; i < pageScope.length; i++) {
 
@@ -1026,7 +1026,7 @@ public class ContorlPicture implements PaintListener {
 
 		// change the location of the resize - buttons. Now that the selection
 		// is released, the entire page can be resized.
-		cp.getcTabPaint().updateResizeLocation();
+		cp.getcTabTools().updateResizeLocation();
 		
 		// stop the border thread (if that has not already been done).
 		stopBorderThread();
@@ -1336,7 +1336,7 @@ public class ContorlPicture implements PaintListener {
 			if (!cp.getPicture().isSelected()) {
 
 				// update the location of the resize buttons
-				cp.getcTabPaint().updateResizeLocation();	
+				cp.getcTabTools().updateResizeLocation();	
 			}
 		}
 	}
@@ -1508,7 +1508,7 @@ public class ContorlPicture implements PaintListener {
 			if (cp.getPicture().isSelected()) {
 
 				// update the location of the resize buttons
-				cp.getcTabPaint().updateResizeLocation();	
+				cp.getcTabTools().updateResizeLocation();	
 			}
 		}		
 	}
@@ -1527,7 +1527,7 @@ public class ContorlPicture implements PaintListener {
 			if (!cp.getPicture().isSelected()) {
 
 				// update the location of the resize buttons
-				cp.getcTabPaint().updateResizeLocation();	
+				cp.getcTabTools().updateResizeLocation();	
 			}
 		}		
 	}
@@ -1573,7 +1573,7 @@ public class ContorlPicture implements PaintListener {
 			if (!cp.getPicture().isSelected()) {
 
 				// update the location of the resize buttons
-				cp.getcTabPaint().updateResizeLocation();	
+				cp.getcTabTools().updateResizeLocation();	
 			}
 		}		
 	}

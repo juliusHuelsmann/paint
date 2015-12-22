@@ -205,7 +205,7 @@ public final class Tabs extends VTabbedPane {
          */
         super.addTab("Tools");
         tab_paint =  new Tools(
-        		_cp, _cp.getcTabPaint(), _cp,
+        		_cp, _cp.getcTabTools(), _cp,
         		_cp.getcTabPaintStatus(), _view);
         super.addToTab(tabNumber, tab_paint);
 
@@ -254,7 +254,7 @@ public final class Tabs extends VTabbedPane {
         super.addTab("Selection");
         tab_selection = new Selection(_view);
         tab_selection.initialize(
-        		_cp.getcTabPaint(), _cp.getcTabSelection(), _cp, 
+        		_cp.getcTabTools(), _cp.getcTabSelection(), _cp, 
         		_cp.getcTabPaintStatus());
         State.setIdTabSelection(tabNumber);
         super.addToTab(tabNumber, tab_selection);

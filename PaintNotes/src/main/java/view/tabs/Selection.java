@@ -561,7 +561,7 @@ public final class Selection extends Tab {
 		}
 		it_changePen.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
 		if (_paint) {
-			addPens(_cp, _cp.getcTabPaint(), _controlPaintStatus);
+			addPens(_cp, _cp.getcTabTools(), _controlPaintStatus);
         	super.add(it_changePen);
 
 	

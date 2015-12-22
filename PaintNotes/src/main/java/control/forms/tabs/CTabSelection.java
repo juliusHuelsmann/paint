@@ -158,7 +158,7 @@ public final class CTabSelection implements ActionListener {
             	// remove model
             	cp.getControlPic().releaseSelected();
             	pic.deleteSelected(cp.getView().getTabs().getTab_debug(), this);
-            	cp.getcTabPaint().updateResizeLocation();
+            	cp.getcTabTools().updateResizeLocation();
         	} else {
         		Message.showMessage(Message.MESSAGE_ID_INFO, "Nothing selected.");
         	}
@@ -526,7 +526,7 @@ public final class CTabSelection implements ActionListener {
     				cp.getControlPic().refreshPaint();
 	
     				cp.getView().getPage().refrehsSps();
-    				cp.getcTabPaint().updateResizeLocation();
+    				cp.getcTabTools().updateResizeLocation();
     			}
 			}
 		}

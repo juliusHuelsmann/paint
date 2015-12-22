@@ -185,7 +185,7 @@ import view.util.mega.MButton;
             }
         };
         jlbl_painting = new PaintLabel(jpnl_toMove);
-        new DropTarget(jlbl_painting, _controlPaint.getcTabPaint());
+        new DropTarget(jlbl_painting, _controlPaint.getcTabTools());
 
         //ScrollPanel for up and down
         sp_ub = new VScrollPane(jpnl_toMove, this, true, jlbl_painting);
@@ -285,7 +285,7 @@ import view.util.mega.MButton;
         super.add(jlbl_backgroundAlpha); 
 
 
-        _controlPaint.getcTabPaint().updateResizeLocation();
+        _controlPaint.getcTabTools().updateResizeLocation();
         sizeChangedImage(_controlPaint.getProject().getShowSize());
 
 	}

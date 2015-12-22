@@ -177,7 +177,7 @@ MenuListener {
 	/**
 	 * Controller class for the painting tab.
 	 */
-	private CTabTools cTabPaint;
+	private CTabTools cTabTools;
 	
 	/**
 	 * Controller class for the tab Print.
@@ -362,7 +362,7 @@ MenuListener {
             controlPic = new ContorlPicture(this);
             cTabSelection = new CTabSelection(this);
             controlPaintSelect = new ControlSelectionTransform(this);
-            cTabPaint = new CTabTools(this);
+            cTabTools = new CTabTools(this);
             cTabPaintStatus = new CPaintStatus(this);
             cTabPaintObjects = new CTabDebug(this);
             zoom = new Zoom(controlPic);
@@ -1428,9 +1428,9 @@ MenuListener {
         	double d = System.currentTimeMillis();
             if (_event.getButton() == MouseEvent.BUTTON1) {
                 mr_zoomIn(_event);
-                cTabPaint.updateResizeLocation();
+                cTabTools.updateResizeLocation();
             } else if (_event.getButton() == MouseEvent.BUTTON3) {
-            	cTabPaint.mr_zoomOut();
+            	cTabTools.mr_zoomOut();
             }
             State.getLogger().severe("brauchte" 
             		+ (System.currentTimeMillis() - d) + "ms");
@@ -1490,6 +1490,84 @@ MenuListener {
     	// adapt size
     	adaptSize();
     	
+    	
+    	
+    	
+    	
+    	
+    	
+    	//
+    	// adapt the location
+    	//
+
+//    	// Calculate the new size of the page.
+//        int newWidth = (int) (State.getImageSize().width
+//        		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
+//        int newHeight = (int) (State.getImageSize().height
+//        		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
+//
+//        int proW = (int) (State.getProjectSize().width
+//        		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
+//        int proH = (int) (State.getProjectSize().height
+//        		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
+
+    	
+    	// get the location inside the project which is stored inside the 
+    	// (VIEW!) class PaintLabel.
+        Point oldLocation = new Point(
+        		getPage().getJlbl_painting().getLocation().x,
+        		getPage().getJlbl_painting().getLocation().y);
+
+       
+        /*
+         * set the location of the panel.
+         */
+        // save new coordinates
+        int newX = (int) ((oldLocation.x - zoom.getX())
+                * ViewSettings.getZoomMultiplicator());
+        int newY = (int) ((oldLocation.y - zoom.getY())
+                * ViewSettings.getZoomMultiplicator());
+
+        
+        // check if the bounds are valid
+        // not smaller than the negative image size.
+        newX = Math.max(newX,
+        		(int) -(project.getShowSize().width
+        				- getPage().getWidth()));
+        newY = Math.max(newY,
+                -(project.getShowSize().height
+                		- getPage().getHeight()));
+        
+        // not greater than 0, these calculations prevent the zoom-out 
+        // location to be at the upper left of the page.
+        newX = Math.min(newX, 0);
+        newY = Math.min(newY, 0); 
+        
+
+        // apply the location at JLabel (with setLocation method that 
+        //is not used for scrolling purpose [IMPORTANT]) and repaint the 
+        //image afterwards.
+        getPage().getJlbl_painting().setBounds(newX, newY,
+        		getPage().getJlbl_painting().getWidth(),
+        		getPage().getJlbl_painting().getHeight());
+        
+
+        // apply the new location at ScrollPane
+        getPage().refrehsSps();
+
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
     }
     
     private void adaptSize() {
@@ -1501,33 +1579,14 @@ MenuListener {
 		final int widthPage = getView().getPage().getJlbl_painting().getWidth();
 		final int heightPage = getView().getPage().getJlbl_painting().getHeight();
 		
-		// (2): width and height of the BufferedImage which displays exactly the
-		// currently visible section of the project. The visualization-unit is 
-		// view-size.
-		final int bi_normal_width = controlPic.getBi().getWidth();
-		final int bi_normal_height = controlPic.getBi().getHeight();
-		
-		// 512 * / 3
-		
-		// state.getzoomFactorToModelSize is not a n
-		//			a * 2/3 
 		//
 		//
-		System.out.println("zoom ceil " + ViewSettings.isZoomCeil());
-		
-		//TODO: is only for the current configuration of ZoomFactor
-		int shit1 = ContorlPicture.adaptToSize(widthPage, ViewSettings.isZoomCeil()).x;
-		int shit2 = ContorlPicture.adaptToSize(heightPage, ViewSettings.isZoomCeil()).x;
+		int roundedW = ContorlPicture.adaptToSize(widthPage, ViewSettings.isZoomCeil()).x;
+		int roundedH = ContorlPicture.adaptToSize(heightPage, ViewSettings.isZoomCeil()).x;
 		
 		
 
 		// 1/3
-		
-		
-		
-		
-		int roundedW = shit1;
-		int roundedH = shit2;
 		
 //		int roundedW = (int) Math.round((int) (Math.round(widthPage * State.getZoomFactorToModelSize())
 //				/ State.getZoomFactorToModelSize()));
@@ -1550,27 +1609,10 @@ MenuListener {
     			ViewSettings.getView_bounds_page_open().y, width, height));
     	ViewSettings.setView_bounds_page(ViewSettings.getView_bounds_page_open());
     	
-    	System.out.println("Das bin ICH!!!!!!!!!!" + width + "..2 " + height);
-    	System.out.println(State.getZoomFactorToModelSize());
-    	final double res1 = 1.0 * width * State.getZoomFactorToModelSize();
-    	final double res2 = 1.0 * height * State.getZoomFactorToModelSize();
-    	System.out.println(res1 + ",," + res2);
-    	
     	controlPic.setBi(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
 		setBi_preprint(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
 
 		
-		System.out.println(width - widthPage);
-		System.out.println(height - heightPage);
-		System.out.println("w" + width);
-		System.out.println("h" + height);
-
-		if (width -widthPage + height -heightPage == 0) {
-			
-			for (int i = 0; i < 10; i++) {
-				System.out.println("hier hier");
-			}
-		}
 		
 		getPage().getJlbl_painting().setSize(width, height);
     	getPage().getJlbl_background().setSize(width, height);
@@ -1589,6 +1631,92 @@ MenuListener {
 
     	// adapt size
     	adaptSize();
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	//
+    	// adapt the location etc.
+    	//
+    	
+
+        // contains the not shifted new location of the paint-JLabel.
+        // the formula is okay.
+        Point oldLocation = new Point(
+        		
+        		// location of the JLabel (negative)
+        		(int) (getPage().getJlbl_painting().getLocation().x 
+        		+ getPage().getJlbl_painting().getWidth() 
+        		* (ViewSettings.getZoomMultiplicator() / 2.0 - 1.0/2.0)),
+        				
+        		(int) (getPage().getJlbl_painting().getLocation().y 
+        		+ getPage().getJlbl_painting().getHeight() 
+        		* (ViewSettings.getZoomMultiplicator() / 2.0 - 1.0/2.0)));
+
+        
+        // not smaller than the negative image size.
+        oldLocation.x = (int) Math.max(oldLocation.x,
+        		-(getProject().getShowSize().width
+        				- getPage().getWidth()
+        				* ViewSettings.getZoomMultiplicator()));
+        oldLocation.y = (int) Math.max(oldLocation.y,
+                -(getProject().getShowSize().height
+                		- getPage().getHeight() 
+                		* ViewSettings.getZoomMultiplicator()));
+        
+        // not greater than 0, these calculations prevent the zoom-out 
+        // location to be at the upper left of the page.
+        oldLocation.x = Math.min(oldLocation.x, 0);
+        oldLocation.y = Math.min(oldLocation.y, 0); 
+// 
+//        // apply the new image size.
+//        State.setImageShowSize(new Dimension(newWidth, newHeight));
+//        State.setProjectShowSize(new Dimension(proW, proH));
+
+        getPage().getJlbl_painting().setBounds(
+        		
+        		// adapt the shifted location to the new image size.
+        		// The rounding at entire pixels is performed inside the
+        		// setBounds-method. Thus we don't have to cope with it
+        		// in here.
+        		(int) ((oldLocation.x) / ViewSettings.getZoomMultiplicator()), 
+        		(int) ((oldLocation.y) / ViewSettings.getZoomMultiplicator()),
+        		
+        		// the old width and height.
+        		getPage().getJlbl_painting().getWidth(),
+        		getPage().getJlbl_painting().getHeight());
+        
+        // refresh scrollPanes which have changed because of the zooming
+        // process.
+        getPage().refrehsSps();
+
+    	final Picture pic = getPicture();
+        
+        // release all selected items. If this is not done, the
+        // painted selection size is too big.
+        if (pic.isSelected()) {
+
+        	controlPic.releaseSelected();
+            pic.releaseSelected(
+        			getControlPaintSelection(),
+        			getcTabSelection(),
+        			getView().getTabs().getTab_debug(),
+        			getView().getPage().getJlbl_painting()
+        			.getLocation().x,
+        			getView().getPage().getJlbl_painting()
+        			.getLocation().y);
+        }
+        
+        // update the location of the resize buttons for resizing the entire
+        // page.
+        getcTabTools().updateResizeLocation();
     }
     
     
@@ -1613,58 +1741,6 @@ MenuListener {
         if (State.getZoomState() <  ViewSettings.MAX_ZOOM_IN) {
 
         	zoomIn();
-
-//        	// Calculate the new size of the page.
-//            int newWidth = (int) (State.getImageSize().width
-//            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
-//            int newHeight = (int) (State.getImageSize().height
-//            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
-//
-//            int proW = (int) (State.getProjectSize().width
-//            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
-//            int proH = (int) (State.getProjectSize().height
-//            		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
-
-            Point oldLocation = new Point(getPage()
-                    .getJlbl_painting().getLocation().x, getPage()
-                    .getJlbl_painting().getLocation().y);
-
-           
-            /*
-             * set the location of the panel.
-             */
-            // save new coordinates
-            int newX = (int) ((oldLocation.x - zoom.getX())
-                    * ViewSettings.getZoomMultiplicator());
-            int newY = (int) ((oldLocation.y - zoom.getY())
-                    * ViewSettings.getZoomMultiplicator());
-
-            
-            // check if the bounds are valid
-            // not smaller than the negative image size.
-            newX = Math.max(newX,
-            		(int) -(project.getShowSize().width
-            				- getPage().getWidth()));
-            newY = Math.max(newY,
-                    -(project.getShowSize().height
-                    		- getPage().getHeight()));
-            
-            // not greater than 0, these calculations prevent the zoom-out 
-            // location to be at the upper left of the page.
-            newX = Math.min(newX, 0);
-            newY = Math.min(newY, 0); 
-            
-
-            // apply the location at JLabel (with setLocation method that 
-            //is not used for scrolling purpose [IMPORTANT]) and repaint the 
-            //image afterwards.
-            getPage().getJlbl_painting().setBounds(newX, newY,
-            		getPage().getJlbl_painting().getWidth(),
-            		getPage().getJlbl_painting().getHeight());
-            
-
-            // apply the new location at ScrollPane
-            getPage().refrehsSps();
         } else {
             Message.showMessage(Message.MESSAGE_ID_INFO, "max zoom in reached");
         }
@@ -2731,8 +2807,8 @@ MenuListener {
 	/**
 	 * @return the cTabPaint
 	 */
-	public final CTabTools getcTabPaint() {
-		return cTabPaint;
+	public final CTabTools getcTabTools() {
+		return cTabTools;
 	}
 
 

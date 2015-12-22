@@ -135,7 +135,7 @@ import control.util.WindowMover;
         
   
         
-        cv = new ControlView(this, _cp.getcTabPaint());
+        cv = new ControlView(this, _cp.getcTabTools());
 
         //ml and mml for hover event
         super.addMouseListener(_cp);

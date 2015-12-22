@@ -595,7 +595,7 @@ public final class Picture implements Serializable {
 
 		// for debugging highlight the white scopes inside the image
 		// with random color (which differs each time update is called)
-		final boolean debug = !false;
+		final boolean debug = false;
 		if (debug) {
 
 			hightlightRectanlge(

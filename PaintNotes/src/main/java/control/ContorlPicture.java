@@ -528,7 +528,10 @@ public class ContorlPicture implements PaintListener {
 				(int) Math.min(((pageScope[0].getHeight() - pnt_loc_pic[0].y)),
 						_height));
 		
-		
+		// auf die location in der zweiten Seite wird folgendes Draufaddiert
+		// bzw. die location aus der zweiten Seite entsteht mithilfe der ersten 
+		// pageScope und dim_size_bi
+
 		
 		//
 		// Inside the for-loop, the values of the four arrays
@@ -560,11 +563,11 @@ public class ContorlPicture implements PaintListener {
 					pageScope[i - 1].y + pageScope[i - 1].height,
 					width,
 					height);
-			
 
 			pnt_loc_bi[i] = new Point(
 					pnt_loc_bi[i - 1].x,
-					(int) pnt_loc_bi[i - 1].y + (int) (dim_size_bi[i - 1].height));
+					(int) pnt_loc_bi[i - 1].y + (int) 
+					(State.getZoomFactorToShowSize() * dim_size_bi[i - 1].height));
 
 			pnt_loc_pic[i] = new Point(
 					
@@ -576,7 +579,7 @@ public class ContorlPicture implements PaintListener {
 					0);
 			
 			dim_size_bi[i] = new Dimension(
-					(int) Math.min(pageScope[i].getWidth() - pnt_loc_bi[i].x, _width),
+					(int) Math.min(pageScope[i].getWidth() - pnt_loc_pic[i].x, _width),
 					(int) (_height - pnt_loc_bi[i].y));
 		}
 

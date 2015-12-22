@@ -523,9 +523,9 @@ public class ContorlPicture implements PaintListener {
 		// inside the Dimension-array is also the very last one, which size
 		// is adapted to the scope-size after the for-loop has terminated.
 		dim_size_bi[0] = new Dimension(
-				(int) (Math.min((pageScope[0].getWidth() - pnt_loc_bi[0].x),
+				(int) (Math.min((pageScope[0].getWidth() - pnt_loc_pic[0].x),
 						_width)),
-				(int) Math.min(((pageScope[0].getHeight() - pnt_loc_bi[0].y)),
+				(int) Math.min(((pageScope[0].getHeight() - pnt_loc_pic[0].y)),
 						_height));
 		
 		

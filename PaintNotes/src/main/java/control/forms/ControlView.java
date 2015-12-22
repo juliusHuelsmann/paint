@@ -264,6 +264,10 @@ ActivityListener, MouseListener {
 					view.getJbtn_exit().getWidth(), 
 					view.getJbtn_exit().getHeight(),
 					Constants.VIEW_JBTN_FULLSCREEN_PRESSED_PATH)));
+			
+			
+			//TODO: adapt location inside picture.
+			
 		} else if (_event.getSource().equals(
 				view.getJbtn_minimize())) {
 			view.getJbtn_minimize().setIcon(new ImageIcon(Utils
@@ -320,15 +324,15 @@ ActivityListener, MouseListener {
 				//compute the new size of the 
 				ViewSettings.setSize_jframe(
 						ViewSettings.getSizeViewFullscreen());
-			view.setFullscreen();
-		 } else {
+				view.setFullscreen();
+			} else {
 
-			//if the new window state is not fullscreen, apply custom size
-			//of JFrame.
-			ViewSettings.setSize_jframe(
-					ViewSettings.getSizeViewWindow());
-				view.setNotFullscreen();
-		 }
+				//if the new window state is not fullscreen, apply custom size
+				//of JFrame.
+				ViewSettings.setSize_jframe(
+						ViewSettings.getSizeViewWindow());
+					view.setNotFullscreen();
+			 }
 			sizeChanged();
 		
 		} else if (_event.getSource().equals(view.getJbtn_minimize())) {

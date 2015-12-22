@@ -588,8 +588,10 @@ public class ContorlPicture implements PaintListener {
 				(int) (_height 
 						+ (pageScope[0].y
 						- pageScope[pageScope.length - 1].y
+						// warum auch immer.
 						+ pnt_loc_pic[0].y
-						- pnt_loc_pic[pageScope.length - 1].y) / zoomStretch);
+						- pnt_loc_pic[pageScope.length - 1].y
+						) / zoomStretch);
 		
 
 //		if (pagePrintScope.length != 1) {

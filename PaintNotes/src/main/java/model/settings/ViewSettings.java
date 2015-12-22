@@ -27,6 +27,7 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.io.ObjectInputStream.GetField;
 
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
@@ -370,6 +371,28 @@ public final class ViewSettings {
     	return 1.0 * ZOOM_MULTIPLICATOR_NUMINATOR / ZOOM_MULTIPLICATOR_DENUMINATOR;
     }
     
+    public static final boolean isZoomIn() {
+    	return State.getZoomFactorToModelSize() <= 1;
+    }
+    
+    /**
+     * this function is used for deciding whether to ceil or floor
+     * the double value which is computed to be the new width or height
+     * of the picture. 
+     * 
+     * The value is to alternate between -1 and 1 (for neither getting too much
+     * smaller than the original size that can be used nor getting too big 
+     * large to be displayed entirely.
+     * 
+     * @return
+     */
+    public static final boolean isZoomCeil() {
+    	return Math.abs(State.getZoomState()) % 2 == 0;
+    }
+    
+    public static final boolean isZoomOut() {
+    	return !isZoomIn();
+    }
     
     
     public static final double ZOOM_MULTIPLICATOR_DENUMINATOR = 2;

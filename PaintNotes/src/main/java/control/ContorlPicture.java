@@ -25,12 +25,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
-
 import javax.swing.ImageIcon;
-
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.tools.ant.taskdefs.AbstractCvsTask.Module;
-
 import control.forms.BorderThread;
 import control.interfaces.MoveEvent;
 import control.interfaces.PaintListener;
@@ -839,7 +835,9 @@ public class ContorlPicture implements PaintListener {
 	 */
 	public static Point adaptToSize(final int _val, final boolean _ceil) {
 
-    	final int modulo = (int) Math.pow(
+    	final int modulo =
+//    			1;
+    			(int) Math.pow(
     			ViewSettings.ZOOM_MULTIPLICATOR_DENUMINATOR 
     			* ViewSettings.ZOOM_MULTIPLICATOR_NUMINATOR,
     			Math.abs(State.getZoomState()));
@@ -847,15 +845,16 @@ public class ContorlPicture implements PaintListener {
     	
     	final int result;
     	if (_ceil) {
-    		result = ((int) Math.ceil(_val / modulo)) * modulo;
+    		result = ((int) Math.ceil(1.0 * _val / modulo)) * modulo;
     	} else {
-    		result = ((int) Math.floor(_val / modulo)) * modulo;
+    		result = ((int) Math.floor(1.0 * _val / modulo)) * modulo;
     	}
-    	
+
     	return new Point(result, _val - result);
 	}
 	
 
+	
 	
 
 

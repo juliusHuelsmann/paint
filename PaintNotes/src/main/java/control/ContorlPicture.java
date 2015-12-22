@@ -25,8 +25,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+
 import javax.swing.ImageIcon;
+
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+
 import control.forms.BorderThread;
 import control.interfaces.MoveEvent;
 import control.interfaces.PaintListener;
@@ -36,6 +39,7 @@ import model.objects.pen.special.PenSelection;
 import model.settings.State;
 import model.settings.ViewSettings;
 import model.util.Util;
+import model.util.paint.Utils;
 import model.util.pdf.PDFUtils;
 import view.forms.Console;
 import view.forms.Page;
@@ -426,20 +430,6 @@ public class ContorlPicture implements PaintListener {
 		
 		final Point rx = adaptToSize(_x, false);
 		final Point ry = adaptToSize(_y, false);
-		final Point rwidth = adaptToSize(_width + rx.y, true);
-		final Point rheight = adaptToSize(_height + ry.y, true);
-		
-		
-		
-		// view size
-		final Point loc_sec_pic = new Point(
-				 + _x,
-				-getPage().getJlbl_painting().getLocation().y + _y);
-		
-		final Dimension dim_size = new Dimension(_width, _height);
-		
-		// model size
-		final Point loc_sec_bi = new Point(_x, _y);
 		
 		
 		//
@@ -743,13 +733,13 @@ public class ContorlPicture implements PaintListener {
 
 				final int adaptedPageLocationY = getPaintLabel().getLocation().y + 
 						(int) (pageScope[0].y * State.getZoomFactorToShowSize());
-//				bi_progress = (Utils.getBackground(
-//						bi_progress, 
-//						-getPaintLabel().getLocation().x + _x,
-//						-adaptedPageLocationY + _y ,
-//						-getPaintLabel().getLocation().x + _x + _width,
-//						-adaptedPageLocationY + _y + _height, 
-//						_x, _y, cp.getProject().getPicture(currentPage).getShowSize()));
+				bi_progress = (Utils.getBackground(
+						bi_progress, 
+						-getPaintLabel().getLocation().x + _x,
+						-adaptedPageLocationY + _y ,
+						-getPaintLabel().getLocation().x + _x + _width,
+						-adaptedPageLocationY + _y + _height, 
+						_x, _y, cp.getProject().getPicture(currentPage).getShowSize()));
 			}
 
 			
@@ -836,11 +826,10 @@ public class ContorlPicture implements PaintListener {
 	public static Point adaptToSize(final int _val, final boolean _ceil) {
 
     	final int modulo =
-//    			1;
     			(int) Math.pow(
-    			ViewSettings.ZOOM_MULTIPLICATOR_DENUMINATOR 
-    			* ViewSettings.ZOOM_MULTIPLICATOR_NUMINATOR,
-    			Math.abs(State.getZoomState()));
+    					ViewSettings.ZOOM_MULTIPLICATOR_DENUMINATOR 
+    					* ViewSettings.ZOOM_MULTIPLICATOR_NUMINATOR,
+    					Math.abs(State.getZoomState()));
     	
     	
     	final int result;

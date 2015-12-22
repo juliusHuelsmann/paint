@@ -119,13 +119,6 @@ public class PaintLabel extends MLabel {
     	final boolean shiftX = (_x >= x);
     	final boolean shiftY = (_y >= y);
     	
-    	// oben links ist true.
-    	System.out.println("shiftx " + shiftX + " .\t. " + "shiftY " + shiftY);
-
-    	System.out.println("abweichung"
-    			+ " " + ContorlPicture.adaptToSize(_x, shiftX).y
-    			+ "\n" + ContorlPicture.adaptToSize(_y, shiftY).y);
-    	
     	return new Point(
     			ContorlPicture.adaptToSize(_x, shiftX).x,
     			ContorlPicture.adaptToSize(_y, shiftY).x);

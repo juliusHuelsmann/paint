@@ -706,6 +706,7 @@ public class ContorlPicture implements PaintListener {
 //					new Dimension((int) (pageScope[i].width  / zoomStretch),
 //							(int) (pageScope[i].height / zoomStretch)),
 					bi_progress);
+			setBi(bi_progress);
 
 //			cp.getProject().getPicture(currentPage).highlightRect(
 //					pnt_loc_pic[i],

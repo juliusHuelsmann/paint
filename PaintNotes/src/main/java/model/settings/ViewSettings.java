@@ -32,6 +32,9 @@ import java.io.ObjectInputStream.GetField;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 
+import control.ContorlPicture;
+import control.ControlPaint;
+
 /**
  * 
  * @author Julius Huelsmann
@@ -437,24 +440,43 @@ public final class ViewSettings {
          viewBoundsPo = new Rectangle(
                 2, h1, h2, h3);
 
-         viewBoundsPageOpen = new Rectangle(
-                 VIEW_LOCATION_TB.x,  getView_heightTB_visible() 
-                 + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
-                 getSize_jframe().width - TWENTY_FIFE - TEN - 2, 
-                 
-//                 getSize_jframe().height - getSize_jframe().height / FIFE 
-//                 - 2 * VIEW_SIZE_SP - 2 * TWENTY_FIFE);
          
-         		getSize_jframe().height - (getView_heightTB_visible() 
-                 + ViewSettings.getView_heightTB_opener() 
-                 + VIEW_LOCATION_TB.y + VIEW_SIZE_SP));
+         
+         final int openWidth = ContorlPicture.adaptToSize(
+        		 getSize_jframe().width - TWENTY_FIFE - TEN - 2,
+        		 false).x;
+         
+
+         final int openHeight = ContorlPicture.adaptToSize(
+        		 getSize_jframe().height - (getView_heightTB_visible() 
+                         + ViewSettings.getView_heightTB_opener() 
+                         + VIEW_LOCATION_TB.y + VIEW_SIZE_SP),
+        		 false).x;
+         
+         final int closedHeight = ContorlPicture.adaptToSize(
+        		 getSize_jframe().height - (getView_heightTB_visible() 
+                         + ViewSettings.getView_heightTB_opener() 
+                         + VIEW_LOCATION_TB.y + VIEW_SIZE_SP) + getView_heightTB_visible() 
+                 - TWENTY_FIFE, false).x;
+         
+         
+         
+         // round the values so that the display size can be transformed
+         // into model size without rounding.
+         viewBoundsPageOpen = new Rectangle(
+                 VIEW_LOCATION_TB.x,  
+                 getView_heightTB_visible() 
+                 + ViewSettings.getView_heightTB_opener() + VIEW_LOCATION_TB.y, 
+                 openWidth,
+                 openHeight);
+         
+         
                 //the last 25 is the size 
          view_bounds_page_closed = new Rectangle(
                  viewBoundsPageOpen.x, 
                  viewBoundsPageOpen.y - getView_heightTB_visible(), 
                  viewBoundsPageOpen.width, 
-                 viewBoundsPageOpen.height + getView_heightTB_visible() 
-                 - TWENTY_FIFE);
+                 closedHeight);
         
          view_bounds_page = new Rectangle(
                 viewBoundsPageOpen);

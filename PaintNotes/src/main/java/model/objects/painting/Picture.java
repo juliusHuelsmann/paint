@@ -592,12 +592,108 @@ public final class Picture implements Serializable {
 				_loc_sectionAtBi,
 				_size_bi, _bi, false, true);
 		
+
+		// for debugging highlight the white scopes inside the image
+		// with random color (which differs each time update is called)
+		final boolean debug = !false;
+		if (debug) {
+
+			hightlightRectanlge(
+					_loc_sectionAtPicture, 
+					_loc_sectionAtBi,
+					_size_bi, _bi, getRandomColor());
+		}
 		return _bi;
 	}
 	
 	
+	public static final Color getRandomColor(){
+		return new Color( new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255));
+		
+	}
 	
-	
+
+	/**
+	 * This is a method for debugging.
+	 * 
+	 * Fills the white pixel of the picture with specified color.
+	 * 
+	 * @see #fillRectangle(Point, Point, Dimension, BufferedImage, Color)
+	 * 
+	 * @param _loc_picture	the location of the selection inside the entire
+	 * 						page. The BufferedImage which is given to this
+	 * 						very method is only the section, which is 
+	 * 						currently visible on screen for the user.
+	 * 						
+	 * 						This value is necessary for adapting the location
+	 * 						inside the BufferedImage to the location of the
+	 * 						page for not removing pixel that are not part of
+	 * 						the painted image.
+	 * 						
+	 * @param _loc_bi		The location of the rectangle which is to be 
+	 * 						filled with white and alpha pixels inside the 
+	 * 						BufferdImage. Its value has to be in the range
+	 * 						of <br><code>([0, _bi.getWidth()]
+	 * 						\times[0, _bi.getHeight()]) </code>.
+	 * 
+	 * @param _size_bi		The size of the rectangle that is to be filled
+	 * 						with white, alpha pixels inside the BufferedImage.
+	 * 						Is adapted to the entire size of the Picture.
+	 * 						Therefore, the _loc_picture values are used.
+	 * 
+	 * @param _bi			The BufferedImage to which the changes are written.
+	 * 						Should be the one located in ControlPicture.
+	 * 
+	 * 
+	 * 						
+	 */
+	private void hightlightRectanlge(
+			final Point _loc_picture, 
+			final Point _loc_bi, 
+			final Dimension _size_bi,
+			final BufferedImage _bi,
+			final Color _clr_highlight) {
+
+		// check whether the rectangle concerns the blue border of the
+		// image which is not to be emptied and then repainted.
+		// If that's the case, the rectangle width or height are decreased.
+		int rectWidth = _size_bi.width, rectHeight = _size_bi.height;
+
+
+		BufferedImage bi = _bi;
+		
+		final boolean fillEntireField = false;
+		
+		
+		final int rgbSearched = new Color(255, 255, 255).getRGB();
+		for (int x = 0; x < rectWidth; x++) {
+			for (int y = 0; y < rectHeight; y++) {
+
+
+				int rx = _loc_bi.x + x;
+				int ry = _loc_bi.y + y;
+
+				// not really the optical x, but ca.;
+				// computed for continuity of linges
+				int opticalX = rx + _loc_picture.x;
+				int opticalY = ry + _loc_picture.y;
+				
+                //painting points
+                if (
+                		ry < _bi.getHeight() && ry >= 0
+                        && rx < _bi.getWidth() && rx >= 0) {
+				
+                	if ((bi.getRGB(rx, ry) == rgbSearched && fillEntireField)
+							|| 						
+							(Math.abs(opticalX + opticalY) % 40 <= 2
+							|| Math.abs(opticalX - opticalY) % 40 <= 2)) {
+						bi.setRGB(rx, ry, _clr_highlight.getRGB());
+	                }
+                }
+			}
+		}
+	}
+
 	/**
 	 * Empties a given rectangle in given BufferedImage and returns the 
 	 * resulting BufferedImage.
@@ -700,7 +796,9 @@ public final class Picture implements Serializable {
 			final BufferedImage _bi) {
 
 		final int maxRGB = 255;
-		fillRectangle(_loc_picture, _loc_bi, _size_bi, _bi, new Color(maxRGB, maxRGB, maxRGB, 0));
+		fillRectangle(_loc_picture, _loc_bi, _size_bi, _bi, 
+//				getRandomColor());
+				new Color(maxRGB, maxRGB, maxRGB, 0));
 
 	}
 

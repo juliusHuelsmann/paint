@@ -1513,11 +1513,12 @@ MenuListener {
 		//			a * 2/3 
 		//
 		//
+		System.out.println("zoom ceil " + ViewSettings.isZoomCeil());
+		
 		//TODO: is only for the current configuration of ZoomFactor
-		int shit1 = (int) (widthPage / 36);
-		shit1 = (int) (shit1 * 36);
-		int shit2 = (int) (heightPage / 36);
-		shit2 = 	(int) (shit2 * 36);
+		int shit1 = ContorlPicture.adaptToSize(widthPage, ViewSettings.isZoomCeil()).x;
+		int shit2 = ContorlPicture.adaptToSize(heightPage, ViewSettings.isZoomCeil()).x;
+		
 		
 
 		// 1/3

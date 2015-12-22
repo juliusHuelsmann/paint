@@ -1035,16 +1035,16 @@ public class ContorlPicture implements PaintListener {
 		// initialize the initial values
 		pnt_locAtBi[0] = new Point(_x, _y);
 		pnt_locAtPic[0] = new Point((int) (-pageScope[0].x 
-				+ State.getZoomFactorToModelSize() * (pnt_locAtBi[0].x
+				+ 1.0 * State.getZoomFactorToModelSize() * (pnt_locAtBi[0].x
 						- getPage().getJlbl_painting().getLocation().getX())),
 				(int) (-pageScope[0].y  
-				+ State.getZoomFactorToModelSize() * (pnt_locAtBi[0].y
+				+ 1.0 * State.getZoomFactorToModelSize() * (pnt_locAtBi[0].y
 						- getPage().getJlbl_painting().getLocation().getY())));
 		
 		dim_size_bi[0] = new Dimension(
 				_width,
-				Math.min(_height, (int) State.getZoomFactorToShowSize() 
-						* (pageScope[0].height - pnt_locAtPic[0].y)));
+				Math.min(_height, (int) (1.0 * State.getZoomFactorToShowSize() 
+						* (pageScope[0].height - pnt_locAtPic[0].y))));
 		int sumHeight = dim_size_bi[0].height;
 		
 		
@@ -1078,14 +1078,19 @@ public class ContorlPicture implements PaintListener {
 			pnt_locAtPic[i] = new Point(
 					pnt_locAtPic[i-1].x,
 					0);
+			
+			
+			
 			pnt_locAtBi[i] = new Point(
 					pnt_locAtBi[i-1].x,
 					pnt_locAtBi[i-1].y + sumHeight);
+			//Insert a small gap between pages due to the zoom-rounding.
+
 			dim_size_bi[i] = new Dimension(
 					_width,
 					Math.min(_height - sumHeight, 
-							(int) State.getZoomFactorToShowSize() * (
-									pageScope[i].height - pnt_locAtPic[i].y)));
+							(int) (1.0 * State.getZoomFactorToShowSize() * (
+									pageScope[i].height - pnt_locAtPic[i].y))));
 			sumHeight += dim_size_bi[i].height;
 		}
 		

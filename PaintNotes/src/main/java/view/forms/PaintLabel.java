@@ -114,9 +114,21 @@ public class PaintLabel extends MLabel {
      * @since paint version 01.02.24
      */
     private Point getShift(final int _x, final int _y) {
+    	
+    	// The old location is smaller or equal to the new location
+    	final boolean shiftX = (_x >= x);
+    	final boolean shiftY = (_y >= y);
+    	
+    	// oben links ist true.
+    	System.out.println("shiftx " + shiftX + " .\t. " + "shiftY " + shiftY);
 
-    	return new Point(ContorlPicture.adaptToSize(_x, false).x,
-    			ContorlPicture.adaptToSize(_y, false).x);
+    	System.out.println("abweichung"
+    			+ " " + ContorlPicture.adaptToSize(_x, shiftX).y
+    			+ "\n" + ContorlPicture.adaptToSize(_y, shiftY).y);
+    	
+    	return new Point(
+    			ContorlPicture.adaptToSize(_x, shiftX).x,
+    			ContorlPicture.adaptToSize(_y, shiftY).x);
     }
     
 

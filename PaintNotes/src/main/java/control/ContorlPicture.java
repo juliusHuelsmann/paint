@@ -1142,7 +1142,7 @@ public class ContorlPicture implements PaintListener {
 				
 				// paint the lines between pages.
 				final int y = (int) getPaintLabel().getLocation().getY() - _y
-						+ (int) ((
+						+ (int) ( 1.0 * (
 								
 								// this is the height of the current page.
 								+ pageScope[i].height
@@ -1174,7 +1174,9 @@ public class ContorlPicture implements PaintListener {
 			if (backgroundEnabled) {
 
 				final int adaptedPageLocationY = getPaintLabel().getLocation().y + 
-						(int) (pageScope[0].y * State.getZoomFactorToShowSize());
+						(int) (pageScope[i].y * State.getZoomFactorToShowSize());
+				
+
 				bi_progress = (Utils.getBackground(
 						bi_progress, 
 						-getPaintLabel().getLocation().x + _x,

@@ -308,7 +308,6 @@ public final class PDFUtils {
 			image = renderer.renderImageWithDPI(_pageNumber, dpi, ImageType.RGB);
 	    	return image;
 		} catch (Exception e) {
-			e.printStackTrace();	
 			if (_dpi < 50) {
 				System.err.println("interrupt loop");
 				return null;

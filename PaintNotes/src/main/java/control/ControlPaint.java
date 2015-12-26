@@ -35,6 +35,8 @@ import java.util.logging.Level;
 
 import javax.swing.ImageIcon;
 
+import org.w3c.dom.CDATASection;
+
 import control.forms.CLoading;
 import control.forms.CNew;
 import control.forms.CPaintStatus;
@@ -97,6 +99,12 @@ MenuListener {
 	 * that are important for the program.
 	 */
 	private View view;
+	
+	
+	/**
+	 * The page to which the current PaintObject is inserted.
+	 */
+	private int currentPage = 0;
 	
 	/*
 	 * Controller classes that are essential for the execution of
@@ -591,7 +599,7 @@ MenuListener {
         	if (getTabs().isMenuOpen()) {
                 getTabs().closeMenues();
         	}
-        	final Picture pic = getPicture();
+        	final Picture pic = getPicture(_event.getPoint());
             
             // switch index of operation
             switch (State.getIndexOperation()) {
@@ -648,6 +656,7 @@ MenuListener {
                     
                 // add paintObject and point to Picture
                 pic.addPaintObject(getTabs().getTab_insert());
+                currentPage = getPictureNumber(_event.getPoint());
                 changePO(_event);
                 break;
             
@@ -663,6 +672,7 @@ MenuListener {
                 // change pen and add new paint object
                 pic.changePen(new PenSelection());
                 pic.addPaintObjectWrinting();
+                currentPage = getPictureNumber(_event.getPoint());
                 break;
 
             case Constants.CONTROL_PAINTING_INDEX_ERASE:
@@ -920,7 +930,7 @@ MenuListener {
                         pnt_start = _event.getPoint();
                         pnt_startLocation = getPage()
                                 .getJlbl_painting().getLocation();
-                        getPicture().abortPaintObject(controlPic);
+                        getPicture(_event.getPoint()).abortPaintObject(controlPic);
                     }
 
                     if (pnt_start != null) {
@@ -967,7 +977,7 @@ MenuListener {
                         pnt_start = _event.getPoint();
                         pnt_startLocation = getPage()
                                 .getJlbl_painting().getLocation();
-                        getPicture().abortPaintObject(controlPic);
+                        getPicture(_event.getPoint()).abortPaintObject(controlPic);
                     }
                     
                     if (pnt_last != null) {
@@ -1035,7 +1045,7 @@ MenuListener {
         //
         // change location of the current selection
         //
-        if (getPicture().isSelected()) {
+        if (getPicture(new Point(_x, _y)).isSelected()) {
         	
         	//calculate the shift in here not directly because the
         	//check whether the new coordinates are in range is
@@ -1274,21 +1284,34 @@ MenuListener {
 		final int pageNumber = pnt_p.x;
 		final int pageY = pnt_p.y;
 		final Picture pic = project.getPicture(pageNumber);
-		
+//		final Picture pic = getPicture(_event.getPoint());
+
+    	// for painting across pages.
+    	if (!pic.hasPaintObject()) {
+    		project.getPicture(currentPage).finish(view.getTabs().getTab_debug());
+            currentPage = getPictureNumber(_event.getPoint());
+        	pic.changePen(Pen.clonePen(
+                    State.getPenSelected1()));
+    		pic.addPaintObject(view.getTabs().getTab_insert());
+    	} 
+    		
 	    if (State.isNormalRotation()) {
 
-	    	
-	        pic.changePaintObject(new DPoint(
-	        		(_event.getX() 
-	        		- getPage().getJlbl_painting().getLocation().x)
-	        		* zoomFactor, 
-	        		(_event.getY() 
-	        		- getPage().getJlbl_painting().getLocation().y)
-	        		* zoomFactor - pageY),
-	        		getPage(),
-	        		controlPic);
+
+	    		
+	    		
+	    		pic.changePaintObject(new DPoint(
+	 	        		(_event.getX() 
+	 	        		- getPage().getJlbl_painting().getLocation().x)
+	 	        		* zoomFactor, 
+	 	        		(_event.getY() 
+	 	        		- getPage().getJlbl_painting().getLocation().y)
+	 	        		* zoomFactor - pageY),
+	 	        		getPage(),
+	 	        		controlPic,
+	                     (int) (pageY * State.getZoomFactorToShowSize()));
+	       
 	    } else {
-	
 	        pic.changePaintObject(
 	                new DPoint(
 	                        getPage().getJlbl_painting().getWidth()
@@ -1304,7 +1327,8 @@ MenuListener {
 	                        )
 	                        * zoomFactor),
 	                        getPage(),
-	                        controlPic
+	                        controlPic,
+	                      (int) ( pageY * State.getZoomFactorToShowSize())
 	                        );
 	    }
 	}
@@ -1349,7 +1373,7 @@ MenuListener {
             // write the current working picture into the global picture.
         	if (getTabs() != null) {
 
-                getPicture().finish(view.getTabs().getTab_debug());
+                getPicture(_event.getPoint()).finish(view.getTabs().getTab_debug());
         	}
             break;
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_CURVE:
@@ -1361,13 +1385,13 @@ MenuListener {
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_COMPLETE_ITEM:
                     
                         PaintObjectWriting pow 
-                        = getPicture().abortPaintObject(controlPic);
+                        = getPicture(_event.getPoint()).abortPaintObject(controlPic);
                         mr_sel_curve_complete(_event, pow);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_DESTROY_ITEM:
 
                     PaintObjectWriting pow2 
-                    = getPicture().abortPaintObject(controlPic);
+                    = getPicture(_event.getPoint()).abortPaintObject(controlPic);
                     mr_sel_curve_destroy(_event, pow2);
                     break;
                 case Constants.CONTROL_PAINTING_SELECTION_INDEX_IMAGE:
@@ -1421,7 +1445,7 @@ MenuListener {
         	break;
         case Constants.CONTROL_PAINTING_INDEX_SELECTION_MAGIC:
             if (_event.getButton() == 1) {
-                getPicture().abortPaintObject(controlPic);
+                getPicture(_event.getPoint()).abortPaintObject(controlPic);
             }
             break;
         case Constants.CONTROL_PAINTING_INDEX_ZOOM_IN:
@@ -1456,7 +1480,7 @@ MenuListener {
                 pnt_last = null;
                 pnt_movementSpeed = null;
                 //release everything
-                final Picture pic = getPicture();
+                final Picture pic = getPicture(_event.getPoint());
                 if (pic.isSelected()) {
                     pic.releaseSelected(
                 			getControlPaintSelection(),
@@ -1696,22 +1720,30 @@ MenuListener {
         // refresh scrollPanes which have changed because of the zooming
         // process.
         getPage().refrehsSps();
+        boolean selected = false;
+        for (int i = 0; field_erase != null && i < field_erase.length; i++) {
 
-    	final Picture pic = getPicture();
-        
-        // release all selected items. If this is not done, the
-        // painted selection size is too big.
-        if (pic.isSelected()) {
+            // release all selected items. If this is not done, the
+            // painted selection size is too big.
+        	final Picture pic = getProject().getPicture(0);
+        	if (pic.isSelected()) {
+
+
+                pic.releaseSelected(
+            			getControlPaintSelection(),
+            			getcTabSelection(),
+            			getView().getTabs().getTab_debug(),
+            			getView().getPage().getJlbl_painting()
+            			.getLocation().x,
+            			getView().getPage().getJlbl_painting()
+            			.getLocation().y);
+            
+        	}
+        	
+		}
+        if (selected) {
 
         	controlPic.releaseSelected();
-            pic.releaseSelected(
-        			getControlPaintSelection(),
-        			getcTabSelection(),
-        			getView().getTabs().getTab_debug(),
-        			getView().getPage().getJlbl_painting()
-        			.getLocation().x,
-        			getView().getPage().getJlbl_painting()
-        			.getLocation().y);
         }
         
         // update the location of the resize buttons for resizing the entire
@@ -1768,7 +1800,7 @@ MenuListener {
             final PaintObjectWriting _ldp) {
 
 
-    	final Picture pic = getPicture();
+    	final Picture pic = getPicture(_event.getPoint());
     	
     	//start transaction
     	final int transaction = pic.getLs_po_sortedByY()
@@ -1883,7 +1915,7 @@ MenuListener {
             final PaintObjectWriting _ldp) {
     	
 
-    	final Picture pic = getPicture();
+    	final Picture pic = getPicture(_event.getPoint());
     	//
     	Rectangle snapBounds = _ldp.getSnapshotBounds();
         int xShift = snapBounds.x, yShift = snapBounds.y;
@@ -2051,7 +2083,7 @@ MenuListener {
             final Rectangle _r_size) {
 
 
-    	final Picture pic = getPicture();
+    	final Picture pic = getPicture(_r_size.getLocation());
     	//start transaction 
     	final int transaction = pic.getLs_po_sortedByY()
     			.startTransaction("Selection line complete", 
@@ -2194,7 +2226,7 @@ MenuListener {
      */
     public final void mr_sel_line_destroy(final Rectangle _r_sizeField) {
 
-    	final Picture pic = getPicture();
+    	final Picture pic = getPicture(_r_sizeField.getLocation());
     	//start transaction 
     	final int transaction = pic.getLs_po_sortedByY()
     			.startTransaction("Selection line destroy", 
@@ -2392,7 +2424,7 @@ MenuListener {
     public final synchronized void mr_erase(final Point _p) {
 
     	
-    	final Picture pic = getPicture();
+    	final Picture pic = getPicture(_p);
     	
     	//start transaction 
     	final int transaction = pic.getLs_po_sortedByY()
@@ -2630,7 +2662,7 @@ MenuListener {
     private void mr_paint_pipette(final MouseEvent _event) {
 
 
-        int color = getPicture().getColorPX(_event.getX(), 
+        int color = getPicture(_event.getPoint()).getColorPX(_event.getX(), 
                 _event.getY(), getControlPic().getBi());
         if (_event.getButton() == 1) {
         	view.getTabs().getTab_paint().getTb_color1().setBackground(
@@ -2855,19 +2887,30 @@ MenuListener {
 	 * {@inheritDoc}
 	 */
 	public final void beforeOpen() {
+        boolean selected = false;
+        for (int i = 0; i < getProject().getAmountPages(); i++) {
 
-		final Picture pic = getPicture();
-    	//release selected because of display bug otherwise.
-    	if (pic.isSelected()) {
-	    	pic.releaseSelected(
-        			getControlPaintSelection(),
-        			getcTabSelection(),
-        			getView().getTabs().getTab_debug(),
-        			getView().getPage().getJlbl_painting().getLocation().x,
-        			getView().getPage().getJlbl_painting().getLocation().y);
-	    	controlPic.releaseSelected();
-    	}		
-	}
+            // release all selected items. If this is not done, the
+            // painted selection size is too big.
+        	final Picture pic = getProject().getPicture(i);
+        	if (pic.isSelected()) {
+
+        		selected = true;
+
+                pic.releaseSelected(
+            			getControlPaintSelection(),
+            			getcTabSelection(),
+            			getView().getTabs().getTab_debug(),
+            			getView().getPage().getJlbl_painting().getLocation().x,
+            			getView().getPage().getJlbl_painting().getLocation().y);
+            
+        	}
+        	
+		}
+        if (selected) {
+
+        	controlPic.releaseSelected();
+        }}
 
 
 
@@ -2877,17 +2920,31 @@ MenuListener {
 	 */
 	public final void beforeClose() {
 
-		final Picture pic = getPicture();
-    	//release selected because of display bug otherwise.
-    	if (pic.isSelected()) {
-	    	pic.releaseSelected(
-        			getControlPaintSelection(),
-        			getcTabSelection(),
-        			getView().getTabs().getTab_debug(),
-        			getView().getPage().getJlbl_painting().getLocation().x,
-        			getView().getPage().getJlbl_painting().getLocation().y);
-	    	controlPic.releaseSelected();
-    	}		
+		
+        boolean selected = false;
+        for (int i = 0; i < getProject().getAmountPages(); i++) {
+
+            // release all selected items. If this is not done, the
+            // painted selection size is too big.
+        	final Picture pic = getProject().getPicture(i);
+        	if (pic.isSelected()) {
+        		selected = true;
+
+                pic.releaseSelected(
+            			getControlPaintSelection(),
+            			getcTabSelection(),
+            			getView().getTabs().getTab_debug(),
+            			getView().getPage().getJlbl_painting().getLocation().x,
+            			getView().getPage().getJlbl_painting().getLocation().y);
+            
+        	}
+        	
+		}
+        if (selected) {
+
+        	controlPic.releaseSelected();
+        }
+		
 	}
 
 	
@@ -2979,7 +3036,7 @@ MenuListener {
 
 		//call remove preprint which removes a preprint if it exists
 		removePreprint();
-    	final Picture pic = getPicture();
+    	final Picture pic = getPicture(new Point(_x, _y));
 
 		if (pic.getPen_current() == null) {
 			return;
@@ -3273,6 +3330,43 @@ MenuListener {
 		return project.getCurrentPicture(
 				-getPage().getJlbl_painting().getLocation().x,
 				-getPage().getJlbl_painting().getLocation().y);
+	}
+	/**
+	 * 
+	 * Slow!
+	 * @param _pnt the location inside the paintLabel. in [VIEW_SIZE]
+	 * @return the picture
+	 */
+	public final Picture getPicture(final Point _pnt) {
+		if (getPage() == null || getPage().getJlbl_painting() == null) {
+			return project.getCurrentPicture(0, 0);
+			
+		}
+		return project.getCurrentPicture(
+				(int) (1.0 
+						* (-getPage().getJlbl_painting().getLocation().x
+								+ _pnt.x)),
+				(int) (1.0 
+						* (-getPage().getJlbl_painting().getLocation().y
+								+ _pnt.y)));
+	}
+	/**
+	 * 
+	 * Slow!
+	 * @param _pnt the location inside the paintLabel. in [VIEW_SIZE]
+	 * @return the picture
+	 */
+	public final int getPictureNumber(final Point _pnt) {
+		if (getPage() == null || getPage().getJlbl_painting() == null) {
+			return 0;
+		}
+		return project.getPictureID(
+				(int) (1.0 
+						* (-getPage().getJlbl_painting().getLocation().x
+								+ _pnt.x)),
+				(int) (1.0 
+						* (-getPage().getJlbl_painting().getLocation().y
+								+ _pnt.y)));
 	}
 
 	/**

@@ -165,7 +165,7 @@ public abstract class Pen implements Serializable {
             
             
             //throw exception
-            throw new Error("Fehler: stift noch nicht hinzugefuegt.");
+            throw new Error("Fehler: stift noch nicht hinzugefuegt." + _pen);
         }
         
         return pen;

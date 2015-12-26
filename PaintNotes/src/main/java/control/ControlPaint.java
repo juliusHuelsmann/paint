@@ -1510,13 +1510,17 @@ MenuListener {
     	// Change the value which is used for computing the current 
     	// <code> imageShowSize</code>.
     	State.zoomStateZoomIn();
+
     	
+    	// get the location inside the project which is stored inside the 
+    	// (VIEW!) class PaintLabel.
+    	Point oldLocation = new Point(
+        		(int) (1.0 * getPage().getJlbl_painting().getLocation().getX()
+        				* ViewSettings.getZoomMultiplicator()),
+        		(int) (1.0 * getPage().getJlbl_painting().getLocation().getY()
+                		* ViewSettings.getZoomMultiplicator()));
     	// adapt size
     	adaptSize();
-    	
-    	
-    	
-    	
     	
     	
     	
@@ -1524,33 +1528,16 @@ MenuListener {
     	// adapt the location
     	//
 
-//    	// Calculate the new size of the page.
-//        int newWidth = (int) (State.getImageSize().width
-//        		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
-//        int newHeight = (int) (State.getImageSize().height
-//        		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
-//
-//        int proW = (int) (State.getProjectSize().width
-//        		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
-//        int proH = (int) (State.getProjectSize().height
-//        		* 1.0 * Math.pow(1.0 * ViewSettings.ZOOM_MULITPLICATOR, 1.0 * State.getZoomState()));
 
-    	
-    	// get the location inside the project which is stored inside the 
-    	// (VIEW!) class PaintLabel.
-        Point oldLocation = new Point(
-        		getPage().getJlbl_painting().getLocation().x,
-        		getPage().getJlbl_painting().getLocation().y);
 
-       
+ 
+
         /*
          * set the location of the panel.
          */
         // save new coordinates
-        int newX = (int) ((oldLocation.x - zoom.getX())
-                * ViewSettings.getZoomMultiplicator());
-        int newY = (int) ((oldLocation.y - zoom.getY())
-                * ViewSettings.getZoomMultiplicator());
+        int newX = (int) ((oldLocation.x - zoom.getX() * ViewSettings.getZoomMultiplicator()));
+        int newY = (int) ((oldLocation.y -  zoom.getY() *  ViewSettings.getZoomMultiplicator()));
 
         
         // check if the bounds are valid
@@ -1566,7 +1553,7 @@ MenuListener {
         // location to be at the upper left of the page.
         newX = Math.min(newX, 0);
         newY = Math.min(newY, 0); 
-        
+//        
 
         // apply the location at JLabel (with setLocation method that 
         //is not used for scrolling purpose [IMPORTANT]) and repaint the 
@@ -1636,9 +1623,10 @@ MenuListener {
     	controlPic.setBi(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
 		setBi_preprint(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
 
-		
+		System.out.println("ll" +getPage().getJlbl_painting().getLocation().y);
 		
 		getPage().getJlbl_painting().setSize(width, height);
+		System.out.println("ll2 " +getPage().getJlbl_painting().getLocation().y);
     	getPage().getJlbl_background().setSize(width, height);
     	getPage().getJlbl_selectionBG().setSize(width, height);
     	getPage().getJlbl_selectionPainting().setSize(width, height);
@@ -1653,6 +1641,18 @@ MenuListener {
     	// <code> imageShowSize</code>.
     	State.zoomStateZoomOut();
 
+    	Point oldLocation = new Point(
+        		(int) (1.0 * getPage().getJlbl_painting().getLocation().getX()
+        				/ ViewSettings.getZoomMultiplicator()
+        				),
+//        				+ getPage().getJlbl_painting().getWidth() 
+//        				* (1.0 / 2.0)),
+        		(int) (1.0 * getPage().getJlbl_painting().getLocation().getY()
+                		/  (1.0 * ViewSettings.getZoomMultiplicator())
+        				)
+                		);
+//                		+ getPage().getJlbl_painting().getHeight() 
+//                		* (1.0/2.0)));
     	// adapt size
     	adaptSize();
     	
@@ -1673,16 +1673,16 @@ MenuListener {
 
         // contains the not shifted new location of the paint-JLabel.
         // the formula is okay.
-        Point oldLocation = new Point(
-        		
-        		// location of the JLabel (negative)
-        		(int) (getPage().getJlbl_painting().getLocation().x 
-        		+ getPage().getJlbl_painting().getWidth() 
-        		* (ViewSettings.getZoomMultiplicator() / 2.0 - 1.0/2.0)),
-        				
-        		(int) (getPage().getJlbl_painting().getLocation().y 
-        		+ getPage().getJlbl_painting().getHeight() 
-        		* (ViewSettings.getZoomMultiplicator() / 2.0 - 1.0/2.0)));
+//        Point oldLocation = new Point(
+//        		
+//        		// location of the JLabel (negative)
+//        		(int) (getPage().getJlbl_painting().getLocation().x 
+//        		+ getPage().getJlbl_painting().getWidth() 
+//        		* (ViewSettings.getZoomMultiplicator() / 2.0 - 1.0/2.0)),
+//        				
+//        		(int) (getPage().getJlbl_painting().getLocation().y 
+//        		+ getPage().getJlbl_painting().getHeight() 
+//        		* (ViewSettings.getZoomMultiplicator() / 2.0 - 1.0/2.0)));
 
         
         // not smaller than the negative image size.
@@ -1710,8 +1710,8 @@ MenuListener {
         		// The rounding at entire pixels is performed inside the
         		// setBounds-method. Thus we don't have to cope with it
         		// in here.
-        		(int) ((oldLocation.x) / ViewSettings.getZoomMultiplicator()), 
-        		(int) ((oldLocation.y) / ViewSettings.getZoomMultiplicator()),
+        		(int) ((oldLocation.x) ), 
+        		(int) ((oldLocation.y) ),
         		
         		// the old width and height.
         		getPage().getJlbl_painting().getWidth(),
@@ -1721,11 +1721,11 @@ MenuListener {
         // process.
         getPage().refrehsSps();
         boolean selected = false;
-        for (int i = 0; field_erase != null && i < field_erase.length; i++) {
+        for (int i = 0; i < getProject().getAmountPages(); i++) {
 
             // release all selected items. If this is not done, the
             // painted selection size is too big.
-        	final Picture pic = getProject().getPicture(0);
+        	final Picture pic = getProject().getPicture(i);
         	if (pic.isSelected()) {
 
 

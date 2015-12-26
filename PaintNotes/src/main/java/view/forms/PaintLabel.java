@@ -138,6 +138,7 @@ public class PaintLabel extends MLabel {
     		final int _x, final int _y) {
     	
     	final Point p = getShift(_x, _y);
+//    	final Point p = new Point(_x, _y);
     	final int newX = p.x;
     	final int newY = p.y;
     	
@@ -200,6 +201,7 @@ public class PaintLabel extends MLabel {
     @Override public final void setLocation(final Point _p) {
 
     	final Point p = getShift(_p.x, _p.y);
+//    	final Point p = new Point(_p);
     	
         //Forward the set location event to the instance of paintListener
         //if it has been set.
@@ -244,7 +246,7 @@ public class PaintLabel extends MLabel {
             final int _widht, final int _height) {
 
     	final Point p = getShift(_x, _y);
-    	
+//    	final Point p = new Point(_x, _y);
         //Forward the set location event to the instance of paintListener
         //if it has been set.
         if (paintListener != null) {

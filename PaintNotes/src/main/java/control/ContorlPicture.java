@@ -1257,7 +1257,7 @@ public class ContorlPicture implements PaintListener {
 
     	final int modulo =
     			(int) Math.pow(
-    					ViewSettings.ZOOM_MULTIPLICATOR_DENUMINATOR 
+    					1.0 * ViewSettings.ZOOM_MULTIPLICATOR_DENUMINATOR 
     					* ViewSettings.ZOOM_MULTIPLICATOR_NUMINATOR,
     					Math.abs(State.getZoomState()));
     	

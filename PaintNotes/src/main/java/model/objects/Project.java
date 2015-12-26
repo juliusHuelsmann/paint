@@ -702,6 +702,7 @@ public class Project extends Observable implements Serializable {
 
 
 
+
 	/**
 	 * @return the size
 	 */

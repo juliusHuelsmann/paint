@@ -242,6 +242,10 @@ public final class Picture implements Serializable {
 		return new PaintObjectWriting(this, getIncreaseCID(), _pen);
 	}
 
+	
+	public boolean hasPaintObject () {
+		return po_current != null;
+	}
 	/**
 	 * adds a new PaintObject to list.
 	 */
@@ -1110,7 +1114,8 @@ public final class Picture implements Serializable {
 	 */
 	public void changePaintObject(final DPoint _pnt,
 			final Page _page,
-			final ContorlPicture _cPicture) {
+			final ContorlPicture _cPicture,
+			final int shiftCurrentPage) {
 
 		if (po_current == null) {
 
@@ -1186,8 +1191,13 @@ public final class Picture implements Serializable {
 				bi_transformed = ((PaintObjectWriting) po_current).paintLast(
 						bi_transformed,
 						_page.getJlbl_painting().getLocation().x,
-						_page.getJlbl_painting().getLocation().y);
+						_page.getJlbl_painting().getLocation().y + shiftCurrentPage);
 			} else {
+				
+				if (po_current == null) {
+					System.out.println("Error: The paint obj. that is to"
+							+ "be changed has not been added!");
+				}
 				_cPicture
 						.refreshRectangle(
 								po_current.getSnapshotBounds().x,

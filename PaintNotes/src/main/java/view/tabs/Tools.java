@@ -360,8 +360,8 @@ public final class Tools extends Tab {
             it_stift1.addMouseListener(_controlPaintStatus);
 
             it_erase = new Item1Menu(false);
-            it_erase.setMenuListener(_ml);
             it_erase.removeScroll();
+            it_erase.setMenuListener(_ml);
             it_erase.addMouseListener(_controlPaintStatus);
             
             tb_move = new Item1Button(null);

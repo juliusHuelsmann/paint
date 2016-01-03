@@ -520,6 +520,73 @@ public class PaintObjectDrawImage extends PaintObjectBI implements Cloneable, Se
 	
 	
 	
+	/**
+	 * For editing scanned images.
+	 */
+	public final void editScans(final Object _o) {
+		
+		int thr1, thr2;
+		double sat, val;
+		if (_o == null) {
+			thr1 = 8;
+			thr2 = 200;
+			sat = 1.5;
+			val = 0.9;
+		} else {
+
+			double[] i = (double[]) (_o);
+			thr1 = (int) i[0];
+			thr2 = (int) i[1];
+			sat = i[2];
+			val = i[3];
+		}
+		
+		// remove background noise
+		justHysterisysThreshold(thr1, thr2);
+		
+		
+		// intensify the resulting colors
+		for (int i = 0; i < getBi_image().getWidth(); i++) {
+
+			// intensify the resulting colors
+			for (int j = 0; j < getBi_image().getHeight(); j++) {
+				int rgb = getBi_image().getContent().getRGB(i, j);
+
+				Color c2;
+				Color clor = new Color(rgb);
+				if (clor.getRed() == clor.getGreen() && clor.getGreen() == clor.getBlue() && clor.getRed() == 255) {
+
+					c2 = new Color(255, 255, 255);
+				
+				} else {
+
+					Color c = new Color(rgb);
+
+					Triple hsv = rgbToHsv(new Triple(c.getRed(), c.getGreen(), c.getBlue()));
+					double hue = hsv.getA();
+					double saturation = Math.min(100, hsv.getB() *sat);
+					double value = hsv.getC();
+					if (hsv.getC() <= 90) {
+
+						value = Math.min(100, hsv.getC() * val);
+					}
+					Triple rgb2 = hsvToRgb(new Triple(hue, saturation, value));
+					
+					c2 = new Color((int) rgb2.getA(), (int)  rgb2.getB(), (int) rgb2.getC());
+					
+				}
+				
+				getBi_image().getContent().setRGB(i, j, c2.getRGB());
+			}
+		}
+
+		BufferedViewer.show(getBi_image().getContent());
+		BufferedViewer.getInstance().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+	}
+	
+	
 	
 	/**
 	 * Applies the hysteresis threshold to the contained BufferedImage.
@@ -591,7 +658,6 @@ public class PaintObjectDrawImage extends PaintObjectBI implements Cloneable, Se
 		
 		//non-maximum-suppression
 
-		double[][][] borderInfo2 = new double[bi_result.getWidth()][bi_result.getHeight()][2];
 
 		for (int x = 1; x < super.getBi_image().getWidth() - 1; x++) {
 			for (int y = 1; y < super.getBi_image().getHeight() - 1; y++) {
@@ -626,12 +692,12 @@ public class PaintObjectDrawImage extends PaintObjectBI implements Cloneable, Se
 					
 				}
 				// - pi / 2 ; + pi / 2
-				System.out.println();
+//				System.out.println();
 				
 				if (Math.abs(borderInfo1[x][y][0]) >= Math.abs(borderInfo1[x + nX][y + nY][0])
 						&& Math.abs(borderInfo1[x][y][0]) >= Math.abs(borderInfo1[x + nX][y + nY][0])) {
-					borderInfo2[x][y][0] = borderInfo1[x][y][0];
-					borderInfo2[x][y][1] = borderInfo1[x][y][1];
+//					borderInfo2[x][y][0] = borderInfo1[x][y][0];
+//					borderInfo2[x][y][1] = borderInfo1[x][y][1];
 				}
 			}
 		}
@@ -666,9 +732,50 @@ public class PaintObjectDrawImage extends PaintObjectBI implements Cloneable, Se
 		}
 		
 		
-		BufferedViewer.show(bi_result);
-		BufferedViewer.getInstance().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getBi_image().setContent(bi_result);
 		
+	}
+	
+	public final void justHysterisysThreshold(
+			final int _lower, final int _upper) {
+
+		BufferedImage bi_result = new BufferedImage(super.getBi_image().getWidth(),
+				super.getBi_image().getHeight(), BufferedImage.TYPE_INT_RGB);
+		
+		double[][][] borderInfo1 = new double[bi_result.getWidth()][bi_result.getHeight()][2];
+		
+		//hysteresis-threshold
+		for (int x = 1; x < super.getBi_image().getWidth() - 1; x++) {
+			for (int y = 1; y < super.getBi_image().getHeight() - 1; y++) {
+				final Color c =  new Color(getBi_image().getContent().getRGB(x, y));
+				borderInfo1[x][y][0] = c.getRed() + c.getGreen() + c.getBlue();
+				if (borderInfo1[x][y][0] >= _lower){
+					bi_result.setRGB(x, y, rgb_potential);
+				} else {
+					bi_result.setRGB(x, y, rgb_noBorder);
+				}
+			}
+		}
+
+		for (int x = 1; x < super.getBi_image().getWidth() - 1; x++) {
+			for (int y = 1; y < super.getBi_image().getHeight() - 1; y++) {
+				if (borderInfo1[x][y][0] >= _upper){
+					followEdge(x, y, bi_result);
+				}
+			}
+		}
+		for (int x = 1; x < super.getBi_image().getWidth() - 1; x++) {
+			for (int y = 1; y < super.getBi_image().getHeight() - 1; y++) {
+				if (bi_result.getRGB(x, y) == rgb_potential){
+					bi_result.setRGB(x, y, rgb_noBorder);
+				} else if (bi_result.getRGB(x, y) == rgb_border) {
+					bi_result.setRGB(x,  y, super.getBi_image().getContent().getRGB(x, y));
+				}
+			}
+		}
+		
+		
+		getBi_image().setContent(bi_result);
 	}
 	
 	

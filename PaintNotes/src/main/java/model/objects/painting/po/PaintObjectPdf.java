@@ -26,6 +26,7 @@ import java.io.Serializable;
 import model.objects.Project;
 import model.objects.painting.Picture;
 import model.settings.Error;
+import model.settings.State;
 import model.util.DPoint;
 import model.util.adt.list.List;
 import model.util.pdf.PDFUtils;
@@ -49,6 +50,12 @@ public class PaintObjectPdf extends PaintObjectBI implements Serializable {
      */
     private static final long serialVersionUID = -3730582547146097485L;
 
+    
+    /**
+     * This bufferedImage contains backuped image in case the current operation
+     * is to be invertible.
+     */
+    private BufferedImage bi_backupEdit;
     
     /**
 	 * The page number inside the XDocument.
@@ -102,6 +109,30 @@ public class PaintObjectPdf extends PaintObjectBI implements Serializable {
 		
 	}
 
+	
+	
+	/**
+	 * 
+	 */
+	public final void startBackup() {
+		this.bi_backupEdit = new BufferedImage(getBi_image().getWidth(), getBi_image().getHeight(), getBi_image().getContent().getType());
+		int [] rgbA = null;
+		rgbA = getBi_image().getContent().getRGB(0, 0, bi_backupEdit.getWidth(), bi_backupEdit.getHeight(), rgbA, 0, bi_backupEdit.getWidth());
+		bi_backupEdit.setRGB(0, 0, bi_backupEdit.getWidth(), bi_backupEdit.getHeight(), rgbA, 0, bi_backupEdit.getWidth());
+	}
+	
+	
+	/**
+	 * 
+	 */
+	public final void applyBackup() {
+		if (bi_backupEdit != null) {
+
+			getBi_image().setContent(bi_backupEdit);
+		} else {
+			State.getLogger().severe("error backup image");
+		}
+	}
 	
 
 	/**

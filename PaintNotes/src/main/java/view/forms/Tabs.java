@@ -406,6 +406,12 @@ public final class Tabs extends VTabbedPane {
         tab_insert.getIa_geo().setOpen(false);
         tab_insert.getIa_maths().setOpen(false);
         
+
+        tab_selection.getIm_scanEdit().setOpen(false);
+        tab_selection.getIt_rotate().setOpen(false);
+        tab_selection.getIm_grayifyColors().setOpen(false);
+        tab_selection.getIm_changeColors().setOpen(false);
+        
         
         //reset open tab.
         CItem.getInstance().reset();
@@ -442,10 +448,15 @@ public final class Tabs extends VTabbedPane {
     			|| tab_paint.getIt_stift2().isOpen() 
     			|| tab_paint.getIt_selection().isOpen() 
     			|| tab_paint.getIt_color().isOpen() 
-    			||  tab_paint.getTb_erase().isOpen()
+    			|| tab_paint.getTb_erase().isOpen()
     			|| tab_insert.getIa_diagram().isOpen() 
     			|| tab_insert.getIa_geo().isOpen() 
-    			|| tab_insert.getIa_maths().isOpen());
+    			|| tab_insert.getIa_maths().isOpen()
+    			|| tab_selection.getIm_scanEdit().isOpen()
+    			|| tab_selection.getIt_rotate().isOpen()
+    			|| tab_selection.getIm_grayifyColors().isOpen()
+    			|| tab_selection.getIm_changeColors().isOpen()
+    	        );
     }
 
     /**

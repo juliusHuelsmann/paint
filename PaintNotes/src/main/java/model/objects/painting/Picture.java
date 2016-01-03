@@ -2816,20 +2816,22 @@ public final class Picture implements Serializable {
 
 	ID_TR_GRAYIFY_YELLOW = 31, ID_TR_GRAYIFY_GREEN = 32,
 	ID_TR_GRAYIFY_LIGHT_BLUE = 33, ID_TR_GRAYIFY_PINK = 34,
-	ID_TR_GRAYIFY_DARK_BLUE = 35, ID_TR_GRAYIFY_RED = 36;
+	ID_TR_GRAYIFY_DARK_BLUE = 35, ID_TR_GRAYIFY_RED = 36,
+
+	ID_TR_SCAN = 37 ;
 	
 	
 	/**
 	 * 
 	 * @param _id_tr_op
 	 */
-	public void executeTraversionOperation(final int _id_tr_op) {
+	public void executeTraversionOperation(final int _id_tr_op, final Object _o) {
 		
 		ls_po_sortedByY.toFirst(SecureList.ID_NO_PREDECESSOR, 
 				SecureList.ID_NO_PREDECESSOR);
 		while (!ls_po_sortedByY.isEmpty() && !ls_po_sortedByY.isBehind()) {
 			
-			executeOperation(_id_tr_op);
+			executeOperation(_id_tr_op, _o);
 			
 			ls_po_sortedByY.next(SecureList.ID_NO_PREDECESSOR,
 					SecureList.ID_NO_PREDECESSOR);
@@ -2837,9 +2839,18 @@ public final class Picture implements Serializable {
 		}
 		
 	}
+
+	/**
+	 * 
+	 * @param _id_tr_op
+	 */
+	public void executeTraversionOperation(final int _id_tr_op) {
+		
+		executeTraversionOperation(_id_tr_op, null);
+		
+	}
 	
-	
-	private void executeOperation(final int _id_tr_op) {
+	private void executeOperation(final int _id_tr_op, final Object _o) {
 		
 		PaintObject po = ls_po_sortedByY.getItem();
 		
@@ -3068,6 +3079,13 @@ public final class Picture implements Serializable {
 				podi.grayifyRed();
 			}
 			break;
+		case ID_TR_SCAN:
+			if (po instanceof PaintObjectDrawImage) {
+				PaintObjectDrawImage podi = (PaintObjectDrawImage) po;
+				podi.editScans(_o);
+			}
+			break;
+			
 		default:
 			break;
 		}

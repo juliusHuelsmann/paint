@@ -432,7 +432,38 @@ public final class CTabSelection implements ActionListener {
 		
 		
 		
-	    } 
+	    } else if (_event.getSource().equals(getSelection()
+	    		.geti1b_scanOk().getActionCause())) {
+	    	
+	    	double[] i, j, k;
+
+	    	if (getSelection().getCp_threshold().isSelected()) {
+
+		    	i = getSelection().getMb_threshold().getComputedLocations();
+	    	} else {
+	    		i = new double[]{0, 0};
+	    	}
+
+	    	if (getSelection().getCp_saturation().isSelected()) {
+
+		    	j = getSelection().getMb_saturation().getComputedLocations();
+	    	} else {
+	    		j = new double[]{1};
+	    	}
+	    	if (getSelection().getCp_value().isSelected()) {
+
+	    		k = getSelection().getMb_value().getComputedLocations();
+	    	} else {
+	    		k = new double[]{1};
+	    	}
+	    	
+	    	cp.getPicture().executeTraversionOperation(
+	    			Picture.ID_TR_SCAN, new double[]{i[0], i[1],
+	    					j[0], k[0]});
+        	getSelection().getIm_scanEdit().repaint();
+        	cp.getControlPic().refreshPaint();
+        	getSelection().getIm_scanEdit().repaint();
+	    }
     
         
         

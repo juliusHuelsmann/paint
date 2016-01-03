@@ -145,7 +145,7 @@ public class Item1Menu extends MPanel {
 		super.setLayout(null);
 		super.setOpaque(false);
 		super.setBorder(null);
-		super.setBackground(ViewSettings.GENERAL_CLR_BACKGROUND_LIGHT);
+		super.setBackground(ViewSettings.CLR_BACKGROUND_MENU_1_OPEN);
 		super.setFocusable(false);
 
 		jpnl_stuff = new MPanel();
@@ -224,7 +224,11 @@ public class Item1Menu extends MPanel {
 	 * remove scrollPanel if not necessary.
 	 */
 	public final void removeScroll() {
-	    super.remove(sp_scroll);
+		if (sp_scroll != null) {
+
+		    super.remove(sp_scroll);
+		    sp_scroll = null;
+		}
 	}
 	
 	/**
@@ -521,7 +525,12 @@ public class Item1Menu extends MPanel {
 				ls_item.toFirst();
 				
 				int lastHeight = 0, lastY = 0;
-				int x = sp_scroll.getIcon_size();
+				int x;
+				if (sp_scroll != null) {
+					x = sp_scroll.getIcon_size();
+				} else {
+					x = 0;
+				}
 				while (!ls_item.isBehind() && !ls_item.isEmpty()) {
 					
 					if (itemsInRow != 1) {
@@ -573,10 +582,13 @@ public class Item1Menu extends MPanel {
 					if (jpnl_stuff.getWidth() > 0) {
 
 						ls_item.toFirst();
-						sp_scroll.setLocation(_width - sp_scroll.getIcon_size(),
-						        closedHeight);
-						sp_scroll.setSize(sp_scroll.getIcon_size(), _height 
-						        + sp_scroll.getIcon_size() - sp_scroll.getY());
+						if (sp_scroll != null) {
+
+							sp_scroll.setLocation(_width - sp_scroll.getIcon_size(),
+							        closedHeight);
+							sp_scroll.setSize(sp_scroll.getIcon_size(), _height 
+							        + sp_scroll.getIcon_size() - sp_scroll.getY());
+						}
 					}
 				}
 		} 

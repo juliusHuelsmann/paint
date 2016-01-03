@@ -44,9 +44,11 @@ import control.forms.tabs.CTabSelection;
 import control.interfaces.MenuListener;
 import control.util.CPen;
 import view.forms.Help;
+import view.util.CheckedComponent;
 import view.util.Item1Menu;
 import view.util.Item1Button;
 import view.util.Item1PenSelection;
+import view.util.MultipleBar;
 import view.util.VColorPanel;
 import view.util.mega.MButton;
 
@@ -75,7 +77,7 @@ public final class Selection extends Tab {
     /**
      * Color fetcher.
      */
-    private Item1Menu it_color, it_changePen;
+    private Item1Menu it_color, im_changePen, im_scanEdit;
 
     /**
      * integer values.
@@ -145,7 +147,7 @@ public final class Selection extends Tab {
         int x = initCololrs(distance, true, _cPaint, _cts, _cp, 
         		_controlPaintStatus);
         x = initPen(x, true, _cts);
-        initOthers(x, true, _cp, _controlPaintStatus, _cts, _cp);
+        x = initOthers(x, true, _cp, _controlPaintStatus, _cts, _cp);
         initBIOperations(x, true, _cp, _controlPaintStatus, _cts, _cp);
 	}
 	
@@ -433,7 +435,9 @@ public final class Selection extends Tab {
         
 	}
 
-	
+
+	private CheckedComponent cp_value, cp_saturation, cp_threshold;
+	private MultipleBar mb_value, mb_threshold, mb_saturation;
 	/**
 	 * The item1Menu for the first pen.
 	 */
@@ -442,12 +446,12 @@ public final class Selection extends Tab {
 	/**
 	 * The item1Menu for the first pen.
 	 */
-	private Item1Menu it_changeColors;
+	private Item1Menu im_changeColors;
 
 	/**
 	 * The item1Menu for the first pen.
 	 */
-	private Item1Menu it_grayifyColors;
+	private Item1Menu im_grayifyColors;
 	
 	
 	/**
@@ -476,7 +480,7 @@ public final class Selection extends Tab {
 	 * 
 	 */
 	private Item1Button i1b_grayifyRed, i1b_grayifyYellow, i1b_grayifyGreen,
-	i1b_grayifyLightBlue, i1b_grayifyDarkBlue, i1b_grayifyPink;
+	i1b_grayifyLightBlue, i1b_grayifyDarkBlue, i1b_grayifyPink, i1b_scanOK;
 	
 	/**
 	 * initialize other items.
@@ -488,7 +492,7 @@ public final class Selection extends Tab {
 	 * 					or to do other necessary stuff.
 	 * 
 	 */
-	private void initOthers(final int _x, final boolean _paint,
+	private int initOthers(final int _x, final boolean _paint,
 			final MenuListener _ml,
 			final CPaintStatus _controlPaintStatus,
 			final ActionListener _cts,
@@ -538,40 +542,58 @@ public final class Selection extends Tab {
 	        tb_changeSize.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
 	        super.add(tb_changeSize);
 	
-            it_changePen = new Item1Menu(false);
-            it_changePen.removeScroll();
-            it_changePen.setMenuListener(_ml);
-            it_changePen.addMouseListener(_controlPaintStatus);
+            im_changePen = new Item1Menu(false);
+            im_changePen.removeScroll();
+            im_changePen.setMenuListener(_ml);
+            im_changePen.addMouseListener(_controlPaintStatus);
 
 		}
 
 
         final Dimension sizeIT = new Dimension(550, 550);
-		it_changePen.setSize(sizeIT);
-		it_changePen.setSizeHeight(50);
-		it_changePen.setLocation(tb_changeSize.getX() + tb_changeSize.getWidth() + distance, 
+		im_changePen.setSize(sizeIT);
+		im_changePen.setSizeHeight(50);
+		im_changePen.setLocation(tb_changeSize.getX() + tb_changeSize.getWidth() + distance, 
                 tb_changeSize.getY());
 		if (_paint) {
 
-			it_changePen.setBorder(null);
-			it_changePen.setText("Change pen");
-			it_changePen.setItemsInRow((byte) 1);
-			it_changePen.setActivable();
-			it_changePen.setBorder(false);
+			im_changePen.setBorder(null);
+			im_changePen.setText("Change pen");
+			im_changePen.setItemsInRow((byte) 1);
+			im_changePen.setActivable();
+			im_changePen.setBorder(false);
 		}
-		it_changePen.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
+		im_changePen.setIcon(Constants.VIEW_TAB_INSRT_SELECT);
 		if (_paint) {
 			addPens(_cp, _cp.getcTabTools(), _controlPaintStatus);
-        	super.add(it_changePen);
+        	super.add(im_changePen);
 
 	
 	        //pen 1
 	        it_rotate = new Item1Menu(false);
+	        it_rotate.removeScroll();
 	        it_rotate.setMenuListener(_ml);
 	        it_rotate.addMouseListener(_controlPaintStatus);
 	        it_rotate.setBorder(null);
 	        it_rotate.setBorder(false);
 	        it_rotate.setText("Drehen/Spiegeln");
+
+	        im_scanEdit = new Item1Menu(false);
+            im_scanEdit.removeScroll();
+            im_scanEdit.setMenuListener(_ml);
+            im_scanEdit.addMouseListener(_controlPaintStatus);
+	        im_scanEdit.setBorder(null);
+	        im_scanEdit.setBorder(false);
+            im_scanEdit.setText("Edit scan");
+
+	        i1b_scanOK = new Item1Button(null);
+	        i1b_scanOK.addActionListener(_cts);
+	        i1b_scanOK.setBorder(false);
+	        i1b_scanOK.setShifted();
+	        i1b_scanOK.setText("Apply");
+	        i1b_scanOK.setActivable(true);
+	        i1b_scanOK.setOpaque(false);
+	        
 	        
             i1b_rotateClockwise = new Item1Button(null);
             i1b_rotateClockwise.addActionListener(_cts);
@@ -613,11 +635,19 @@ public final class Selection extends Tab {
             i1b_mirrorHoriz.setText("Mirror horizontally");
             i1b_mirrorHoriz.setActivable(true);
             i1b_mirrorHoriz.setOpaque(false);
+
+            
+
+//            im_scanEdit.addActionListener(_cts);
+
 		}
 		final int distance = 5;
         final int contentHeight = ViewSettings.getItemMenu1Height() - 2 * distance;
         final Dimension sizeOpen = new Dimension(
         		ViewSettings.getItemMenu1Width() * (2 + 2), 
+        		 contentHeight * (2 + 2) + 5);
+        final Dimension sizeOpenScan = new Dimension(
+        		ViewSettings.getItemMenu1Width() * (2 + 2 + 1), 
         		 contentHeight * (2 + 2) + 5);
         
         it_rotate.changeClosedSizes(ViewSettings.getItemMenu1Width(), 
@@ -626,22 +656,34 @@ public final class Selection extends Tab {
         it_rotate.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         it_rotate.setSize(sizeOpen);
         it_rotate.setSizeHeight(ViewSettings.getItemWidth());
-        it_rotate.setLocation(it_changePen.getX() 
-                + it_changePen.getWidth() + distance, 
-                it_changePen.getY());
-        
+        it_rotate.setLocation(im_changePen.getX() 
+                + im_changePen.getWidth() + distance, 
+                im_changePen.getY());
+
+        im_scanEdit.changeClosedSizes(ViewSettings.getItemMenu1Width(), 
+                ViewSettings.getItemMenu1Height());
+
+        im_scanEdit.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        im_scanEdit.setSize(sizeOpenScan);
+        im_scanEdit.setSizeHeight(ViewSettings.getItemWidth());
+
         i1b_rotateClockwise.setSize(
+        		it_rotate.getWidth(), i1b_rotateClockwise.getHeight());
+        i1b_scanOK.setSize(
         		it_rotate.getWidth(), i1b_rotateClockwise.getHeight());
         i1b_rotateCounterclockwise.setSize(i1b_rotateClockwise.getSize());
         i1b_rotateFree.setSize(i1b_rotateClockwise.getSize());
         i1b_mirrorHoriz.setSize(i1b_rotateClockwise.getSize());
         i1b_mirrorVert.setSize(i1b_rotateClockwise.getSize());
+//        im_scanEdit.setSize(ViewSettings.getItemMenu1Width(), 
+//                ViewSettings.getItemMenu1Height());
 
         i1b_rotateClockwise.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_rotateCounterclockwise.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_rotateFree.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_mirrorHoriz.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_mirrorVert.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        im_scanEdit.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
 		if (_paint) {
 
             it_rotate.add(i1b_rotateClockwise);
@@ -653,13 +695,43 @@ public final class Selection extends Tab {
 	        it_rotate.setItemsInRow((byte) 1);
 	        it_rotate.setBorder(false);
 	        super.add(it_rotate);
-	        it_rotate.removeScroll();
-		}
-        
+	        
+	        cp_threshold = new CheckedComponent("threshold");
+	        mb_threshold = new MultipleBar(2, 0, 255*3, im_scanEdit.getBackground());
+	        cp_threshold.add(mb_threshold);
+	    	cp_threshold.setSize(im_scanEdit.getWidth(), im_scanEdit.getHeight() / 3);
 
-        int xLocationSeparation = it_rotate.getWidth() + it_rotate.getX()
+	        im_scanEdit.add(cp_threshold);
+	        
+
+	        cp_saturation = new CheckedComponent("saturation");
+	        mb_saturation = new MultipleBar(1, 0.01, 1.0, im_scanEdit.getBackground());
+	        cp_saturation.add(mb_saturation);
+	    	cp_saturation.setSize(im_scanEdit.getWidth(), im_scanEdit.getHeight() / 3);
+	    	im_scanEdit.add(cp_saturation);
+
+	        cp_value = new CheckedComponent("value");
+	        mb_value = new MultipleBar(1, 0.01, 1.0, 
+	        		im_scanEdit.getBackground());
+	        cp_value.add(mb_value);
+	    	cp_value.setSize(im_scanEdit.getWidth(), im_scanEdit.getHeight() / 3);
+	    	im_scanEdit.add(cp_value);
+
+	    	im_scanEdit.add(i1b_scanOK);
+	        mb_value.setSize(cp_value.getResultingWidth(), cp_value.getHeight());
+	        im_scanEdit.setActivable();
+	        im_scanEdit.setItemsInRow((byte) 1);
+	        im_scanEdit.setBorder(false);
+	        im_scanEdit.removeScroll();
+            super.add(im_scanEdit);
+		}
+
+        im_scanEdit.setLocation(it_rotate.getX() + it_rotate.getWidth() + 5, it_rotate.getY());
+
+        int xLocationSeparation = im_scanEdit.getWidth() + im_scanEdit.getX()
                 + ViewSettings.getDistanceBeforeLine();
         insertSectionStuff("Farben", _x, xLocationSeparation, 1, _paint);
+        return xLocationSeparation;
 //        return xLocationSeparation + ViewSettings.getDistanceBetweenItems();
 	}
 	
@@ -695,13 +767,13 @@ public final class Selection extends Tab {
         if (_paint) {
         	
 
-            it_changeColors = new Item1Menu(false);
-            it_changeColors.setMenuListener(_ml);
-            it_changeColors.addMouseListener(_controlPaintStatus);
-            it_changeColors.setBorder(null);
-            it_changeColors.setBorder(false);
-            it_changeColors.setText("switch clr");
-            it_changeColors.changeClosedSizes(ViewSettings.getItemMenu1Width(), 
+            im_changeColors = new Item1Menu(false);
+            im_changeColors.setMenuListener(_ml);
+            im_changeColors.addMouseListener(_controlPaintStatus);
+            im_changeColors.setBorder(null);
+            im_changeColors.setBorder(false);
+            im_changeColors.setText("switch clr");
+            im_changeColors.changeClosedSizes(ViewSettings.getItemMenu1Width(), 
                     ViewSettings.getItemMenu1Height());
 
             /*
@@ -969,11 +1041,10 @@ public final class Selection extends Tab {
         
         
 
-        it_changeColors.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
-        it_changeColors.setSize(sizeOpen);
-        it_changeColors.setSizeHeight(ViewSettings.getItemWidth());
-        it_changeColors.setLocation(it_rotate.getX() 
-                + it_rotate.getWidth() + distance, 
+        im_changeColors.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        im_changeColors.setSize(sizeOpen);
+        im_changeColors.setSizeHeight(ViewSettings.getItemWidth());
+        im_changeColors.setLocation(_x +  distance, 
                 it_rotate.getY());
         
         
@@ -983,7 +1054,7 @@ public final class Selection extends Tab {
 
         i1b_red2yellow.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_red2yellow.setSize(
-        		it_changeColors.getWidth(), i1b_red2yellow.getHeight());
+        		im_changeColors.getWidth(), i1b_red2yellow.getHeight());
 
         i1b_red2green.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_red2green.setSize(i1b_red2yellow.getSize());
@@ -1002,7 +1073,7 @@ public final class Selection extends Tab {
 
         i1b_yellow2red.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_yellow2red.setSize(
-        		it_changeColors.getWidth(), i1b_yellow2red.getHeight());
+        		im_changeColors.getWidth(), i1b_yellow2red.getHeight());
 
         i1b_yellow2green.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_yellow2green.setSize(i1b_yellow2red.getSize());
@@ -1021,7 +1092,7 @@ public final class Selection extends Tab {
 
         i1b_green2yellow.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_green2yellow.setSize(
-        		it_changeColors.getWidth(), i1b_green2yellow.getHeight());
+        		im_changeColors.getWidth(), i1b_green2yellow.getHeight());
 
         i1b_green2red.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_green2red.setSize(i1b_green2yellow.getSize());
@@ -1040,7 +1111,7 @@ public final class Selection extends Tab {
 
         i1b_lightBlue2yellow.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_lightBlue2yellow.setSize(
-        		it_changeColors.getWidth(), i1b_lightBlue2yellow.getHeight());
+        		im_changeColors.getWidth(), i1b_lightBlue2yellow.getHeight());
 
         i1b_lightBlue2green.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_lightBlue2green.setSize(i1b_lightBlue2yellow.getSize());
@@ -1059,7 +1130,7 @@ public final class Selection extends Tab {
 
         i1b_darkBlue2yellow.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_darkBlue2yellow.setSize(
-        		it_changeColors.getWidth(), i1b_darkBlue2yellow.getHeight());
+        		im_changeColors.getWidth(), i1b_darkBlue2yellow.getHeight());
 
         i1b_darkBlue2green.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_darkBlue2green.setSize(i1b_darkBlue2yellow.getSize());
@@ -1078,7 +1149,7 @@ public final class Selection extends Tab {
 
         i1b_pink2yellow.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_pink2yellow.setSize(
-        		it_changeColors.getWidth(), i1b_pink2yellow.getHeight());
+        		im_changeColors.getWidth(), i1b_pink2yellow.getHeight());
 
         i1b_pink2green.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_pink2green.setSize(i1b_pink2yellow.getSize());
@@ -1097,47 +1168,47 @@ public final class Selection extends Tab {
         
 		if (_paint) {
 
-			it_changeColors.add(i1b_red2yellow);
-			it_changeColors.add(i1b_red2green);
-			it_changeColors.add(i1b_red2lightBlue);
-			it_changeColors.add(i1b_red2darkBlue);
-			it_changeColors.add(i1b_red2pink);
+			im_changeColors.add(i1b_red2yellow);
+			im_changeColors.add(i1b_red2green);
+			im_changeColors.add(i1b_red2lightBlue);
+			im_changeColors.add(i1b_red2darkBlue);
+			im_changeColors.add(i1b_red2pink);
 
-			it_changeColors.add(i1b_yellow2red);
-			it_changeColors.add(i1b_yellow2green);
-			it_changeColors.add(i1b_yellow2lightBlue);
-			it_changeColors.add(i1b_yellow2darkBlue);
-			it_changeColors.add(i1b_yellow2pink);
+			im_changeColors.add(i1b_yellow2red);
+			im_changeColors.add(i1b_yellow2green);
+			im_changeColors.add(i1b_yellow2lightBlue);
+			im_changeColors.add(i1b_yellow2darkBlue);
+			im_changeColors.add(i1b_yellow2pink);
 
-			it_changeColors.add(i1b_green2yellow);
-			it_changeColors.add(i1b_green2red);
-			it_changeColors.add(i1b_green2lightBlue);
-			it_changeColors.add(i1b_green2darkBlue);
-			it_changeColors.add(i1b_green2pink);
+			im_changeColors.add(i1b_green2yellow);
+			im_changeColors.add(i1b_green2red);
+			im_changeColors.add(i1b_green2lightBlue);
+			im_changeColors.add(i1b_green2darkBlue);
+			im_changeColors.add(i1b_green2pink);
 
-			it_changeColors.add(i1b_lightBlue2yellow);
-			it_changeColors.add(i1b_lightBlue2green);
-			it_changeColors.add(i1b_lightBlue2red);
-			it_changeColors.add(i1b_lightBlue2darkBlue);
-			it_changeColors.add(i1b_lightBlue2pink);
+			im_changeColors.add(i1b_lightBlue2yellow);
+			im_changeColors.add(i1b_lightBlue2green);
+			im_changeColors.add(i1b_lightBlue2red);
+			im_changeColors.add(i1b_lightBlue2darkBlue);
+			im_changeColors.add(i1b_lightBlue2pink);
 
-			it_changeColors.add(i1b_darkBlue2yellow);
-			it_changeColors.add(i1b_darkBlue2green);
-			it_changeColors.add(i1b_darkBlue2lightBlue);
-			it_changeColors.add(i1b_darkBlue2red);
-			it_changeColors.add(i1b_darkBlue2pink);
+			im_changeColors.add(i1b_darkBlue2yellow);
+			im_changeColors.add(i1b_darkBlue2green);
+			im_changeColors.add(i1b_darkBlue2lightBlue);
+			im_changeColors.add(i1b_darkBlue2red);
+			im_changeColors.add(i1b_darkBlue2pink);
 
-			it_changeColors.add(i1b_pink2yellow);
-			it_changeColors.add(i1b_pink2green);
-			it_changeColors.add(i1b_pink2lightBlue);
-			it_changeColors.add(i1b_pink2darkBlue);
-			it_changeColors.add(i1b_pink2red);
+			im_changeColors.add(i1b_pink2yellow);
+			im_changeColors.add(i1b_pink2green);
+			im_changeColors.add(i1b_pink2lightBlue);
+			im_changeColors.add(i1b_pink2darkBlue);
+			im_changeColors.add(i1b_pink2red);
 
 
-			it_changeColors.setActivable();
-			it_changeColors.setItemsInRow((byte) 1);
-			it_changeColors.setBorder(false);
-	        super.add(it_changeColors);
+			im_changeColors.setActivable();
+			im_changeColors.setItemsInRow((byte) 1);
+			im_changeColors.setBorder(false);
+	        super.add(im_changeColors);
 	        //it_changeColors.removeScroll();
 		}
         
@@ -1155,13 +1226,13 @@ public final class Selection extends Tab {
 			
 
 	        //pen 1
-	        it_grayifyColors = new Item1Menu(false);
-	        it_grayifyColors.setMenuListener(_ml);
-	        it_grayifyColors.addMouseListener(_controlPaintStatus);
-	        it_grayifyColors.setBorder(null);
-	        it_grayifyColors.setBorder(false);
-	        it_grayifyColors.setText("remove clr");
-	        it_grayifyColors.changeClosedSizes(ViewSettings.getItemMenu1Width(), 
+	        im_grayifyColors = new Item1Menu(false);
+	        im_grayifyColors.setMenuListener(_ml);
+	        im_grayifyColors.addMouseListener(_controlPaintStatus);
+	        im_grayifyColors.setBorder(null);
+	        im_grayifyColors.setBorder(false);
+	        im_grayifyColors.setText("remove clr");
+	        im_grayifyColors.changeClosedSizes(ViewSettings.getItemMenu1Width(), 
 	                ViewSettings.getItemMenu1Height());
 	        
 			
@@ -1218,15 +1289,15 @@ public final class Selection extends Tab {
         
         
 
-        it_grayifyColors.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
-        it_grayifyColors.setSize(sizeOpen);
-        it_grayifyColors.setSizeHeight(ViewSettings.getItemWidth());
-        it_grayifyColors.setLocation(it_changeColors.getX() 
-                + it_changeColors.getWidth() + distance, 
-                it_changeColors.getY());
+        im_grayifyColors.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
+        im_grayifyColors.setSize(sizeOpen);
+        im_grayifyColors.setSizeHeight(ViewSettings.getItemWidth());
+        im_grayifyColors.setLocation(im_changeColors.getX() 
+                + im_changeColors.getWidth() + distance, 
+                im_changeColors.getY());
         
         i1b_rotateClockwise.setSize(
-        		it_grayifyColors.getWidth(), i1b_rotateClockwise.getHeight());
+        		im_grayifyColors.getWidth(), i1b_rotateClockwise.getHeight());
 
         
 		
@@ -1235,12 +1306,12 @@ public final class Selection extends Tab {
 
         i1b_grayifyRed.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_grayifyRed.setSize(
-        		it_changeColors.getWidth(), i1b_grayifyRed.getHeight());
+        		im_changeColors.getWidth(), i1b_grayifyRed.getHeight());
 		
 
         i1b_grayifyYellow.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_grayifyYellow.setSize(
-        		it_changeColors.getWidth(), i1b_grayifyYellow.getHeight());
+        		im_changeColors.getWidth(), i1b_grayifyYellow.getHeight());
 
         i1b_grayifyGreen.setIcon(Constants.VIEW_TB_PIPETTE_PATH);
         i1b_grayifyGreen.setSize(i1b_grayifyYellow.getSize());
@@ -1258,17 +1329,17 @@ public final class Selection extends Tab {
 		
 		if (_paint) {
 
-			it_grayifyColors.add(i1b_grayifyRed);
-			it_grayifyColors.add(i1b_grayifyYellow);
-			it_grayifyColors.add(i1b_grayifyGreen);
-			it_grayifyColors.add(i1b_grayifyLightBlue);
-			it_grayifyColors.add(i1b_grayifyDarkBlue);
-			it_grayifyColors.add(i1b_grayifyPink);
+			im_grayifyColors.add(i1b_grayifyRed);
+			im_grayifyColors.add(i1b_grayifyYellow);
+			im_grayifyColors.add(i1b_grayifyGreen);
+			im_grayifyColors.add(i1b_grayifyLightBlue);
+			im_grayifyColors.add(i1b_grayifyDarkBlue);
+			im_grayifyColors.add(i1b_grayifyPink);
 			
-			it_grayifyColors.setActivable();
-			it_grayifyColors.setItemsInRow((byte) 1);
-			it_grayifyColors.setBorder(false);
-	        super.add(it_grayifyColors);
+			im_grayifyColors.setActivable();
+			im_grayifyColors.setItemsInRow((byte) 1);
+			im_grayifyColors.setBorder(false);
+	        super.add(im_grayifyColors);
 	        //it_changeColors.removeScroll();
 		}
 		
@@ -1312,13 +1383,13 @@ public final class Selection extends Tab {
 			
 			//mouse listener and changeListener
 			i1.addMouseListener(_cp);
-			CPen cpen = new CPen(_controlPaint, _cp, i1, it_changePen, 
+			CPen cpen = new CPen(_controlPaint, _cp, i1, im_changePen, 
 					Pen.clonePen(pen_available), 1, _controlPaintStatus, true);
 			i1.addChangeListener(cpen);
 			i1.addMouseListener(cpen);
 
 			//add to first pen
-			it_changePen.add(i1);
+			im_changePen.add(i1);
 		}
     
 	}
@@ -1727,6 +1798,188 @@ public final class Selection extends Tab {
 	}
 
 
+
+	/**
+	 * @return the i1b_scanEdit
+	 */
+	public Item1Menu getIm_scanEdit() {
+		return im_scanEdit;
+	}
+
+
+
+
+
+
+
+	/**
+	 * @return the i1b_scanEdit
+	 */
+	public Item1Button geti1b_scanOk() {
+		return i1b_scanOK;
+	}
+
+
+
+	/**
+	 * @return the im_changePen
+	 */
+	public Item1Menu getIm_changePen() {
+		return im_changePen;
+	}
+
+
+
+	/**
+	 * @param im_changePen the im_changePen to set
+	 */
+	public void setIm_changePen(Item1Menu im_changePen) {
+		this.im_changePen = im_changePen;
+	}
+
+
+
+	/**
+	 * @return the im_changeColors
+	 */
+	public Item1Menu getIm_changeColors() {
+		return im_changeColors;
+	}
+
+
+
+	/**
+	 * @param im_changeColors the im_changeColors to set
+	 */
+	public void setIm_changeColors(Item1Menu im_changeColors) {
+		this.im_changeColors = im_changeColors;
+	}
+
+
+
+	/**
+	 * @return the im_grayifyColors
+	 */
+	public Item1Menu getIm_grayifyColors() {
+		return im_grayifyColors;
+	}
+
+
+
+	/**
+	 * @param im_grayifyColors the im_grayifyColors to set
+	 */
+	public void setIm_grayifyColors(Item1Menu im_grayifyColors) {
+		this.im_grayifyColors = im_grayifyColors;
+	}
+
+
+
+	/**
+	 * @return the mb_saturation
+	 */
+	public MultipleBar getMb_saturation() {
+		return mb_saturation;
+	}
+
+
+
+	/**
+	 * @param mb_saturation the mb_saturation to set
+	 */
+	public void setMb_saturation(MultipleBar mb_saturation) {
+		this.mb_saturation = mb_saturation;
+	}
+
+
+
+	/**
+	 * @return the cp_saturation
+	 */
+	public CheckedComponent getCp_saturation() {
+		return cp_saturation;
+	}
+
+
+
+	/**
+	 * @param cp_saturation the cp_saturation to set
+	 */
+	public void setCp_saturation(CheckedComponent cp_saturation) {
+		this.cp_saturation = cp_saturation;
+	}
+
+
+
+	/**
+	 * @return the cp_threshold
+	 */
+	public CheckedComponent getCp_threshold() {
+		return cp_threshold;
+	}
+
+
+
+	/**
+	 * @param cp_threshold the cp_threshold to set
+	 */
+	public void setCp_threshold(CheckedComponent cp_threshold) {
+		this.cp_threshold = cp_threshold;
+	}
+
+
+
+	/**
+	 * @return the mb_threshold
+	 */
+	public MultipleBar getMb_threshold() {
+		return mb_threshold;
+	}
+
+
+
+	/**
+	 * @param mb_threshold the mb_threshold to set
+	 */
+	public void setMb_threshold(MultipleBar mb_threshold) {
+		this.mb_threshold = mb_threshold;
+	}
+
+
+
+	/**
+	 * @return the cp_value
+	 */
+	public CheckedComponent getCp_value() {
+		return cp_value;
+	}
+
+
+
+	/**
+	 * @param cp_value the cp_value to set
+	 */
+	public void setCp_value(CheckedComponent cp_value) {
+		this.cp_value = cp_value;
+	}
+
+
+
+	/**
+	 * @return the mb_value
+	 */
+	public MultipleBar getMb_value() {
+		return mb_value;
+	}
+
+
+
+	/**
+	 * @param mb_value the mb_value to set
+	 */
+	public void setMb_value(MultipleBar mb_value) {
+		this.mb_value = mb_value;
+	}
 
 
 

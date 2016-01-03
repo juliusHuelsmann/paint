@@ -45,6 +45,7 @@ import model.settings.State;
 import model.settings.StateStandard;
 import model.settings.ViewSettings;
 import model.util.DPoint;
+import model.util.adt.list.SecureListSort;
 import model.util.paint.Utils;
 import model.util.pdf.PDFUtils;
 import model.util.pdf.XDocument;
@@ -217,11 +218,17 @@ public class Project extends Observable implements Serializable {
 		
 		document = new XDocument(this);
 		PDPage page = new PDPage();
-		page.setCropBox(new PDRectangle(_dim_page.width, 
+		page.setCropBox(new PDRectangle(
+				_dim_page.width, 
 				_dim_page.height));
-		document.addPage(new PDPage());
+		document.addPage(page);
+
+		Dimension[] d = document.initialize();
+		setSize(d[1]);
+//		setSize(_dim_page);
 		
 	}
+	
 
 
 
@@ -325,8 +332,28 @@ public class Project extends Observable implements Serializable {
 			initialize(_wsLoc);
 			return null;
 		} else {
-			return 	pictures[0].load(_wsLoc);	
+			
+			
 
+			if (document != null) {
+				document.close();
+			}
+			
+			document = new XDocument(this);
+
+			DPoint pnt = pictures[0].load(_wsLoc);
+			PDPage page = new PDPage();
+			document.addPage(page);
+			document.setPageSize(0, (int) pnt.getX(),(int) pnt.getY());
+			pictures[0].initialize(history,
+					new Dimension((int) pnt.getX(), (int) pnt.getY()));
+			pictures[0].load(_wsLoc);
+
+//			setSize(d[1]);
+			setSize(new Dimension((int) pnt.getX(), (int) pnt.getY()));
+
+			return pnt;
+			
 		} 
 	}
 

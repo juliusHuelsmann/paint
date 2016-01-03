@@ -305,7 +305,7 @@ public final class PDFUtils {
     	PDFRenderer renderer = new PDFRenderer(_document);
     	BufferedImage image;
 		try {
-			image = renderer.renderImageWithDPI(_pageNumber, dpi, ImageType.RGB);
+			image = renderer.renderImageWithDPI(_pageNumber, _dpi, ImageType.RGB);
 	    	return image;
 		} catch (Exception e) {
 			if (_dpi < 50) {

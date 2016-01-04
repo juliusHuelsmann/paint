@@ -340,18 +340,29 @@ public class Project extends Observable implements Serializable {
 			}
 			
 			document = new XDocument(this);
-
-			DPoint pnt = pictures[0].load(_wsLoc);
 			PDPage page = new PDPage();
 			document.addPage(page);
-			document.setPageSize(0, (int) pnt.getX(),(int) pnt.getY());
+			DPoint pnt = pictures[0].load(_wsLoc);
+			document.setPageSize(0, (int) pnt.getX()
+					 ,
+					(int) pnt.getY() );
+
+			System.out.println("dp0" + document.getPageSize(0));
+			history = new HistorySession();
+			pictures[0] = new Picture();
 			pictures[0].initialize(history,
 					new Dimension((int) pnt.getX(), (int) pnt.getY()));
 			pictures[0].load(_wsLoc);
 
+			
+			
 //			setSize(d[1]);
 			setSize(new Dimension((int) pnt.getX(), (int) pnt.getY()));
 
+			System.out.println(size);
+			System.out.println(pnt.getX() +" " + pnt.getY());
+			System.out.println("dp0" + document.getPageSize(0));
+			System.out.println(pictures[0].getSize());
 			return pnt;
 			
 		} 

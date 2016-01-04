@@ -216,7 +216,7 @@ public final class Start {
     	        ControlPaint cp =  new ControlPaint();
     	        cp.initialize();
     	        cp.getProject().load(_args[0]);
-    	        cp.getView().getTabs().setTabbedPaneOpen(false);
+//    	        cp.getView().getTabs().setTabbedPaneOpen(false);
     	        
     	        //set the initialization process terminated
                 State.increaseInitializationFinished();

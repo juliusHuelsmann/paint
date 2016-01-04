@@ -69,6 +69,30 @@ public class CMultipleBarSimple implements MouseMotionListener, MouseListener {
 		clr_background = _clr_background;
 		
 	}
+
+	/**
+	 * 
+	 * @param _mb
+	 */
+	public CMultipleBarSimple(
+			final MultipleBar _mb,
+			final int _amount,
+			final double _min, final double _max,
+			final Color _clr_background,
+			final int[] _filling) {
+		this.mb = _mb;
+		this.min = _min;
+		this.max = _max;
+
+		location = new int[_amount];
+		clr_background = _clr_background;
+		if (_filling != null && _filling.length == _amount) {
+
+			this.location = _filling;
+			
+		}
+		
+	}
 	
 	private int pressed = -1;
 
@@ -148,7 +172,11 @@ public class CMultipleBarSimple implements MouseMotionListener, MouseListener {
 				bi.setRGB(i, j, white);
 			}
 		}
-		for (int i = 0; i < location.length; i++) {
+		
+
+		
+		for (int i = 0; i < location.length && location[location.length - 1] == 0; i++) {
+			
 			location[i] = bi.getWidth() * i / location.length;
 		}
 		paintBar();

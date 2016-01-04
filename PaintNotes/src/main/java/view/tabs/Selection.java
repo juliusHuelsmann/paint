@@ -697,7 +697,7 @@ public final class Selection extends Tab {
 	        super.add(it_rotate);
 	        
 	        cp_threshold = new CheckedComponent("threshold");
-	        mb_threshold = new MultipleBar(2, 0, 255*3, im_scanEdit.getBackground());
+	        mb_threshold = new MultipleBar(2, 0, 255*3, im_scanEdit.getBackground(), new int[]{5, 35});
 	        cp_threshold.add(mb_threshold);
 	    	cp_threshold.setSize(im_scanEdit.getWidth(), im_scanEdit.getHeight() / 3);
 

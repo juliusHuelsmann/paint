@@ -240,8 +240,8 @@ public class XDocument implements Serializable {
 	public Dimension getPageSize(final int _i) {
 		
 		PDRectangle b = document.getPage(_i).getBBox();
-		final int realPageWidth  = Math.round(b.getWidth() * PDFUtils.dpi / 72);
-		final int realPageHeight = Math.round(b.getHeight() * PDFUtils.dpi / 72);
+		final int realPageWidth  = (int) (b.getWidth() * PDFUtils.dpi / 72);
+		final int realPageHeight = (int) (b.getHeight() * PDFUtils.dpi / 72);
 		return new Dimension(realPageWidth, realPageHeight);
 	}
 
@@ -253,11 +253,9 @@ public class XDocument implements Serializable {
 	 * @return
 	 */
 	public void setPageSize(final int _i, final int _width, final int _height) {
-		
-		PDRectangle pdr = new PDRectangle(
-				(float) _width * 72 / PDFUtils.dpi,
-				(float) _height* 72 / PDFUtils.dpi);
+		PDRectangle pdr = new PDRectangle(0,0,_width, _height);
 		document.getPage(_i).setBleedBox(pdr);
+		document.getPage(_i).setCropBox(pdr);
 	}
 
 

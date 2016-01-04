@@ -38,12 +38,31 @@ public class MultipleBar extends JLabel {
 		super();
 		super.setOpaque(false);
 		super.setLayout(null);
-		this.controller = new CMultipleBarSimple(this, _amount, _min, _max, _clr_background);
+		this.controller = new CMultipleBarSimple(this, _amount, _min, _max,
+				_clr_background);
 		super.addMouseMotionListener(controller);
 		super.addMouseListener(controller);
 		
 	}
 
+	/**
+	 * Constructor initializes the gui contents.
+	 * @param _amount the amount of bars to move.
+	 * @param _min the minimal value of bar
+	 * @param _max the max value of bar.
+	 */
+	public MultipleBar(final int _amount,
+			final double _min,
+			final double _max,
+			final Color _clr_background, final int [] _filling) {
+		super();
+		super.setOpaque(false);
+		super.setLayout(null);
+		this.controller = new CMultipleBarSimple(this, _amount, _min, _max, _clr_background, _filling);
+		super.addMouseMotionListener(controller);
+		super.addMouseListener(controller);
+		
+	}
 	
 	/**
 	 * Constructor initializes the gui contents.

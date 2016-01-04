@@ -532,6 +532,7 @@ public class PaintObjectDrawImage extends PaintObjectBI implements Cloneable, Se
 			thr2 = 200;
 			sat = 1.5;
 			val = 0.9;
+			System.out.println("o du 0" + _o);
 		} else {
 
 			double[] i = (double[]) (_o);
@@ -539,6 +540,7 @@ public class PaintObjectDrawImage extends PaintObjectBI implements Cloneable, Se
 			thr2 = (int) i[1];
 			sat = i[2];
 			val = i[3];
+			System.out.println("o du nicht 0:" + thr1 + ".." + thr2);
 		}
 		
 		// remove background noise
@@ -748,7 +750,7 @@ public class PaintObjectDrawImage extends PaintObjectBI implements Cloneable, Se
 		for (int x = 1; x < super.getBi_image().getWidth() - 1; x++) {
 			for (int y = 1; y < super.getBi_image().getHeight() - 1; y++) {
 				final Color c =  new Color(getBi_image().getContent().getRGB(x, y));
-				borderInfo1[x][y][0] = c.getRed() + c.getGreen() + c.getBlue();
+				borderInfo1[x][y][0] = 255 * 3 - c.getRed() - c.getGreen() - c.getBlue();
 				if (borderInfo1[x][y][0] >= _lower){
 					bi_result.setRGB(x, y, rgb_potential);
 				} else {

@@ -38,6 +38,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.tools.ant.property.GetProperty;
 
 import model.objects.history.HistorySession;
 import model.objects.painting.Picture;
@@ -363,6 +364,13 @@ public class Project extends Observable implements Serializable {
 			System.out.println(pnt.getX() +" " + pnt.getY());
 			System.out.println("dp0" + document.getPageSize(0));
 			System.out.println(pictures[0].getSize());
+			
+			
+			System.out.println("loading information:");
+			System.out.println("proj size " + getSize());
+			System.out.println("page size " + getPicture(0).getSize());
+			System.out.println("pdf  size " + document.getPage(0).getBBox());
+			
 			return pnt;
 			
 		} 

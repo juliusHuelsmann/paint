@@ -739,10 +739,14 @@ public class Project extends Observable implements Serializable {
 		final int id = getPageFromPX(new Point(
 				(int) (_x * zoomToModel),
 				(int) (_y * zoomToModel)));
+		
+		
 		return id;
 	}
 
 	public Picture getCurrentPicture(final int _x, final int _y) {
+		
+		
 		return pictures[getPictureID(_x, _y)];
 	}
 

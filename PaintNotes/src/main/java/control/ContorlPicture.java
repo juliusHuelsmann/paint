@@ -1798,9 +1798,16 @@ public class ContorlPicture implements PaintListener {
 	public final void beforeLocationChange(final MoveEvent _ev, 
 			final MoveEvent _evOld) {
 
+		// this function changes the location of the currently selected
+		// stuff in case something is selected at the currently displayed
+		// page. 
+		// The called function demands the location inside the current
+		// page. 
 		cp.changeLocationSelectionOnScroll(
-				_ev.getPnt_bottomLocation().x,
-				_ev.getPnt_bottomLocation().y);
+//				_ev.getPnt_bottomLocation().x,
+//				_ev.getPnt_bottomLocation().y
+				0,0
+				);
 	}
 
 	

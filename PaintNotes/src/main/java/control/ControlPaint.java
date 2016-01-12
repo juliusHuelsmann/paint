@@ -1041,6 +1041,7 @@ MenuListener {
         //
         // change location of the current selection
         //
+		
         if (getPicture(new Point(_x, _y)).isSelected()) {
         	
         	//calculate the shift in here not directly because the

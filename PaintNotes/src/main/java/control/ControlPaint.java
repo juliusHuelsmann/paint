@@ -32,11 +32,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.logging.Level;
-
 import javax.swing.ImageIcon;
-
-import org.w3c.dom.CDATASection;
-
 import control.forms.CLoading;
 import control.forms.CNew;
 import control.forms.CPaintStatus;

@@ -2080,7 +2080,18 @@ MenuListener {
             final Rectangle _r_size) {
 
 
-    	final Picture pic = getPicture(_r_size.getLocation());
+//    	// Like the location of the jlbl_picture is negative
+//    	// and has already been added to the Rectangle _r_size
+//    	// it has to be 'subtracted' thus added to the Point
+//    	// that is given to the getpicture method which only
+//    	// demands the location relative to the current 
+//    	// displayable section.
+    	Point loc_pic = 
+    			new Point(
+    					(int) (_r_size.getX() + getPage().getJlbl_painting().getLocation().getX()),
+    					(int) (_r_size.getY() + getPage().getJlbl_painting().getLocation().getY()));
+    			
+    	final Picture pic = getPicture(loc_pic);
     	//start transaction 
     	final int transaction = pic.getLs_po_sortedByY()
     			.startTransaction("Selection line complete", 
@@ -2090,7 +2101,6 @@ MenuListener {
          */
         //case: there can't be items inside rectangle because list is empty
         if (pic.getLs_po_sortedByY().isEmpty()) {
-
 
     		getPage().getJlbl_border().setBounds(
     				new Rectangle(0, 0, 0, 0));
@@ -2770,6 +2780,10 @@ MenuListener {
                     .getLocation().x;
             yLocation -= getPage().getJlbl_painting()
                     .getLocation().y;
+            
+            int currentPicture = getPictureNumber(new Point(xLocation, yLocation));
+            Rectangle r = project.getPageRectanlgeinProject(currentPicture);
+            yLocation -= r.y;
 
             
             return new Rectangle(

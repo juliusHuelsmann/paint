@@ -741,6 +741,7 @@ implements ActionListener, MouseListener {
 //                                bi_imageBG.getHeight()));
 //                        State.setImageShowSize(State.getImageSize());
                         controlPaint.getPicture().emptyImage();
+                        controlPaint.getProject().emptyImage();
 //                        controlPaint.getPicture().addPaintObjectImage(
 //                        		bi_imageBG);
                     	controlPaint.getProject().load(file.getAbsolutePath());
@@ -1129,8 +1130,9 @@ implements ActionListener, MouseListener {
                     State.setSavePath(file.getAbsolutePath());
                     
                 } else if (Constants.endsWithSaveFormat(file.getName())) {
-                    
-                        controlPaint.getPicture().emptyImage();
+
+                    controlPaint.getPicture().emptyImage();
+                    controlPaint.getProject().emptyImage();
                     	controlPaint.getProject().load(file.getAbsolutePath());
                         getControlPicture().refreshPaint();
                         

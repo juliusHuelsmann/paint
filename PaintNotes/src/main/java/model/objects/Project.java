@@ -651,6 +651,8 @@ public class Project extends Observable implements Serializable {
 		if (document.getPage(_pageNumber) == null) {
 			
 			b = new PDRectangle(
+					0,
+					y,
 					pictures[_pageNumber].getShowSize().width, 
 					pictures[_pageNumber].getShowSize().height);
 		} else {
@@ -739,7 +741,6 @@ public class Project extends Observable implements Serializable {
 		final int id = getPageFromPX(new Point(
 				(int) (_x * zoomToModel),
 				(int) (_y * zoomToModel)));
-		System.out.println("fetched picture id " + id);
 		
 		return id;
 	}

@@ -2088,10 +2088,13 @@ MenuListener {
 //    	// displayable section.
     	Point loc_pic = 
     			new Point(
-    					(int) (_r_size.getX() + getPage().getJlbl_painting().getLocation().getX()),
+    					(int) (_r_size.getX() 
+    							+ getPage().getJlbl_painting().getLocation().getX()),
     					(int) (_r_size.getY() + getPage().getJlbl_painting().getLocation().getY()));
-    			
-    	final Picture pic = getPicture(loc_pic);
+        int currentPicture = getPictureNumber(loc_pic);
+        Rectangle r = project.getPageRectanlgeinProject(currentPicture);
+        
+    	final Picture pic = getPicture(currentPicture);
     	//start transaction 
     	final int transaction = pic.getLs_po_sortedByY()
     			.startTransaction("Selection line complete", 
@@ -2135,6 +2138,7 @@ MenuListener {
         _r_size.x *= cZoomFactor;
         _r_size.width *= cZoomFactor;
         _r_size.y *= cZoomFactor;
+        _r_size.y -= r.y;
         _r_size.height *= cZoomFactor;
         
         // go through list. until either list is empty or it is
@@ -2145,13 +2149,13 @@ MenuListener {
                 <= (_r_size.y + _r_size.height)) {
 
 
+        	
             //The y condition has to be in here because the items are just 
             //sorted by x coordinate; thus it is possible that one PaintObject 
             //is not suitable for the specified rectangle but some of its 
             //predecessors in sorted list do.
             if (po_current.isInSelectionImage(_r_size)
             		&& po_current.isEditable()) {
-
 
                 //remove item out of PictureOverview and paint and refresh paint
                 //otherwise it is not possible to select more than one item
@@ -2166,14 +2170,18 @@ MenuListener {
                 		transaction);
             }            
 
+            // The next operation is to be performed in each case of the if 
+            // clause because after calling remove, the current list item 
+            // points to the predecessor of the removed element (which has
+            // already been checked 
             pic.getLs_po_sortedByY().next(
             		transaction, SecureList.ID_NO_PREDECESSOR);
-
             // update current values
             currentY = po_current.getSnapshotBounds().y;
             po_current = pic.getLs_po_sortedByY().getItem();
-
+            
         }
+        
 
     	//finish transaction 
     	pic.getLs_po_sortedByY().finishTransaction(
@@ -2233,7 +2241,28 @@ MenuListener {
      */
     public final void mr_sel_line_destroy(final Rectangle _r_sizeField) {
 
-    	final Picture pic = getPicture(_r_sizeField.getLocation());
+
+//    	// Like the location of the jlbl_picture is negative
+//    	// and has already been added to the Rectangle _r_size
+//    	// it has to be 'subtracted' thus added to the Point
+//    	// that is given to the getpicture method which only
+//    	// demands the location relative to the current 
+//    	// displayable section.
+    	Point loc_pic = 
+    			new Point(
+    					(int) (_r_sizeField.getX() 
+    							+ getPage().getJlbl_painting().getLocation().getX()),
+    					(int) (_r_sizeField.getY() + getPage().getJlbl_painting().getLocation().getY()));
+        int currentPicture = getPictureNumber(loc_pic);
+        System.out.println("currentPicture" + currentPicture);
+        Rectangle r = project.getPageRectanlgeinProject(currentPicture);
+        
+    	final Picture pic = getPicture(currentPicture);
+    	
+    	
+    	
+    	
+    	
     	//start transaction 
     	final int transaction = pic.getLs_po_sortedByY()
     			.startTransaction("Selection line destroy", 
@@ -2430,8 +2459,22 @@ MenuListener {
      */
     public final synchronized void mr_erase(final Point _p) {
 
-    	
-    	final Picture pic = getPicture(_p);
+
+//    	// Like the location of the jlbl_picture is negative
+//    	// and has already been added to the Rectangle _r_size
+//    	// it has to be 'subtracted' thus added to the Point
+//    	// that is given to the getpicture method which only
+//    	// demands the location relative to the current 
+//    	// displayable section.
+    	Point loc_pic = 
+    			new Point(
+    					(int) (_p.getX() 
+    							+ getPage().getJlbl_painting().getLocation().getX()),
+    					(int) (_p.getY() + getPage().getJlbl_painting().getLocation().getY()));
+        int currentPicture = getPictureNumber(loc_pic);
+        System.out.println("currentPicture" + currentPicture);
+        
+    	final Picture pic = getPicture(currentPicture);
     	
     	//start transaction 
     	final int transaction = pic.getLs_po_sortedByY()
@@ -2781,9 +2824,6 @@ MenuListener {
             yLocation -= getPage().getJlbl_painting()
                     .getLocation().y;
             
-            int currentPicture = getPictureNumber(new Point(xLocation, yLocation));
-            Rectangle r = project.getPageRectanlgeinProject(currentPicture);
-            yLocation -= r.y;
 
             
             return new Rectangle(
@@ -3360,6 +3400,10 @@ MenuListener {
 				(int) (1.0 
 						* (-getPage().getJlbl_painting().getLocation().y
 								+ _pnt.y)));
+	}
+	
+	public final Picture getPicture (final int _identifier) {
+		return project.getPicture(_identifier);
 	}
 	/**
 	 * 

@@ -321,6 +321,17 @@ public abstract class POInsertion extends PaintObjectPen implements Cloneable {
     }
 
 
+    public final POInsertion movePaintObject(final int _dX, final int _dY) {
+    	
+    	pnt_first = new DPoint(pnt_first.getX() + _dX, pnt_first.getY() + _dY);
+    	pnt_last = new DPoint(pnt_last.getX() + _dX, pnt_last.getY() + _dY);
+    	minX += _dX;
+    	maxX += _dX;
+    	minY += _dY;
+    	maxY += _dY;
+    	return this;
+    	
+    }
 
     /**
      * {@inheritDoc}

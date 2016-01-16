@@ -51,7 +51,7 @@ public final class Start {
 	public static void changeFolder(final String _arg) {
 		
 	    //create an instance of picture
-		Picture p = new Picture();
+		Picture p = new Picture(0);
 		File f = new File(_arg);
 
 		//if file exists and is directory

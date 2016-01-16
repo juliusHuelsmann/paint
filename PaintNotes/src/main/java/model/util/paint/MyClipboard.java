@@ -36,10 +36,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import test.PaintObjectSelectLineDestroy;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectDrawImage;
 import model.objects.painting.po.PaintObjectWriting;
+import model.objects.painting.po.PoSelection;
 import model.settings.State;
 import model.util.DPoint;
 import model.util.adt.list.List;
@@ -132,7 +134,7 @@ public final class MyClipboard implements ClipboardOwner {
      */
     public void copyPaintObjects(
     		final Picture _picture,
-    		final SecureList<PaintObject> _lsPoSelected, 
+    		final SecureList<PoSelection> _lsPoSelected, 
             final Image _i) {
 
         //copy image
@@ -151,7 +153,7 @@ public final class MyClipboard implements ClipboardOwner {
         _lsPoSelected.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
         while (!_lsPoSelected.isBehind() && !_lsPoSelected.isEmpty()) {
             
-            PaintObject po = _lsPoSelected.getItem();
+            PaintObject po = _lsPoSelected.getItem().getPaintObject();
             if (po instanceof PaintObjectDrawImage) {
                 PaintObjectDrawImage poi = (PaintObjectDrawImage) po;
                 PaintObjectDrawImage poi_new = _picture.createPOI(

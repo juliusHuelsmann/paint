@@ -30,18 +30,13 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Observable;
-import java.util.Observer;
-
 import javax.swing.ImageIcon;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.apache.tools.ant.property.GetProperty;
-
 import view.forms.Console;
 import view.forms.Page;
 import view.tabs.Debug;
@@ -961,7 +956,7 @@ public class Project extends Observable implements Serializable {
 			ls_poSelected.toFirst(transaction, closedAction);
 			_ctabSelection.activateOp();
 
-			while (!ls_poSelected.isBehind()) {
+			while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
 				
 
 				if (ls_poSelected.getItem().getPaintObject() instanceof PaintObjectWriting) {
@@ -1015,32 +1010,19 @@ public class Project extends Observable implements Serializable {
 
 		while (!ls_poSelected.isBehind()) {
 
-			if (ls_poSelected.getItem().getPaintObject() instanceof PaintObjectWriting) {
-
-				PaintObjectWriting pow = (PaintObjectWriting) ls_poSelected
-						.getItem().getPaintObject();
-				pow = Picture.movePaintObjectWriting(pow, _dX, _dY);
-
-			} else if (ls_poSelected.getItem().getPaintObject() instanceof PaintObjectDrawImage) {
-
-				PaintObjectDrawImage p = (PaintObjectDrawImage) ls_poSelected.getItem().getPaintObject();
-				p.move(new Point(_dX, _dY));
-			} else if (ls_poSelected.getItem().getPaintObject() instanceof POLine) {
-
-				POLine p = (POLine) ls_poSelected.getItem().getPaintObject();
-				Picture.moveLine(p, _dX, _dY);
-			} else {
-				State.getLogger().warning("unknown kind of PaintObject?");
-			}
+			PaintObject pow = (PaintObject) ls_poSelected
+					.getItem().getPaintObject();
+			pow.movePaintObject(_dX, _dY);
 			ls_poSelected.next(transaction, closedAction);
+			
 		}
 
 
 		SecureList<PoSelection> sl_newMoved 
 		= cloneSecureListPaintObject(ls_poSelected);
 
-		history.addHistoryItem(history.createMoveItem(
-				sl_oldMove, sl_newMoved, this));
+//		history.addHistoryItem(history.createMoveItem(
+//				sl_oldMove, sl_newMoved, null));
 		
     	//close transaction and closed action.
 		ls_poSelected.finishTransaction(
@@ -1462,24 +1444,48 @@ public class Project extends Observable implements Serializable {
 		ls_poSelected.toFirst(transaction, SecureList.ID_NO_PREDECESSOR);
 		while (!ls_poSelected.isEmpty()) {
 
-			PaintObject po = ls_poSelected.getItem().getPaintObject();
+			PoSelection pos = ls_poSelected.getItem();
+			PaintObject po = pos.getPaintObject();
 
 			if (po == null) {
 				State.getLogger().warning("error: empty list item");
 			}
+			
+			// find the page which contains the current PoSelection
+			final Point locPageOriginal = pos.getLocationPageProject().getLocation();
+			final Point locInPageOriginal = po.getSnapshotBounds().getLocation();
+			// compute the page and the 
+			final Point pnt_pageStart = getPageAndPageStartFromPX(new Point(
+					locPageOriginal.x + locInPageOriginal.x,
+					locPageOriginal.y + locInPageOriginal.y));
+			final int pageNumber  = pnt_pageStart.x;
+			final int pageY       = pnt_pageStart.y;
+			final int locInPageDY = locPageOriginal.y - pageY;
+			System.out.println("insert into page number " + pageNumber);
+			final Picture pic_toInsert = pictures[pageNumber];
+			// adjust the y location in new page.
+			po.movePaintObject(0, locInPageDY);
+			po.setPicture(pic_toInsert);
+			
+			
+			
+			
+			
+			
+			
 
 			new PictureOverview(_paintObjects).removeSelected(po);
 
 			if (po instanceof PaintObjectWriting) {
 				PaintObjectWriting pow = (PaintObjectWriting) po;
 				new PictureOverview(_paintObjects).add(pow);
-				ls_po_sortedByY.insertSorted(pow, pow.getSnapshotBounds().y,
+				pic_toInsert.getLs_po_sortedByY().insertSorted(pow, pow.getSnapshotBounds().y,
 						SecureList.ID_NO_PREDECESSOR);
 			} else if (po instanceof PaintObjectDrawImage) {
 				PaintObjectDrawImage poi = (PaintObjectDrawImage) po;
 				new PictureOverview(_paintObjects).add(poi);
 
-				ls_po_sortedByY.insertSorted(poi, poi.getSnapshotBounds().y,
+				pic_toInsert.getLs_po_sortedByY().insertSorted(poi, poi.getSnapshotBounds().y,
 						SecureList.ID_NO_PREDECESSOR);
 			} else if (po instanceof POLine) {
 
@@ -1487,7 +1493,7 @@ public class Project extends Observable implements Serializable {
 				p.recalculateSnapshotBounds();
 				new PictureOverview(_paintObjects).add(p);
 
-				ls_po_sortedByY.insertSorted(p, p.getSnapshotBounds().y,
+				pic_toInsert.getLs_po_sortedByY().insertSorted(p, p.getSnapshotBounds().y,
 						SecureList.ID_NO_PREDECESSOR);
 			} else if (po != null) {
 				State.getLogger().warning("unknown kind of PaintObject" + po);

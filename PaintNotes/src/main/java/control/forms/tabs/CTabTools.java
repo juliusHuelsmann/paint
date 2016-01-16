@@ -34,8 +34,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
+
+import org.apache.tools.ant.property.GetProperty;
+
 import control.ContorlPicture;
 import control.ControlPaint;
+import model.objects.Project;
 import model.objects.painting.Picture;
 import model.objects.painting.po.PaintObject;
 import model.objects.painting.po.PaintObjectDrawImage;
@@ -339,14 +343,15 @@ implements ActionListener, MouseListener {
      */
     public void mr_cut() {
     	final Picture pic = controlPaint.getPicture();
+    	final Project pro = controlPaint.getProject();
 
         MyClipboard.getInstance().copyPaintObjects(
         		pic,
-        		pic.getLs_poSelected(), 
-        		pic.paintSelectedBI(new DRect(controlPaint
+        		pro.getLs_poSelected(), 
+        		pro.paintSelectedBI(new DRect(controlPaint
                 		.getControlPaintSelection().getR_selection())));
         
-        pic.deleteSelected(
+        pro.deleteSelected(
         		controlPaint.getView().getTabs().getTab_debug(),
         		controlPaint.getcTabSelection());
         getControlPicture().releaseSelected();
@@ -361,9 +366,10 @@ implements ActionListener, MouseListener {
     public void mr_paste() {
 
     	final Picture pic = controlPaint.getPicture();
+    	final Project pro = controlPaint.getProject();
     	
     	getControlPicture().releaseSelected();
-        pic.releaseSelected(
+    	pro.releaseSelected(
     			controlPaint.getControlPaintSelection(),
     			controlPaint.getcTabSelection(),
     			controlPaint.getView().getTabs().getTab_debug(),
@@ -371,19 +377,19 @@ implements ActionListener, MouseListener {
     			.getLocation().x,
     			controlPaint.getView().getPage().getJlbl_painting()
     			.getLocation().y);
-        pic.createSelected();
+    	pro.createSelected();
         
         Object o = MyClipboard.getInstance().paste();
         if (o instanceof BufferedImage) {
             PaintObjectDrawImage poi = pic.createPOI(
                     (BufferedImage) o);
-            pic.insertIntoSelected(
+            pro.insertIntoSelected(
             		poi, controlPaint.getView().getTabs().getTab_debug());
             //finish insertion into selected.
-            pic.finishSelection(
+            pro.finishSelection(
             		controlPaint.getcTabSelection());
             
-            pic.paintSelected(getPage(),
+            pro.paintSelected(getPage(),
         			controlPaint.getControlPic(),
         			controlPaint.getControlPaintSelection());
             getPage().getJlbl_background().repaint();
@@ -438,12 +444,12 @@ implements ActionListener, MouseListener {
                     PaintObjectDrawImage poi = (PaintObjectDrawImage) po;
                     PaintObjectDrawImage poi_new = pic
                     		.createPOI(poi.getSnapshot());
-                    pic.insertIntoSelected(
+                    pro.insertIntoSelected(
                     		poi_new, controlPaint.getView().getTabs()
                     		.getTab_debug());
 
                     //finish insertion into selected.
-                    pic.finishSelection(
+                    pro.finishSelection(
                     		controlPaint.getcTabSelection());
                     
                 } else if (po instanceof PaintObjectWriting) {
@@ -458,7 +464,7 @@ implements ActionListener, MouseListener {
                                 pow.getPoints().getItem()));
                         pow.getPoints().next();
                     }
-                    pic.insertIntoSelected(pow_new, 
+                    pro.insertIntoSelected(pow_new, 
                     		controlPaint.getView().getTabs().getTab_debug());
 
                 
@@ -469,38 +475,38 @@ implements ActionListener, MouseListener {
                 ls.next();
             }
             //finish insertion into selected.
-            pic.finishSelection(
+            pro.finishSelection(
             		controlPaint.getcTabSelection());
-            pic.moveSelected(pnt_move.x, pnt_move.y);
+            pro.moveSelected(pnt_move.x, pnt_move.y);
             
         } else if (o instanceof PaintObjectWriting) {
         	
         	//theoretically unused because everything is stored
         	//inside lists.
-            pic.insertIntoSelected(
+        	pro.insertIntoSelected(
                     (PaintObjectWriting) o, 
                     controlPaint.getView().getTabs().getTab_debug());
 
             //finish insertion into selected.
-            pic.finishSelection(
+        	pro.finishSelection(
             		controlPaint.getcTabSelection());
         } else if (o instanceof PaintObjectDrawImage) {
 
         	//theoretically unused because everything is stored
         	//inside lists.
-            pic.insertIntoSelected(
+        	pro.insertIntoSelected(
                     (PaintObjectDrawImage) o, 
                     controlPaint.getView().getTabs().getTab_debug());
 
             //finish insertion into selected.
-            pic.finishSelection(
+        	pro.finishSelection(
             		controlPaint.getcTabSelection());
             new Exception("hier").printStackTrace();
         } else {
             State.getLogger().warning("unknown return type of clipboard"
             		+ "\ncontent: " + o);
         }
-        pic.paintSelected(getPage(),
+        pro.paintSelected(getPage(),
     			controlPaint.getControlPic(),
     			controlPaint.getControlPaintSelection());
         getPage().getJlbl_background().repaint();
@@ -515,8 +521,8 @@ implements ActionListener, MouseListener {
     	final Picture pic  = controlPaint.getPicture();
         MyClipboard.getInstance().copyPaintObjects(
         		pic,
-        		pic.getLs_poSelected(), 
-                pic.paintSelectedBI(new DRect(
+        		controlPaint.getProject().getLs_poSelected(), 
+        		controlPaint.getProject().paintSelectedBI(new DRect(
                 		controlPaint
                 		.getControlPaintSelection().getR_selection())));
             
@@ -871,7 +877,7 @@ implements ActionListener, MouseListener {
     	
     	// TODO: move selection to project and not to picture.
     	// only perform this action if nothing is selected.
-		if (!pic.isSelected()) {
+		if (!controlPaint.getProject().isSelected()) {
 
 			// change the location of the resize - buttons. Now that the selection
 			// is released, the entire page can be resized.

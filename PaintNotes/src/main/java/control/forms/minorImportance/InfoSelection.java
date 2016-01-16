@@ -53,7 +53,7 @@ public class InfoSelection implements ActionListener {
 	public void actionPerformed(final ActionEvent _event) {
 		if (_event.getSource().equals(jbtn_delete)) {
 
-			cp.getPicture().deleteSelected(cp.getView().getTabs().getTab_debug(),
+			cp.getProject().deleteSelected(cp.getView().getTabs().getTab_debug(),
 					cp.getcTabSelection());
 			cp.getControlPic().releaseSelected();
 			cp.getView().getInfo_form().setVisible(false);

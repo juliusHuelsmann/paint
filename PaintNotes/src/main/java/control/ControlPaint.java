@@ -526,7 +526,7 @@ MenuListener {
 	        	
 	        	
 			//remove old pen - position - indication - point
-			if (!getPicture().isSelected()) {
+			if (!getProject().isSelected()) {
 				switch (State.getIndexOperation()) {
 				
 				case Constants.CONTROL_PAINTING_INDEX_I_D_DIA:
@@ -1042,7 +1042,7 @@ MenuListener {
         // change location of the current selection
         //
 		
-        if (getPicture(new Point(_x, _y)).isSelected()) {
+        if (getProject().isSelected()) {
         	
         	//calculate the shift in here not directly because the
         	//check whether the new coordinates are in range is
@@ -1477,9 +1477,9 @@ MenuListener {
                 pnt_last = null;
                 pnt_movementSpeed = null;
                 //release everything
-                final Picture pic = getPicture(_event.getPoint());
-                if (pic.isSelected()) {
-                    pic.releaseSelected(
+                final Project pro = getProject();
+                if (pro.isSelected()) {
+                    pro.releaseSelected(
                 			getControlPaintSelection(),
                 			getcTabSelection(),
                 			getView().getTabs().getTab_debug(),
@@ -1717,12 +1717,10 @@ MenuListener {
         // refresh scrollPanes which have changed because of the zooming
         // process.
         getPage().refrehsSps();
-        boolean selected = false;
-        for (int i = 0; i < getProject().getAmountPages(); i++) {
 
             // release all selected items. If this is not done, the
             // painted selection size is too big.
-        	final Picture pic = getProject().getPicture(i);
+        	final Project pic = getProject();
         	if (pic.isSelected()) {
 
 
@@ -1734,14 +1732,10 @@ MenuListener {
             			.getLocation().x,
             			getView().getPage().getJlbl_painting()
             			.getLocation().y);
+            	controlPic.releaseSelected();
             
         	}
         	
-		}
-        if (selected) {
-
-        	controlPic.releaseSelected();
-        }
         
         // update the location of the resize buttons for resizing the entire
         // page.
@@ -1813,7 +1807,7 @@ MenuListener {
 
         //necessary because the points are painted directly to the buffered
         //image which starts at the _ldp snapshot x.
-        Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
+        _ldp.movePaintObject(-_ldp.getSnapshotBounds().x, 
                 -_ldp.getSnapshotBounds().y);
 
         BufferedImage transform = _ldp.getSnapshot();
@@ -1827,7 +1821,7 @@ MenuListener {
         // initialize selection list
         pic.getLs_po_sortedByY().toFirst(
         		transaction, SecureList.ID_NO_PREDECESSOR);
-        pic.createSelected();
+        getProject().createSelected();
         
         // create and initialize current values (current PO and its coordinates)
         PaintObject po_current = pic.getLs_po_sortedByY()
@@ -1847,7 +1841,7 @@ MenuListener {
             		field, new Point(xShift, yShift))) {
 
                 //move current item from normal list into selected list 
-                pic.insertIntoSelected(po_current,
+            	getProject().insertIntoSelected(po_current,
                 		getView().getTabs().getTab_debug());
                 pic.getLs_po_sortedByY().remove(
                 		transaction);
@@ -1872,10 +1866,10 @@ MenuListener {
     			transaction);
     	
         //finish insertion into selected.
-        pic.finishSelection(getcTabSelection());
+    	getProject().finishSelection(getcTabSelection());
         
         //paint the selected item and refresh entire painting.
-        if (!pic.paintSelected(getPage(),
+        if (!getProject().paintSelected(getPage(),
         		getControlPic(),
         		getControlPaintSelection())) {
         	controlPic.stopBorderThread();
@@ -1892,7 +1886,7 @@ MenuListener {
         controlPic.refreshPaint();
 
         // open selection tab
-        if (pic.isSelected()) {
+        if (getProject().isSelected()) {
 
             getTabs().openTab(State.getIdTabSelection());	
         }
@@ -1919,7 +1913,7 @@ MenuListener {
         
         //necessary because the points are painted directly to the buffered
         //image which starts at the _ldp snapshot x.
-        Picture.movePaintObjectWriting(_ldp, -_ldp.getSnapshotBounds().x, 
+        _ldp.movePaintObject(-_ldp.getSnapshotBounds().x, 
                 -_ldp.getSnapshotBounds().y);
         BufferedImage transform = _ldp.getSnapshot();
 
@@ -1935,7 +1929,7 @@ MenuListener {
          * whole item selection.
          */
         // initialize selection list
-        pic.createSelected();
+        getProject().createSelected();
 
         // go to the beginning of the list
         if (!pic.getLs_po_sortedByY().isEmpty()) {
@@ -1990,7 +1984,7 @@ MenuListener {
                             //recalculate snapshot bounds for being able to 
                             //insert the item into the sorted list.
                             separatedPO[1][current].recalculateSnapshotBounds();
-                            pic.insertIntoSelected(
+                            getProject().insertIntoSelected(
                                     separatedPO[1][current], 
                                     getView().getTabs().getTab_debug());
                         } else {
@@ -2000,7 +1994,7 @@ MenuListener {
                     }
                     
                     //finish insertion into selected.
-                    pic.finishSelection(getcTabSelection());
+                    getProject().finishSelection(getcTabSelection());
                     
                     for (int current = 0; current < separatedPO[0].length;
                             current++) {
@@ -2040,14 +2034,14 @@ MenuListener {
         	pic.getLs_po_sortedByY().finishTransaction(
         			transaction);
         	
-            if (pic.paintSelected(getPage(),
+            if (getProject().paintSelected(getPage(),
         			getControlPic(),
         			getControlPaintSelection())) {
             	controlPic.refreshPaint();
             } 
         }
 
-        if (!pic.paintSelected(getPage(),
+        if (!getProject().paintSelected(getPage(),
     			getControlPic(),
     			getControlPaintSelection())) {
         	controlPic.stopBorderThread();
@@ -2063,7 +2057,7 @@ MenuListener {
         controlPic.refreshPaint();
 
         // open selection tab
-        if (pic.isSelected()) {
+        if (getProject().isSelected()) {
 
             getTabs().openTab(State.getIdTabSelection());	
         }
@@ -2126,7 +2120,7 @@ MenuListener {
         // initialize selection list
         pic.getLs_po_sortedByY().toFirst(
         		transaction, SecureList.ID_NO_PREDECESSOR);
-        pic.createSelected();
+        getProject().createSelected();
         
         // create and initialize current values (current PO and its coordinates)
         PaintObject po_current = pic.getLs_po_sortedByY()
@@ -2163,7 +2157,7 @@ MenuListener {
                 		 po_current);
                 
                 //move current item from normal list into selected list 
-                pic.insertIntoSelected(
+                 getProject().insertIntoSelected(
                 		po_current, getView().getTabs().getTab_debug());
                              
                 pic.getLs_po_sortedByY().remove(
@@ -2188,11 +2182,11 @@ MenuListener {
     			transaction);
 
         //finish insertion into selected.
-        pic.finishSelection(getcTabSelection());
+    	getProject().finishSelection(getcTabSelection());
         
         controlPic.refreshPaint();
 
-        if (!pic.paintSelected(getPage(),
+        if (!getProject().paintSelected(getPage(),
     			getControlPic(),
     			getControlPaintSelection())) {
 
@@ -2222,7 +2216,7 @@ MenuListener {
         
 
         // open selection tab
-        if (pic.isSelected()) {
+        if (getProject().isSelected()) {
 
             getTabs().openTab(State.getIdTabSelection());	
         }
@@ -2271,7 +2265,7 @@ MenuListener {
          * whole item selection.
          */
         // initialize selection list
-        pic.createSelected();
+    	getProject().createSelected();
 
         // go to the beginning of the list
         pic.getLs_po_sortedByY().toFirst(transaction, 
@@ -2344,7 +2338,7 @@ MenuListener {
                             //recalculate snapshot bounds for being able to 
                             //insert the item into the sorted list.
                             separatedPO[1][current].recalculateSnapshotBounds();
-                            pic.insertIntoSelected(
+                            getProject().insertIntoSelected(
                                     separatedPO[1][current],
                                     getView().getTabs().getTab_debug()
                             		);
@@ -2357,7 +2351,7 @@ MenuListener {
                     }
 
                     //finish insertion into selected.
-                    pic.finishSelection(getcTabSelection());
+                    getProject().finishSelection(getcTabSelection());
                     
                     for (int current = 0; current < separatedPO[0].length;
                             current++) {
@@ -2404,7 +2398,7 @@ MenuListener {
         	//finish transaction
         	pic.getLs_po_sortedByY().finishTransaction(
         			transaction);
-            if (pic.paintSelected(getPage(),
+            if (getProject().paintSelected(getPage(),
         			getControlPic(),
         			getControlPaintSelection())) {
 
@@ -2444,7 +2438,7 @@ MenuListener {
         
 
         // open selection tab
-        if (pic.isSelected()) {
+        if (getProject().isSelected()) {
 
             getTabs().openTab(State.getIdTabSelection());	
         }
@@ -2494,7 +2488,7 @@ MenuListener {
          * whole item selection.
          */
         // initialize selection list
-        pic.createSelected();
+    	getProject().createSelected();
 
         // go to the beginning of the list
         pic.getLs_po_sortedByY().toFirst(transaction,
@@ -2566,7 +2560,7 @@ MenuListener {
             			transaction);
 
                 //finish insertion into selected.
-                pic.finishSelection(getcTabSelection());
+            	getProject().finishSelection(getcTabSelection());
                 
                 controlPic.refreshPaint();
             	
@@ -2576,7 +2570,7 @@ MenuListener {
             	
             	
             	
-            	pic.deleteSelected(getView()
+                getProject().deleteSelected(getView()
             			.getTabs().getTab_debug(), cTabSelection);
             	break;
             case Constants.ERASE_DESTROY:
@@ -2669,7 +2663,7 @@ MenuListener {
 	        			transaction);
 	        
 	            
-	            if (pic.paintSelected(getPage(),
+	            if (getProject().paintSelected(getPage(),
 	        			getControlPic(),
 	        			getControlPaintSelection())) {
 	            	controlPic.refreshPaint();
@@ -2938,30 +2932,21 @@ MenuListener {
 	 * {@inheritDoc}
 	 */
 	public final void beforeOpen() {
-        boolean selected = false;
-        for (int i = 0; i < getProject().getAmountPages(); i++) {
+        	if (getProject().isSelected()) {
 
-            // release all selected items. If this is not done, the
-            // painted selection size is too big.
-        	final Picture pic = getProject().getPicture(i);
-        	if (pic.isSelected()) {
 
-        		selected = true;
-
-                pic.releaseSelected(
+                getProject().releaseSelected(
             			getControlPaintSelection(),
             			getcTabSelection(),
             			getView().getTabs().getTab_debug(),
             			getView().getPage().getJlbl_painting().getLocation().x,
             			getView().getPage().getJlbl_painting().getLocation().y);
-            
+
+            	controlPic.releaseSelected();
         	}
         	
 		}
-        if (selected) {
 
-        	controlPic.releaseSelected();
-        }}
 
 
 
@@ -2972,29 +2957,19 @@ MenuListener {
 	public final void beforeClose() {
 
 		
-        boolean selected = false;
-        for (int i = 0; i < getProject().getAmountPages(); i++) {
+        	if (getProject().isSelected()) {
 
-            // release all selected items. If this is not done, the
-            // painted selection size is too big.
-        	final Picture pic = getProject().getPicture(i);
-        	if (pic.isSelected()) {
-        		selected = true;
-
-                pic.releaseSelected(
+                getProject().releaseSelected(
             			getControlPaintSelection(),
             			getcTabSelection(),
             			getView().getTabs().getTab_debug(),
             			getView().getPage().getJlbl_painting().getLocation().x,
             			getView().getPage().getJlbl_painting().getLocation().y);
+            	controlPic.releaseSelected();
             
         	}
         	
-		}
-        if (selected) {
 
-        	controlPic.releaseSelected();
-        }
 		
 	}
 

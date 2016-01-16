@@ -86,7 +86,28 @@ public abstract class PaintObjectBI extends PaintObject implements Cloneable, Se
         this.pnt_locationOfImage = new Point(0, 0);
     }
 
-    
+
+	/**
+	 * Move PaintObject items.
+	 * 
+	 * @param _pow
+	 *            PaintObjectWriting
+	 * @param _dX
+	 *            the x difference from current position
+	 * @param _dY
+	 *            the y difference from current position
+	 * @return the PaintObjectWriting
+	 */
+	public final PaintObject movePaintObject(
+			final int _dX, final int _dY) {
+		
+		pnt_locationOfImage.x += _dX;
+		pnt_locationOfImage.y += _dY;
+		
+		return this;
+	}
+	
+	
     /**
      * {@inheritDoc}
      */

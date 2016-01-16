@@ -29,6 +29,7 @@ import javax.swing.ImageIcon;
 
 import control.ContorlPicture;
 import control.ControlPaint;
+import model.objects.Project;
 import model.objects.painting.Picture;
 import model.objects.pen.Pen;
 import model.settings.Constants;
@@ -399,7 +400,7 @@ public final class CPaintStatus implements MouseListener {
                 if (_event.getSource().equals(
                         paint.getJbtn_colors()[j])) {
                 	
-                	if (controlPaint.getPicture().isSelected()) {
+                	if (controlPaint.getProject().isSelected()) {
 
                     	controlPaint.getcTabSelection().setSelectionColor(
                     			paint
@@ -467,7 +468,7 @@ public final class CPaintStatus implements MouseListener {
     			
     			
     		int operationID = getOperation(_event);
-    		final Picture pic = controlPaint.getPicture();
+    		final Project pro = controlPaint.getProject();
     		    
     		//if operation id is valid; thus operation has been found
     		if (operationID != -1) {
@@ -476,10 +477,10 @@ public final class CPaintStatus implements MouseListener {
     			State.setIndexOperation(operationID);
     			deactivate();
     			
-    			if (pic.isSelected()) {
+    			if (pro.isSelected()) {
     				
     				//if there was selection before, release it to Picture
-    				pic.releaseSelected(
+    				pro.releaseSelected(
     						controlPaint.getControlPaintSelection(),
     						controlPaint.getcTabSelection(),
     						controlPaint.getView().getTabs().getTab_debug(),
@@ -512,6 +513,7 @@ public final class CPaintStatus implements MouseListener {
     				paint.getIt_stift1().getTb_open()
     				.setActivated(true);
     				paint.getTb_color1().setActivated(true);
+    				final Picture pic = controlPaint.getPicture(_event.getPoint());
     				pic.changePen(
     						State.getPenSelected1());
                         	
@@ -524,7 +526,10 @@ public final class CPaintStatus implements MouseListener {
     				//enable buttons
     				paint.getIt_stift2().getTb_open().setActivated(true);
     				paint.getTb_color2().setActivated(true);
-    				pic.changePen(
+    				
+    				
+    				final Picture pic1 = controlPaint.getPicture(_event.getPoint());
+    				pic1.changePen(
     						State.getPenSelected2());
                         	
     				//set cursor

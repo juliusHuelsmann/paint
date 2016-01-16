@@ -252,6 +252,21 @@ public abstract class PaintObject implements Serializable, Cloneable {
     public abstract boolean isEditable();
     
     
+
+	/**
+	 * Move PaintObject items.
+	 * 
+	 * @param _pow
+	 *            PaintObjectWriting
+	 * @param _dX
+	 *            the x difference from current position
+	 * @param _dY
+	 *            the y difference from current position
+	 * @return the PaintObjectWriting
+	 */
+	public abstract PaintObject movePaintObject(
+			final int _dX, final int _dY);
+    
     /**
      * Clone this paint object.
      * @return the cloned object
@@ -288,6 +303,14 @@ public abstract class PaintObject implements Serializable, Cloneable {
 	 */
 	public final Picture getPicture() {
 		return this.picture;
+	}
+
+
+	/**
+	 * @param picture the picture to set
+	 */
+	public void setPicture(Picture picture) {
+		this.picture = picture;
 	}
     
 }

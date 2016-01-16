@@ -60,6 +60,9 @@ public class PoSelection implements Serializable, Cloneable {
 	
 	
 	
+	public Point getLocationPageProject() {
+		return pnt_locationOfPage;
+	}
 	/**
 	 * Returns location in project.
 	 */

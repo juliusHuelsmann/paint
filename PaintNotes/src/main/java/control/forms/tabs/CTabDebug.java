@@ -146,7 +146,7 @@ public final class CTabDebug implements ActionListener {
     	                    showPaintObjectInformation(po_cu);
     	                    
     	                    
-    	                    pic.releaseSelected(
+    	                    cp.getProject().releaseSelected(
     	                			cp.getControlPaintSelection(),
     	                			cp.getcTabSelection(),
     	                			cp.getView().getTabs().getTab_debug(),
@@ -164,9 +164,9 @@ public final class CTabDebug implements ActionListener {
     	                    //decativate other menuitems and activate the 
     	                    //current one
     	                    //(move)
-    	                    pic.createSelected();
+    	                    cp.getProject().createSelected();
     	                    getPaintObjects().deactivate();
-    	                    pic.insertIntoSelected(po_cu, 
+    	                    cp.getProject().insertIntoSelected(po_cu, 
     	                    		cp.getView().getTabs().getTab_debug());
     	                    new PictureOverview(getPaintObjects()).remove(
     	                    		po_cu);
@@ -182,9 +182,9 @@ public final class CTabDebug implements ActionListener {
     	        }
     	        
     	        //finish insertion into selected.
-    	        pic.finishSelection(cp.getcTabSelection());
+    	        cp.getProject().finishSelection(cp.getcTabSelection());
     	        
-    	        pic.paintSelected(getPage(),
+    	        cp.getProject().paintSelected(getPage(),
     	    			cp.getControlPic(),
     	    			cp.getControlPaintSelection());
     	        getControlPicture().refreshPaint();

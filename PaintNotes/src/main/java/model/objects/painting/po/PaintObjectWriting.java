@@ -2073,6 +2073,33 @@ public class PaintObjectWriting extends PaintObjectPen implements Cloneable {
             ls_point.next();
         }
     }
+    
+	/**
+	 * 
+	 * Move PaintObject items.
+	 * 
+	 * @param _pow
+	 *            PaintObjectWriting
+	 * @param _dX
+	 *            the x difference from current position
+	 * @param _dY
+	 *            the y difference from current position
+	 * @return the PaintObjectWriting
+	 */
+	public PaintObjectWriting movePaintObject(
+			final int _dX, final int _dY) {
+
+		getPoints().toFirst();
+		adjustSnapshotBounds(_dX, _dY);
+		while (!getPoints().isBehind() && !getPoints().isEmpty()) {
+			getPoints().getItem()
+					.setX(getPoints().getItem().getX() + _dX);
+			getPoints().getItem()
+					.setY(getPoints().getItem().getY() + _dY);
+			getPoints().next();
+		}
+		return this;
+	}
 
     
     /**

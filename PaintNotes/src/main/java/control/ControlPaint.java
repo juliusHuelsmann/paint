@@ -2248,10 +2248,9 @@ MenuListener {
     							+ getPage().getJlbl_painting().getLocation().getX()),
     					(int) (_r_sizeField.getY() + getPage().getJlbl_painting().getLocation().getY()));
         int currentPicture = getPictureNumber(loc_pic);
-        System.out.println("currentPicture" + currentPicture);
-        Rectangle r = project.getPageRectanlgeinProject(currentPicture);
         
     	final Picture pic = getPicture(currentPicture);
+        Rectangle r = project.getPageRectanlgeinProject(currentPicture);
     	
     	
     	
@@ -2291,6 +2290,7 @@ MenuListener {
             _r_sizeField.x *= cZoomFactor;
             _r_sizeField.width *= cZoomFactor;
             _r_sizeField.y *= cZoomFactor;
+            _r_sizeField.y -= r.y;
             _r_sizeField.height *= cZoomFactor;
             
             
@@ -2413,6 +2413,7 @@ MenuListener {
 
             _r_sizeField.x /= cZoomFactor;
             _r_sizeField.width /= cZoomFactor;
+//            _r_sizeField.y += r.y; 
             _r_sizeField.y /= cZoomFactor;
             _r_sizeField.height /= cZoomFactor;
 

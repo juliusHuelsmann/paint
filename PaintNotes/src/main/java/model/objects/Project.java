@@ -959,10 +959,11 @@ public class Project extends Observable implements Serializable {
 			while (!ls_poSelected.isEmpty() && !ls_poSelected.isBehind()) {
 				
 
-				if (ls_poSelected.getItem().getPaintObject() instanceof PaintObjectWriting) {
+				if (ls_poSelected.getItem().getPaintObject() 
+						instanceof PaintObjectWriting) {
 
-					PaintObjectWriting pow = 
-							(PaintObjectWriting) ls_poSelected.getItem().getPaintObject();
+					PaintObjectWriting pow = (PaintObjectWriting) 
+							ls_poSelected.getItem().getPaintObject();
 					_ctabSelection.change(ls_poSelected.isEmpty(),
 							pow.getPen().getId_operation(),
 							pow.getPen().getClr_foreground().getRGB());
@@ -1064,8 +1065,8 @@ public class Project extends Observable implements Serializable {
 		// Initialize new list into which the Items are inserted that are inside
 		// the specified rectangle. List is sorted by id for painting the
 		// items chronologically.
-		SecureListSort<PaintObject> ls_poChronologic 
-		= new SecureListSort<PaintObject>();
+		SecureListSort<PoSelection> ls_poChronologic 
+		= new SecureListSort<PoSelection>();
 
 		// reset value for debugging and speed testing.
 		State.setCounter_paintedPoints(0);
@@ -1082,11 +1083,16 @@ public class Project extends Observable implements Serializable {
 				// create new Rectangle consisting of the bounds of the current
 				// paitnObject otherwise adjust the existing bounds
 				if (r_max == null) {
-					Rectangle b = ls_poSelected.getItem().getPaintObject().getSnapshotBounds();
-					r_max = new Rectangle(b.x, b.y, b.width + b.x, b.height
-							+ b.y);
+					Rectangle b = ls_poSelected.getItem().getPaintObject()
+							.getSnapshotBounds();
+					// fetch the page which owns the paintObject
+					int pageStartY = getPageAndPageStartFromPX(ls_poSelected.getItem().getLocationInProject()).y;
+					
+					r_max = new Rectangle(b.x, b.y + pageStartY, b.width + b.x, b.height
+							+ b.y + pageStartY);
 				} else {
-					Rectangle b = ls_poSelected.getItem().getPaintObject().getSnapshotBounds();
+					Rectangle b = ls_poSelected.getItem().getPaintObject()
+							.getSnapshotBounds();
 					r_max.x = Math.min(r_max.x, b.x);
 					r_max.y = Math.min(r_max.y, b.y);
 					r_max.width = Math.max(r_max.width, b.x + b.width);
@@ -1097,7 +1103,7 @@ public class Project extends Observable implements Serializable {
 				//insert the current element into the list containing 
 				//the selected items by sorted by time of insertion 
 				//indicated by their index.
-				ls_poChronologic.insertSorted(ls_poSelected.getItem().getPaintObject(),
+				ls_poChronologic.insertSorted(ls_poSelected.getItem(),
 						ls_poSelected.getItem().getPaintObject().getElementId(),
 						SecureList.ID_NO_PREDECESSOR);
 			} else {
@@ -1121,20 +1127,28 @@ public class Project extends Observable implements Serializable {
 		int counter = 0;
 		while (!ls_poChronologic.isBehind() && !ls_poChronologic.isEmpty()) {
 
-			if (ls_poChronologic.getItem() instanceof PaintObjectWriting) {
+			if (ls_poChronologic.getItem().getPaintObject() 
+					instanceof PaintObjectWriting) {
 				PaintObjectWriting pow = (PaintObjectWriting) ls_poChronologic
-						.getItem();
+						.getItem().getPaintObject();
 				pow.enableSelected();
 			}
+			// fetch the page which owns the paintObject
+			int pageStartY = getPageAndPageStartFromPX(ls_poChronologic.getItem().getLocationInProject()).y;
+			
+			
+			
 			// paint the object.
-			ls_poChronologic.getItem().paint(verbufft2, false, verbufft,
+			ls_poChronologic.getItem().getPaintObject().paint(
+					verbufft2, false, verbufft,
 					_page.getJlbl_painting().getLocation().x,
-					_page.getJlbl_painting().getLocation().y, 
+					_page.getJlbl_painting().getLocation().y + pageStartY, 
 					null);
 
-			if (ls_poChronologic.getItem() instanceof PaintObjectWriting) {
+			if (ls_poChronologic.getItem().getPaintObject()
+					instanceof PaintObjectWriting) {
 				PaintObjectWriting pow = (PaintObjectWriting) ls_poChronologic
-						.getItem();
+						.getItem().getPaintObject();
 				pow.disableSelected();
 			}
 			

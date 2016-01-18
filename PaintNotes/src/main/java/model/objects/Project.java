@@ -826,20 +826,27 @@ public class Project extends Observable implements Serializable {
 		for (int i = 0; i < document.getNumberOfPages(); i++) {
 
 			// compute size
-			PDRectangle b = document.getPage(i).getBBox();
-//			final int realPageWidth = Math.round(b.getWidth() 
-//					* PDFUtils.dpi / 72);
-			final int realPageHeight = Math.round(b.getHeight() 
-					* PDFUtils.dpi / 72);
+			final int heightCurrentPage = getPageHeight(i);
 			
-			pageY = sumHeight;
-			sumHeight += realPageHeight;
+			// The y coordinates of the current page is equal to 
+			// the project height considering each page up to the
+			// page i-1
+			pageY 	   = sumHeight;
+			sumHeight += heightCurrentPage;
 			
 			if (_px.y <= sumHeight) {
 				return new Point(i, pageY);
 			}
 		}
 		return new Point(document.getNumberOfPages() - 1, pageY);
+	}
+	
+	public final int getPageHeight(final int _pageNumber) {
+		// compute size
+		PDRectangle b = document.getPage(_pageNumber).getBBox();
+		return Math.round(b.getHeight() 
+				* PDFUtils.dpi / 72);
+			
 	}
 
 

@@ -2088,9 +2088,9 @@ MenuListener {
         int currentPicture = getPictureNumber(loc_pic);
         Rectangle r = project.getPageRectanlgeinProject(currentPicture);
         
-    	final Picture pic = getPicture(currentPicture);
+    	Picture pic = getPicture(currentPicture);
     	//start transaction 
-    	final int transaction = pic.getLs_po_sortedByY()
+    	int transaction = pic.getLs_po_sortedByY()
     			.startTransaction("Selection line complete", 
     					SecureList.ID_NO_PREDECESSOR);
         /*
@@ -2143,7 +2143,7 @@ MenuListener {
                 <= (_r_size.y + _r_size.height)) {
 
 
-        	
+
             //The y condition has to be in here because the items are just 
             //sorted by x coordinate; thus it is possible that one PaintObject 
             //is not suitable for the specified rectangle but some of its 
@@ -2172,12 +2172,65 @@ MenuListener {
             		transaction, SecureList.ID_NO_PREDECESSOR);
             // update current values
             currentY = po_current.getSnapshotBounds().y;
-            po_current = pic.getLs_po_sortedByY().getItem();
             
-        }
-        
+            po_current = pic.getLs_po_sortedByY().getItem();
 
-    	//finish transaction 
+            // if there is no suitable PaintObject at the current page anymore,
+            // check the following page for suitable PaintObjects.
+            if (po_current == null) {
+            	
+            	
+            	
+            	
+            	
+            	// If the currentPicture exists, fetch the picture and save the
+            	// first PaintObject inside po_current.
+            	// Otherwise there is nothing to do: the po_current is equal to
+            	// null and the loop is interrupted.
+            	do {
+
+                	// increase the picture identifier and finish the previous 
+                	// page's transaction right away.
+                	currentPicture++;
+            		
+                	System.out.println("ich bin in der while mit dem current picture" + currentPicture);
+            		if (currentPicture < project.getAmountPages()) {
+
+                    	pic.getLs_po_sortedByY().finishTransaction(
+                    			transaction);
+                		pic = getPicture(currentPicture);
+                    	transaction = pic.getLs_po_sortedByY()
+                    			.startTransaction("Selection line complete", 
+                    					SecureList.ID_NO_PREDECESSOR);
+                		pic.getLs_po_sortedByY().toFirst(transaction, 
+                				SecureList.ID_NO_PREDECESSOR);
+                		
+                		// decrease the rectangle's height and the 
+                		// y location of the rectangle
+                		final int heightNewPage = getProject().getPageHeight(currentPicture - 1);
+                		_r_size.height -= heightNewPage - _r_size.y;
+                		_r_size.y = 0;
+                        
+                		// if there exists a paintObject at the current page,
+                		// store the PaintObject and the y coordinates inside
+                		// the variables.
+                		// Otherwise, the loop continues with the next page
+                		// which contains a PaintObject.
+                		if (!pic.getLs_po_sortedByY().isEmpty()) {
+                			po_current = pic.getLs_po_sortedByY()
+                                    .getItem();
+                            currentY = po_current.getSnapshotBounds().y;
+                    		
+                		}
+            		}
+            		
+                    
+            	} while ((currentPicture < project.getAmountPages()
+            			&& pic.getLs_po_sortedByY().isEmpty()));
+            	System.out.println("left while");
+            }
+        }
+
     	pic.getLs_po_sortedByY().finishTransaction(
     			transaction);
 

@@ -1172,8 +1172,10 @@ public class Project extends Observable implements Serializable {
 					// fetch the page which owns the paintObject
 					int pageStartY = getPageAndPageStartFromPX(ls_poSelected.getItem().getLocationInProject()).y;
 					
-					r_max = new Rectangle(b.x, b.y + pageStartY, b.width + b.x, b.height
-							+ b.y + pageStartY);
+					r_max = new Rectangle(b.x, 
+							b.y + pageStartY, 
+							b.width + b.x,
+							b.height + b.y + pageStartY);
 				} else {
 					Rectangle b = ls_poSelected.getItem().getPaintObject()
 							.getSnapshotBounds();
@@ -1218,7 +1220,9 @@ public class Project extends Observable implements Serializable {
 				pow.enableSelected();
 			}
 			// fetch the page which owns the paintObject
-			int pageStartY = getPageAndPageStartFromPX(ls_poChronologic.getItem().getLocationInProject()).y;
+			int pageStartY = (int) (getPageAndPageStartFromPX(
+					ls_poChronologic.getItem().getLocationInProject()).y
+					* State.getZoomFactorToShowSize());
 			
 			
 			

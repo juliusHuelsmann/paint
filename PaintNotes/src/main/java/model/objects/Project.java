@@ -636,6 +636,90 @@ public class Project extends Observable implements Serializable {
             }
         }
     }
+	public void saveProjectPage(final String firstPath, final int _id) throws IOException {
+
+    	
+    	
+    	PDDocument doc = document.getPDDocument();
+        try
+        {
+        	
+        	final boolean newlyCreated = (doc == null);
+        	
+        	if (newlyCreated) {
+
+            	// create new document and insert empty page to the document.
+            	doc = new PDDocument();
+        	} else {
+        		// reset wrong settings.
+        		State.setBorderBottomPercentExport(0);
+        		State.setBorderRightPercentExport(0);
+        		State.setBorderLeftPercentExport(0);
+        		State.setBorderTopPercentExport(0);
+        		State.setExportAlpha(true);
+        	}
+        	
+        	
+        		
+        		attatchToPDF(doc, pictures[_id].getBufferedImage(0, 0, false), _id);
+
+
+    	    //save and close
+    	    doc.save(firstPath);
+        }
+        finally
+        {
+            if( doc != null )
+            {
+//                doc.close();
+            }
+        }
+    }
+	
+	
+
+	
+	public void saveProjectAsImage(final String _savePath, final int _reduceFactor)  {
+
+    	
+    	
+
+    	BufferedImage[] bi_pages = new BufferedImage[pictures.length];
+    	int height = 0;
+    	int width = 0;
+    	for (int i = 0; i < pictures.length; i++) {
+    		document.getPdfPages()[i].remind();
+    		bi_pages[i] = pictures[i].calculateImage();
+    		final int cWidth = bi_pages[i].getWidth() / _reduceFactor;
+    		final int cHeight = bi_pages[i].getHeight() / _reduceFactor;
+    		bi_pages[i] = Utils.resizeImageQuick(cWidth, cHeight, bi_pages[i]);
+			height += cHeight;
+			width = Math.max(cWidth, width);
+    		document.getPdfPages()[i].forget();
+		}
+
+		document.getPdfPages()[0].remind();
+    	BufferedImage bi_result = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    	int y = 0;
+    	for (int i = 0; i < bi_pages.length; i++) {
+
+    		
+    		int[] rgbArray = null;
+    		rgbArray = bi_pages[i].getRGB(
+    				0, 0, bi_pages[i].getWidth(), bi_pages[i].getHeight(), 
+    				rgbArray, 0, bi_pages[i].getWidth());
+    		bi_result.setRGB(
+    				0, y, bi_pages[i].getWidth(), bi_pages[i].getHeight(),
+    				rgbArray, 0, bi_pages[i].getWidth());
+			y += bi_pages[i].getHeight();
+			rgbArray = null;
+			bi_pages[i] = null;
+    	}
+    	
+    	Picture.saveBufferedImage(_savePath, bi_result);
+        	
+    }
+
 
 
 	/**

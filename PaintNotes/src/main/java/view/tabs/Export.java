@@ -50,7 +50,7 @@ public final class Export extends Tab {
     /**
      * The JCheckBox for background of new Image.
      */
-    private JCheckBox jcb_raster, jcb_lines, jcb_nothing, jcb_borderEnabled;
+    private JCheckBox jcb_raster, jcb_lines, jcb_nothing, jcb_borderEnabled, jcb_entireProject;
     
     /**
      * The JCombo boxes for the size of the border.
@@ -426,7 +426,7 @@ public final class Export extends Tab {
     	if (_paint) {
 
             //right
-            jlbl_displayAlphaTitle = new MLabel("Ohter:");	
+            jlbl_displayAlphaTitle = new MLabel("Other:");	
     	}
         jlbl_displayAlphaTitle.setSize(buttonWidth * 3 / 4, buttonHeight);
         jlbl_displayAlphaTitle.setLocation(_x
@@ -501,9 +501,33 @@ public final class Export extends Tab {
             super.add(jcb_saveFormats);
             
 
+
+            jcb_entireProject = new JCheckBox("entire project");
+            jcb_entireProject.setFocusable(false);
+            jcb_entireProject.setOpaque(false);
+            jcb_entireProject.addActionListener(_cex);	
+
+            jcb_entireProject.setFont(ViewSettings.GENERAL_FONT_ITEM);
+            jcb_entireProject.setSelected(true);
+            super.add(jcb_entireProject);
         }
-        insertSectionStuff("Visualization", jlbl_displayAlphaTitle.getX(), 
-                jcb_displayAlpha.getX() + jcb_displayAlpha.getWidth()
+        jcb_entireProject.setLocation(
+        		jcb_saveFormats.getX() 
+        		+ ViewSettings.getDistanceBetweenItems()
+        		+ jcb_saveFormats.getWidth(),
+        		jcb_saveFormats.getY()
+//                + ViewSettings.getDistanceBetweenItems()
+//                + jlbl_backgroundTitle.getHeight()
+                );
+        jcb_entireProject.setSize(buttonWidth * 2 / (2 + 2), buttonHeight);
+        
+        
+                
+        
+        
+        
+        insertSectionStuff("Visualization", jcb_entireProject.getX(), 
+        		jcb_entireProject.getX() + jcb_entireProject.getWidth()
                 + ViewSettings.getDistanceBetweenItems(), 1, _paint);
         
         return jcb_displayAlpha.getX() + jcb_displayAlpha.getWidth()
@@ -694,5 +718,13 @@ public final class Export extends Tab {
 	public MLabel getJlbl_subtitle_borderRight() {
 		return jlbl_subtitle_borderRight;
 	}
+
+	/**
+	 * @return the jcb_entireProject
+	 */
+	public JCheckBox getJcb_entireProject() {
+		return jcb_entireProject;
+	}
+
 
 }

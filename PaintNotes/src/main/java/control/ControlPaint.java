@@ -3350,14 +3350,21 @@ MenuListener {
 	 * @return the picture
 	 */
 	public final Picture getPicture() {
+		
+		return project.getPicture(getPictureID());
+	}
+	
+	
+	public final int getPictureID() {
 		if (getPage() == null || getPage().getJlbl_painting() == null) {
-			return project.getCurrentPicture(0, 0);
+			return project.getPictureID(0, 0);
 			
 		}
-		return project.getCurrentPicture(
+		return project.getPictureID(
 				-getPage().getJlbl_painting().getLocation().x,
 				-getPage().getJlbl_painting().getLocation().y);
 	}
+	
 	/**
 	 * 
 	 * Slow!

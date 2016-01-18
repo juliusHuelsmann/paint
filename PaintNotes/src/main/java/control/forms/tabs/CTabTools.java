@@ -683,14 +683,35 @@ implements ActionListener, MouseListener {
 
             	if (fileEnding.equals(".pdf")) {
 
-                    try {
-						controlPaint.getProject().savePDF(firstPath + fileEnding);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+
+            		if (getView().getTabs().getTab_export()
+            				.getJcb_entireProject().isSelected()) {
+
+                        try {
+    						controlPaint.getProject().savePDF(firstPath + fileEnding);
+    					} catch (IOException e) {
+    						e.printStackTrace();
+    					}
+            		} else {
+            			try {
+							controlPaint.getProject().saveProjectPage(
+									firstPath + fileEnding, 
+									controlPaint.getPictureID());
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+            		}
             	} else  {
 
-                    controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
+            		if (getView().getTabs().getTab_export()
+            				.getJcb_entireProject().isSelected()) {
+
+                        controlPaint.getProject().saveProjectAsImage(firstPath + fileEnding, 4);
+            		} else {
+
+                        controlPaint.getPicture().saveIMAGE(firstPath, 0, 0, fileEnding);
+            		}
             	}
             } 
             controlPaint.getProject().saveProject(firstPath + ".pic");

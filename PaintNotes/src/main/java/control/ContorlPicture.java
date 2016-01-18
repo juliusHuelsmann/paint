@@ -1151,7 +1151,15 @@ public class ContorlPicture implements PaintListener {
 								+ pageScope[i].y
 								) / zoomStretch);
 
-				for (int j = 0; j < bi.getWidth(); j++) {
+				if (y >= bi.getHeight()) {
+					try {
+						throw new Exception("Hier brennt's");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				for (int j = 0; y < bi.getHeight() && j < bi.getWidth(); j++) {
 
 					bi.setRGB(j, y,
 							Color.black.getRGB());

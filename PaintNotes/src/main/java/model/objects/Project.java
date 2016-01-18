@@ -1164,15 +1164,17 @@ public class Project extends Observable implements Serializable {
 			// next operation.
 			if (ls_poSelected.getItem() != null) {
 
+				// fetch the page which owns the paintObject
+				int pageStartY = getPageAndPageStartFromPX(ls_poSelected.getItem().getLocationInProject()).y;
+				
 				// create new Rectangle consisting of the bounds of the current
 				// paitnObject otherwise adjust the existing bounds
 				if (r_max == null) {
 					Rectangle b = ls_poSelected.getItem().getPaintObject()
 							.getSnapshotBounds();
-					// fetch the page which owns the paintObject
-					int pageStartY = getPageAndPageStartFromPX(ls_poSelected.getItem().getLocationInProject()).y;
 					
-					r_max = new Rectangle(b.x, 
+					r_max = new Rectangle(
+							b.x, 
 							b.y + pageStartY, 
 							b.width + b.x,
 							b.height + b.y + pageStartY);
@@ -1180,9 +1182,9 @@ public class Project extends Observable implements Serializable {
 					Rectangle b = ls_poSelected.getItem().getPaintObject()
 							.getSnapshotBounds();
 					r_max.x = Math.min(r_max.x, b.x);
-					r_max.y = Math.min(r_max.y, b.y);
+					r_max.y = Math.min(r_max.y, b.y + pageStartY);
 					r_max.width = Math.max(r_max.width, b.x + b.width);
-					r_max.height = Math.max(r_max.height, b.y + b.height);
+					r_max.height = Math.max(r_max.height, b.y + b.height  + pageStartY);
 				}
 
 

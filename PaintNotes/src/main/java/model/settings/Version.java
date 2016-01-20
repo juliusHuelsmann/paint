@@ -42,7 +42,7 @@ public final class Version {
 	 * This final static string contains the release-date of the current 
 	 * version.
 	 */
-	public static final String RELEASE_DATE = "2015 09 29";
+	public static final String RELEASE_DATE = "2016 01 01";
 	
 	/**
 	 * This final, static string contains information on the state of the 

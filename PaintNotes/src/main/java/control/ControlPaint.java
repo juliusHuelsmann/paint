@@ -2193,7 +2193,6 @@ MenuListener {
                 	// page's transaction right away.
                 	currentPicture++;
             		
-                	System.out.println("ich bin in der while mit dem current picture" + currentPicture);
             		if (currentPicture < project.getAmountPages()) {
 
                     	pic.getLs_po_sortedByY().finishTransaction(
@@ -2227,7 +2226,6 @@ MenuListener {
                     
             	} while ((currentPicture < project.getAmountPages()
             			&& pic.getLs_po_sortedByY().isEmpty()));
-            	System.out.println("left while");
             }
         }
 

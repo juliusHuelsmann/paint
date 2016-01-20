@@ -57,7 +57,7 @@ public final class Version {
 	 *				If the current version is a release without big known bugs.
 	 *				<br><br> 
 	 */
-	public static final String STATUS = "PRE RELEASE";
+	public static final String STATUS = "RELEASE";
 
 	/**
 	 * This final, static string contains the milestone that is in progress.
